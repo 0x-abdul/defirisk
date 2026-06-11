@@ -698,7 +698,7 @@ def _derive_draft07_from_2020(schema_2020: dict) -> dict:
     import copy
     out = copy.deepcopy(schema_2020)
     out["$schema"] = "https://json-schema.org/draft-07/schema#"
-    out["$id"] = "https://riskdashboard.xyz/api/v1.7.0/schema/envelope.json"
+    out["$id"] = "https://defirisk.co/api/v1.7.0/schema/envelope.json"
     return out
 
 
@@ -710,7 +710,7 @@ def _derive_draft07_from_2020(schema_2020: dict) -> dict:
 # from rubric-version bumps.
 ENVELOPE_SCHEMA_2020: dict = {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://riskdashboard.xyz/api/v1.7.0/schemas/envelope.json",
+    "$id": "https://defirisk.co/api/v1.7.0/schemas/envelope.json",
     "title": "RiskProduct API canonical envelope",
     "description": (
         "Envelope wrapping every API response under /api/v1.7.0/. "

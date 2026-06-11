@@ -74,7 +74,7 @@ jobs:
         run: |
           sleep 5   # brief settle time after Nginx picks up new files
           STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
-            https://riskdashboard.xyz/)
+            https://defirisk.co/)
           if [ "$STATUS" != "200" ]; then
             echo "Smoke check failed: HTTP $STATUS"
             exit 1

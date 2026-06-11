@@ -12,7 +12,7 @@ assignees: ''
 **Grade you believe is correct:**
 
 **Which rubric criterion is at issue:**
-<!-- cite the specific threshold from https://riskdashboard.xyz/methodology/ -->
+<!-- cite the specific threshold from https://defirisk.co/methodology/ -->
 <!-- e.g. "critical-flag count is shown as 2 but I count only 1 because..." -->
 
 **Evidence:**
