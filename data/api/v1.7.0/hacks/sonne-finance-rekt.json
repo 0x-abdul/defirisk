@@ -1,0 +1,90 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "sonne-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Sonne Finance",
+        "occurred_at": "2024-05-14",
+        "loss_usd": 20000000.0,
+        "category": "Lending / Money Market (Compound V2 fork)",
+        "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation",
+        "description": "Sonne Finance lost $20M to the exact same Compound V2 donation attack that hit Hundred Finance a year earlier, after their own auditor explicitly flagged the vulnerability as high-severity.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "causal",
+          "notes": "Ignored disclosure — closest [via cross-hack: Factor 19: Audit Finding Not Communicated to Team] || Ignored bug bounty disclosure — adjacent [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        },
+        {
+          "factor_id": "RD-F-036",
+          "relevance": "related",
+          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]"
+        },
+        {
+          "factor_id": "RD-F-038",
+          "relevance": "causal",
+          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "related",
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-072",
+          "relevance": "causal",
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — Massive flash-loan-funded borrowing across multiple markets in a single transaction]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Governance proposal added new market with collateral factor; permissionless execution on Optimism]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market]"
+        },
+        {
+          "factor_id": "RD-F-177",
+          "relevance": "causal",
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        }
+      ]
+    }
+  }
+}

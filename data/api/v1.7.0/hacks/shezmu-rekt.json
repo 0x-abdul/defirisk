@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "shezmu-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Shezmu",
+        "occurred_at": "2024-09-20",
+        "loss_usd": 4900000.0,
+        "category": "CDP / Stablecoin",
+        "root_cause": "Unrestricted Collateral Minting in CDP Vault",
+        "description": "Shezmu's vault accepted collateral anyone could mint for free — an attacker borrowed $4.9M in ShezUSD, then thin liquidity and a 20% bounty deal brought most of it back.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — contract upgrade 17 days before exploit (may be related)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — contract upgrade 17 days before exploit (may be related)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — contract upgrade 17 days prior is notable; may have introduced or failed to patch the flaw]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — contract upgrade 17 days before exploit (may be related)]"
+        }
+      ]
+    }
+  }
+}

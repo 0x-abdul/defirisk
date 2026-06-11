@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "dango-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Dango (custom-L1 perpetual DEX; Grug engine on Tendermint)",
+        "occurred_at": "2026-04-13",
+        "loss_usd": 1900000.0,
+        "category": "Perpetual Futures DEX",
+        "root_cause": "Missing sign/positivity check on `donate()` input in the insurance-fund contract — negative value reversed accounting direction",
+        "description": "Dango's perp DEX lost $1.9M when its insurance-fund donation function accepted a negative value — letting an attacker \"donate\" their way to withdrawing the vault — but a bridge rate-limiter and emergency chain-pause froze $1.49M on-chain and the white-hat returned the bridged $410K for a bounty, leaving users whole.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Presumed unaudited (no public audit on record)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Partial — no formal program disclosed pre-incident; a negotiated post-exploit bounty was paid to the white-hat (amount undisclosed)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: N — from-scratch L1 using custom Grug engine; not a fork of Hyperliquid, dYdX, or any existing perp DEX]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]"
+        }
+      ]
+    }
+  }
+}

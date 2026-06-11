@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "daomaker-rekt",
+        "protocol_slug": null,
+        "protocol_name": "DAO Maker",
+        "occurred_at": "2021-09-04",
+        "loss_usd": 4000000.0,
+        "category": "IDO Launchpad / Token Vesting",
+        "root_cause": "Reinitializable init() function + emergencyExit() drain on token vesting contracts",
+        "description": "DAO Maker was exploited for $4M when its token vesting contracts allowed anyone to call `init()` a second time — resetting ownership to the attacker and enabling `emergencyExit()` to drain all funds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Disputed; likely unaudited or audit scope did not cover the specific vesting contracts]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        }
+      ]
+    }
+  }
+}

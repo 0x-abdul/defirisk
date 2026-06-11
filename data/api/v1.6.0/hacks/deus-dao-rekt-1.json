@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "deus-dao-rekt-1",
+        "protocol_slug": null,
+        "protocol_name": "Deus DAO (DEI lending contract)",
+        "occurred_at": "2022-03-15",
+        "loss_usd": 3000000.0,
+        "category": "Algorithmic Stablecoin / Lending",
+        "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation",
+        "description": "Deus DAO's freshly launched DEI lending contract lost ~$3M when an attacker flash-loaned from the same pool used as its price oracle, manipulated collateral valuations, and liquidated real users' positions for profit.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited newly deployed contract]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — newly launched DEI lending contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — oracle price manipulated during the flash loan; detectable as a price spike/crash]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — 24.7M DEI flash loaned from oracle pool]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "anyswap-rekt",
+        "protocol_slug": null,
+        "protocol_name": "AnySwap (Multichain) V3",
+        "occurred_at": "2021-07-10",
+        "loss_usd": 7900000.0,
+        "category": "Cross-Chain Bridge / DEX",
+        "root_cause": "ECDSA repeated k-value (same R signature) → MPC private key back-calculation",
+        "description": "AnySwap V3 lost $7.9M when its MPC key-signing software reused a random nonce after a restart, letting an attacker recover the private key via textbook ECDSA algebra.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (V3); off-chain MPCNode software]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — V3 was new prototype code; MPCNode had a recent patch that introduced the bug]"
+        },
+        {
+          "factor_id": "RD-F-062",
+          "relevance": "related",
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        },
+        {
+          "factor_id": "RD-F-105",
+          "relevance": "causal",
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        }
+      ]
+    }
+  }
+}

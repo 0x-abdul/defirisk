@@ -1,0 +1,160 @@
+---
+import Page from '../../components/Page.astro';
+import Callout from '../../components/Callout.astro';
+import { listGradeChanges } from '../../lib/data-loaders';
+import { RUBRIC_VERSION } from '../../lib/rubric';
+
+const changes = listGradeChanges();
+const changesByMonth: Record<string, typeof changes> = {};
+for (const ch of changes) {
+  const month = ch.detected_at.slice(0, 7);
+  if (!changesByMonth[month]) changesByMonth[month] = [];
+  changesByMonth[month].push(ch);
+}
+const months = Object.keys(changesByMonth).sort().reverse();
+
+const toc =
+  months.length > 0
+    ? months.map((m) => ({
+        id: `m-${m}`,
+        n: new Date(`${m}-01`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+      }))
+    : [{ id: 'empty', n: 'No changes yet' }];
+
+function gradeColor(g: string): string {
+  const map: Record<string, string> = {
+    A: 'var(--gA)',
+    B: 'var(--gB)',
+    C: 'var(--gC)',
+    D: 'var(--gD)',
+    F: 'var(--gF)',
+  };
+  return map[g] ?? 'var(--fg-3)';
+}
+---
+
+<Page
+  pageTitle="Grade changes"
+  description="Reverse-chronological log of every protocol letter-grade change."
+  crumbs={[{ n: 'Changes' }]}
+  toc={toc}
+  hero={{
+    h1: 'Grade changes',
+    lede: 'Reverse-chronological log of every protocol letter-grade change since rubric ' + RUBRIC_VERSION + ' was published. Subscribe via RSS or JSON Feed.',
+    meta: [
+      { label: 'Entries', value: String(changes.length) },
+      { label: 'Rubric', value: RUBRIC_VERSION },
+      { label: 'Feed', value: 'RSS · JSON' },
+    ],
+  }}
+>
+  <p>
+    Every letter change is recorded with the rubric version it was computed against, a
+    before/after snapshot date, and a short reason. A protocol's letter can change for two
+    reasons: the evidence changed, or the rubric changed. Both are tracked separately.
+  </p>
+
+  <p>
+    Subscribe at <a class="link" href="/feeds/grade-changes.xml">/feeds/grade-changes.xml</a>
+    (RSS 2.0) or <a class="link" href="/feeds/grade-changes.json">/feeds/grade-changes.json</a>
+    (JSON Feed 1.1).
+  </p>
+
+  {
+    changes.length === 0 && (
+      <Callout kind="note" label="No changes yet">
+        <p id="empty">
+          No grade changes have been recorded since rubric {RUBRIC_VERSION} was published. New
+          changes will appear here as protocols are re-assessed.
+        </p>
+      </Callout>
+    )
+  }
+
+  {
+    months.map((month) => (
+      <section>
+        <h2 id={`m-${month}`}>
+          {new Date(`${month}-01`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          <a class="alink" href={`#m-${month}`}>#</a>
+        </h2>
+        <ul class="change-list">
+          {changesByMonth[month]!.map((ch) => (
+            <li class="change-item">
+              <a class="change-link" href={`/changes/${ch.id}/`}>
+                <span class="change-dir" style={`color: ${gradeColor(ch.is_upgrade ? ch.to_grade : ch.from_grade)}`}>
+                  {ch.is_upgrade ? '↑' : '↓'}
+                </span>
+                <span class="change-protocol">{ch.protocol_name}</span>
+                <span class="change-from-to">
+                  <span style={`color: ${gradeColor(ch.from_grade)}`}>{ch.from_grade}</span>
+                  {' → '}
+                  <span style={`color: ${gradeColor(ch.to_grade)}`}>{ch.to_grade}</span>
+                </span>
+                <span class="change-date">{ch.detected_at.slice(0, 10)}</span>
+              </a>
+              {ch.reason && <p class="change-reason">{ch.reason}</p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</Page>
+
+<style>
+  .change-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .change-item {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  .change-item::before {
+    content: none !important;
+  }
+  .change-item:last-child {
+    border-bottom: none;
+  }
+  .change-link {
+    display: grid;
+    grid-template-columns: 24px 1fr auto auto;
+    gap: 12px;
+    align-items: baseline;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .change-link:hover .change-protocol {
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 3px;
+  }
+  .change-dir {
+    font-family: 'Geist Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .change-protocol {
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .change-from-to {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-2);
+  }
+  .change-date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+  }
+  .change-reason {
+    margin: 6px 0 0 36px !important;
+    font-size: 13px;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+</style>

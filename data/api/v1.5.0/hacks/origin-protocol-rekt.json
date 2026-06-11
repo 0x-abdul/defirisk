@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "origin-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Origin Protocol (OUSD)",
+        "occurred_at": "2020-11-17",
+        "loss_usd": 7700000.0,
+        "category": "Algorithmic Stablecoin / Yield-Bearing Stablecoin",
+        "root_cause": "Flash loan + fake token injection → missing mintMultiple() validation → reentrancy → rebase inflation → drain",
+        "description": "Origin Protocol's OUSD lost $7.7M when a gas-optimization refactor accidentally removed a single validation check, letting an attacker pass a fake stablecoin into mintMultiple(), trigger reentrancy, inflate the total OUSD supply, and redeem more than the vault held.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the validation bug was introduced during a refactoring pass (gas optimization) shortly before the hack] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the validation bug was introduced during a refactoring pass (gas optimization) shortly before the hack]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — 70,000 ETH flash loan from dYdX (very large flash loan for November 2020)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the validation bug was introduced during a refactoring pass (gas optimization) shortly before the hack]"
+        }
+      ]
+    }
+  }
+}

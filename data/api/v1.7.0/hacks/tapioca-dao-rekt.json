@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "tapioca-dao-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Tapioca DAO",
+        "occurred_at": "2024-10-18",
+        "loss_usd": 4400000.0,
+        "category": "Yield / DAO / Omnichain Protocol (token vesting + CDP stablecoin)",
+        "root_cause": "Social engineering → private key compromise → vesting contract ownership takeover + stablecoin infinite mint → TAP dump + USDO/USDC LP drain",
+        "description": "Tapioca DAO lost $4.4M when a social engineering attack — likely via malware-laced fake job offer — compromised the private key controlling the vesting and stablecoin contracts, enabling a TAP dump, quintillion-USDO mint, and LP drain before the team counter-hacked to recover 1,000 ETH.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Emergency Rescue function called by compromised owner key; stablecoin minter role added; ownership transferred on both vesting and stabl...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Emergency Rescue function called by compromised owner key; stablecoin minter role added; ownership transferred on both vesting and stabl...]"
+        }
+      ]
+    }
+  }
+}

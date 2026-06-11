@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "drift-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Drift Protocol (Solana perpetual futures DEX)",
+        "occurred_at": "2026-04-01",
+        "loss_usd": 285260000.0,
+        "category": "Perpetual Futures DEX",
+        "root_cause": "Multi-month social engineering + Solana durable-nonce pre-signing + fake-collateral-token / attacker-controlled oracle",
+        "description": "North Korean operatives spent six months posing as a trading firm at real conferences, compromised Drift contributors' devices via a VSCode zero-day, pre-signed dormant Solana transactions, then drained $285M in 128 seconds on April 1, 2026.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Security Council migrated to 2/5 threshold with zero timelock approximately 6 days before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Security Council migrated to 2/5 threshold with zero timelock approximately 6 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: [PENDING: no confirmed Immunefi or equivalent program found in sources]]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Security Council threshold reduction (3/5→2/5, timelock removed) March 25–27; admin key transfer April 1]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: CVT minted March 12 with 80% supply concentration to one address; $500 Raydium seed pool with wash-trading volume; 4 durable-nonce accounts ...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — attacker-deployed CVT oracle (not a recognized oracle provider); price feed detectably non-canonical]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Security Council threshold reduction (3/5→2/5, timelock removed) March 25–27; admin key transfer April 1]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Security Council migrated to 2/5 threshold with zero timelock approximately 6 days before exploit]"
+        }
+      ]
+    }
+  }
+}

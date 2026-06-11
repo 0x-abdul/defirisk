@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "eminence-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Eminence Finance (EMN)",
+        "occurred_at": "2020-09-28",
+        "loss_usd": 15000000.0,
+        "category": "Unreleased / Test-in-Prod (gaming multiverse / bonding curve token system)",
+        "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)",
+        "description": "$15M in DAI was drained from Eminence Finance — Andre Cronje's unannounced, unaudited test contracts — within hours of deployment, as FOMO-driven users deposited funds into a bonding curve an attacker immediately arbitraged to zero.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit existed] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit existed]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited; vulnerability is inherent to the bonding curve design (circular token mechanics exploitable via flash loans)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — deployed day of exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — deployed day of exploit] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "causal",
+          "notes": "Protocol age (days since first mainnet deploy) [via cross-hack: Factor 35: Protocol Age < 2 Weeks at Time of Hack]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — large flash loan from Uniswap pool visible on-chain]"
+        },
+        {
+          "factor_id": "RD-F-114",
+          "relevance": "causal",
+          "notes": "Deployer address prior on-chain history [via cross-hack: Factor 20: Deployer Reputation as False Trust Signal]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — deployed day of exploit]"
+        }
+      ]
+    }
+  }
+}

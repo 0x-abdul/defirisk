@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "aethir-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Aethir (decentralized GPU compute / DePIN; ATH token bridge)",
+        "occurred_at": "2026-04-09",
+        "loss_usd": 400000.0,
+        "category": "DePIN / Cross-Chain Bridge Adapter (LayerZero OFT)",
+        "root_cause": "Access control — unprotected/misauthorized `transferOwnership()` on AethirOFTAdapter; either missing `onlyOwner` modifier or compromised single-EOA admin key",
+        "description": "An attacker seized ownership of Aethir's LayerZero OFT bridge adapter on BNB Chain in one `transferOwnership` call, drained ~423,000 ATH (~$400K), and bridged to TRON — but exchange coordination froze most of it, holding net user losses under $90K.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: [PENDING: no confirmed Immunefi program for the bridge adapter]]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — unauthorized `transferOwnership` call on AethirOFTAdapter is itself the critical admin action]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — unauthorized `transferOwnership` call on AethirOFTAdapter is itself the critical admin action]"
+        }
+      ]
+    }
+  }
+}

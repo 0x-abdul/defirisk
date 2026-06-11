@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "onyx-protocol-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Onyx Protocol (2nd incident)",
+        "occurred_at": "2024-09-25",
+        "loss_usd": 3800000.0,
+        "category": "Lending / Money Market (Compound V2 fork)",
+        "root_cause": "Compound V2 empty-market donation attack — VUSD governance-added market",
+        "description": "Onyx Protocol was drained for $3.8M using the exact same Compound V2 empty-market vulnerability that hit it 11 months earlier — after governance added a new VUSD market without first seeding it with liquidity.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years 8 months at time of exploit]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Y — VUSD market newly added via governance]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown / not advertised publicly]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — governance vote added the new VUSD market that created the empty-market opportunity]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — Compound V2 fork]"
+        }
+      ]
+    }
+  }
+}

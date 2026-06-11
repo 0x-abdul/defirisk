@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "gamma-strategies",
+        "protocol_slug": null,
+        "protocol_name": "Gamma Strategies",
+        "occurred_at": "2024-01-04",
+        "loss_usd": 4500000.0,
+        "category": "DEX / Concentrated Liquidity Management",
+        "root_cause": "Flash Loan — LP Token Price Manipulation (Price Threshold Bypass)",
+        "description": "Gamma Strategies lost $4.5M when an attacker used flash loans to push prices to the edges of Gamma's own intentionally-set price tolerance thresholds — the \"protection\" mechanism was the vulnerability because the tolerances were set too wide.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Y — Tornado Cash-funded attacker address appeared ~2.5 hours before attack; attack contract deployed pre-exploit]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — LP token price manipulation via flash loan is detectable as an anomalous price spike within the vault's price feed during the attack]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

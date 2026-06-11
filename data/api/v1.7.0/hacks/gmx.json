@@ -1,0 +1,85 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "gmx",
+        "protocol_slug": "gmx-v2",
+        "protocol_name": "GMX V1",
+        "occurred_at": "2025-07-09",
+        "loss_usd": 0.0,
+        "category": "Perpetuals DEX / Liquidity Pool (GLP)",
+        "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback",
+        "description": "A cross-contract reentrancy bug introduced by GMX's own 2022 security patch let an attacker manipulate GLP pricing from $1.45 to $27, threatening $42M — recovered via white-hat coordinated disclosure for a $5M bounty.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "related",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — keeper callbacks, globalShortAveragePrices logic, and AUM circular dependency were all post-audit additions or changes] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — keeper callbacks, globalShortAveragePrices logic, and AUM circular dependency were all post-audit additions or changes] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "illustrative",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years at exploit (extensive post-audit code changes)]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "related",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited post-audit code; bug introduced by a security patch in 2022]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "related",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: No new deployment — but code significantly changed since last audit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: No new deployment — but code significantly changed since last audit] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || (+1 more matches)"
+        },
+        {
+          "factor_id": "RD-F-081",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-084",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker wallet funded via Mayan Swift Bridge 48h prior; attack contract deployed day-of]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — GLP price spiked from $1.45 to $27+ (18x); BTC globalShortAveragePrice collapsed 98% within transaction]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "related",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes (GMX V1 widely forked across DeFi — all forks inherited same vulnerability)]"
+        },
+        {
+          "factor_id": "RD-F-139",
+          "relevance": "related",
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "illustrative",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "illustrative",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: No new deployment — but code significantly changed since last audit]"
+        }
+      ]
+    }
+  }
+}

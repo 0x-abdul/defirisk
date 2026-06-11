@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "seneca-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Seneca Protocol",
+        "occurred_at": "2024-02-28",
+        "loss_usd": 6400000.0,
+        "category": "CDP / Liquid Staking",
+        "root_cause": "Approval Exploit — Arbitrary transferFrom via Constructed Calldata",
+        "description": "Seneca Protocol's Chamber contract let anyone construct calldata to drain tokens from any user's wallet who had ever given it approval — a bug flagged by a Sherlock researcher three months before launch that the team knowingly shipped.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — core Chamber contract; no recent upgrade] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — core Chamber contract; no recent upgrade]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N — no bug bounty program]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: In audited code (Halborn) — related issues flagged but specific flaw missed]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker address funded via FixedFloat 5 months prior and dormant; no on-chain activity immediately before]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — \"battle-tested code\" (their words); LST collateral CDP fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — core Chamber contract; no recent upgrade]"
+        }
+      ]
+    }
+  }
+}

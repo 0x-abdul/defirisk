@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "silo-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Silo Finance (V2, soUSDC managed vault on Arbitrum)",
+        "occurred_at": "2026-04-03",
+        "loss_usd": 392000.0,
+        "category": "Isolated Lending (curator-managed meta-vault over isolated markets)",
+        "root_cause": "Immutable hardcoded wstUSR oracle (pricing depegged asset ~10x reality) + supply-cap bypass via `receiver` parameter + `totalAssets()` summing externally-donated shares",
+        "description": "Silo Finance's soUSDC managed vault on Arbitrum lost ~$392K on April 3, 2026 when an attacker exploited a hardcoded immutable wstUSR oracle pricing the depegged token at $1.13 while it traded at $0.12, combined with a supply-cap bypass via the `receiver` parameter and a `totalAssets()` accounting flaw that counted externally-donated shares as vault assets.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — V2 managed-vault architecture ~12 months old; wstUSR market configuration newer] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — V2 managed-vault architecture ~12 months old; wstUSR market configuration newer]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — ~9.4x mispricing (oracle $1.13 vs market $0.12) for ~12 days]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: N — original protocol; V2 meta-vault pattern is conceptually similar to MetaMorpho but not a fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — V2 managed-vault architecture ~12 months old; wstUSR market configuration newer]"
+        }
+      ]
+    }
+  }
+}

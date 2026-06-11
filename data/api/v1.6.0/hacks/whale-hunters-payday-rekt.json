@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "whale-hunters-payday-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Unnamed Crypto Whale (Maker DSProxy vault)",
+        "occurred_at": "2024-08-20",
+        "loss_usd": 55470000.0,
+        "category": "CDP / Personal Vault (Maker DSProxy)",
+        "root_cause": "Phishing → EOA compromise → DSProxy ownership transfer → DAI vault drain",
+        "description": "A whale lost 55.47M DAI when a phishing attack tricked them into signing away ownership of their Maker DSProxy, letting the attacker drain the vault directly.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — the exploit is off-chain phishing; no code bug] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — the exploit is off-chain phishing; no code bug]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N/A (personal wallet / Maker DSProxy — no user-level bug bounty)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — DSProxy ownership transfer to attacker address was the pivotal on-chain step]"
+        }
+      ]
+    }
+  }
+}

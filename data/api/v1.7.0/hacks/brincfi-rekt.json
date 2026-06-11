@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "brincfi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "BrincFi",
+        "occurred_at": "2021-12-14",
+        "loss_usd": 1100000.0,
+        "category": "Staking / Yield",
+        "root_cause": "Insider backdoor — rescueTokens() admin drain via ownership transfer + malicious contract upgrade",
+        "description": "BrincFi's own Head of Development allegedly transferred ownership of the staking contract to himself, upgraded it with a `rescueTokens()` backdoor, and drained $1.1M — then retained a lawyer.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited; insider-introduced backdoor]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — malicious implementation upgrade was the attack vehicle]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-043",
+          "relevance": "causal",
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — ownership transfer is an on-chain event; contract upgrade is an on-chain event]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-123",
+          "relevance": "causal",
+          "notes": "★ Sudden admin-rescue / ACL change absent issue/PR discussion [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        }
+      ]
+    }
+  }
+}

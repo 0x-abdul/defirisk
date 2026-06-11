@@ -1,0 +1,547 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # ── 0a. Python lint (ruff) ───────────────────────────────────────────────────
+  # Hard gate. Auto-fixable findings (57) were applied at install; the 37
+  # judgement-call findings (E701, B007, E741, E402, F841) were resolved
+  # in the follow-up to the lint-tooling work. To debug locally, run
+  # `python -m ruff check scripts/ risk-dashboard/scripts/`.
+  lint-py:
+    name: Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install ruff
+        run: pip install 'ruff>=0.6'
+      - name: Run ruff
+        run: ruff check scripts/ risk-dashboard/scripts/
+
+  # ── 0b. Site lint (eslint) ───────────────────────────────────────────────────
+  lint-site:
+    name: Lint (eslint)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - run: npm ci
+      - run: npm run lint
+
+  # ── 0c. Pipeline tests (pytest) ──────────────────────────────────────────────
+  test-py:
+    name: Data-pipeline tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test deps
+        run: pip install pytest selectolax
+      - name: Run pytest (test_rekt + test_defillama + future per-fetcher tests)
+        run: pytest risk-dashboard/scripts/data-pipeline/tests/ -v
+      - name: Run legacy offline test (schema validation + dry-run)
+        run: python risk-dashboard/scripts/data-pipeline/tests/test_offline.py
+
+  # ── 1. Schema drift check ────────────────────────────────────────────────────
+  schema-check:
+    name: Schema check (drizzle-kit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:check
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+
+  # ── 2. Rubric unit tests ─────────────────────────────────────────────────────
+  rubric-tests:
+    name: Rubric tests (vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - run: npm ci
+        working-directory: site
+      - run: npm test
+        working-directory: site
+
+  # ── 3. TypeScript type-check ─────────────────────────────────────────────────
+  type-check:
+    name: Type-check (tsc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - name: Install site deps
+        run: npm ci
+        working-directory: site
+      - name: Type-check site
+        run: npm run typecheck
+        working-directory: site
+
+  # ── 4. Astro build ───────────────────────────────────────────────────────────
+  astro-build:
+    name: Astro build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site
+        continue-on-error: true
+        # Astro scaffold not complete until E-11; build is expected to fail until then
+
+  # ── 5. Rubric version 4-layer pin assertion ──────────────────────────────────
+  rubric-version-pin:
+    name: Rubric version pin (constant = DB)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: risk_dashboard
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Apply schema + seed
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          npm run db:push
+          npm run db:seed
+      - name: Assert RUBRIC_VERSION pin
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: npx tsx scripts/ci/check-rubric-version-pin.ts
+
+  # ── 6. Source citation invariant ─────────────────────────────────────────────
+  source-invariant:
+    name: Source citation invariant
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: risk_dashboard
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Apply schema + seed
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          npm run db:push
+          npm run db:seed
+      - name: Assert no factor_scores without sources
+        run: |
+          count=$(psql "postgresql://postgres:postgres@localhost:5432/risk_dashboard" \
+            -t -f scripts/ci/source-invariant.sql | tr -d '[:space:]')
+          if [ "$count" != "0" ]; then
+            echo "FAIL: $count current factor_score(s) have zero source citations"
+            exit 1
+          fi
+          echo "OK: source citation invariant holds"
+
+  # ── 7. Changelog append-only ─────────────────────────────────────────────────
+  changelog-check:
+    name: Changelog append-only
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ensure changelog is append-only
+        run: |
+          base=$(git merge-base origin/${{ github.base_ref }} HEAD)
+          removed=$(git diff "$base"...HEAD -- docs/methodology/changelog.md | grep '^-[^-]' | wc -l)
+          if [ "$removed" -gt 0 ]; then
+            echo "FAIL: $removed line(s) removed or modified in docs/methodology/changelog.md"
+            echo "changelog.md is append-only — only new lines may be added"
+            exit 1
+          fi
+          echo "OK: changelog.md append-only invariant holds"
+
+  # ── 8. OpenAPI spec present + valid ─────────────────────────────────────────
+  openapi-check:
+    name: OpenAPI spec check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate site/public/openapi.json
+        run: |
+          set -e
+          file="site/public/openapi.json"
+          if [ ! -f "$file" ]; then
+            echo "FAIL: $file not found — run npx tsx scripts/gen-openapi.ts"
+            exit 1
+          fi
+          version=$(jq -r '.openapi' "$file")
+          if [ "$version" != "3.1.0" ]; then
+            echo "FAIL: openapi field is '$version', expected '3.1.0'"
+            exit 1
+          fi
+          path_count=$(jq '.paths | length' "$file")
+          if [ "$path_count" -lt 8 ]; then
+            echo "FAIL: only $path_count paths in spec, expected ≥8"
+            exit 1
+          fi
+          echo "OK: OpenAPI 3.1 spec with $path_count paths"
+
+  # ── 9. Accessibility (axe-core) ─────────────────────────────────────────────
+  a11y-check:
+    name: Accessibility check (axe-core)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - name: Install site deps
+        run: npm ci
+        working-directory: site
+      - name: Build site
+        run: npm run build
+        working-directory: site
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: site
+      - name: Run axe accessibility checks
+        run: npm run test:a11y
+        working-directory: site
+
+  # ── 10. Performance budget ───────────────────────────────────────────────────
+  perf-budget:
+    name: Performance budget (JS bundle sizes)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - name: Install site deps
+        run: npm ci
+        working-directory: site
+      - name: Build site
+        run: npm run build
+        working-directory: site
+      - name: Check JS bundle budgets
+        run: npx tsx scripts/ci/check-perf-budget.ts
+
+      # Lighthouse: informational only (does not block CI). Score ≥90 is the target.
+      # Requires @lhci/cli — install via: npm i -D @lhci/cli (in site/ devDependencies).
+      # NOTE: @lhci/cli is not yet in site/package.json; add it before M5 launch.
+      - name: Lighthouse audit (informational)
+        continue-on-error: true  # warning, not blocker per E-26 acceptance criteria
+        run: |
+          # Start preview server in background, wait for it to be ready
+          npm run preview -- --port 4321 &
+          SERVER_PID=$!
+          sleep 5
+          # Run lhci collect against protocol detail page
+          npx --yes @lhci/cli collect \
+            --url=http://localhost:4321/protocols/aave-v3/ \
+            --numberOfRuns=1 \
+            --settings.chromeFlags="--no-sandbox" \
+            2>&1 | tail -20 || true
+          # Assert performance score ≥90 (informational — continue-on-error above handles failure)
+          npx @lhci/cli assert \
+            --assert.assertions.categories:performance=["warn",">=0.90"] \
+            2>&1 | tail -5 || true
+          kill $SERVER_PID 2>/dev/null || true
+        working-directory: site
+
+  # ── 11. Smoke tests (post-build, HARD GATE) ──────────────────────────────────
+  # Flipped from informational to gating per p0-response 2026-05-30 (P0 #2).
+  # Smoke tests now pin to v1.7.0 (single source: site/src/lib/rubric.ts) and
+  # assert the M1 v4 envelope fields, so a regression in the wire contract is
+  # a real merge blocker. CP2 / 2026-05-30 added the M1 assertions; if any of
+  # those start failing on master, this job will turn the dashboard red.
+  smoke-staging:
+    name: Smoke tests (local preview)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - name: Install site deps
+        run: npm ci
+        working-directory: site
+      - name: Build site
+        run: npm run build
+        working-directory: site
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: site
+      - name: Run smoke tests
+        run: npm run test:smoke
+        working-directory: site
+
+  # ── 12. Visual regression (E-16, informational until Linux baselines land) ──
+  # Existing baselines are -win32 only (captured locally on Windows). To
+  # promote this job to a hard gate, run on a Linux CI worker once with
+  # `npm run test:visual:update`, commit the resulting -linux PNGs under
+  # site/tests/visual/__snapshots__/, then drop continue-on-error.
+  # The 5 protocol/factor-detail specs use test.skip() until D3 page work
+  # lands; only factor-page-global currently produces a snapshot.
+  visual-regression:
+    name: Visual regression (Playwright)
+    runs-on: ubuntu-latest
+    continue-on-error: true  # informational until Linux baselines committed
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+      - name: Install site deps
+        run: npm ci
+        working-directory: site
+      - name: Build site
+        run: npm run build
+        working-directory: site
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: site
+      - name: Run visual regression
+        run: npm run test:visual
+        working-directory: site
+
+  # ── 13. Migration round-trip ──────────────────────────────────────────────────
+  migration-roundtrip:
+    name: Migration round-trip
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: risk_dashboard
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Apply all migrations from scratch
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: npm run db:push
+      - name: Seed and verify counts
+        run: |
+          DSN="postgresql://postgres:postgres@localhost:5432/risk_dashboard"
+          npm run db:seed
+          rv=$(psql "$DSN" -t -c "SELECT COUNT(*) FROM rubric_versions WHERE is_active = true;" | tr -d '[:space:]')
+          [ "$rv" = "1" ] || { echo "FAIL: expected 1 active rubric_version, got $rv"; exit 1; }
+          cats=$(psql "$DSN" -t -c "SELECT COUNT(*) FROM categories;" | tr -d '[:space:]')
+          [ "$cats" = "13" ] || { echo "FAIL: expected 13 categories, got $cats"; exit 1; }
+          echo "OK: 1 active rubric version + 13 categories"
+        env:
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+
+  # ── 14. Migration replay (ordered SQL files) ─────────────────────────────────
+  #
+  # Complements `migration-roundtrip` above. That job uses `npm run db:push`,
+  # which has Drizzle reconcile the live schema to match db/schema.ts in a
+  # single declarative step — fast and idempotent, but it hides whether the
+  # *hand-written* db/migrations/*.sql files actually apply cleanly in
+  # filename order against an empty Postgres.
+  #
+  # This job replays the hand-written SQL chain (badge-column drops in 0003,
+  # gap_reason rename in 0004, M1 v17 risk_score columns in 0005, etc.) the
+  # same way a recovery from R2 backup would: empty database, apply files in
+  # order, verify the resulting schema looks sane.
+  #
+  # Catches: migration-order regressions (e.g. dropping a column before a
+  # downstream migration tries to read it), syntactically broken SQL, missing
+  # IF EXISTS guards, accidental dependency on objects only db:push creates.
+  #
+  # Added per p0-response 2026-05-30 (P0 #8).
+  migration-replay:
+    name: Migration replay (ordered SQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: risk_dashboard
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install postgresql-client
+        run: sudo apt-get install -y --no-install-recommends postgresql-client
+
+      - name: Replay db/migrations/*.sql in filename order on empty Postgres
+        env:
+          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          # Sort by filename so 0000 → 0001 → ... → 0007 → ... applies in order.
+          set -euo pipefail
+          shopt -s nullglob
+          files=(db/migrations/[0-9]*.sql)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "FAIL: no SQL migration files found under db/migrations/"
+            exit 1
+          fi
+          # Sort just to be safe — bash glob order is locale-dependent.
+          IFS=$'\n' files=($(printf '%s\n' "${files[@]}" | sort))
+          unset IFS
+          echo "Applying ${#files[@]} migration(s) in order:"
+          for f in "${files[@]}"; do
+            echo "  → $f"
+            psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
+          done
+          echo "OK: all migrations applied cleanly"
+
+      - name: Verify resulting schema looks sane
+        env:
+          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          # Core tables that MUST exist after a full replay. If a future
+          # migration drops one of these accidentally, this fails loudly.
+          set -euo pipefail
+          required_tables=(
+            protocols deployments factors factor_scores
+            factor_score_sources sources hacks hack_factor_links
+            grade_history protocol_grade_history grade_changes
+            rubric_versions categories
+          )
+          missing=()
+          for t in "${required_tables[@]}"; do
+            exists=$(psql "$DSN" -t -c \
+              "SELECT to_regclass('public.${t}') IS NOT NULL;" | tr -d '[:space:]')
+            if [ "$exists" != "t" ]; then
+              missing+=("$t")
+            fi
+          done
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "FAIL: migration replay left required tables missing: ${missing[*]}"
+            exit 1
+          fi
+          echo "OK: all ${#required_tables[@]} required tables present"
+
+      - name: Verify badge columns were correctly dropped/relaxed by 0003
+        env:
+          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          # Migration 0003 is the most ordering-sensitive change in the chain:
+          # it drops protocols.headline_badge + deployments.badge entirely and
+          # relaxes grade_history.badge + protocol_grade_history.badge to NULL.
+          # Regressions here directly motivated this job's existence.
+          set -euo pipefail
+
+          # Should NOT exist
+          for col in "protocols.headline_badge" "deployments.badge"; do
+            tbl="${col%.*}"; c="${col##*.}"
+            exists=$(psql "$DSN" -t -c \
+              "SELECT EXISTS (SELECT 1 FROM information_schema.columns
+                              WHERE table_name='${tbl}' AND column_name='${c}');" \
+              | tr -d '[:space:]')
+            if [ "$exists" = "t" ]; then
+              echo "FAIL: ${col} still exists after migration 0003"
+              exit 1
+            fi
+          done
+
+          # Should still exist, but NULLABLE
+          for col in "grade_history.badge" "protocol_grade_history.badge"; do
+            tbl="${col%.*}"; c="${col##*.}"
+            nullable=$(psql "$DSN" -t -c \
+              "SELECT is_nullable FROM information_schema.columns
+               WHERE table_name='${tbl}' AND column_name='${c}';" \
+              | tr -d '[:space:]')
+            if [ "$nullable" != "YES" ]; then
+              echo "FAIL: ${col} expected nullable=YES, got '${nullable}'"
+              exit 1
+            fi
+          done
+
+          echo "OK: badge column drops + NULL-relaxations correct per migration 0003"

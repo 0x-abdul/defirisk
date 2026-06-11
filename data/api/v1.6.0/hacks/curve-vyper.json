@@ -1,0 +1,30 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "curve-vyper",
+        "protocol_slug": "curve-v2",
+        "protocol_name": "Curve Finance (multiple pools) + JPEG'd, Alchemix, Metronome",
+        "occurred_at": "2023-07-30",
+        "loss_usd": 69000000.0,
+        "category": "DEX / AMM (Liquidity Pool)",
+        "root_cause": "Compiler-Level Reentrancy Guard Failure (Vyper 0.2.15–0.3.0 Bug)",
+        "description": "A hidden compiler bug in Vyper versions 0.2.15–0.3.0 silently disabled reentrancy guards in Curve's ETH pools since 2021, allowing attackers to drain $69M across four pools in a single day when the bug was finally discovered and weaponized.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "related",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — compiler-level; no audit reviews compiler correctness]"
+        }
+      ]
+    }
+  }
+}

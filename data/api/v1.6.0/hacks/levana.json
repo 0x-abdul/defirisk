@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "levana",
+        "protocol_slug": null,
+        "protocol_name": "Levana Protocol",
+        "occurred_at": "2023-12-13",
+        "loss_usd": 1146000.0,
+        "category": "Perpetuals / Derivatives",
+        "root_cause": "Oracle Price Delta Manipulation (Timing + Network Congestion)",
+        "description": "Levana Protocol lost $1.1M — 10% of LP liquidity — to a 14-day stealth attack that exploited timing gaps in oracle updates, with the biggest losses coming when a Cosmos network congestion bug (and a DDoS) gave the attacker uninterrupted windows to make loaded leveraged bets.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — oracle update lag windows exploited; detectable in retrospect]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Original protocol (not a fork)]"
+        }
+      ]
+    }
+  }
+}

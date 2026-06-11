@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "autoshark-rekt",
+        "protocol_slug": null,
+        "protocol_name": "AutoShark Finance",
+        "occurred_at": "2021-06-01",
+        "loss_usd": 745000.0,
+        "category": "Yield Aggregator / Auto-compounding Vault",
+        "root_cause": "Flash loan + SharkMinter balance spoofing → excess native token minting",
+        "description": "AutoShark, a PancakeBunny fork, was exploited for $745K using the identical flash-loan minter-balance attack — just 8 hours after PancakeBunny itself was hit.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: N — newly deployed protocol (few days old)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: Days to weeks old at time of exploit]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — 100K BNB flash loan]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — direct fork of PancakeBunny (which had been exploited 8 hours earlier by the same vector)]"
+        }
+      ]
+    }
+  }
+}

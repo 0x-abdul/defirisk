@@ -1,0 +1,551 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopBar from '../../components/TopBar.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { listFactors, listProtocols, getProtocol } from '../../lib/data-loaders';
+import { RUBRIC_VERSION } from '../../lib/rubric';
+import {
+  TOTAL_FACTOR_COUNT,
+  TOTAL_CATEGORY_COUNT,
+  CRITICAL_FACTOR_COUNT,
+} from '../../lib/rubric-constants';
+import { CATEGORIES } from '../../data/categories';
+
+const factors = listFactors();
+const protocols = listProtocols();
+
+// Build per-factor distribution of scores across all protocols.
+type Dist = { r: number; y: number; g: number; carried: number };
+const dist = new Map<string, Dist>();
+for (const f of factors) dist.set(f.id, { r: 0, y: 0, g: 0, carried: 0 });
+for (const p of protocols) {
+  const detail = getProtocol(p.slug);
+  const scores = (detail?.factor_scores ?? []) as Array<Record<string, unknown>>;
+  for (const s of scores) {
+    const id = s.factor_id as string;
+    const d = dist.get(id);
+    if (!d) continue;
+    d.carried++;
+    const score = s.score as string;
+    if (score === 'red') d.r++;
+    else if (score === 'yellow') d.y++;
+    else if (score === 'green') d.g++;
+  }
+}
+
+const totalProtocols = protocols.length;
+const categoryNameById = new Map(CATEGORIES.map((c) => [c.id, c.name]));
+
+const rows = factors
+  .map((f) => ({
+    id: f.id,
+    name: f.name,
+    description: f.description,
+    cat_id: f.category_id,
+    cat_name: categoryNameById.get(f.category_id) ?? `Category ${f.category_id}`,
+    critical: f.is_critical,
+    dist: dist.get(f.id) ?? { r: 0, y: 0, g: 0, carried: 0 },
+  }))
+  .sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
+---
+
+<Base title="Factor encyclopedia">
+  <TopBar slot="topbar" />
+
+  <Breadcrumb items={[{ n: 'DeFi Risk', href: '/' }, { n: 'Factors' }]} />
+
+  <div class="hero">
+    <h1>Factor encyclopedia</h1>
+    <p class="lede">
+      {TOTAL_FACTOR_COUNT} evidence factors across {TOTAL_CATEGORY_COUNT} categories. Click any
+      factor for methodology, measurement, and which protocols carry it.
+    </p>
+    <div class="meta">
+      <span class="mi">{TOTAL_FACTOR_COUNT} factors</span>
+      <span class="mi">{TOTAL_CATEGORY_COUNT} categories</span>
+      <span class="mi">{CRITICAL_FACTOR_COUNT} critical <span class="star-inline">★</span></span>
+      <span class="mi">rubric <b>{RUBRIC_VERSION}</b></span>
+    </div>
+  </div>
+
+  <div class="frail" data-filter-rail>
+    <div class="frow">
+      <span class="flbl">Category</span>
+      {
+        CATEGORIES.map((c) => (
+          <button type="button" class="chip" data-cat-filter={c.id}>
+            {c.short ?? c.name}
+            <span class="ct">{factors.filter((f) => f.category_id === c.id).length}</span>
+          </button>
+        ))
+      }
+    </div>
+    <div class="frow">
+      <span class="flbl">Severity</span>
+      <button type="button" class="star-toggle" data-crit-only>
+        <span class="star">★</span> Critical only <span class="ct">{CRITICAL_FACTOR_COUNT}</span>
+      </button>
+      <label class="search">
+        <span aria-hidden="true">⌕</span>
+        <input
+          type="search"
+          placeholder="filter by ID or name… (RD-F-022, audit, oracle)"
+          data-search-input
+          aria-label="Filter factors"
+        />
+      </label>
+      <button type="button" class="clr" data-clear-all>Clear</button>
+    </div>
+  </div>
+
+  <div class="tbl-wrap">
+    <div class="tbl-head">
+      <span>ID</span>
+      <span style="justify-content:center">★</span>
+      <span>Factor</span>
+      <span>Category</span>
+      <span style="justify-content:flex-end">Carried</span>
+      <span></span>
+    </div>
+    {
+      rows.map((r) => (
+        <a
+          class:list={['tbl-row', { crit: r.critical }]}
+          href={`/factors/${r.id}/`}
+          data-cat={r.cat_id}
+          data-name={r.name.toLowerCase()}
+          data-id={r.id.toLowerCase()}
+          data-crit={r.critical ? '1' : '0'}
+        >
+          <span class="fid">{r.id}</span>
+          <span class="star-mark" style="justify-content:center">{r.critical ? '★' : ''}</span>
+          <span class="fname">{r.name}</span>
+          <span><span class="cchip">{r.cat_name}</span></span>
+          <span class="pcount">
+            <span class="v">
+              {r.dist.carried} <i>of {totalProtocols}</i>
+            </span>
+            <span class="distbar" aria-hidden="true">
+              {r.dist.r > 0 && <i class="r" style={`width:${(r.dist.r / totalProtocols) * 100}%`} />}
+              {r.dist.y > 0 && <i class="y" style={`width:${(r.dist.y / totalProtocols) * 100}%`} />}
+              {r.dist.g > 0 && <i class="g" style={`width:${(r.dist.g / totalProtocols) * 100}%`} />}
+            </span>
+          </span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+      ))
+    }
+  </div>
+</Base>
+
+<script is:inline>
+  (function () {
+    var rail = document.querySelector('[data-filter-rail]');
+    if (!rail) return;
+    var rows = Array.from(document.querySelectorAll('a.tbl-row'));
+    var catSel = new Set();
+    var critOnly = false;
+    var q = '';
+
+    function update() {
+      rows.forEach(function (r) {
+        var cat = Number(r.getAttribute('data-cat'));
+        var name = r.getAttribute('data-name') || '';
+        var id = r.getAttribute('data-id') || '';
+        var crit = r.getAttribute('data-crit') === '1';
+        var visible = true;
+        if (catSel.size > 0 && !catSel.has(cat)) visible = false;
+        if (critOnly && !crit) visible = false;
+        if (q && !(name.includes(q) || id.includes(q))) visible = false;
+        r.style.display = visible ? '' : 'none';
+      });
+    }
+
+    rail.querySelectorAll('[data-cat-filter]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = Number(btn.getAttribute('data-cat-filter'));
+        if (catSel.has(id)) catSel.delete(id);
+        else catSel.add(id);
+        btn.classList.toggle('on');
+        update();
+      });
+    });
+
+    var critBtn = rail.querySelector('[data-crit-only]');
+    if (critBtn) {
+      critBtn.addEventListener('click', function () {
+        critOnly = !critOnly;
+        critBtn.classList.toggle('on');
+        update();
+      });
+    }
+
+    var searchInput = rail.querySelector('[data-search-input]');
+    if (searchInput) {
+      searchInput.addEventListener('input', function (e) {
+        q = (e.target.value || '').toLowerCase().trim();
+        update();
+      });
+    }
+
+    var clearBtn = rail.querySelector('[data-clear-all]');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        catSel.clear();
+        critOnly = false;
+        q = '';
+        if (searchInput) searchInput.value = '';
+        rail.querySelectorAll('[data-cat-filter].on').forEach(function (b) {
+          b.classList.remove('on');
+        });
+        if (critBtn) critBtn.classList.remove('on');
+        update();
+      });
+    }
+  })();
+</script>
+
+<style>
+  .hero {
+    padding: 34px 28px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    text-wrap: balance;
+    color: var(--fg);
+  }
+  .hero .lede {
+    font-size: 14px;
+    color: var(--fg-2);
+    margin: 14px 0 0;
+    line-height: 1.55;
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  .hero .meta {
+    margin: 22px 0 0;
+    padding: 11px 0 0;
+    border-top: 1px solid var(--border);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    letter-spacing: 0.01em;
+  }
+  .hero .meta .mi {
+    padding-right: 14px;
+    margin-right: 14px;
+    border-right: 1px solid var(--border);
+  }
+  .hero .meta .mi:last-child {
+    border-right: none;
+  }
+  .hero .meta .mi b {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .star-inline {
+    color: var(--gF);
+    margin-left: 4px;
+  }
+
+  .frail {
+    margin: 18px 28px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .frail .frow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .frail .flbl {
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 82px;
+    flex-shrink: 0;
+    font-family: 'Geist Mono', monospace;
+  }
+  .frail .chip {
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 11.5px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg-2);
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+    font-family: inherit;
+  }
+  .frail .chip:hover {
+    border-color: var(--border-2);
+    color: var(--fg);
+  }
+  .frail .chip.on {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .frail .chip .ct {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    opacity: 0.7;
+  }
+  .frail .star-toggle {
+    padding: 4px 11px;
+    border-radius: 14px;
+    font-size: 11.5px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg-2);
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+  .frail .star-toggle.on {
+    background: var(--gF-bg);
+    color: var(--gF);
+    border-color: transparent;
+  }
+  .frail .star-toggle .star {
+    color: var(--gF);
+  }
+  .frail .search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    min-width: 240px;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-3);
+  }
+  .frail .search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--fg);
+    flex: 1;
+    font-feature-settings: 'tnum';
+  }
+  .frail .clr {
+    padding: 4px 9px;
+    border: none;
+    background: transparent;
+    color: var(--fg-3);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+  .frail .clr:hover {
+    color: var(--fg);
+  }
+
+  .tbl-wrap {
+    margin: 18px 28px 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .tbl-head,
+  .tbl-row {
+    display: grid;
+    grid-template-columns: 96px 24px 1fr 220px 150px 32px;
+    gap: 16px;
+    align-items: center;
+    padding: 0 18px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .tbl-head {
+    height: 38px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .tbl-head span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .tbl-row {
+    min-height: 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tbl-row:last-child {
+    border-bottom: none;
+  }
+  .tbl-row:hover {
+    background: var(--surface-2);
+  }
+  .tbl-row .fid {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11.5px;
+    color: var(--fg-3);
+    letter-spacing: 0.01em;
+  }
+  .tbl-row .star-mark {
+    display: inline-flex;
+    align-items: center;
+    color: var(--gF);
+    font-size: 13px;
+  }
+  .tbl-row .fname {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    text-wrap: pretty;
+  }
+  .tbl-row .cchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 11px;
+    color: var(--fg-2);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tbl-row .pcount {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    font-family: 'Geist Mono', monospace;
+  }
+  .tbl-row .pcount .v {
+    font-size: 12.5px;
+    color: var(--fg);
+    font-weight: 500;
+  }
+  .tbl-row .pcount .v i {
+    font-style: normal;
+    color: var(--fg-4);
+    font-weight: 400;
+  }
+  .tbl-row .pcount .distbar {
+    display: flex;
+    width: 120px;
+    height: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--border);
+  }
+  .tbl-row .pcount .distbar i {
+    height: 100%;
+  }
+  .tbl-row .pcount .distbar i.r {
+    background: var(--gF);
+  }
+  .tbl-row .pcount .distbar i.y {
+    background: var(--gC);
+  }
+  .tbl-row .pcount .distbar i.g {
+    background: var(--gA);
+  }
+  .tbl-row .arr {
+    color: var(--fg-4);
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+  }
+  .tbl-row:hover .arr {
+    color: var(--fg);
+  }
+  .tbl-row.crit .fid,
+  .tbl-row.crit .fname {
+    color: var(--fg);
+  }
+
+  /* ─── Mobile (under 900px) ─── */
+  @media (max-width: 900px) {
+    .hero {
+      padding: 24px 18px 18px;
+    }
+    .hero h1 {
+      font-size: 26px;
+    }
+    .frail {
+      margin: 14px 18px 0;
+    }
+    .frail .frow {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 4px;
+    }
+    .frail .flbl {
+      width: auto;
+      min-width: 78px;
+    }
+    .tbl-wrap {
+      margin: 14px 18px 24px;
+    }
+    .tbl-head,
+    .tbl-row {
+      grid-template-columns: 84px 18px 1fr 120px 24px;
+      gap: 10px;
+      padding: 0 12px;
+    }
+    .tbl-head > span:nth-child(5),
+    .tbl-row > *:nth-child(5) {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .tbl-head,
+    .tbl-row {
+      grid-template-columns: 70px 14px 1fr 24px;
+      gap: 8px;
+    }
+    .tbl-head > span:nth-child(4),
+    .tbl-row > *:nth-child(4) {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "easyfi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "EasyFi (Easy Network)",
+        "occurred_at": "2021-04-19",
+        "loss_usd": 59000000.0,
+        "category": "Lending / Money Market (Compound fork, Layer 2)",
+        "root_cause": "Admin key theft via compromised machine (malicious MetaMask binary)",
+        "description": "EasyFi lost ~$59M when an attacker compromised the founder's dedicated signing machine and used a stolen MetaMask private key to drain protocol funds on Polygon — the first major Layer 2 DeFi hack.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — exploit was off-chain key compromise, not a code flaw. However, the `transfer()` admin function with no timelock was in-scope risk not ...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — exploit was off-chain key compromise, not a code flaw. However, the `transfer()` admin function with no timelock was in-scope risk not ...]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No evidence of bug bounty program at time of hack]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Single admin key execution of transfer() function with no timelock; this IS the exploit mechanism]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Single admin key execution of transfer() function with no timelock; this IS the exploit mechanism]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Compound Finance fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — Compound Finance fork]"
+        }
+      ]
+    }
+  }
+}

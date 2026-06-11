@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "venus-blizz-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Venus Protocol + Blizz Finance (two protocols, one event)",
+        "occurred_at": "2022-05-12",
+        "loss_usd": 13500000.0,
+        "category": "Lending Protocol (both)",
+        "root_cause": "Oracle Min-Price Floor Exploit (Stale Price Feed During Depeg)",
+        "description": "When LUNA's price hit zero, Chainlink's hardcoded $0.10 minimum floor let attackers borrow $21.8M from Venus and Blizz using worthless LUNA as collateral — and Blizz's own timelock safety feature prevented it from responding in time to stop the drain.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — this IS the exploit; oracle price diverging massively from market price is the core signal]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y (attempted) — Venus suspended activity; Blizz attempted but timelock prevented timely action]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Venus forked from Compound; Blizz forked from Aave]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — Venus forked from Compound; Blizz forked from Aave]"
+        }
+      ]
+    }
+  }
+}

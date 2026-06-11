@@ -1,0 +1,488 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopBar from '../../components/TopBar.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import LetterPill from '../../components/LetterPill.astro';
+import FilterChip from '../../components/FilterChip.astro';
+import FilterRail from '../../components/FilterRail.astro';
+import DeploymentChip from '../../components/DeploymentChip.astro';
+import IncidentBanner from '../../components/IncidentBanner.astro';
+import Callout from '../../components/Callout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import BigGradeCard from '../../components/BigGradeCard.astro';
+import VerdictBlock from '../../components/VerdictBlock.astro';
+import CategoryCard from '../../components/CategoryCard.astro';
+import GovernanceSignalRow from '../../components/GovernanceSignalRow.astro';
+import FactorTable from '../../components/FactorTable.astro';
+import VersionMarker from '../../components/VersionMarker.astro';
+import FactorCard from '../../components/FactorCard.astro';
+import HackFactorLinks from '../../components/HackFactorLinks.astro';
+import SourceList from '../../components/SourceList.astro';
+import IncidentTable from '../../components/IncidentTable.astro';
+import MethodologyTable from '../../components/MethodologyTable.astro';
+import DeploymentTabs from '../../components/DeploymentTabs';
+import type { Hack } from '../../lib/data-loaders';
+
+const chains = [
+  { id: 'arbitrum', n: 'Arbitrum', c: '#28a0f0', mark: 'A' },
+  { id: 'avalanche', n: 'Avalanche', c: '#e84142', mark: 'A' },
+  { id: 'base', n: 'Base', c: '#0052ff', mark: 'B' },
+  { id: 'bsc', n: 'BNB Chain', c: '#f0b90b', mark: 'B' },
+  { id: 'ethereum', n: 'Ethereum', c: '#627eea', mark: 'Ξ' },
+  { id: 'gnosis', n: 'Gnosis', c: '#04795b', mark: 'G' },
+  { id: 'mantle', n: 'Mantle', c: '#0a0a0a', mark: 'M' },
+  { id: 'optimism', n: 'Optimism', c: '#ff0420', mark: 'O' },
+  { id: 'polygon', n: 'Polygon', c: '#8247e5', mark: 'P' },
+];
+
+const stubDeployments = [
+  { chain_id: 'ethereum', chain_name: 'Ethereum', color: '#627eea', mark: 'Ξ', tvs_usd: 11_572_395_269 },
+  { chain_id: 'arbitrum', chain_name: 'Arbitrum', color: '#28a0f0', mark: 'A', tvs_usd: 616_656_594 },
+  { chain_id: 'base', chain_name: 'Base', color: '#0052ff', mark: 'B', tvs_usd: 452_872_498 },
+];
+
+const stubFactors = [
+  { factor_id: 'RD-F-001', light: 'red' as const, headline: 'Audit scope mismatch', evidence: 'Bytecode at production proxy does not match the audited commit SHA.', href: '/factors/RD-F-001/' },
+  { factor_id: 'RD-F-002', light: 'yellow' as const, headline: 'Audit recency', evidence: 'Most recent audit is 14 months old; one delta-review was published 4 months ago.', href: '/factors/RD-F-002/' },
+  { factor_id: 'RD-F-003', light: 'green' as const, headline: 'Resolved-without-proof findings', evidence: 'All audit findings remediated with reviewer sign-off and on-chain confirmation.' },
+  { factor_id: 'RD-F-022', light: 'gray' as const, headline: 'Not-yet-assessed example', evidence: 'No public source available within the curator window.' },
+];
+
+const stubHacks: Hack[] = [
+  {
+    id: 'wormhole-2022',
+    protocol_slug: 'wormhole',
+    protocol_name: 'Wormhole',
+    occurred_at: '2022-02-02T00:00:00Z',
+    loss_usd: 326_000_000,
+    category: 'Bridge',
+    root_cause: 'Signature verification flaw',
+    description: 'Attacker bypassed signature verification on the Solana-side bridge contract.',
+    postmortem_url: null,
+    funds_recovered_pct: 100,
+    is_active: false,
+    status: 'resolved',
+    linked_factors: [],
+  },
+  {
+    id: 'curve-2023',
+    protocol_slug: 'curve',
+    protocol_name: 'Curve',
+    occurred_at: '2023-07-30T00:00:00Z',
+    loss_usd: 73_500_000,
+    category: 'Compiler',
+    root_cause: 'Vyper reentrancy guard failure',
+    description: 'Compiler-level reentrancy lock failed under a specific call pattern, affecting older Vyper-compiled pools.',
+    postmortem_url: null,
+    funds_recovered_pct: 73,
+    is_active: false,
+    status: 'resolved',
+    linked_factors: [],
+  },
+];
+
+const stubSources = [
+  { source_type: 'audit_report' as const, url: 'https://example.com/audit.pdf', title: 'Pashov Audit Group · v3.6 review', retrieved_at: '2026-04-27T00:00:00Z', primary: true },
+  { source_type: 'governance_post' as const, url: 'https://forum.example.com/p/429', title: 'Governance proposal 429', retrieved_at: '2026-04-27T00:00:00Z' },
+  { source_type: 'curator_note' as const, url: null, reference: 'Internal triage 2026-04-27', title: 'Curator triage note' },
+  { source_type: 'etherscan' as const, url: 'https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2', title: 'Aave v3 Pool — Ethereum mainnet' },
+];
+
+const stubLinkedHacks = [
+  { id: 'wormhole-2022', title: 'Wormhole bridge exploit', occurred_at: '2022-02-02', loss_usd: 326_000_000, root_cause: 'Signature verification flaw', relevance: 'causal' as const, notes: 'Same primitive failure class' },
+  { id: 'mango-2022', title: 'Mango Markets oracle manipulation', occurred_at: '2022-10-11', loss_usd: 114_000_000, root_cause: 'Thin-market price feed', relevance: 'illustrative' as const },
+  { id: 'ronin-2022', title: 'Ronin validator-set compromise', occurred_at: '2022-03-23', loss_usd: 625_000_000, root_cause: '5-of-9 validator key compromise', relevance: 'related' as const },
+];
+---
+
+<Base title="Component gallery" noindex>
+  <TopBar slot="topbar" />
+
+  <Breadcrumb items={[{ n: 'DeFi Risk', href: '/' }, { n: 'Dev' }, { n: 'Components' }]} />
+
+  <div class="gallery">
+    <header class="gallery-head">
+      <h1>Component gallery</h1>
+      <p class="lede">
+        Self-test surface for the rebuild. Each primitive is rendered in isolation
+        against its canonical preview at <code>/_canonical_*.html</code>.
+      </p>
+    </header>
+
+    <section class="block">
+      <h2>TopBar + Breadcrumb</h2>
+      <p class="muted">TopBar above page; Breadcrumb directly below it.</p>
+    </section>
+
+    <section class="block">
+      <h2>LetterPill — 3 sizes</h2>
+      <div class="row">
+        <span class="muted">mini (18×18):</span>
+        <LetterPill letter="A" size="mini" />
+        <LetterPill letter="B" size="mini" />
+        <LetterPill letter="C" size="mini" />
+        <LetterPill letter="D" size="mini" />
+        <LetterPill letter="F" size="mini" />
+      </div>
+      <div class="row">
+        <span class="muted">medium (34×34):</span>
+        <LetterPill letter="A" size="medium" />
+        <LetterPill letter="B" size="medium" />
+        <LetterPill letter="C" size="medium" />
+        <LetterPill letter="D" size="medium" />
+        <LetterPill letter="F" size="medium" />
+      </div>
+      <div class="row">
+        <span class="muted">hero (256×256, with meaning + score):</span>
+      </div>
+      <div class="hero-row">
+        <div class="hero-box"><LetterPill letter="A" size="hero" meaning="Resilient" score="v1.6.0" /></div>
+        <div class="hero-box"><LetterPill letter="C" size="hero" meaning="Watch" score="v1.6.0" /></div>
+        <div class="hero-box"><LetterPill letter="F" size="hero" meaning="Failing" score="v1.6.0" /></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>FilterChip — variants</h2>
+      <div class="row">
+        <span class="muted">basic + count:</span>
+        <FilterChip label="Ethereum" count={17} />
+        <FilterChip label="Arbitrum" count={3} />
+        <FilterChip label="Base" count={1} />
+      </div>
+      <div class="row">
+        <span class="muted">active state:</span>
+        <FilterChip label="Ethereum" count={17} on />
+        <FilterChip label="Off" count={3} />
+      </div>
+      <div class="row">
+        <span class="muted">severity:</span>
+        <FilterChip label="Governance & admin" severity={["r", "y"]} />
+        <FilterChip label="Operational history" severity={["g"]} />
+        <FilterChip label="Oracle & ext deps" severity={["y"]} />
+      </div>
+      <div class="row">
+        <span class="muted">with LetterPill prefix:</span>
+        <FilterChip label="Grade A">
+          <LetterPill slot="prefix" letter="A" size="mini" />
+        </FilterChip>
+        <FilterChip label="Grade B">
+          <LetterPill slot="prefix" letter="B" size="mini" />
+        </FilterChip>
+        <FilterChip label="Grade F">
+          <LetterPill slot="prefix" letter="F" size="mini" />
+        </FilterChip>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>FilterRail (wraps FilterChips with mono labels + clear button)</h2>
+      <FilterRail ariaLabel="Demo filters">
+        <div class="frow">
+          <span class="flbl">Chain</span>
+          <FilterChip label="Ethereum" count={17} on />
+          <FilterChip label="Arbitrum" count={3} />
+          <FilterChip label="Base" count={1} />
+          <FilterChip label="Optimism" count={1} />
+          <FilterChip label="Polygon" />
+        </div>
+        <div class="frow">
+          <span class="flbl">Category</span>
+          <FilterChip label="Code & audits" severity={["y"]} />
+          <FilterChip label="Governance & admin" severity={["r", "y"]} />
+          <FilterChip label="Oracle & ext deps" severity={["y"]} />
+          <FilterChip label="Economic risk" severity={["y"]} />
+          <button class="clr" type="button">Clear</button>
+        </div>
+      </FilterRail>
+    </section>
+
+    <section class="block">
+      <h2>DeploymentChip — 9 chains</h2>
+      <div class="deploy">
+        <span class="lbl">Deployments</span>
+        {
+          chains.map((c, i) => (
+            <DeploymentChip name={c.n} color={c.c} mark={c.mark} chainId={c.id} on={i === 4} />
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>IncidentBanner — 3 variants</h2>
+      <p class="muted">Rendered top-level (no real incidents data; Phase 3.5 visual verification harness).</p>
+      <div class="banner-stack">
+        <IncidentBanner
+          variant="advisory"
+          headline="oracle feed reported a 12-minute heartbeat lapse on ETH/USD"
+        />
+        <IncidentBanner
+          variant="critical"
+          headline="reserve solvency check failed for the wstETH/ETH market"
+        />
+        <IncidentBanner
+          variant="pre-publication"
+          headline="content under reviewer review until 2026-05-15"
+        />
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Callout — info / warning / note</h2>
+      <Callout kind="info" label="Heads up"><p>This is an info callout. Use for clarifications and reader notes.</p></Callout>
+      <Callout kind="warning" label="Appeals do not pause the grade"><p>This is a warning callout. Use for risks that need attention.</p></Callout>
+      <Callout kind="note"><p>This is a note callout (default). Use for asides without color emphasis.</p></Callout>
+    </section>
+
+    <section class="block">
+      <h2>CodeBlock</h2>
+      <CodeBlock title="example" lang="bash" code={'curl -s "https://api.defirisk.co/v1.6.0/protocols/aave-v3.json"\n  | jq .data.protocol_data.protocol.headline_grade'} />
+    </section>
+
+    <section class="block">
+      <h2>BigGradeCard — 256×256 hero card with meaning + score</h2>
+      <div class="grade-row">
+        <div class="grade-stub"><BigGradeCard letter="A" meaning="Resilient" /></div>
+        <div class="grade-stub"><BigGradeCard letter="C" meaning="Watch" /></div>
+        <div class="grade-stub"><BigGradeCard letter="F" meaning="Failing" /></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>VerdictBlock — 5 letter defaults</h2>
+      <div class="verdict-stack">
+        <VerdictBlock letter="A" />
+        <VerdictBlock letter="B" />
+        <VerdictBlock letter="C" />
+        <VerdictBlock letter="D" />
+        <VerdictBlock letter="F" body="A curator-supplied override goes here. Two sentences. Verbose enough to wrap." />
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>CategoryCard — 3 light states with FactorTable inside</h2>
+      <CategoryCard id="demo-red" name="Governance & admin (red)" light="red" bars={['r', 'r', 'y', 'y', 'g', 'g']} count="6 of 24" open>
+        <FactorTable factors={stubFactors} />
+      </CategoryCard>
+      <CategoryCard id="demo-yellow" name="Operational history (yellow)" light="yellow" bars={['y', 'y', 'g', 'g', 'g']} count="5 of 15" open={false}>
+        <FactorTable factors={stubFactors.slice(0, 2)} />
+      </CategoryCard>
+      <CategoryCard id="demo-green" name="Code & audits (green)" light="green" bars={['g', 'g', 'g', 'g', 'g']} count="5 of 25" open={false}>
+        <FactorTable factors={stubFactors.slice(2, 3)} />
+      </CategoryCard>
+    </section>
+
+    <section class="block">
+      <h2>GovernanceSignalRow — multisig / timelock rows</h2>
+      <dl class="signal-meta">
+        <GovernanceSignalRow label="Multisig" light="green" value="7 / 13" sub="Governance" />
+        <GovernanceSignalRow label="Multisig" light="yellow" value="3 / 5" sub="Council" />
+        <GovernanceSignalRow label="Multisig" light="red" value="2 / 3" sub="Team" />
+        <GovernanceSignalRow label="Timelock" light="green" value="7d" sub="emergency 48h" />
+        <GovernanceSignalRow label="Timelock" light="yellow" value="48h" sub="emergency 24h" />
+        <GovernanceSignalRow label="Timelock" light="red" value="none" sub="no delay path" subBad />
+      </dl>
+    </section>
+
+    <section class="block">
+      <h2>FactorTable standalone</h2>
+      <FactorTable factors={stubFactors} />
+    </section>
+
+    <section class="block">
+      <h2>DeploymentTabs (Preact island)</h2>
+      <DeploymentTabs client:visible deployments={stubDeployments} />
+    </section>
+
+    <section class="block">
+      <h2>VersionMarker — H2 with version pill + date</h2>
+      <VersionMarker id="vm-current" version="v1.6.0" date="2026-05-11" current>
+        Current version
+      </VersionMarker>
+      <VersionMarker id="vm-prior" version="v1.5.0" date="2026-04-23">
+        Prior version with date
+      </VersionMarker>
+      <VersionMarker id="vm-old" version="v1.0.0">
+        Version-only (no date)
+      </VersionMarker>
+    </section>
+
+    <section class="block">
+      <h2>FactorCard — sticky-rail standalone (factor surface)</h2>
+      <div class="rail-stub">
+        <FactorCard
+          factorId="RD-F-001"
+          critical
+          categoryName="Code & audits"
+          categoryHref="/factors/?cat=1"
+          factorName="Audit scope mismatch"
+          meta={[
+            { label: 'Cadence', value: 'S' },
+            { label: 'Carried', value: '38 of 38' },
+            { label: 'Linked hacks', value: '65 historical', crit: true },
+            { label: 'Severity gate', value: 'D / F (single-factor)' },
+          ]}
+          distribution={{ r: 2, y: 29, g: 7 }}
+          appliesTo={38}
+        />
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>HackFactorLinks — relevance pills (causal / illustrative / related)</h2>
+      <HackFactorLinks hacks={stubLinkedHacks} />
+    </section>
+
+    <section class="block">
+      <h2>SourceList — 10 source types with primary + corroborating chips</h2>
+      <SourceList heading="Sources" sources={stubSources} />
+    </section>
+
+    <section class="block">
+      <h2>IncidentTable — historical hacks</h2>
+      <IncidentTable hacks={stubHacks} heading="Historical incidents" />
+    </section>
+
+    <section class="block">
+      <h2>MethodologyTable — rubric thresholds (badge column dropped per PD-035)</h2>
+      <MethodologyTable />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .gallery {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 36px 28px 96px;
+    color: var(--fg);
+  }
+  .gallery-head h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .gallery-head .lede {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .gallery-head code {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    border: 1px solid var(--border);
+  }
+  .block {
+    margin-top: 32px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+  }
+  .block h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    color: var(--fg);
+  }
+  .block .muted {
+    font-size: 12px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+  .row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .row:last-child {
+    margin-bottom: 0;
+  }
+  .hero-row {
+    display: grid;
+    grid-template-columns: repeat(3, 256px);
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .hero-box {
+    width: 256px;
+    height: 256px;
+  }
+
+  /* Reproduce .deploy container styling (lives in protocol detail body, not a primitive) */
+  .deploy {
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .deploy .lbl {
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  .banner-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .banner-stack > :global(aside.incident-banner) {
+    border-bottom: 1px solid var(--border);
+  }
+  .banner-stack > :global(aside.incident-banner:last-child) {
+    border-bottom: none;
+  }
+
+  /* BigGradeCard hero examples — fix containers to 200px so the gallery doesn't blow out */
+  .grade-row {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    gap: 20px;
+  }
+  .grade-stub {
+    width: 200px;
+    height: 200px;
+  }
+
+  .verdict-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .signal-meta {
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+    margin: 0;
+  }
+
+  .rail-stub {
+    max-width: 300px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 22px;
+    background: var(--surface);
+  }
+</style>

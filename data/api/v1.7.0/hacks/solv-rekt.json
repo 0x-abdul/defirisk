@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "solv-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Solv Protocol (BRO vault)",
+        "occurred_at": "2026-03-05",
+        "loss_usd": 2730000.0,
+        "category": "Bitcoin Yield / Structured Products",
+        "root_cause": "ERC-3525 Callback Reentrancy — Double Mint (onERC721Received fires before state update)",
+        "description": "Solv Protocol's unaudited BRO vault contained a textbook ERC-3525 callback reentrancy bug that let an attacker loop a single deposit 22 times — turning 135 BRO into 567 million and extracting $2.73M, while Solv's five published audits covered every contract except this one.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — BRO vault explicitly excluded from all published audits] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — BRO vault explicitly excluded from all published audits]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (BRO vault never in any audit scope)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BRO vault was a newer product added after main audits] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BRO vault was a newer product added after main audits]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No — HackenProof programs excluded EVM contracts; only Web2 infrastructure and Solana covered]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BRO vault was a newer product added after main audits]"
+        }
+      ]
+    }
+  }
+}

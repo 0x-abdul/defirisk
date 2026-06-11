@@ -1,0 +1,48 @@
+---
+import Page from '../../components/Page.astro';
+import Callout from '../../components/Callout.astro';
+
+const toc = [
+  { id: 'about', n: 'What is this guide?' },
+  { id: 'factors', n: 'Browse factors' },
+  { id: 'chains', n: 'Browse chains' },
+];
+---
+
+<Page
+  pageTitle="Education hub"
+  description="Background reading on DeFi risk, chains, evidence factors, and the exploits that shaped the rubric."
+  crumbs={[{ n: 'Guide' }]}
+  toc={toc}
+  hero={{
+    h1: 'Education hub',
+    lede: 'Background reading on DeFi risk: how protocols fail, why the rubric is shaped the way it is, and what the evidence factors actually measure.',
+  }}
+>
+  <h2 id="about">What is this guide? <a class="alink" href="#about">#</a></h2>
+  <p>
+    The rest of the site grades protocols. This section explains the vocabulary the grading uses
+    so a reader who doesn't live in DeFi can still get value out of the dashboard.
+  </p>
+
+  <Callout kind="note" label="Work in progress">
+    <p>
+      This section is being built out. Content is being added progressively — check back for
+      factor explainers, chain risk profiles, and background reading.
+    </p>
+  </Callout>
+
+  <h2 id="factors">Browse factors <a class="alink" href="#factors">#</a></h2>
+  <p>
+    Each of the 184 evidence factors has a methodology page covering what we look for, why it
+    matters, and how scoring breaks down. Start with the
+    <a class="link" href="/factors/">factor encyclopedia</a> for the full index.
+  </p>
+
+  <h2 id="chains">Browse chains <a class="alink" href="#chains">#</a></h2>
+  <p>
+    Each chain hosts protocols with different risk profiles. The chain pages summarize which
+    protocols we've graded on each chain and what the typical risk pattern looks like.
+  </p>
+
+</Page>

@@ -1,0 +1,138 @@
+---
+export interface TocItem {
+  id: string;
+  n: string;
+  sub?: Array<{ id: string; n: string }>;
+}
+
+export interface Props {
+  items: TocItem[];
+  heading?: string;
+}
+
+const { items, heading = 'Contents' } = Astro.props;
+---
+
+<aside class="rail">
+  <h5>{heading}</h5>
+  <nav class="toc" aria-label={heading}>
+    {
+      items.map((it) => (
+        <>
+          <a href={`#${it.id}`} data-toc-target={it.id}>
+            {it.n}
+          </a>
+          {it.sub?.map((s) => (
+            <a class="h3" href={`#${s.id}`} data-toc-target={s.id}>
+              {s.n}
+            </a>
+          ))}
+        </>
+      ))
+    }
+  </nav>
+</aside>
+
+<script is:inline>
+  (function () {
+    var links = Array.from(document.querySelectorAll('a[data-toc-target]'));
+    if (links.length === 0) return;
+    var targetIds = links
+      .map(function (a) {
+        return a.getAttribute('data-toc-target');
+      })
+      .filter(function (id) {
+        return id && document.getElementById(id);
+      });
+    if (targetIds.length === 0) return;
+
+    function setActive(id) {
+      links.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('data-toc-target') === id);
+      });
+    }
+
+    function onScroll() {
+      var bestId = targetIds[0];
+      var bestTop = -Infinity;
+      for (var i = 0; i < targetIds.length; i++) {
+        var el = document.getElementById(targetIds[i]);
+        if (!el) continue;
+        var top = el.getBoundingClientRect().top - 80;
+        if (top <= 0 && top > bestTop) {
+          bestId = targetIds[i];
+          bestTop = top;
+        }
+      }
+      setActive(bestId);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+
+<style>
+  .rail {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    padding: 36px 24px 36px 0;
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .rail::-webkit-scrollbar {
+    width: 4px;
+  }
+  .rail::-webkit-scrollbar-thumb {
+    background: var(--border-2);
+    border-radius: 2px;
+  }
+  .rail h5 {
+    margin: 0 0 12px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .toc {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .toc a {
+    display: block;
+    padding: 5px 10px;
+    font-size: 12.5px;
+    color: var(--fg-3);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .toc a.h3 {
+    padding-left: 22px;
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+  .toc a:hover {
+    color: var(--fg);
+  }
+  .toc a.active {
+    color: var(--fg);
+    border-left-color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  /* Hide TOC on mobile — content stacks linearly below 900px */
+  @media (max-width: 900px) {
+    .rail {
+      display: none;
+    }
+  }
+</style>

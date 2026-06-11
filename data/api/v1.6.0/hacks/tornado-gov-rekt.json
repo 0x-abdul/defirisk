@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "tornado-gov-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Tornado Cash (Governance)",
+        "occurred_at": "2023-05-20",
+        "loss_usd": 750000.0,
+        "category": "Privacy Protocol / DAO Governance",
+        "root_cause": "Metamorphic contract (CREATE + CREATE2 + selfDestruct) — trojan horse governance proposal",
+        "description": "Tornado Cash's governance was hijacked when an attacker used a metamorphic contract to swap in malicious code after a legitimate-looking proposal was approved, gaining 1.2M votes vs 700K legitimate and taking full DAO control.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N/A (Tornado Cash is community-governed, no active bug bounty post-OFAC sanctions)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — the attack IS the governance action; proposal submission + voting visible on-chain]"
+        }
+      ]
+    }
+  }
+}

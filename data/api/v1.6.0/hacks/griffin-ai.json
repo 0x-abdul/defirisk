@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "griffin-ai",
+        "protocol_slug": null,
+        "protocol_name": "Griffin AI ($GAIN token)",
+        "occurred_at": "2024-09-24",
+        "loss_usd": 3000000.0,
+        "category": "AI Token / Cross-Chain Token (LayerZero OFT)",
+        "root_cause": "Fake LayerZero Peer Initialization (Cross-Chain Minting Exploit)",
+        "description": "Griffin AI's $GAIN token was exploited less than 24 hours after launch on Binance Alpha — an attacker registered a fake LayerZero peer on Ethereum to mint 5 billion unauthorized tokens (5x max supply), dumping 2.8% for $3M while leaving a 97.2% supply overhang as a permanent sword of Damocles over the token.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited; LayerZero OFT peer configuration misconfiguration]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — brand new token launch]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None mentioned]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Uses LayerZero OFT standard (not a fork per se, but relies on shared infrastructure)]"
+        }
+      ]
+    }
+  }
+}

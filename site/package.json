@@ -1,0 +1,48 @@
+{
+  "name": "defirisk-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node ./scripts/post-build-copy.mjs && node ./scripts/build-og-images.mjs",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:visual": "playwright test --config=playwright.config.ts",
+    "test:visual:update": "playwright test --config=playwright.config.ts --update-snapshots",
+    "test:a11y": "playwright test --config=playwright.a11y.config.ts",
+    "test:smoke": "playwright test --config=playwright.smoke.config.ts",
+    "perf:desktop": "lhci collect --config=./lighthouserc.desktop.json && lhci assert --config=./lighthouserc.desktop.json",
+    "perf:mobile": "lhci collect --config=./lighthouserc.mobile.json && lhci assert --config=./lighthouserc.mobile.json",
+    "typecheck": "astro check",
+    "lint": "eslint . --ext .js,.cjs,.mjs,.ts,.tsx,.astro",
+    "lint:fix": "eslint . --ext .js,.cjs,.mjs,.ts,.tsx,.astro --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write ."
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.4",
+    "@astrojs/preact": "^3.0.0",
+    "@astrojs/sitemap": "~3.2.0",
+    "@fontsource/inter": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
+    "preact": "^10.24.0",
+    "satori": "^0.26.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@axe-core/playwright": "^4.11.2",
+    "@lhci/cli": "^0.13.0",
+    "@playwright/test": "^1.59.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "astro": "^4.16.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-astro": "^1.7.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

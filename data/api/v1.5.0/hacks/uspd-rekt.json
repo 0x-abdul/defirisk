@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "uspd-rekt",
+        "protocol_slug": null,
+        "protocol_name": "USPD",
+        "occurred_at": "2025-12-04",
+        "loss_usd": 1000000.0,
+        "category": "Yield / Structured Products (stablecoin)",
+        "root_cause": "CPIMP (Clandestine Proxy In the Middle of Proxy) — front-run proxy initialization, shadow admin installation, 78-day dormancy, then mint + drain",
+        "description": "USPD's proxy was front-run in a 24-second initialization window on deployment day, installing a hidden middleman that forwarded all real function calls while sitting dormant for 78 days before minting $1M in unbacked tokens.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — the CPIMP attack targeted the deployment procedure, not the audited contract logic; audited implementation was the decoy] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — the CPIMP attack targeted the deployment procedure, not the audited contract logic; audited implementation was the decoy]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — proxy deployment (the deployment event itself was the vulnerability)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — proxy deployment (the deployment event itself was the vulnerability)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: 10% offered post-hack; no pre-hack bounty publicized]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — proxy upgrade on Dec 4 was the trigger (admin-controlled, but by attacker)]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Two-step proxy deployment visible in mempool Sept 16 (gap between deploy + initialize); privileged role grant to secondary contract Sept 17;...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — proxy upgrade on Dec 4 was the trigger (admin-controlled, but by attacker)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — proxy deployment (the deployment event itself was the vulnerability)]"
+        }
+      ]
+    }
+  }
+}

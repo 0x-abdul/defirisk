@@ -1,0 +1,30 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "dodo-rekt",
+        "protocol_slug": null,
+        "protocol_name": "DODO (V2 Crowdpooling)",
+        "occurred_at": "2021-03-09",
+        "loss_usd": 3800000.0,
+        "category": "DEX / AMM (Crowdpooling)",
+        "root_cause": "Reinitializable init() in Crowdpool contract — attacker calls init() twice with counterfeit then real token, resets reserve to 0 via sync(), drains pool via flash loan",
+        "description": "DODO's Crowdpool init() function could be called twice — an attacker reset pool reserves to zero with a fake token, then reinitialised with real tokens and flash-loaned out $3.8M, while a front-running bot beat them to the first drain by 10 minutes.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — re-initialization vulnerability survived audit]"
+        }
+      ]
+    }
+  }
+}

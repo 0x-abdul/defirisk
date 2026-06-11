@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "popsicle-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Popsicle Finance (Sorbetto Fragola)",
+        "occurred_at": "2021-08-04",
+        "loss_usd": 20000000.0,
+        "category": "Yield Optimizer / Liquidity Management (Uniswap V3)",
+        "root_cause": "Fee Accounting Bug — LP Token Transfer Without Reward Checkpoint",
+        "description": "Popsicle Finance's Sorbetto Fragola contract lost ~$20M when an attacker exploited a known LP token transfer fee-accounting bug — chaining three contracts to triple-collect the same rewards across eight Uniswap V3 pools simultaneously.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unknown — likely unaudited or audit missed known bug class]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Relatively new deployment]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — large multi-asset AAVE flash loan]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

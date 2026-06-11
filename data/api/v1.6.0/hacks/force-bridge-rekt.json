@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "force-bridge-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Force Bridge (Nervos Network)",
+        "occurred_at": "2025-06-01",
+        "loss_usd": 3760000.0,
+        "category": "Cross-Chain Bridge",
+        "root_cause": "Access control compromise — admin key leak → privileged unlock() drain across two chains",
+        "description": "Force Bridge was drained for $3.76M on the same day it announced its retirement — an attacker with admin-level access systematically unlocked assets across Ethereum and BSC after multiple failed attempts hours earlier.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N — none mentioned]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — the exploit was itself an admin-level action; no on-chain governance signal preceding it]"
+        },
+        {
+          "factor_id": "RD-F-031",
+          "relevance": "causal",
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Wallet funded via KuCoin on May 31 (day before sunset announcement); multiple failed access control attempts on June 1 before success; ~6-ho...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — the exploit was itself an admin-level action; no on-chain governance signal preceding it]"
+        },
+        {
+          "factor_id": "RD-F-166",
+          "relevance": "causal",
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bzx",
+        "protocol_slug": null,
+        "protocol_name": "bZx (bzx.network)",
+        "occurred_at": "2021-11-05",
+        "loss_usd": 55000000.0,
+        "category": "Lending / Margin Trading Protocol",
+        "root_cause": "Phishing → Private Key Compromise → Smart Contract Drain",
+        "description": "A single bZx developer opened a phishing email on their personal computer, had their seed phrase stolen by a malicious Word macro, and handed an attacker administrative control over two entire blockchain deployments — resulting in $55M lost across Polygon, BSC, and Ethereum.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the vulnerability was operational (single EOA admin key), not a code bug]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — compromised EOA had admin control over Polygon and BSC deployments; its use constituted an admin action]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — compromised EOA had admin control over Polygon and BSC deployments; its use constituted an admin action]"
+        }
+      ]
+    }
+  }
+}

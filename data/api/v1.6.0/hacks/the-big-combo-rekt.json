@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "the-big-combo-rekt",
+        "protocol_slug": null,
+        "protocol_name": "BT Finance + Growth DeFi (two separate hacks, one article)",
+        "occurred_at": "2021-02-09",
+        "loss_usd": 1500000.0,
+        "category": "Yield Aggregator (both)",
+        "root_cause": "BT Finance: Flash Loan Price Manipulation; Growth DeFi: Fake Token LP Injection",
+        "description": "Two yield aggregators fell in one day — BT Finance via the same flash-loan-plus-earn trick that had already killed Harvest and Value DeFi, and Growth DeFi via a more exotic fake token LP injection that drained $1.3M by staking worthless AXXZ tokens alongside real GRO.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown (both)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y (BT Finance — price manipulation is oracle/reserve anomaly)]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y (BT Finance — large flash loan)]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — both are yield aggregator forks of common patterns]"
+        }
+      ]
+    }
+  }
+}

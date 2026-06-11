@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hacken-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Hacken ($HAI token)",
+        "occurred_at": "2025-06-20",
+        "loss_usd": 170000.0,
+        "category": "Security Firm Token / Utility Token",
+        "root_cause": "Bridge private key leak from decommissioned server → unauthorized token minting → dump",
+        "description": "Hacken — the DeFi security auditing firm — had its own token's bridge minting key left exposed on a decommissioned server, letting an attacker mint 900M $HAI tokens and crash the price 99%, extracting ~$170K.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — bridge architectural migration in progress at time of incident; old server credentials not rotated] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — bridge architectural migration in progress at time of incident; old server credentials not rotated]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — unauthorized minting via compromised minter role key]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — unauthorized minting via compromised minter role key]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — bridge architectural migration in progress at time of incident; old server credentials not rotated]"
+        },
+        {
+          "factor_id": "RD-F-166",
+          "relevance": "causal",
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]"
+        },
+        {
+          "factor_id": "RD-F-168",
+          "relevance": "related",
+          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]"
+        }
+      ]
+    }
+  }
+}

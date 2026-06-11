@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "munchables-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Munchables",
+        "occurred_at": "2024-03-26",
+        "loss_usd": 62500000.0,
+        "category": "GameFi / NFT Game",
+        "root_cause": "Malicious Insider — Storage Slot Manipulation via Upgradeable Proxy",
+        "description": "Munchables' rogue developer — suspected North Korean — pre-planted a $62.5M backdoor at deployment via storage slot manipulation in an upgradeable proxy, then drained the contract before ZachXBT exposed the connection and forced the full return of funds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (unverified implementation)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — Blast L2 new deployment; proxy upgraded to unverified implementation]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — proxy upgrade to unverified implementation]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Team public; developer anonymous (North Korean IT worker persona)]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        },
+        {
+          "factor_id": "RD-F-125",
+          "relevance": "causal",
+          "notes": "★ Deployer linked to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        }
+      ]
+    }
+  }
+}

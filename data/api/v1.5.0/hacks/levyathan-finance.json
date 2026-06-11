@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "levyathan-finance",
+        "protocol_slug": null,
+        "protocol_name": "Levyathan Finance",
+        "occurred_at": "2021-06-01",
+        "loss_usd": 1500000.0,
+        "category": "Yield Farming / Staking",
+        "root_cause": "Exposed Private Key + Minting + emergencyWithdraw Bug",
+        "description": "Levyathan Finance lost $1.5M after developers committed a minting private key to a public GitHub repo — an attacker found it four months later and used it to mint and dump LEV, then a secondary `emergencyWithdraw` bug wiped out the remaining staked funds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — generic yield farm fork (MasterChef style)]"
+        }
+      ]
+    }
+  }
+}

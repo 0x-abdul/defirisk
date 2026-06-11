@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cetus",
+        "protocol_slug": null,
+        "protocol_name": "Cetus Protocol",
+        "occurred_at": "2025-05-22",
+        "loss_usd": 223000000.0,
+        "category": "DEX / AMM (Concentrated Liquidity)",
+        "root_cause": "Integer Overflow / Division-by-Near-Zero in Concentrated Liquidity Math",
+        "description": "An attacker deposited a single token into a DEX pool with a near-zero denominator in its liquidity formula, generating 10³⁴ units of fake liquidity, and drained $223M from every pool on Sui's largest exchange.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited** — Zellic explicitly stated the `integer-mate` library was out of scope for their April 2025 audit. MoveIT and Otter audited 2 ye...]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N + detail): YES** — HODLFM flagged USDC depegging to zero on Sui and mass SUI token dumps within minutes of pools being drained. The sequential drain ac...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability Reasoning: Each individual exploit was atomic (single tx). However, the sequential nature (every Cetus pool drained one after another) and the immediat...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N + detail): YES** — Token prices crashed 75–80% on Sui during the exploit. Meme coins died first. Price oracle feeds from Cetus pools would have shown i...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N + detail): YES** — Flash loan of 56,700 SUI at exploit initiation. Repeated flash loans for each subsequent pool.]"
+        }
+      ]
+    }
+  }
+}

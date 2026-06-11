@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bedrock-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Bedrock (uniBTC vault)",
+        "occurred_at": "2024-09-25",
+        "loss_usd": 2000000.0,
+        "category": "Liquid Restaking / Multi-asset Staking",
+        "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)",
+        "description": "Bedrock lost $2M when an unaudited uniBTC vault upgrade failed to register BTC as a native asset, letting anyone mint 1 uniBTC per 1 ETH deposited — a 20x price gift — across 8 chains.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — unaudited upgrade]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited post-upgrade code]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — uniBTC vault was a recently deployed/upgraded contract that was not audited] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None active at time of exploit; Bedrock invited attacker to become white-hat post-hack]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "causal",
+          "notes": "Protocol age (days since first mainnet deploy) [via cross-hack: Factor 35: Protocol Age < 2 Weeks at Time of Hack]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — uniBTC price crashed on multiple pairs (detectable post-facto)]"
+        },
+        {
+          "factor_id": "RD-F-139",
+          "relevance": "causal",
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        }
+      ]
+    }
+  }
+}

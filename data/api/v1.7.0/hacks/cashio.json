@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cashio",
+        "protocol_slug": null,
+        "protocol_name": "Cashio",
+        "occurred_at": "2022-03-23",
+        "loss_usd": 48000000.0,
+        "category": "Algorithmic Stablecoin / Mint Protocol",
+        "root_cause": "Infinite mint via incomplete collateral validation — fake account chain bypasses all verification",
+        "description": "An attacker minted 2 billion $CASH by exploiting a gap in Cashio's collateral validation that never checked the `.mint` field — creating a chain of fake Solana accounts that each vouched for the others.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-061",
+          "relevance": "causal",
+          "notes": "Protocol trusts LP token balanceOf for pricing — donation-manipulable [via cross-hack: Factor 12: LP Token Collateral With Incomplete Field Validation]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous — team did respond publicly post-exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: Unknown — novel Solana stablecoin design, not a direct fork of Ethereum equivalents]"
+        }
+      ]
+    }
+  }
+}

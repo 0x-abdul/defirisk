@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "sovryn-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Sovryn",
+        "occurred_at": "2022-10-04",
+        "loss_usd": 1100000.0,
+        "category": "Lending / Money Market (Bitcoin L2 DeFi)",
+        "root_cause": "External call reentrancy via callTokensToSend — token price inflation via mid-transaction mint → overclaim via burn",
+        "description": "Sovryn's Bitcoin L2 lending protocol lost $1.1M when an attacker exploited an external callback during token transfers to re-enter mid-transaction, inflating a Load Token supply calculation and looping out 45 RBTC and 211K USDT.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y (internal) — the tokenPrice calculation relied on in-flight state that hadn't been committed; the price diverged from true value mid-trans...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — large flash loan borrow followed by abnormal series of side token conversions]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — lending pool design influenced by Compound/Aave patterns adapted for RSK] || Is-a-fork-of (BTC-DeFi taxonomy partial — see PD-032) [via cross-hack: Factor 44: Bitcoin L2 / Sidechain Legacy Code Without Standard Security Patterns]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — lending pool design influenced by Compound/Aave patterns adapted for RSK]"
+        }
+      ]
+    }
+  }
+}

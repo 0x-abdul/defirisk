@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cream-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Cream Finance",
+        "occurred_at": "2021-08-30",
+        "loss_usd": 18800000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "ERC777 reentrancy via newly integrated AMP token — reentrant `borrow()` before state update",
+        "description": "Cream Finance lost $18.8M when an attacker exploited ERC777 reentrancy hooks in the newly integrated AMP token to double-borrow from Cream's lending pool 17 times before state was updated.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: NO (partial)** — Trail of Bits audited Cream's base code in January 2021. The AMP token integration was added via governance in February 202...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: NO (partial)** — Trail of Bits audited Cream's base code in January 2021. The AMP token integration was added via governance in February 202...]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded: YES** — AMP token integration deployed via governance proposal Feb 10, 2021; exploit Aug 30, 2021. The integration was ~6.5 months old but w...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded: YES** — AMP token integration deployed via governance proposal Feb 10, 2021; exploit Aug 30, 2021. The integration was ~6.5 months old but w...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Yes — detectable in-exploit**: 17 sequential transactions each involving a flash loan + double borrow cycle. Reentrancy within borrow would ...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked: Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: YES** — AMP token integration deployed via governance proposal Feb 10, 2021; exploit Aug 30, 2021. The integration was ~6.5 months old but w...]"
+        }
+      ]
+    }
+  }
+}

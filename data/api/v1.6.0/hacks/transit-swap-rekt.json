@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "transit-swap-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Transit Swap",
+        "occurred_at": "2022-10-01",
+        "loss_usd": 21000000.0,
+        "category": "DEX Aggregator / Cross-Chain Swap",
+        "root_cause": "Controllable transferFrom() in unverified (closed-source) swap contract — approval drain",
+        "description": "Transit Swap's closed-source contract had a fully controllable transferFrom() that let an attacker drain $21M from any wallet with active approvals — 70% was returned only after security teams uncovered the hacker's identity.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — contracts were not even verified on-chain]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "causal",
+          "notes": "★ Contract unverified on Etherscan/Sourcify at launch [via cross-hack: Factor 30: Closed-Source / Unverified Contracts]"
+        },
+        {
+          "factor_id": "RD-F-096",
+          "relevance": "illustrative",
+          "notes": "New ERC-20 approval to unverified contract [via realtime_signals/Pre-exploit on-chain signals: Unverified (closed-source) contracts on a live swap aggregator; large-scale approval draining across multiple wallets simultaneously]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown — raised suspicion of potential insider involvement]"
+        }
+      ]
+    }
+  }
+}

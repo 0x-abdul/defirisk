@@ -1,0 +1,14 @@
+{
+  "slug": "polymarket",
+  "verdict_body": "Polymarket's CTF Exchange V2 (April 2026 upgrade) is gated by a custom timelock contract on Polygon at 0x47EbFAC3353314C788B96CDCbf41daadfE03629C with a 12-hour minimum delay verified via the initialization transaction. The contract's non-standard ABI does not expose the OpenZeppelin getMinDelay()/delay()/MIN_DELAY() selectors, so the data pipeline cannot auto-read the value; this sidecar carries the manually-verified delay until PD-042 (governance-fetcher extension) lands. Multisig admin is a 3-of-6 Safe (Protocol Admin, also the timelock's sole proposer/executor/canceller).",
+  "multisig": {
+    "value": "3/6",
+    "sub": "Protocol Admin",
+    "light": "green"
+  },
+  "timelock": {
+    "value": "12h",
+    "sub": "custom timelock contract",
+    "light": "yellow"
+  }
+}

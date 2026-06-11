@@ -1,0 +1,570 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopBar from '../../components/TopBar.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import FactorCard from '../../components/FactorCard.astro';
+import HackFactorLinks from '../../components/HackFactorLinks.astro';
+import type { LinkedHack, HackRelevance } from '../../components/HackFactorLinks.astro';
+import { listFactors, getFactor } from '../../lib/data-loaders';
+import { CATEGORIES } from '../../data/categories';
+import { RUBRIC_VERSION } from '../../lib/rubric';
+
+export async function getStaticPaths() {
+  return listFactors().map((f) => ({ params: { id: f.id } }));
+}
+
+const { id } = Astro.params as { id: string };
+const detail = getFactor(id);
+
+if (!detail) {
+  return Astro.redirect('/404');
+}
+
+const f = detail.factor;
+const catName = CATEGORIES.find((c) => c.id === f.category_id)?.name ?? `Category ${f.category_id}`;
+
+// Distribution
+const scored = detail.scored_protocols;
+const dist = scored.reduce(
+  (acc, p) => {
+    if (p.score === 'red') acc.r++;
+    else if (p.score === 'yellow') acc.y++;
+    else if (p.score === 'green') acc.g++;
+    return acc;
+  },
+  { r: 0, y: 0, g: 0 },
+);
+
+const totalProtocols = scored.length;
+
+const linkedHacks: LinkedHack[] = detail.linked_hacks.map((h) => ({
+  id: h.hack_id,
+  title: h.hack_protocol_name ? `${h.hack_protocol_name} — ${h.root_cause ?? 'incident'}` : h.hack_id,
+  occurred_at: h.occurred_at,
+  loss_usd: h.loss_usd,
+  root_cause: h.root_cause,
+  relevance: (h.relevance as HackRelevance) ?? 'related',
+  notes: h.notes,
+}));
+
+function sectionParas(blob: string | null | undefined): string[] {
+  if (!blob) return [];
+  return blob
+    .split(/\n{2,}/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+const methodologyParas = sectionParas(f.scoring_methodology);
+const measurementText = f.measurement ?? f.description;
+
+/** PD-039 — distinguish "GRAY because the protocol is opaque" from "GRAY because
+ *  our pipeline can't measure this yet." Read by `title=` on each pip. */
+function pipTooltip(score: string, gr: string | null | undefined): string | undefined {
+  if (score === 'green' || score === 'yellow' || score === 'red') return undefined;
+  if (score === 'not_applicable') return 'Not applicable to this protocol';
+  switch (gr) {
+    case 'protocol_opacity':
+      return 'GRAY — protocol opaque (closed source / undocumented)';
+    case 'pipeline_unimplemented':
+      return 'GRAY — measurement pending (our pipeline gap, not a protocol issue)';
+    case 'external_api_blocked':
+      return 'GRAY — measurement pending (external API blocked)';
+    case 'requires_curator_input':
+      return 'GRAY — measurement pending (curator review needed)';
+    case 'not_applicable':
+      return 'GRAY — not applicable';
+    default:
+      return score === 'not_assessed' ? 'Not assessed' : 'GRAY — no measurement available';
+  }
+}
+---
+
+<Base
+  title={`${f.id} — ${f.name}`}
+  description={`${f.name}: ${f.description}`}
+>
+  <TopBar slot="topbar" />
+
+  <Breadcrumb
+    items={[
+      { n: 'DeFi Risk', href: '/' },
+      { n: 'Factors', href: '/factors/' },
+      { n: catName, href: `/factors/?cat=${f.category_id}` },
+      { n: f.id },
+    ]}
+  />
+
+  <div class="rdf-page">
+    <aside class="rail">
+      <FactorCard
+        factorId={f.id}
+        critical={f.is_critical}
+        categoryName={catName}
+        categoryHref="/factors/"
+        factorName={f.name}
+        meta={[
+          { label: 'Cadence', value: f.cadence ?? '—' },
+          { label: 'Curation', value: f.curation_archetype },
+          { label: 'Carried', value: `${totalProtocols} of ${totalProtocols}` },
+          {
+            label: 'Linked hacks',
+            value: linkedHacks.length > 0 ? `${linkedHacks.length} historical` : 'None',
+            crit: linkedHacks.length > 0,
+          },
+          { label: 'Severity gate', value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup' },
+        ]}
+        distribution={dist}
+        appliesTo={totalProtocols}
+      />
+    </aside>
+
+    <main class="body">
+      <div class="hero">
+        <h1>
+          {f.is_critical && <span class="star-big" aria-label="Critical factor">★</span>}
+          <span>{f.name}</span>
+        </h1>
+        <p class="sub">
+          A {catName.toLowerCase()} factor in the {RUBRIC_VERSION} rubric. Measured per protocol on
+          a {(f.cadence ?? 'manual').toLowerCase()} cadence.
+        </p>
+        {
+          f.is_critical && (
+            <div class="crit-banner">
+              <span class="star" aria-hidden="true">
+                ★
+              </span>
+              <span>
+                <b>Critical factor.</b> A Red on this factor alone is sufficient to gate a protocol
+                to grade D or F regardless of other category rollups.
+              </span>
+            </div>
+          )
+        }
+      </div>
+
+      <h2 id="methodology">
+        Methodology <span class="ct">how we score</span>
+        <a class="alink" href="#methodology">#</a>
+      </h2>
+      {methodologyParas.map((p) => <p>{p}</p>)}
+
+      <h2 id="measurement">
+        Measurement <span class="ct">what to look for</span>
+        <a class="alink" href="#measurement">#</a>
+      </h2>
+      <p>{measurementText}</p>
+
+      <h2 id="data" style="margin-top:36px">
+        Data &amp; output <a class="alink" href="#data">#</a>
+      </h2>
+      <div class="infogrid">
+        <div class="ig">
+          <div class="lbl">Data source</div>
+          <div class="v">{f.data_source ?? '—'}</div>
+        </div>
+        <div class="ig">
+          <div class="lbl">Output format</div>
+          <div class="v">
+            Green / Yellow / Red
+            {f.is_critical && <span class="crit-flag"> · critical gate active</span>}
+          </div>
+        </div>
+        <div class="ig">
+          <div class="lbl">Evidence artifact</div>
+          <div class="v">{f.evidence_artifact ?? '—'}</div>
+        </div>
+        <div class="ig">
+          <div class="lbl">Confidence signal</div>
+          <div class="v">{f.confidence_signal ?? '—'}</div>
+        </div>
+      </div>
+
+      <h2 id="scored">
+        Scored protocols <span class="ct">{totalProtocols} carry this factor</span>
+        <a class="alink" href="#scored">#</a>
+      </h2>
+      {
+        scored.length === 0 ? (
+          <div class="empty-state">No protocols have been scored for this factor yet.</div>
+        ) : (
+          <div class="stbl">
+            <div class="row head">
+              <span>Protocol</span>
+              <span class="r-align">{f.id}</span>
+              <span />
+            </div>
+            {scored.map((p) => (
+              <a class="row" href={`/protocols/${p.protocol_slug}/factors/${f.id}/`}>
+                <span class="pcell">
+                  <span class="pdot" aria-hidden="true" />
+                  <span>
+                    <span class="pname">{p.protocol_name ?? p.protocol_slug}</span>
+                    {p.primary_chain && <span class="ptag">{p.primary_chain}</span>}
+                  </span>
+                </span>
+                <span class="r-align">
+                  <span
+                    class:list={['pip', p.score]}
+                    title={pipTooltip(p.score, p.gap_reason)}
+                  >
+                    {p.score}
+                  </span>
+                </span>
+                <span class="arr" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ))}
+            <div class="stbl-footer">
+              <span>
+                {dist.r} red · {dist.y} yellow · {dist.g} green
+              </span>
+            </div>
+          </div>
+        )
+      }
+
+      <h2 id="hacks">
+        Linked hacks{' '}
+        <span class="ct">
+          {linkedHacks.length === 0
+            ? 'no historical incidents linked'
+            : `${linkedHacks.length} historical incident${linkedHacks.length > 1 ? 's' : ''}`}
+        </span>
+        <a class="alink" href="#hacks">#</a>
+      </h2>
+      <HackFactorLinks hacks={linkedHacks} />
+
+      <div class="envelope">
+        <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
+        <span><b>factor</b> {f.id}</span>
+        <span><b>category</b> {f.category_id}</span>
+        <span><b>carried</b> {totalProtocols}</span>
+        <span><b>critical</b> {f.is_critical ? 'yes' : 'no'}</span>
+      </div>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .rdf-page {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 0;
+    align-items: flex-start;
+  }
+  .rail {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    padding: 28px 26px;
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    scrollbar-width: thin;
+  }
+  .rail::-webkit-scrollbar {
+    width: 4px;
+  }
+  .rail::-webkit-scrollbar-thumb {
+    background: var(--border-2);
+    border-radius: 2px;
+  }
+
+  .body {
+    padding: 34px 36px 80px;
+    max-width: 820px;
+  }
+  .body .hero h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    text-wrap: balance;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--fg);
+  }
+  .body .hero h1 .star-big {
+    color: var(--gF);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .body .hero .sub {
+    font-size: 14px;
+    color: var(--fg-2);
+    margin: 12px 0 0;
+    line-height: 1.55;
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  .body .hero .crit-banner {
+    margin-top: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px;
+    background: var(--gF-bg);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--gF);
+    font-weight: 500;
+  }
+  .body .hero .crit-banner b {
+    font-weight: 600;
+  }
+  .body .hero .star {
+    color: var(--gF);
+  }
+
+  .body h2 {
+    margin: 42px 0 12px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    color: var(--fg);
+  }
+  .body h2 .ct {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .body h2 .alink {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-4);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.12s, color 0.12s;
+    font-weight: 400;
+  }
+  .body h2:hover .alink {
+    opacity: 1;
+  }
+  .body h2:first-of-type {
+    margin-top: 36px;
+  }
+  .body p {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.7;
+    margin: 0 0 12px;
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  .body p strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .infogrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .infogrid .ig {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .infogrid .ig .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .infogrid .ig .v {
+    font-size: 13px;
+    color: var(--fg);
+    line-height: 1.5;
+  }
+  .infogrid .ig .crit-flag {
+    color: var(--gF);
+    font-weight: 500;
+  }
+
+  .stbl {
+    margin-top: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .stbl .row {
+    display: grid;
+    grid-template-columns: 1fr 90px 28px;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    min-height: 48px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .stbl .row:last-child {
+    border-bottom: none;
+  }
+  .stbl .row:hover {
+    background: var(--surface-2);
+  }
+  .stbl .row.head {
+    background: var(--surface-2);
+    min-height: 0;
+    padding: 9px 16px;
+    cursor: default;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .stbl .pcell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .stbl .pdot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--fg-4);
+  }
+  .stbl .pname {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+    display: block;
+  }
+  .stbl .ptag {
+    font-size: 11px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    display: block;
+    margin-top: 1px;
+  }
+  .stbl .arr {
+    color: var(--fg-4);
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    text-align: right;
+  }
+  .stbl .row:hover .arr {
+    color: var(--fg);
+  }
+  .r-align {
+    text-align: right;
+  }
+  .stbl .pip {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  .stbl .pip.red {
+    color: var(--gF);
+    background: var(--gF-bg);
+  }
+  .stbl .pip.yellow {
+    color: var(--gC);
+    background: var(--gC-bg);
+  }
+  .stbl .pip.green {
+    color: var(--gA);
+    background: var(--gA-bg);
+  }
+  .stbl-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    background: var(--surface-2);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    border-top: 1px solid var(--border);
+  }
+  .empty-state {
+    padding: 28px 16px;
+    text-align: center;
+    color: var(--fg-3);
+    font-size: 13px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+  .envelope {
+    margin-top: 36px;
+    padding: 14px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    letter-spacing: 0.01em;
+  }
+  .envelope b {
+    color: var(--fg);
+    font-weight: 500;
+    margin-right: 6px;
+  }
+
+  /* ─── Mobile (under 900px) ─── */
+  @media (max-width: 900px) {
+    .rdf-page {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .rail {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 24px 18px;
+    }
+    .body {
+      padding: 24px 18px 48px;
+      max-width: 100%;
+    }
+    .body .hero h1 {
+      font-size: 24px;
+      flex-wrap: wrap;
+    }
+    .infogrid {
+      grid-template-columns: 1fr;
+    }
+    .stbl .row {
+      grid-template-columns: 1fr 80px 24px;
+      gap: 10px;
+      padding: 11px 12px;
+    }
+  }
+</style>

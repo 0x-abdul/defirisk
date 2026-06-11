@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "abracadabra-rekt1",
+        "protocol_slug": null,
+        "protocol_name": "Abracadabra Money (1st incident — abra-rekt)",
+        "occurred_at": "2024-01-30",
+        "loss_usd": 6500000.0,
+        "category": "CDP / Lending (Cauldron-based stablecoin)",
+        "root_cause": "ERC-4626 rounding error — borrow share price inflation via repeated borrow/repay → phantom debt drain",
+        "description": "Abracadabra's CauldronV4 rounding bug let an attacker inflate borrow share prices via repeated micro-borrows, draining $6.5M in MIM from two cauldrons.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — rounding flaw survived review]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]"
+        }
+      ]
+    }
+  }
+}

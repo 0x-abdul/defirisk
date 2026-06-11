@@ -1,0 +1,131 @@
+---
+export type HackRelevance = 'causal' | 'illustrative' | 'related';
+
+export interface LinkedHack {
+  id: string;
+  title: string;
+  occurred_at?: string | null;
+  loss_usd?: number | string | null;
+  root_cause?: string | null;
+  relevance: HackRelevance;
+  /** Optional notes from curator. */
+  notes?: string | null;
+}
+
+export interface Props {
+  hacks: LinkedHack[];
+}
+
+const { hacks } = Astro.props;
+
+function fmtLoss(v: number | string | null | undefined): string {
+  if (v === null || v === undefined) return '';
+  const n = typeof v === 'string' ? parseFloat(v) : v;
+  if (!Number.isFinite(n) || n <= 0) return '';
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
+}
+---
+
+{
+  hacks.length === 0 ? (
+    <div class="hacks-empty">No historical incidents are linked to this factor.</div>
+  ) : (
+    <div class="hacks" role="list">
+      {hacks.map((h) => {
+        const subParts: string[] = [];
+        if (h.occurred_at) subParts.push(h.occurred_at.slice(0, 10));
+        const loss = fmtLoss(h.loss_usd);
+        if (loss) subParts.push(loss);
+        if (h.root_cause) subParts.push(h.root_cause);
+        if (h.notes) subParts.push(h.notes);
+        return (
+          <div class="hk" role="listitem">
+            <span class:list={['rel', h.relevance]}>{h.relevance}</span>
+            <span>
+              <span class="ti">{h.title}</span>
+              {subParts.length > 0 && <span class="sub">{subParts.join(' · ')}</span>}
+            </span>
+            <span class="arr" aria-hidden="true">
+              →
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  )
+}
+
+<style>
+  .hacks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .hacks .hk {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .hacks .hk .rel {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 11px;
+  }
+  .hacks .hk .rel.causal {
+    color: var(--gF);
+    background: var(--gF-bg);
+  }
+  .hacks .hk .rel.illustrative {
+    color: var(--gC);
+    background: var(--gC-bg);
+  }
+  .hacks .hk .rel.related {
+    color: var(--fg-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .hacks .hk .ti {
+    font-size: 13.5px;
+    color: var(--fg);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    display: block;
+  }
+  .hacks .hk .sub {
+    font-size: 11.5px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    margin-top: 2px;
+    display: block;
+  }
+  .hacks .hk .arr {
+    color: var(--fg-4);
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+  }
+  .hacks-empty {
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--fg-3);
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>

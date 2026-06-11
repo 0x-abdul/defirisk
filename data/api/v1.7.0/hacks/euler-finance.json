@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "euler-finance",
+        "protocol_slug": "euler-v2",
+        "protocol_name": "Euler Finance",
+        "occurred_at": "2023-03-13",
+        "loss_usd": 197000000.0,
+        "category": "Lending Protocol",
+        "root_cause": "Donation Function Bypassing Health Check (Logic Bug in EIP-14 upgrade)",
+        "description": "An attacker used Euler's own leverage system and a donation function that skipped health checks to manufacture bad debt, then liquidated it at a discount — draining $197M from one of DeFi's most audited lending protocols.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "related",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded (Y/N + detail): YES** — The vulnerability was introduced in EIP-14 (the `donateToReserves` function), deployed as an upgrade prior to the hack. Not in the o...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded (Y/N + detail): YES** — The vulnerability was introduced in EIP-14 (the `donateToReserves` function), deployed as an upgrade prior to the hack. Not in the o...]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited** (by Sherlock) — but the health-check omission was missed. Sherlock accepted responsibility and paid out $4.5M.]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-081",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Partial** — An associated attacker address had previously exploited BSC-based EPMAX and deposited proceeds to Tornado Cash. This address his...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N + detail): YES** — The attack involved taking flash loans and using Euler's leverage system to create extreme eToken/dToken positions in a single block...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "illustrative",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded (Y/N + detail): YES** — The vulnerability was introduced in EIP-14 (the `donateToReserves` function), deployed as an upgrade prior to the hack. Not in the o...]"
+        }
+      ]
+    }
+  }
+}

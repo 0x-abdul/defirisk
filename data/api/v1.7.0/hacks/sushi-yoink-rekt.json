@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "sushi-yoink-rekt",
+        "protocol_slug": null,
+        "protocol_name": "SushiSwap",
+        "occurred_at": "2023-04-08",
+        "loss_usd": 3300000.0,
+        "category": "DEX / AMM",
+        "root_cause": "Malicious Callback / Arbitrary Approval Drain",
+        "description": "SushiSwap's 4-day-old RouteProcessor2 contract allowed anyone with a fake Uniswap V3 pool to drain tokens from any user who had approved it — costing $3.3M+ across 14 chains, and briefly rekt-ing DeFi villain 0xSifu for 1,800 ETH.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — RouteProcessor2 was 4 days old at time of exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — RouteProcessor2 was 4 days old at time of exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — originally forked from Uniswap V2]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — RouteProcessor2 was 4 days old at time of exploit]"
+        }
+      ]
+    }
+  }
+}

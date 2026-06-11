@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "harmony-bridge",
+        "protocol_slug": null,
+        "protocol_name": "Harmony Horizon Bridge",
+        "occurred_at": "2022-06-23",
+        "loss_usd": 100000000.0,
+        "category": "Cross-Chain Bridge",
+        "root_cause": "Compromised Multisig Private Keys (Hot Wallets)",
+        "description": "Harmony's $100M Horizon bridge was drained after attackers obtained private keys to two of the five multisig signers — the minimum number needed to authorise any transaction.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-028",
+          "relevance": "causal",
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]"
+        },
+        {
+          "factor_id": "RD-F-030",
+          "relevance": "causal",
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]"
+        }
+      ]
+    }
+  }
+}

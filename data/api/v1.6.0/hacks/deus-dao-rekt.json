@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "deus-dao-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Deus DAO (1st incident)",
+        "occurred_at": "2022-03-15",
+        "loss_usd": 3000000.0,
+        "category": "Algorithmic Stablecoin / Lending",
+        "root_cause": "Flash loan → spot price manipulation of Solidex USDC/DEI AMM pool (used as oracle) → user positions liquidated",
+        "description": "Deus DAO's DEI lending contract lost ~$3M when an attacker flash-loaned from the very AMM pool the contract used as its price oracle — crashing the oracle price mid-transaction and liquidating all user positions at once.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — DEI lending contract was newly launched]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: DEI lending contract was recently launched (weeks old at time of exploit)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — the sAMM-USDC/DEI pool price was severely distorted mid-transaction; detectable as a sharp oracle deviation]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — large DEI flash loan from the oracle pool itself]"
+        }
+      ]
+    }
+  }
+}

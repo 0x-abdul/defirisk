@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cork-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Cork Protocol",
+        "occurred_at": "2025-05-28",
+        "loss_usd": 12000000.0,
+        "category": "Depeg Insurance / Structured Products",
+        "root_cause": "Fake token injection → exchange rate manipulation via unvalidated CorkHook input",
+        "description": "Cork Protocol, a depeg insurance product, lost $12M when an attacker injected fake tokens into its unvalidated exchange rate calculation, turning the protocol's own market creation feature against itself.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: NO** — CorkHook contract was explicitly out of scope for at least Sherlock, Runtime Verification, and Quantstamp. Sherlock confirmed: \"The e...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: NO** — CorkHook contract was explicitly out of scope for at least Sherlock, Runtime Verification, and Quantstamp. Sherlock confirmed: \"The e...] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (CorkHook was out of scope for all known auditors)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Unknown — CorkHook appears to have been a core component not covered by audits rather than a new deployment] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Unknown — CorkHook appears to have been a core component not covered by audits rather than a new deployment]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "related",
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-072",
+          "relevance": "causal",
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker address funded via Swapuz (service provider); malicious contract deployed shortly before exploit. No liquidity exit signals reporte...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Unknown — CorkHook appears to have been a core component not covered by audits rather than a new deployment]"
+        }
+      ]
+    }
+  }
+}

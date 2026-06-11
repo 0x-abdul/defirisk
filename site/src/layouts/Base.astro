@@ -1,0 +1,173 @@
+---
+import '../styles/global.css';
+import {
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  DEFAULT_OG_IMAGE,
+  TWITTER_HANDLE,
+} from '../lib/seo-defaults';
+
+// Preload the primary weight (Geist 400 latin) so first-paint isn't blocked
+// on font fetch. Other weights load when actually used by CSS rules.
+import geistRegularWoff2 from '@fontsource/geist/files/geist-latin-400-normal.woff2?url';
+import geistMonoRegularWoff2 from '@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: unknown[] | unknown;
+}
+
+const {
+  title = SITE_NAME,
+  description = SITE_DESCRIPTION,
+  canonical,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const fullTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
+// Noindex pages must NOT emit <link rel="canonical"> or og:url pointing at
+// themselves — that contradicts the noindex signal and, in the case of
+// /unpublished/<slug>-<token>/, would leak the secret review URL into
+// canonical metadata. See p0-response 2026-05-30 (P0 #4).
+const canonicalUrl = noindex
+  ? null
+  : (canonical ?? new URL(Astro.url.pathname, SITE_URL).toString());
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, SITE_URL).toString();
+const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:site_name" content={SITE_NAME} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={TWITTER_HANDLE} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE_NAME} — Grade changes`}
+      href="/feeds/grade-changes.xml"
+    />
+    <link
+      rel="alternate"
+      type="application/feed+json"
+      title={`${SITE_NAME} — Grade changes`}
+      href="/feeds/grade-changes.json"
+    />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    <link rel="preload" href={geistRegularWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistMonoRegularWoff2} as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('rd-theme');
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = stored || (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+          var contrast = localStorage.getItem('rd-prefer-contrast');
+          if (contrast === '1') {
+            document.documentElement.setAttribute('data-prefer-contrast', '');
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
+
+    {
+      ldArray.map((ld) => (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
+      ))
+    }
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <slot name="topbar" />
+    <slot name="banner" />
+    <main id="main">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>
+
+<style is:global>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html {
+    background: var(--bg);
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'ss01', 'cv11', 'tnum';
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a {
+    color: inherit;
+  }
+  button {
+    font-family: inherit;
+  }
+  /* Skip link for keyboard users */
+  a.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+  }
+  a.skip-link:focus {
+    left: 8px;
+    top: 8px;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 8px 12px;
+    z-index: 9999;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+</style>

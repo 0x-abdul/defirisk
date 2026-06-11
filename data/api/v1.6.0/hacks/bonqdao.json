@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bonqdao",
+        "protocol_slug": null,
+        "protocol_name": "BonqDAO",
+        "occurred_at": "2023-02-01",
+        "loss_usd": 120000000.0,
+        "category": "Lending / CDP Stablecoin Protocol",
+        "root_cause": "Oracle Manipulation (Tellor Price Feed — Instant Value)",
+        "description": "BonqDAO was manipulated with $175 worth of TRB tokens to report a fake WALBT price — allowing the attacker to borrow 100 million BEUR against 0.1 WALBT and liquidate every other user's collateral, causing $120M in nominal damage while escaping with only ~$1.7M.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the attacked oracle contracts (TellorPriceFeed etc.) were added post-audit and were explicitly out of scope]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-audit oracle contracts)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — oracle contracts were post-audit additions]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker funded via Tornado Cash before attack; 10 TRB staked on TellorFlex (small, unusual stake from fresh wallet)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — WALBT oracle price reported at an astronomical value; detectable instantly]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,144 @@
+---
+export interface Props {
+  title?: string;
+  lang?: string;
+  code: string;
+}
+
+const { title, lang, code } = Astro.props;
+const id = `cb-${Math.random().toString(36).slice(2, 10)}`;
+const hasBar = Boolean(title || lang);
+---
+
+<div class="codeblock" data-codeblock-id={id}>
+  {
+    hasBar && (
+      <div class="cbar">
+        <div class="ctitle">
+          <span class="dot" aria-hidden="true" />
+          {title && <span>{title}</span>}
+          {lang && <span class="lang">{lang}</span>}
+        </div>
+        <button type="button" class="copy" data-target={id}>
+          Copy
+        </button>
+      </div>
+    )
+  }
+  <pre data-code-source={id}>{code}</pre>
+</div>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('button.copy[data-target]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-target');
+        var pre = document.querySelector('pre[data-code-source="' + id + '"]');
+        if (!pre) return;
+        try {
+          navigator.clipboard.writeText(pre.textContent || '');
+        } catch (e) {
+          /* ignore */
+        }
+        var original = btn.textContent;
+        btn.classList.add('ok');
+        btn.textContent = 'Copied';
+        setTimeout(function () {
+          btn.classList.remove('ok');
+          btn.textContent = original;
+        }, 1200);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .codeblock {
+    margin: 18px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  .codeblock .cbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+  }
+  .codeblock .cbar .ctitle {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .codeblock .cbar .ctitle .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg-4);
+  }
+  .codeblock .cbar .ctitle .lang {
+    color: var(--fg-2);
+    font-weight: 500;
+  }
+  .codeblock .cbar .copy {
+    font: inherit;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-2);
+    padding: 3px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+  }
+  .codeblock .cbar .copy:hover {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+  .codeblock .cbar .copy.ok {
+    color: var(--gA);
+    border-color: var(--gA);
+  }
+  .codeblock pre {
+    margin: 0;
+    padding: 14px 16px;
+    font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--fg);
+    overflow-x: auto;
+    font-feature-settings: 'tnum';
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+  .codeblock pre :global(.c-key) {
+    color: var(--fg);
+  }
+  .codeblock pre :global(.c-str) {
+    color: var(--gA);
+  }
+  .codeblock pre :global(.c-num) {
+    color: var(--gD);
+  }
+  .codeblock pre :global(.c-com) {
+    color: var(--fg-3);
+    font-style: italic;
+  }
+  .codeblock pre :global(.c-cmd) {
+    color: var(--fg-2);
+  }
+  .codeblock pre :global(.c-flag) {
+    color: var(--gC);
+  }
+  .codeblock pre :global(.c-url) {
+    color: var(--fg);
+  }
+</style>

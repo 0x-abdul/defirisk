@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ripmevbot2",
+        "protocol_slug": null,
+        "protocol_name": "Anonymous MEV Sandwich Bot (on-chain MEV contract)",
+        "occurred_at": "2023-11-07",
+        "loss_usd": 2000000.0,
+        "category": "MEV / Sandwich Bot (not a DeFi protocol for depositors)",
+        "root_cause": "Unprotected public swap function → sandwich attack via Curve WETH/WBTC pool — $50M flash loan",
+        "description": "An MEV sandwich bot lost $2M after an attacker discovered a public function with no access control, using a $50M flash loan to sandwich attack the bot through its own exposed swap interface.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — proprietary bot contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N/A]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous]"
+        }
+      ]
+    }
+  }
+}

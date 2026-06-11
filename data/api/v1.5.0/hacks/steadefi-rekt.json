@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "steadefi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Steadefi",
+        "occurred_at": "2023-08-07",
+        "loss_usd": 1140000.0,
+        "category": "Yield Aggregator / Leveraged Farming",
+        "root_cause": "Compromised Deployer Key → Ownership Transfer",
+        "description": "Steadefi lost $1.14M when its deployer address — which retained admin ownership of all vaults, never transferred to a multisig — was compromised, letting the attacker grant open borrowing permissions and drain both its Arbitrum and Avalanche lending vaults.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — standard vault ownership pattern exploited; no recent upgrade] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — standard vault ownership pattern exploited; no recent upgrade]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Ownership transfer from deployer to attacker address is the key on-chain action; monitoring for unexpected ownership transfer events on ...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Ownership transfer from deployer to attacker address is the key on-chain action; monitoring for unexpected ownership transfer events on ...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — leveraged yield farming model similar to Alpaca Finance, Beefy]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — standard vault ownership pattern exploited; no recent upgrade]"
+        }
+      ]
+    }
+  }
+}

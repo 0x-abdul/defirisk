@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ethtrustfund",
+        "protocol_slug": null,
+        "protocol_name": "ETHTrustFund (ETF)",
+        "occurred_at": "2024-07-21",
+        "loss_usd": 2100000.0,
+        "category": "Yield / OHM Fork (Rebasing Token)",
+        "root_cause": "Insider Rug Pull — Deployer Drains Treasury Smart Contract",
+        "description": "ETHTrustFund's anonymous founder \"Peng\" spent months building community trust on Base, then drained a $2.1M treasury smart contract in two transactions nine hours apart, disappearing into Tornado Cash and Railgun.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — deployer directly transferred treasury funds; admin privilege over treasury was single-key]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — deployer directly transferred treasury funds; admin privilege over treasury was single-key]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — founder known only as \"Peng\"; no verified identity]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — OHM (Olympus DAO) fork; rebasing bond mechanism]"
+        }
+      ]
+    }
+  }
+}

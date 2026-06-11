@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "saga-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Saga (SagaEVM / Saga Dollar)",
+        "occurred_at": "2026-01-21",
+        "loss_usd": 7000000.0,
+        "category": "Cross-Chain Bridge / Stablecoin",
+        "root_cause": "IBC Precompile Input Validation Bypass → Infinite Mint",
+        "description": "An attacker taught Saga's IBC bridge a new language — fiction — forging cross-chain collateral deposits to mint $7M in Saga Dollar from thin air before the chain could hit the brakes.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — $37M → $13.6M TVL drop; $D depeg to $0.73 during/after exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — built on Ethermint (Cosmos EVM layer); vulnerability confirmed to originate there]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "snowdog-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Snowdog (SnowdogDAO)",
+        "occurred_at": "2021-11-25",
+        "loss_usd": 21000000.0,
+        "category": "OHM-fork / Reserve Memecoin",
+        "root_cause": "Insider front-running — privileged challengeKey knowledge + custom AMM sniping",
+        "description": "Snowdog's anon team created a custom AMM with a secret challengeKey for a $44M buyback, and insiders with advance knowledge sniped $21M in the first two transactions.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — custom Snowswap AMM with challengeKey]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Entire protocol was 8 days old; custom AMM deployed specifically for the buyback] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Entire protocol was 8 days old; custom AMM deployed specifically for the buyback]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Team migrated all liquidity to custom AMM with challengeKey mechanism]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 8 days (by design)]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Two new wallets funded via FTX day before buyback; liquidity migration from TraderJoe to custom AMM; treasury accumulation to $44M visible o...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Team migrated all liquidity to custom AMM with challengeKey mechanism]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — Snowbank/Snowdog anon team]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-123",
+          "relevance": "causal",
+          "notes": "★ Sudden admin-rescue / ACL change absent issue/PR discussion [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — OHM fork (Snowbank); custom AMM forked from Uniswap V2]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Entire protocol was 8 days old; custom AMM deployed specifically for the buyback]"
+        }
+      ]
+    }
+  }
+}

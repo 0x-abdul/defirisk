@@ -1,0 +1,273 @@
+---
+import { RUBRIC_VERSION } from '../lib/rubric';
+
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+type NavItem = { id: string; n: string; href: string; matches: (p: string) => boolean };
+
+const nav: NavItem[] = [
+  {
+    id: 'protocols',
+    n: 'Protocols',
+    href: '/',
+    matches: (p) => p === '/' || p.startsWith('/protocols/'),
+  },
+  {
+    id: 'factors',
+    n: 'Factors',
+    href: '/factors/',
+    matches: (p) => p.startsWith('/factors/'),
+  },
+  {
+    id: 'methodology',
+    n: 'Methodology',
+    href: '/methodology/',
+    matches: (p) => p.startsWith('/methodology/'),
+  },
+  {
+    id: 'data',
+    n: 'Data',
+    href: '/data/',
+    matches: (p) => p.startsWith('/data/') || p.startsWith('/api/'),
+  },
+  {
+    id: 'guide',
+    n: 'Guide',
+    href: '/learn/',
+    matches: (p) => p.startsWith('/learn/'),
+  },
+  {
+    id: 'about',
+    n: 'About',
+    href: '/about/',
+    matches: (p) => p.startsWith('/about/'),
+  },
+];
+---
+
+<div class="topbar">
+  <a class="brand" href="/" aria-label="DeFi Risk home">
+    <svg class="brand-mark" width="18" height="18" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <circle cx="32" cy="32" r="23" fill="none" stroke="currentColor" stroke-width="4.5" stroke-dasharray="41.75 6.42" stroke-linecap="butt" transform="rotate(-90 32 32)"/>
+      <circle cx="32" cy="32" r="3.5" fill="currentColor"/>
+    </svg>
+    <span class="brand-name">defirisk<span class="brand-tld">.co</span></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    {
+      nav.map((n) => (
+        <a class:list={[n.matches(currentPath) ? 'on' : '']} href={n.href}>
+          {n.n}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="topright">
+    <span class="vbadge">rubric {RUBRIC_VERSION}</span>
+    <div class="toggle" role="group" aria-label="Theme">
+      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    </div>
+    <button
+      type="button"
+      class="toggle toggle-aa"
+      data-prefer-contrast-toggle
+      aria-pressed="false"
+      title="High-contrast mode (WCAG AA)"
+    >AA</button>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    function syncTheme() {
+      var theme = document.documentElement.getAttribute('data-theme') || 'light';
+      var buttons = document.querySelectorAll('[data-theme-set]');
+      buttons.forEach(function (b) {
+        var match = b.getAttribute('data-theme-set') === theme;
+        b.classList.toggle('on', match);
+        b.setAttribute('aria-pressed', String(match));
+      });
+    }
+    function syncContrast() {
+      var on = document.documentElement.hasAttribute('data-prefer-contrast');
+      var buttons = document.querySelectorAll('[data-prefer-contrast-toggle]');
+      buttons.forEach(function (b) {
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+    }
+    syncTheme();
+    syncContrast();
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!(target instanceof Element)) return;
+      var themeBtn = target.closest('[data-theme-set]');
+      if (themeBtn) {
+        var theme = themeBtn.getAttribute('data-theme-set');
+        if (!theme) return;
+        document.documentElement.setAttribute('data-theme', theme);
+        try { localStorage.setItem('rd-theme', theme); } catch (err) { /* ignore */ }
+        syncTheme();
+        return;
+      }
+      var contrastBtn = target.closest('[data-prefer-contrast-toggle]');
+      if (contrastBtn) {
+        var enable = !document.documentElement.hasAttribute('data-prefer-contrast');
+        if (enable) {
+          document.documentElement.setAttribute('data-prefer-contrast', '');
+        } else {
+          document.documentElement.removeAttribute('data-prefer-contrast');
+        }
+        try { localStorage.setItem('rd-prefer-contrast', enable ? '1' : '0'); } catch (err) { /* ignore */ }
+        syncContrast();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .topbar {
+    display: flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    gap: 18px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .brand-mark {
+    flex-shrink: 0;
+    color: var(--fg);
+  }
+  .brand-tld {
+    color: var(--fg-3);
+    font-weight: 400;
+  }
+  .nav {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+  }
+  .nav a {
+    padding: 7px 11px;
+    font-size: 12.5px;
+    color: var(--fg-2);
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .nav a:hover {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+  .nav a.on {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+  .topright {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+  .vbadge {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 7px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--fg-2);
+  }
+  .toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .toggle button {
+    background: transparent;
+    border: none;
+    padding: 5px 9px;
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--fg-3);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .toggle button.on {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  /* Single-button AA toggle (sibling of the two-button theme toggle). */
+  button.toggle.toggle-aa {
+    padding: 5px 9px;
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--fg-3);
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    background: var(--surface-2);
+  }
+  button.toggle.toggle-aa:hover {
+    color: var(--fg);
+  }
+  button.toggle.toggle-aa.on {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  @media (max-width: 900px) {
+    .topbar {
+      padding: 0 14px;
+      gap: 10px;
+      overflow-x: auto;
+    }
+    .nav {
+      flex: none;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .nav a {
+      padding: 7px 8px;
+      font-size: 12px;
+    }
+    .vbadge {
+      display: none;
+    }
+    button.toggle.toggle-aa {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .brand {
+      flex-shrink: 0;
+    }
+    .brand-name {
+      display: none;
+    }
+  }
+</style>

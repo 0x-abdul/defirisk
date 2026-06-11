@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "prismafi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "PrismaFi",
+        "occurred_at": "2024-03-28",
+        "loss_usd": 11600000.0,
+        "category": "CDP / Liquid Restaking",
+        "root_cause": "Flash Loan + Missing Input Validation (Migration Helper)",
+        "description": "PrismaFi's flash loan attack exploited a freshly deployed migration helper contract with no input validation, letting the attacker commandeer other users' collateral troves for $11.6M.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — MigrateTroveZap was a recently deployed helper contract; unclear if it was in any audit scope; likely deployed after last audit] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — MigrateTroveZap was a recently deployed helper contract; unclear if it was in any audit scope; likely deployed after last audit]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (newly deployed migration helper)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MigrateTroveZap contract deployed within the week before the attack] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MigrateTroveZap contract deployed within the week before the attack]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — not mentioned in source]"
+        },
+        {
+          "factor_id": "RD-F-096",
+          "relevance": "illustrative",
+          "notes": "New ERC-20 approval to unverified contract [via realtime_signals/Pre-exploit on-chain signals: Approval of MigrateTroveZap by a monitored address 5 days before attack; migration contract was newly deployed (past week)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — fork of Liquity Protocol with modifications]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MigrateTroveZap contract deployed within the week before the attack]"
+        }
+      ]
+    }
+  }
+}

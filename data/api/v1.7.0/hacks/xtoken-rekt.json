@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "xtoken-rekt",
+        "protocol_slug": null,
+        "protocol_name": "xToken Market",
+        "occurred_at": "2021-05-12",
+        "loss_usd": 24000000.0,
+        "category": "Index / Passive Yield (wrapped SNX and BNT positions)",
+        "root_cause": "Flash loan + SNX/BNT price manipulation → xSNX/xBNT share price inflation → drain",
+        "description": "xToken lost $24M when an attacker used a $267M Flashbots private flash loan to crash SNX's price and mint $24M of xSNXa and xBNTa nearly for free, exploiting the gap between manipulated spot prices and the protocol's internal share valuations.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived PeckShield review]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — xSNXa/xBNTa price divergence from manipulated underlying spot prices; Uniswap V2 SNX price cratered during attack]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Flashbots MEV private transaction (front-ran by attacker's own bundle — not visible in public mempool); large SNX sell pressure on Uniswap V...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — xSNXa/xBNTa price divergence from manipulated underlying spot prices; Uniswap V2 SNX price cratered during attack]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ripmevbot",
+        "protocol_slug": null,
+        "protocol_name": "0xbad MEV Bot (on-chain MEV arbitrage contract)",
+        "occurred_at": "2022-09-27",
+        "loss_usd": 1500000.0,
+        "category": "MEV / Arbitrage Bot (not a DeFi protocol for depositors)",
+        "root_cause": "Unprotected flashloan callback — arbitrary execution via callFunction → WETH approval exploit",
+        "description": "A notorious Ethereum MEV bot that had spent 75 days frontrunning users had its own smart contract drained of 1,101 ETH after an attacker found an unprotected flashloan callback that allowed arbitrary execution and WETH approval theft.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — proprietary bot contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N/A]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 75 days of operation at time of hack]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous (bot operator identity unknown)]"
+        }
+      ]
+    }
+  }
+}

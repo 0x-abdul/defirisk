@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "theidolsnft-rekt",
+        "protocol_slug": null,
+        "protocol_name": "The Idols NFT",
+        "occurred_at": "2025-01-14",
+        "loss_usd": 324000.0,
+        "category": "NFT Protocol / Staking Rewards",
+        "root_cause": "Self-Transfer Reward Loop (Logic Bug in Token Transfer Hook)",
+        "description": "The Idols NFT lost 97 stETH ($324k) to a reward accounting loop triggered by self-transfers — when a user sent tokens to themselves with a balance of exactly 1, the contract entered an infinite reward cycle.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited (if Tikkala Security did audit) or unaudited (if they were only the detector) — unclear]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Repeated self-transfer transactions (sender = receiver) on the NFT contract; stETH balance declining in reward reserves]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

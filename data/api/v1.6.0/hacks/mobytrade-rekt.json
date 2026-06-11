@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "mobytrade-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Moby Trade",
+        "occurred_at": "2025-01-08",
+        "loss_usd": 1000000.0,
+        "category": "Perpetuals DEX",
+        "root_cause": "Private key compromise → proxy admin key stolen → vault ownership transfer → drain",
+        "description": "Moby Trade lost roughly $1M when stolen proxy admin private keys were used to upgrade and drain two vaults — though a whitehat crew rescued $1.47M USDC before the attacker could reach it.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — proxy ownership transfer was the triggering on-chain event; detectable before drain began]"
+        }
+      ]
+    }
+  }
+}

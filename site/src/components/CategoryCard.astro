@@ -1,0 +1,204 @@
+---
+export type Light = 'red' | 'yellow' | 'green' | 'gray';
+
+export interface SeverityBar {
+  /** 'r' | 'y' | 'g' — color class for the bar */
+  kind: 'r' | 'y' | 'g';
+}
+
+export interface Props {
+  /** Category id used as anchor target (e.g. used with `id={`cat-${id}`}`). */
+  id: string | number;
+  /** Category display name. */
+  name: string;
+  /** Aggregate light for this category. */
+  light: Light;
+  /** Up to 18 severity bars showing the red/yellow/green distribution. */
+  bars?: Array<'r' | 'y' | 'g'>;
+  /** Right-side count text e.g. "10 of 25". */
+  count?: string;
+  /** Whether the card is open by default. */
+  open?: boolean;
+  /** M1 per-category severity score 0–100. Displayed as a numeric badge next to the light label. */
+  severity?: number;
+}
+
+const { id, name, light, bars = [], count, open = true, severity } = Astro.props;
+
+const labelText: Record<Light, string> = {
+  red: 'Red',
+  yellow: 'Yellow',
+  green: 'Green',
+  gray: 'Gray',
+};
+
+// Bar height pattern from canonical .da1 .catcard .ch .severity i style:
+// `${6 + (i % 5) * 2.2}px`
+function barHeight(i: number) {
+  return 6 + (i % 5) * 2.2;
+}
+
+const displayedBars = bars.length > 18 ? bars.slice(0, 18) : bars;
+---
+
+<details class="catcard" id={`cat-${id}`} open={open}>
+  <summary class="ch">
+    <span class="arrow" aria-hidden="true">▾</span>
+    <span class="nm">{name}</span>
+    <span class="severity" aria-hidden="true">
+      {
+        displayedBars.map((b, i) => (
+          <i class={b} style={`height: ${barHeight(i)}px`} />
+        ))
+      }
+    </span>
+    <span class:list={['lt', light]}>{labelText[light]}</span>
+    {typeof severity === 'number' && <span class:list={['sev-num', light]}>{severity.toFixed(0)}</span>}
+    {count && <span class="ct">{count}</span>}
+  </summary>
+  <slot />
+</details>
+
+<style>
+  .catcard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    scroll-margin-top: 64px;
+  }
+  .catcard summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .catcard summary::-webkit-details-marker {
+    display: none;
+  }
+  .catcard summary::marker {
+    content: '';
+  }
+  .catcard .ch {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .catcard:not([open]) .ch {
+    border-bottom-color: transparent;
+  }
+  .catcard .ch .arrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    display: inline-block;
+    width: 12px;
+  }
+  .catcard:not([open]) .arrow {
+    transform: rotate(-90deg);
+  }
+  .catcard .ch .nm {
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    flex: 1;
+    color: var(--fg);
+  }
+  .catcard .ch .lt {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .catcard .ch .lt::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .catcard .ch .lt.red::before {
+    background: var(--gF);
+  }
+  .catcard .ch .lt.red {
+    color: var(--gF);
+  }
+  .catcard .ch .lt.yellow::before {
+    background: var(--gC);
+  }
+  .catcard .ch .lt.yellow {
+    color: var(--gC);
+  }
+  .catcard .ch .lt.green::before {
+    background: var(--gA);
+  }
+  .catcard .ch .lt.green {
+    color: var(--gA);
+  }
+  .catcard .ch .lt.gray::before {
+    background: var(--fg-4);
+  }
+  .catcard .ch .lt.gray {
+    color: var(--fg-3);
+  }
+  .catcard .ch .severity {
+    display: flex;
+    gap: 1.5px;
+    align-items: flex-end;
+    height: 18px;
+    width: 120px;
+  }
+  .catcard .ch .severity i {
+    flex: 1;
+    border-radius: 1.5px;
+    background: var(--border-2);
+    min-width: 3px;
+  }
+  .catcard .ch .severity i.r {
+    background: var(--gF);
+  }
+  .catcard .ch .severity i.y {
+    background: var(--gC);
+  }
+  .catcard .ch .severity i.g {
+    background: var(--gA);
+  }
+  .catcard .ch .sev-num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    font-feature-settings: 'tnum';
+    letter-spacing: -0.01em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    min-width: 28px;
+    text-align: center;
+  }
+  .catcard .ch .sev-num.red {
+    background: color-mix(in srgb, var(--gF) 15%, transparent);
+    color: var(--gF);
+  }
+  .catcard .ch .sev-num.yellow {
+    background: color-mix(in srgb, var(--gC) 15%, transparent);
+    color: var(--gC);
+  }
+  .catcard .ch .sev-num.green {
+    background: color-mix(in srgb, var(--gA) 15%, transparent);
+    color: var(--gA);
+  }
+  .catcard .ch .sev-num.gray {
+    background: var(--surface-2);
+    color: var(--fg-3);
+  }
+  .catcard .ch .ct {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    min-width: 108px;
+    text-align: right;
+  }
+</style>

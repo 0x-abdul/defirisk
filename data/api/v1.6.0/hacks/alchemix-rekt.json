@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "alchemix-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Alchemix",
+        "occurred_at": "2021-06-16",
+        "loss_usd": 4.8,
+        "category": "Yield-Backed Loan / Self-Repaying Loan Protocol",
+        "root_cause": "Logic bug in alETH collateral accounting — ETH collateral position assigned zero debt → users could withdraw collateral without repaying loan",
+        "description": "Alchemix's new alETH feature had a debt accounting bug that accidentally gave users free money — ~2,700 ETH in undercollateralization, then the team publicly asked users to give it back, and remarkably, many did.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — alETH was a new feature extension; the debt accounting bug was in new, possibly unaudited code]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: New feature code — likely unaudited or insufficiently reviewed]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — alETH collateral type was newly deployed]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — ETH collateral being withdrawn without corresponding debt repayment would be detectable]"
+        }
+      ]
+    }
+  }
+}

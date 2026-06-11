@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "alpha-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Alpha Finance / Alpha Homora V2 (leveraged yield farming)",
+        "occurred_at": "2021-02-13",
+        "loss_usd": 37500000.0,
+        "category": "Leveraged Yield Farming / Lending",
+        "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required",
+        "description": "Alpha Homora V2 lost $37.5M when an attacker with apparent insider knowledge used a rounding bug and a public fee-collection function to create exponentially inflating fake debt, then borrowed $37.5M in real assets across a 13-step attack.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — HomoraBankV2 with sUSD pool was newly deployed and not yet publicly accessible] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — HomoraBankV2 with sUSD pool was newly deployed and not yet publicly accessible] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-050",
+          "relevance": "causal",
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-052",
+          "relevance": "related",
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — SBF withdrew $400M FTT from Cream Finance; Three Arrows Capital sent $3M ALPHA to Binance shortly after the exploit broke publicly (like...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — HomoraBankV2 with sUSD pool was newly deployed and not yet publicly accessible]"
+        }
+      ]
+    }
+  }
+}

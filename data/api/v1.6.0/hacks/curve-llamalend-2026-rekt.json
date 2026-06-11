@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "curve-llamalend-2026-rekt",
+        "protocol_slug": "curve-v2",
+        "protocol_name": "Curve LlamaLend",
+        "occurred_at": "2026-03-02",
+        "loss_usd": 240000.0,
+        "category": "Lending (LlamaLend on Curve infrastructure)",
+        "root_cause": "Empty-market donation attack on a freshly-listed lending market",
+        "description": "Same root-cause class as the Venus zkSync Era incident () and the 2026-03-15 Venus BNB Chain incident — donation attack on a fresh, low-TVL lending market without first-depositor protection.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-070",
+          "relevance": "related",
+          "notes": "Same empty-market donation pattern as Venus zkSync incident"
+        },
+        {
+          "factor_id": "RD-F-074",
+          "relevance": "related",
+          "notes": "_decimalsOffset() returning 0 + no virtual deposit; same ERC-4626 first-depositor config error as Venus"
+        },
+        {
+          "factor_id": "RD-F-084",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-143",
+          "relevance": "illustrative",
+          "notes": "LlamaLend factory did not back-port the first-depositor fix from mainnet Venus / Compound III"
+        }
+      ]
+    }
+  }
+}

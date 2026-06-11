@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "safemoon-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Safemoon",
+        "occurred_at": "2023-03-28",
+        "loss_usd": 8900000.0,
+        "category": "Algorithmic Token / AMM Liquidity Pool",
+        "root_cause": "Upgrade introduced public burn() function → LP token burn → pool price manipulation → BNB drain",
+        "description": "Safemoon's self-described \"un-ruggable\" locked liquidity was drained for $8.9M after a routine upgrade introduced a public burn() function that let anyone destroy LP tokens, manipulate the pool price, and extract BNB.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — the upgrade was not reviewed]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the vulnerability was introduced by the upgrade deployed 6 hours before the attack] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the vulnerability was introduced by the upgrade deployed 6 hours before the attack] || Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Safemoon Deployer upgraded the token contract 6 hours before the exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — BEP-20 token with custom transfer mechanics (PancakeSwap liquidity)]"
+        },
+        {
+          "factor_id": "RD-F-139",
+          "relevance": "causal",
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the vulnerability was introduced by the upgrade deployed 6 hours before the attack]"
+        }
+      ]
+    }
+  }
+}

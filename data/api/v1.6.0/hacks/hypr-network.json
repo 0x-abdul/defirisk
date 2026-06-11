@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hypr-network",
+        "protocol_slug": null,
+        "protocol_name": "Hypr Network",
+        "occurred_at": "2023-09-12",
+        "loss_usd": 220000.0,
+        "category": "L2 Bridge (Gaming-focused L2)",
+        "root_cause": "Bridge Contract Reinitialization (OP Stack Unpatched Dev Branch)",
+        "description": "Hypr Network's bridge was drained for $220K just two days after launch because the team deployed from a non-production OP Stack dev branch that contained a critical reinitialization bug — a patch existed but hadn't been applied before go-live.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — newly launched L2 bridge, 2 days old]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: N/A]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 2 days (launched 2 days before exploit)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — OP Stack fork (Optimism)]"
+        }
+      ]
+    }
+  }
+}

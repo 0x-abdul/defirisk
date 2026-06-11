@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://riskdashboard.xyz/api/v1.5.0/schema/factor.json",
+  "title": "Factor",
+  "description": "One factor in the 184-factor taxonomy. From factors.json.",
+  "type": "object",
+  "required": ["id", "category_id", "name", "description", "is_critical"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^RD-F-\\d{3}$", "example": "RD-F-001" },
+    "category_id": { "type": "integer", "minimum": 1, "maximum": 13 },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "is_critical": { "type": "boolean", "description": "True for the 20 single-factor-sufficient D/F trigger factors." },
+    "curation_archetype": { "type": ["string", "null"], "enum": ["PE", "PH", "M", null] },
+    "introduced_in_rubric": { "type": ["string", "null"] },
+    "deprecated_in_rubric": { "type": ["string", "null"] }
+  }
+}

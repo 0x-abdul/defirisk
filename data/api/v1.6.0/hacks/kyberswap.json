@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "kyberswap",
+        "protocol_slug": null,
+        "protocol_name": "KyberSwap Elastic",
+        "occurred_at": "2023-11-22",
+        "loss_usd": 48000000.0,
+        "category": "Concentrated Liquidity DEX",
+        "root_cause": "Tick Manipulation + Double Liquidity Counting — Precision Arithmetic Edge Case",
+        "description": "A highly sophisticated attacker exploited a sub-0.00000000001% precision error in KyberSwap Elastic's tick-crossing logic to double-count liquidity and drain $48M across 6 chains simultaneously — leaving step-by-step commentary in on-chain event logs.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived two independent reviews (ChainSecurity + Sherlock)]"
+        },
+        {
+          "factor_id": "RD-F-009",
+          "relevance": "related",
+          "notes": "Formal verification coverage — would have caught [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-024",
+          "relevance": "causal",
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash + FixedFloat funding across chains; large flash loan originations at attack time]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — TVL fell from $71M to <$3M on KyberSwap Elastic during attack] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — pool prices pushed into empty liquidity zones; abnormal swap states]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — flash loans used to bootstrap tick manipulation]"
+        }
+      ]
+    }
+  }
+}

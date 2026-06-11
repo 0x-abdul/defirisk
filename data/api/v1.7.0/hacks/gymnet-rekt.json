@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "gymnet-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Gym Network (GymNet)",
+        "occurred_at": "2022-06-10",
+        "loss_usd": 2100000.0,
+        "category": "Yield Aggregator",
+        "root_cause": "Missing caller verification — fake deposits via unchecked balance inflation → withdraw drain",
+        "description": "Gym Network lost $2.1M when a new \"Claim and Pool\" feature deployed 2 days after their audits was found to lack any caller verification, letting an attacker create fake deposits and withdraw them for real tokens.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (post-audit addition)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — new Single Pool Contract with Claim and Pool feature deployed 2 days before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — new Single Pool Contract with Claim and Pool feature deployed 2 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — built on top of Alpaca Finance (yield strategy layer)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — new Single Pool Contract with Claim and Pool feature deployed 2 days before exploit]"
+        }
+      ]
+    }
+  }
+}

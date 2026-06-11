@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "rari-capital-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Rari Capital",
+        "occurred_at": "2021-05-08",
+        "loss_usd": 10000000.0,
+        "category": "Yield Aggregator / Lending Pool",
+        "root_cause": "Fake token + protocol callback exploit (ibETH injection via Alpha Homora) → ETH pool drain",
+        "description": "A serial attacker used BSC exploit proceeds from Value DeFi to fund a cross-chain attack on Rari Capital's ETH pool, injecting fake ibETH via Alpha Homora to drain $10M in a single afternoon.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-050",
+          "relevance": "causal",
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-052",
+          "relevance": "related",
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        }
+      ]
+    }
+  }
+}

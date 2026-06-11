@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "akropolis-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Akropolis (Delphi savings pool)",
+        "occurred_at": "2020-11-12",
+        "loss_usd": 2000000.0,
+        "category": "Yield Aggregator / Savings Pool",
+        "root_cause": "Flash loan + fake token reentrancy — malicious ERC20 deposit triggers re-entrant deposit() before balance update",
+        "description": "Akropolis lost $2M DAI when an attacker exploited a reentrancy in the deposit function using a fake ERC20 token — a bug that survived reviews by three separate auditors over eight hours of repeated $50K batch attacks.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — reentrancy bug survived three audits]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Repeated $50K batch attacks for ~8 hours before discovery]"
+        }
+      ]
+    }
+  }
+}

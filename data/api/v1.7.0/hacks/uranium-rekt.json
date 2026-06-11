@@ -1,0 +1,80 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "uranium-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Uranium Finance",
+        "occurred_at": "2021-04-28",
+        "loss_usd": 57200000.0,
+        "category": "DEX / AMM (Uniswap V2 fork)",
+        "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)",
+        "description": "Uranium Finance's Uniswap V2 fork changed a constant from 1000 to 10000 in two places but not the third, breaking the x*y=k check and letting an attacker drain $57.2M by swapping 1 wei for 98% of each pool.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — no audit performed]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Bug introduced in v2 migration ~10 days before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Bug introduced in v2 migration ~10 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Team deployed v2 with the bug and announced v2.1 migration]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-123",
+          "relevance": "causal",
+          "notes": "★ Sudden admin-rescue / ACL change absent issue/PR discussion [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Uniswap V2 fork on BSC]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Bug introduced in v2 migration ~10 days before exploit]"
+        }
+      ]
+    }
+  }
+}

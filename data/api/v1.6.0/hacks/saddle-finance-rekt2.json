@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "saddle-finance-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Saddle Finance",
+        "occurred_at": "2022-05-01",
+        "loss_usd": 11000000.0,
+        "category": "DEX / Stableswap AMM",
+        "root_cause": "Flash Loan + LP Token Price Manipulation (Old MetaSwapUtils Library)",
+        "description": "Saddle Finance lost $11M to the exact attack vector they had patched 5 months earlier — the fix existed in the codebase but was never applied to the vulnerable metapool.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Flash loan activity; repeated sUSD/LP swap pattern in metapool]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — LP token price manipulation detectable as price deviation from VirtualPrice baseline]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Curve Finance fork (extensively)]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+name: Accessibility (axe-core)
+
+# Runs on PRs and pushes to main.
+# Blocks merge on any serious or critical WCAG 2.0 A/AA / WCAG 2.1 A/AA violation.
+# wcag2aaa is informational-only and NOT included in this gate.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  a11y-check:
+    name: a11y check (axe-core / Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package.json
+
+      - name: Install site dependencies
+        run: npm ci
+        working-directory: site
+
+      - name: Build site (produces dist/ for preview server)
+        run: npm run build
+        working-directory: site
+
+      - name: Install Playwright Chromium browser
+        run: npx playwright install --with-deps chromium
+        working-directory: site
+
+      # Runs tests/a11y/*.spec.ts against a local preview server.
+      # playwright.a11y.config.ts auto-starts `npm run preview -- --port 4321`.
+      # Tags checked: wcag2a, wcag2aa, wcag21a, wcag21aa.
+      # Fails on any violation with impact=serious or impact=critical.
+      - name: Run axe-core accessibility checks
+        run: npx playwright test --config=playwright.a11y.config.ts --project=chromium
+        working-directory: site
+
+      - name: Upload a11y results (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-results
+          path: site/tests/a11y/results.json
+          retention-days: 14

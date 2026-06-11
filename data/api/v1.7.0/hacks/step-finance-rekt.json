@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "step-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Step Finance",
+        "occurred_at": "2026-01-31",
+        "loss_usd": 27300000.0,
+        "category": "DeFi Dashboard / Yield / Staking (also runs Remora Markets — tokenized equities)",
+        "root_cause": "Compromised Executive Device → Stake Authorization Transfer",
+        "description": "Step Finance had audited contracts, a bug bounty, and public security reviews — none of it mattered when a phished executive's laptop handed attackers the keys to 261,854 SOL ($27.3M) in 90 minutes.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Stake authorization transfer to unknown address is the key on-chain action; Solana staking change events to fresh wallets during APAC of...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Stake authorization transfer to unknown address is the key on-chain action; Solana staking change events to fresh wallets during APAC of...]"
+        }
+      ]
+    }
+  }
+}

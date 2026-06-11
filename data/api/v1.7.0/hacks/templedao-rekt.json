@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "templedao-rekt",
+        "protocol_slug": null,
+        "protocol_name": "TempleDAO / STAX Finance",
+        "occurred_at": "2022-10-11",
+        "loss_usd": 2300000.0,
+        "category": "Yield Vault / LP Staking",
+        "root_cause": "Missing access control in migrateStake() — unvalidated oldStaking parameter",
+        "description": "TempleDAO's STAX contract lost $2.3M when an attacker called a migration function with no access control and withdrew all LP tokens using a fake old-staking contract.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — STAX staking contract was separate from audited Temple core vaults] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — STAX staking contract was separate from audited Temple core vaults]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (STAX staking contract)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — STAX was a newer application layer built atop TempleDAO, deployed June 2022] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — STAX was a newer application layer built atop TempleDAO, deployed June 2022]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: No — TempleDAO was an OHM-fork that had pivoted to FRAX stablecoin farming; STAX was original code]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — STAX was a newer application layer built atop TempleDAO, deployed June 2022]"
+        }
+      ]
+    }
+  }
+}

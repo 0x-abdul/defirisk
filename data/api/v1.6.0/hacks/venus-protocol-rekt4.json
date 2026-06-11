@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "venus-protocol-rekt4",
+        "protocol_slug": "venus",
+        "protocol_name": "Venus Protocol",
+        "occurred_at": "2026-03-15",
+        "loss_usd": 3700000.0,
+        "category": "Lending Protocol",
+        "root_cause": "Donation Attack → Supply Cap Bypass → Collateral Inflation → Recursive Borrow Loop",
+        "description": "An attacker spent 9 months accumulating 84% of Venus Protocol's THE supply cap, bypassed it via a raw ERC-20 transfer (an exploit flagged and dismissed by Venus's own Code4rena audit in 2023), and extracted $3.7M — Venus's fourth major hack in five years, same root cause category each time.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "illustrative",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years since Code4rena audit that flagged the exact vulnerability]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — explicitly flagged by Code4rena, dismissed by team]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]"
+        },
+        {
+          "factor_id": "RD-F-084",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — BoundValidator resisted manipulated THE price for 37 minutes before capitulating; price spike was visible on-chain]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — post-exploit: Collateral Factor zeroed on six additional markets where single wallet held >60% of supplied collateral]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "related",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — forked from Compound]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "illustrative",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — forked from Compound]"
+        }
+      ]
+    }
+  }
+}

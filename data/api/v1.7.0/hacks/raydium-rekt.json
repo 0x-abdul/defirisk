@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "raydium-rekt",
+        "protocol_slug": "raydium",
+        "protocol_name": "Raydium",
+        "occurred_at": "2022-12-16",
+        "loss_usd": 4400000.0,
+        "category": "DEX / AMM",
+        "root_cause": "Compromised pool owner private key → withdraw_pnl() fee drain + SyncNeedTake parameter manipulation",
+        "description": "Raydium's AMM lost $4.4M in protocol fees when an attacker used a compromised owner private key to call a privileged drain function across nine Solana liquidity pools.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "related",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (no public audit) — root cause is key management failure, not code bug]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "illustrative",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "related",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — withdraw_pnl called by owner key; SyncNeedTake parameter modified. Both are admin-level operations]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "illustrative",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — withdraw_pnl called by owner key; SyncNeedTake parameter modified. Both are admin-level operations]"
+        }
+      ]
+    }
+  }
+}

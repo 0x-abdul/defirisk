@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "veefinance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Vee Finance",
+        "occurred_at": "2021-09-21",
+        "loss_usd": 34000000.0,
+        "category": "Lending / Leveraged Trading",
+        "root_cause": "Pangolin spot price oracle manipulation via custom trading pairs + decimal handling bug",
+        "description": "Vee Finance lost $34M when an attacker created custom Pangolin trading pairs to manipulate the spot prices Vee Finance used as its sole oracle, with a decimal handling bug silently disabling the protocol's own slippage protection.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown (team offered bug bounty to hacker post-attack)]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — Pangolin spot prices manipulated via newly created low-liquidity pairs; observable if monitoring oracle price vs reference]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — Pangolin spot prices manipulated via newly created low-liquidity pairs; observable if monitoring oracle price vs reference]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Partially — leveraged trading platform with Compound-style lending influences]"
+        }
+      ]
+    }
+  }
+}

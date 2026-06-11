@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "alexlab-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "AlexLab (Bitcoin DeFi / Stacks)",
+        "occurred_at": "2025-06-06",
+        "loss_usd": 16180000.0,
+        "category": "DEX / AMM",
+        "root_cause": "Vault permission hijack via malicious token self-listing; `as-contract` context abuse",
+        "description": "AlexLab lost $16M when an attacker deployed a fake token, used the protocol's own permissionless listing feature to gain vault-level access, then drained every asset in one transaction by exploiting Stacks' `as-contract` context shift.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N** — the live `amm-vault-v2-01` that was drained was explicitly outside the May 2025 audit scope] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N** — the live `amm-vault-v2-01` that was drained was explicitly outside the May 2025 audit scope] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code** — exploited contract was not in audit scope]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "related",
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-072",
+          "relevance": "causal",
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        }
+      ]
+    }
+  }
+}

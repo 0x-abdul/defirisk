@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "jimbo-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Jimbo's Protocol",
+        "occurred_at": "2023-05-28",
+        "loss_usd": 7500000.0,
+        "category": "Algorithmic Stablecoin / AMM (semi-stablecoin via rebalancing)",
+        "root_cause": "Flash loan + missing slippage control in rebalancing function → liquidity drain",
+        "description": "Jimbo's Protocol attempted to create a semi-stablecoin via a floor-price rebalancing mechanism (described by observers as \"OHM flashbacks\"). The v2 had just launched — it was the team's second attempt after a buggy v1 fell apart on launch days earlier. v2 added leverage complexity.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — no audit existed]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Y — v2 launched 3 days prior; v1 had already collapsed] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No (10% offered after hack via on-chain message)]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "causal",
+          "notes": "Protocol age (days since first mainnet deploy) [via cross-hack: Factor 35: Protocol Age < 2 Weeks at Time of Hack] || Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: v2 was 3 days old at time of hack; v1 was ~2 weeks old and had already failed]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        }
+      ]
+    }
+  }
+}

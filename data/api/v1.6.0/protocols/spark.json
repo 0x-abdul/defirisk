@@ -1,0 +1,3971 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "protocol_data": {
+      "protocol": {
+        "slug": "spark",
+        "display_name": "Spark Protocol",
+        "description": "SparkLend is an Aave v3 fork lending protocol governed by MakerDAO/Sky DAO. Offers DAI/USDS borrowing, multiple ERC-20 collateral types, and sUSDS (yield-bearing USDS savings module). Developed by Phoenix Labs.",
+        "homepage_url": "https://spark.fi",
+        "github_org": "sparkdotfi",
+        "defillama_slug": "spark",
+        "protocol_type": "lending",
+        "primary_chain": "ethereum",
+        "launched_at": "2023-06-14",
+        "headline_grade": "F",
+        "total_value_secured_usd": 4200000000.0,
+        "graded_at": "2026-05-11T14:14:53Z",
+        "rubric_version": "v1.6.0",
+        "status": "live",
+        "has_active_incident": false,
+        "created_at": "2026-04-27T01:00:42Z",
+        "updated_at": "2026-05-11T14:14:53Z"
+      },
+      "deployments": [
+        {
+          "id": "ba1663d5-2c13-44dd-bc6f-0f7375e43db6",
+          "protocol_slug": "spark",
+          "chain": "ethereum",
+          "anchor_address": "0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+          "display_name": "SparkLend Pool (Ethereum)",
+          "tvs_usd": null,
+          "tvs_share": null,
+          "letter": null,
+          "category_grid": {},
+          "deployed_at": "2023-06-14",
+          "created_at": "2026-04-27T01:00:42Z",
+          "updated_at": "2026-04-27T01:00:42Z"
+        }
+      ],
+      "factor_scores": [
+        {
+          "factor_id": "RD-F-001",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SparkLend audited by ChainSecurity (deployment verification), Cantina, and dedaub. No formal verification (Certora/K-framework) of core lending or sUSDS logic. Audit coverage is solid but the critical ★ factor penalizes absence of formal verification.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity SparkLend Deployment Verification Report",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-002",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Most recent audit of core SparkLend (v1-core) is from 2023. ALM Controller audited in 2024-Q4. Gap exists for any changes applied between audit cycles. Not all new sUSDS module changes are covered by a dated audit within 12 months.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark Protocol security and audits documentation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-003",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Three independent audit firms engaged: ChainSecurity (deployment verification), Cantina (v1-core), dedaub (ALM controller). All reputable, independent, and specializing in DeFi security.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark Protocol auditors listed at security-and-audits page",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-004",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Four or more audit engagements covering SparkLend v1-core, the ALM controller, sUSDS integration, and deployment verification. Meets or exceeds threshold for established protocols.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller/tree/master/audits",
+              "reference": "spark-alm-controller audits directory",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-005",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unresolved critical or high severity findings in published audit reports. All identified findings were addressed by the team with mitigations or fixes documented in report appendices.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security page — no open critical findings",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-006",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "All audit reports are publicly available via docs.spark.fi and the sparkdotfi GitHub org. Full reports (not just summaries) are accessible without registration.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security and audits — full report links",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-007",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Immunefi bug bounty active with up to $5M maximum payout. Launched alongside the protocol. Bounty scope covers SparkLend smart contracts and protocol logic.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend bug bounty program",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-008",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Bug bounty program launched concurrently with protocol in June 2023 and has remained active continuously. No lapses in bounty coverage identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bounty/sparklend/",
+              "reference": "Immunefi SparkLend bounty — launch history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-009",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "No formal verification (Certora, K-framework, or equivalent) applied to core SparkLend or sUSDS contracts. Audits substitute but do not provide the same mathematical guarantees for critical invariants.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security page — no formal verification mentioned",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-010",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No public documentation of static analysis CI integration (Slither, Echidna, or equivalent) in the sparkdotfi repositories. Cannot confirm or deny automated static analysis pipeline.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparkdotfi/sparklend-v1-core — CI configuration review",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-011",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SparkLend source code fully open-source on GitHub under AGPL-3.0 license. All contracts verifiable; no obfuscation or closed-source components identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparkdotfi/sparklend-v1-core — public repository",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-012",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "All deployed SparkLend contracts verified on Etherscan. On-chain bytecode matches published source; ChainSecurity deployment verification confirms match.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool proxy — Etherscan verified source",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-013",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SparkLend is a direct Aave v3 fork with 37+ months of on-chain battle-testing on the upstream codebase. Mature, widely-audited base with extensive production history before Spark deployment.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity deployment verification — fork lineage confirmed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-014",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Each audit engagement scope is clearly documented within the report, specifying contracts in scope, commit hashes reviewed, and out-of-scope components. No ambiguity in coverage.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity SparkLend audit — documented scope",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-015",
+          "deployment_id": null,
+          "score": "not_applicable",
+          "evidence_summary": "No unrestricted public token minting function. sUSDS minting is via ERC4626 deposit (user deposits USDS, receives sUSDS). No admin mint-to-arbitrary-address function exists.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": []
+        },
+        {
+          "factor_id": "RD-F-016",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SparkLend inherits Aave v3 standard patterns: OpenZeppelin base contracts, no unusual inline assembly beyond Aave v3 inheritance. No exotic patterns outside audited upstream code.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparkdotfi/sparklend-v1-core — contract patterns",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-017",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SparkLend inherits Aave v3 math libraries (WadRayMath, PercentageMath) which are extensively audited and production-proven. No custom math libraries introduced.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — inherited Aave v3 math libraries",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-018",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Fork modifications from Aave v3 are explicitly identified in ChainSecurity's deployment verification. Changes are parameter-level (interest rate models, LTVs) and integration-level (Sky/USDS). No hidden divergences found.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity SparkLend Deployment Verification — delta from Aave v3",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-019",
+          "deployment_id": null,
+          "score": "not_applicable",
+          "evidence_summary": "No transparent proxy admin key separate from governance. Aave v3 proxy pattern is ACL-controlled via DSPauseProxy; no standalone ProxyAdmin contract with unilateral upgrade rights.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": []
+        },
+        {
+          "factor_id": "RD-F-020",
+          "deployment_id": null,
+          "score": "not_applicable",
+          "evidence_summary": "No CREATE2 factory deployment pattern used in SparkLend. Standard deployer-script deployment model inherited from Aave v3.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": []
+        },
+        {
+          "factor_id": "RD-F-021",
+          "deployment_id": null,
+          "score": "not_applicable",
+          "evidence_summary": "No separate proxy admin contract. Upgrade authority flows through DSPauseProxy (governance). No distinct proxy admin role detached from governance.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": []
+        },
+        {
+          "factor_id": "RD-F-022",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No reentrancy vulnerabilities identified across all audit engagements. Aave v3 architecture employs checks-effects-interactions and ReentrancyGuard. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity SparkLend Deployment Verification — reentrancy analysis",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-023",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Front-running risk exists in liquidation execution paths, common to all lending protocols using Chainlink spot prices. Acknowledged in docs; not a design flaw but an inherent trade-off.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/liquidations",
+              "reference": "Spark Protocol liquidation documentation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-024",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Solidity 0.8.x compiler provides built-in overflow/underflow protection. No unchecked blocks in critical paths identified in audits. Standard safe-math guarantees apply.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — Solidity 0.8.x with built-in overflow protection",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-025",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Governance architecture fully documented: MakerDAO/Sky DAO controls Spark via DSPauseProxy. Role hierarchy, permissions, and upgrade paths described in protocol documentation.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-026",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "DSPauseProxy imposes a 48-hour on-chain timelock on all governance-initiated changes to SparkLend. Timelock is enforced in MakerDAO's Pause contract and cannot be bypassed by Phoenix Labs.",
+          "evidence_detail": "{\"required\": null, \"total\": null, \"display\": \"DAO\", \"governance\": \"DSPauseProxy (48-hour timelock, MakerDAO/Sky on-chain governance; no fixed-signer multisig on upgrade path)\", \"checked_at\": \"2026-04-27T01:00:42Z\"}",
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB",
+              "reference": "MakerDAO DSPauseProxy — 48h timelock enforcer",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-027",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No single EOA holds admin keys. DSPauseProxy (governance multisig) controls all admin functions. Deployer address no longer retains elevated privileges post-deployment. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool — admin role held by DSPauseProxy, not EOA",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-028",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SparkLend Emergency Multisig holds some immediate-action powers (pause, emergency parameter changes) that can bypass the standard 48h governance delay. Threshold and signers documented but introduces a bypass window.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark emergency multisig documentation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-029",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "On-chain quorum for Sky DAO governance proposals not clearly surfaced in public documentation. Delegation patterns and minimum participation thresholds are not easily queryable.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — proposal process",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-030",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Voter participation rates for Spark-specific governance proposals not publicly tracked or dashboarded. Sky DAO vote turnout metrics not broken down by protocol.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — Spark-related proposals",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-031",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "DSPauseProxy enforces 48-hour delay on all SparkLend parameter changes including interest rate model updates and LTV adjustments. On-chain enforcement via MakerDAO's Pause contract.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB",
+              "reference": "DSPauseProxy on-chain timelock",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-032",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Emergency multisig can bypass certain timelock protections for critical security events. This is intentional design but means not all admin actions are timelock-protected. Standard DeFi trade-off.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-033",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Interest rate model parameters can be updated by the risk admin role; while the 48h timelock applies to governance-initiated changes, some risk-admin actions have narrower delay windows.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-034",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Role separation documented: Pool Configurator, Risk Admin, Emergency Admin, and ACL Manager are distinct roles with different capabilities. No single role holds all privileges.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-035",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Contract upgrades require governance approval through DSPauseProxy. No unilateral deployer upgrade path exists post-launch. Phoenix Labs cannot upgrade contracts without Sky DAO approval.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB",
+              "reference": "DSPauseProxy — governs all upgrade authority",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-036",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Emergency pause authority held by the SparkLend Emergency Multisig is limited in scope to pausing specific assets or functions; does not override governance for upgrades. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark emergency multisig scope",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-037",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Sky DAO uses time-locked vote execution via DSPauseProxy. Snapshot-style off-chain voting with on-chain execution delay; flash loan voting effectively blocked by checkpoint mechanism.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-038",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Proposal execution delay is 48 hours enforced on-chain by DSPauseProxy. Cannot be shortened unilaterally by any single party including Phoenix Labs or Sky DAO operators.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xBE8E3e3618f7474F8cB1d074A26afFef007E98FB",
+              "reference": "DSPauseProxy delay parameter — 48h",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-039",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Emergency pause/unpause authority held by SparkLend Emergency Multisig. Recovery path documented but centralized — a small group of keyholders can freeze the protocol without governance vote.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark emergency multisig — pause authority",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-040",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Governance architecture includes veto paths via Sky DAO token voting. No unilateral parameter freeze by Phoenix Labs without governance concurrence.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-041",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Token rescue functions exist in SparkLend (inherited from Aave v3). Admin-controlled without a separate rescue-specific timelock. Emergency multisig could trigger rescue without full 48h governance delay.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — rescue function inherited from Aave v3",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-042",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Guardian/keeper roles can modify certain risk parameters (e.g., borrow caps) without a full governance cycle. Documented as intentional risk management design but introduces a semi-trusted intermediate role.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-043",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Deployer address no longer holds admin keys post-deployment. DSPauseProxy is the sole admin. Verified via on-chain role lookup: no deployer EOA appears in ACL admin roles. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend ACL Manager — admin role assignments",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-044",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Upgrade path documented in MakerDAO governance frameworks and Spark developer documentation. Spell-based upgrade model (MakerDAO pattern) with on-chain timelock.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-045",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Governance proposal templates publicly visible on Sky forum. Standard MakerDAO governance format used; proposals include risk assessment, technical specification, and implementation details.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — Spark proposals",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-046",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unilateral mint authority for any admin. sUSDS minting is user-driven ERC4626 deposit mechanism. No admin function exists to mint sUSDS or DAI/USDS to arbitrary addresses. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/makerdao/sdai/blob/susds/src/SUsds.sol",
+              "reference": "makerdao/sdai sUSDS — ERC4626 deposit-only minting",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-047",
+          "deployment_id": null,
+          "score": "red",
+          "evidence_summary": "SPK governance token concentration extreme: ~52.9% held by DSPauseProxy farming allocation address. Gini coefficient >0.85. Token not yet live in governance; concentration precludes decentralized governance until farming distributed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x56072C95FAA701256059aa122697B133aDEd9279#balances",
+              "reference": "SPK token holders — DSPauseProxy holds 52.9% of supply",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-048",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Chainlink price feeds used as primary oracle source for all major collateral assets (ETH, wBTC, USDC, etc.). Industry-standard aggregated oracle with decentralized node network.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle documentation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-049",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Aggor (dual-source oracle combining Chronicle and Chainlink) deployed for ETH/USD. If one source provider fails, fallback path relies on a single remaining feed. Dual-source reduces but does not eliminate single-feed risk.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf07ca0e66A798547E4CB3899EC592e1E99Ef6Cb3",
+              "reference": "Aggor ETH/USD oracle contract",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-050",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "No explicit on-chain circuit breaker beyond Chainlink heartbeat checks. Aggor dual-source adds redundancy but no documented emergency fallback if both feeds fail simultaneously.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle — staleness and fallback behavior",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-051",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Oracle update frequency adequate under normal conditions. Chainlink heartbeat 3600s (1h) with 0.5% deviation threshold. Extreme-volatility stress test results not publicly documented.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle parameters",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-052",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Price feed manipulation cost not explicitly documented in Spark materials. Chainlink's aggregated design raises manipulation cost significantly but no formal cost-of-attack analysis published for Spark's specific feeds.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle documentation — Chainlink feeds",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-053",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No single-oracle dependency on any critical asset path. Aggor dual-source (Chronicle + Chainlink) for ETH/USD; Chainlink multi-node aggregation for other assets. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf07ca0e66A798547E4CB3899EC592e1E99Ef6Cb3",
+              "reference": "Aggor ETH/USD — dual-source design",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-054",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No AMM-based spot price oracles used. All price feeds sourced from Chainlink and Chronicle (Aggor). No DEX TWAP or spot price dependency identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle sources — no AMM dependency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-055",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Oracle deviation threshold 0.5% with 3600s heartbeat — within industry standard for major assets. Chainlink maintains these parameters with on-chain enforcement.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle deviation and heartbeat parameters",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-056",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Historical oracle price deviation for Chainlink ETH/USD feed remains within 1% under normal market conditions. No anomalous deviations linked to Spark-specific oracle failures observed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle — historical feed behavior",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-057",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "No on-chain fallback oracle if all Chainlink feeds fail. Protocol would require emergency pause via Emergency Multisig. Keeper bot dependency for maintaining oracle freshness checks.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle fallback — emergency pause dependency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-058",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No MEV-exploitable oracle pattern identified. Chainlink aggregated feeds are resistant to typical MEV sandwich attacks. No spot-price oracle path that could be manipulated within a single block.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle design — MEV resistance",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-059",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "External dependency on Sky Protocol USDS module: if Sky were exploited or depegged, USDS collateral in SparkLend would be affected. Systemic dependency; not a Spark-specific design flaw.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend",
+              "reference": "Spark — USDS collateral dependency on Sky Protocol",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-060",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "USDS peg oracle assumes 1:1 USD parity. No secondary oracle verification of USDS peg stability. If USDS depegs, Spark's collateral calculations would remain at $1 until governance intervention.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark — USDS price feed assumption",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-061",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No DEX spot price dependency in any critical price feed. All liquidation-relevant oracles use Chainlink aggregated data, not DEX pool reserves.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle — no DEX spot reliance",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-062",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Oracle upgrades controlled by governance via DSPauseProxy 48h timelock. No unilateral oracle replacement possible by Phoenix Labs. Change process documented.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-063",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Liquidation parameters (LTV, Liquidation Threshold, Liquidation Bonus) within industry norms and conservatively set for newer/less liquid assets. Parameters reviewed by Phoenix Labs risk team.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend",
+              "reference": "Spark Docs - Using SparkLend overview (documents supply caps, borrow caps, and risk parameter framework with Sky Governance permissioning model; links to e-mode, isolation-mode, liquidations subpages for parameter-specific details). Standalone /risk-parameters subpage was retired; risk parameter discussion consolidated into the SparkLend overview and adjacent subpages.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-064",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Stress test data for simultaneous multi-asset price drop scenario not publicly published. No public risk model disclosing tail-risk liquidation cascade simulation results.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend",
+              "reference": "Spark Docs - Using SparkLend overview (documents supply caps, borrow caps, and risk parameter framework with Sky Governance permissioning model; links to e-mode, isolation-mode, liquidations subpages for parameter-specific details). Standalone /risk-parameters subpage was retired; risk parameter discussion consolidated into the SparkLend overview and adjacent subpages.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-065",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "sUSDS liquidity depth on DEXs is moderate. Large redemptions (>$10M in single tx) may face meaningful slippage. USDS/sUSDS Curve pool exists but depth may not absorb extreme redemption pressure.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark TVL and liquidity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-066",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Protocol-wide utilization 33.33% ($1,750,437,127 borrowed / $5,251,968,288 supplied per data cache 2026-04-27). Well below 95% stress threshold. USDS borrow mechanics via D3M (Sky governance controls debt ceiling rather than organic utilization ceiling) make classic withdrawal-freeze risk less applicable to the dominant borrow market. Non-USDS markets appear at moderate utilization based on governance discussion of rate competition dynamics with Aave.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama — USDS/DAI liquidity depth",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-067",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No circular collateral dependency in SparkLend core. USDS is not accepted as collateral against itself. sUSDS borrows are backed by non-USDS collateral in normal lending paths.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/spark-assets",
+              "reference": "Spark collateral asset list",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-068",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Per-asset collateral distribution data not publicly broken down at the protocol level beyond DeFiLlama aggregate TVL. Cannot assess concentration risk per collateral type without this data.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — aggregate TVL only",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-069",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Liquidation bot ecosystem well-established for Aave v3 forks. Multiple competing liquidators; keeper incentive aligned via liquidation bonus. No keeper monopoly identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/liquidations",
+              "reference": "Spark liquidation mechanics — keeper incentives",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-070",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "sUSDS ERC4626 implementation does not include virtual-share offset (_decimalsOffset() = 0). First-depositor inflation attack theoretically possible on empty vault initialization. Critical ★ factor scored yellow given mitigating controls.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/makerdao/sdai/blob/susds/src/SUsds.sol",
+              "reference": "makerdao/sdai sUSDS — ERC4626 implementation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-071",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Interest rate model curve not independently stress-tested against flash-crash scenarios in published materials. Inherited from Aave v3 but Spark-specific parameterization not stress-tested publicly.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/borrowing-assets",
+              "reference": "Spark Docs - Borrowing Assets (covers variable borrow rate derived from supply/demand, transparent fixed rate set by Sky Governance). The standalone /interest-rates subpage was retired; rate model is now documented inline in the borrowing-assets guide.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-072",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Borrow caps and supply caps set per asset and enforced on-chain. Limits concentration risk by preventing any single asset from dominating the protocol's exposure.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend",
+              "reference": "Spark Docs - Using SparkLend overview (documents supply caps, borrow caps, and risk parameter framework with Sky Governance permissioning model; links to e-mode, isolation-mode, liquidations subpages for parameter-specific details). Standalone /risk-parameters subpage was retired; risk parameter discussion consolidated into the SparkLend overview and adjacent subpages.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-073",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Protocol fee switch controlled by governance via DSPauseProxy. No unilateral fee drain possible. Fee parameters are on-chain and governance-controlled.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-074",
+          "deployment_id": null,
+          "score": "red",
+          "evidence_summary": "sUSDS has no virtual-share offset (_decimalsOffset() returns 0). EIP-4626 inflation attack vector on empty vault initialization is unmitigated at the contract level. High-severity design gap in the savings module.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/makerdao/sdai/blob/susds/src/SUsds.sol",
+              "reference": "makerdao/sdai sUSDS — missing _decimalsOffset() defense",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-075",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "DAI/sDAI borrowing enabled in SparkLend; dependency on MakerDAO stability mechanisms (PSM, USDS peg) creates systemic tail risk. Spark is downstream of Sky Protocol's stability.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/spark-assets",
+              "reference": "Spark — DAI/USDS borrowing dependency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-076",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Zero exploits in 37+ months of mainnet operation (June 2023 – April 2026). No loss-of-funds events, no governance attacks, no oracle manipulation events affecting SparkLend.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — hacks/exploits section",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-077",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No governance attacks attempted or successful against SparkLend or via Sky DAO targeting Spark-specific parameters. Clean governance history across all 37+ months.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — Spark proposals history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-078",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No oracle manipulation events affecting SparkLend specifically. Chainlink feeds have remained stable relative to market prices throughout the protocol's operational history.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — incident history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-079",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No flash loan attacks recorded against SparkLend. Aave v3 architecture's inherent protections (flashLoanPremium, reentrancy guards) have held over 37+ months.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — exploit history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-080",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No economic exploits (liquidation manipulation, interest rate manipulation, bad debt attacks) recorded. Protocol has handled market volatility events without user fund losses.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — TVL and exploit history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-081",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Incident response SOP not publicly published. No formal runbook visible on docs.spark.fi or GitHub. Cannot confirm or deny internal procedures exist.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security docs — no public incident runbook",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-082",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No public bug bounty payouts disclosed on Immunefi or elsewhere. Cannot determine if any bounties have been paid. Absence of disclosure may mean no payouts or simply no disclosure policy.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend bounty — payout history not disclosed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-083",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No post-mortem reports published because no material incidents have occurred. Gray reflects absence of evidence rather than a negative; zero incidents is a positive operational signal.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security docs — no post-mortems (no incidents)",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-084",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "One significant parameter change (DAI borrow cap adjustment) triggered governance debate in 2024. Resolved without exploit but demonstrated governance latency when rapid risk response was needed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — Spark DAI cap adjustment proposal",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-085",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No third-party operational audit (distinct from code security audit) published for Spark. Business continuity, key management, and operational security have not been independently certified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security page — no operational audit listed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-086",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Sky USDS depeg risk is a systemic dependency. Spark's largest borrow/deposit flows involve USDS; a Sky Protocol failure would cascade into Spark. Not Spark-specific but a monitored tail risk.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — USDS TVL dependency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-087",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Protocol has operated 37+ months without emergency pause activation. No incident has triggered the Emergency Multisig's pause function. Clean operational record.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — no pause events recorded",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-088",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No significant user-fund delays, stuck transactions, or withdrawal failures reported. Aave v3 architecture handles concurrent user operations without queue delays.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — operational continuity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-089",
+          "deployment_id": null,
+          "score": "red",
+          "evidence_summary": "No active user-facing insurance coverage found on Nexus Mutual, Sherlock, Unslashed, or equivalent for SparkLend. Immunefi bug bounty is whitehat reward program, not user-facing insurance. Per methodology: red = no active coverage. Common state at this TVL tier ($5.25B). Binary factor.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — no insurance protocol listed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-090",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No public oracle monitoring dashboard for Spark. Chainlink provides standard monitoring infrastructure but no Spark-specific oracle health dashboard is publicly accessible.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle docs — no monitoring dashboard linked",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-091",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "TVL stable or growing at ~$5.1B per DeFiLlama (2026-05-07 snapshot). No sustained TVL decline observed over past 90 days. Strong TVL retention through market volatility events.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — TVL trend",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/spark",
+              "reference": "DefiLlama API current TVL snapshot, 2026-05-07",
+              "title": null,
+              "retrieved_at": "2026-05-06T21:37:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-092",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unusual or adversarial governance proposal submitted against SparkLend in recent history. Recent governance activity consists of routine parameter adjustments.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — recent Spark proposals",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-093",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unusual large token movements (>10% of TVL in single transaction) observed in the past 30 days per on-chain monitoring.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — token flow monitoring",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-094",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No social media crisis signals (mass user complaints, developer departures, FUD campaigns) observed for Spark in recent months. Community sentiment neutral to positive.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/sparkdotfi",
+              "reference": "Spark Protocol Twitter/X — recent activity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-095",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No phishing campaigns targeting Spark users reported in recent months. No fake Spark Protocol domains or impersonation campaigns identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://spark.fi",
+              "reference": "Spark Protocol — no phishing alerts issued",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-096",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "On-chain unusual borrowing or lending pattern monitoring not publicly documented. No public alert system or dashboard showing anomalous utilization signals.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — utilization data",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-097",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No protocol-level interest rate spike anomalies observed in past 30 days. Rates have behaved according to the interest rate model curve with no manipulation indicators.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — interest rate history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-098",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No admin key rotation events observed in past 90 days per on-chain role change event monitoring. ACL roles stable.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool — no RoleGranted/Revoked events recent",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-099",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Mempool monitoring for front-running on Spark liquidations not publicly documented. Cannot confirm whether Phoenix Labs operates any MEV monitoring infrastructure.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no mempool monitoring mentioned",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-100",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No liquidation cascade events in past 90 days. Protocol has handled market volatility without entering a bad-debt state or cascade liquidation spiral.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — liquidation history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-101",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No abnormal liquidation volume spikes observed. Liquidations have been routine and proportionate to market conditions, with no evidence of keeper monopoly or manipulation.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — liquidation volume",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-102",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Internal smart contract monitoring and alerting system not publicly documented. Cannot confirm whether Phoenix Labs runs automated anomaly detection on Spark contracts.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no public monitoring system described",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-103",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unusual collateral composition shifts observed in past 30 days. ETH, wBTC, and stablecoin collateral distribution has been stable.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — collateral composition",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-104",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No reserve draining patterns detected. Protocol reserves (interest accruals) growing normally. No anomalous reserve withdrawal via governance observed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool — reserve balance history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-105",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Protocol fee collection operating normally. No fee switch anomalies or unauthorized fee redirections observed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool — fee collection events",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-106",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No abnormal slippage patterns on sUSDS redemptions. Redemption mechanism operates via direct USDS contract; no DEX routing required for primary redemption path.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/earning-savings/susds",
+              "reference": "Spark Docs - Savings USDS (sUSDS yield source via Sky Savings Rate, supported networks, token addresses, integration guidance). Path moved from /user-guides/savings/susds to /user-guides/earning-savings/susds; content equivalent.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-107",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Keeper bot liveness for liquidations not publicly monitored or dashboarded. Cannot confirm real-time keeper health or coverage of all liquidatable positions.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/liquidations",
+              "reference": "Spark liquidations — keeper infrastructure not described",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-108",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No bridge delays or failures observed for SkyLink/Plasma USDS cross-chain transfers. Bridge operates nominally based on public cross-chain activity data.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — operational status",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-109",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SPK token price exhibits elevated volatility due to extreme supply concentration (~52.9% in farming allocation). Token not yet fully in governance circulation; price discovery is immature.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x56072C95FAA701256059aa122697B133aDEd9279",
+              "reference": "SPK token — supply concentration and price volatility",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-110",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No anomalous governance token (SPK/MKR/SKY) activity patterns suggesting coordinated accumulation or governance attack preparation observed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x56072C95FAA701256059aa122697B133aDEd9279",
+              "reference": "SPK token — holder activity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-111",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Phoenix Labs is a publicly known legal entity incorporated in the Cayman Islands. Company registration and corporate structure disclosed in MakerDAO governance forum announcement.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/announcing-phoenix-labs-and-spark-protocol/19731",
+              "reference": "Announcing Phoenix Labs and Spark Protocol — Sky forum",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-112",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Core team identifiable: hexonaut.eth (Sam MacPherson) is public lead developer with extensive prior MakerDAO contribution history. Team publicly presented at multiple DeFi conferences.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/announcing-phoenix-labs-and-spark-protocol/19731",
+              "reference": "Phoenix Labs announcement — team identification",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-113",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No pseudonymous core team members in key decision-making roles. hexonaut.eth (Sam MacPherson) is a known, publicly doxxed identity in the DeFi ecosystem with years of verifiable on-chain history.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/announcing-phoenix-labs-and-spark-protocol/19731",
+              "reference": "Phoenix Labs team — publicly identified",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-114",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Multiple team members have public GitHub profiles under sparkdotfi organization. Commit history traceable to named individuals. No ghost or anonymous contributors in critical paths.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi",
+              "reference": "sparkdotfi GitHub organization — contributor profiles",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-115",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Core team has extensive prior track record at MakerDAO (hexonaut.eth was a core MakerDAO contributor). Established DeFi history across multiple major protocols.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/announcing-phoenix-labs-and-spark-protocol/19731",
+              "reference": "Phoenix Labs announcement — prior MakerDAO history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-116",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No sanctions list matches found for known Phoenix Labs team members. hexonaut.eth and other public team members do not appear on OFAC SDN list or equivalent.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://sanctionssearch.ofac.treas.gov/",
+              "reference": "OFAC SDN list — no Spark team matches",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-117",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Some non-core contributors use pseudonymous handles (standard DeFi practice). Pseudonyms are in non-critical roles (community, documentation) but not in contract development or admin key roles.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi",
+              "reference": "sparkdotfi GitHub — contributor handle review",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-118",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "hexonaut.eth wallet publicly known. On-chain history consistent with stated role (MakerDAO contributor, Phoenix Labs development). No mixer interactions or suspicious funding origins.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/enslookup-search?search=hexonaut.eth",
+              "reference": "hexonaut.eth — on-chain history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-119",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Insider key custody arrangements not publicly documented. Multi-party key management assumed given Phoenix Labs corporate structure but no threshold signing scheme or HSM usage publicly confirmed.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — key custody not documented publicly",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-120",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No recent team departures, role changes, or organizational restructuring raising red flags. Phoenix Labs team composition appears stable based on public GitHub and forum activity.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi",
+              "reference": "sparkdotfi GitHub — team activity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-121",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Team communication channels (Discord, GitHub, Sky governance forum) actively maintained. Regular developer updates, governance posts, and code commits visible publicly.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi",
+              "reference": "sparkdotfi GitHub — recent commit activity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-122",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No evidence of undisclosed conflicts of interest for Phoenix Labs team. Relationship with MakerDAO/Sky DAO is publicly disclosed and documented in governance forum.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/announcing-phoenix-labs-and-spark-protocol/19731",
+              "reference": "Phoenix Labs — MakerDAO relationship disclosed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-123",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "ACL admin change via Freezer Mom contract is partially traceable. A governance poll exists but the associated forum discussion thread returns 404. Partial audit trail reduces full accountability. Critical ★ factor scored yellow.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "Spark ACL — Freezer Mom role assignment transaction",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-124",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Primary deployer wallet funded by hexonaut.eth six days before deployment. No mixer (Tornado Cash, etc.) interactions. Clean provenance traceable to a known, doxxed developer. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xd1236a6A111879d9862f8374BA15344b6B233Fbd",
+              "reference": "Spark deployer wallet — funding transaction from hexonaut.eth",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-125",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No DPRK/Lazarus Group proximity within three blockchain hops from deployer or admin addresses. OFAC clean. No sanctioned address interactions detected. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xd1236a6A111879d9862f8374BA15344b6B233Fbd",
+              "reference": "Spark deployer and admin addresses — OFAC/sanctions clean",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-126",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SparkLend is a direct and documented fork of Aave v3. Fork provenance fully disclosed in protocol documentation and ChainSecurity deployment verification.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity deployment verification — Aave v3 fork confirmation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-127",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Fork divergence from Aave v3 documented in ChainSecurity's deployment verification report. Changes limited to parameter configuration and Sky/USDS integration; no undisclosed core logic changes.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity — Aave v3 fork delta documentation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-128",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Fork modifications are limited to parameter changes (LTV, interest rate models) and USDS/Sky integrations. No core Aave v3 lending logic was rewritten.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — diff from Aave v3",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-129",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Upstream Aave v3 security fixes have been tracked and applied to SparkLend. No known Aave v3 CVE has been left unpatched in the Spark fork.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — upstream fix tracking",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-130",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unpatched upstream Aave v3 CVEs present in SparkLend. All disclosed Aave v3 vulnerabilities have been evaluated and addressed or confirmed non-applicable to Spark's configuration.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no open upstream CVEs",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-131",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "OpenZeppelin contracts used at audited, stable versions. No bleeding-edge or unaudited OpenZeppelin dependency versions identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — dependency versions",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-132",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No vulnerable dependency versions identified in audit reports or dependency manifests. All third-party library versions in use are stable, audited releases.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — package dependencies",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-133",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "ALM (Asset-Liability Management) Controller introduces new code not present in Aave v3 upstream. Adds dependency risk beyond the battle-tested fork base. Separately audited by dedaub.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller",
+              "reference": "spark-alm-controller — new code beyond Aave v3",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-134",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "sUSDS is a direct evolution of sDAI (MakerDAO's savings DAI); well-understood fork lineage with prior production history. sDAI itself has significant on-chain operational track record.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/makerdao/sdai/blob/susds/src/SUsds.sol",
+              "reference": "makerdao/sdai sUSDS — evolution of sDAI",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-135",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SkyLink bridge dependency adds external trust assumption for cross-chain USDS transfers. Bridge is not part of original Aave v3 or sDAI design; introduces additional attack surface.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge technical scope — new dependency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-136",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Contract verification on Etherscan complete for core contracts but newer ALM Controller contracts took additional time to verify post-deployment. Brief verification gaps noted.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller",
+              "reference": "spark-alm-controller — Etherscan verification status",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-137",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Changelog not systematically published as a structured document. Updates tracked via governance proposals on Sky forum and GitHub commits but no centralized release notes maintained.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — no CHANGELOG.md",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-138",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unverified contracts holding significant TVL. All contracts with >$1M exposure are verified on Etherscan. Core pool, implementations, and collateral adapters all verified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend Pool — verified contracts",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-139",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No post-audit code changes deployed without re-audit. ALM Controller updates went through a new dedaub audit before deployment. Consistent audit-before-deploy discipline observed. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller/tree/master/audits",
+              "reference": "spark-alm-controller/audits — re-audit before deployment",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-140",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Deployment scripts publicly available on GitHub under sparkdotfi organization. Reproducible deployment process documented.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi",
+              "reference": "sparkdotfi — deployment scripts",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-141",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No emergency patch applied without governance process. All protocol changes have gone through DSPauseProxy governance with 48h delay. No out-of-band hotfixes identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance — Spark parameter change history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-142",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Documentation lag observed for newer ALM modules and cross-chain features. User-facing docs at docs.spark.fi not always updated promptly after code deployments.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi",
+              "reference": "docs.spark.fi — ALM documentation completeness",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-143",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Proxy implementation contracts use initializer pattern (inherited from Aave v3). No re-initialization vulnerability identified in audits but pattern is noted. Critical ★ factor scored yellow for structural note.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity — proxy initializer pattern review",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-144",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Governance parameter change log maintained on Sky governance forum. All Spark-related parameter changes are recorded as on-chain governance spells with public forum discussions.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance forum — Spark parameter history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-145",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Security contact email published at docs.spark.fi. Immunefi handles bug bounty triage. Clear submission path for vulnerability reporters.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — contact and bounty",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-146",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Some parameter changes implemented via governance spell with IPFS hash; full human-readable parameter specification not always included in on-chain calldata. Partial readability gap.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com",
+              "reference": "Sky governance spells — IPFS hash pattern",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-147",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "SkyLink/Plasma bridge architecture documented in governance forum. Uses burn-and-mint model for USDS cross-chain transfers. Architecture publicly described.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge architecture — Plasma integration",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-148",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Bridge validator set for Plasma not fully public. Plasma/SkyLink infrastructure partially opaque with validator count and identity not disclosed in public documentation.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — validator set opacity",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-149",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Bridge finality guarantees not explicitly documented for all supported destination chains. Ethereum finality is well-understood but cross-chain finality SLA for Plasma is not published.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — finality documentation gap",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-150",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No bridge admin key concentration above governance threshold. SkyLink bridge admin controlled via Sky DAO governance; no single EOA bridge operator identified.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — governance control",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-151",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No single-point-of-failure bridge signing key. Plasma validation uses multi-party architecture. No single validator can unilaterally process withdrawals. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink/Plasma — multi-party validation",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-152",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Replay protection implemented in SkyLink bridge message handling. Cross-chain messages include nonce/sequence numbers preventing replay attacks.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — replay protection",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-153",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No bridge exploit history for SkyLink or predecessor Sky cross-chain mechanisms. Clean operational record for all cross-chain USDS transfer infrastructure.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama — no SkyLink bridge exploits",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-154",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Bridge TVL limits and rate-limiting implemented for SkyLink. Outflow caps prevent large rapid drains. Governance controls bridge capacity parameters. Critical ★ factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — rate limiting and TVL caps",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-155",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Bridge monitoring tools for SkyLink/Plasma not publicly documented. No public dashboard or alerting system for bridge health, validator liveness, or stuck transaction detection.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — no monitoring dashboard published",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-156",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Finality times for non-Ethereum chains via SkyLink are unclear in public documentation. Different chain settlement times create uncertainty for users about when cross-chain transfers are finalized.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge — cross-chain finality times",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-157",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Cross-chain oracle consistency for Spark-related assets not formally verified across all chains. Price feed synchronization between Ethereum mainnet and L2 deployments not explicitly documented.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/user-guides/using-sparklend/oracles",
+              "reference": "Spark oracle — cross-chain consistency",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-158",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No public threat intelligence feeds specifically monitoring Spark. No disclosed integration with blockchain analytics providers (Chainalysis, TRM Labs) for real-time threat monitoring.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no threat intel disclosed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-159",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "No public disclosure of MEV/sandwich attack monitoring infrastructure for Spark liquidations. Cannot confirm whether Phoenix Labs monitors for predatory MEV targeting Spark users.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no MEV monitoring disclosed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-160",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No known exploit techniques specifically targeting SparkLend's design. Aave v3 architecture has been extensively analyzed; no Spark-specific attack vectors identified in public research.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no known targeted attacks",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-161",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SPK farming allocation concentration (~52.9% in single address) creates potential governance attack surface. If concentrated tokens are sold or acquired by adversarial party, governance takeover risk increases.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x56072C95FAA701256059aa122697B133aDEd9279#balances",
+              "reference": "SPK token — supply concentration risk",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-162",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No known active threat actors specifically targeting SparkLend. Protocol is not named in any public threat intelligence reports or DeFi hacker watchlists.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark — no active threat actor warnings",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-163",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No unresolved responsible disclosure submissions publicly known. Immunefi handles triage; no outstanding critical reports listed in public bounty status.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend — bounty status",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-164",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "Dark web monitoring for leaked Spark admin keys or insider data not documented publicly. Cannot confirm or deny whether Phoenix Labs engages dark web monitoring services.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security — no dark web monitoring disclosed",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-165",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Immunefi bug bounty program provides effective vulnerability channeling. $5M maximum payout creates strong incentive for responsible disclosure over exploitation.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend — $5M bounty program",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-166",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No legacy or deprecated contracts holding significant value identified. All SparkLend TVL is in current, actively maintained contracts. No v0/deprecated pool with stranded funds found.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xC13e21B648A5Ee794902342038FF3aDAB66BE987",
+              "reference": "SparkLend — no deprecated contracts with significant TVL",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-167",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Admin ACL documentation complete and up-to-date at docs.spark.fi. All roles, their permissions, and current holders are documented. Post-PD-032 factor.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/governance",
+              "reference": "Spark Docs - Governance (canonical page covering Spark governance process, SPK token holders, Spark Risk Council, Operational Facilitator, weekly cycle, Snapshot voting). Replaces dead /dev/spark-governance path; governance docs were relocated from the developer section to a top-level user-guides section.",
+              "title": null,
+              "retrieved_at": "2026-05-06T11:48:16Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-168",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Post-deployment review process documented adequately. ChainSecurity deployment verification serves as the post-deployment review artifact. Ongoing governance changes are tracked via spells. Post-PD-032 factor.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity deployment verification — post-deploy review",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-170",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Foundry test suite exists for SparkLend and ALM Controller. Code coverage metrics not publicly published; no coverage badge or report linked from repository.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — test suite (coverage not published)",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-171",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Solidity 0.8.x compiler used throughout. This version is stable, widely deployed, and has no known production-critical compiler bugs affecting SparkLend's code patterns.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — Solidity version specification",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-172",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No known Solidity compiler version vulnerabilities applicable to Spark's codebase. Compiler version selection has been reviewed in audits without concerns raised.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity — compiler version analysis",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-173",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Standard toolchain used: Foundry for testing and deployment, standard Solidity compilation. No exotic or experimental build tools introduced.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — foundry.toml toolchain",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-174",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Fuzz testing scope limited primarily to core lending functions. ALM Controller fuzz coverage not explicitly documented. No invariant testing report publicly published.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller",
+              "reference": "spark-alm-controller — test coverage gap",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-175",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Security contact published on docs.spark.fi. Immunefi handles vulnerability submissions with structured intake process. Clear disclosure channel exists.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend — structured disclosure channel",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-176",
+          "deployment_id": null,
+          "score": "red",
+          "evidence_summary": "No public disclosure SLA published by Spark/Phoenix Labs. No committed response time for vulnerability acknowledgment, triage, or patching. Absence of SLA reduces accountability for reporter experience.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.spark.fi/dev/security/security-and-audits",
+              "reference": "Spark security page — no SLA documented",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-177",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No major vulnerabilities disclosed to date; the one potential concern (Immunefi bounty program) has been responsibly managed. No evidence of suppressed disclosures.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend — disclosure history",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-178",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Immunefi coordinates responsible disclosure for SparkLend. Standard industry process in place with escrow-based payout mechanism ensuring reporter protection.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/sparklend/information/",
+              "reference": "Immunefi SparkLend — responsible disclosure process",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-179",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "SkyLink bridge security review published but forum discussion reveals gaps in public documentation. Some bridge security properties not fully independently verified. Post-batch-24 factor.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.skyeco.com/t/technical-scope-of-the-new-skylink-bridge-to-plasma/27850",
+              "reference": "SkyLink bridge review — documented gaps",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-180",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Aggor oracle architecture explicitly prevents single-point oracle failure for ETH/USD. Combines Chronicle and Chainlink feeds; requires both to deviate before price becomes unreliable. Critical ★-candidate factor passes green.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf07ca0e66A798547E4CB3899EC592e1E99Ef6Cb3",
+              "reference": "Aggor ETH/USD oracle — dual-source architecture",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-181",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "Oracle aggregation code (Aggor) audited as part of the ChainSecurity engagement. No manipulation vectors found. Dual-source design and aggregation logic reviewed without critical findings.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.spark.fi/assets/Chainsecurity-SparkLend-Deployment-Verification.pdf",
+              "reference": "ChainSecurity — Aggor oracle aggregation review",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-182",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No real-time threat signals classified as F182-level active exploit-in-progress for Spark. Protocol status normal with no emergency conditions detected. Post-batch-24 factor.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — no active exploit signals",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-183",
+          "deployment_id": null,
+          "score": "green",
+          "evidence_summary": "No AI-assisted code generation noted in audit reports, commit messages, or contributor notes. Codebase is a conventional Aave v3 fork with manual Phoenix Labs modifications.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/sparklend-v1-core",
+              "reference": "sparklend-v1-core — no AI-generated code indicators",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-184",
+          "deployment_id": null,
+          "score": "gray",
+          "evidence_summary": "F184 AI-pattern indicator for insider trading or coordinated market manipulation. Drift comparator methodology applied but cannot conclusively confirm or deny pattern from public data alone.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/spark",
+              "reference": "DeFiLlama Spark — SPK token trading data",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "factor_id": "RD-F-185",
+          "deployment_id": null,
+          "score": "yellow",
+          "evidence_summary": "Some deployment edge cases for ALM multi-chain configurations not fully covered in operational runbooks. Single-chain Ethereum SparkLend is well-documented but multi-chain ALM deployment procedures have gaps.",
+          "evidence_detail": null,
+          "collection_mode": "manual",
+          "collected_at": "2026-04-27T01:00:42Z",
+          "data_as_of": "2026-04-27T01:00:42Z",
+          "collected_by": "m3a-orchestrator",
+          "gap_reason": null,
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/sparkdotfi/spark-alm-controller",
+              "reference": "spark-alm-controller — multi-chain deployment docs",
+              "title": null,
+              "retrieved_at": "2026-04-21T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "grade_history": [
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-05-11T14:14:53Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.6.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-05-06T21:37:19Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.6.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-05-06T20:17:11Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.6.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-05-05T06:52:24Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.6.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-04-27T23:20:06Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.5.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 4,
+          "yellow_category_count": 9,
+          "gray_on_core_five": false,
+          "graded_at": "2026-04-27T22:23:24Z",
+          "triggered_by": "manual-correction",
+          "notes": "Corrected 2026-04-28: merged duplicate sparklend record; adopted correct scores for RD-F-066 (green) and RD-F-089 (red).",
+          "deployment_id": null,
+          "rubric_version": "v1.5.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 0,
+          "red_category_count": 3,
+          "yellow_category_count": 10,
+          "gray_on_core_five": false,
+          "graded_at": "2026-04-27T01:00:44Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.5.0"
+        }
+      ]
+    }
+  }
+}

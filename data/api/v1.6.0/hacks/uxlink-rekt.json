@@ -1,0 +1,30 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "uxlink-rekt",
+        "protocol_slug": null,
+        "protocol_name": "UXLINK",
+        "occurred_at": "2025-09-22",
+        "loss_usd": 41000000.0,
+        "category": "Web3 Social / Treasury",
+        "root_cause": "Admin key compromise → delegateCall admin takeover + unauthorized infinite token minting",
+        "description": "An attacker seized UXLINK's multisig via delegateCall, drained $18M from the treasury, minted 10 trillion unauthorized tokens for another $23M — then got phished themselves by Inferno Drainer.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — delegateCall used to remove admins and install attacker as new owner]"
+        }
+      ]
+    }
+  }
+}

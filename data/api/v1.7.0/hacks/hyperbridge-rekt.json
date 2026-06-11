@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hyperbridge-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Hyperbridge (Polkadot-native interoperability rollup built by Polytope Labs; Token Gateway / HandlerV1)",
+        "occurred_at": "2026-04-13",
+        "loss_usd": 2500000.0,
+        "category": "Cross-Chain Bridge / Interoperability Protocol",
+        "root_cause": "Smart-contract proof-verification bypass — MMR bounds-check failure + missing proof-to-request binding + zero challenge period + single-step admin transfer",
+        "description": "An attacker bypassed Hyperbridge's Merkle Mountain Range proof verifier with a single out-of-bounds index value, minted 1 billion fake bridged DOT worth over $1B notional, and extracted $2.5M before thin DEX liquidity capped the haul — all in a single atomic transaction.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~16–18 months (2024 → April 2026)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited code (SR Labs 2024); the specific MMR off-by-one and missing proof-to-request binding were not caught]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker deployed 15+ test contracts against live protocol state over ~1 month; custom zk-SNARK keys pre-staged 8.5 months earlier; attacker...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,157 @@
+---
+import type { Hack } from '../lib/data-loaders';
+
+export interface Props {
+  hacks: Hack[];
+  heading?: string;
+  /** Show the protocol column. Defaults true; set false on a per-protocol page. */
+  showProtocol?: boolean;
+}
+
+const { hacks, heading, showProtocol = true } = Astro.props;
+
+function fmtLoss(v: number | string | null | undefined): string {
+  if (v === null || v === undefined) return '—';
+  const n = typeof v === 'string' ? parseFloat(v) : v;
+  if (!Number.isFinite(n) || n <= 0) return '—';
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
+  if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
+}
+
+const sorted = hacks
+  .slice()
+  .sort((a, b) => (b.occurred_at ?? '').localeCompare(a.occurred_at ?? ''));
+---
+
+<section class="incident-table">
+  {heading && <h2>{heading}</h2>}
+  {
+    sorted.length === 0 ? (
+      <div class="empty">No incidents recorded.</div>
+    ) : (
+      <div class="itable">
+        <div class:list={['row', 'head', { 'has-proto': showProtocol }]} role="row">
+          {showProtocol && <span>Protocol</span>}
+          <span>Incident</span>
+          <span>Date</span>
+          <span class="r-align">Loss</span>
+        </div>
+        {sorted.map((h) => (
+          <div class:list={['row', { 'has-proto': showProtocol }]}>
+            {showProtocol && (
+              <span class="proto">
+                {h.protocol_slug ? (
+                  <a href={`/protocols/${h.protocol_slug}/`}>{h.protocol_name}</a>
+                ) : (
+                  h.protocol_name
+                )}
+              </span>
+            )}
+            <span class="title">
+              <span class="head-line">{h.root_cause || '—'}</span>
+              {h.description && <span class="desc">{h.description}</span>}
+            </span>
+            <span class="date">{h.occurred_at?.slice(0, 10) ?? '—'}</span>
+            <span class="loss r-align">{fmtLoss(h.loss_usd)}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .incident-table {
+    margin: 18px 0;
+  }
+  .incident-table h2 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+    color: var(--fg);
+  }
+  .itable {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 96px 90px;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    min-height: 52px;
+    font-size: 12.5px;
+    color: var(--fg-2);
+  }
+  .row.has-proto {
+    grid-template-columns: 180px 1fr 96px 90px;
+  }
+  .row:last-child {
+    border-bottom: none;
+  }
+  .row.head {
+    background: var(--surface-2);
+    min-height: 0;
+    padding: 9px 16px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .row .proto a {
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .row .proto a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 2px;
+  }
+  .row .title .head-line {
+    display: block;
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 13px;
+  }
+  .row .title .desc {
+    display: block;
+    color: var(--fg-3);
+    font-size: 11.5px;
+    margin-top: 3px;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .row .date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+  .row .loss {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--fg);
+    font-feature-settings: 'tnum';
+  }
+  .r-align {
+    text-align: right;
+  }
+  .empty {
+    padding: 28px 14px;
+    text-align: center;
+    color: var(--fg-3);
+    font-size: 13px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+  }
+</style>

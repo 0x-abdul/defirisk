@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "curve-finance-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Curve Finance (curve.fi frontend)",
+        "occurred_at": "2022-08-09",
+        "loss_usd": 575000.0,
+        "category": "DEX / Stablecoin AMM",
+        "root_cause": "DNS hijack of curve.fi → malicious contract injection → approval harvesting drain",
+        "description": "Curve Finance's $5.7B in smart contracts survived untouched, but a DNS hijack of curve.fi redirected users to a clone that stole $575K in approvals — a reminder that DeFi still runs on web2 infrastructure.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: N/A — no smart contract exploited]"
+        },
+        {
+          "factor_id": "RD-F-096",
+          "relevance": "illustrative",
+          "notes": "New ERC-20 approval to unverified contract [via realtime_signals/Pre-exploit on-chain signals: None — attack was web2 infrastructure; no on-chain signals precede the approval harvesting]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "curio-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Curio (CurioDAO)",
+        "occurred_at": "2024-03-23",
+        "loss_usd": 16000000.0,
+        "category": "Real-World Asset (RWA) tokenization / DAO governance",
+        "root_cause": "Voting power privilege escalation via MakerDAO fork governance bug → mass CGT token minting",
+        "description": "Curio lost $16M when an attacker acquired a handful of CGT governance tokens and exploited a voting power flaw in its MakerDAO fork to gain full governance control, mint unlimited tokens, and drain the protocol.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: YES** — MakerDAO governance fork (IDSChief, IDSPause)]"
+        },
+        {
+          "factor_id": "RD-F-132",
+          "relevance": "causal",
+          "notes": "Fork has different economic parameters than upstream (audit gap) [via cross-hack: Factor 17: Governance Fork Without Independent Parameter Audit]"
+        }
+      ]
+    }
+  }
+}

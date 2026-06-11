@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "heco-bridge",
+        "protocol_slug": null,
+        "protocol_name": "HECO Bridge (Huobi ECO Chain Ethereum Bridge)",
+        "occurred_at": "2023-11-22",
+        "loss_usd": 86600000.0,
+        "category": "Cross-Chain Bridge",
+        "root_cause": "Compromised Bridge Operator Account (Private Key / Off-chain)",
+        "description": "HECO Bridge lost $86.6M when a compromised operator account began draining the bridge contract — the third major hack tied to Justin Sun entities in 12 days, while global attention was focused on Binance's legal settlement.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — operator account action was the enabling event]"
+        }
+      ]
+    }
+  }
+}

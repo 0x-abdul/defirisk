@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cheese-bank-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Cheese Bank",
+        "occurred_at": "2020-11-06",
+        "loss_usd": 3300000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Flash loan + Uniswap LP spot oracle manipulation → inflated collateral value → drain via borrow()",
+        "description": "Cheese Bank's lending protocol was drained of $3.3M when an attacker used a 21,000 ETH flash loan to inflate the WETH balance in a Uniswap pool, tricking the protocol's spot oracle into accepting massively overvalued LP tokens as collateral.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (likely)]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — Uniswap CHEESE/ETH pool WETH balance spiked from normal to 20,000+ ETH within a single transaction, just before oracle refresh and borro...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

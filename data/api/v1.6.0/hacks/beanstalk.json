@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "beanstalk",
+        "protocol_slug": null,
+        "protocol_name": "Beanstalk",
+        "occurred_at": "2022-04-17",
+        "loss_usd": 181000000.0,
+        "category": "Stablecoin / Algorithmic Stable Protocol",
+        "root_cause": "Flash Loan + Governance Exploit",
+        "description": "An attacker borrowed $1B in a flash loan to temporarily gain a majority vote in Beanstalk's governance, passed a proposal to steal all protocol funds, and walked away with $76M — all in one transaction.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty existed (Y/N): Unknown — not mentioned in source] || Bug bounty absent — alternate field name [via dashboard_risk_factors/Bug bounty existed (Y/N): Unknown — not mentioned in source]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N + detail): YES** — Malicious governance proposals submitted 24h prior. An on-chain governance monitor watching for unusual proposal initiators or large...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — Publius (protocol founder) doxed themselves post-hack as a group of three]"
+        }
+      ]
+    }
+  }
+}

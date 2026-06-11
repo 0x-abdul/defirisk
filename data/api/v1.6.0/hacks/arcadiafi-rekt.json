@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "arcadiafi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "ArcadiaFi",
+        "occurred_at": "2025-07-14",
+        "loss_usd": 3600000.0,
+        "category": "DeFi Vault / Structured Products",
+        "root_cause": "Arbitrary swapData call via trusted rebalancer contract — attacker exploited cooldown period from decoy pause to prevent emergency shutdown during drain",
+        "description": "ArcadiaFi lost $3.6M when an attacker exploited a two-phase strategy: first triggering the protocol's own circuit breaker to start a cooldown timer, then draining user vaults through an arbitrary call in the rebalancer while ArcadiaFi was unable to pause.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited but rebalancer external call validation missed]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the forced pause/unpause cycle was the setup]"
+        }
+      ]
+    }
+  }
+}

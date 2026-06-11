@@ -1,0 +1,32 @@
+@import './tokens.css';
+
+/* Self-hosted Geist + Geist Mono (latin subset only). Replaces the Google
+   Fonts <link rel=stylesheet>: cuts ~60KB of render-blocking third-party
+   CSS + DNS handshake + cookie traffic. font-display:swap is built into
+   the @fontsource @font-face rules. */
+@import '@fontsource/geist/latin-400.css';
+@import '@fontsource/geist/latin-500.css';
+@import '@fontsource/geist/latin-600.css';
+@import '@fontsource/geist/latin-700.css';
+@import '@fontsource/geist-mono/latin-400.css';
+@import '@fontsource/geist-mono/latin-500.css';
+@import '@fontsource/geist-mono/latin-600.css';
+
+:where(:focus-visible) {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+.tnum,
+[class*="num"],
+[class*="-mono"] {
+  font-feature-settings: "tnum", "lnum";
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Mobile responsiveness — under ~900px, collapse 2-column sticky layouts
+   into single-column scrollable layouts. The D3 design is desktop-first
+   (1340×896 canonical); mobile is a degradation path, not a designed surface. */
+html, body {
+  overflow-x: hidden;
+}

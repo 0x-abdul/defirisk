@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "pancakebunny2-rekt",
+        "protocol_slug": null,
+        "protocol_name": "PancakeBunny (Polygon deployment — polyBUNNY)",
+        "occurred_at": "2021-07-18",
+        "loss_usd": 2400000.0,
+        "category": "Yield Aggregator",
+        "root_cause": "Flash Loan + Reward Minting Manipulation (Performance Fee Inflation)",
+        "description": "PancakeBunny's Polygon deployment lost $2.4M to the exact same flash loan / reward-minting exploit that had already drained their BSC protocol two months earlier — and had been publicly demonstrated against a direct fork just 48 hours before.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — Polygon is a new chain deployment]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — large AAVE flash loan]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Polygon deploy is essentially same codebase as BSC]"
+        }
+      ]
+    }
+  }
+}

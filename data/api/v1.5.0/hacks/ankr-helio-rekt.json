@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ankr-helio-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Ankr (aBNBc) + Helio Money (HAY stablecoin)",
+        "occurred_at": "2022-12-02",
+        "loss_usd": 5000000.0,
+        "category": "Liquid Staking + Stablecoin (dependent protocol cascade)",
+        "root_cause": "Deployer private key compromise → malicious aBNBc contract upgrade → permissionless infinite mint → PancakeSwap pool drain + Helio collateral collapse",
+        "description": "A compromised Ankr deployer key triggered a malicious aBNBc upgrade that minted 60 trillion tokens — but liquidity was so thin only $5M escaped, while a secondary attacker used the worthless tokens to drain $15M from Helio's stablecoin protocol.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — deployer key compromise is an operational security failure, not a code vulnerability]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — malicious upgrade was deployed during the attack]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — aBNBc price crashed; Helio's oracle failed to update fast enough (secondary exploit)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — malicious proxy upgrade was the root cause action]"
+        }
+      ]
+    }
+  }
+}

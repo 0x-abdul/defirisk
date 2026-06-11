@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "inverse-finance-2",
+        "protocol_slug": null,
+        "protocol_name": "Inverse Finance",
+        "occurred_at": "2022-06-16",
+        "loss_usd": 5800000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Oracle Price Manipulation (Flash Loan)",
+        "description": "Inverse Finance was hit for $5.8M in bad debt — its second oracle manipulation attack in 60 days — after its custom yvCurve LP oracle used raw pool balances that could be distorted with a single 27,000 WBTC flash loan.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited oracle addition]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker funded via Tornado Cash 2 minutes before exploit — a known pre-attack pattern]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — massive pool balance distortion detectable on Curve]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Original protocol with Compound-style mechanics]"
+        }
+      ]
+    }
+  }
+}

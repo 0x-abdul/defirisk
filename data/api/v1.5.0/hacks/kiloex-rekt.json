@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "kiloex-rekt",
+        "protocol_slug": null,
+        "protocol_name": "KiloEx",
+        "occurred_at": "2025-04-14",
+        "loss_usd": 7490000.0,
+        "category": "Perpetuals DEX",
+        "root_cause": "Missing signature verification in MinimalForwarder → unvalidated oracle price update → multi-chain drain",
+        "description": "KiloEx is a multi-chain perpetuals protocol backed by Binance Labs. Their oracle system used a chain of contract trust: . The contract accepted any forged signature with zero validation — anyone could submit arbitrary price updates.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — ScaleBit confirmed root cause was outside their scope] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (out of scope for all 5 audits)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None pre-exploit (10% offered post-hack)]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding of attacker wallet (April 13, one day prior); no other on-chain signals before attack]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — extreme ETH price swings ($100 to $10,000) on-chain during attack; detectable if monitoring oracle price feeds]"
+        }
+      ]
+    }
+  }
+}

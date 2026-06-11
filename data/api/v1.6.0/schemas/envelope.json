@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://riskdashboard.xyz/api/v1.6.0/schemas/envelope.json",
+  "title": "RiskProduct API canonical envelope",
+  "description": "Envelope wrapping every API response under /api/v1.6.0/. Resolves PD-008: rubric_version and data_as_of are mandatory on every response so downstream integrators can distinguish protocol-data changes from rubric-version bumps. The `data` field shape varies per endpoint.",
+  "type": "object",
+  "required": [
+    "rubric_version",
+    "data_as_of",
+    "generated_at",
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "rubric_version": {
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "description": "Frozen rubric version string, e.g. v1.6.0. Matches the published rubric changelog entry current at grade-computation time.",
+      "examples": [
+        "v1.6.0"
+      ]
+    },
+    "data_as_of": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. Distinct from generated_at: the rubric may re-evaluate without new factor data arriving. May be the Unix epoch (1970-01-01T00:00:00Z) when no scores have been collected."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of when this dump ran (when the JSON file was last written by dump.py)."
+    },
+    "data": {
+      "type": "object",
+      "description": "Endpoint-specific payload. Shape documented per-path in openapi.yaml."
+    }
+  }
+}

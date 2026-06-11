@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "dydx",
+        "protocol_slug": null,
+        "protocol_name": "dYdX v3",
+        "occurred_at": "2023-11-20",
+        "loss_usd": 9000000.0,
+        "category": "Derivatives / Perpetuals DEX",
+        "root_cause": "Market Manipulation (Low-Liquidity Token — YFI Long + Spot Dump)",
+        "description": "A single actor pumped dYdX's YFI open interest from $0.8M to $67M over several days, then crashed YFI's spot price to force $9M in insurance fund losses — a targeted, multi-day market manipulation that followed a failed dry run on the SUSHI market two weeks earlier.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — YFI spot price crashed 40% in a manipulated move; the oracle used for liquidation pricing reflected the manipulated spot price]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — YFI spot price crashed 40% in a manipulated move; the oracle used for liquidation pricing reflected the manipulated spot price]"
+        }
+      ]
+    }
+  }
+}

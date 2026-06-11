@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "velocore-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Velocore",
+        "occurred_at": "2024-06-02",
+        "loss_usd": 6800000.0,
+        "category": "DEX / AMM (Balancer-style CPMM)",
+        "root_cause": "Fee Multiplier Manipulation + Underflow → Liquidity Token Mint",
+        "description": "Velocore lost $6.8M across Linea and zkSync when an attacker directly called an unprotected execution function to inflate fee multipliers past 100%, then triggered an underflow in a single-token withdrawal to mint unlimited liquidity tokens — and Linea halted block production in response, raising centralization alarms.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Yes — 10% bug bounty offered post-hack (no pre-hack bounty mentioned)]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding + bridge to Linea/zkSync; direct invocation of velocore__execute() with non-standard parameters]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — large flash loan as part of exploit sequence]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Balancer-style CPMM architecture]"
+        }
+      ]
+    }
+  }
+}

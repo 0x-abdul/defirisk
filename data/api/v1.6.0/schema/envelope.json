@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://riskdashboard.xyz/api/v1.6.0/schema/envelope.json",
+  "title": "RiskProduct API canonical envelope",
+  "description": "Envelope wrapping every API response. Every response under /api/v1.6.0/ MUST validate against this schema. The `data` field's shape varies per endpoint (protocols, factors, hacks, incidents, rubric).",
+  "type": "object",
+  "required": [
+    "rubric_version",
+    "data_as_of",
+    "generated_at",
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "rubric_version": {
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "description": "Frozen rubric version, e.g. v1.6.0."
+    },
+    "data_as_of": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. May be the unix epoch when no scores have been collected yet."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of when this dump ran."
+    },
+    "data": {
+      "type": "object",
+      "description": "Endpoint-specific payload."
+    }
+  }
+}

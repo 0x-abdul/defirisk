@@ -1,0 +1,76 @@
+---
+export interface Props {
+  name: string;
+  color: string;
+  mark: string;
+  chainId?: string;
+  on?: boolean;
+  href?: string;
+  title?: string;
+}
+
+const { name, color, mark, chainId, on = false, href, title } = Astro.props;
+const Tag = href ? 'a' : 'button';
+const titleResolved = title ?? name;
+---
+
+<Tag
+  type={href ? undefined : 'button'}
+  href={href}
+  class:list={['d', { on }]}
+  title={titleResolved}
+  aria-label={name}
+  aria-pressed={href ? undefined : on ? 'true' : 'false'}
+  style={`background: ${color};`}
+>
+  {chainId ? (
+    <img
+      src={`/chains/mono/${chainId}.svg`}
+      width="14"
+      height="14"
+      alt=""
+      aria-hidden="true"
+      class="chain-icon"
+    />
+  ) : mark}
+</Tag>
+
+<style>
+  .d {
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    font-family: 'Geist', sans-serif;
+    letter-spacing: -0.02em;
+    transition:
+      transform 0.12s,
+      box-shadow 0.12s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+  .chain-icon {
+    display: block;
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+  }
+  .d:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    z-index: 2;
+  }
+  .d.on {
+    outline: 2px solid var(--fg);
+    outline-offset: 1px;
+  }
+</style>

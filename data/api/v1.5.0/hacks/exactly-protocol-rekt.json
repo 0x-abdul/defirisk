@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "exactly-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Exactly Protocol",
+        "occurred_at": "2023-08-18",
+        "loss_usd": 7300000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Unvalidated market address in periphery — fake market injection → _msgSender hijack → collateral drain + reentrancy",
+        "description": "Exactly Protocol lost $7.3M when attackers passed a fake market address into an unaudited periphery contract, hijacking user collateral via reentrancy — despite the core protocol having four separate audits.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited periphery code]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — DebtManager was a new periphery feature added without undergoing an audit first] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — DebtManager was a new periphery feature added without undergoing an audit first]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown (no mention in rekt.news article; $700K bounty offered post-hack for attacker information)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — DebtManager was a new periphery feature added without undergoing an audit first]"
+        }
+      ]
+    }
+  }
+}

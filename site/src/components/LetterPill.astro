@@ -1,0 +1,159 @@
+---
+import type { Letter } from '../lib/rubric';
+
+export type LetterPillSize = 'mini' | 'medium' | 'hero';
+
+export interface Props {
+  letter: Letter;
+  size?: LetterPillSize;
+  meaning?: string;
+  /** Numeric risk score rendered as a string (e.g. "14.3") — displayed in hero size only. */
+  score?: string;
+  ariaLabel?: string;
+}
+
+const { letter, size = 'medium', meaning, score, ariaLabel } = Astro.props;
+
+const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
+---
+
+{
+  size === 'mini' && (
+    <span class:list={['gpill', letter]} aria-label={ariaLabelResolved}>
+      {letter}
+    </span>
+  )
+}
+{
+  size === 'medium' && (
+    <span class:list={['gpill-lg', letter]} aria-label={ariaLabelResolved}>
+      {letter}
+    </span>
+  )
+}
+{
+  size === 'hero' && (
+    <div class:list={['gradebig', letter]} role="img" aria-label={ariaLabelResolved}>
+      {meaning && <span class="m">{meaning}</span>}
+      <span class="l">{letter}</span>
+      {score && <span class="n">{score}</span>}
+    </div>
+  )
+}
+
+<style>
+  /* Mini — 18×18, used in filter chips next to "Grade A" labels */
+  .gpill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10.5px;
+    color: #fff;
+  }
+  .gpill.A {
+    background: var(--gA);
+  }
+  .gpill.B {
+    background: var(--gB);
+  }
+  .gpill.C {
+    background: var(--gC);
+  }
+  .gpill.D {
+    background: var(--gD);
+  }
+  .gpill.F {
+    background: var(--gF);
+  }
+
+  /* Medium — 34×34, used in protocol row Grade column */
+  .gpill-lg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    letter-spacing: 0;
+    font-feature-settings: 'lnum';
+  }
+  .gpill-lg.A {
+    background: var(--gA);
+  }
+  .gpill-lg.B {
+    background: var(--gB);
+  }
+  .gpill-lg.C {
+    background: var(--gC);
+  }
+  .gpill-lg.D {
+    background: var(--gD);
+  }
+  .gpill-lg.F {
+    background: var(--gF);
+  }
+
+  /* Hero — 256×256 (or container-sized), used in protocol detail rail */
+  .gradebig {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+  }
+  .gradebig.A {
+    background: var(--gA);
+  }
+  .gradebig.B {
+    background: var(--gB);
+  }
+  .gradebig.C {
+    background: var(--gC);
+  }
+  .gradebig.D {
+    background: var(--gD);
+  }
+  .gradebig.F {
+    background: var(--gF);
+  }
+  .gradebig .l {
+    font-size: 130px;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-feature-settings: 'lnum';
+  }
+  .gradebig .n {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    font-feature-settings: 'tnum';
+    letter-spacing: -0.01em;
+    opacity: 0.8;
+  }
+  .gradebig .m {
+    position: absolute;
+    top: 14px;
+    left: 18px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+</style>

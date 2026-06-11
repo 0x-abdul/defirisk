@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "swissborg-rekt",
+        "protocol_slug": null,
+        "protocol_name": "SwissBorg (via Kiln staking partner)",
+        "occurred_at": "2025-09-08",
+        "loss_usd": 41500000.0,
+        "category": "Staking / Yield (via third-party API)",
+        "root_cause": "Partner API compromise — withdrawal authority transfer via hidden staking instructions",
+        "description": "Kiln's compromised API let attackers bury 8 withdrawal authority changes inside a routine Solana unstaking transaction, then drain 192,600 SOL ($41.5M) from SwissBorg's staking program 8 days later.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-062",
+          "relevance": "causal",
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 32: Third-Party API / Infrastructure Dependency] || External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Withdrawal authority was transferred via Kiln's compromised API; appeared as routine staking operations]"
+        },
+        {
+          "factor_id": "RD-F-105",
+          "relevance": "causal",
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        }
+      ]
+    }
+  }
+}

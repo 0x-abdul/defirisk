@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "furucombo",
+        "protocol_slug": null,
+        "protocol_name": "Furucombo",
+        "occurred_at": "2021-02-27",
+        "loss_usd": 14000000.0,
+        "category": "DeFi Aggregator / Transaction Composer",
+        "root_cause": "Evil Contract — Delegatecall Storage Collision",
+        "description": "An attacker exploited Furucombo's delegatecall architecture to overwrite its proxy's implementation slot with a malicious contract, draining $14M from users who had granted unlimited token approvals.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-012",
+          "relevance": "causal",
+          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]"
+        },
+        {
+          "factor_id": "RD-F-039",
+          "relevance": "related",
+          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]"
+        }
+      ]
+    }
+  }
+}

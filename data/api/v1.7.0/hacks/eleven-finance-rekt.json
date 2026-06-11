@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "eleven-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Eleven Finance (11)",
+        "occurred_at": "2021-06-14",
+        "loss_usd": 4500000.0,
+        "category": "Yield Aggregator",
+        "root_cause": "emergencyBurn() missing balance accounting — ghost withdrawal double-spend",
+        "description": "Eleven Finance lost $4.5M when its `emergencyBurn()` function withdrew the full vault balance without updating internal accounting, letting the attacker collect twice.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous; pseudonymous devs]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — forked from PancakeBunny / standard BSC yield aggregator pattern]"
+        }
+      ]
+    }
+  }
+}

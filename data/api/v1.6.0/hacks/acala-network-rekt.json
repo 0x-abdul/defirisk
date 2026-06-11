@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "acala-network-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Acala Network",
+        "occurred_at": "2022-08-14",
+        "loss_usd": 1600000.0,
+        "category": "Algorithmic Stablecoin / DeFi Hub",
+        "root_cause": "Misconfiguration of iBTC/aUSD liquidity pool — incorrect parameter in newly launched pool triggered unbounded aUSD minting",
+        "description": "Acala's newly launched iBTC/aUSD pool had a misconfiguration that allowed ~$1.3B in unbacked aUSD to be minted — Polkadot's governance freeze mechanism contained most of the damage to just $1.6M stolen.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — iBTC/aUSD pool launched same day as exploit]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — emergency governance freeze activated rapidly (arguably this is the response, not a pre-signal)]"
+        }
+      ]
+    }
+  }
+}

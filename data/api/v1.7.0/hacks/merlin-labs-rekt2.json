@@ -1,0 +1,85 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "merlin-labs-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Merlin Labs (REKT 2)",
+        "occurred_at": "2021-05-27",
+        "loss_usd": 550000.0,
+        "category": "Yield Aggregator",
+        "root_cause": "Oracle Mispricing",
+        "description": "Merlin Labs was exploited for the second time in a single day when an emergency patch introduced a new oracle mispricing bug affecting the BAND token, yielding ~$550K to the attacker.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — new priceCalculator was not audited; it was an emergency patch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-hack patch)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — priceCalculator was deployed same day as first hack as a fix]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: ~2 weeks at first hack]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — BAND mispriced by new calculator]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — emergency patch deployed between attacks]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — PancakeBunny fork]"
+        }
+      ]
+    }
+  }
+}

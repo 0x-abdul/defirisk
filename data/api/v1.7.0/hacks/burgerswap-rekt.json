@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "burgerswap-rekt",
+        "protocol_slug": null,
+        "protocol_name": "BurgerSwap",
+        "occurred_at": "2021-05-28",
+        "loss_usd": 7200000.0,
+        "category": "DEX / AMM (Uniswap V2 fork)",
+        "root_cause": "Reentrancy via non-standard BEP-20 + missing x*y=k invariant check",
+        "description": "BurgerSwap lost $7.2M because its Uniswap V2 fork was missing the `x*y≥k` constant-product invariant check — meaning anyone could extract unlimited output from any pool with a 1-unit input.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — 6,000 WBNB flash swap]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Uniswap V2 fork with the x*y≥k invariant check deliberately or accidentally removed]"
+        }
+      ]
+    }
+  }
+}

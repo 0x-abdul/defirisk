@@ -1,0 +1,234 @@
+---
+import Page from '../components/Page.astro';
+import Callout from '../components/Callout.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import { RUBRIC_VERSION } from '../lib/rubric';
+
+const today = new Date().toISOString().slice(0, 10);
+
+const toc = [
+  { id: 'base', n: 'Versioned base URL' },
+  { id: 'endpoints', n: 'Endpoints' },
+  { id: 'envelope', n: 'Envelope contract' },
+  { id: 'schema', n: 'Schema' },
+  { id: 'cache', n: 'Caching' },
+  { id: 'license', n: 'License' },
+];
+
+const baseUrlExample = `https://defirisk.co/api/${RUBRIC_VERSION}/`;
+
+// Two distinct envelope shapes — kept in sync with the real wire JSON
+// (data/api/${RUBRIC_VERSION}/index.json + protocols/aave-v3.json).
+//
+// index.json: lightweight list, no M1 fields at envelope level or per row.
+const indexEnvelopeExample = `{
+  "rubric_version": "${RUBRIC_VERSION}",
+  "data_as_of": "2026-05-05T12:41:36Z",
+  "generated_at": "2026-05-06T22:06:43Z",
+  "data": {
+    "protocols": [
+      {
+        "slug": "aave-v3",
+        "display_name": "Aave v3",
+        "headline_grade": "B",
+        "total_value_secured_usd": 14063906193,
+        "status": "live",
+        "has_active_incident": true
+      }
+    ]
+  }
+}`;
+
+// Protocol detail envelope: M1 v4 fields at top-level (canonical) AND
+// mirrored under data.protocol_data.protocol.* (back-compat copy).
+const envelopeExample = `{
+  "rubric_version": "${RUBRIC_VERSION}",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "risk_score": 17.09,
+  "category_severities": { "1": 5.80, "2": 13.04, "5": 44.44 },
+  "cap_applied": "none",
+  "cap_reason": null,
+  "data": {
+    "protocol_data": {
+      "protocol": {
+        "slug": "aave-v3",
+        "display_name": "Aave v3",
+        "headline_grade": "B",
+        "total_value_secured_usd": 14063906193,
+        "risk_score": 17.09,
+        "category_severities": { "1": 5.80, "2": 13.04, "5": 44.44 },
+        "cap_applied": "none",
+        "cap_reason": null
+      }
+    }
+  }
+}`;
+const csvExample = `https://defirisk.co/api/${RUBRIC_VERSION}/protocols.csv
+https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
+---
+
+<Page
+  pageTitle="Data & API"
+  description="All data is open under CC-BY 4.0. Adapter code under MIT. Stable JSON envelope."
+  crumbs={[{ n: 'Data & API' }]}
+  toc={toc}
+  hero={{
+    h1: 'Data & API',
+    lede: 'All data is open under CC-BY 4.0. Adapter code under MIT. Stable JSON envelope.',
+    meta: [
+      { label: 'Base URL', value: `defirisk.co/api/${RUBRIC_VERSION}` },
+      { label: 'Schema', value: RUBRIC_VERSION },
+      { label: 'License', value: 'CC-BY 4.0 · MIT' },
+      { label: 'Last updated', value: today },
+    ],
+  }}
+>
+  <h2 id="base">Versioned base URL <a class="alink" href="#base">#</a></h2>
+  <p>
+    Every endpoint is prefixed by the rubric version. Breaking changes increment the minor
+    component (e.g. <code>v1.5.0</code> → <code>v1.6.0</code>); additive changes do not. Major
+    versions overlap for at least 12 months after a new minor is released.
+  </p>
+  <CodeBlock title="base URL" lang="https" code={baseUrlExample} />
+
+  <h2 id="endpoints">Endpoints <a class="alink" href="#endpoints">#</a></h2>
+  <p>
+    All endpoints return JSON wrapped in the envelope contract. No pagination cursor at v1 —
+    the dataset is small enough to ship in a single payload per list endpoint.
+  </p>
+
+  <div class="endpts">
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/index.json</span>
+      <span class="desc">Lightweight protocol index — slug, grade, TVL</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/protocols/&#123;slug&#125;.json</span>
+      <span class="desc">Full per-protocol assessment with all factor scores</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/factors.json</span>
+      <span class="desc">Rubric factor definitions (all 184)</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/factors/&#123;id&#125;.json</span>
+      <span class="desc">Methodology + per-protocol scores + linked hacks</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/hacks.json</span>
+      <span class="desc">Historical hacks ledger</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/rubric.json</span>
+      <span class="desc">Current rubric version + frozen-at timestamp</span>
+    </div>
+    <div class="ep">
+      <span class="verb">GET</span>
+      <span class="path">/api/{RUBRIC_VERSION}/changes.json</span>
+      <span class="desc">Reverse-chronological grade-change log</span>
+    </div>
+  </div>
+
+  <h2 id="envelope">Envelope contract <a class="alink" href="#envelope">#</a></h2>
+  <p>
+    Every successful response is a JSON object stamped with <code>rubric_version</code>,
+    <code>data_as_of</code>, and <code>generated_at</code> at the top level, followed by a
+    <code>data</code> payload. The stamps make every response self-citing.
+  </p>
+
+  <CodeBlock title="protocol detail envelope (with M1 v4 fields)" lang="json" code={envelopeExample} />
+
+  <p style="margin-top:1.5rem">
+    The <code>index.json</code> / list envelopes omit the four M1 v4 fields —
+    they are protocol-specific and only appear on protocol-detail responses
+    and at the envelope top level. List rows are lightweight on purpose:
+  </p>
+  <CodeBlock title="index.json envelope (lightweight, no M1 fields)" lang="json" code={indexEnvelopeExample} />
+
+  <ul>
+    <li>
+      <strong><code>rubric_version</code></strong> — the rubric this response was computed
+      against. Grades are only meaningful against a specific rubric version.
+    </li>
+    <li>
+      <strong><code>data_as_of</code></strong> — the snapshot timestamp of the underlying data
+      (when the upstream pipeline last refreshed).
+    </li>
+    <li>
+      <strong><code>generated_at</code></strong> — when this particular file was produced.
+    </li>
+    <li>
+      <strong><code>data</code></strong> — the requested resource. An object keyed by resource
+      type (e.g. <code>data.protocols</code>, <code>data.protocol_data</code>); never
+      <code>null</code>.
+    </li>
+  </ul>
+
+  <h3 id="envelope-m1-fields">M1 rubric fields (v1.7.0+)</h3>
+  <p>
+    Protocol records include the following additional fields introduced with the M1 v4 rubric:
+  </p>
+  <ul>
+    <li>
+      <strong><code>risk_score</code></strong> — numeric 0–100 (2 decimal places, per dump.py <code>round(_, 2)</code>). A
+      core-five-weighted average of per-category severity scores plus a critical-red penalty
+      (5 pts per critical red, capped at 15). Lower is safer. This is the primary input to
+      the letter-grade bands.
+    </li>
+    <li>
+      <strong><code>category_severities</code></strong> — <code>Record&lt;string, number&gt;</code>.
+      Maps each category id (as a string, e.g. <code>"1"</code>) to its 0–100 severity score.
+      Gray factors are excluded from the denominator; 0 means all green or no graded factors.
+    </li>
+    <li>
+      <strong><code>cap_applied</code></strong> — <code>"none" | "D" | "F"</code>. When a
+      core-five category has severity ≥ 60, the grade is capped to D; ≥ 90 caps to F. This
+      field records whether a cap was applied.
+    </li>
+    <li>
+      <strong><code>cap_reason</code></strong> — human-readable explanation of the cap
+      (e.g. <code>"Cat 5 severity 67 ≥ 60 (core-five cap)"</code>), or <code>null</code> when
+      <code>cap_applied</code> is <code>"none"</code>.
+    </li>
+  </ul>
+
+  <Callout kind="info" label="Cite the snapshot">
+    <p>
+      When citing data downstream, attach the <code>data_as_of</code> timestamp and
+      <code>rubric_version</code>. A grade is only meaningful against the rubric version under
+      which it was computed.
+    </p>
+  </Callout>
+
+  <h2 id="schema">Schema <a class="alink" href="#schema">#</a></h2>
+  <p>
+    JSON Schema definitions for every resource type are published alongside the API and versioned
+    in lockstep with the rubric. The schema is open under CC-BY 4.0; reuse it freely.
+  </p>
+  <CodeBlock
+    title="schema index"
+    lang="https"
+    code={`https://defirisk.co/api/${RUBRIC_VERSION}/schema/envelope.json`}
+  />
+
+  <h2 id="cache">Caching <a class="alink" href="#cache">#</a></h2>
+  <p>
+    All API responses are static JSON files emitted by the build pipeline and served by the CDN.
+    They carry standard HTTP cache headers. New rubric versions live at new paths; old paths are
+    immutable.
+  </p>
+
+  <h2 id="license">License <a class="alink" href="#license">#</a></h2>
+  <p>
+    Everything we publish is licensed for unrestricted reuse, subject to attribution. Data is
+    <code>CC BY 4.0</code>; code is <code>MIT</code>. Attribution to "DeFi Risk, rubric {RUBRIC_VERSION}" suffices for any data reuse.
+  </p>
+  <CodeBlock title="nightly CSV (planned)" lang="https" code={csvExample} />
+</Page>

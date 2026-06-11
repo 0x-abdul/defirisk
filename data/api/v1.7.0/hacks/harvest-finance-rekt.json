@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "harvest-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Harvest Finance",
+        "occurred_at": "2020-10-26",
+        "loss_usd": 33800000.0,
+        "category": "Yield Aggregator / Vault",
+        "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain",
+        "description": "An attacker flash-loaned $50M and cycled a Curve pool stablecoin imbalance 32 times over 7 minutes, exploiting Harvest Finance's spot-price oracle to drain $33.8M — while leaving $400M more vulnerable but untouched.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited code — design flaw survived all three reviews]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — bank run of ~$700M TVL followed immediately post-attack; no pre-attack TVL signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability reasoning: The 32-cycle attack over 7 minutes generated extremely large and anomalous Curve Y-pool swaps repeatedly — a monitoring system watching for ...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — Curve Y-pool USDC/USDT ratio was visibly distorted on every exploit cycle]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — $50M flash loan from Uniswap initiated each cycle]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous (Harvest dev team anonymous; 0xf00d deployer address)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — inspired by Yearn Finance vault architecture]"
+        }
+      ]
+    }
+  }
+}

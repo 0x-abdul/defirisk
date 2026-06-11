@@ -1,0 +1,287 @@
+---
+import Page from '../components/Page.astro';
+import Callout from '../components/Callout.astro';
+import { RUBRIC_VERSION } from '../lib/rubric';
+import {
+  TOTAL_FACTOR_COUNT,
+  TOTAL_CATEGORY_COUNT,
+  CRITICAL_FACTOR_COUNT,
+} from '../lib/rubric-constants';
+
+const today = new Date().toISOString().slice(0, 10);
+
+const toc = [
+  {
+    id: 'overview',
+    n: 'Rubric overview',
+    sub: [
+      { id: 'overview-shape', n: 'Shape of a grade' },
+      { id: 'overview-inputs', n: 'Inputs' },
+    ],
+  },
+  {
+    id: 'thresholds',
+    n: 'Letter thresholds',
+    sub: [{ id: 'pipeline', n: 'Scoring pipeline' }],
+  },
+  { id: 'critical', n: 'Critical factors' },
+  { id: 'corefive', n: 'Core-five categories' },
+  { id: 'appeals', n: 'Appeals' },
+  { id: 'changelog', n: 'Changelog' },
+];
+---
+
+<Page
+  pageTitle="Methodology"
+  description="How a protocol's letter grade is computed. The rubric is open and deterministic."
+  crumbs={[{ n: 'Methodology' }]}
+  toc={toc}
+  hero={{
+    h1: 'Methodology',
+    lede: "How a protocol's letter grade is computed. The rubric is open and deterministic.",
+    meta: [
+      { label: 'Last updated', value: today },
+      { label: 'Version', value: RUBRIC_VERSION },
+      { label: 'License', value: 'CC-BY 4.0' },
+    ],
+  }}
+>
+  <h2 id="overview">Rubric overview <a class="alink" href="#overview">#</a></h2>
+  <p>
+    DeFi Risk grades a protocol on {TOTAL_CATEGORY_COUNT} evidence categories and rolls
+    those into a single letter A through F. The rubric is open, deterministic, and versioned. Two
+    reviewers reading the same evidence should arrive at the same letter.
+  </p>
+  <p>
+    The letter is produced by a three-stage pipeline: each category receives a severity score
+    (0–100) based on the proportion of red and yellow factors it contains; those category
+    severities are aggregated into a protocol risk score (0–100) with core-five categories
+    weighted 1.5×; the risk score is bucketed into a letter band. Critical-flag reds carry an
+    additional penalty and can force the bottom two grades regardless of the score. There is no
+    hidden weight vector and no trained model — every step of the derivation is published.
+  </p>
+
+  <h3 id="overview-shape">Shape of a grade <a class="alink" href="#overview-shape">#</a></h3>
+  <p>
+    A protocol page carries a letter, a one-word meaning, a risk score, and a verdict sentence.
+    The letter and score are computed; the meaning is fixed per letter; the verdict is human prose
+    under a 240-character cap. Where a single core-five category severity is severe enough to
+    override the score-based letter, the page shows the cap reason.
+  </p>
+
+  <h3 id="overview-inputs">Inputs <a class="alink" href="#overview-inputs">#</a></h3>
+  <p>
+    Each of the {TOTAL_FACTOR_COUNT} evidence factors is reviewed against a fixed citation list:
+    audit reports, on-chain state, governance forums, public incident records, source repos, and
+    operator disclosures. Every factor row on a protocol page links to its sources. If a
+    citation cannot be made public, the factor is marked <code>n/a — under embargo</code> and the
+    underlying claim does not contribute to the grade.
+  </p>
+
+  <Callout kind="info" label="What we do not grade">
+    <p>
+      We do not score user experience, frontend hosting, token price, marketing surface, or
+      community sentiment. Where a category technically applies but the protocol does not use the
+      relevant primitive — e.g. an isolated AMM with no oracle dependency — the category is
+      marked <code>n/a</code> and excluded from the severity calculation entirely.
+    </p>
+  </Callout>
+
+  <h2 id="thresholds">Letter thresholds <a class="alink" href="#thresholds">#</a></h2>
+  <p>
+    The letter is derived from a protocol risk score (0–100) and a count of critical-flag reds.
+    The first matching rule wins; precedence runs F &gt; D &gt; C &gt; B &gt; A.
+  </p>
+
+  <div class="ttable" tabindex="0" role="region" aria-label="Methodology table">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px">Grade</th>
+          <th style="width:110px">Meaning</th>
+          <th>Threshold (first match wins)</th>
+          <th style="width:160px">Critical-flag trigger</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="gcell"><span class="gpill A">A</span></span></td>
+          <td><b>Resilient</b></td>
+          <td>Risk score ≤ 12. No critical flags.</td>
+          <td class="mono">0</td>
+        </tr>
+        <tr>
+          <td><span class="gcell"><span class="gpill B">B</span></span></td>
+          <td><b>Sound</b></td>
+          <td>Risk score ≤ 20 with 0 critical flags; or exactly 1 critical flag with risk score ≤ 20 (prevents A regardless of score).</td>
+          <td class="mono">≤ 1</td>
+        </tr>
+        <tr>
+          <td><span class="gcell"><span class="gpill C">C</span></span></td>
+          <td><b>Watch</b></td>
+          <td>Risk score &gt; 20 and ≤ 35. Material gaps warrant monitoring.</td>
+          <td class="mono">≤ 1</td>
+        </tr>
+        <tr>
+          <td><span class="gcell"><span class="gpill D">D</span></span></td>
+          <td><b>Compromised</b></td>
+          <td>Risk score &gt; 35 and ≤ 55; or a single core-five category severity ≥ 60 overrides a higher natural letter.</td>
+          <td class="mono">≥ 2</td>
+        </tr>
+        <tr>
+          <td><span class="gcell"><span class="gpill F">F</span></span></td>
+          <td><b>Failing</b></td>
+          <td>Risk score &gt; 55, or a core-five category severity ≥ 90 overrides any natural letter.</td>
+          <td class="mono">≥ 3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <Callout kind="note">
+    <p>
+      A protocol with no oracle dependency cannot be downgraded for missing oracle controls. The
+      same applies to the other core-five categories. Categories with no assessed factors
+      (<code>n/a</code>) are excluded from the severity and risk-score calculations entirely.
+    </p>
+  </Callout>
+
+  <h3 id="pipeline">Scoring pipeline <a class="alink" href="#pipeline">#</a></h3>
+  <p>
+    The three steps from raw factors to letter:
+  </p>
+  <ol>
+    <li>
+      <strong>Per-category severity.</strong> For each of the {TOTAL_CATEGORY_COUNT} categories,
+      count assessed (non-gray) factors only:
+      <code>severity = (red × 3 + yellow × 1) / (assessed × 3) × 100</code>.
+      A category with all green factors scores 0; all red scores 100. Gray factors are excluded
+      from the denominator — data gaps neither help nor hurt the protocol.
+    </li>
+    <li>
+      <strong>Protocol risk score.</strong> A weighted average of per-category severities, where
+      core-five categories (code, governance, oracle, operational history, fork lineage) contribute
+      at 1.5× and all other categories at 1.0×. Gray categories (no assessed factors) are excluded
+      from the weighted average. A critical-red penalty of 5 points per critical-flag red
+      (capped at 15 total) is added to the weighted average, capped at 100.
+    </li>
+    <li>
+      <strong>Letter band.</strong> The risk score and critical-flag count are compared against
+      the threshold table above. After the natural letter is assigned, a cap override checks
+      each core-five category: a severity ≥ 60 caps the letter at D; a severity ≥ 90 forces F,
+      regardless of the natural letter. The cap reason is shown on the protocol page.
+    </li>
+  </ol>
+
+  <h2 id="critical">Critical factors <a class="alink" href="#critical">#</a></h2>
+  <p>
+    A critical factor is an evidence item that, when red, prevents an A grade on its own and adds 5 points to the protocol risk score (cap 15 across all critical reds). A single critical-flag red guarantees at least B; two guarantee at least D; three or more guarantee F.
+    Critical status is asserted explicitly in the factor definition file and cannot be inferred
+    at grading time. As of rubric {RUBRIC_VERSION} there are {CRITICAL_FACTOR_COUNT} critical
+    factors out of {TOTAL_FACTOR_COUNT} total.
+  </p>
+  <p>Examples of critical-factor categories include:</p>
+  <ul>
+    <li>
+      <strong>Live admin without delay.</strong> Any path that lets a single key — or a single
+      multisig threshold — execute a state-changing upgrade with no timelock delay.
+    </li>
+    <li>
+      <strong>Unaudited live primitive.</strong> A core primitive (matching engine, lending
+      core, oracle adapter) deployed without a public audit covering the live commit.
+    </li>
+    <li>
+      <strong>Oracle without staleness floor.</strong> An oracle adapter with no on-chain
+      staleness or deviation guard against the underlying feed.
+    </li>
+    <li>
+      <strong>Solvency self-attestation only.</strong> A protocol whose reserve solvency is
+      asserted only off-chain, with no on-chain or proof-of-reserve mechanism.
+    </li>
+  </ul>
+  <p>
+    The complete critical-factor list lives in <code>rubric/critical.yml</code> in the public
+    repo. Each entry carries the exact predicate, the citation requirement, and the chain of
+    reasoning from evidence to grade.
+  </p>
+
+  <h2 id="corefive">Core-five categories <a class="alink" href="#corefive">#</a></h2>
+  <p>
+    The {TOTAL_CATEGORY_COUNT}-category taxonomy on a protocol page is the full evidence
+    surface. Five of those categories are <em>load-bearing</em> for the letter:
+  </p>
+
+  <div class="ttable" tabindex="0" role="region" aria-label="Methodology table">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:200px">Category</th>
+          <th style="width:60px">ID</th>
+          <th>What it covers</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Code &amp; audits</b></td><td class="mono">1</td><td>Source-level review state, audit coverage of the live commit, severity-by-severity remediation log.</td></tr>
+        <tr><td><b>Governance &amp; admin controls</b></td><td class="mono">2</td><td>Multisig topology, timelock delays, emergency paths, signer rotation, upgrade scope.</td></tr>
+        <tr><td><b>Oracle &amp; external deps</b></td><td class="mono">3</td><td>Feed providers, heartbeat &amp; deviation, fallback logic, cross-chain relay risk.</td></tr>
+        <tr><td><b>Operational history</b></td><td class="mono">5</td><td>Incident record, postmortem cadence, recovery posture, response times.</td></tr>
+        <tr><td><b>Fork / dependency lineage</b></td><td class="mono">8</td><td>Upstream code provenance, divergence from canonical fork, dependency CVE exposure.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    Core-five categories carry a 1.5× weight in the protocol risk score, and are the only
+    categories subject to the single-category cap override (severity ≥ 60 → D floor; ≥ 90 → F
+    override). The remaining eight categories — economic risk, real-time signals, dev identity,
+    post-deploy hygiene, cross-chain, threat intelligence, tooling, and response hygiene — are
+    weighted at 1.0× and cannot trigger the cap. They contribute to the risk score in full, but
+    a single weakness in one of those eight categories has less leverage than the same weakness
+    in a core-five category.
+  </p>
+
+  <h2 id="appeals">Appeals <a class="alink" href="#appeals">#</a></h2>
+  <p>
+    A protocol team that disputes a grade can file an appeal. Appeals are public from the moment
+    they are filed.
+  </p>
+  <ol>
+    <li>
+      <strong>Open a dispute</strong> against a specific factor — not against the letter. Letters
+      are downstream of factors, so a successful appeal targets the underlying evidence.
+    </li>
+    <li>
+      <strong>Submit counter-citations</strong> that bear on the predicate. New audits, on-chain
+      changes, or updated governance configurations all qualify.
+    </li>
+    <li>
+      <strong>Two-reviewer adjudication</strong> against the rubric. The first reviewer is the
+      one who originally signed off; the second is drawn from the standing reviewer pool.
+    </li>
+    <li>
+      <strong>Decision published</strong> within 14 days, with full reasoning. The factor either
+      flips, stays, or is rewritten — and the resulting letter is recomputed.
+    </li>
+  </ol>
+
+  <Callout kind="warning" label="Appeals do not pause the grade">
+    <p>
+      A grade stays live throughout the appeal window. We do not gate publication on the appeal
+      calendar. If an appeal succeeds, the historical record shows both the pre-appeal and
+      post-appeal grade with the date of change.
+    </p>
+  </Callout>
+
+  <h2 id="changelog">Changelog <a class="alink" href="#changelog">#</a></h2>
+  <p>
+    The rubric itself is versioned. Material changes are documented in the
+    <a class="link" href="/methodology/changelog/">rubric changelog</a>; every protocol
+    assessment is stamped with the rubric version it was graded against.
+  </p>
+  <p>
+    A protocol's letter can change for two reasons: the evidence changed, or the rubric changed.
+    Both are tracked separately. When a rubric version flips a letter without any evidence
+    change, the assessment carries a small <code>rubric-shift</code> note explaining which rule
+    moved.
+  </p>
+</Page>

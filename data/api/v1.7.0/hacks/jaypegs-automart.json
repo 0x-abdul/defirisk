@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "jaypegs-automart",
+        "protocol_slug": null,
+        "protocol_name": "JayPegs Automart (via SushiSwap MISO platform)",
+        "occurred_at": "2021-09-17",
+        "loss_usd": 3100000.0,
+        "category": "Token Launchpad / Auction",
+        "root_cause": "Supply Chain Attack (Malicious Contractor Code Injection)",
+        "description": "A trusted contractor on the JayPegs Automart/MISO auction injected their own wallet address as the auction beneficiary, redirecting $3.1M in ETH — funds were only returned after SushiSwap's CTO publicly doxxed the suspected developer and threatened FBI involvement.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — contract behaved as written; the malicious wallet address was injected, not a code bug]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — fresh auction contract deployment with injected malicious wallet address]"
+        }
+      ]
+    }
+  }
+}

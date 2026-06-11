@@ -1,0 +1,90 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "radiant-capital-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Radiant Capital",
+        "occurred_at": "2024-10-16",
+        "loss_usd": 53000000.0,
+        "category": "Lending / Money Market (Aave fork)",
+        "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain",
+        "description": "An attacker compromised 3 of Radiant Capital's 11 multisig keys, used them to transfer lending pool ownership to a malicious contract deployed 14 days earlier, and drained $53M — all while the team stayed silent for 2 hours.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade was the attack vector; but the underlying contract's upgrade mechanism was a design feature] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade was the attack vector; but the underlying contract's upgrade mechanism was a design feature]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — multisig transactions transferring pool ownership and upgrading implementation were the exploit itself]"
+        },
+        {
+          "factor_id": "RD-F-028",
+          "relevance": "causal",
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]"
+        },
+        {
+          "factor_id": "RD-F-030",
+          "relevance": "causal",
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — multisig transactions transferring pool ownership and upgrading implementation were the exploit itself]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        },
+        {
+          "factor_id": "RD-F-125",
+          "relevance": "causal",
+          "notes": "★ Deployer linked to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Aave v2 fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade was the attack vector; but the underlying contract's upgrade mechanism was a design feature]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "dforce-network",
+        "protocol_slug": null,
+        "protocol_name": "dForce Network",
+        "occurred_at": "2023-02-13",
+        "loss_usd": 3650000.0,
+        "category": "Lending",
+        "root_cause": "Read-Only Reentrancy (Curve wstETH/ETH LP Oracle Manipulation)",
+        "description": "dForce lost $3.65M on two L2 chains simultaneously to a Curve read-only reentrancy attack that was publicly documented and had already hit another protocol the previous month — before the exploiter returned all funds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — virtual price spike during reentrancy window is detectable post-hoc; the `get_virtual_price` manipulation is the core exploitable signal]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — virtual price spike during reentrancy window is detectable post-hoc; the `get_virtual_price` manipulation is the core exploitable signal]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Compound fork (dForce lending is Compound-inspired)]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Compound fork (dForce lending is Compound-inspired)]"
+        }
+      ]
+    }
+  }
+}

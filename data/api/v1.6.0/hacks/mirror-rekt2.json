@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "mirror-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Mirror Protocol (REKT 2)",
+        "occurred_at": "2022-05-31",
+        "loss_usd": 92000000.0,
+        "category": "Synthetic Assets / Derivatives",
+        "root_cause": "Missing Duplicate-Call Check (Re-entrancy variant)",
+        "description": "Mirror Protocol was silently drained of $90M over 7 months via a missing duplicate-call check on its lock contract — a bug that was then patched without any public announcement, before a second $2M exploit hit the day after the theft was publicly exposed.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y (Exploit 2 only — LUNA depeg oracle inconsistency)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — silent patch on May 14, 2022 without disclosure]"
+        }
+      ]
+    }
+  }
+}

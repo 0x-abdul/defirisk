@@ -1,0 +1,515 @@
+---
+import Base from '../layouts/Base.astro';
+import TopBar from './TopBar.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import TableOfContents from './TableOfContents.astro';
+import type { TocItem } from './TableOfContents.astro';
+import type { CrumbItem } from './Breadcrumb.astro';
+import { RUBRIC_VERSION } from '../lib/rubric';
+
+export interface HeroMeta {
+  label: string;
+  value: string;
+}
+
+export interface Props {
+  pageTitle: string;
+  description?: string;
+  crumbs: CrumbItem[];
+  toc: TocItem[];
+  hero: {
+    h1: string;
+    lede?: string;
+    meta?: HeroMeta[];
+  };
+}
+
+const { pageTitle, description, crumbs, toc, hero } = Astro.props;
+const buildSha = import.meta.env.PUBLIC_GIT_SHA;
+---
+
+<Base title={pageTitle} description={description ?? hero.lede ?? pageTitle}>
+  <TopBar slot="topbar" />
+
+  <Breadcrumb items={crumbs} />
+
+  <div class="page">
+    <TableOfContents items={toc} />
+
+    <main class="body">
+      <div class="hero">
+        <h1>{hero.h1}</h1>
+        {hero.lede && <p class="lede">{hero.lede}</p>}
+      </div>
+
+      {
+        hero.meta && hero.meta.length > 0 && (
+          <div class="meta">
+            {hero.meta.map((m) => (
+              <span class="mi">
+                {m.label} <b>{m.value}</b>
+              </span>
+            ))}
+          </div>
+        )
+      }
+
+      <slot />
+    </main>
+  </div>
+
+  <footer slot="footer" class="ftr">
+    <div class="frow">
+      <div class="l">
+        <a href="/">Protocols</a>
+        <a href="/factors/">Factors</a>
+        <a href="/methodology/">Methodology</a>
+        <a href="/about/">About</a>
+        <a href="/data/">Data &amp; API</a>
+        <a href="/methodology/changelog/">Changelog</a>
+      </div>
+      <div>
+        © 2026 DeFi Risk · Data <i>CC BY 4.0</i> · Code <i>MIT</i> · Rubric <i>{RUBRIC_VERSION}</i> · build <i>{buildSha ?? 'dev'}</i>
+      </div>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* 2-column layout — 240px sticky TOC + 720px prose */
+  .page {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 0;
+    align-items: flex-start;
+    padding: 0 28px;
+  }
+
+  /* Prose body */
+  .body {
+    padding: 36px 0 96px;
+    max-width: 720px;
+  }
+  .body .hero h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  .body .hero .lede {
+    font-size: 14px;
+    color: var(--fg-2);
+    margin: 14px 0 0;
+    line-height: 1.5;
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  .body .meta {
+    margin: 22px 0 0;
+    padding: 11px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    letter-spacing: 0.01em;
+  }
+  .body .meta .mi {
+    padding-right: 14px;
+    margin-right: 14px;
+    border-right: 1px solid var(--border);
+  }
+  .body .meta .mi:last-child {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+  }
+  .body .meta .mi b {
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  /* Body prose styles (global so slot children inherit) */
+  .body :global(h2) {
+    margin: 48px 0 14px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    scroll-margin-top: 64px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-wrap: balance;
+    color: var(--fg);
+  }
+  .body :global(h2 .alink) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-4);
+    text-decoration: none;
+    opacity: 0;
+    transition:
+      opacity 0.12s,
+      color 0.12s;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .body :global(h2:hover .alink) {
+    opacity: 1;
+  }
+  .body :global(h2 .alink:hover) {
+    color: var(--fg-2);
+  }
+  .body :global(h3) {
+    margin: 32px 0 10px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    scroll-margin-top: 64px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg);
+  }
+  .body :global(h3 .alink) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--fg-4);
+    text-decoration: none;
+    opacity: 0;
+    transition:
+      opacity 0.12s,
+      color 0.12s;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .body :global(h3:hover .alink) {
+    opacity: 1;
+  }
+  .body :global(p) {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.7;
+    margin: 0 0 14px;
+    max-width: 65ch;
+    text-wrap: pretty;
+  }
+  .body :global(p:first-child) {
+    margin-top: 0;
+  }
+  .body :global(p strong),
+  .body :global(li strong) {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .body :global(a.link) {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    cursor: pointer;
+  }
+  .body :global(a.link:hover) {
+    text-decoration-color: var(--fg);
+  }
+
+  /* Lists */
+  .body :global(ul),
+  .body :global(ol) {
+    margin: 0 0 14px;
+    padding-left: 22px;
+    max-width: 65ch;
+  }
+  .body :global(ul li),
+  .body :global(ol li) {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.7;
+    margin: 8px 0;
+  }
+  .body :global(ul) {
+    list-style: none;
+    padding-left: 18px;
+  }
+  .body :global(ul > li) {
+    position: relative;
+    padding-left: 4px;
+  }
+  .body :global(ul > li::before) {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 0.85em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--fg-4);
+  }
+  .body :global(ol) {
+    padding-left: 24px;
+  }
+  .body :global(ol > li::marker) {
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* Inline code */
+  .body :global(code) {
+    font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    background: var(--surface-2);
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: var(--fg);
+    border: 1px solid var(--border);
+    font-feature-settings: 'tnum';
+  }
+
+  /* Pull quote */
+  .body :global(blockquote) {
+    margin: 18px 0;
+    padding: 6px 0 6px 18px;
+    border-left: 3px solid var(--fg-3);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--fg);
+    line-height: 1.55;
+    max-width: 62ch;
+    text-wrap: pretty;
+  }
+  .body :global(blockquote cite) {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    letter-spacing: 0.02em;
+  }
+
+  /* Tables */
+  .body :global(.ttable) {
+    margin: 18px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface);
+    width: 100%;
+  }
+  .body :global(.ttable table) {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .body :global(.ttable th) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .body :global(.ttable td) {
+    font-size: 13.5px;
+    color: var(--fg-2);
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.55;
+    vertical-align: top;
+  }
+  .body :global(.ttable tr:last-child td) {
+    border-bottom: none;
+  }
+  .body :global(.ttable td.mono) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12.5px;
+    color: var(--fg);
+    font-feature-settings: 'tnum';
+  }
+  .body :global(.ttable td b) {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .body :global(.ttable .gcell) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .body :global(.ttable .gpill) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    font-family: 'Geist', sans-serif;
+  }
+  .body :global(.ttable .gpill.A) {
+    background: var(--gA);
+  }
+  .body :global(.ttable .gpill.B) {
+    background: var(--gB);
+  }
+  .body :global(.ttable .gpill.C) {
+    background: var(--gC);
+  }
+  .body :global(.ttable .gpill.D) {
+    background: var(--gD);
+  }
+  .body :global(.ttable .gpill.F) {
+    background: var(--gF);
+  }
+
+  /* Endpoint list */
+  .body :global(.endpts) {
+    margin: 14px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .body :global(.endpts .ep) {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .body :global(.endpts .ep:last-child) {
+    border-bottom: none;
+  }
+  .body :global(.endpts .ep .verb) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--gA);
+    background: var(--gA-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .body :global(.endpts .ep .path) {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12.5px;
+    color: var(--fg);
+    font-feature-settings: 'tnum';
+  }
+  .body :global(.endpts .ep .desc) {
+    font-size: 12px;
+    color: var(--fg-3);
+    text-align: right;
+    text-wrap: pretty;
+    max-width: 32ch;
+  }
+
+  /* Footer (compact) */
+  .ftr {
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    margin-top: 48px;
+    padding: 24px 28px 28px;
+  }
+  .ftr .frow {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+  .ftr .frow .l {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .ftr .frow .l a {
+    color: var(--fg-3);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ftr .frow .l a:hover {
+    color: var(--fg);
+  }
+  .ftr .frow i {
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-2);
+    background: var(--surface);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 10.5px;
+    margin: 0 2px;
+  }
+
+  /* ─── Mobile (under 900px) ─── Collapse TOC rail */
+  @media (max-width: 900px) {
+    .page {
+      grid-template-columns: 1fr;
+      padding: 0 18px;
+    }
+    .body {
+      padding: 24px 0 64px;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+    }
+    .body .hero h1 {
+      font-size: 26px;
+    }
+    .body .meta .mi {
+      padding-right: 10px;
+      margin-right: 10px;
+    }
+    .body :global(table) {
+      font-size: 12px;
+    }
+    .body :global(.ttable) {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+    .body :global(.ttable th),
+    .body :global(.ttable td) {
+      padding: 8px 9px;
+    }
+    .body :global(.ttable th[style*="width"]) {
+      width: auto !important;
+    }
+    .ftr {
+      padding: 22px 18px 24px;
+    }
+    .ftr .frow {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+  @media (max-width: 640px) {
+    .body .meta {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .body .meta .mi {
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
+    }
+  }
+</style>

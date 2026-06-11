@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "thorchain-rekt",
+        "protocol_slug": null,
+        "protocol_name": "THORChain",
+        "occurred_at": "2021-07-16",
+        "loss_usd": 5000000.0,
+        "category": "Cross-Chain DEX / AMM / Bridge",
+        "root_cause": "ETH Bifrost override loop — msg.value spoofing via wrapped router",
+        "description": "THORChain's ETH Bifrost bridge lost $5M when an attacker wrapped the router contract to spoof a deposit amount of 200 against a real deposit of 0, exploiting an override loop the code's own comments warned should be restricted.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — ETH MCCN Bifrost was explicitly out of scope at time of hack] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — ETH MCCN Bifrost was explicitly out of scope at time of hack]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (ETH MCCN Bifrost)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MCCN Bifrosts were a new deployment, never audited] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MCCN Bifrosts were a new deployment, never audited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No — hacker noted explicitly in the exploit that \"10% VAR bounty would have prevented this\"; THORChain had paused bounty refresh for MCCN]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MCCN Bifrosts were a new deployment, never audited]"
+        }
+      ]
+    }
+  }
+}

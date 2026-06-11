@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "atlantis-loans-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Atlantis Loans",
+        "occurred_at": "2023-06-10",
+        "loss_usd": 2500000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Governance attack on abandoned protocol — attacker passed malicious proposal granting token contract control, then upgraded to drain addresses with active approvals",
+        "description": "Atlantis Loans was abandoned by its developers in April 2023 — but its governance still worked, and an attacker used it to pass a malicious proposal, take control of the token contracts, and drain $2.5M from addresses that never revoked their approvals.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — attacker deployed malicious upgrade post-governance takeover]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None (project abandoned)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the malicious governance proposal was the root cause]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Likely a Compound/Aave fork (BSC lending)]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Likely a Compound/Aave fork (BSC lending)]"
+        }
+      ]
+    }
+  }
+}

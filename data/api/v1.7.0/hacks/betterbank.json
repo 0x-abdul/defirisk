@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "betterbank",
+        "protocol_slug": null,
+        "protocol_name": "BetterBank",
+        "occurred_at": "2025-08-25",
+        "loss_usd": 5000000.0,
+        "category": "Lending Protocol / Yield Protocol",
+        "root_cause": "LP Manipulation + Bonus Minting Exploit (Unregistered LP Pair Bypass)",
+        "description": "BetterBank's auditor flagged the exact attack vector three months before launch; BetterBank downgraded it to \"Low Priority\" — six weeks later an attacker used worthless tokens instead of ETH to drain $5M.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 6 weeks at time of exploit]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker deployed 3 custom contracts before the attack; Tornado Cash funding of attack wallet]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous; co-founder background raises questions]"
+        }
+      ]
+    }
+  }
+}

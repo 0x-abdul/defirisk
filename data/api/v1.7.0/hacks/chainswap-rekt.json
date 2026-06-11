@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "chainswap-rekt",
+        "protocol_slug": null,
+        "protocol_name": "ChainSwap",
+        "occurred_at": "2021-07-11",
+        "loss_usd": 4400000.0,
+        "category": "Cross-Chain Bridge / Token Bridge",
+        "root_cause": "Auth bypass in Factory minting contract — sloppy signature check bypassed with fresh addresses",
+        "description": "ChainSwap lost $4.4M when its per-token Factory minting contracts could be called by anyone using a fresh address per transaction — bypassing an authorization check that required no proof of legitimacy.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited / inadequate review]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: ~Several months; second incident came 9 days after first]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially public (Alameda-backed, but dev team semi-anonymous)]"
+        }
+      ]
+    }
+  }
+}

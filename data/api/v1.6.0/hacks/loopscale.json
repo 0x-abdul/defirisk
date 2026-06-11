@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "loopscale",
+        "protocol_slug": null,
+        "protocol_name": "Loopscale (formerly Bridgesplit)",
+        "occurred_at": "2025-04-26",
+        "loss_usd": 5800000.0,
+        "category": "Lending / Yield Optimization",
+        "root_cause": "Oracle Price Manipulation (RateX PT Token Pricing)",
+        "description": "Loopscale lost $5.8M just 16 days after launch when an attacker reverse-engineered the protocol's binary, deployed a fake price feed inflating RateX PT token values, and drained both USDC and SOL vaults through undercollateralized loans — recovering most funds via a rare successful whitehat bounty deal.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — recently launched (16 days); new RateX PT pricing logic]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 16 days (launched April 10; exploited April 26)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — PT token reported price vs. RateX market price divergence detectable]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Original protocol (not a fork)]"
+        }
+      ]
+    }
+  }
+}

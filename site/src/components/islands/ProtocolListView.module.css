@@ -1,0 +1,427 @@
+/* ProtocolListView — CSS module. CSS ported verbatim from
+   risk-dashboard/design/handoff/risk-dashboard-3-designs/project/d3-variants-v2.jsx
+   .v-a namespace (the `.lf` / `.v-a` / `.d3v` prefix dropped per Astro's
+   per-file scoping). Source line refs in comments. */
+
+/* ─── Section head ─── */
+.sechead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sechead .left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sechead .num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10.5px;
+  color: var(--fg-3);
+  background: var(--surface-2);
+  padding: 3px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  letter-spacing: 0.04em;
+}
+.sechead h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.sechead .right {
+  font-size: 11.5px;
+  color: var(--fg-3);
+}
+
+/* ─── Grade filterbar (.filterbar) ─── */
+.filterbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.filterbar .f {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-2);
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: inherit;
+}
+.filterbar .f.on {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+.filterbar .f .ct {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10.5px;
+  opacity: 0.7;
+}
+:global([data-prefer-contrast]) .filterbar .f .ct {
+  opacity: 1;
+}
+.filterbar .right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+.filterbar .right input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--fg);
+  width: 120px;
+}
+
+/* Mini letter pill embedded inside .filterbar .f — same spec as LetterPill mini */
+.filterbar .gpill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 10.5px;
+  color: #fff;
+}
+.filterbar .gpill.A {
+  background: var(--gA);
+}
+.filterbar .gpill.B {
+  background: var(--gB);
+}
+.filterbar .gpill.C {
+  background: var(--gC);
+}
+.filterbar .gpill.D {
+  background: var(--gD);
+}
+.filterbar .gpill.F {
+  background: var(--gF);
+}
+
+/* ─── Filter rail (.frail) ─── */
+.frail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.frail .frow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.frail .flbl {
+  font-size: 10px;
+  color: var(--fg-3);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  width: 78px;
+  flex-shrink: 0;
+  font-family: 'Geist Mono', monospace;
+}
+.frail .chip {
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 11.5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--fg-2);
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1.3;
+  font-family: inherit;
+}
+.frail .chip:hover {
+  border-color: var(--border-2);
+  color: var(--fg);
+}
+.frail .chip.on {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
+}
+.frail .chip .ct {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  opacity: 0.65;
+}
+:global([data-prefer-contrast]) .frail .chip .ct {
+  opacity: 1;
+}
+.frail .chip.severity {
+  padding: 4px 8px;
+}
+.frail .chip.severity .sev {
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.frail .chip.severity .sev.r {
+  background: var(--gF);
+}
+.frail .chip.severity .sev.y {
+  background: var(--gC);
+}
+.frail .chip.severity .sev.g {
+  background: var(--gA);
+}
+.frail .clr {
+  padding: 4px 9px;
+  border: none;
+  background: transparent;
+  color: var(--fg-3);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+}
+.frail .clr:hover {
+  color: var(--fg);
+}
+
+/* ─── Heatmap leaderboard (.hb) ─── */
+.hb {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.hb .row {
+  display: grid;
+  grid-template-columns: 1fr 70px 156px 110px 110px;
+  gap: 14px;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+.hb .row:last-child {
+  border-bottom: none;
+}
+.hb .row.head {
+  background: var(--surface-2);
+  min-height: 0;
+  padding: 8px 16px;
+  cursor: default;
+  font-size: 10.5px;
+  color: var(--fg-3);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hb .row:not(.head):hover {
+  background: var(--surface-2);
+}
+.hb .pcell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hb .pdot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--fg-4);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+.hb .pname {
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+.hb .ptag {
+  font-size: 11px;
+  color: var(--fg-3);
+  font-family: 'Geist Mono', monospace;
+}
+.hb .tvl {
+  font-size: 13px;
+  font-weight: 500;
+  font-feature-settings: 'tnum';
+  text-align: right;
+  color: var(--fg);
+}
+.hb .tvl-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+}
+.hb .tvl-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--fg);
+  border-radius: 2px;
+}
+.hb .lights {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  height: 18px;
+}
+.hb .lights i {
+  flex: 1;
+  border-radius: 1.5px;
+  background: var(--border-2);
+  min-width: 5px;
+}
+.hb .lights i.r {
+  background: var(--gF);
+}
+.hb .lights i.y {
+  background: var(--gC);
+}
+.hb .lights i.g {
+  background: var(--gA);
+}
+/* Medium grade pill (gpill-lg) inside the Grade column */
+.hb .gpill-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: 0;
+  font-feature-settings: 'lnum';
+}
+.hb .gpill-lg.A {
+  background: var(--gA);
+}
+.hb .gpill-lg.B {
+  background: var(--gB);
+}
+.hb .gpill-lg.C {
+  background: var(--gC);
+}
+.hb .gpill-lg.D {
+  background: var(--gD);
+}
+.hb .gpill-lg.F {
+  background: var(--gF);
+}
+.hb .arrow {
+  font-family: 'Geist Mono', monospace;
+  color: var(--fg-3);
+  font-size: 14px;
+}
+.hb .row:hover .arrow {
+  color: var(--fg);
+}
+.hb .sortBtn {
+  cursor: pointer;
+  user-select: none;
+}
+.hb .alignRight {
+  text-align: right;
+}
+.hb .empty {
+  padding: 24px 16px;
+  color: var(--fg-3);
+  font-size: 13px;
+  text-align: center;
+}
+.hb .clrLink {
+  background: none;
+  border: none;
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* ─── Mobile (under 900px) ─── Collapse 5-col grid; hide TVL bar + 13-light strip */
+@media (max-width: 900px) {
+  .hb .row {
+    grid-template-columns: 1fr 56px 90px 32px;
+    gap: 10px;
+    padding: 0 12px;
+    min-height: 64px;
+  }
+  .hb .row.head .alignRight + span,
+  .hb .row > span:nth-child(4) {
+    display: none;
+  }
+  .hb .row > *:nth-child(4) {
+    display: none;
+  }
+  .filterbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 6px;
+  }
+  .filterbar .right {
+    margin-left: 0;
+  }
+  .frail .frow {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+  .frail .flbl {
+    width: auto;
+    min-width: 78px;
+  }
+}
+@media (max-width: 640px) {
+  .hb .row {
+    grid-template-columns: 1fr 44px 24px;
+    gap: 8px;
+    padding: 0 10px;
+  }
+  .hb .row > *:nth-child(3) {
+    display: none;
+  }
+  .hb .pname {
+    font-size: 13px;
+  }
+  .sechead .num {
+    display: none;
+  }
+}

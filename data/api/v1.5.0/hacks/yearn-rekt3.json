@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "yearn-rekt3",
+        "protocol_slug": null,
+        "protocol_name": "Yearn Finance (yETH LST stableswap pool + yETH-WETH Curve pool)",
+        "occurred_at": "2023-11-30",
+        "loss_usd": 9000000.0,
+        "category": "Yield Aggregator / LST Stableswap (legacy / abandoned pool)",
+        "root_cause": "Invariant corruption via remove_liquidity(0) + update_rates() calls → Newton-Raphson arithmetic underflow → 235 trillion yETH minted from dust deposit → single-asset drain",
+        "description": "A forgotten Yearn pool nobody maintained minted 235 trillion yETH tokens from a 12-wei deposit, draining $9M through a Newton-Raphson arithmetic underflow triggered by weeks of invariant corruption.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited-at-time-of-exploit (audits were historical; no ongoing review of this abandoned pool)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — abandoned legacy code, no recent changes] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — abandoned legacy code, no recent changes]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Heavy Tornado Cash activity + unusual LST token movements across Yearn, Rocket Pool, Origin, and Dinero noted by Togbe minutes before the ex...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: N — custom stableswap math, not a fork of standard Curve]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — abandoned legacy code, no recent changes]"
+        }
+      ]
+    }
+  }
+}

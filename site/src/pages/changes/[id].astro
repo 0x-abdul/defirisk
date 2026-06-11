@@ -1,0 +1,80 @@
+---
+import Page from '../../components/Page.astro';
+import LetterPill from '../../components/LetterPill.astro';
+import { listGradeChanges } from '../../lib/data-loaders';
+import type { Letter } from '../../lib/rubric';
+
+export async function getStaticPaths() {
+  return listGradeChanges().map((ch) => ({ params: { id: ch.id }, props: { change: ch } }));
+}
+
+const { change } = Astro.props as { change: ReturnType<typeof listGradeChanges>[number] };
+
+const detectedDisplay = new Date(change.detected_at).toLocaleString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});
+
+const toc = [
+  { id: 'summary', n: 'Summary' },
+  { id: 'before', n: 'Before snapshot' },
+  { id: 'after', n: 'After snapshot' },
+  { id: 'reason', n: 'Reason' },
+];
+---
+
+<Page
+  pageTitle={`${change.protocol_name}: ${change.from_grade} → ${change.to_grade}`}
+  description={`${change.protocol_name} ${change.is_upgrade ? 'upgraded' : 'downgraded'} from ${change.from_grade} to ${change.to_grade} on ${detectedDisplay}`}
+  crumbs={[
+    { n: 'Changes', href: '/changes/' },
+    { n: change.protocol_name },
+  ]}
+  toc={toc}
+  hero={{
+    h1: `${change.protocol_name}: ${change.from_grade} → ${change.to_grade}`,
+    lede: `${change.is_upgrade ? 'Upgraded' : 'Downgraded'} ${detectedDisplay} under rubric ${change.rubric_version}.`,
+    meta: [
+      { label: 'Detected', value: change.detected_at.slice(0, 10) },
+      { label: 'Rubric', value: change.rubric_version },
+      { label: 'Direction', value: change.is_upgrade ? 'upgrade' : 'downgrade' },
+    ],
+  }}
+>
+  <h2 id="summary">Summary <a class="alink" href="#summary">#</a></h2>
+  <p>
+    <strong>{change.protocol_name}</strong> moved from grade
+    <span class="inline-pill"><LetterPill letter={change.from_grade as Letter} size="mini" /></span>
+    to
+    <span class="inline-pill"><LetterPill letter={change.to_grade as Letter} size="mini" /></span>
+    on {detectedDisplay}. The change was computed against rubric{' '}
+    <code>{change.rubric_version}</code>.
+  </p>
+
+  <h2 id="before">Before snapshot <a class="alink" href="#before">#</a></h2>
+  <p>Snapshot date: <code>{change.snapshot_date_before}</code></p>
+
+  <h2 id="after">After snapshot <a class="alink" href="#after">#</a></h2>
+  <p>Snapshot date: <code>{change.snapshot_date_after}</code></p>
+
+  <h2 id="reason">Reason <a class="alink" href="#reason">#</a></h2>
+  <p>{change.reason ?? 'No reason recorded.'}</p>
+
+  <p>
+    <a class="link" href={`/protocols/${change.protocol_slug}/`}>
+      View current {change.protocol_name} assessment →
+    </a>
+  </p>
+</Page>
+
+<style>
+  .inline-pill {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+</style>

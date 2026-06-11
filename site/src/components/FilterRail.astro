@@ -1,0 +1,56 @@
+---
+export interface Props {
+  ariaLabel?: string;
+}
+
+const { ariaLabel = 'Filters' } = Astro.props;
+---
+
+<section class="frail" aria-label={ariaLabel}>
+  <slot />
+</section>
+
+<style>
+  .frail {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  /* Row = label + chips (children render here, slotted by callers) */
+  .frail :global(.frow) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .frail :global(.flbl) {
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 78px;
+    flex-shrink: 0;
+    font-family: 'Geist Mono', monospace;
+  }
+  .frail :global(.clr) {
+    padding: 4px 9px;
+    border: none;
+    background: transparent;
+    color: var(--fg-3);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+  .frail :global(.clr:hover) {
+    color: var(--fg);
+  }
+</style>

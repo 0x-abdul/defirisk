@@ -1,0 +1,43 @@
+.claude/worktrees/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claire/
+.clone/
+__pycache__/
+*.pyc
+
+# Node / site
+node_modules/
+dist/
+.astro/
+*.tsbuildinfo
+
+# Playwright (E-16 visual regression — committed: __snapshots__/, .gitignored: results/cache)
+site/test-results/
+site/playwright-report/
+site/playwright/.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+.venv/
+*.egg-info/
+
+# Editor
+.DS_Store
+Thumbs.db
+
+# DB backups (PD-036 cutover)
+.backups/
+
+# Data-pipeline local-only surfaces
+# NOTE: risk-dashboard/scripts/data-pipeline/ contains tracked source/config files.
+# Do not re-add a broad ignore here unless the tracked files are intentionally
+# removed with `git rm --cached` and replaced by public stubs/docs.
+risk-dashboard/scripts/data-pipeline/.cache/
+risk-dashboard/scripts/data-pipeline/tmp/
+risk-dashboard/scripts/data-pipeline/*.local.json
+risk-dashboard/scripts/data-pipeline/*.secrets.json

@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "rhea-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Rhea Finance (merged entity of Ref Finance DEX + Burrow Finance lending; launched February 2025)",
+        "occurred_at": "2026-04-16",
+        "loss_usd": 18400000.0,
+        "category": "Integrated DEX + Lending + Margin Trading (NEAR's dominant DeFi protocol)",
+        "root_cause": "Permissionless fake-token pool creation → spot-price oracle acceptance → margin-trading `min_amount_out` double-counting across sequential swaps",
+        "description": "An attacker spent two days seeding 8 fake token pools across 423 wallets on NEAR, tricked Rhea Finance's spot-price oracle into pricing worthless tokens as real collateral, then exploited a double-counting arithmetic error in the margin-slippage check to drain $18.4M in cascading liquidations.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: [PENDING: no confirmed Immunefi program identified in sources]]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited code (per BlockSec + ToB October 2025); the specific double-counting case was not caught]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — price history for fake tokens was entirely self-generated from attacker wash trades; any oracle with a liquidity threshold or token-age ...]"
+        }
+      ]
+    }
+  }
+}

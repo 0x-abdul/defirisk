@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "aevo-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Aevo (formerly Ribbon Finance)",
+        "occurred_at": "2025-12-12",
+        "loss_usd": 2700000.0,
+        "category": "Options / Structured Products Vault",
+        "root_cause": "Proxy upgrade removed oracle access control — oracle price settable to arbitrary value → vault fully drained in atomic loop",
+        "description": "A routine oracle upgrade to Aevo's legacy Ribbon vaults accidentally removed access control on price-setting, giving the attacker a 6-day window to set prices to infinity and drain $2.7M.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the specific oracle upgrade that removed access control was not audited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — oracle upgrade deployed 6 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — the upgrade itself was an admin action (root cause)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — oracle access control silently removed; price became settable by anyone]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the upgrade itself was an admin action (root cause)]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "sturdy-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Sturdy Finance",
+        "occurred_at": "2023-06-12",
+        "loss_usd": 800000.0,
+        "category": "Lending / Money Market (leveraged yield on staked collateral)",
+        "root_cause": "Read-only reentrancy on Balancer LP (B-stETH-STABLE) → manipulated collateral price → undercollateralized borrow drain",
+        "description": "Sturdy Finance lost $800K to a read-only reentrancy attack on Balancer LP pricing — a well-documented vulnerability that had been publicly flagged for the exact pools used in the attack four months before the hack.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N — the vulnerable LendingPool contract version was outside all three audit scopes] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N — the vulnerable LendingPool contract version was outside all three audit scopes] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "related",
+          "notes": "Ignored bug bounty disclosure — adjacent [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        },
+        {
+          "factor_id": "RD-F-050",
+          "relevance": "causal",
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-052",
+          "relevance": "related",
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — SturdyOracle returned an inflated collateral price during the Balancer callback window; detectable as a price divergence from the true B...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-177",
+          "relevance": "causal",
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        }
+      ]
+    }
+  }
+}

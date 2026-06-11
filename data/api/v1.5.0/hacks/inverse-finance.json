@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "inverse-finance",
+        "protocol_slug": null,
+        "protocol_name": "Inverse Finance",
+        "occurred_at": "2022-04-02",
+        "loss_usd": 15600000.0,
+        "category": "Lending Protocol",
+        "root_cause": "SushiSwap TWAP Oracle Manipulation — Thin Liquidity Governance Token",
+        "description": "An MEV-sophisticated attacker inflated INV's price 50x on a thin SushiSwap pool, blocked arbitrage bots from correcting it across multiple blocks, then borrowed $15.6M from Inverse Finance against $644k of real collateral.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || ★ Oracle source = spot DEX pool [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash withdrawal; 500 ETH buy of INV on thin SushiSwap pool causing 50x price spike]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — INV price spiked 50x on SushiSwap; visible on-chain immediately]"
+        }
+      ]
+    }
+  }
+}

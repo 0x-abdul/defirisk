@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "mango-markets-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Mango Markets",
+        "occurred_at": "2022-10-11",
+        "loss_usd": 115000000.0,
+        "category": "Lending / Money Market + Margin Trading (Solana)",
+        "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain",
+        "description": "Mango Markets is Solana's flagship margin trading and lending protocol. The attack exploited the low liquidity and volume of the MNGO native token — whose spot price was used as collateral valuation for borrowing.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — marked \"Out of Scope\" in rekt.news metadata; the spot price manipulation risk was not caught or addressed]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "related",
+          "notes": "Ignored bug bounty disclosure — adjacent [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly (Y/N): Y — MNGO spot price pump to $0.91 was extreme and detectable] || ★ Oracle source = spot DEX pool [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-073",
+          "relevance": "causal",
+          "notes": "Oracle-manipulation-proof borrow cap per asset [via cross-hack: Factor 42: Unrealized PnL Accepted as Borrowing Collateral]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — MNGO spot price pump to $0.91 was extreme and detectable]"
+        },
+        {
+          "factor_id": "RD-F-177",
+          "relevance": "causal",
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        }
+      ]
+    }
+  }
+}

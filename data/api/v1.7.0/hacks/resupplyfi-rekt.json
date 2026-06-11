@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "resupplyfi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "ResupplyFi",
+        "occurred_at": "2025-06-25",
+        "loss_usd": 9800000.0,
+        "category": "Lending",
+        "root_cause": "ERC4626 Donation Attack (Vault Inflation / Zero Exchange Rate)",
+        "description": "ResupplyFi lost $9.8M in two hours when an attacker donated spare change to a freshly deployed vault, inflated its share price to infinity, and borrowed the entire market with 1 wei of collateral.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — wstUSR market contract deployed ~2 hours before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — wstUSR market contract deployed ~2 hours before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — not mentioned in source]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: New market deployed ~2 hours before exploit (detectable on-chain); Tornado Cash funding of attacker address]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — oracle reported astronomically inflated price for newly donated vault; any oracle sanity check would have flagged price as unrealistic]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — integrates crvUSD/Curve infrastructure; ERC4626-based]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — wstUSR market contract deployed ~2 hours before exploit]"
+        }
+      ]
+    }
+  }
+}

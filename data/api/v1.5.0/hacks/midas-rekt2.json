@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "midas-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Midas Capital",
+        "occurred_at": "2023-06-17",
+        "loss_usd": 600000.0,
+        "category": "Lending / Money Market (Compound V2 fork)",
+        "root_cause": "Compound V2 empty-market donation attack — exchange rate inflation + rounding error in redeemUnderlying",
+        "description": "Midas Capital lost $600K to the same Compound V2 empty-market rounding vulnerability that had drained Hundred Finance for $7.4M just two months prior — making it Midas's second leaderboard entry of 2023.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound V2 / Fuse fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound V2 / Fuse fork]"
+        }
+      ]
+    }
+  }
+}

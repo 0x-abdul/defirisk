@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bent-finance",
+        "protocol_slug": null,
+        "protocol_name": "Bent Finance",
+        "occurred_at": "2021-12-21",
+        "loss_usd": 1750000.0,
+        "category": "Yield Aggregator / Curve Staking & Farming",
+        "root_cause": "Insider Contract Manipulation (Malicious Balance Adjustment)",
+        "description": "A Bent Finance insider silently manipulated smart contract reward balances on November 30 to award themselves ~$1.75M in fraudulent yields — and wasn't caught for 21 days until a DeBank listing accidentally exposed the absurd pending rewards.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — cvxCRV contract was updated on Nov 30 (the update that enabled the exploit)]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — the exploit *was* an admin action (manual balance manipulation via contract update)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the exploit *was* an admin action (manual balance manipulation via contract update)]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous / pseudonymous]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "revest-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Revest Finance",
+        "occurred_at": "2022-03-27",
+        "loss_usd": 2000000.0,
+        "category": "Financial NFT / Token Vesting / Liquidity Lock",
+        "root_cause": "ERC1155 reentrancy via onERC1155Received — fnftId update timing flaw inflates FNFT redemption value",
+        "description": "Revest Finance lost $2M when an attacker used an ERC1155 mint callback to re-enter the vault mid-transaction, exploiting a timing flaw in FNFT ID tracking to assign real token value to 360,000 worthless receipt tokens.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived single review]"
+        }
+      ]
+    }
+  }
+}

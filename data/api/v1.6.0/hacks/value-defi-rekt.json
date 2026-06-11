@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "value-defi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Value DeFi",
+        "occurred_at": "2020-11-14",
+        "loss_usd": 7000000.0,
+        "category": "Yield Aggregator / Lending Vault",
+        "root_cause": "Flash loan + Curve spot price oracle manipulation → inflated collateral → over-borrow drain",
+        "description": "Value DeFi lost ~$7M when an attacker used a $231M flash loan to double their Curve LP oracle price and borrow stablecoins far beyond actual collateral value — hours after the team tweeted \"we are smarter than most in terms of flash loan protection.\"",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — Curve spot price doubled during attack; observable if monitored]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — Curve spot price doubled during attack; observable if monitored]"
+        }
+      ]
+    }
+  }
+}

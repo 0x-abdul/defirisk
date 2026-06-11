@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "belt",
+        "protocol_slug": null,
+        "protocol_name": "Belt Finance",
+        "occurred_at": "2021-05-29",
+        "loss_usd": 6300000.0,
+        "category": "Yield Aggregator / Stablecoin Strategy Vault",
+        "root_cause": "Flash Loan + Price/Share Manipulation (Incorrect Share Valuation)",
+        "description": "Belt Finance was drained of $6.3M when an attacker used 8 simultaneous $385M flash loans to repeatedly manipulate share valuations across BSC yield strategies in a near-identical replay of the Harvest Finance hack.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — price manipulation via Ellipsis swaps distorted share valuations]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — 8 simultaneous flash loans from PancakeSwap ($385M BUSD)]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Partially anonymous (BSC-era project)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — described as \"fork of a fork\"]"
+        }
+      ]
+    }
+  }
+}

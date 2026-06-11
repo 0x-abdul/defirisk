@@ -1,0 +1,9 @@
+# Cloudflare Pages redirects (E-17 stub).
+#
+# Format: https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# /api → /data/ — the meta-refresh in src/pages/api/index.astro is the
+# fallback for browsers that load the page; this _redirects rule is faster
+# (302 at the edge before the page even renders).
+
+/api  /data/  302

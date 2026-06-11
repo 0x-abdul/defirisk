@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "paid-rekt",
+        "protocol_slug": null,
+        "protocol_name": "PAID Network",
+        "occurred_at": "2021-03-05",
+        "loss_usd": 27400000.0,
+        "category": "Token / IDO Platform",
+        "root_cause": "Infinite Mint — Compromised Deployer Key (Suspected Insider)",
+        "description": "PAID Network's deployer EOA transferred token contract ownership to an unknown address 30 minutes before 59.47M PAID tokens were minted and dumped on Uniswap — collapsing the price 89% and raising widespread suspicion of an inside job.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — ownership transfer of token contract]"
+        }
+      ]
+    }
+  }
+}

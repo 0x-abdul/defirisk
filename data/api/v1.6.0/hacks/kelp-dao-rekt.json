@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "kelp-dao-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Kelp DAO (rsETH liquid restaking)",
+        "occurred_at": "2026-04-18",
+        "loss_usd": 292000000.0,
+        "category": "Liquid Restaking Token (LRT) / Cross-Chain Bridge",
+        "root_cause": "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration",
+        "description": "An attacker forged a single LayerZero message to drain $292M in rsETH from Kelp DAO's mainnet bridge reserve, then weaponized the unbacked tokens as Aave collateral to borrow $196M in ETH — all inside the 46-minute window before Kelp could pause.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited or out-of-scope code (bridge contracts excluded from bug bounty; audit coverage of lzReceive configuration unconfirmed)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Six attacker wallets funded via Tornado Cash ~10 hours before exploit (07:35 UTC); no documented anomalous rsETH-bridge or OFTAdapter activi...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+        },
+        {
+          "factor_id": "RD-F-148",
+          "relevance": "causal",
+          "notes": "Bridge validator count (M) — LayerZero DVN sub-field [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+        },
+        {
+          "factor_id": "RD-F-149",
+          "relevance": "related",
+          "notes": "Bridge validator threshold (k-of-M) [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+        }
+      ]
+    }
+  }
+}

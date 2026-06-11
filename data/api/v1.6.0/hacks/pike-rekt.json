@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "pike-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Pike Finance",
+        "occurred_at": "2024-04-26",
+        "loss_usd": 1900000.0,
+        "category": "Lending / Cross-chain Liquidity Market",
+        "root_cause": "Storage Layout Collision → Unauthorized Proxy Upgrade / Ownership Takeover",
+        "description": "Pike Finance was exploited twice in four days — the second time using the same root vulnerability introduced by the emergency patch deployed to fix the first: a storage layout collision that left proxy contracts re-initializable and ownership stealable.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — emergency patch introduced the bug; original audit did not cover post-patch code]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (emergency patch)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — emergency patch deployed after first exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — emergency upgrade between attacks introduced the storage collision]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "stars-arena-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Stars Arena",
+        "occurred_at": "2023-10-07",
+        "loss_usd": 2900000.0,
+        "category": "SocialFi (FriendTech clone)",
+        "root_cause": "Reentrancy",
+        "description": "Stars Arena's \"fix\" for its first exploit introduced a reentrancy bug that drained the entire $2.9M TVL less than 24 hours later.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit existed] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit existed]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — second exploit used contract deployed as \"fix\" for first exploit, hours before attack] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — second exploit used contract deployed as \"fix\" for first exploit, hours before attack]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Proxy upgrade between exploit 1 and exploit 2 introduced the reentrancy bug; new implementation was unverified]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — FriendTech clone]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — second exploit used contract deployed as \"fix\" for first exploit, hours before attack]"
+        }
+      ]
+    }
+  }
+}

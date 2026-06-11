@@ -1,0 +1,30 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "skyward-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Skyward Finance",
+        "occurred_at": "2022-11-03",
+        "loss_usd": 3200000.0,
+        "category": "Token Launchpad",
+        "root_cause": "Missing Parameter Validation — Redemption Loop (redeem_skyward)",
+        "description": "Skyward Finance's treasury was drained in one transaction when an attacker passed a looped parameter to the redemption function — a missing input validation that existed since launch and took over a year for anyone to exploit.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unknown (likely unaudited)]"
+        }
+      ]
+    }
+  }
+}

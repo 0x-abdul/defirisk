@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "shibarium-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Shibarium (Bridge)",
+        "occurred_at": "2025-09-12",
+        "loss_usd": 3000000.0,
+        "category": "Bridge / L2 Infrastructure",
+        "root_cause": "Flash Loan Validator Capture → Fraudulent Checkpoint → Bridge Drain",
+        "description": "An attacker flash-loaned enough BONE to control 10 of Shibarium's 12 validators in a single block, signed fraudulent bridge checkpoints, and drained $3M — exactly the attack L2BEAT had warned about in writing.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — 4.6M BONE flash-purchased in same block as exploit; validator power spiked anomalously]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Polygon PoS-derived architecture]"
+        }
+      ]
+    }
+  }
+}

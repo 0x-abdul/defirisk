@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "unizen-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Unizen",
+        "occurred_at": "2024-03-08",
+        "loss_usd": 2100000.0,
+        "category": "DEX Aggregator",
+        "root_cause": "Unvalidated external call in upgraded DEX Aggregation contract — approval drain",
+        "description": "Unizen lost $2.1M when a gas optimization upgrade to their DEX aggregation contract introduced an unvalidated external call vulnerability, enabling multiple attackers to drain token approvals from users' wallets within hours.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — the upgrade that introduced the vulnerability was not audited] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — the upgrade that introduced the vulnerability was not audited]"
+        },
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2022 audit; exploit March 2024)]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (the upgrade)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — gas optimization upgrade deployed immediately before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — gas optimization upgrade deployed immediately before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — contract upgrade was the proximate trigger (team-controlled but observable)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — gas optimization upgrade deployed immediately before exploit]"
+        }
+      ]
+    }
+  }
+}

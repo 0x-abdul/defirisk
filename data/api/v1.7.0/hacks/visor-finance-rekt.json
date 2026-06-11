@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "visor-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Visor Finance",
+        "occurred_at": "2021-12-22",
+        "loss_usd": 8200000.0,
+        "category": "Liquidity Management / Yield (Uniswap V3 LP manager)",
+        "root_cause": "Vulnerable require() in vVISR deposit() — self-referential ownership bypass → unlimited share minting",
+        "description": "Visor Finance lost $8.2M in VISR when an attacker bypassed the vVISR deposit() check by deploying a contract that owned itself, minting 195K vVISR tokens redeemable for 8.8M underlying VISR — though the dump crashed the token 87%, limiting actual ETH extraction to ~$450K.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding of attacker address minutes before; custom contract deployment]"
+        }
+      ]
+    }
+  }
+}

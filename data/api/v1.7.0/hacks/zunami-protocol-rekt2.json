@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "zunami-protocol-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Zunami Protocol",
+        "occurred_at": "2025-05-14",
+        "loss_usd": 500000.0,
+        "category": "Yield Aggregator / Stablecoin",
+        "root_cause": "Admin key compromise → withdrawStuckToken() drain of LP collateral",
+        "description": "Zunami Protocol's fourth exploit in two years saw $500K in LP collateral drained in 7 minutes via a single withdrawStuckToken() call by someone holding the admin key — a protocol that never migrated to DAO control, had no GitHub activity for months, and whose CTO blamed Russian border police for the key compromise.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — withdrawStuckToken() admin privilege and centralized key management were operational/governance risk, not a code vulnerability in audit...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — withdrawStuckToken() admin privilege and centralized key management were operational/governance risk, not a code vulnerability in audit...]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — admin role grant is the proximate signal; 7-minute window between grant and drain]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — admin role grant is the proximate signal; 7-minute window between grant and drain]"
+        }
+      ]
+    }
+  }
+}

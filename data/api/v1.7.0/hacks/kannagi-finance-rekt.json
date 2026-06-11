@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "kannagi-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Kannagi Finance",
+        "occurred_at": "2023-07-29",
+        "loss_usd": 1100000.0,
+        "category": "Yield Aggregator",
+        "root_cause": "Insider rug — privileged admin withdrawal on behalf of users (MainChef address)",
+        "description": "Kannagi Finance was a yield aggregator on zkSync Era with $2.1M TVL. The protocol had been audited twice and was endorsed (via a now-deleted giveaway tweet) by SyncSwap, the leading zkSync DEX.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Y — newly launched]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "causal",
+          "notes": "Ignored disclosure — closest [via cross-hack: Factor 19: Audit Finding Not Communicated to Team]"
+        },
+        {
+          "factor_id": "RD-F-043",
+          "relevance": "causal",
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: Launched ~weeks before rug; newly deployed]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the privileged withdrawal was the attack mechanism itself]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Fully anonymous]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        },
+        {
+          "factor_id": "RD-F-123",
+          "relevance": "causal",
+          "notes": "★ Sudden admin-rescue / ACL change absent issue/PR discussion [via cross-hack: Factor 34: Suspected Insider Involvement]"
+        }
+      ]
+    }
+  }
+}

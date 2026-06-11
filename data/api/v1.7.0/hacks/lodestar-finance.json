@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "lodestar-finance",
+        "protocol_slug": null,
+        "protocol_name": "Lodestar Finance",
+        "occurred_at": "2022-12-10",
+        "loss_usd": 6500000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Oracle Price Manipulation (LP Token Donation)",
+        "description": "Lodestar Finance lost $6.5M when an attacker used flash loans and an open `donate()` function to inflate the Lodestar custom oracle price for plvGLP collateral, then borrowed all protocol liquidity against the inflated value.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited custom oracle code]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — team asked hacker to negotiate white-hat]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — GLPOracle price inflation detectable via `donate()` call monitoring]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound fork]"
+        }
+      ]
+    }
+  }
+}

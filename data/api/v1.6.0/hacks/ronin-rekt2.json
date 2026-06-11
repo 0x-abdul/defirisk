@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ronin-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Ronin Network (Bridge)",
+        "occurred_at": "2024-08-06",
+        "loss_usd": 12000000.0,
+        "category": "Bridge / Gaming Infrastructure",
+        "root_cause": "Uninitialized Variable in Contract Upgrade (initializeV3 Skipped)",
+        "description": "Six days after a routine upgrade, an MEV bot discovered Ronin's bridge had no withdrawal limits due to a skipped initialization call, drained $12M, then returned it all for a $500K bounty.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — the specific initializeV3-skip appears to have been a deployment error, not a code-level flaw; the new implementation (MainchainGateway...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — the specific initializeV3-skip appears to have been a deployment error, not a code-level flaw; the new implementation (MainchainGateway...]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — bridge upgrade deployed 6 days before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — bridge upgrade deployed 6 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — bridge upgrade deployed 6 days before exploit; this was the trigger]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — bridge upgrade deployed 6 days before exploit]"
+        }
+      ]
+    }
+  }
+}

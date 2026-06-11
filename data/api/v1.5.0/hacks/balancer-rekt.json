@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "balancer-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Balancer V2 (+ Beethoven X fork)",
+        "occurred_at": "2023-08-27",
+        "loss_usd": 2100000.0,
+        "category": "DEX / AMM (Weighted Pools, Boosted Pools)",
+        "root_cause": "Linear pool rounding-down logic → cached rate manipulation → boosted pool drain",
+        "description": "Balancer lost $2.1M when a known rounding bug in Linear Pool math — publicly disclosed 5 days earlier — was exploited in pools that were never included in any audit scope.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — Boosted Pools and Linear Pools explicitly out of scope for all linked audit reports] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code (Boosted Pools explicitly out of scope)]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "related",
+          "notes": "Ignored bug bounty disclosure — adjacent [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — majority of at-risk TVL was withdrawn in the 5-day window; only remaining stragglers were drained]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: No — original Balancer; Beethoven X is a Balancer fork that was also hit]"
+        },
+        {
+          "factor_id": "RD-F-177",
+          "relevance": "causal",
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]"
+        }
+      ]
+    }
+  }
+}

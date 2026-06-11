@@ -1,0 +1,985 @@
+---
+/**
+ * ProtocolDetailLayout — shared body for the protocol detail page.
+ *
+ * Rendered by two routes:
+ *   - /protocols/<slug>/                    (published; canonical public URL)
+ *   - /unpublished/<slug>-<token>/          (pre-publication review; noindex)
+ *
+ * The two routes diverge only in:
+ *   - the JSON loader they use (getProtocol vs getProtocolByReviewPath)
+ *   - whether `reviewMode` is true (adds the "Pending review" banner; the
+ *     /unpublished/ route also passes noindex to <Base>)
+ *
+ * Everything below this comment is identical for both — keeping the body
+ * in a single component prevents drift between published and review
+ * renders of the same protocol.
+ */
+import Base from '../layouts/Base.astro';
+import TopBar from '../components/TopBar.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import BigGradeCard from '../components/BigGradeCard.astro';
+import VerdictBlock from '../components/VerdictBlock.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import GovernanceSignalRow from '../components/GovernanceSignalRow.astro';
+import IncidentBanner from '../components/IncidentBanner.astro';
+import FactorTable from '../components/FactorTable.astro';
+import DeploymentTabs from '../components/DeploymentTabs';
+import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loaders';
+import { loadCuratorSidecar } from '../lib/curator-sidecar';
+import { RUBRIC_VERSION } from '../lib/rubric';
+import type { Letter } from '../lib/rubric';
+import { TOTAL_FACTOR_COUNT } from '../lib/rubric-constants';
+import { CATEGORIES, chainMeta } from '../data/categories';
+import type { FactorRow, FactorLight, GapReason } from '../components/FactorTable.astro';
+
+export interface Props {
+  detail: ProtocolDetail;
+  reviewMode?: boolean;
+  /** Optional explicit canonical override (used by the /unpublished/ route
+   *  to keep the review URL out of canonical link metadata). */
+  canonical?: string;
+}
+
+const { detail, reviewMode = false, canonical } = Astro.props;
+
+const MEANING: Record<Letter, string> = {
+  A: 'Resilient',
+  B: 'Sound',
+  C: 'Watch',
+  D: 'Compromised',
+  F: 'Failing',
+};
+
+const proto = detail.protocol as Record<string, unknown>;
+const slug = (proto.slug as string) ?? '';
+const headlineGrade = (proto.headline_grade ?? null) as Letter | null;
+const displayName = (proto.display_name as string) ?? slug;
+const protocolType = (proto.protocol_type as string) ?? '—';
+const primaryChain = (proto.primary_chain as string) ?? '—';
+const description = (proto.description as string) ?? '';
+const gradedAt = (proto.graded_at as string | null) ?? null;
+const tvlUsd = ((): number => {
+  const v = proto.total_value_secured_usd;
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') return parseFloat(v) || 0;
+  return 0;
+})();
+const categoryLights =
+  (proto.category_lights as Record<number, 'red' | 'yellow' | 'green' | 'gray'>) ?? {};
+
+// M1 v4 fields
+const riskScore = ((): number | null => {
+  const v = proto.risk_score;
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  if (typeof v === 'string') { const n = parseFloat(v); return Number.isFinite(n) ? n : null; }
+  return null;
+})();
+const categorySeverities =
+  (proto.category_severities as Record<string, number> | null | undefined) ?? null;
+const capApplied = (proto.cap_applied as 'none' | 'D' | 'F' | null | undefined) ?? 'none';
+const capReason = (proto.cap_reason as string | null | undefined) ?? null;
+
+// Deployments
+const deploymentsRaw =
+  (detail.deployments as Array<Record<string, unknown>>) ?? [];
+const deployments = deploymentsRaw.map((d) => {
+  const chainId = (d.chain as string) ?? '';
+  const m = chainMeta(chainId);
+  return {
+    chain_id: chainId,
+    chain_name: m.name,
+    color: m.color ?? '#7a7e85',
+    mark: m.mark ?? chainId.charAt(0).toUpperCase(),
+    tvs_usd: ((): number => {
+      const v = d.tvs_usd;
+      if (typeof v === 'number') return v;
+      if (typeof v === 'string') return parseFloat(v) || 0;
+      return 0;
+    })(),
+  };
+});
+
+// Factor scores → group by category_id
+const factors = listFactors();
+const factorById = new Map(factors.map((f) => [f.id, f]));
+
+const factorScoresRaw =
+  (detail.factor_scores as Array<Record<string, unknown>>) ?? [];
+
+type ScoreRecord = {
+  factor_id: string;
+  score: FactorLight;
+  evidence_summary: string;
+  category_id: number;
+  factor_name: string;
+  /** PD-039 (2026-05-11) — null on graded scores; populated on gray/not_assessed. */
+  gap_reason: GapReason | null;
+};
+
+const scoreRecords: ScoreRecord[] = factorScoresRaw.flatMap((fs) => {
+  const factorId = (fs.factor_id as string) ?? '';
+  const factor = factorById.get(factorId);
+  if (!factor) return [];
+  const score = (fs.score as FactorLight) ?? 'gray';
+  return [
+    {
+      factor_id: factorId,
+      score,
+      evidence_summary: (fs.evidence_summary as string) ?? '',
+      category_id: factor.category_id,
+      factor_name: factor.name,
+      gap_reason: (fs.gap_reason as GapReason | null | undefined) ?? null,
+    },
+  ];
+});
+
+// Counts for severity bars + meta values
+const totals = scoreRecords.reduce(
+  (acc, s) => {
+    if (s.score === 'red') acc.r++;
+    else if (s.score === 'yellow') acc.y++;
+    else if (s.score === 'green') acc.g++;
+    return acc;
+  },
+  { r: 0, y: 0, g: 0 },
+);
+
+// Critical factor count: load factors marked is_critical
+const CRITICAL_IDS = new Set(factors.filter((f) => f.is_critical).map((f) => f.id));
+const criticalRed = scoreRecords.filter(
+  (s) => CRITICAL_IDS.has(s.factor_id) && s.score === 'red',
+).length;
+
+const categoryRollup: Record<
+  number,
+  { records: ScoreRecord[]; r: number; y: number; g: number; total: number }
+> = {};
+for (const c of CATEGORIES) {
+  categoryRollup[c.id] = { records: [], r: 0, y: 0, g: 0, total: 0 };
+}
+for (const s of scoreRecords) {
+  const r = categoryRollup[s.category_id];
+  if (!r) continue;
+  r.records.push(s);
+  r.total++;
+  if (s.score === 'red') r.r++;
+  else if (s.score === 'yellow') r.y++;
+  else if (s.score === 'green') r.g++;
+}
+
+// Per-category factor counts in the full taxonomy
+const taxonomyCounts: Record<number, number> = {};
+for (const f of factors) taxonomyCounts[f.category_id] = (taxonomyCounts[f.category_id] ?? 0) + 1;
+
+// Active incidents only render on the published view — unpublished review
+// pages are pre-launch and should not surface incident banners from the
+// public ledger (the protocol isn't on the public dashboard yet).
+const incidents = reviewMode ? [] : listIncidents();
+const activeIncident = incidents.find((i) => i.protocol_slug === slug && i.status === 'open');
+
+// Curator sidecar — verdict body + multisig/timelock cells when upstream pipeline
+// doesn't yet emit them. Null for most protocols pending curator pass.
+const curator = loadCuratorSidecar(slug);
+const multisigCell = curator?.multisig ?? null;
+const timelockCell = curator?.timelock ?? null;
+
+function fmtTvl(usd: number): string {
+  if (!Number.isFinite(usd) || usd <= 0) return '—';
+  if (usd >= 1e9) return `$${(usd / 1e9).toFixed(1)}B`;
+  if (usd >= 1e6) return `$${(usd / 1e6).toFixed(1)}M`;
+  if (usd >= 1e3) return `$${(usd / 1e3).toFixed(0)}K`;
+  return `$${usd.toFixed(0)}`;
+}
+
+const lastAssessedDisplay = gradedAt
+  ? new Date(gradedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  : '—';
+
+// Severity-bar pattern for catcards. Take up to 18 bars per category.
+function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | 'g'> {
+  const bars: Array<'r' | 'y' | 'g'> = [];
+  for (let i = 0; i < rec.r; i++) bars.push('r');
+  for (let i = 0; i < rec.y; i++) bars.push('y');
+  for (let i = 0; i < rec.g; i++) bars.push('g');
+  return bars.slice(0, 18);
+}
+
+// JSON-envelope link target. For published pages the file lives at
+// /api/<rubric>/protocols/<slug>.json. For review pages the JSON sits
+// under /api/<rubric>/unpublished/<slug>-<token>/index.json, but we
+// derive the path off the route slug — the layout doesn't know the
+// review token, so on the review page we hide the JSON link instead
+// of pointing it at a stale published path.
+const envelopeHref = reviewMode
+  ? null
+  : `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
+---
+
+<Base
+  title={displayName}
+  description={description || `Risk assessment for ${displayName}`}
+  noindex={reviewMode}
+  canonical={canonical}
+>
+  <TopBar slot="topbar" />
+  {
+    reviewMode && (
+      <div slot="banner" class="review-banner" role="status">
+        <span class="review-icon" aria-hidden="true">🔍</span>
+        <span class="review-text">
+          <b>Pending review</b> — This assessment has not yet been published on the
+          dashboard. You have been shared this link so you can review the data before it goes live.
+          If you spot any errors, please reach out.
+        </span>
+      </div>
+    )
+  }
+  {
+    activeIncident && (
+      <IncidentBanner
+        slot="banner"
+        variant={activeIncident.severity}
+        headline={activeIncident.headline}
+        dismissKey={`incident-${activeIncident.id}`}
+      />
+    )
+  }
+
+  <Breadcrumb
+    items={[
+      { n: 'Protocols', href: '/' },
+      { n: protocolType.charAt(0).toUpperCase() + protocolType.slice(1) },
+      { n: displayName },
+    ]}
+  />
+
+  {
+    capApplied !== 'none' && capReason && (
+      <div class:list={['cap-banner', capApplied === 'F' ? 'cap-f' : 'cap-d']}>
+        <span class="cap-icon" aria-hidden="true">{capApplied === 'F' ? '⚠' : '▲'}</span>
+        <span class="cap-text">
+          <b>Grade capped to {capApplied}</b> — {capReason}
+        </span>
+      </div>
+    )
+  }
+
+  <div class="layout">
+    <aside class="rail">
+      <div class="gradeblock">
+        {
+          headlineGrade ? (
+            <BigGradeCard
+              letter={headlineGrade}
+              meaning={MEANING[headlineGrade]}
+              score={riskScore ?? undefined}
+            />
+          ) : (
+            <div class="gradebig-unscored" aria-label="Not yet scored">
+              <span class="l">—</span>
+              <span class="m">Pending</span>
+            </div>
+          )
+        }
+        {
+          headlineGrade && (
+            <VerdictBlock letter={headlineGrade} body={curator?.verdict_body ?? undefined} />
+          )
+        }
+      </div>
+
+      <div class="pname">{displayName}</div>
+      <div class="ptag">
+        {protocolType} · {chainMeta(primaryChain).name}
+      </div>
+
+      <div class="meta">
+        <div class="mi">
+          <span>TVL</span>
+          <b>{fmtTvl(tvlUsd)}</b>
+        </div>
+        <div class="mi">
+          <span>Sector</span>
+          <b>{protocolType}</b>
+        </div>
+        <div class="mi">
+          <span>Last assessed</span>
+          <b>{lastAssessedDisplay}</b>
+        </div>
+        <div class="mi">
+          <span>Critical findings</span>
+          <b style={criticalRed > 0 ? 'color: var(--gF)' : ''}>
+            {criticalRed} of {CRITICAL_IDS.size}
+          </b>
+        </div>
+        {riskScore !== null && (
+          <div class="mi">
+            <span>Risk score</span>
+            <b class="mono">{riskScore.toFixed(1)}<span class="mi-unit"> / 100</span></b>
+          </div>
+        )}
+        <div class="mi">
+          <span>Severity (R / Y / G)</span>
+          <b class="mono">{totals.r} · {totals.y} · {totals.g}</b>
+        </div>
+        <GovernanceSignalRow
+          label="Multisig"
+          light={multisigCell?.light ?? 'gray'}
+          value={multisigCell?.value ?? '—'}
+          sub={multisigCell?.sub ?? 'curator pending'}
+        />
+        <GovernanceSignalRow
+          label="Timelock"
+          light={timelockCell?.light ?? 'gray'}
+          value={timelockCell?.value ?? '—'}
+          sub={timelockCell?.sub ?? 'curator pending'}
+        />
+      </div>
+
+      <h5>Categories</h5>
+      <nav class="toc" aria-label="Category jump links">
+        {
+          CATEGORIES.map((c) => {
+            const cl = categoryLights[c.id] ?? 'gray';
+            const counts = categoryRollup[c.id];
+            const issues = counts.r + counts.y;
+            return (
+              <a href={`#cat-${c.id}`}>
+                <span class="lbl">
+                  <span class:list={['dot', cl]} aria-hidden="true" />
+                  <span>{c.short ?? c.name}</span>
+                </span>
+                <span class="ct">{issues > 0 ? `${issues}` : '—'}</span>
+              </a>
+            );
+          })
+        }
+      </nav>
+
+      <div class="actions">
+        {envelopeHref && (
+          <a href={envelopeHref}>
+            JSON envelope <span class="arr">↗</span>
+          </a>
+        )}
+        {!reviewMode && (
+          <a href={`/factors/?protocol=${slug}`}>
+            All factors <span class="arr">→</span>
+          </a>
+        )}
+      </div>
+    </aside>
+
+    <div class="body">
+      <div class="masthead">
+        <h1>{displayName}</h1>
+        {description && <p class="sub">{description}</p>}
+        <div class="body-meta">
+          <div class="mi">
+            <span>Sector</span>
+            <b>{protocolType}</b>
+          </div>
+          <div class="mi">
+            <span>TVL</span>
+            <b>{fmtTvl(tvlUsd)}</b>
+          </div>
+          <div class="mi">
+            <span>Reviewed</span>
+            <b>{lastAssessedDisplay}</b>
+          </div>
+          <div class="mi">
+            <span>Factors</span>
+            <b>{TOTAL_FACTOR_COUNT}</b>
+          </div>
+          <div class="mi">
+            <span>Categories</span>
+            <b>{CATEGORIES.length}</b>
+          </div>
+          {riskScore !== null && (
+            <div class="mi">
+              <span>Risk score</span>
+              <b>{riskScore.toFixed(1)}</b>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {
+        deployments.length > 0 && (
+          <DeploymentTabs client:visible deployments={deployments} />
+        )
+      }
+
+      <section class="sec">
+        <div class="head">
+          <span class="num">01</span>
+          <h2>Risk profile at a glance</h2>
+          <span class="right">
+            {Object.values(categoryLights).filter((l) => l === 'red').length} red ·{' '}
+            {Object.values(categoryLights).filter((l) => l === 'yellow').length} yellow ·{' '}
+            {Object.values(categoryLights).filter((l) => l === 'green').length} green
+          </span>
+        </div>
+        <div class="catstrip">
+          {
+            CATEGORIES.map((c) => {
+              const l = categoryLights[c.id] ?? 'gray';
+              const ct = taxonomyCounts[c.id] ?? 0;
+              return (
+                <a
+                  href={`#cat-${c.id}`}
+                  class:list={['ck', l]}
+                  title={`${c.name} · ${l}`}
+                  aria-label={`${c.name} category: ${l}, ${ct} factors`}
+                >
+                  {ct}
+                </a>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <section class="sec">
+        <div class="head">
+          <span class="num">02</span>
+          <h2>Categories &amp; evidence</h2>
+          <span class="right">
+            {TOTAL_FACTOR_COUNT} factors · {CATEGORIES.length} categories
+          </span>
+        </div>
+
+        {
+          CATEGORIES.map((c) => {
+            const counts = categoryRollup[c.id];
+            const total = taxonomyCounts[c.id] ?? 0;
+            const light = categoryLights[c.id] ?? 'gray';
+            const rows: FactorRow[] = counts.records
+              .sort((a, b) => {
+                const order = { red: 0, yellow: 1, gray: 2, not_assessed: 2, not_applicable: 2, green: 3 } as Record<
+                  string,
+                  number
+                >;
+                return (order[a.score] ?? 4) - (order[b.score] ?? 4);
+              })
+              .map((s) => ({
+                factor_id: s.factor_id,
+                light: s.score,
+                headline: s.factor_name,
+                evidence: s.evidence_summary,
+                gap_reason: s.gap_reason,
+                href:
+                  s.score !== 'green' && !reviewMode
+                    ? `/protocols/${slug}/factors/${s.factor_id}/`
+                    : undefined,
+              }));
+            const catSeverity = categorySeverities
+              ? (categorySeverities[String(c.id)] ?? undefined)
+              : undefined;
+            return (
+              <CategoryCard
+                id={String(c.id)}
+                name={c.name}
+                light={light}
+                bars={makeBars(counts)}
+                count={`${counts.records.length} of ${total}`}
+                severity={catSeverity}
+                open
+              >
+                <FactorTable factors={rows} />
+              </CategoryCard>
+            );
+          })
+        }
+      </section>
+
+      <div class="envelope">
+        <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
+        <span><b>graded_at</b> {gradedAt?.slice(0, 19).replace('T', ' ') ?? '—'}</span>
+        <span><b>factors</b> {TOTAL_FACTOR_COUNT}</span>
+        <span><b>protocol</b> {slug}</span>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  /* ─── Review banner (unpublished protocol preview) ─── */
+  .review-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 18px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, #a78bfa 8%, var(--bg));
+    border-top: 2px solid #a78bfa;
+  }
+  .review-banner .review-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .review-banner .review-text {
+    color: var(--fg-2);
+  }
+  .review-banner .review-text b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* ─── Cap banner (M1 v4 single-category override) ─── */
+  .cap-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 18px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--border);
+  }
+  .cap-banner.cap-f {
+    background: color-mix(in srgb, var(--gF) 8%, var(--bg));
+    border-top: 2px solid var(--gF);
+    color: var(--gF);
+  }
+  .cap-banner.cap-d {
+    background: color-mix(in srgb, var(--gD) 8%, var(--bg));
+    border-top: 2px solid var(--gD);
+    color: var(--gD);
+  }
+  .cap-banner .cap-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .cap-banner .cap-text {
+    color: var(--fg-2);
+  }
+  .cap-banner .cap-text b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  /* Muted unit suffix on risk score meta value */
+  .mi-unit {
+    font-size: 0.85em;
+    opacity: 0.55;
+    font-weight: 400;
+  }
+
+  /* ─── DA1 layout (300px sticky rail + body) ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: flex-start;
+  }
+  .rail {
+    border-right: 1px solid var(--border);
+    padding: 24px 22px;
+    background: var(--surface);
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .rail::-webkit-scrollbar {
+    width: 4px;
+  }
+  .rail::-webkit-scrollbar-thumb {
+    background: var(--border-2);
+    border-radius: 2px;
+  }
+  .gradeblock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .gradebig-unscored {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 14px;
+    background: var(--surface-2);
+    border: 1px dashed var(--border-2);
+    color: var(--fg-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .gradebig-unscored .l {
+    font-size: 96px;
+    font-weight: 700;
+    color: var(--fg-4);
+  }
+  .gradebig-unscored .m {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .pname {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin-top: 18px;
+    color: var(--fg);
+  }
+  .ptag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    margin-top: 4px;
+  }
+
+  .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 18px 0 0;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .meta .mi {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    font-size: 11.5px;
+    color: var(--fg-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .meta .mi:last-child {
+    border-bottom: none;
+  }
+  .meta .mi b {
+    color: var(--fg);
+    font-weight: 600;
+    font-feature-settings: 'tnum';
+    font-size: 12.5px;
+  }
+  .meta .mi b.mono {
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .rail h5 {
+    margin: 22px 0 9px;
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .toc a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 9px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--fg-2);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    border-left: 2px solid transparent;
+  }
+  .toc a:hover {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+  .toc a .lbl {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+  }
+  .toc a .lbl span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .toc a .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .toc a .dot.red {
+    background: var(--gF);
+  }
+  .toc a .dot.yellow {
+    background: var(--gC);
+  }
+  .toc a .dot.green {
+    background: var(--gA);
+  }
+  .toc a .dot.gray {
+    background: var(--fg-4);
+  }
+  .toc a .ct {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+  }
+
+  .actions {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .actions a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--fg);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .actions a:hover {
+    background: var(--surface-2);
+  }
+  .actions a .arr {
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-3);
+  }
+
+  /* ─── Body ─── */
+  .body {
+    padding: 28px 36px 64px;
+    max-width: 920px;
+  }
+  .body .masthead h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .body .masthead .sub {
+    font-size: 15px;
+    color: var(--fg-2);
+    margin-top: 10px;
+    max-width: 680px;
+    line-height: 1.55;
+  }
+  .body .body-meta {
+    margin: 18px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .body .body-meta .mi {
+    padding-right: 18px;
+    margin-right: 18px;
+    border-right: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--fg-3);
+    line-height: 1.4;
+  }
+  .body .body-meta .mi:last-child {
+    border-right: none;
+  }
+  .body .body-meta .mi b {
+    display: block;
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 13.5px;
+    font-feature-settings: 'tnum';
+    margin-top: 1px;
+  }
+
+  /* ─── Section ─── */
+  .sec {
+    margin-top: 38px;
+    scroll-margin-top: 64px;
+  }
+  .sec:first-of-type {
+    margin-top: 32px;
+  }
+  .sec .head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec .head .num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    background: var(--surface-2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .sec .head h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    flex: 1;
+  }
+  .sec .head .right {
+    font-size: 11.5px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+  }
+
+  /* ─── Catstrip ─── */
+  .catstrip {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    gap: 3px;
+    margin-bottom: 18px;
+  }
+  .catstrip .ck {
+    height: 36px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0;
+    transition: transform 0.12s;
+    text-decoration: none;
+  }
+  .catstrip .ck:hover {
+    transform: scale(1.06);
+    z-index: 2;
+  }
+  .catstrip .ck.red {
+    background: var(--gF);
+  }
+  .catstrip .ck.yellow {
+    background: var(--gC);
+  }
+  .catstrip .ck.green {
+    background: var(--gA);
+  }
+  .catstrip .ck.gray {
+    background: var(--fg-4);
+  }
+
+  /* ─── Provenance envelope (data stamps; test-stable selector) ─── */
+  .envelope {
+    margin-top: 36px;
+    padding: 14px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+    letter-spacing: 0.01em;
+  }
+  .envelope b {
+    color: var(--fg);
+    font-weight: 500;
+    margin-right: 6px;
+  }
+
+  /* ─── Mobile (under 900px) ─── Collapse 300px sticky rail to top of single-col stack */
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .rail {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 24px 18px;
+    }
+    .gradeblock {
+      flex-direction: row;
+      align-items: center;
+      gap: 18px;
+    }
+    .gradeblock :global(.gradebig) {
+      width: 140px;
+      height: 140px;
+      aspect-ratio: 1;
+      flex-shrink: 0;
+    }
+    .gradeblock :global(.gradebig .l) {
+      font-size: 72px;
+    }
+    .body {
+      padding: 24px 18px 48px;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+    }
+    .body .masthead h1 {
+      font-size: 28px;
+    }
+    .catstrip {
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+    .sec .head {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .sec .head .right {
+      width: 100%;
+    }
+  }
+  @media (max-width: 640px) {
+    .gradeblock {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .body .body-meta .mi {
+      padding-right: 12px;
+      margin-right: 12px;
+    }
+    .catstrip {
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .body .body-meta {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .body .body-meta .mi {
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
+    }
+  }
+  @media (max-width: 420px) {
+    .catstrip {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

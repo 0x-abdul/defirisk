@@ -1,0 +1,75 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "lndfi",
+        "protocol_slug": null,
+        "protocol_name": "LNDFi (LND.fi)",
+        "occurred_at": "2025-05-09",
+        "loss_usd": 1180000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Admin Backdoor (Malicious Code Injection by Contractor / DPRK Dev)",
+        "description": "LNDFi lost $1.18M when a suspected DPRK developer injected a single backdoor line into their Aave V3 fork 41 days before launch, giving any Pool Admin the power to drain depositor funds — and then did exactly that in 45 seconds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited; backdoor injected at development stage]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — fresh deployment with injected backdoor]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — Pool Admin role assignment was the enabling action]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 41 days (from deployment to exploit)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — Pool Admin role assignment was the enabling action]"
+        },
+        {
+          "factor_id": "RD-F-122",
+          "relevance": "related",
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        },
+        {
+          "factor_id": "RD-F-123",
+          "relevance": "causal",
+          "notes": "★ Sudden admin/ACL change absent issue/PR — DPRK insider class [via dashboard_risk_factors/Team anonymity: Pseudonymous; possible DPRK IT worker involvement]"
+        },
+        {
+          "factor_id": "RD-F-125",
+          "relevance": "causal",
+          "notes": "★ Deployer linked to DPRK cluster [via dashboard_risk_factors/Team anonymity: Pseudonymous; possible DPRK IT worker involvement] || ★ Deployer linked to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Aave V3 fork]"
+        }
+      ]
+    }
+  }
+}

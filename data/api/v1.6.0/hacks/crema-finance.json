@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "crema-finance",
+        "protocol_slug": null,
+        "protocol_name": "Crema Finance",
+        "occurred_at": "2022-07-04",
+        "loss_usd": 8800000.0,
+        "category": "DEX / Concentrated Liquidity AMM",
+        "root_cause": "Faulty Account Owner Validation — Fake Tick Account Injection",
+        "description": "Crema Finance lost $8.8M when an attacker created a fake Solana tick account with fabricated price data, tricking the protocol into paying millions in illegitimate LP fees.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — tick account data (price data used for fee calculation) was fabricated; a monitoring system comparing tick account owner validity agains...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

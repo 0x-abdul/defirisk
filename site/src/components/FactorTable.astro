@@ -1,0 +1,183 @@
+---
+// FactorTable types live in FactorTable.types.ts (not inline in this frontmatter).
+//
+// Why a sibling .ts file: esbuild 0.21.5 + Vite 5.4 (Astro 4.16) misroutes union
+// types declared in an .astro frontmatter when those types are imported via
+// `import type` from another .astro file (here, [slug].astro pulls FactorRow /
+// FactorLight / GapReason). The misroute parses the frontmatter as plain JS,
+// fails on the union `|`, and reports "Unexpected '|'" at a misleading byte
+// position inside this file. Moving the types to a .ts module avoids the
+// .astro → .astro type-import path entirely. Reported upstream-ish; revisit
+// when bumping Astro / Vite.
+import type { FactorLight, GapReason, FactorRow } from './FactorTable.types';
+export type { FactorLight, GapReason, FactorRow } from './FactorTable.types';
+
+export interface Props {
+  factors: FactorRow[];
+}
+
+const { factors } = Astro.props;
+
+function pipText(l: FactorLight): string {
+  switch (l) {
+    case 'red':
+    case 'yellow':
+    case 'green':
+      return l;
+    case 'not_assessed':
+      return 'n/a';
+    case 'not_applicable':
+      return 'n/a';
+    case 'gray':
+    default:
+      return 'gray';
+  }
+}
+
+function pipKind(l: FactorLight): string {
+  if (l === 'red' || l === 'yellow' || l === 'green') return l;
+  return 'gray';
+}
+
+/** PD-039 — Tooltip copy for the pip when score is gray/not_assessed.
+ *  Distinguishes protocol-side opacity from our pipeline gaps so the GRAY
+ *  cell doesn't read as a protocol penalty. */
+function pipTooltip(l: FactorLight, gr?: GapReason | null): string | undefined {
+  if (l === 'green' || l === 'yellow' || l === 'red') return undefined;
+  if (l === 'not_applicable') return 'Not applicable to this protocol';
+  // gray or not_assessed
+  switch (gr) {
+    case 'protocol_opacity':
+      return 'GRAY — protocol opaque (closed source / undocumented)';
+    case 'pipeline_unimplemented':
+      return 'GRAY — measurement pending (our pipeline gap, not a protocol issue)';
+    case 'external_api_blocked':
+      return 'GRAY — measurement pending (external API blocked)';
+    case 'requires_curator_input':
+      return 'GRAY — measurement pending (curator review needed)';
+    case 'not_applicable':
+      return 'GRAY — not applicable';
+    default:
+      return l === 'not_assessed' ? 'Not assessed' : 'GRAY — no measurement available';
+  }
+}
+---
+
+<div class="ftable" role="list">
+  {
+    factors.map((f) => {
+      const tag = f.href ? 'a' : 'div';
+      const Tag = tag as 'a' | 'div';
+      return (
+        <Tag
+          role="listitem"
+          class="frow"
+          href={f.href}
+        >
+          <span class="fid">{f.factor_id}</span>
+          <span>
+            <span
+              class:list={['pip', pipKind(f.light)]}
+              title={pipTooltip(f.light, f.gap_reason)}
+            >
+              {pipText(f.light)}
+            </span>
+          </span>
+          <span class="body">
+            <span class="head">{f.headline}</span>
+            {f.evidence && <span class="ev">{f.evidence}</span>}
+          </span>
+        </Tag>
+      );
+    })
+  }
+  {
+    factors.length === 0 && (
+      <div class="empty">No factor evidence yet for this category.</div>
+    )
+  }
+</div>
+
+<style>
+  .ftable {
+    display: flex;
+    flex-direction: column;
+  }
+  .frow {
+    display: grid;
+    grid-template-columns: 80px 80px 1fr;
+    gap: 14px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+  }
+  .frow:last-child {
+    border-bottom: none;
+  }
+  a.frow {
+    cursor: pointer;
+  }
+  a.frow:hover {
+    background: var(--surface-2);
+  }
+  .fid {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+  }
+  .pip {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 4px;
+  }
+  .pip.red {
+    color: var(--gF);
+    background: var(--gF-bg);
+  }
+  .pip.yellow {
+    color: var(--gC);
+    background: var(--gC-bg);
+  }
+  .pip.green {
+    color: var(--gA);
+    background: var(--gA-bg);
+  }
+  .pip.gray {
+    color: var(--fg-3);
+    background: var(--surface-2);
+  }
+  .body {
+    min-width: 0;
+  }
+  .head {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.35;
+    color: var(--fg);
+  }
+  .ev {
+    display: block;
+    font-size: 12.5px;
+    color: var(--fg-2);
+    margin-top: 4px;
+    line-height: 1.55;
+    max-width: 680px;
+    text-wrap: pretty;
+  }
+  .empty {
+    padding: 14px 18px;
+    font-size: 12.5px;
+    color: var(--fg-3);
+    text-align: center;
+  }
+</style>

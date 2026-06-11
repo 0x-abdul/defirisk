@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bybit",
+        "protocol_slug": null,
+        "protocol_name": "ByBit",
+        "occurred_at": "2025-02-21",
+        "loss_usd": 1430000000.0,
+        "category": "Centralised Exchange (CEX) — Ethereum cold wallet (Safe multisig)",
+        "root_cause": "Frontend Spoofing / Blind Signing — Malicious Safe Multisig Implementation Upgrade",
+        "description": "North Korea's Lazarus Group deceived ByBit's multisig signers into approving a malicious Safe implementation upgrade that installed a hidden drain function — executing the largest theft in crypto history at $1.43 billion.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — attacker deployed and installed malicious Safe implementation contract]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the exploit *was* a governance/implementation action (Safe upgrade) disguised as a routine transfer]"
+        }
+      ]
+    }
+  }
+}

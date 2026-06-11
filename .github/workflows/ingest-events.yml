@@ -1,0 +1,65 @@
+# Weekly Bucket B refresh — episodic-cadence factors (E-30 Phase 4)
+#
+# Runs refresh-events.py for all protocols at 05:00 UTC every Monday.
+# Two-stage: probes for discrete change events first, then re-grades only
+# the protocols where something changed.
+#
+# Episodic factors include: pause activations, post-exploit response scores,
+# signer rotations, new audits, governance proposals, bug-bounty disclosures.
+#
+# Prerequisites (repo Settings → Secrets and variables → Actions):
+#   DATABASE_URL          — Supabase pooler connection string (M5+)
+#
+# [!] Pre-M5: DATABASE_URL is not configured — workflow skips gracefully.
+
+name: Weekly ingest (Bucket B — episodic cadence)
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'   # 05:00 UTC every Monday
+  workflow_dispatch:        # manual: gh workflow run ingest-events.yml
+
+permissions:
+  contents: read
+
+jobs:
+  refresh-events:
+    name: Refresh episodic-cadence factors
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install 'psycopg[binary]' requests
+
+      - name: Check prerequisites
+        id: prereq
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "SKIP: DATABASE_URL not set — configure at M5 Supabase cutover."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Run refresh-events.py
+        if: steps.prereq.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/refresh-events.py --all
+
+      - name: Skip notice (pre-M5)
+        if: steps.prereq.outputs.skip == 'true'
+        run: echo "Weekly event refresh skipped — DATABASE_URL not configured (pre-M5)."

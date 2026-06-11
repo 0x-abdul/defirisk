@@ -1,0 +1,93 @@
+---
+import Page from '../../../components/Page.astro';
+import { listProtocols } from '../../../lib/data-loaders';
+import { CHAINS, chainMeta } from '../../../data/categories';
+
+export async function getStaticPaths() {
+  return CHAINS.map((c) => ({ params: { slug: c.id } }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const meta = chainMeta(slug);
+const protocols = listProtocols().filter((p) => p.primary_chain === slug);
+
+const toc = [
+  { id: 'overview', n: `${meta.name} overview` },
+  { id: 'protocols', n: 'Protocols graded' },
+];
+---
+
+<Page
+  pageTitle={`${meta.name} — risk overview`}
+  description={`Protocols graded on ${meta.name}, with their letter grades and TVL coverage.`}
+  crumbs={[
+    { n: 'Guide', href: '/learn/' },
+    { n: 'Chains' },
+    { n: meta.name },
+  ]}
+  toc={toc}
+  hero={{
+    h1: `${meta.name}`,
+    lede: `Graded protocols deployed on ${meta.name}. ${protocols.length} ${protocols.length === 1 ? 'entry' : 'entries'} in the current rubric.`,
+    meta: [
+      { label: 'Protocols', value: String(protocols.length) },
+      { label: 'Chain id', value: slug },
+    ],
+  }}
+>
+  <h2 id="overview">{meta.name} overview <a class="alink" href="#overview">#</a></h2>
+  <p>
+    {meta.name} hosts {protocols.length} graded {protocols.length === 1 ? 'protocol' : 'protocols'} in
+    the current rubric. Click any protocol below for its full assessment.
+  </p>
+
+  <h2 id="protocols">Protocols graded <a class="alink" href="#protocols">#</a></h2>
+  {
+    protocols.length === 0 ? (
+      <p>No protocols are graded on this chain yet.</p>
+    ) : (
+      <ul class="proto-list">
+        {protocols.map((p) => (
+          <li>
+            <a href={`/protocols/${p.slug}/`}>
+              <strong>{p.display_name}</strong>
+              <span class="meta-strip">
+                {p.protocol_type} · grade {p.headline_grade ?? '—'}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Page>
+
+<style>
+  .proto-list {
+    list-style: none;
+    padding: 0;
+  }
+  .proto-list li::before {
+    content: none !important;
+  }
+  .proto-list a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 8px 0;
+    background: var(--surface);
+    text-decoration: none;
+    color: var(--fg);
+  }
+  .proto-list a:hover {
+    background: var(--surface-2);
+  }
+  .meta-strip {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+</style>

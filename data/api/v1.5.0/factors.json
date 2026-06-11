@@ -1,0 +1,1849 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "factors": [
+      {
+        "id": "RD-F-001",
+        "category_id": 1,
+        "name": "Audit scope mismatch",
+        "description": "Check whether the commit SHA cited in the audit report matches the bytecode deployed at the production proxy/implementation address.",
+        "is_critical": true,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-002",
+        "category_id": 1,
+        "name": "Audit recency",
+        "description": "Measure the number of days between today and the sign-off date of the most recent audit report covering the currently-deployed bytecode.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-003",
+        "category_id": 1,
+        "name": "Resolved-without-proof findings",
+        "description": "Count the number of findings the audit report marks \"Resolved\" or \"Fixed\" where no matching on-chain bytecode change or verifiable commit can be found.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-004",
+        "category_id": 1,
+        "name": "Audit count",
+        "description": "Count the number of distinct audit firms whose reports cover any portion of the currently-deployed bytecode.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-005",
+        "category_id": 1,
+        "name": "Audit firm tier",
+        "description": "Classify each auditing firm into: Tier-1 (Trail of Bits / OpenZeppelin / ConsenSys Diligence / Certora / Sigma Prime / Spearbit / Zellic) / Tier-2 (established, named firm with public track record) / boutique / unknown.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-006",
+        "category_id": 1,
+        "name": "Audit-to-deploy gap",
+        "description": "Measure the number of days between the audit report sign-off date and the mainnet deploy of the audited bytecode.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-007",
+        "category_id": 1,
+        "name": "Bug bounty presence & max payout",
+        "description": "Check whether a public bug bounty program is active for this protocol and record the maximum payout in USD.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-008",
+        "category_id": 1,
+        "name": "Ignored bounty disclosure",
+        "description": "Determine whether any prior post-mortem documents a disclosed vulnerability that was reported to the team and not actioned before exploit.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-009",
+        "category_id": 1,
+        "name": "Formal verification coverage",
+        "description": "Determine the percentage of protocol-declared critical invariants covered by a formal verification proof (Certora Prover, Kani, Halmos, or equivalent).",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-010",
+        "category_id": 1,
+        "name": "Static-analyzer high-severity count",
+        "description": "Count the number of unique high-severity detector findings from Slither + Mythril + Semgrep run against the deployed verified source (after deduplication across tools).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-011",
+        "category_id": 1,
+        "name": "SELFDESTRUCT reachable from non-admin path",
+        "description": "Determine whether any deployed contract contains the SELFDESTRUCT opcode in a code path reachable from a non-admin caller.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-012",
+        "category_id": 1,
+        "name": "delegatecall with user-controlled target",
+        "description": "Determine whether any contract uses `delegatecall` where the target address is or can be user-supplied without an on-chain allowlist.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-013",
+        "category_id": 1,
+        "name": "Arbitrary call with user-controlled target",
+        "description": "Determine whether any contract performs `.call(target, data)` where target and/or data is user-supplied without a target allowlist or selector filter.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-014",
+        "category_id": 1,
+        "name": "Reentrancy guard on external-calling functions",
+        "description": "Determine whether all state-mutating functions that perform external calls carry `nonReentrant` or an equivalent reentrancy guard.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-015",
+        "category_id": 1,
+        "name": "ERC-777/1155/721 hook without reentrancy guard",
+        "description": "Determine whether the protocol integrates token standards with callbacks (ERC-777 tokensReceived, ERC-1155 onReceived, ERC-721 onReceived) without reentrancy guards on the affected functions.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-016",
+        "category_id": 1,
+        "name": "Divide-before-multiply pattern",
+        "description": "Determine whether Slither's `divide-before-multiply` detector fires on the deployed verified source.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-017",
+        "category_id": 1,
+        "name": "Mixed-decimals math without explicit scaling",
+        "description": "Determine whether shared numerator/denominator arithmetic operates over tokens with different decimals without WAD/RAY normalization or explicit decimal-adjustment.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-018",
+        "category_id": 1,
+        "name": "Signed/unsigned arithmetic confusion",
+        "description": "Determine whether signed-integer conversions or comparisons where unsigned was intended exist in the deployed bytecode/source.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-019",
+        "category_id": 1,
+        "name": "ecrecover zero-address return unchecked",
+        "description": "Determine whether any `ecrecover` call result is used without a `!= address(0)` guard.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-020",
+        "category_id": 1,
+        "name": "EIP-712 domain separator missing chainId",
+        "description": "Determine whether the EIP-712 domain separator struct omits the `chainId` field, allowing cross-chain replay.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-021",
+        "category_id": 1,
+        "name": "UUPS _authorizeUpgrade correctly permissioned",
+        "description": "Determine whether the UUPS implementation defines `_authorizeUpgrade(address)` restricted to owner/admin/timelock (not open to arbitrary callers).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-022",
+        "category_id": 1,
+        "name": "Public initialize() without initializer modifier",
+        "description": "Determine whether any implementation contract exposes `initialize(…)` without the OpenZeppelin `initializer` modifier or equivalent initialization lock.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-023",
+        "category_id": 1,
+        "name": "Constructor calls _disableInitializers()",
+        "description": "Determine whether implementation contract constructors call `_disableInitializers()` to prevent re-initialization of the implementation directly.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-024",
+        "category_id": 1,
+        "name": "Code complexity vs audit coverage",
+        "description": "Determine whether the cyclomatic complexity or LOC-per-audit-day ratio exceeds the curator-declared credibility threshold for the audit to be meaningful.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-025",
+        "category_id": 2,
+        "name": "Admin key custody type",
+        "description": "Read the effective admin/owner/upgrader role on deployed contracts and classify as: EOA / multisig / multisig+timelock / full DAO+timelock / immutable.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-026",
+        "category_id": 2,
+        "name": "Upgrade multisig signer configuration (M/N)",
+        "description": "Read `threshold` and `getOwners()` on the multisig controlling upgrade / sensitive ops. Store as `required` (M) and `total` (N); render as \"M/N\". For EOA admins record `required=1, total=1` (display \"1/1\"). Null when admin is immutable or full DAO with no fixed signer set.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-027",
+        "category_id": 2,
+        "name": "Single admin EOA",
+        "description": "Determine whether the effective upgrade/owner/rescue role is held by a single EOA (not a multisig) with no timelock on sensitive operations.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-028",
+        "category_id": 2,
+        "name": "Low-threshold multisig vs TVL",
+        "description": "Determine whether the multisig threshold is abnormally low relative to TVL peer cohort (e.g., 2-of-3 for a protocol with >$100M TVL where peer norm is 5-of-8).",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-029",
+        "category_id": 2,
+        "name": "Multisig signers co-hosted",
+        "description": "Determine whether multisig signers share ASN / data-center / custodian according to on-chain and OSINT inference.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-030",
+        "category_id": 2,
+        "name": "Hot-wallet signer flag",
+        "description": "Determine whether ≥1 multisig signer address exhibits on-chain behavior consistent with a hot wallet (web-wallet signing pattern, no hardware signing indicators).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-031",
+        "category_id": 2,
+        "name": "Signer rotation recency",
+        "description": "Measure the number of months since the most recent signer-set change (add/remove signer) on the admin multisig; flag if threshold was reduced within 14 days of a timelock removal or new-signer addition.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-032",
+        "category_id": 2,
+        "name": "Timelock duration on upgrades",
+        "description": "Read the timelock delay (in hours) between a queued upgrade proposal and its executable state.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-033",
+        "category_id": 2,
+        "name": "Timelock on sensitive actions",
+        "description": "For each sensitive action category (mint / pause / rescue / setOracle / upgrade), determine whether execution requires going through the declared timelock.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-034",
+        "category_id": 2,
+        "name": "Guardian/pause-keeper distinct from upgrader",
+        "description": "Determine whether a pauser/guardian role exists and is held by an address distinct from the upgrader address.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-035",
+        "category_id": 2,
+        "name": "Role separation: upgrade ≠ fee ≠ oracle",
+        "description": "Determine whether the upgrade role, fee-collection role, and oracle-config role are assigned to distinct addresses.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-036",
+        "category_id": 2,
+        "name": "Flash-loanable voting weight",
+        "description": "Determine whether governance voting power is a function of current token balance of a transferable token with no lock or checkpoint, making it flash-loan susceptible.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-037",
+        "category_id": 2,
+        "name": "Quorum achievable via single-entity flash loan",
+        "description": "Determine whether the governance quorum threshold is ≤ the largest available flash-loan notional in the governance token at reference DEX depth.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-038",
+        "category_id": 2,
+        "name": "Proposal execution delay < 24h",
+        "description": "Determine whether the time between a governance proposal passing and its executability (including any internal delay) is less than 24 hours.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-039",
+        "category_id": 2,
+        "name": "delegatecall/call in proposal execution without allowlist",
+        "description": "Determine whether the governance executor contract uses `delegatecall` or `call` with proposal-supplied target, without enforcing an allowlist of permitted targets.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-040",
+        "category_id": 2,
+        "name": "Emergency-veto multisig present",
+        "description": "Determine whether an emergency-veto or guardian multisig exists with power to cancel malicious proposals before execution.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-041",
+        "category_id": 2,
+        "name": "Rescue/emergencyWithdraw without timelock",
+        "description": "Determine whether a `rescue(…)` or `emergencyWithdraw(…)` function exists callable by admin without a timelock delay on execution.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-042",
+        "category_id": 2,
+        "name": "Admin has mint() with unlimited max",
+        "description": "Determine whether an admin-callable `mint` on a protocol token has no supply cap or an unlimited maximum supply.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-043",
+        "category_id": 2,
+        "name": "Admin = deployer EOA after 7 days",
+        "description": "Determine whether, at t = deploy+7d, the admin address still equals the deployer EOA with no evidence of transfer to a multisig.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-044",
+        "category_id": 2,
+        "name": "Admin wallet interacts with flagged addresses",
+        "description": "Determine whether the admin/upgrader address has sent or received transactions with addresses on the curator watchlist (mixer deposits, dust-attack targets, OFAC-listed).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-045",
+        "category_id": 2,
+        "name": "Constructor args match governance proposal",
+        "description": "Determine whether the deployed contract's constructor arguments match what the governance proposal or deploy announcement stated.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-046",
+        "category_id": 2,
+        "name": "Contract unverified on Etherscan/Sourcify",
+        "description": "Determine whether the protocol's deployed contracts have source code verified on Etherscan or Sourcify (public ABI available).",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-047",
+        "category_id": 2,
+        "name": "Governance token concentration (Gini)",
+        "description": "Compute the Gini coefficient of governance token holdings across the top-1000 holder addresses.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-048",
+        "category_id": 3,
+        "name": "Oracle providers used",
+        "description": "List all oracle providers used (Chainlink, Pyth, Redstone, Uniswap-TWAP, in-house, etc.) per asset/market pair in the protocol.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-049",
+        "category_id": 3,
+        "name": "Oracle role per asset",
+        "description": "For each oracle, classify its role as Primary / Secondary / Fallback per asset/market.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-050",
+        "category_id": 3,
+        "name": "Dependency graph (protocols depended upon)",
+        "description": "List all external protocols whose failure would directly impair this protocol (LST providers, bridges, stablecoin issuers, keepers).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-051",
+        "category_id": 3,
+        "name": "Fallback behavior on oracle failure",
+        "description": "Identify the declared fallback behavior (pause, secondary source, last-known-price, revert) when the primary oracle reverts or reports a stale value.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-052",
+        "category_id": 3,
+        "name": "Breakage analysis per dependency",
+        "description": "Produce a short per-dependency text describing which protocol functions halt or degrade and impact severity if each declared dependency fails.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-053",
+        "category_id": 3,
+        "name": "Oracle source = spot DEX pool (no TWAP)",
+        "description": "Determine whether the primary oracle for any asset/market reads spot price from a single DEX pool without a TWAP window or secondary source.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-054",
+        "category_id": 3,
+        "name": "TWAP window duration",
+        "description": "For each DEX-TWAP oracle, measure the TWAP window duration in minutes; flag any window < 30 minutes as high risk.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-055",
+        "category_id": 3,
+        "name": "Oracle pool depth (USD)",
+        "description": "Measure the liquidity depth of each DEX pool feeding a TWAP oracle, in USD at reference block; updated continuously.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-056",
+        "category_id": 3,
+        "name": "Single-pool oracle (no medianization)",
+        "description": "Determine whether the oracle reads from a single DEX venue with no medianization across multiple pools or venues.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-057",
+        "category_id": 3,
+        "name": "Circuit breaker on price deviation",
+        "description": "Determine whether the protocol halts or reverts if the oracle-reported price deviates by more than X% from a reference within Y blocks.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-058",
+        "category_id": 3,
+        "name": "Max-deviation threshold (bps)",
+        "description": "If a circuit breaker exists, read the configured deviation threshold in basis points.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-059",
+        "category_id": 3,
+        "name": "Oracle staleness check present",
+        "description": "Determine whether the protocol rejects oracle reads older than a declared maximum age (i.e., checks `updatedAt > block.timestamp - maxStaleness`).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-060",
+        "category_id": 3,
+        "name": "Chainlink aggregator min/max bound misconfig",
+        "description": "Determine whether the Chainlink aggregator's `minAnswer` and `maxAnswer` circuit-breaker bounds are misconfigured (too wide or too narrow) for the asset class.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-061",
+        "category_id": 3,
+        "name": "LP token balanceOf used for pricing",
+        "description": "Determine whether protocol pricing is derived from the `balanceOf` of LP tokens in a contract (manipulable by direct token transfer / donation).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-062",
+        "category_id": 3,
+        "name": "External keeper/relayer not redundant",
+        "description": "Determine whether the protocol depends on a single keeper or relayer (Gelato, Chainlink Automation, custom) with no redundancy or failover.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-063",
+        "category_id": 4,
+        "name": "TVL (current + 30d trend)",
+        "description": "Read current TVL in USD and 30-day trend using DeFiLlama adapter methodology.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-064",
+        "category_id": 4,
+        "name": "TVL concentration (top-10 wallet share)",
+        "description": "Compute the percentage of protocol TVL held in the top-10 depositor addresses.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-065",
+        "category_id": 4,
+        "name": "Liquidity depth per major asset",
+        "description": "Measure on-chain liquidity depth for protocol-held assets at 2% and 5% price impact in USD.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-066",
+        "category_id": 4,
+        "name": "Utilization rate (lending protocols)",
+        "description": "Read the borrowed/supplied ratio per market; flag markets above 95% utilization as at-risk for withdrawal freeze.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-067",
+        "category_id": 4,
+        "name": "Historical bad-debt events",
+        "description": "Count and sum (USD) the number of documented bad-debt events where the protocol socialized losses across depositors.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-068",
+        "category_id": 4,
+        "name": "Collateralization under stress",
+        "description": "Determine whether under curator-defined stress scenario (top-3 collateral assets drop 50%), protocol net collateralization falls below 110%.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-069",
+        "category_id": 4,
+        "name": "Algorithmic / under-collateralized stablecoin",
+        "description": "Classify whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-070",
+        "category_id": 4,
+        "name": "Empty cToken-style market (zero supply/borrow)",
+        "description": "Determine whether any listed Compound V2-fork market has `totalSupply == 0` and `totalBorrow == 0`, the precondition for a donation-exploit.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-071",
+        "category_id": 4,
+        "name": "Seed-deposit requirement for new market listing",
+        "description": "Determine whether market-listing governance or code requires a minimum seed deposit before borrow-enabling a new market.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-072",
+        "category_id": 4,
+        "name": "Market-listing governance threshold",
+        "description": "Classify the governance threshold required to list a new market as: permissionless / low-threshold (team multisig) / high-threshold (DAO vote) / no new listings.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-073",
+        "category_id": 4,
+        "name": "Oracle-manipulation-proof borrow cap",
+        "description": "Determine whether the per-asset borrow cap is ≤ (oracle pool depth × manipulation-resistance multiplier).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-074",
+        "category_id": 4,
+        "name": "ERC-4626 virtual-share offset (OZ ≥4.9)",
+        "description": "Determine whether ERC-4626 vaults use OpenZeppelin ≥4.9 virtual-share offset pattern to prevent first-depositor share-inflation.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-075",
+        "category_id": 4,
+        "name": "First-depositor / share-inflation guard",
+        "description": "Determine whether the vault has a first-depositor guard (seed deposit on deploy, virtual-share offset, or floor-check).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-076",
+        "category_id": 5,
+        "name": "Protocol age (days)",
+        "description": "Measure the number of days between today and the earliest mainnet deploy of any currently-live contract for this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-077",
+        "category_id": 5,
+        "name": "Prior exploit count",
+        "description": "Count the number of distinct incidents in the hack database affecting this protocol.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-078",
+        "category_id": 5,
+        "name": "Chronic-exploit flag (≥3 incidents)",
+        "description": "Determine whether the protocol has ≥3 distinct incidents in the hack database.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-079",
+        "category_id": 5,
+        "name": "Same-root-cause repeat exploit",
+        "description": "Determine whether the protocol has been exploited ≥2 times via the same root-cause cluster.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-080",
+        "category_id": 5,
+        "name": "Days since last exploit",
+        "description": "Measure the number of days between today and the most recent incident for this protocol (0 if an incident is currently active).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-081",
+        "category_id": 5,
+        "name": "Post-exploit response score",
+        "description": "Curator-score (1–5) the most recent incident response on: compensation completeness, transparency of disclosure, root-cause analysis depth, and operational recovery speed.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-082",
+        "category_id": 5,
+        "name": "Post-mortem published within 30 days",
+        "description": "Determine whether a public post-mortem was published within 30 days of the most recent incident.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-083",
+        "category_id": 5,
+        "name": "Auditor re-engaged after last exploit",
+        "description": "Determine whether a reputable auditor performed a re-audit or incident review after the most recent exploit.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-084",
+        "category_id": 5,
+        "name": "TVL stability (CoV over 90d)",
+        "description": "Compute the coefficient of variation (σ/μ) of daily TVL over the trailing 90 days as a proxy for operational stability.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-085",
+        "category_id": 5,
+        "name": "Incident response time (minutes)",
+        "description": "Measure the time in minutes from the first exploit transaction to the first official team statement for the most recent incident.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-086",
+        "category_id": 5,
+        "name": "Pause activations (trailing 12 months)",
+        "description": "Count the number of deliberate pause activations with documented reason in the trailing 12 months.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-087",
+        "category_id": 5,
+        "name": "Pause > 7 consecutive days",
+        "description": "Determine whether the protocol has been paused for more than 7 consecutive days at any point in the last 12 months.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-088",
+        "category_id": 5,
+        "name": "Re-deployed to new addresses in last year",
+        "description": "Determine whether the protocol retired prior deployed contracts and redeployed to a new address set in the last 12 months.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-089",
+        "category_id": 5,
+        "name": "Insurance coverage active",
+        "description": "Determine whether active coverage on Nexus Mutual, Unslashed, Sherlock, or equivalent is in force; record cover size in USD.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-090",
+        "category_id": 6,
+        "name": "Mixer withdrawal → protocol interaction",
+        "description": "Detect whether a wallet that recently withdrew from Tornado Cash, Railgun, or similar mixer has interacted with this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-091",
+        "category_id": 6,
+        "name": "Partial-drain test transactions",
+        "description": "Detect one or more small-value outflows prior to a larger drain that match a known pre-strike pattern (low-value same-function calls from new wallet).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-092",
+        "category_id": 6,
+        "name": "Unusual mempool pattern from deployer wallet",
+        "description": "Detect whether the deployer wallet submits an unusual sequence (new contract deploys, mass approvals) vs its historical baseline.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-093",
+        "category_id": 6,
+        "name": "Abnormal gas-price willingness from attacker wallet",
+        "description": "Detect whether a wallet pays ≥5× median gas priority fee (indicating MEV race or urgency), interacting with this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-094",
+        "category_id": 6,
+        "name": "New contract with similar bytecode to exploit template",
+        "description": "Detect whether a freshly deployed contract has high bytecode similarity to a known exploit template targeting this protocol class.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-095",
+        "category_id": 6,
+        "name": "Known-exploit function-selector replay",
+        "description": "Detect whether a call-pattern matches a known-exploit replay template (specific selector sequence and calldata shape) against this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-096",
+        "category_id": 6,
+        "name": "New ERC-20 approval to unverified contract from whale",
+        "description": "Detect whether a top-TVL depositor grants a new token approval to an unverified contract that interacts with this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-097",
+        "category_id": 6,
+        "name": "Sybil surge of identical-pattern transactions",
+        "description": "Detect multiple new EOAs submitting identical transaction patterns within a short window (sybil setup pattern).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-098",
+        "category_id": 6,
+        "name": "TVL anomaly — % drop in <1h",
+        "description": "Detect whether TVL drops >X% within 1 hour versus the trailing 30-day baseline (X configurable per protocol TVL tier).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-099",
+        "category_id": 6,
+        "name": "Oracle price deviation >X% from secondary",
+        "description": "Detect whether the primary oracle's reported price deviates >X% from the best available secondary source (another feed or venue).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-100",
+        "category_id": 6,
+        "name": "Flash loan >$10M targeting protocol tokens",
+        "description": "Detect whether a flash loan >$10M denominated in protocol tokens or LP tokens has originated, likely to interact with this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-101",
+        "category_id": 6,
+        "name": "Large governance proposal queued",
+        "description": "Detect whether a governance proposal with potentially protocol-impactful payload has been queued for execution (including Security-Council threshold-reduction variant).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-102",
+        "category_id": 6,
+        "name": "Admin/upgrade transaction in mempool",
+        "description": "Detect an admin-role or upgrade transaction appearing in the mempool before confirmation.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-103",
+        "category_id": 6,
+        "name": "Bridge signer-set change proposed/executed",
+        "description": "Detect whether a bridge validator or signer-set change has been proposed or executed.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-104",
+        "category_id": 6,
+        "name": "Stablecoin depeg >2% on shared-LP venue",
+        "description": "Detect whether a stablecoin in this protocol's dependency graph depegs >2% on a venue with shared liquidity.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-105",
+        "category_id": 6,
+        "name": "DNS/CDN/frontend hash drift",
+        "description": "Detect whether the hash of production frontend JS changes versus the prior published hash, or a DNS config change is detected.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-106",
+        "category_id": 6,
+        "name": "Cross-chain bridge unverified mint pattern",
+        "description": "Detect cross-chain activity consistent with an unverified mint on the destination chain (deposit on source without corresponding verified proof on dest).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-107",
+        "category_id": 6,
+        "name": "Admin EOA signing from new geography/device",
+        "description": "Detect whether an admin/upgrader EOA signs from a geography or device fingerprint inconsistent with prior signing history.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-108",
+        "category_id": 6,
+        "name": "GitHub force-push to sensitive branch",
+        "description": "Detect whether the repository shows a force-push or push to a sensitive branch (main, production tag) from a non-protocol account.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-109",
+        "category_id": 6,
+        "name": "Social-media impersonation scam spike",
+        "description": "Detect a sharp uptick in Discord/Telegram/X accounts impersonating the protocol team or announcing fake airdrops.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-110",
+        "category_id": 6,
+        "name": "Unusual pending/executed proposal ratio",
+        "description": "Detect an unusual ratio of pending-to-executed governance proposals versus the trailing-30-day baseline.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-111",
+        "category_id": 7,
+        "name": "Team doxx status",
+        "description": "Classify each named team member as: real-name / consistent-pseudonym-with-track-record / pseudonym-no-track-record / fully-anonymous.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-112",
+        "category_id": 7,
+        "name": "Team public accountability surface",
+        "description": "Count the number of verifiable public trails per team member (LinkedIn with employment history, conference talks, prior employer records, GitHub with aged contribution history).",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-113",
+        "category_id": 7,
+        "name": "Team other-protocol involvement history",
+        "description": "Document current or prior protocol roles for team members (conflicts of interest, prior rugs, prior successful launches).",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-114",
+        "category_id": 7,
+        "name": "Deployer address prior on-chain history",
+        "description": "Classify the deployer address history as: none (fresh address) / normal-dev-history (prior protocol deploys, non-flagged activity) / linked-to-prior-rug (deployer used in prior known rug).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-115",
+        "category_id": 7,
+        "name": "Prior rug/exit-scam affiliation",
+        "description": "Determine whether any team member is linked via verified OSINT to a prior rug or exit-scam-labeled protocol.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-116",
+        "category_id": 7,
+        "name": "Contributor tenure at admin-permissioned PR",
+        "description": "Measure the number of days contributing to the repo of the author of the most recent admin-permissioned code change.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-117",
+        "category_id": 7,
+        "name": "ENS/NameStone identity bound to deployer",
+        "description": "Determine whether the deployer address has a bound ENS or NameStone name resolvable to a verifiable identity.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-118",
+        "category_id": 7,
+        "name": "Handle reuse across failed/rugged projects",
+        "description": "Determine whether any social handle (Twitter, Discord) has been associated with a prior rugged or failed project under a different alias.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-119",
+        "category_id": 7,
+        "name": "Commit timezone consistent with stated geography",
+        "description": "Determine whether the distribution of commit hours in the repo is consistent with the team's publicly stated geography (anomaly flag for DPRK-precursor pattern).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-120",
+        "category_id": 7,
+        "name": "Video-off/voice-consistency flag",
+        "description": "Record whether the team has declined video in public interviews, or exhibits voice/timezone inconsistencies suggesting false identity.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-121",
+        "category_id": 7,
+        "name": "Contributor OSINT depth score",
+        "description": "Curator-scored 1–5 based on LinkedIn depth, GitHub history, conference presence per contributor.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-122",
+        "category_id": 7,
+        "name": "Contributor paid to DPRK-cluster wallet",
+        "description": "Determine whether protocol payments to any contributor wallet have an on-chain path ≤3 hops to a known DPRK-labeled cluster.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-123",
+        "category_id": 7,
+        "name": "Sudden admin-rescue/ACL change without discussion",
+        "description": "Determine whether any admin-rescue function or ACL change was committed to the repo or executed on-chain without corresponding public discussion in issues, PRs, or governance forum.",
+        "is_critical": true,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-124",
+        "category_id": 7,
+        "name": "Deployer wallet mixer-funded within 30 days",
+        "description": "Determine whether the deployer wallet received funds via Tornado Cash, Railgun, or similar mixer within 30 days before the protocol's first deploy.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-125",
+        "category_id": 7,
+        "name": "Deployer linked within 3 hops to DPRK/Lazarus",
+        "description": "Determine whether the deployer address has an on-chain path of ≤3 hops to a Chainalysis/OFAC DPRK-labeled cluster address.",
+        "is_critical": true,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-126",
+        "category_id": 8,
+        "name": "Is-a-fork-of",
+        "description": "Identify the upstream protocol this is a fork of (if any) via bytecode similarity, function-selector set overlap, or team declaration.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-127",
+        "category_id": 8,
+        "name": "Upstream patch not merged",
+        "description": "Determine whether the upstream fork source has published a known-vulnerability patch that has not been merged into this fork's deployed code.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-128",
+        "category_id": 8,
+        "name": "Upstream vulnerability disclosure (last 90d)",
+        "description": "Determine whether the upstream has a public vulnerability disclosure in the last 90 days that affects this fork's deployed code.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-129",
+        "category_id": 8,
+        "name": "Code divergence from upstream (%)",
+        "description": "Measure the percentage of lines changed between this fork's deployed code and the stated upstream codebase at fork point.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-130",
+        "category_id": 8,
+        "name": "Fork depth (generations from original audit)",
+        "description": "Count the number of fork hops from an originally audited protocol (0 = direct fork of an audited protocol, N = N-th generation).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-131",
+        "category_id": 8,
+        "name": "Fork retains upstream audit coverage",
+        "description": "Determine whether the fork's deployed code is covered by either: (a) the upstream audit plus a delta-audit for fork-specific changes, or (b) a fresh independent audit of the fork.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-132",
+        "category_id": 8,
+        "name": "Fork has different economic parameters than upstream",
+        "description": "Determine whether the fork's economic parameters (collateral factor, LTV, fee structure) differ from upstream audited defaults without a subsequent re-audit.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-133",
+        "category_id": 8,
+        "name": "Dependency manifest uses unpinned versions",
+        "description": "Determine whether `package.json`, `Cargo.toml`, or `foundry.toml` uses `^` or `~` version ranges for security-critical libraries (OpenZeppelin, Solady, etc.).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-134",
+        "category_id": 8,
+        "name": "Dependency had malicious-release incident (last 90d)",
+        "description": "Determine whether any npm/PyPI/crates.io dependency of this protocol had a flagged malicious release in the trailing 90 days.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-135",
+        "category_id": 8,
+        "name": "Shared-library version with known-vuln status",
+        "description": "Identify the version of key shared libraries (OZ, Solady, Solmate) used and check against CVE/GHSA databases for any active advisory.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-136",
+        "category_id": 9,
+        "name": "Deployed bytecode matches signed release tag",
+        "description": "Determine whether the deployed runtime bytecode corresponds to a signed git tag in the protocol's repository.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-137",
+        "category_id": 9,
+        "name": "Upgrade frequency (per 90 days)",
+        "description": "Count the number of contract upgrades in the trailing 90 days via on-chain upgrade events.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-138",
+        "category_id": 9,
+        "name": "Hot-patch deploys without timelock (last 30 days)",
+        "description": "Count upgrades executed in the last 30 days without going through the declared timelock path.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-139",
+        "category_id": 9,
+        "name": "Post-audit code changes without re-audit",
+        "description": "Count deployed changes to audited bytecode where no subsequent audit or spot-review covers the changed code.",
+        "is_critical": true,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-140",
+        "category_id": 9,
+        "name": "Fix-merged-but-not-deployed gap",
+        "description": "Determine whether a known vulnerability has a PR merged in the repo but the fix has not been included in the deployed bytecode.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-141",
+        "category_id": 9,
+        "name": "Test-mode parameters in deploy",
+        "description": "Determine whether the deployed configuration retains test-mode parameters (test oracle address, infinite allowance, admin = deployer EOA).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-142",
+        "category_id": 9,
+        "name": "Storage-layout collision risk across upgrades",
+        "description": "Determine whether the OZ upgrades-plugin or manual review flags a storage-layout collision risk between implementation versions.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-143",
+        "category_id": 9,
+        "name": "Reinitializable implementation (no _disableInitializers)",
+        "description": "Determine whether the implementation contract does not call `_disableInitializers()` in its constructor, leaving re-initialization possible.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-144",
+        "category_id": 9,
+        "name": "CREATE2 factory permits same-address redeploy",
+        "description": "Determine whether a CREATE2 factory deployment allows redeployment to the same address with different bytecode (via selfdestruct + redeploy pattern).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-145",
+        "category_id": 9,
+        "name": "Deployed bytecode reproducibility",
+        "description": "Determine whether anyone can independently reproduce the deployed bytecode from the repo and declared build toolchain.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-146",
+        "category_id": 9,
+        "name": "New contract deploys in last 30 days",
+        "description": "Count the number of new contract deploys associated with this protocol's deployer address in the trailing 30 days.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-147",
+        "category_id": 10,
+        "name": "Protocol has bridge surface",
+        "description": "Determine whether the protocol has a bridge surface (its own bridge or a bridge-operated dependency for routing/minting).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-148",
+        "category_id": 10,
+        "name": "Bridge validator count (M)",
+        "description": "Count the number of distinct validators or signers in the bridge's signer set (for non-LZ bridges; use F179 for LayerZero OFT).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-149",
+        "category_id": 10,
+        "name": "Bridge validator threshold (k-of-M)",
+        "description": "Read the signature threshold required to approve a cross-chain message (for non-LZ bridges).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-150",
+        "category_id": 10,
+        "name": "Bridge validator co-hosting",
+        "description": "Determine whether validators share ASN or data-center/custodian per on-chain and OSINT inference.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-151",
+        "category_id": 10,
+        "name": "Bridge ecrecover checks result ≠ address(0)",
+        "description": "Determine whether the bridge verifier code rejects `ecrecover` returns of `address(0)`.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-152",
+        "category_id": 10,
+        "name": "Bridge binds message to srcChainId",
+        "description": "Determine whether the bridge message struct includes `srcChainId` and the verifier enforces per-chain separation.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-153",
+        "category_id": 10,
+        "name": "Bridge tracks nonce-consumed mapping",
+        "description": "Determine whether the bridge inbox maintains a nonce-consumed mapping and rejects replay of used nonces.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-154",
+        "category_id": 10,
+        "name": "Default bytes32(0) acceptable as valid root",
+        "description": "Determine whether the bridge inbox accepts a default-value (bytes32(0)) Merkle root as a valid proof root (Nomad bug class).",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-155",
+        "category_id": 10,
+        "name": "Bridge validator-set rotation recency",
+        "description": "Measure the number of months since the last validator-set change for the bridge.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-156",
+        "category_id": 10,
+        "name": "Bridge uses same key custody for >30% validators",
+        "description": "Determine whether >30% of bridge validators share a single key custodian.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-157",
+        "category_id": 10,
+        "name": "Bridge TVL per validator ratio",
+        "description": "Compute bridge TVL divided by validator count as a concentration-of-compromise measure.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-158",
+        "category_id": 11,
+        "name": "Known-threat-actor cluster has touched protocol",
+        "description": "Detect whether an address from the curator-maintained threat-actor cluster (past exploiters, labeled attacker families) interacted with this protocol in the last 30 days.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-159",
+        "category_id": 11,
+        "name": "Attacker wallet pre-strike probe (low-gas failing txs)",
+        "description": "Detect whether a wallet in a threat-actor cluster is sending low-gas or intentionally-failing transactions to this protocol (pre-strike reconnaissance pattern).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-160",
+        "category_id": 11,
+        "name": "GitHub malicious-dependency incident touching protocol deps",
+        "description": "Determine whether a security advisory flags a malicious release in a dependency consumed by this protocol.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-161",
+        "category_id": 11,
+        "name": "Protocol-impersonator domain registered (typosquat)",
+        "description": "Determine whether a typosquat of the official protocol domain has been registered in the last 90 days.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-162",
+        "category_id": 11,
+        "name": "Known-exploit-template selector deployed by any address",
+        "description": "Determine whether any contract has been deployed containing a function-selector pattern matching a known exploit template targeting protocols of this class.",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-163",
+        "category_id": 11,
+        "name": "Avg attacker reconnaissance time for peer-class protocols",
+        "description": "Report the average number of days of attacker reconnaissance activity before a strike on peer-class protocols (lending/DEX/bridge/perps), sourced from the hack database.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-164",
+        "category_id": 11,
+        "name": "Leaked credential on paste/sentry site",
+        "description": "Determine whether a public paste site, Sentry-alt, or credential-dump references protocol infrastructure endpoints or API keys.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-165",
+        "category_id": 11,
+        "name": "Protocol social channel has scam-coordinator flag",
+        "description": "Determine whether a protocol-adjacent social channel admin is flagged on the curator scam-coordinator watchlist.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-166",
+        "category_id": 5,
+        "name": "Deprecated contracts still holding value",
+        "description": "Determine whether contracts marked deprecated by a protocol announcement still hold >$100K in assets.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-167",
+        "category_id": 2,
+        "name": "Deprecated contract paused but pause reversible by live admin",
+        "description": "Determine whether a deprecated-and-paused contract's pause state is revertible by a currently-live admin role.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-168",
+        "category_id": 9,
+        "name": "Stale-approval exposure on deprecated router",
+        "description": "Count the number of active user approvals (ERC-20 `allowance`) to deprecated router or protocol contracts.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-170",
+        "category_id": 12,
+        "name": "Solc version used (known-bug versions flagged)",
+        "description": "Identify the Solidity compiler version used for deployed bytecode and flag if it appears on the known-bug list (solc bugs.json or Vyper 0.2.15–0.3.0 range).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-171",
+        "category_id": 12,
+        "name": "Bytecode similarity to audited upstream with behavior deviation",
+        "description": "Determine whether the bytecode has high structural similarity to an audited upstream but deviates in state-mutation ordering (AI-generated copy risk pattern).",
+        "is_critical": false,
+        "curation_archetype": "PH",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-172",
+        "category_id": 12,
+        "name": "Repo shows AI-tool co-authorship in critical files",
+        "description": "Determine whether critical security files show commits with AI-tool co-authorship metadata (GitHub Copilot, ChatGPT Code Interpreter).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-173",
+        "category_id": 12,
+        "name": "Team self-disclosure of AI-generated Solidity",
+        "description": "Determine whether the team has publicly disclosed (blog, tweet, docs) that AI-generated Solidity was used in security-critical paths.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-174",
+        "category_id": 12,
+        "name": "Dependency tree uses EOL Solidity version",
+        "description": "Determine whether the deployed code or its dependencies use an EOL or unsupported Solidity version without a forward-compatibility patch.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-175",
+        "category_id": 13,
+        "name": "Disclosure channel exists",
+        "description": "Determine whether the protocol publishes a public security disclosure channel (security@ email, Immunefi program, in-house disclosure page).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-176",
+        "category_id": 13,
+        "name": "Disclosure SLA public",
+        "description": "Determine whether the protocol publishes an acknowledgment-time SLA for disclosed vulnerabilities (e.g., 72h ack).",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-177",
+        "category_id": 13,
+        "name": "Prior known-ignored disclosure",
+        "description": "Determine whether evidence exists in prior-incident post-mortems that a disclosed vulnerability was reported to the team and not actioned before exploit.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-178",
+        "category_id": 13,
+        "name": "CVE/GHSA advisory issued against protocol",
+        "description": "Determine whether a CVE, GHSA, or equivalent public advisory has been issued against this protocol or its code.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-179",
+        "category_id": 10,
+        "name": "LayerZero OFT DVN config (count, threshold, diversity)",
+        "description": "For any LayerZero OFT adapter, read the DVN configuration: count of DVNs, k-of-N threshold, and operator diversity (independent operators vs same-operator multi-DVN).",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-180",
+        "category_id": 3,
+        "name": "Immutable oracle address",
+        "description": "Determine whether any collateral oracle address is marked `immutable` in protocol config with no admin-replaceable adapter wrapper, preventing the protocol from repricing when the upstream asset depegs.",
+        "is_critical": true,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-181",
+        "category_id": 3,
+        "name": "Permissionless-pool lending oracle",
+        "description": "Determine whether the lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-182",
+        "category_id": 6,
+        "name": "Security-Council threshold reduction (RT)",
+        "description": "Detect in real-time whether the bridge/protocol Security Council multisig executes a threshold reduction (e.g. 3/5 → 2/5), timelock removal, or new-signer addition within ≤14 days of either of those events.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-183",
+        "category_id": 1,
+        "name": "Bug bounty scope gap on highest-TVL contracts",
+        "description": "Determine whether the highest-TVL contracts of this protocol (especially shared primitives: OFT adapters, ZK verifiers, bridge inbox) are explicitly excluded from the protocol's active bug bounty scope.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-184",
+        "category_id": 7,
+        "name": "Real-capital social-engineering persona",
+        "description": "Determine whether a curator-flagged \"team contributor\" or \"external integrator\" persona has ≥$1M of attributed real-capital deposits to the target protocol or peer protocols, potentially used to build credibility ahead of a social-engineering attack.",
+        "is_critical": false,
+        "curation_archetype": "M",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      },
+      {
+        "id": "RD-F-185",
+        "category_id": 9,
+        "name": "Bridge rate-limiter / chain-pause as positive mitigant",
+        "description": "Determine whether the bridge implements a per-window outflow rate-limiter (and at what cap), and whether the protocol team can trigger a chain-level or validator-set emergency pause.",
+        "is_critical": false,
+        "curation_archetype": "PE",
+        "introduced_in_rubric": "v1.5.0",
+        "deprecated_in_rubric": null
+      }
+    ]
+  }
+}

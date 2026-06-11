@@ -1,0 +1,85 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "polter-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Polter Finance",
+        "occurred_at": "2024-11-16",
+        "loss_usd": 8700000.0,
+        "category": "Lending / Money Market (Geist fork)",
+        "root_cause": "Spot price oracle manipulation (SpookySwap V2/V3) → inflated BOO collateral → draining borrow",
+        "description": "Polter Finance lost $8.7M when an attacker flash-loaned BOO tokens to manipulate the SpookySwap spot price, artificially inflating BOO collateral value in Polter's unaudited lending market to borrow the entire protocol's funds.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit performed] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N/A — no audit performed]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BOO market was a new addition] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BOO market was a new addition] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — BOO spot price in SpookySwap would show extreme anomaly during the drain-and-borrow window] || ★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || ★ Oracle source = spot DEX pool [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — BOO spot price in SpookySwap would show extreme anomaly during the drain-and-borrow window]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — fork of Geist Finance (itself an Aave fork)]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — BOO market was a new addition]"
+        }
+      ]
+    }
+  }
+}

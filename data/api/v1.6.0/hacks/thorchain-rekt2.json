@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "thorchain-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "THORChain",
+        "occurred_at": "2021-07-26",
+        "loss_usd": 8000000.0,
+        "category": "Cross-Chain DEX / AMM / Bridge",
+        "root_cause": "Fake deposit via fake Asgard vault + malicious memo — Bifrost refund logic abuse",
+        "description": "THORChain was hit for $8M ten days after its first hack, when an attacker deployed a fake Asgard vault to trigger THORChain's automatic refund logic and extract real assets using a malicious transaction MEMO.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited code]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — same MCCN Bifrosts, new vulnerability found by different attacker in same unaudited component] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — same MCCN Bifrosts, new vulnerability found by different attacker in same unaudited component]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No (hacker demanded 10% bounty be established; THORChain committed to one post-incident)]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: MCCN launched early 2021; exploit 10 days after exploit 1]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attack observation noted at 21:42 GMT on 2021-07-22 (4 days before main exploit); series of preparatory transactions; Tornado Cash funding]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — same MCCN Bifrosts, new vulnerability found by different attacker in same unaudited component]"
+        }
+      ]
+    }
+  }
+}

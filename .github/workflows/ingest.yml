@@ -1,0 +1,83 @@
+# Nightly Bucket A refresh — continuous-cadence factors (E-30 Phase 3)
+#
+# Runs refresh-continuous.py for all protocols at 03:00 UTC every day
+# (after the nightly data pipeline has settled). Updates TVL, oracle
+# depth, utilization rate, and days-since-exploit for all 57 protocols,
+# then re-runs compose.py and dump.py to refresh static exports.
+#
+# Prerequisites (repo Settings → Secrets and variables → Actions):
+#   DATABASE_URL          — Supabase pooler connection string (M5+)
+#
+# [!] Pre-M5: DATABASE_URL is not configured — the script detects this and
+#     exits early after printing a skip notice. The workflow still runs to
+#     confirm the skip; no error is emitted.
+#
+# Replaced the old "full T-16 pipeline × all fetchers" model (fan-out
+# savings: ~85% fewer fetcher calls per week for S/E-cadence factors).
+
+name: Nightly ingest (Bucket A — continuous cadence)
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # 03:00 UTC daily
+    - cron: '0 4 * * 0'   # 04:00 UTC Sunday — weekly history prune (E-32)
+  workflow_dispatch:        # manual: gh workflow run ingest.yml
+
+permissions:
+  contents: read
+
+jobs:
+  refresh-continuous:
+    name: Refresh continuous-cadence factors
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install 'psycopg[binary]' requests
+
+      - name: Check prerequisites
+        id: prereq
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "SKIP: DATABASE_URL not set — configure at M5 Supabase cutover."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Run refresh-continuous.py
+        if: steps.prereq.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/refresh-continuous.py --all
+
+      - name: Skip notice (pre-M5)
+        if: steps.prereq.outputs.skip == 'true'
+        run: echo "Nightly ingest skipped — DATABASE_URL not configured (pre-M5)."
+
+      - name: Detect grade changes (E-34)
+        if: steps.prereq.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python scripts/detect-grade-changes.py
+
+      - name: Run prune-history.py (Sundays only, E-32)
+        if: steps.prereq.outputs.skip != 'true' && github.event.schedule == '0 4 * * 0'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python scripts/prune-history.py

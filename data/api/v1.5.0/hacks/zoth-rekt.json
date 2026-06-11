@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "zoth-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Zoth (RWA yield protocol)",
+        "occurred_at": "2025-03-21",
+        "loss_usd": 8400000.0,
+        "category": "RWA / Yield (Real-World Asset protocol)",
+        "root_cause": "Admin key compromise → malicious proxy contract upgrade → vault drain",
+        "description": "Zoth's $8.4M hack required no smart contract exploit — just a stolen deployer key, a one-line proxy upgrade, and three minutes to drain the vault.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the attacker deployed a malicious implementation contract and upgraded the proxy to it immediately before the drain] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the attacker deployed a malicious implementation contract and upgraded the proxy to it immediately before the drain]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — the malicious proxy upgrade is a critical governance/admin action; any monitor watching for deployer wallet upgrade transactions on prod...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — the malicious proxy upgrade is a critical governance/admin action; any monitor watching for deployer wallet upgrade transactions on prod...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Unknown — RWA yield protocol; specific fork status not referenced]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — the attacker deployed a malicious implementation contract and upgraded the proxy to it immediately before the drain]"
+        }
+      ]
+    }
+  }
+}

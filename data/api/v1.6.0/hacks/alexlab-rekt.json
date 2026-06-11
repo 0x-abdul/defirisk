@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "alexlab-rekt",
+        "protocol_slug": null,
+        "protocol_name": "AlexLab (XLink Bridge)",
+        "occurred_at": "2024-05-14",
+        "loss_usd": 4300000.0,
+        "category": "DEX / Bridge (Bitcoin L2 DeFi)",
+        "root_cause": "Phishing-compromised deployer private key → malicious proxy upgrades → vault drain",
+        "description": "AlexLab's XLink bridge lost $4.3M after attackers phished the deployer private key, executed 5 rapid proxy upgrades, and drained the vault — with the attack later linked to the Lazarus Group.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — attacker deployed malicious upgrades during the attack]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — proxy upgrade transactions by deployer wallet]"
+        }
+      ]
+    }
+  }
+}

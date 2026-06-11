@@ -1,0 +1,10 @@
+---
+import { listFactors } from '../../../lib/data-loaders';
+
+export async function getStaticPaths() {
+  return listFactors().map((f) => ({ params: { id: f.id } }));
+}
+
+// /learn/factors/:id/ is an alias to /factors/:id/
+return Astro.redirect(`/factors/${(Astro.params as { id: string }).id}/`);
+---

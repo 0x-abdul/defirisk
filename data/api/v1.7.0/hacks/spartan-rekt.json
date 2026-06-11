@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "spartan-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Spartan Protocol",
+        "occurred_at": "2021-05-01",
+        "loss_usd": 30500000.0,
+        "category": "DEX / Synthetic Assets / AMM",
+        "root_cause": "Flash loan + inflated pool balance → LP burn liquidity share manipulation",
+        "description": "Spartan Protocol's custom AMM used live pool balance instead of cached reserves for LP share calculation, letting an attacker inflate the pool via direct transfer and drain $30.5M by burning LP tokens.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — core protocol code was in CertiK's audit scope; the bug in calcLiquidityShare() was missed]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Large flash loan (100K WBNB) from PancakeSwap; repeated swap-add-burn pattern across multiple transactions; significant WBNB/SPARTA pool imb...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — 100K WBNB flash loan ($61M notional)]"
+        }
+      ]
+    }
+  }
+}

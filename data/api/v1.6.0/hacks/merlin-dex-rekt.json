@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "merlin-dex-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Merlin DEX",
+        "occurred_at": "2023-04-25",
+        "loss_usd": 1820000.0,
+        "category": "DEX / AMM",
+        "root_cause": "Insider rug — max approval drain via privileged Feeto address",
+        "description": "Merlin DEX's back-end team exploited Certik-approved max token approvals to drain $1.82M from its own liquidity pools two days after passing its second audit.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — pools deployed fresh for the LGE] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — pools deployed fresh for the LGE]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — but centralization risk dismissed by auditor]"
+        },
+        {
+          "factor_id": "RD-F-043",
+          "relevance": "causal",
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Feeto address held permanent max approval from pool deployment]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Mixed — front-end team public, back-end team (who executed rug) were anonymous/pseudonymous]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — concentrated liquidity DEX; custom code for zkSync]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — pools deployed fresh for the LGE]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "cream-finance",
+        "protocol_slug": null,
+        "protocol_name": "Cream Finance",
+        "occurred_at": "2021-08-30",
+        "loss_usd": 18800000.0,
+        "category": "Lending",
+        "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)",
+        "description": "Cream Finance lost $18.8M when a post-audit AMP token integration introduced an ERC-777 reentrancy hook that allowed the attacker to double-borrow against collateral that hadn't yet been updated.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — the AMP token integration (ERC-777 callback) was added post-audit]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — AMP token integration added via governance Feb 10, 2021, six months before exploit; the new token type introduced the reentrancy surface] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — AMP token integration added via governance Feb 10, 2021, six months before exploit; the new token type introduced the reentrancy surface] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — not mentioned in post-mortem]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Flash loan activity visible on-chain; repeated pattern across 17 transactions suggesting an iterative, manual/scripted attack rather than a ...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Cream Finance is a fork of Compound Finance]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — Cream Finance is a fork of Compound Finance]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — AMP token integration added via governance Feb 10, 2021, six months before exploit; the new token type introduced the reentrancy surface]"
+        }
+      ]
+    }
+  }
+}

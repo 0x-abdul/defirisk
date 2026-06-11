@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "meter-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Meter (Passport Bridge)",
+        "occurred_at": "2022-02-05",
+        "loss_usd": 7700000.0,
+        "category": "Cross-Chain Bridge",
+        "root_cause": "Deposit method calldata bypass — unwrapped native token assumption not enforced in secondary deposit path",
+        "description": "Meter's ChainBridge fork had two deposit entry points but only one validated the calldata amount against actual funds deposited, letting an attacker mint arbitrary wrapped tokens and drain $4.4M — with $3.3M more lost as collateral damage at Hundred Finance.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (the Meter-specific ERC20 Handler modification)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y (indirect) — Hundred Finance collateral damage enabled because Chainlink oracle price diverged from local manipulated BNB.bsc price on Moo...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — ChainSafe ChainBridge fork with custom modifications]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "orion-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Orion Protocol",
+        "occurred_at": "2023-02-02",
+        "loss_usd": 3000000.0,
+        "category": "DEX Aggregator / Liquidity Aggregator",
+        "root_cause": "Fake token reentrancy — depositAsset() double-credit via ATK token transfer hook",
+        "description": "Orion Protocol lost $3M when a fake token's transfer function re-entered the exchange contract's deposit accounting, doubling the attacker's ledger balance and enabling a massive artificial withdrawal.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "hyperliquid",
+  "verdict_body": "Hyperliquid runs a sovereign L1 (HyperBFT consensus) with native validator-set governance — there is no Gnosis Safe or OpenZeppelin TimelockController. The only significant EVM-side surface is the Bridge2 contract on Arbitrum at 0x2Df1c51E09aECF9cacB7bc98cB1742757f163dF7, where hot validators (>2/3 stake-weighted) sign withdrawals and cold validators (>2/3 stake-weighted) sign configuration changes; a separate 2-of-5 locker quorum can emergency-pause the bridge. Cold validator keys are held in practice by the Hyperliquid Foundation. The 600-second dispute period on withdrawals is a fraud-proof window, not a governance timelock. Bridge deprecation in favor of native Circle CCTP USDC was announced December 2025. PD-041 covers the v1.1+ schema work to formally represent validator-set governance alongside Multisig + Timelock.",
+  "multisig": {
+    "value": "≥2/3 stake",
+    "sub": "HyperBFT validator quorum",
+    "light": "yellow"
+  },
+  "timelock": {
+    "value": "10m",
+    "sub": "bridge dispute period (not a gov timelock)",
+    "light": "red"
+  }
+}

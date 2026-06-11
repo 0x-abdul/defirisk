@@ -1,0 +1,569 @@
+---
+import Base from '../layouts/Base.astro';
+import TopBar from '../components/TopBar.astro';
+import ProtocolListView from '../components/islands/ProtocolListView';
+import type {
+  ProtocolListItem,
+  CategoryLight,
+} from '../components/islands/ProtocolListView';
+import { listProtocols, getProtocol } from '../lib/data-loaders';
+import { RUBRIC_VERSION } from '../lib/rubric';
+import type { Letter } from '../lib/rubric';
+import { TOTAL_FACTOR_COUNT, TOTAL_CATEGORY_COUNT } from '../lib/rubric-constants';
+import { CATEGORIES, CHAINS } from '../data/categories';
+
+const baseList = listProtocols();
+
+function toNumber(v: number | string | null | undefined): number {
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  if (typeof v === 'string') {
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
+}
+
+const items: ProtocolListItem[] = baseList.map((p) => {
+  const detail = getProtocol(p.slug);
+  const proto = (detail?.protocol ?? {}) as Record<string, unknown>;
+  const lights =
+    (proto.category_lights as Record<number, CategoryLight> | undefined) ?? {};
+  return {
+    slug: p.slug,
+    display_name: p.display_name,
+    protocol_type: p.protocol_type,
+    primary_chain: p.primary_chain,
+    headline_grade: (p.headline_grade ?? null) as Letter | null,
+    total_value_secured_usd: toNumber(p.total_value_secured_usd),
+    has_active_incident: p.has_active_incident,
+    category_lights: lights,
+  };
+});
+
+// Stats panel values
+const totalTvl = items.reduce((s, p) => s + p.total_value_secured_usd, 0);
+const totalTvlBillions = totalTvl / 1e9;
+const chainCount = new Set(items.map((p) => p.primary_chain)).size;
+const sectorCount = new Set(items.map((p) => p.protocol_type)).size;
+const gradeDist: Array<{ g: Letter; n: number }> = (['A', 'B', 'C', 'D', 'F'] as Letter[]).map(
+  (g) => ({ g, n: items.filter((p) => p.headline_grade === g).length }),
+);
+
+// Hero copy
+const headlineCopy = `${items.length} protocols, ${TOTAL_FACTOR_COUNT} risk factors, ${TOTAL_CATEGORY_COUNT} categories.`;
+const ledeCopy =
+  'An open-source field guide to DeFi risk. Every protocol graded, every factor cited — all in the open.';
+
+// Latest review date for kicker
+const latestReviewedIso = baseList
+  .map((p) => p.graded_at)
+  .filter((s): s is string => typeof s === 'string' && s.length > 0)
+  .sort()
+  .reverse()[0];
+
+const latestReviewedDisplay = latestReviewedIso
+  ? new Date(latestReviewedIso).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    })
+  : 'pending';
+
+const buildSha = import.meta.env.PUBLIC_GIT_SHA;
+---
+
+<Base title="DeFi Risk">
+  <TopBar slot="topbar" />
+
+  <div class="hero">
+    <div class="left">
+      <div class="kicker">
+        <span class="live"><span class="dot"></span>Live</span>
+        Rubric {RUBRIC_VERSION} · Last review {latestReviewedDisplay}
+      </div>
+      <h1>{headlineCopy}</h1>
+      <p class="lede">{ledeCopy}</p>
+    </div>
+
+    <div class="statsPanel">
+      <div class="sp-h">
+        <span>Coverage · at a glance</span>
+        <span class="sp-h-r">Rubric {RUBRIC_VERSION} · n = {items.length}</span>
+      </div>
+      <div class="sp-grid">
+        <div class="sp-cell">
+          <div class="sp-lbl">Protocols</div>
+          <div class="sp-num">{items.length}</div>
+          <div class="sp-sub">{chainCount} chains · {sectorCount} sectors</div>
+        </div>
+        <div class="sp-cell">
+          <div class="sp-lbl">Risk Factors</div>
+          <div class="sp-num">{TOTAL_FACTOR_COUNT}</div>
+          <div class="sp-sub">{TOTAL_CATEGORY_COUNT} categories</div>
+        </div>
+        <div class="sp-cell">
+          <div class="sp-lbl">TVL covered</div>
+          <div class="sp-num">${totalTvlBillions.toFixed(1)}<span>B</span></div>
+          <div class="sp-sub">USD, latest snapshot</div>
+        </div>
+      </div>
+      <div class="sp-dist">
+        <span class="sp-dist-l">Grade distribution</span>
+        <div class="sp-bar">
+          {
+            gradeDist
+              .filter((d) => d.n > 0)
+              .map((d) => (
+                <span
+                  class:list={['sp-seg', d.g]}
+                  style={`flex: ${d.n}`}
+                  title={`${d.n} ${d.n === 1 ? 'protocol' : 'protocols'}`}
+                >
+                  {d.g}
+                </span>
+              ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <!-- client:idle — page is static-rendered with the canonical list visible
+         immediately; Preact hydration runs after first paint via requestIdleCallback
+         so initial TBT on slow mobile CPUs stays low. Filters become interactive
+         within a frame of idle. -->
+    <ProtocolListView
+      client:idle
+      protocols={items}
+      categories={CATEGORIES}
+      chains={CHAINS}
+    />
+  </section>
+
+  <section class="sec foot-htr">
+    <div class="sechead">
+      <div class="left"><span class="num">04</span><h3>How to read this</h3></div>
+    </div>
+    <div class="htr-body">
+      <p>
+        Every protocol is graded against {TOTAL_FACTOR_COUNT} evidence factors across {TOTAL_CATEGORY_COUNT}
+        risk categories — audits, governance, oracle dependencies, economic design, operational history,
+        and more. Each category receives a 0–100 severity score (weighted by red and yellow findings);
+        the letter grade is bucketed from a core-five-weighted protocol risk score, with critical-factor
+        reds adding a direct penalty and single-category caps ensuring no catastrophically weak area can
+        be masked by strong scores elsewhere.
+      </p>
+      <p>
+        We publish our rubric, factor definitions, and all source citations openly under CC BY 4.0.
+      </p>
+      <a class="htr-cta" href="/methodology/">How we grade →</a>
+    </div>
+    <div class="htr-meta">
+      <span><i>rubric_version</i><b>{RUBRIC_VERSION}</b></span>
+      <span><i>graded_at</i><b>{latestReviewedIso?.slice(0, 10) ?? '—'}</b></span>
+      <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
+      <span><i>protocols_v1</i><b>{items.length}</b></span>
+    </div>
+  </section>
+
+  <footer slot="footer" class="ftr">
+    <div class="ftr-cols">
+      <div class="ftr-col ftr-about">
+        <p>
+          <b>DeFi Risk</b> is an open-source field guide to DeFi risk. Every protocol graded,
+          every factor cited — all in the open.
+        </p>
+      </div>
+      <div class="ftr-col">
+        <h5>Browse</h5>
+        <a href="/">Protocols</a>
+        <a href="/factors/">Factors</a>
+        <a href="/changes/">Grade changes</a>
+        <a href="/learn/">Education hub</a>
+      </div>
+      <div class="ftr-col">
+        <h5>Methodology</h5>
+        <a href="/methodology/">Rubric {RUBRIC_VERSION}</a>
+        <a href="/methodology/changelog/">Changelog</a>
+        <a href="/about/">About + reviewers</a>
+      </div>
+      <div class="ftr-col">
+        <h5>Data</h5>
+        <a href="/data/">JSON API</a>
+        <a href="/status/">System status</a>
+      </div>
+    </div>
+    <div class="ftr-legal">
+      <span>© 2026 DeFi Risk</span>
+      <span>Data <i>CC BY 4.0</i> · Code <i>MIT</i></span>
+      <span>Rubric <i>{RUBRIC_VERSION}</i></span>
+      <span>build <i>{buildSha ?? 'dev'}</i></span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* ─── Hero (5fr 7fr) — verbatim from d3-variants-v2.jsx .hero ─── */
+  .hero {
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 36px;
+    align-items: center;
+  }
+  .hero .left .kicker {
+    font-size: 11.5px;
+    color: var(--fg-3);
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero .left .kicker .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--gA);
+    background: var(--gA-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero .left .kicker .live .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gA);
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .hero .lede {
+    font-size: 14px;
+    color: var(--fg-2);
+    margin-top: 12px;
+    line-height: 1.5;
+    max-width: 380px;
+  }
+
+  /* ─── Stats panel (gap:1px;background:var(--border) creates internal dividers) ─── */
+  .statsPanel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sp-h {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    align-items: center;
+  }
+  .sp-h .sp-h-r {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    color: var(--fg-3);
+  }
+  .sp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .sp-cell {
+    background: var(--surface);
+    padding: 12px 14px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 0;
+  }
+  .sp-lbl {
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+  .sp-num {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    font-feature-settings: 'tnum';
+    line-height: 1.1;
+    color: var(--fg);
+  }
+  .sp-num span {
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--fg);
+    margin-left: 0;
+    letter-spacing: -0.025em;
+  }
+  .sp-sub {
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-feature-settings: 'tnum';
+  }
+  .sp-dist {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10.5px;
+    color: var(--fg-3);
+  }
+  .sp-dist .sp-dist-l {
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+  .sp-bar {
+    display: flex;
+    height: 18px;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 1px;
+    flex: 1;
+  }
+  .sp-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-feature-settings: 'tnum';
+    cursor: pointer;
+    min-width: 0;
+  }
+  .sp-seg.A {
+    background: var(--gA);
+  }
+  .sp-seg.B {
+    background: var(--gB);
+  }
+  .sp-seg.C {
+    background: var(--gC);
+  }
+  .sp-seg.D {
+    background: var(--gD);
+  }
+  .sp-seg.F {
+    background: var(--gF);
+  }
+
+  /* ─── Section wrapper ─── */
+  .sec {
+    padding: 22px 24px;
+  }
+
+  /* ─── How-to-read editorial section ─── */
+  .foot-htr {
+    padding-top: 30px;
+    padding-bottom: 18px;
+  }
+  .foot-htr .sechead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .foot-htr .sechead .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .foot-htr .sechead .num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    background: var(--surface-2);
+    padding: 3px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    letter-spacing: 0.04em;
+  }
+  .foot-htr .sechead h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .foot-htr .htr-body {
+    max-width: 940px;
+    margin-top: 6px;
+  }
+  .foot-htr .htr-body p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--fg-2);
+    margin: 0 0 14px;
+    text-wrap: pretty;
+  }
+  .foot-htr .htr-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--fg);
+    background: var(--surface);
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 4px;
+    text-decoration: none;
+  }
+  .foot-htr .htr-cta:hover {
+    background: var(--surface-2);
+  }
+  .foot-htr .htr-meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--fg-3);
+    flex-wrap: wrap;
+  }
+  .foot-htr .htr-meta i {
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-3);
+    margin-right: 8px;
+    font-size: 11px;
+  }
+  .foot-htr .htr-meta b {
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg);
+    font-weight: 500;
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  /* ─── Footer ─── */
+  .ftr {
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+    padding: 36px 24px 0;
+    margin-top: 8px;
+  }
+  .ftr-cols {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 32px;
+  }
+  .ftr-col h5 {
+    margin: 0 0 12px;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ftr-col a {
+    display: block;
+    font-size: 13px;
+    color: var(--fg-2);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 3px 0;
+    line-height: 1.5;
+  }
+  .ftr-col a:hover {
+    color: var(--fg);
+  }
+  .ftr-about p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-2);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .ftr-about p b {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .ftr-legal {
+    border-top: 1px solid var(--border);
+    padding: 14px 0 18px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+  .ftr-legal i {
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-2);
+    background: var(--surface);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 10.5px;
+    margin-left: 4px;
+  }
+
+  /* ─── Mobile (under 900px) ─── */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      padding: 24px 18px 18px;
+    }
+    .sec {
+      padding: 18px 18px;
+    }
+    .ftr {
+      padding: 24px 18px 0;
+    }
+    .ftr-cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      padding-bottom: 24px;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero h1 {
+      font-size: 26px;
+    }
+    .sp-grid {
+      grid-template-columns: 1fr;
+    }
+    .ftr-cols {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+</style>

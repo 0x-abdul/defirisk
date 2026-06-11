@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "swaprum-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Swaprum",
+        "occurred_at": "2023-05-18",
+        "loss_usd": 3000000.0,
+        "category": "DEX / AMM",
+        "root_cause": "Rug Pull via Malicious Contract Upgrade",
+        "description": "Swaprum rugged $3M via a malicious contract upgrade — the backdoor wasn't in CertiK's audit scope, but the upgrade capability was, making this the fourth $1M+ rug of 2023 at an \"audited\" protocol.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (malicious upgrade); structural risk in audited (upgradeable contract owned by team)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed immediately before drain] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed immediately before drain]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — Contract upgrade via owner/admin function is the key action; monitoring for reward contract upgrades by the deployer address would surfa...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — Contract upgrade via owner/admin function is the key action; monitoring for reward contract upgrades by the deployer address would surfa...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — deleted all social media post-rug]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — standard AMM fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed immediately before drain]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hundred-finance-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Hundred Finance",
+        "occurred_at": "2023-04-15",
+        "loss_usd": 7400000.0,
+        "category": "Lending / Money Market (Compound V2 fork)",
+        "root_cause": "ERC-4626-style cToken exchange rate manipulation + rounding error",
+        "description": "Hundred Finance is a Compound fork that uses hTokens (cTokens) to track lending positions. The protocol had deployed two WBTC hToken markets — one active and one empty (unused by the UI). The empty hWBTC market became the attack surface.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound V2 fork]"
+        }
+      ]
+    }
+  }
+}

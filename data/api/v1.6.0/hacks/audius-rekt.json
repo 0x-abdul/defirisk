@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "audius-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Audius",
+        "occurred_at": "2022-07-23",
+        "loss_usd": 6000000.0,
+        "category": "Web3 Music Platform / DAO Governance",
+        "root_cause": "Storage collision in upgradeable proxy — governance contract reinitializable via AudiusAdminUpgradabilityProxy slot 0 collision with OpenZeppelin Initializable; attacker reinitializes, inflates own voting power, passes malicious treasury transfer proposal",
+        "description": "Audius lost $6M in AUDIO tokens when an attacker exploited an OpenZeppelin storage slot collision to reinitialize the governance contract, delegate 10 trillion voting tokens to themselves, and pass a treasury transfer proposal — all without owning a single AUDIO token legitimately.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — storage collision survived review]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the reinitialize and delegated-vote governance action was the core mechanism]"
+        }
+      ]
+    }
+  }
+}

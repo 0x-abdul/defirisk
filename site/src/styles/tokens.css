@@ -1,0 +1,198 @@
+/* DeFi Risk — Design Tokens (D3 v1.0)
+   Locked: 2026-05-05 from D3 redesign handoff (claude-design exports).
+   Source: design/handoff/risk-dashboard-3-designs/project/d3-variants-v2.jsx
+   Mirror of: risk-dashboard/design/tokens.css
+
+   Conventions:
+   - Light mode is canonical. Dark mode toggles via .dark on <body> or
+     [data-theme="dark"] on <html>.
+   - Letter-grade hues: deeper / editorial in light, brighter in dark
+     (so contrast survives dark-page tinting).
+   - Surfaces are white-on-warm-bg in light, slate-on-near-black in dark.
+   - All numerals tabular-aligned (font-feature-settings: "tnum").
+   - No shadows, no blur surfaces, no gradients.
+
+   Typography:
+   - Body: Geist (free, Vercel). Inter as fallback.
+   - Numerics + factor IDs + addresses: Geist Mono.
+   - Self-hosted via @fontsource/geist + @fontsource/geist-mono, imported
+     from global.css (latin subset only — replaces the Google Fonts
+     <link> for LCP + privacy).
+*/
+
+/* ──────────── LIGHT MODE (canonical) ──────────── */
+:root {
+  /* Neutral surfaces */
+  --bg:        #fafaf9;   /* page background, warm off-white */
+  --surface:   #ffffff;   /* card surface (sits on --bg) */
+  --surface-2: #f5f4f1;   /* subtle surface (table zebra, header band) */
+
+  /* Borders */
+  --border:    #e7e5e0;   /* dividers, card borders */
+  --border-2:  #d8d5cd;   /* hover/emphasized border */
+
+  /* Text */
+  --fg:        #0f1011;   /* primary text, headlines */
+  --fg-2:      #4a4d52;   /* secondary text, body */
+  --fg-3:      #686b71;   /* tertiary text, captions, datelines — darkened from #7a7e85 for WCAG AA 4.5:1 on --bg */
+  --fg-4:      #80838a;   /* faint text, disabled — darkened from #a5a8af for WCAG AA on small text */
+
+  /* Letter grades — fg (the letter color) */
+  --gA: #118a4d;   /* A — generally safe (deep green) */
+  --gB: #3da55f;   /* B — acceptable (medium green) */
+  --gC: #c4881b;   /* C — caution (mustard) */
+  --gD: #cc6420;   /* D — material concern (orange) */
+  --gF: #b62a1f;   /* F — avoid (brick red) */
+
+  /* Letter grades — bg tint */
+  --gA-bg: #dff2e3;
+  --gB-bg: #e6f1da;
+  --gC-bg: #f8eccc;
+  --gD-bg: #f7dec5;
+  --gF-bg: #f6d3cd;
+
+  /* Status dots */
+  --status-green:  var(--gA);
+  --status-yellow: var(--gC);
+  --status-red:    var(--gF);
+  --status-gray:   var(--fg-4);
+
+  /* Type families */
+  --font-sans: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Type scale */
+  --t-micro:  10px;
+  --t-cap:    11px;
+  --t-mini:   11.5px;
+  --t-sm:     12px;
+  --t-sm-2:   12.5px;
+  --t-base:   13px;
+  --t-md:     14px;
+  --t-lg:     16px;
+  --t-xl:     18px;
+  --t-2xl:    22px;
+  --t-3xl:    28px;
+  --t-4xl:    34px;
+  --t-hero:   54px;
+
+  /* Type weights */
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-semi:    600;
+  --w-bold:    700;
+
+  /* Letter spacing */
+  --ls-tight:   -0.04em;
+  --ls-snug:    -0.025em;
+  --ls-display: -0.02em;
+  --ls-normal:  0;
+  --ls-wide:    0.04em;
+  --ls-caps:    0.06em;
+  --ls-caps-2:  0.08em;
+
+  /* Spacing scale */
+  --s-1:  4px;
+  --s-2:  6px;
+  --s-3:  8px;
+  --s-4:  10px;
+  --s-5:  12px;
+  --s-6:  14px;
+  --s-7:  16px;
+  --s-8:  18px;
+  --s-9:  22px;
+  --s-10: 24px;
+  --s-11: 32px;
+  --s-12: 36px;
+  --s-13: 48px;
+  --s-14: 64px;
+
+  /* Border radii */
+  --r-1: 3px;
+  --r-2: 4px;
+  --r-3: 5px;
+  --r-4: 6px;
+  --r-5: 7px;
+  --r-6: 8px;
+  --r-7: 10px;
+  --r-8: 12px;
+  --r-9: 14px;
+  --r-pill: 999px;
+
+  /* Heights */
+  --h-topbar: 52px;
+  --h-row:    56px;
+
+  /* Z-index */
+  --z-topbar: 5;
+  --z-tweaks: 9999;
+}
+
+/* ──────────── DARK MODE ──────────── */
+.dark,
+[data-theme='dark'] {
+  --bg:        #0a0b0c;
+  --surface:   #111315;
+  --surface-2: #16191c;
+
+  --border:    #22262b;
+  --border-2:  #2c3137;
+
+  --fg:        #f0f1f2;
+  --fg-2:      #b3b6bb;
+  --fg-3:      #7e8389;
+  --fg-4:      #5a5f66;
+
+  --gA: #3eb573;
+  --gB: #7fc35a;
+  --gC: #e8b62a;
+  --gD: #e88a2a;
+  --gF: #e25555;
+
+  --gA-bg: rgba(62, 181, 115, 0.14);
+  --gB-bg: rgba(127, 195, 90, 0.14);
+  --gC-bg: rgba(232, 182, 42, 0.14);
+  --gD-bg: rgba(232, 138, 42, 0.14);
+  --gF-bg: rgba(226, 85, 85, 0.16);
+}
+
+/* ──────────── HIGH-CONTRAST MODE (opt-in) ──────────────────────
+   Toggled by [data-prefer-contrast] on <html> (TopBar button +
+   localStorage 'rd-prefer-contrast'). Swaps the color-on-tint
+   patterns that fail WCAG-AA 4.5:1 at small text sizes for
+   higher-contrast variants. Canonical D3 palette is preserved by
+   default; this mode is opt-in for users who need stricter contrast.
+   See methodology/changelog v1.6.0 + Design system v1.1 note. */
+[data-prefer-contrast] {
+  /* Darker grade foregrounds (lift contrast against tinted bg). */
+  --gA: #0a5c34;
+  --gB: #2b7a45;
+  --gC: #946112;
+  --gD: #984a16;
+  --gF: #871f17;
+  /* Lighter tints (further lift contrast under the darker letter). */
+  --gA-bg: #ecf7ee;
+  --gB-bg: #f0f6e6;
+  --gC-bg: #fcf2dc;
+  --gD-bg: #fce8d4;
+  --gF-bg: #fbe1dc;
+  /* Bump --fg-3 toward --fg-2 so chip counts pass AA at opacity:1 (see component overrides). */
+  --fg-3: #585b60;
+  /* Bump --fg-4 (faint captions / source dates) to clear AA 4.5:1 on --surface. */
+  --fg-4: #585b60;
+}
+
+[data-theme='dark'][data-prefer-contrast] {
+  --gA: #6ed395;
+  --gB: #aedc8e;
+  --gC: #f4cf63;
+  --gD: #f4a965;
+  --gF: #ef8c8c;
+  --gA-bg: rgba(110, 211, 149, 0.22);
+  --gB-bg: rgba(174, 220, 142, 0.22);
+  --gC-bg: rgba(244, 207, 99, 0.22);
+  --gD-bg: rgba(244, 169, 101, 0.22);
+  --gF-bg: rgba(239, 140, 140, 0.24);
+  --fg-3: #9aa0a8;
+  --fg-4: #9aa0a8;
+}

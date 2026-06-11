@@ -1,0 +1,66 @@
+# Cloudflare Pages headers config (E-17 stub).
+#
+# Activated at M5 cloud cutover. Until then the site builds locally and
+# serves via `npx serve site/dist/` for D2 review on localhost.
+#
+# Spec source: eng-review-2026-04-23.md §1D (Cloudflare Pages) + §6
+# ER-04 (cache invariants on rubric bump).
+#
+# Format: https://developers.cloudflare.com/pages/configuration/headers/
+
+# ── Security headers (apply to every response) ──────────────────────────────
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), microphone=(), midi=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+# ── HTML pages ──────────────────────────────────────────────────────────────
+# Short cache + revalidate so rubric bumps don't strand stale grades, but
+# CDN still absorbs traffic spikes between revalidations.
+/*.html
+  Cache-Control: public, max-age=60, stale-while-revalidate=600
+
+# ── Pre-publication review JSON (must come before /api/*) ──────────────────
+# Pre-pub review JSON lives at /api/<rubric>/unpublished/<slug>-<token>/index.json,
+# which matches /api/* and would otherwise inherit the public cache below.
+# This more-specific rule keeps unpublished JSON out of edge caches and out of
+# crawler indexes — mirrors the /unpublished/* HTML rule below.
+/api/*/unpublished/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: private, no-store
+
+# ── Versioned JSON API responses ────────────────────────────────────────────
+# Per eng-review §1E: every response under /api/<rubric>/ is byte-stable per
+# git SHA. The version segment in the URL is what changes; the file content
+# at a given URL is immutable per build. Long max-age + 1h revalidate.
+/api/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=3600
+
+# ── Static assets (Astro fingerprints these) ────────────────────────────────
+# Astro emits fingerprinted filenames under _astro/. Cache forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── Pre-publication review pages (PD-049, 2026-05-27) ──────────────────────
+# Belt-and-braces: <meta name="robots" noindex> is also emitted by Base.astro
+# (via the reviewMode prop on ProtocolDetailLayout). X-Robots-Tag covers
+# HEAD-only crawls and any path-scan that doesn't parse HTML, e.g. archive.org.
+# robots.txt also disallows /unpublished/ for well-behaved crawlers.
+/unpublished/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: private, no-store
+
+# ── Sitemap, robots, favicon ────────────────────────────────────────────────
+/sitemap-*.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/favicon.svg
+  Cache-Control: public, max-age=86400

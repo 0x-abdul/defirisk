@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "lifi-jumper",
+        "protocol_slug": null,
+        "protocol_name": "LiFi Protocol (Jumper Exchange)",
+        "occurred_at": "2024-07-16",
+        "loss_usd": 9730000.0,
+        "category": "Cross-Chain Bridge Aggregator / DEX Aggregator",
+        "root_cause": "Call Injection via Unvalidated Swap Function",
+        "description": "LiFi lost $9.73M when an unaudited new contract facet introduced a call-injection vulnerability that allowed an attacker to drain infinite-approval wallets across multiple chains — the exact same vulnerability class as LiFi's own 2022 hack.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — new facet was not audited]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited new code]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — new facet deployed July 11, 5 days before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "voltage-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Voltage Finance / Ola Finance",
+        "occurred_at": "2022-03-31",
+        "loss_usd": 4000000.0,
+        "category": "Lending / Money Market (Compound fork via Ola Finance)",
+        "root_cause": "ERC677 callAfterTransfer() reentrancy in Compound fork — borrow before balance update",
+        "description": "Voltage Finance lost $4M to the exact same ERC677 reentrancy that had hit two other Compound forks on Gnosis chain weeks earlier — the attack looped through BUSD, USDC, FUSD, WBTC, WETH, and FUSE by withdrawing both borrow proceeds and collateral tokens before the protocol registered the debt.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited for ERC677 compatibility; inherited Compound fork risk]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding; contract deployment; then rapid multi-asset borrowing sequence]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound fork (via Ola Finance \"Compound-like instance\" architecture)]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound fork (via Ola Finance \"Compound-like instance\" architecture)]"
+        }
+      ]
+    }
+  }
+}

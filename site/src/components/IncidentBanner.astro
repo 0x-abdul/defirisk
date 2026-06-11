@@ -1,0 +1,129 @@
+---
+export type IncidentVariant = 'advisory' | 'critical' | 'pre-publication';
+
+export interface Props {
+  variant: IncidentVariant;
+  headline: string;
+  /** Optional dismissal-storage key (per-page dismissable when set). */
+  dismissKey?: string;
+}
+
+const { variant, headline, dismissKey } = Astro.props;
+
+const symbol = variant === 'critical' ? '⚠' : variant === 'pre-publication' ? '✎' : 'ⓘ';
+---
+
+<aside
+  class:list={['incident-banner', variant]}
+  data-dismiss-key={dismissKey ?? ''}
+  role={variant === 'critical' ? 'alert' : 'status'}
+>
+  <span class="ico" aria-hidden="true">{symbol}</span>
+  <span class="msg">
+    {variant === 'pre-publication' ? (
+      <>Preview build — content under review. <em>{headline}</em></>
+    ) : (
+      <>Active incident — <em>{headline}.</em> The structural grade has not changed.</>
+    )}
+  </span>
+  {
+    dismissKey && (
+      <button type="button" class="dismiss" aria-label="Dismiss this banner">
+        ×
+      </button>
+    )
+  }
+</aside>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('aside.incident-banner[data-dismiss-key]').forEach(function (el) {
+      var key = el.getAttribute('data-dismiss-key');
+      if (!key) return;
+      try {
+        if (localStorage.getItem('rd-dismiss-' + key) === '1') {
+          el.style.display = 'none';
+        }
+      } catch (e) {
+        /* ignore */
+      }
+      var btn = el.querySelector('button.dismiss');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        try {
+          localStorage.setItem('rd-dismiss-' + key, '1');
+        } catch (e) {
+          /* ignore */
+        }
+        el.style.display = 'none';
+      });
+    });
+  })();
+</script>
+
+<style>
+  .incident-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 18px;
+    font-size: 13px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+  }
+  .incident-banner .ico {
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .incident-banner .msg {
+    flex: 1;
+    color: var(--fg-2);
+  }
+  .incident-banner .msg em {
+    color: var(--fg);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .incident-banner .dismiss {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--fg-3);
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .incident-banner .dismiss:hover {
+    color: var(--fg);
+    border-color: var(--border-2);
+  }
+  .incident-banner.advisory {
+    background: var(--gC-bg);
+    border-bottom-color: var(--gC);
+  }
+  .incident-banner.advisory .ico {
+    color: var(--gC);
+  }
+  .incident-banner.critical {
+    background: var(--gF-bg);
+    border-bottom-color: var(--gF);
+  }
+  .incident-banner.critical .ico {
+    color: var(--gF);
+  }
+  .incident-banner.pre-publication {
+    background: var(--surface-2);
+    border-bottom-color: var(--border);
+  }
+  .incident-banner.pre-publication .ico {
+    color: var(--fg-3);
+  }
+</style>

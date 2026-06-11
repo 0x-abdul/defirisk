@@ -1,0 +1,328 @@
+---
+import { RUBRIC_VERSION } from '../lib/rubric';
+
+export interface FactorCardMeta {
+  label: string;
+  value: string;
+  sub?: string;
+  crit?: boolean;
+}
+
+export interface MiniDist {
+  r: number;
+  y: number;
+  g: number;
+}
+
+export interface Props {
+  factorId: string;
+  critical: boolean;
+  categoryName: string;
+  categoryHref?: string;
+  factorName: string;
+  meta: FactorCardMeta[];
+  distribution?: MiniDist;
+  appliesTo?: number;
+  actions?: Array<{ label: string; href: string; arrow?: string }>;
+}
+
+const {
+  factorId,
+  critical,
+  categoryName,
+  categoryHref,
+  factorName,
+  meta,
+  distribution,
+  appliesTo,
+  actions = [
+    { label: 'JSON envelope', href: `/api/${RUBRIC_VERSION}/factors/${factorId}.json`, arrow: '↗' },
+    { label: 'Cite this factor', href: '#cite', arrow: '↗' },
+  ],
+} = Astro.props;
+---
+
+<div class="fcard">
+  <div class="top">
+    <div class="fid-big">{factorId}</div>
+    <div class:list={['star-big', { muted: !critical }]} aria-label={critical ? 'Critical factor' : 'Non-critical factor'}>
+      {critical ? '★' : '☆'}
+    </div>
+  </div>
+  {
+    categoryHref ? (
+      <a class="cchip" href={categoryHref}>
+        {categoryName}
+      </a>
+    ) : (
+      <span class="cchip">{categoryName}</span>
+    )
+  }
+  <div class="fname-rail">{factorName}</div>
+
+  <div class="meta">
+    {
+      meta.map((m) => (
+        <div class="mi">
+          <span class="lbl">{m.label}</span>
+          <span class:list={['v', { crit: m.crit }]}>
+            {m.value}
+            {m.sub && <span class="sub">{m.sub}</span>}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    distribution && appliesTo !== undefined && (
+      <>
+        <h5>Distribution across {appliesTo} protocols</h5>
+        <div class="mini-dist">
+          <div class="mini-bar">
+            {distribution.r > 0 && (
+              <i class="r" style={`flex:${distribution.r}`}>
+                {distribution.r}
+              </i>
+            )}
+            {distribution.y > 0 && (
+              <i class="y" style={`flex:${distribution.y}`}>
+                {distribution.y}
+              </i>
+            )}
+            {distribution.g > 0 && (
+              <i class="g" style={`flex:${distribution.g}`}>
+                {distribution.g}
+              </i>
+            )}
+          </div>
+          <div class="mini-legend">
+            <span>
+              <span class="dot r" /> Red {distribution.r}
+            </span>
+            <span>
+              <span class="dot y" /> Yellow {distribution.y}
+            </span>
+            <span>
+              <span class="dot g" /> Green {distribution.g}
+            </span>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  <div class="actions">
+    {
+      actions.map((a) => (
+        <a href={a.href}>
+          {a.label} {a.arrow && <span class="arr">{a.arrow}</span>}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .fcard .top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .fcard .fid-big {
+    font-family: 'Geist Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+    font-feature-settings: 'tnum';
+  }
+  .fcard .star-big {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: var(--gF);
+    font-size: 18px;
+    line-height: 1;
+  }
+  .fcard .star-big.muted {
+    color: var(--fg-4);
+  }
+  .fcard .cchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 11.5px;
+    color: var(--fg-2);
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    text-decoration: none;
+  }
+  .fcard .cchip:hover {
+    color: var(--fg);
+  }
+  .fcard .fname-rail {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin-top: 14px;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+  .fcard .meta {
+    display: flex;
+    flex-direction: column;
+    margin: 18px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .fcard .mi {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 0;
+    font-size: 11.5px;
+    color: var(--fg-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .fcard .mi:last-child {
+    border-bottom: none;
+  }
+  .fcard .mi .lbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .fcard .mi .v {
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 12px;
+    text-align: right;
+    font-feature-settings: 'tnum';
+  }
+  .fcard .mi .v .sub {
+    display: block;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    font-weight: 400;
+    margin-top: 1px;
+    letter-spacing: 0.01em;
+  }
+  .fcard .mi .v.crit {
+    color: var(--gF);
+  }
+
+  .fcard h5 {
+    margin: 22px 0 9px;
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: 'Geist Mono', monospace;
+  }
+  .fcard .mini-dist {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 11px 12px;
+  }
+  .fcard .mini-bar {
+    display: flex;
+    height: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    gap: 1px;
+    background: var(--border);
+  }
+  .fcard .mini-bar i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    font-feature-settings: 'tnum';
+    min-width: 0;
+    font-family: 'Geist Mono', monospace;
+  }
+  .fcard .mini-bar i.r {
+    background: var(--gF);
+  }
+  .fcard .mini-bar i.y {
+    background: var(--gC);
+  }
+  .fcard .mini-bar i.g {
+    background: var(--gA);
+  }
+  .fcard .mini-legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 10.5px;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+  .fcard .mini-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .fcard .mini-legend .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .fcard .mini-legend .dot.r {
+    background: var(--gF);
+  }
+  .fcard .mini-legend .dot.y {
+    background: var(--gC);
+  }
+  .fcard .mini-legend .dot.g {
+    background: var(--gA);
+  }
+
+  .fcard .actions {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fcard .actions a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 11px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--fg);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .fcard .actions a:hover {
+    background: var(--surface-2);
+  }
+  .fcard .actions a .arr {
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-3);
+  }
+</style>

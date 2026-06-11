@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "fortress-protocol",
+        "protocol_slug": null,
+        "protocol_name": "Fortress Protocol (lending arm of JetFuel Finance)",
+        "occurred_at": "2022-05-09",
+        "loss_usd": 3000000.0,
+        "category": "Lending",
+        "root_cause": "Oracle Manipulation + Malicious Governance Proposal",
+        "description": "Fortress Protocol was drained for $3M when an attacker passed a malicious governance proposal (active for 3 days, uncontested) and exploited a publicly callable oracle to inflate FTS price, using $4.50 worth of FTS as collateral to borrow everything.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — both auditors missed the public oracle submit() function; collateral factor manipulation via governance was not flagged]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — malicious governance proposal was the key enabling step; was active and voteable for 3 days]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Y — malicious governance proposal to add FTS as collateral was visible on-chain for 3 days before execution; Tornado Cash-funded attacker ad...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — publicly callable oracle submit() means any price submission is a potential manipulation; FTS price spike at time of exploit is detectab...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — malicious governance proposal was the key enabling step; was active and voteable for 3 days]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — JetFuel Finance / Compound-style lending fork on BSC]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — JetFuel Finance / Compound-style lending fork on BSC]"
+        }
+      ]
+    }
+  }
+}

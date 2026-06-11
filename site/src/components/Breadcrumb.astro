@@ -1,0 +1,80 @@
+---
+export interface CrumbItem {
+  n: string;
+  href?: string;
+}
+
+export interface Props {
+  items: CrumbItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="crumbbar" aria-label="Breadcrumb">
+  <ol class="crumb">
+    {
+      items.map((it, i) => {
+        const last = i === items.length - 1;
+        return (
+          <>
+            <li>
+              {last ? (
+                <span class="here" aria-current="page">
+                  {it.n}
+                </span>
+              ) : it.href ? (
+                <a href={it.href}>{it.n}</a>
+              ) : (
+                <a>{it.n}</a>
+              )}
+            </li>
+            {!last && (
+              <li class="sep" aria-hidden="true">
+                ›
+              </li>
+            )}
+          </>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbbar {
+    padding: 13px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .crumb {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11.5px;
+    color: var(--fg-3);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    letter-spacing: 0.01em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .crumb li {
+    display: inline-flex;
+    align-items: center;
+  }
+  .crumb a {
+    color: var(--fg-3);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .crumb a:hover {
+    color: var(--fg);
+  }
+  .crumb .sep {
+    color: var(--fg-4);
+  }
+  .crumb .here {
+    color: var(--fg);
+  }
+</style>

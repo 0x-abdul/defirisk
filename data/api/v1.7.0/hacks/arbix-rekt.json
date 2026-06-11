@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "arbix-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Arbix Finance",
+        "occurred_at": "2022-01-04",
+        "loss_usd": 10000000.0,
+        "category": "Yield Aggregator / Vault",
+        "root_cause": "Insider rug pull — deployer drained user vaults and disappeared, then dumped native token via PancakeSwap",
+        "description": "Arbix Finance's team drained all user vaults at 3 AM, pre-dumped 4.5M ARBX tokens, then deleted the website and social accounts — a textbook BSC rug pull that CertiK's November audit failed to prevent.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — deployer exercised privileged vault withdrawal capability]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — common BSC yield aggregator fork pattern]"
+        }
+      ]
+    }
+  }
+}

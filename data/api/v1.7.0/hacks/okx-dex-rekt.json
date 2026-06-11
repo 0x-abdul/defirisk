@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "okx-dex-rekt",
+        "protocol_slug": null,
+        "protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
+        "occurred_at": "2023-12-13",
+        "loss_usd": 2700000.0,
+        "category": "DEX Aggregator",
+        "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals",
+        "description": "OKX's DEX aggregator lost $2.7M when a compromised proxy admin key was used to swap in a malicious implementation that drained any wallet that had previously approved the contract.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed by attacker] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed by attacker]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — proxy implementation upgrade by compromised Proxy Admin Owner was the trigger event] || ★ Single admin EOA — adjacent [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key]"
+        },
+        {
+          "factor_id": "RD-F-031",
+          "relevance": "causal",
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — proxy implementation upgrade by compromised Proxy Admin Owner was the trigger event]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — malicious upgrade deployed by attacker]"
+        },
+        {
+          "factor_id": "RD-F-166",
+          "relevance": "causal",
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials] || Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key]"
+        },
+        {
+          "factor_id": "RD-F-168",
+          "relevance": "related",
+          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]"
+        }
+      ]
+    }
+  }
+}

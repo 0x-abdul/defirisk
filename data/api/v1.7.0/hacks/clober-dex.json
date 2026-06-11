@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "clober-dex",
+        "protocol_slug": null,
+        "protocol_name": "Clober DEX",
+        "occurred_at": "2024-12-10",
+        "loss_usd": 500000.0,
+        "category": "DEX / Liquidity Vault",
+        "root_cause": "Reentrancy (Post-Audit Code Change)",
+        "description": "Clober DEX's Liquidity Vault was drained for $500K via a textbook reentrancy attack that was introduced in a post-audit code change — rendering two completed security audits completely irrelevant.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the reentrancy was introduced in a post-audit code addition not covered by Trust Security's audit; Kupia flagged concerns about malicio...]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-audit addition)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — post-audit code change added the vulnerable `burnHook` callback]"
+        }
+      ]
+    }
+  }
+}

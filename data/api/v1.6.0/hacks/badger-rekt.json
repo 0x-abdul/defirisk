@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "badger-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Badger DAO (Bitcoin-yield vaults on Ethereum)",
+        "occurred_at": "2021-12-02",
+        "loss_usd": 120000000.0,
+        "category": "Yield Vault / BTC-on-DeFi",
+        "root_cause": "Front-end injection (Cloudflare account compromise) → malicious `increaseAllowance()` approvals → vault token drain",
+        "description": "Badger DAO lost $120M after an attacker compromised their front-end and silently injected malicious token approvals into user transactions for 12 days before draining 500+ wallets.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded: N — existing vault contracts; the attack vector was the front-end, not a new contract] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded: N — existing vault contracts; the attack vector was the front-end, not a new contract]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program]"
+        },
+        {
+          "factor_id": "RD-F-062",
+          "relevance": "related",
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        },
+        {
+          "factor_id": "RD-F-096",
+          "relevance": "illustrative",
+          "notes": "New ERC-20 approval to unverified contract [via realtime_signals/Pre-exploit on-chain signals: Y** — malicious `increaseAllowance()` calls granting attacker's address unlimited approval began ~12 days before the drain; a user flagged t...]"
+        },
+        {
+          "factor_id": "RD-F-105",
+          "relevance": "causal",
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: N — existing vault contracts; the attack vector was the front-end, not a new contract]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "abracadabra-rekt3",
+        "protocol_slug": null,
+        "protocol_name": "Abracadabra Money (3rd incident — abracadabra-rekt3)",
+        "occurred_at": "2025-10-04",
+        "loss_usd": 1800000.0,
+        "category": "CDP / Lending (Cauldron-based stablecoin)",
+        "root_cause": "Deprecated cauldron security flag bypass — cook() action ordering resets solvency check flag → uncollateralized MIM borrow",
+        "description": "Abracadabra's third exploit in two years drained $1.8M from deprecated CauldronV4 contracts that remained live with no kill switch — anyone who read the code could borrow MIM uncollateralized with a two-step trick.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — deprecated contracts explicitly excluded from any recent audit scope]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited state — deprecated contracts with no audit since Nov 2023]"
+        }
+      ]
+    }
+  }
+}

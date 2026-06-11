@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "venus-zksync-2025-rekt",
+        "protocol_slug": "venus",
+        "protocol_name": "Venus Protocol (zkSync Era deployment)",
+        "occurred_at": "2025-03-29",
+        "loss_usd": 902000.0,
+        "category": "Lending — empty-market donation attack",
+        "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection",
+        "description": "Same root-cause class as the 2026-03-15 Venus BNB Chain incident (referenced in but not previously broken out as a dedicated zkSync-Era record).",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-070",
+          "relevance": "causal",
+          "notes": "Empty-market donation attack — canonical RD-F-070 evidence pattern"
+        },
+        {
+          "factor_id": "RD-F-074",
+          "relevance": "related",
+          "notes": "_decimalsOffset() returning 0 + no virtual deposit is the textbook ERC-4626 first-depositor configuration error"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-085",
+          "relevance": "illustrative",
+          "notes": "Part of Venus chronic-pattern cluster (this + 2026-03-15 BNB Chain incident) per PD-022"
+        },
+        {
+          "factor_id": "RD-F-143",
+          "relevance": "related",
+          "notes": "Cross-chain deployment did not back-port mainnet first-depositor protection before listing — Cat 9 hygiene failure"
+        }
+      ]
+    }
+  }
+}

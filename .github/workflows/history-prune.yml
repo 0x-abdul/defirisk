@@ -1,0 +1,135 @@
+# Weekly history retention prune — E-32
+#
+# Runs every Sunday at 05:00 UTC (after the backup at 04:00).
+# Also runnable manually via GitHub UI or: gh workflow run history-prune.yml
+#
+# What this does
+# ──────────────
+# Calls prune-history.py which applies the tiered retention policy:
+#   - Last 365 days: full daily snapshots retained
+#   - Older rows: keeps one row per (protocol[,factor], calendar month)
+#
+# Prerequisites (repo Settings → Secrets and variables → Actions):
+#   DATABASE_URL   Supabase pooler connection string (set at M5 cutover)
+#
+# [!] Pre-M5: DATABASE_URL is not configured — the script detects this and
+#     exits early after printing a skip notice. The workflow still runs to
+#     confirm the skip; no error is emitted.
+#
+# On failure: opens a GitHub Issue tagged incident:prune-failed so the solo
+# builder is notified even without active monitoring (same pattern as
+# backup-r2.yml).
+
+name: History retention prune (E-32)
+
+on:
+  schedule:
+    - cron: '0 5 * * 0'   # Sundays 05:00 UTC (after backup at 04:00)
+  workflow_dispatch:        # manual: gh workflow run history-prune.yml
+
+permissions:
+  contents: read
+  issues: write             # needed for failure-notification step
+
+jobs:
+  prune:
+    name: Prune snapshot history tables
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ── 0. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 1. Check prerequisites ────────────────────────────────────────────────
+      - name: Check prerequisites
+        id: prereq
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "SKIP: DATABASE_URL not set — configure at M5 Supabase cutover."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          DB_URL: ${{ secrets.DATABASE_URL }}
+
+      # ── 2. Set up Python ──────────────────────────────────────────────────────
+      - name: Set up Python 3.12
+        if: steps.prereq.outputs.skip != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # ── 3. Install Python dependencies ────────────────────────────────────────
+      - name: Install Python dependencies
+        if: steps.prereq.outputs.skip != 'true'
+        run: pip install --quiet 'psycopg[binary]'
+
+      # ── 4. Run prune-history.py ───────────────────────────────────────────────
+      - name: Run prune-history.py
+        id: run_prune
+        if: steps.prereq.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python scripts/prune-history.py
+
+      # ── 5. Skip notice (pre-M5) ───────────────────────────────────────────────
+      - name: Skip notice (pre-M5)
+        if: steps.prereq.outputs.skip == 'true'
+        run: |
+          echo "History prune skipped — DATABASE_URL not yet configured (pre-M5 Supabase cutover)."
+          echo "This is expected until the production Supabase project is provisioned."
+
+  # ── Failure notification ────────────────────────────────────────────────────
+  #
+  # Opens a GitHub Issue tagged 'incident:prune-failed' if the prune job fails.
+  # Gives the solo builder a persistent notification without needing to watch
+  # CI emails. Same pattern as backup-r2.yml.
+  notify-on-failure:
+    name: Open failure issue
+    runs-on: ubuntu-latest
+    needs: prune
+    if: failure()
+    permissions:
+      issues: write
+
+    steps:
+      - name: Open GitHub Issue for prune failure
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO:     ${{ github.repository }}
+          RUN_URL:  ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITLE="[incident:prune-failed] Weekly history prune failed $(date -u +%Y-%m-%d)"
+          BODY="## History prune failure detected
+
+          **Date:** $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          **Workflow run:** $RUN_URL
+          **Trigger:** ${{ github.event_name }}
+
+          ## What failed
+          The weekly \`prune-history.py\` run did not complete successfully.
+          Check the workflow log above for the specific error.
+
+          ## Immediate actions
+          1. Visit the run log: $RUN_URL
+          2. If the DB connection failed: check that \`DATABASE_URL\` is still valid.
+          3. Run manually to confirm the issue: \`gh workflow run history-prune.yml\`
+          4. For a safe manual re-run: \`DATABASE_URL=<conn> python scripts/prune-history.py --dry-run\`
+             to preview what would be deleted before running without \`--dry-run\`.
+
+          ## Severity
+          - **Low** if this is a one-off transient failure (no data loss — rows accumulate until next run).
+          - **Moderate** if this fails 4+ weeks running — table bloat may begin to affect query performance.
+
+          _Auto-opened by the \`history-prune.yml\` workflow. Close this issue once the prune is confirmed healthy._"
+
+          gh issue create \
+            --repo "$REPO" \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label "incident:prune-failed" || \
+          echo "WARNING: could not create issue (label may not exist — create label 'incident:prune-failed' in repo Settings → Labels)"

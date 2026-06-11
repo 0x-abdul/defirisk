@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "agave-hundred-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Agave DAO + Hundred Finance (dual attack)",
+        "occurred_at": "2022-03-15",
+        "loss_usd": 11700000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "ERC677 callAfterTransfer() reentrancy — flash loan collateral → nested borrow calls before debt balance update → multi-asset drain",
+        "description": "The same attacker drained $5.5M from Agave and $6.2M from Hundred Finance in a 3-minute window on Gnosis Chain — both forks vulnerable to the same ERC677 token callback reentrancy, 7 months after Cream Finance fell to the identical attack class on Ethereum.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the xDai token callback compatibility risk was not in audit scope]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: No — established forks; no recent upgrades]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Agave: Yes (Aave-like program); Hundred: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — both are forks (Aave V2 and Compound respectively)]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — both are forks (Aave V2 and Compound respectively)]"
+        }
+      ]
+    }
+  }
+}

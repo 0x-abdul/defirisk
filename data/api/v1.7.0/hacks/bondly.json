@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bondly",
+        "protocol_slug": null,
+        "protocol_name": "Bondly Finance",
+        "occurred_at": "2021-07-15",
+        "loss_usd": 5900000.0,
+        "category": "NFT Platform / Multi-service token platform",
+        "root_cause": "Infinite Mint (Compromised or Insider Minting Key)",
+        "description": "Someone minted 373 million BONDLY tokens from a single unprotected minting address, dumped them in batches of 100,000, crashed the price 80%, and sent $4.8M to Tornado Cash — while Bondly blamed an \"unknown party.\"",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — the minting key had unilateral control; its use was the exploit]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — the minting key had unilateral control; its use was the exploit]"
+        }
+      ]
+    }
+  }
+}

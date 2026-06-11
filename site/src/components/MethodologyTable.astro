@@ -1,0 +1,80 @@
+---
+import type { Letter } from '../lib/rubric';
+
+export interface MethodologyRow {
+  letter: Letter;
+  meaning: string;
+  evidence: string;
+  critical: string;
+}
+
+export interface Props {
+  rows?: MethodologyRow[];
+}
+
+const DEFAULT_ROWS: MethodologyRow[] = [
+  {
+    letter: 'A',
+    meaning: 'Resilient',
+    evidence: 'All five core categories green. No factor marked yellow in oracle or governance.',
+    critical: '0',
+  },
+  {
+    letter: 'B',
+    meaning: 'Sound',
+    evidence: 'At most one yellow in the core five. No red anywhere. All gaps documented with mitigations.',
+    critical: '0',
+  },
+  {
+    letter: 'C',
+    meaning: 'Watch',
+    evidence: 'Multiple yellows or one yellow in oracle/governance. Material gaps that warrant monitoring.',
+    critical: '0',
+  },
+  {
+    letter: 'D',
+    meaning: 'Compromised',
+    evidence: 'At least one red in the core five, or any single critical factor open and unmitigated.',
+    critical: '≥ 1',
+  },
+  {
+    letter: 'F',
+    meaning: 'Failing',
+    evidence: 'Disqualifying issue present: active exploit, missing timelock with admin keys live, or two or more reds in the core five.',
+    critical: '≥ 1 unresolved',
+  },
+];
+
+const { rows = DEFAULT_ROWS } = Astro.props;
+---
+
+<div class="ttable" tabindex="0" role="region" aria-label="Methodology table">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:60px">Grade</th>
+        <th style="width:110px">Meaning</th>
+        <th>Required evidence</th>
+        <th style="width:130px">Critical factors</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((r) => (
+          <tr>
+            <td>
+              <span class="gcell">
+                <span class:list={['gpill', r.letter]}>{r.letter}</span>
+              </span>
+            </td>
+            <td>
+              <b>{r.meaning}</b>
+            </td>
+            <td>{r.evidence}</td>
+            <td class="mono">{r.critical}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

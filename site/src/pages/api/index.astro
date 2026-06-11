@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import { RUBRIC_VERSION } from '../../lib/rubric';
+
+const target = '/data/';
+---
+
+<Base title="API — DeFi Risk">
+  <div class="container">
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <div class="masthead">
+      <div class="crumb">API</div>
+      <h1>API root</h1>
+      <p class="lede">The canonical entry to the public API documentation lives at <a href={target}>{target}</a>. You should be redirected automatically.</p>
+      <div class="meta-row">
+        <span><b>Rubric</b> <code>{RUBRIC_VERSION}</code></span>
+        <span><b>Versioned base</b> <code>/api/{RUBRIC_VERSION}/</code></span>
+      </div>
+    </div>
+    <section class="section">
+      <p>Redirecting to <a href={target}>{target}</a>&#8230; If you are not redirected, follow the link.</p>
+    </section>
+  </div>
+</Base>

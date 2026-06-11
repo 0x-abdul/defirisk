@@ -1,0 +1,159 @@
+---
+import type { SourceType } from '../lib/types';
+
+export interface SourceEntry {
+  source_type: SourceType | string;
+  url: string | null;
+  reference?: string | null;
+  title?: string | null;
+  retrieved_at?: string | null;
+  primary?: boolean;
+}
+
+export interface Props {
+  sources: SourceEntry[];
+  heading?: string;
+}
+
+const { sources, heading } = Astro.props;
+
+const TYPE_LABEL: Record<string, string> = {
+  url: 'URL',
+  github: 'GitHub',
+  etherscan: 'Etherscan',
+  transaction: 'Tx',
+  audit_report: 'Audit',
+  governance_post: 'Governance',
+  docs: 'Docs',
+  partner_feed: 'Partner feed',
+  curator_note: 'Curator note',
+  commit_sha: 'Commit',
+  local_reference: 'Internal',
+};
+---
+
+{
+  sources.length > 0 && (
+    <section class="source-list">
+      {heading && <h5>{heading}</h5>}
+      <ul>
+        {sources.map((s) => {
+          const labelType = TYPE_LABEL[s.source_type] ?? s.source_type;
+          const primary = s.primary === true;
+          const linkable = s.url !== null && /^https?:/.test(s.url ?? '');
+          return (
+            <li>
+              <span class:list={['type-chip', primary ? 'primary' : 'corroborating']}>
+                {labelType}
+                {primary && <span class="primary-flag" aria-hidden="true">●</span>}
+              </span>
+              <div class="src-body">
+                {linkable ? (
+                  <a href={s.url!} class="src-link" rel="noopener" target="_blank">
+                    {s.title ?? s.url}
+                  </a>
+                ) : (
+                  <span class="src-text">{s.title ?? s.reference ?? '—'}</span>
+                )}
+                {s.reference && s.title && <span class="src-ref">{s.reference}</span>}
+                {s.retrieved_at && (
+                  <span class="src-date">retrieved {s.retrieved_at.slice(0, 10)}</span>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .source-list {
+    margin: 14px 0;
+  }
+  .source-list h5 {
+    margin: 0 0 9px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    color: var(--fg-3);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .source-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .source-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    align-items: baseline;
+  }
+  .source-list .type-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'Geist Mono', monospace;
+    letter-spacing: 0.02em;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg-2);
+    line-height: 1.3;
+  }
+  .source-list .type-chip.primary {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .source-list .type-chip .primary-flag {
+    font-size: 8px;
+  }
+  .source-list .src-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .source-list .src-link {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 3px;
+    font-size: 13px;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .source-list .src-link:hover {
+    text-decoration-color: var(--fg);
+  }
+  .source-list .src-text {
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .source-list .src-ref {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--fg-3);
+  }
+  .source-list .src-date {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-4);
+  }
+</style>

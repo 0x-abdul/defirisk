@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "gempad",
+        "protocol_slug": null,
+        "protocol_name": "GemPad",
+        "occurred_at": "2024-12-17",
+        "loss_usd": 1900000.0,
+        "category": "Token Launchpad / LP Lock Service",
+        "root_cause": "Reentrancy — Missing Guards on collectFees / Withdrawal Function",
+        "description": "GemPad's LP lock contract — the mechanism that was supposed to secure other projects' liquidity — had no reentrancy guard on its withdrawal function, letting an attacker drain ~$1.9M across Ethereum, BNB Chain, and Base using malicious token callbacks.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited (partially) — the vulnerability class (missing reentrancy guard) is a fundamental security check; its presence suggests the lock con...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

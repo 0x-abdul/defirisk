@@ -1,0 +1,83 @@
+---
+export interface Props {
+  id: string;
+  version: string;
+  date?: string;
+  current?: boolean;
+}
+
+const { id, version, date, current = false } = Astro.props;
+---
+
+<h2 id={id} class="vh">
+  <span class:list={['vmark', { current }]}>{version}</span>
+  <span class="vh-text"><slot /></span>
+  {date && <span class="vdate">{date}</span>}
+  <a class="alink" href={`#${id}`} title="Copy link">#</a>
+</h2>
+
+<style>
+  .vh {
+    margin: 48px 0 14px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    scroll-margin-top: 64px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    padding-left: 0;
+    color: var(--fg);
+  }
+  .vmark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    color: var(--fg);
+    letter-spacing: 0.01em;
+    font-feature-settings: 'tnum';
+    flex-shrink: 0;
+  }
+  .vmark.current {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .vdate {
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    color: var(--fg-3);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  .vh-text {
+    flex: 1;
+  }
+  .alink {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-4);
+    text-decoration: none;
+    opacity: 0;
+    transition:
+      opacity 0.12s,
+      color 0.12s;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .vh:hover .alink {
+    opacity: 1;
+  }
+  .alink:hover {
+    color: var(--fg-2);
+  }
+</style>

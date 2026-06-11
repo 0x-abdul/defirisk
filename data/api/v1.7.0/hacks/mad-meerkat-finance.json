@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "mad-meerkat-finance",
+        "protocol_slug": null,
+        "protocol_name": "Mad Meerkat Finance (MM.Finance)",
+        "occurred_at": "2022-05-04",
+        "loss_usd": 2000000.0,
+        "category": "DEX / AMM",
+        "root_cause": "DNS Hijack / Front-End Attack (Router Address Substitution)",
+        "description": "Mad Meerkat Finance lost $2M to a DNS attack that silently swapped the router address in their front-end for 3 hours, rerouting 600+ user transactions to the attacker while Discord users raising red flags were ignored by the team.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Cronos DEX fork (Uniswap V2-style)]"
+        }
+      ]
+    }
+  }
+}

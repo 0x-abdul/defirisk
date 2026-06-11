@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "astroport-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Astroport (on Terra Phoenix chain)",
+        "occurred_at": "2024-07-30",
+        "loss_usd": 6400000.0,
+        "category": "DEX / AMM (Cosmos / IBC ecosystem)",
+        "root_cause": "IBC hooks reentrancy — reintroduced known vulnerability in June upgrade after April patch; timeout callback re-enters token minting",
+        "description": "A known Cosmos IBC reentrancy bug patched in April 2024 was accidentally reintroduced by Terra's June upgrade — giving an attacker a 2-month window to drain $6.4M from Astroport's Terra liquidity via a minting exploit, while the ecosystem watched helplessly.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Chain infrastructure (unaudited per-upgrade)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — June Terra chain upgrade accidentally reintroduced vulnerability]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Astroport is a fork of its own earlier version; Terra using custom ibc-go fork]"
+        }
+      ]
+    }
+  }
+}

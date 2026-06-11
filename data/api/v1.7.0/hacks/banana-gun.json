@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "banana-gun",
+        "protocol_slug": null,
+        "protocol_name": "Banana Gun",
+        "occurred_at": "2024-09-19",
+        "loss_usd": 3000000.0,
+        "category": "Trading Bot / Telegram Bot Infrastructure",
+        "root_cause": "Telegram Message Oracle Vulnerability",
+        "description": "Banana Gun's Telegram oracle was exploited to manually drain $3M from 11 high-profile crypto traders in a surgical, real-time attack across Ethereum and Solana.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (off-chain component)]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — the Telegram message oracle itself was the attack surface]"
+        }
+      ]
+    }
+  }
+}

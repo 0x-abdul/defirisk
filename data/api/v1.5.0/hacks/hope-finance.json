@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hope-finance",
+        "protocol_slug": null,
+        "protocol_name": "Hope Finance",
+        "occurred_at": "2023-02-20",
+        "loss_usd": 1860000.0,
+        "category": "Algorithmic Stablecoin (Tomb Fork)",
+        "root_cause": "Insider Exit Scam — Malicious Fake Router Pre-Deployed",
+        "description": "Hope Finance's team deployed a fake swap router and configured the protocol to use it (signed by all 3 multisig owners) before launch, then drained $1.86M in WETH and USDC the moment `openTrade()` was first called.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — fresh launch deployment] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — fresh launch deployment]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — the SwapHelper config update was the trigger; signed by all 3 multisig owners]"
+        },
+        {
+          "factor_id": "RD-F-043",
+          "relevance": "causal",
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — the SwapHelper config update was the trigger; signed by all 3 multisig owners]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes (Tomb fork / algorithmic stablecoin template)]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — fresh launch deployment]"
+        }
+      ]
+    }
+  }
+}

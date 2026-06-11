@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "value-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Value DeFi",
+        "occurred_at": "2021-05-05",
+        "loss_usd": 10000000.0,
+        "category": "Yield Aggregator / AMM",
+        "root_cause": "Uninitialized Pool Re-initialization (Missing initialized = true)",
+        "description": "Value DeFi lost $10M because a code migration omitted one line — `initialized = true` — letting any caller re-initialize their vStake pool, claim admin ownership, and drain it via their own emergency recovery function.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vStake pool was a new deployment (migration from old implementation)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vStake pool was a new deployment (migration from old implementation)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-009",
+          "relevance": "related",
+          "notes": "Formal verification coverage — would have caught [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-024",
+          "relevance": "causal",
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — initialize() call to a deployed pool contract by an external address is the attack signal; governanceRecoverUnsupported() call immediate...]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — code migrated/forked from own earlier implementation]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vStake pool was a new deployment (migration from old implementation)]"
+        }
+      ]
+    }
+  }
+}

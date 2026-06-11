@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "nomad-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Nomad Bridge",
+        "occurred_at": "2022-08-02",
+        "loss_usd": 190000000.0,
+        "category": "Cross-chain Bridge",
+        "root_cause": "Initialisation Error — Zero-Address Trusted Root (Merkle Proof Bypass)",
+        "description": "Nomad Bridge's routine upgrade accidentally set the zero address as a trusted Merkle root, making every message valid by default — turning a sophisticated bridge hack into a permissionless free-for-all where anyone could copy-paste the exploit tx and drain $190M over 2.5 hours.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited upgrade (initialisation parameter)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — Replica contract upgraded June 2022]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — June upgrade that introduced the bug]"
+        }
+      ]
+    }
+  }
+}

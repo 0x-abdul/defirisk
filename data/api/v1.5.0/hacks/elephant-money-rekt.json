@@ -1,0 +1,75 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "elephant-money-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Elephant Money",
+        "occurred_at": "2022-04-12",
+        "loss_usd": 22200000.0,
+        "category": "Algorithmic Stablecoin / Treasury Reserve",
+        "root_cause": "Flash loan + spot price manipulation during stablecoin minting",
+        "description": "Elephant Money lost $22.2M when an attacker used a flash loan to manipulate ELEPHANT's price during TRUNK stablecoin minting — a vulnerability Solidity Finance had identified in an audit but never communicated to the team.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Mixed: vulnerability identified in audit but unaddressed; drained treasury was unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No evidence]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "causal",
+          "notes": "Ignored disclosure — closest [via cross-hack: Factor 19: Audit Finding Not Communicated to Team]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — ELEPHANT price spiked anomalously during minting cycle; spot price used as oracle was directly manipulable] || ★ Oracle source = spot DEX pool (no TWAP, no fallback) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-055",
+          "relevance": "related",
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-056",
+          "relevance": "related",
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — ELEPHANT price spiked anomalously during minting cycle; spot price used as oracle was directly manipulable]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — 131K WBNB + 91M BUSD flash loan from PancakeSwap is anomalous]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous (\"Bankteller\" pseudonym)]"
+        }
+      ]
+    }
+  }
+}

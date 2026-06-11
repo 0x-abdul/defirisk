@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "gana-payment",
+        "protocol_slug": null,
+        "protocol_name": "GANA Payment",
+        "occurred_at": "2025-11-20",
+        "loss_usd": 3100000.0,
+        "category": "Payment / Staking",
+        "root_cause": "Leaked Owner Key + EIP-7702 Delegator Contract (onlyEOA Bypass)",
+        "description": "GANA Payment lost $3.1M in nine days of life — a leaked owner key enabled an EIP-7702 delegator contract to bypass the staking contract's onlyEOA protection via an ownership rotation chain across eight addresses, then drain the pool in iterative stake-unstake loops.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — no audit; off-chain key compromise as root cause]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — entire protocol was 9 days old; all code was newly deployed] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — entire protocol was 9 days old; all code was newly deployed]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — transferOwnership calls (8x) and reward rate manipulation are admin-level on-chain actions immediately preceding the drain]"
+        },
+        {
+          "factor_id": "RD-F-031",
+          "relevance": "causal",
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: 9 days (launched November 11, 2025; exploited November 20, 2025)]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — transferOwnership calls (8x) and reward rate manipulation are admin-level on-chain actions immediately preceding the drain]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown — no verified identities; corporate communications were euphemistic (\"interaction contract targeted by external attack\")]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — entire protocol was 9 days old; all code was newly deployed]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "orange-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Orange Finance",
+        "occurred_at": "2025-01-07",
+        "loss_usd": 843500.0,
+        "category": "Yield / Concentrated Liquidity Manager (Uniswap V3 / PancakeSwap / SushiSwap LP positions)",
+        "root_cause": "Admin private key compromise → proxy upgrade → privileged drain of LP vault positions",
+        "description": "Orange Finance's $843K drain opened 2025 because their \"multi-sig\" was configured to execute with a single signature — making it a single point of failure that cost users everything.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA (not multisig, not timelock) [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay] || ★ Single admin EOA — when ms threshold = 1 [via cross-hack: Factor 39: Multi-Sig Misconfigured as Single-Sig] || ★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — proxy upgrade by compromised admin key was the attack itself]"
+        },
+        {
+          "factor_id": "RD-F-028",
+          "relevance": "related",
+          "notes": "★ Low-threshold multisig [via cross-hack: Factor 39: Multi-Sig Misconfigured as Single-Sig]"
+        },
+        {
+          "factor_id": "RD-F-032",
+          "relevance": "related",
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — proxy upgrade by compromised admin key was the attack itself]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown — not disclosed]"
+        }
+      ]
+    }
+  }
+}

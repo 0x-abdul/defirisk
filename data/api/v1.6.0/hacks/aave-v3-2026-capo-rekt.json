@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "aave-v3-2026-capo-rekt",
+        "protocol_slug": "aave-v3",
+        "protocol_name": "Aave V3",
+        "occurred_at": "2026-03-12",
+        "loss_usd": 862000.0,
+        "category": "Lending — oracle misconfiguration",
+        "root_cause": "CAPO (Correlated Asset Price Oracle) misconfigured price feed for a freshly-listed correlated asset → mispriced collateral → cascade of involuntary liquidations",
+        "description": "This was an oracle-config incident, not a malicious exploit. A new collateral asset listed on Aave V3 Ethereum on 2026-03-12 was wired to a CAPO (Correlated Asset Price Oracle) feed with an incorrect price-correlation mapping. Within minutes the oracle reported a price ~7% off from the asset's actual on-chain price (off in the direction that under-valued user collateral).",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "related",
+          "notes": "Single CAPO feed without parallel-source cross-check enabled the misconfiguration to propagate undetected"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-084",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-143",
+          "relevance": "illustrative",
+          "notes": "Cat 9 post-deploy hygiene gap; new-listing process did not include parameter-set validation prior to activation"
+        },
+        {
+          "factor_id": "RD-F-180",
+          "relevance": "related",
+          "notes": "Oracle config posture factor — CAPO listing process gap allowed mis-correlated mapping into production"
+        }
+      ]
+    }
+  }
+}

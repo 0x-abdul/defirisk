@@ -1,0 +1,60 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "ionic-money",
+        "protocol_slug": null,
+        "protocol_name": "Ionic Money (formerly Midas)",
+        "occurred_at": "2024-02-04",
+        "loss_usd": 6900000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Fake Collateral Listing (Social Engineering → On-chain Exploit)",
+        "description": "Ionic Money lost $6.9M when attackers impersonating the Lombard Finance team convinced the protocol to whitelist a counterfeit LBTC token as collateral, then minted 250 fake tokens, borrowed everything in Ionic's vaults, and vanished through Tornado Cash.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — the exploit was via social engineering to whitelist fake collateral; the smart contract code itself was not bugged]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: New collateral listing (governance/admin action)]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — admin whitelisting of fake collateral was the enabling action]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — admin whitelisting of fake collateral was the enabling action]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Midas was a lending protocol; architecture similar to Compound forks]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Midas was a lending protocol; architecture similar to Compound forks]"
+        }
+      ]
+    }
+  }
+}

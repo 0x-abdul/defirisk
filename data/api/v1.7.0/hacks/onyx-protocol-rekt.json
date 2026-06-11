@@ -1,0 +1,80 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "onyx-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Onyx Protocol",
+        "occurred_at": "2023-10-31",
+        "loss_usd": 2100000.0,
+        "category": "Lending / Money Market (Compound Finance fork)",
+        "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation",
+        "description": "Onyx Protocol lost $2.1M on Halloween when a governance vote to add a PEPE memecoin lending market created a textbook Compound V2 empty-market vulnerability — the same bug that had already hit Hundred Finance and Midas Capital earlier that year.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Proposal 22 added the PEPE market days before the exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Proposal 22 added the PEPE market days before the exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "related",
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-072",
+          "relevance": "causal",
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — governance Proposal 22 enabled the vulnerable PEPE market; detectable pre-exploit risk]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound Finance fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound Finance fork]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — Proposal 22 added the PEPE market days before the exploit]"
+        }
+      ]
+    }
+  }
+}

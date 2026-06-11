@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "zunami-protocol-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Zunami Protocol",
+        "occurred_at": "2023-08-13",
+        "loss_usd": 2100000.0,
+        "category": "Yield Aggregator / Stablecoin AMM (Curve-based)",
+        "root_cause": "Flash loan + SDT token swap → totalHoldings price calculation manipulation → zETH/UZD LP price manipulation → drain",
+        "description": "Zunami Protocol lost $2.1M when an attacker used flash loans to create SDT pool slippage, exploiting a totalHoldings() price calculation flaw to drain zETH and UZD Curve pools — causing 85% and 99% depegs of Zunami's own stablecoins.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — MimCurveStakeDAO strategy added after audit; totalHoldings() price manipulation not in reviewed scope] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — MimCurveStakeDAO strategy added after audit; totalHoldings() price manipulation not in reviewed scope]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-audit strategy addition)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MimCurveStakeDAO strategy was added after the primary audit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MimCurveStakeDAO strategy was added after the primary audit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — zStable LP prices distorted via totalHoldings() manipulation; 85% and 99% depeg visible]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — MimCurveStakeDAO strategy was added after the primary audit]"
+        }
+      ]
+    }
+  }
+}

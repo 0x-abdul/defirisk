@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "moonwell-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Moonwell",
+        "occurred_at": "2026-02-15",
+        "loss_usd": 1780000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Oracle Misconfiguration (Missing ETH/USD Multiplier)",
+        "description": "A Moonwell governance upgrade co-authored by Claude Opus 4.6 deployed a cbETH oracle missing a single multiplication, pricing a $2,200 asset at $1.12 — liquidation bots seized 1,096 cbETH within 4 minutes, leaving $1.78M in bad debt.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited configuration (governance parameter)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — Chainlink OEV oracle wrappers newly deployed via MIP-X43]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — cbETH price dropped from ~$2,200 to $1.12 immediately on oracle activation]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — governance proposal execution directly caused the exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound V2 fork]"
+        },
+        {
+          "factor_id": "RD-F-172",
+          "relevance": "causal",
+          "notes": "Repo shows AI-tool co-authorship in critical files (Cat 12) [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]"
+        },
+        {
+          "factor_id": "RD-F-173",
+          "relevance": "related",
+          "notes": "Team self-disclosure of AI-generated Solidity [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]"
+        }
+      ]
+    }
+  }
+}

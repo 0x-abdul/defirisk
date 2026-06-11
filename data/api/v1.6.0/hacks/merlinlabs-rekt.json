@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "merlinlabs-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Merlin Labs",
+        "occurred_at": "2021-05-26",
+        "loss_usd": 680000.0,
+        "category": "Yield Aggregator / Vault (PancakeBunny fork)",
+        "root_cause": "External token balance spoofing → excess native token minting",
+        "description": "Merlin Labs, a PancakeBunny fork audited just 11 days prior, lost $680K when an attacker sent CAKE tokens directly to a vault contract, tricking it into minting excess MERL rewards 36 times.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown / not mentioned]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived Hacken review conducted 11 days prior]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: 36 repeated calls to getReward() interspersed with external CAKE sends — pattern would stand out in mempool/event monitoring]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — PancakeBunny fork]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hedgey-finance",
+        "protocol_slug": null,
+        "protocol_name": "Hedgey Finance",
+        "occurred_at": "2024-04-19",
+        "loss_usd": 44700000.0,
+        "category": "Token Vesting / Lockup Infrastructure",
+        "root_cause": "Unverified User Input — Flash Loan Enabled Approval Manipulation",
+        "description": "Hedgey Finance lost $44.7M when an attacker used a Balancer flash loan and an unvalidated `claimLockup` parameter to trick the protocol into granting unauthorized token approvals across Ethereum and Arbitrum simultaneously.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — vulnerable `createLockedCampaign()` function deployed after the audit] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — vulnerable `createLockedCampaign()` function deployed after the audit] || ★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-audit code addition)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — post-audit contract version] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — post-audit contract version] || Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — $1.3M Balancer flash loan used as attack capital]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-139",
+          "relevance": "causal",
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Yes — post-audit contract version]"
+        }
+      ]
+    }
+  }
+}

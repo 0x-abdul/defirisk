@@ -1,0 +1,106 @@
+---
+import Page from '../components/Page.astro';
+import Callout from '../components/Callout.astro';
+
+const today = new Date().toISOString().slice(0, 10);
+
+const toc = [
+  { id: 'mission', n: 'Mission' },
+  { id: 'maintainer', n: 'Maintainer' },
+  { id: 'independence', n: 'Independence' },
+  { id: 'disputes', n: 'Methodology disputes' },
+  { id: 'licenses', n: 'Code & data licenses' },
+  { id: 'contact', n: 'Contact' },
+];
+---
+
+<Page
+  pageTitle="About"
+  description="Who maintains defirisk.co, why it exists, and how to challenge a grade."
+  crumbs={[{ n: 'About' }]}
+  toc={toc}
+  hero={{
+    h1: 'About',
+    lede: 'Who maintains defirisk.co, why it exists, and how to challenge a grade.',
+    meta: [
+      { label: 'Last updated', value: today },
+      { label: 'Maintainer', value: '0x_Abdul' },
+      { label: 'Independence', value: 'No paid grades' },
+    ],
+  }}
+>
+  <h2 id="mission">Mission <a class="alink" href="#mission">#</a></h2>
+  <p>
+    defirisk.co is a structural risk assessment of DeFi protocols. We grade what we can
+    verify against an open rubric, and we are candid about what we cannot. The dashboard does not
+    predict exploits — it exposes structural risk gaps in protocol deployments. An assigned grade
+    is a protocol's standing against that rubric, nothing more.
+  </p>
+
+  <h2 id="maintainer">Maintainer <a class="alink" href="#maintainer">#</a></h2>
+  <p>
+    defirisk.co is maintained by <a class="link" href="https://x.com/0x_abdul">0x_Abdul</a>.
+    The maintainer holds authority on the rubric, the review pool, and the public repo.
+  </p>
+
+  <h2 id="independence">Independence <a class="alink" href="#independence">#</a></h2>
+  <p>
+    Independence is the only thing defirisk.co has to sell. There are no paid grades.
+    Protocols cannot pay to be assessed, cannot pay to expedite an assessment, and cannot pay to
+    influence one. defirisk.co is an open-source public good for the DeFi community.
+  </p>
+
+  <h2 id="disputes">Methodology disputes <a class="alink" href="#disputes">#</a></h2>
+  <p>There are two kinds of disagreement we treat differently.</p>
+  <p>
+    A <strong>grade dispute</strong> targets a specific factor on a specific assessment. It says:
+    this citation is wrong, this predicate was misapplied, or this evidence is outdated. Grade
+    disputes are handled through the
+    <a class="link" href="/methodology/#appeals">appeals process</a> documented in the
+    methodology.
+  </p>
+  <p>
+    A <strong>rubric dispute</strong> targets the rubric itself. It says: this category is
+    mis-specified, this critical factor is too broad, or this threshold is poorly calibrated.
+    Rubric disputes are filed as issues against the public repo, reviewed by the editorial team,
+    and either accepted into a future rubric version, deferred to a future revision, or declined
+    with a public note.
+  </p>
+  <p>
+    Both classes of dispute are public from the moment they are filed. We do not pause grades or
+    redact pages during a dispute window.
+  </p>
+
+  <h2 id="licenses">Code &amp; data licenses <a class="alink" href="#licenses">#</a></h2>
+  <p>
+    Everything defirisk.co publishes is licensed for unrestricted reuse, subject to
+    attribution. We choose permissive licenses deliberately, because a closed-licence risk
+    assessment is mostly a marketing surface.
+  </p>
+  <ul>
+    <li>
+      <strong>Data</strong> — all grades, evidence factors, citation lists, and derived datasets
+      are licensed under <code>CC BY 4.0</code>. Attribution to "defirisk.co, rubric vN.N" is
+      sufficient.
+    </li>
+    <li>
+      <strong>Code</strong> — the rubric engine, factor parser, adapter SDK, and site itself are
+      licensed under <code>MIT</code>. Source for everything lives at the canonical repo.
+    </li>
+    <li>
+      <strong>Rubric definitions</strong> — the <code>rubric/</code> directory (factor
+      predicates, category definitions, critical-factor list) is dual-licensed under
+      <code>CC BY 4.0</code> and <code>MIT</code>, with attribution to the version tag.
+    </li>
+  </ul>
+
+  <h2 id="contact">Contact <a class="alink" href="#contact">#</a></h2>
+  <p>For grade disputes, use the appeals system.</p>
+  <p>
+    For coverage requests — new protocols, new chains, new sectors — submit a public post on X
+    tagging <a class="link" href="https://x.com/0x_abdul">@0x_Abdul</a> with the protocol name,
+    chain, and official handle. Requests submitted publicly are logged and prioritised against the
+    published criteria.
+  </p>
+  <p>For any other inquiries, DM the X account.</p>
+</Page>

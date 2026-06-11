@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://riskdashboard.xyz/api/v1.7.0/schema/envelope.json",
+  "title": "RiskProduct API canonical envelope",
+  "description": "Envelope wrapping every API response under /api/v1.7.0/. Resolves PD-008: rubric_version and data_as_of are mandatory on every response so downstream integrators can distinguish protocol-data changes from rubric-version bumps. Protocol envelopes additionally carry risk_score, category_severities, cap_applied, and cap_reason (M1 v4 rubric, introduced in v1.7.0). The `data` field shape varies per endpoint.",
+  "type": "object",
+  "required": [
+    "rubric_version",
+    "data_as_of",
+    "generated_at",
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "rubric_version": {
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "description": "Frozen rubric version string, e.g. v1.7.0. Matches the published rubric changelog entry current at grade-computation time.",
+      "examples": [
+        "v1.7.0"
+      ]
+    },
+    "data_as_of": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. Distinct from generated_at: the rubric may re-evaluate without new factor data arriving. May be the Unix epoch (1970-01-01T00:00:00Z) when no scores have been collected."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp of when this dump ran (when the JSON file was last written by dump.py)."
+    },
+    "data": {
+      "type": "object",
+      "description": "Endpoint-specific payload. Shape documented per-path in openapi.json."
+    },
+    "risk_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Protocol-level risk score (0\u2013100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5\u00d7, non-core 1.0\u00d7) plus up to 15 points critical-red penalty. Introduced in v1.7.0.",
+      "examples": [
+        9.0,
+        34.0,
+        62.0
+      ]
+    },
+    "category_severities": {
+      "type": "object",
+      "description": "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0\u2013100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric).",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100
+      }
+    },
+    "cap_applied": {
+      "type": "string",
+      "enum": [
+        "none",
+        "D",
+        "F"
+      ],
+      "description": "Whether the single-category core-five cap overrode the natural letter grade. 'none' = no cap; 'D' = capped at D; 'F' = capped at F. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric).",
+      "examples": [
+        "none",
+        "D",
+        "F"
+      ]
+    },
+    "cap_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Human-readable explanation of the cap, e.g. 'Cat 5 severity 67 >= 60 (core-five cap)'. null when cap_applied='none'. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric).",
+      "examples": [
+        null,
+        "Cat 5 severity 67 >= 60 (core-five cap)"
+      ]
+    },
+    "series_window": {
+      "type": "object",
+      "description": "Date range of the time-series payload, present only on history.json envelopes (per-protocol and fleet-wide). Allows clients to render a chart axis without iterating the full `series` array. ISO-8601 date strings (UTC).",
+      "required": [
+        "from",
+        "to"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "type": "string",
+          "format": "date"
+        },
+        "to": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}

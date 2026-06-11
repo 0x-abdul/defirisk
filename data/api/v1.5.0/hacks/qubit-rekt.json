@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "qubit-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Qubit Finance",
+        "occurred_at": "2022-01-28",
+        "loss_usd": 80000000.0,
+        "category": "Cross-Chain Lending / Bridge",
+        "root_cause": "Zero-Address safeTransferFrom Logic Bug (Cross-Chain Bridge Deposit)",
+        "description": "Qubit Finance lost $80M when attackers called a deprecated bridge deposit function with a zero-address token, silently \"depositing\" nothing on Ethereum while minting $185M in collateral on BSC.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: In audited code — but the audit missed the dead-code / zero-address safeTransferFrom interaction]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding of attacker address shortly before exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — BSC lending protocol; Compound-adjacent architecture]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Y — BSC lending protocol; Compound-adjacent architecture]"
+        }
+      ]
+    }
+  }
+}

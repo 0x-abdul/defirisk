@@ -1,0 +1,90 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "compound",
+        "protocol_slug": null,
+        "protocol_name": "Compound Finance",
+        "occurred_at": "2021-09-29",
+        "loss_usd": 147000000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir",
+        "description": "Compound's Proposal 62 governance upgrade contained a bug that let any user claim excess COMP rewards, and the protocol's own `drip()` function let anyone keep refilling the vulnerable vault while the fix waited 7 days to pass governance.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Direct: Audit scope mismatch (report commit ≠ deployed bytecode) [via cross-hack: Factor 1: Audit Scope Mismatch]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited upgrade (new governance proposal code)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — bug was introduced by Proposal 62, a fresh Comptroller upgrade] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — bug was introduced by Proposal 62, a fresh Comptroller upgrade] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-013",
+          "relevance": "causal",
+          "notes": "Arbitrary call with user-controlled args [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]"
+        },
+        {
+          "factor_id": "RD-F-014",
+          "relevance": "related",
+          "notes": "Reentrancy guard absence [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — **this is the exploit itself**: Proposal 62 execution introduced the bug; Proposal 64 was the remediation]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: N — Compound is the original; many others forked from it]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked: N — Compound is the original; many others forked from it]"
+        },
+        {
+          "factor_id": "RD-F-141",
+          "relevance": "related",
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: Y — bug was introduced by Proposal 62, a fresh Comptroller upgrade]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "odin-fun-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Odin.Fun",
+        "occurred_at": "2025-08-12",
+        "loss_usd": 7000000.0,
+        "category": "AMM / Bitcoin Token Trading",
+        "root_cause": "AMM Liquidity Manipulation (Governance Token Price Pump + Drain)",
+        "description": "Odin.Fun suffered its third major breach in six months when attackers pumped worthless SATOSHI tokens through its AMM to drain 58.2 BTC ($7M) in real Bitcoin — with treasury insufficient to compensate and trading suspended indefinitely.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — BTC reserve monitoring would show drawdown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — AMM price manipulation of SATOSHI token]"
+        }
+      ]
+    }
+  }
+}

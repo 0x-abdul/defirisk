@@ -1,0 +1,35 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "zklend-rekt",
+        "protocol_slug": null,
+        "protocol_name": "zkLend",
+        "occurred_at": "2025-02-11",
+        "loss_usd": 9570000.0,
+        "category": "Lending / Money Market (Starknet)",
+        "root_cause": "Empty market accumulator inflation via flash loan donation mechanism + rounding error → collateral inflation → drain",
+        "description": "zkLend lost $9.57M on Starknet when an attacker combined three harmless-looking design details — an empty market, a flash loan donation mechanism, and integer rounding — to inflate their collateral balance from 1 to over 7,000 wstETH and drain multiple lending pools.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Partially — wstETH market was newly added to Starknet; the combination of new empty market + existing accumulator logic created the exploit ...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Partially — wstETH market was newly added to Starknet; the combination of new empty market + existing accumulator logic created the exploit ...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Partially — wstETH market was newly added to Starknet; the combination of new empty market + existing accumulator logic created the exploit ...]"
+        }
+      ]
+    }
+  }
+}

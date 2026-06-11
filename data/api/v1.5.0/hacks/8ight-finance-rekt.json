@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "8ight-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "8ight Finance",
+        "occurred_at": "2021-12-07",
+        "loss_usd": 1750000.0,
+        "category": "OHM-fork / Reserve Currency",
+        "root_cause": "Admin key compromise — private key shared via Facebook chat and Google Drive → treasury drain",
+        "description": "8ight Finance, an OHM-fork on Harmony, lost $1.75M when a treasury private key shared via Facebook chat and Google Drive was compromised — exactly seven weeks after launch.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: No recent changes]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: ~7 weeks (launched October 2021; exploited December 7, 2021)]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Olympus DAO fork]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "platypus-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Platypus Finance (3rd exploit)",
+        "occurred_at": "2023-10-12",
+        "loss_usd": 2200000.0,
+        "category": "DEX / Stableswap AMM",
+        "root_cause": "Flash loan + LP-AVAX pool cash/liability manipulation → slippage-inflated swap output",
+        "description": "Platypus Finance was drained for $2.2M in its third exploit in 8 months when attackers manipulated the cash/liability ratio in the LP-AVAX pool — a pool deployed after the only audits the protocol ever received.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (post-audit deployment)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "related",
+          "notes": "Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-139",
+          "relevance": "causal",
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]"
+        }
+      ]
+    }
+  }
+}

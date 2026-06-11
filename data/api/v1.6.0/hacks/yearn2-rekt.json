@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "yearn2-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Yearn Finance (iearn yUSDT)",
+        "occurred_at": "2023-04-13",
+        "loss_usd": 10000000.0,
+        "category": "Yield Aggregator / Vault (legacy iearn contract)",
+        "root_cause": "Misconfiguration (copy/paste error) in yUSDT — wrong Fulcrum USDC address used instead of USDT → share price manipulation → 1.2 quadrillion yUSDT minted",
+        "description": "Yearn's legacy yUSDT contract — live for 1,156 days with a copy/paste error using the wrong Fulcrum address since deployment — was exploited for $11.4M; a last-minute Twitter warning was useless because the contract is immutable.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — yUSDT was not audited] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — yUSDT was not audited]"
+        },
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years (Feb 2020 audit; April 2023 exploit)]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited (yUSDT specifically) — copy/paste error at deployment]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Yearn has a bug bounty; immutable contract meant no patch was possible even with disclosure]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: yUSDT deployed ~2020; exploited after 1,156 days = ~3.2 years]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Last-minute warning posted on Twitter (by storming0x); Tornado Cash funding of attacker]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "balancer-2025-rekt",
+        "protocol_slug": "balancer",
+        "protocol_name": "Balancer V2 (Composable Stable Pools)",
+        "occurred_at": "2025-11-03",
+        "loss_usd": 128000000.0,
+        "category": "DEX / AMM (Composable Stable Pools, BPT flash-mint vector)",
+        "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps",
+        "description": "The 2025 Balancer V2 exploit (\"Rekt II\" — distinct from the 2023 Boosted Pools incident at ) targeted Composable Stable Pools, draining ~$128M across eight chains in roughly five hours.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "related",
+          "notes": "Composable Stable Pools were within audit scope but verified properties did not constrain batch-rounding behavior"
+        },
+        {
+          "factor_id": "RD-F-022",
+          "relevance": "illustrative",
+          "notes": "Cat 9 hygiene pattern: audited but not stress-tested under batch composition; live 4+ years before vector discovered"
+        },
+        {
+          "factor_id": "RD-F-070",
+          "relevance": "related",
+          "notes": "Composable Stable Pool _upscale() rounding-down compounded across batch swaps; root cause of $128M loss"
+        },
+        {
+          "factor_id": "RD-F-081",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        },
+        {
+          "factor_id": "RD-F-084",
+          "relevance": "related",
+          "notes": "Auto-linked by C.4 triage 2026-05-07"
+        }
+      ]
+    }
+  }
+}

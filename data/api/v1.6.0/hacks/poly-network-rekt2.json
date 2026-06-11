@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "poly-network-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Poly Network (2nd incident)",
+        "occurred_at": "2023-07-01",
+        "loss_usd": 4400000.0,
+        "category": "Cross-Chain Bridge",
+        "root_cause": "Compromised 3-of-4 multisig → forged deposit proofs → cross-chain withdrawal drain",
+        "description": "Poly Network's second exploit lost $4.4M when three of its four multisig keys were compromised, allowing forged withdrawal proofs — a simpler attack than its $600M first hack but an equally avoidable one.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — multisig validation was the attack vector itself]"
+        },
+        {
+          "factor_id": "RD-F-028",
+          "relevance": "causal",
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]"
+        },
+        {
+          "factor_id": "RD-F-030",
+          "relevance": "causal",
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — multisig validation was the attack vector itself]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Unknown]"
+        }
+      ]
+    }
+  }
+}

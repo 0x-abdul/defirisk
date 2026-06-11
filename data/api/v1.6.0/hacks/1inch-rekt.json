@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "1inch-rekt",
+        "protocol_slug": null,
+        "protocol_name": "1inch (Fusion v1 resolver contracts)",
+        "occurred_at": "2025-03-05",
+        "loss_usd": 5000000.0,
+        "category": "DEX Aggregator / Limit Order Protocol",
+        "root_cause": "Integer underflow in deprecated assembly — calldata pointer corruption → resolver address forgery",
+        "description": "A two-year-old integer underflow in 1inch's deprecated Fusion v1 assembly code let an attacker forge resolver addresses and drain $5M from a market maker — nine audits missed it.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: Unknown; v1 deprecated mid-2023 — ~18 months before exploit]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived 9 reviews; required assembly/Web2 heap exploitation expertise]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "related",
+          "notes": "★ Single admin EOA — adjacent [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Attacker wallet funded via Tornado Cash before attack; no other pre-staging]"
+        },
+        {
+          "factor_id": "RD-F-166",
+          "relevance": "causal",
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key] || Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]"
+        }
+      ]
+    }
+  }
+}

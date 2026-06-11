@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "multichain-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "Multichain (formerly Anyswap)",
+        "occurred_at": "2023-07-07",
+        "loss_usd": 126000000.0,
+        "category": "Cross-chain Bridge",
+        "root_cause": "Private Key Compromise (MPC Address) — suspected backend breach or insider",
+        "description": "Multichain's MPC bridge addresses on Fantom and Moonriver were drained for $126M in what appears to be a backend or insider key compromise — months after the team warned of \"force majeure\" and the CEO was reportedly arrested.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action (Y/N): Y — MPC key control centralized in compromised party]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — some TVL flight post-force-majeure in May]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — MPC key control centralized in compromised party]"
+        }
+      ]
+    }
+  }
+}

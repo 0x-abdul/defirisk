@@ -1,0 +1,267 @@
+---
+import Page from '../../components/Page.astro';
+import VersionMarker from '../../components/VersionMarker.astro';
+import { RUBRIC_VERSION } from '../../lib/rubric';
+
+const toc = [
+  { id: 'v1-7-0', n: `${RUBRIC_VERSION} — current` },
+  { id: 'v1-6-0', n: 'v1.6.0 (superseded)' },
+  { id: 'ds-v1-1', n: 'Design system v1.1' },
+  { id: 'v1-5-0', n: 'v1.5.0' },
+  { id: 'v1-4-0', n: 'v1.4.0' },
+  { id: 'v1-3-1', n: 'v1.3.1' },
+  { id: 'v1-3-0', n: 'v1.3.0' },
+  { id: 'v1-2-0', n: 'v1.2.0' },
+  { id: 'v1-1-0', n: 'v1.1.0' },
+  { id: 'v1-0-0', n: 'v1.0.0' },
+];
+---
+
+<Page
+  pageTitle="Rubric changelog"
+  description="Every material change to the rubric, reverse-chronological. Tagged in the public repo."
+  crumbs={[{ n: 'Methodology', href: '/methodology/' }, { n: 'Changelog' }]}
+  toc={toc}
+  hero={{
+    h1: 'Rubric changelog',
+    lede: 'Every material change to the rubric, reverse-chronological. Tagged in the public repo.',
+    meta: [
+      { label: 'Latest', value: RUBRIC_VERSION },
+      { label: 'Released', value: '2026-05-12' },
+      { label: 'License', value: 'CC-BY 4.0' },
+    ],
+  }}
+>
+  <p>
+    Every material change to the rubric is documented here. Versions are tagged in the public
+    repo; entries link to the merged proposal and the resulting predicates.
+  </p>
+  <p>
+    A bump in the minor (e.g. <code>v1.5 → v1.6</code>) may flip letters without any evidence
+    change. Affected assessments carry a <code>rubric-shift</code> note linking to the entry
+    below.
+  </p>
+
+  <VersionMarker id="v1-7-0" version={RUBRIC_VERSION} date="2026-05-12" current>
+    M1 v4 — severity-based scoring (Curve &amp; Calibrate)
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Replaced</strong> the four-integer deterministic-lookup rubric with a severity-based
+      score pipeline per <code>PD-043</code>. The letter is now derived from a 0–100 protocol
+      risk score and a critical-flag count, not from category-color counts.
+    </li>
+    <li>
+      <strong>Per-category severity:</strong> each category receives a severity score
+      <code>(red × 3 + yellow × 1) / (assessed × 3) × 100</code>. Gray factors are excluded
+      from the denominator — data gaps neither help nor hurt the protocol.
+    </li>
+    <li>
+      <strong>Protocol risk score:</strong> core-five-weighted average of per-category severities
+      (core-five weight 1.5×; all others 1.0×), plus a critical-red penalty of 5 pts per
+      critical-flag red, capped at 15. Total score capped at 100.
+    </li>
+    <li>
+      <strong>Letter bands:</strong> F if critical_red_count ≥ 3 or score &gt; 55; D if
+      critical_red_count ≥ 2 or score &gt; 35; C if score &gt; 20; B if critical_red_count ≥ 1
+      or score &gt; 12; A otherwise.
+    </li>
+    <li>
+      <strong>Single-category cap:</strong> after the natural letter is assigned, a core-five
+      category with severity ≥ 60 caps the letter at D; severity ≥ 90 forces F regardless of
+      natural letter. Cap constants: D=60, F=90. Cap reason shown on the protocol page.
+    </li>
+    <li>
+      <strong>Removed</strong> the <code>gray_on_core_five</code> A-eligibility gate, the
+      TVL ≥ $100M and age ≥ 12 months A floors, and the per-category <code>CAT_RED_THRESHOLD</code>
+      override map. Critical-flag counts and category colors remain available for display but
+      no longer drive the letter directly.
+    </li>
+    <li>
+      <strong>Calibration/launch result:</strong> initial calibration used the pre-backlog cohort;
+      the launch generated-data tree now contains 80 protocols under <code>v1.7.0</code>.
+      Final grade distribution should be read from <code>data/api/v1.7.0/index.json</code>
+      at release time.
+    </li>
+    <li>
+      <strong>API:</strong> <code>data/api/v1.7.0/</code> is the canonical tree. The v1.6.0
+      folder is archived for rollback and version-comparison. New envelope fields:
+      <code>risk_score</code>, <code>category_severities</code>, <code>cap_applied</code>,
+      <code>cap_reason</code>.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-6-0" version="v1.6.0" date="2026-05-11">
+    Badge layer retired (superseded by v1.7.0)
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Retired</strong> the badge layer entirely (CHRONIC / EVENT / ARCH / CLEAN). Per
+      <code>PD-035</code> the UI no longer renders any badge; per <code>PD-036</code> the
+      backend no longer computes it. <code>compose.py</code> simplified to return
+      <code>&#123;letter&#125;</code> only.
+    </li>
+    <li>
+      <strong>Dropped</strong> the <code>headline_badge</code> field from the envelope schema in
+      <code>data/api/v1.6.0/</code>. The v1.5.0 API folder is frozen as a legacy snapshot.
+    </li>
+    <li>
+      <strong>Preserved unchanged</strong> the four-count letter rubric (critical-flag,
+      red-category, yellow-category, gray-on-core-five), category-red integrity rule,
+      single-factor-sufficient overrides, and letter-ineligible states. v1.5 lookup logic is
+      preserved verbatim — only the badge surfacing layer is gone.
+    </li>
+    <li>
+      Active-incident state surfaces as a non-rubric presentation banner on the protocol detail
+      page (per PD-033) drawn from the Cat 5 incident ledger. The structural letter grade is
+      unaffected during incidents.
+    </li>
+    <li>
+      F079 (root-cause distinctness) continues to score at the factor level; only the CHRONIC
+      rollup that consumed it is dropped.
+    </li>
+    <li>
+      <strong>Documented accessibility tradeoff:</strong> the canonical D3 design system uses
+      color-on-tint patterns for letter pills and severity chips (e.g., grade-A green letter
+      <code>#118a4d</code> on green tint <code>#dff2e3</code> at 10.5px). These render at
+      ~3.8:1 contrast — under the WCAG 2 AA 4.5:1 threshold for small text. The patterns are
+      load-bearing for the design's editorial identity; tightening contrast would change
+      the visual contract. Body-text tokens (<code>--fg-3</code>, <code>--fg-4</code>) were
+      darkened in this release for AA compliance (5.2:1 / 5.0:1). An opt-in
+      <strong>High-contrast mode</strong> (AA button in the header) toggles a
+      <code>data-prefer-contrast</code> attribute that swaps grade colors + tints for
+      AA-clean variants without changing the default visual contract — see Design system v1.1
+      below.
+    </li>
+  </ul>
+
+  <VersionMarker id="ds-v1-1" version="Design system v1.1" date="2026-05-11">
+    High-contrast mode (UI-only, no rubric change)
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Added</strong> an opt-in High-contrast mode toggle (AA button) in the top bar
+      next to the theme switcher. When enabled, the page sets a
+      <code>data-prefer-contrast</code> attribute on <code>&lt;html&gt;</code>, which swaps
+      letter-grade foregrounds and tinted backgrounds for darker / lighter variants that pass
+      WCAG-AA 4.5:1 on all small text. The preference persists via
+      <code>localStorage</code> (<code>rd-prefer-contrast</code>) and applies on first paint
+      to avoid FOUC.
+    </li>
+    <li>
+      <strong>Note:</strong> share-preview OG cards continue to use the canonical palette —
+      they are server-rendered PNGs and do not inherit the per-user opt-in.
+    </li>
+    <li>
+      <strong>Note:</strong> the rubric version (<code>{RUBRIC_VERSION}</code>) is unaffected
+      — this is a UI-only milestone tracked under the design system, not the rubric.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-5-0" version="v1.5.0" date="2026-04-23">
+    Cat 12 dissolved, yellow caps recalibrated
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Dissolved</strong> Cat 12 (Legacy / deprecated state) per <code>PD-032</code>.
+      F166 → Cat 5 (Ops history); F167 → Cat 2 (Governance); F168 → Cat 9 (Post-deploy hygiene);
+      F169 deleted outright. Cats 13/14 renumbered to 12/13. Net: 14 → 13 categories,
+      185 → 184 factors.
+    </li>
+    <li>
+      <strong>Tightened</strong> yellow caps proportionally to the new 13-category basis:
+      B cap 11 → 10, C trigger 12 → 11. Preserves the same fraction of the category space
+      (~77%) as the prior B/C boundary on 14 categories.
+    </li>
+    <li>
+      <strong>Unchanged</strong> the ★ critical-factor count (20) and badge layer.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-4-0" version="v1.4.0" date="2026-04-22">
+    Active-incident demoted from F-trigger to EVENT badge
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Demoted</strong> "active incident" from a direct F-trigger to an EVENT-badge-only
+      signal. T-14 execution found the Aave v3 rsETH/Kelp and Compound v3 cases produced F
+      grades on mature, structurally-sound protocols whose own architectural security was not
+      at fault.
+    </li>
+    <li>
+      <strong>Added</strong> a category-red integrity rule so active events do not cascade into
+      multiple factor-level reds.
+    </li>
+    <li>
+      <strong>Raised</strong> yellow caps on 8-protocol dry-run evidence to resolve residual
+      C-compression. B cap 9 → 11; C trigger 10 → 12.
+    </li>
+    <li>
+      <strong>Promoted</strong> F180 (immutable oracle address with no admin-replaceable
+      wrapper) from critical-CANDIDATE to ★. ★ count: 19 → 20.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-3-1" version="v1.3.1" date="2025-11-02">
+    Clarifications
+  </VersionMarker>
+  <ul>
+    <li>
+      Clarified the <code>n/a</code> treatment for protocols without an oracle dependency. No
+      grade changes resulted.
+    </li>
+    <li>Fixed two typos in the <code>RD-F-018</code> evidence template.</li>
+  </ul>
+
+  <VersionMarker id="v1-3-0" version="v1.3.0" date="2025-09-19">
+    Verdict reviewers
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Introduced</strong> the two-reviewer requirement for verdict publication. All
+      assessments since v1.3.0 carry both reviewer names in the page footer.
+    </li>
+    <li>
+      <strong>Formalised</strong> the conflict register; reviewers with a three-year material
+      exposure to a protocol cannot grade it.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-2-0" version="v1.2.0" date="2025-06-08">
+    Operational history weight
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Promoted</strong> operational history (Cat 5) to a load-bearing category. The five
+      load-bearing categories are now: code, governance, oracle, operational history, fork/
+      dependency lineage.
+    </li>
+    <li>
+      <strong>Defined</strong> the 12-month look-back window for operational evidence. Older
+      incidents are footnoted but do not enter the grade.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-1-0" version="v1.1.0" date="2025-03-21">
+    Appeals process
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Published</strong> the appeals process. Factor-level disputes are now resolved
+      within a 14-day window.
+    </li>
+    <li>
+      <strong>Opened</strong> the rubric-dispute issue tracker for proposals against the rubric
+      itself.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-0-0" version="v1.0.0" date="2024-12-01">
+    Founding rubric
+  </VersionMarker>
+  <p>
+    Initial public rubric. Core categories defined, 168 evidence factors, 8 critical-factor
+    predicates. Letter precedence F &gt; D &gt; C &gt; B &gt; A. Grading deterministic against
+    citations.
+  </p>
+</Page>

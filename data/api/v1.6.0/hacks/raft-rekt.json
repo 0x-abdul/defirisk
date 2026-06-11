@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "raft-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Raft",
+        "occurred_at": "2023-11-10",
+        "loss_usd": 3300000.0,
+        "category": "CDP / Algorithmic Stablecoin (R stablecoin)",
+        "root_cause": "Flash loan + collateral inflation via position liquidation → infinite R mint → stablecoin dump",
+        "description": "The Raft attacker executed a sophisticated $3.3M exploit to mint 6.7M R stablecoin — then accidentally sent all profits to the Ethereum burn address due to an uninitialized delegatecall storage slot, ending up $8K out of pocket.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — bug survived Trail of Bits review]"
+        },
+        {
+          "factor_id": "RD-F-012",
+          "relevance": "causal",
+          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry] || delegatecall with user-controlled target [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]"
+        },
+        {
+          "factor_id": "RD-F-039",
+          "relevance": "related",
+          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing (Y/N): Y — 6.7M R minted in a single transaction against flash-loan-inflated collateral]"
+        },
+        {
+          "factor_id": "RD-F-143",
+          "relevance": "related",
+          "notes": "★ Reinitializable implementation [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]"
+        }
+      ]
+    }
+  }
+}

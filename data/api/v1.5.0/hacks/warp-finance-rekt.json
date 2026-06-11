@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "warp-finance-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Warp Finance",
+        "occurred_at": "2020-12-17",
+        "loss_usd": 7800000.0,
+        "category": "Lending / Stablecoin Vault",
+        "root_cause": "Flash loan + Uniswap V2 LP token spot oracle manipulation → inflated collateral → over-borrow drain",
+        "description": "Warp Finance lost $7.8M when an attacker used $231M in flash loans to double the WETH-DAI LP token spot price and borrow far beyond real collateral value — but left their own LP tokens locked in the vault, enabling partial recovery via liquidation.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown; attacker left collateral locked creating a natural bounty for liquidation]"
+        },
+        {
+          "factor_id": "RD-F-053",
+          "relevance": "causal",
+          "notes": "★ Spot DEX pool oracle without TWAP — root cause [via realtime_signals/Oracle anomaly: Y — Uniswap V2 WETH-DAI LP spot price doubled mid-transaction; observable if monitoring oracle price deviation]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — Uniswap V2 WETH-DAI LP spot price doubled mid-transaction; observable if monitoring oracle price deviation]"
+        }
+      ]
+    }
+  }
+}

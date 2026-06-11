@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+import TopBar from '../components/TopBar.astro';
+---
+
+<Base title="Page not found" noindex>
+  <TopBar slot="topbar" />
+
+  <div class="wrap">
+    <div class="card">
+      <h1>404</h1>
+      <p class="lede">The page you're looking for doesn't exist.</p>
+      <p class="muted">
+        If you arrived here from a link in our own site, please <a class="link" href="/about/#contact">let us know</a>.
+        Otherwise, here are some places that probably do exist:
+      </p>
+    </div>
+
+    <div class="jumps">
+      <a class="jump" href="/">
+        <span class="jumpTitle">Protocols</span>
+        <span class="jumpDesc">Every graded protocol, sorted by TVL</span>
+      </a>
+      <a class="jump" href="/factors/">
+        <span class="jumpTitle">Factors</span>
+        <span class="jumpDesc">All 184 evidence factors with methodology</span>
+      </a>
+      <a class="jump" href="/methodology/">
+        <span class="jumpTitle">Methodology</span>
+        <span class="jumpDesc">How letter grades are computed</span>
+      </a>
+      <a class="jump" href="/data/">
+        <span class="jumpTitle">Data &amp; API</span>
+        <span class="jumpDesc">JSON envelope, endpoints, license</span>
+      </a>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 28px 96px;
+  }
+  .card h1 {
+    margin: 0;
+    font-family: 'Geist Mono', monospace;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .card .lede {
+    margin: 14px 0 6px;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--fg);
+    letter-spacing: -0.02em;
+  }
+  .card .muted {
+    color: var(--fg-2);
+    line-height: 1.6;
+    font-size: 14px;
+    max-width: 60ch;
+  }
+  .card .link {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 3px;
+  }
+
+  .jumps {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .jump {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .jump:hover {
+    background: var(--surface-2);
+  }
+  .jumpTitle {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .jumpDesc {
+    font-size: 12.5px;
+    color: var(--fg-3);
+  }
+</style>

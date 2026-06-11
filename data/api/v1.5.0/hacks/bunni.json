@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "bunni",
+        "protocol_slug": null,
+        "protocol_name": "Bunni",
+        "occurred_at": "2025-09-01",
+        "loss_usd": 8400000.0,
+        "category": "DEX / Liquidity Management (Uniswap V4 Hook)",
+        "root_cause": "Precision/Rounding Error in Custom Liquidity Distribution Function (LDF)",
+        "description": "Bunni's custom Liquidity Distribution Function — its key innovation over standard Uniswap math — was gamed with precisely sized trades to produce rounding errors that let an attacker drain $8.4M from two pools while leaving behind 1,000+ self-incriminating transaction logs.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — codebase continuously evolving; changes made during and after multiple audit windows]"
+        },
+        {
+          "factor_id": "RD-F-009",
+          "relevance": "related",
+          "notes": "Formal verification coverage — would have caught [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-024",
+          "relevance": "causal",
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: ~Several months; TVL explosion July 31–Aug 1 2025 (weeks before exploit)]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Abnormally small token balances in pools (25 wei); repeated cyclical deposit/withdrawal patterns; 1,000+ transaction logs from single addres...]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Not anonymous; public team]"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "indexed-finance",
+        "protocol_slug": null,
+        "protocol_name": "Indexed Finance",
+        "occurred_at": "2021-10-14",
+        "loss_usd": 16000000.0,
+        "category": "Index / Passive Portfolio (Balancer BPool fork)",
+        "root_cause": "Flash Loan — Rebalancing Delay Pool Oracle Manipulation",
+        "description": "An attacker used flash loans to manipulate Indexed Finance's pool oracle by 99.97%, tricking the protocol into valuing $100M+ in assets at $300k, then minted inflated index tokens and drained $16M from three pools.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Tornado Cash funding hours before; large flash loan origination at attack time]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — pool's internal valuation dropped to ~$300k from $100M+ equivalent; 99.97% distortion]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — flash loans of pool assets used to manipulate reference token balance]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes (Balancer BPool fork with custom rebalancing logic)]"
+        }
+      ]
+    }
+  }
+}

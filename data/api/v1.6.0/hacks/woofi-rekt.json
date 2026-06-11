@@ -1,0 +1,50 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "woofi-rekt",
+        "protocol_slug": null,
+        "protocol_name": "WooFi (WooPPV2)",
+        "occurred_at": "2024-03-05",
+        "loss_usd": 8500000.0,
+        "category": "DEX / AMM (sPMM oracle-based)",
+        "root_cause": "Flash loan → WOO oracle price manipulation → pool swap drain",
+        "description": "WooFi lost $8.5M on Arbitrum when attackers exploited a gap in the sPMM oracle's Chainlink fallback — flash loans drove WOO price out of range with no safety net to catch it.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the core WooPPV2 contract predates the exploit; the new risk factor was the newly added WOO lending market which changed the economic at...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the core WooPPV2 contract predates the exploit; the new risk factor was the newly added WOO lending market which changed the economic at...]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited code — the sPMM oracle was audited by CertiK; the specific interaction between sPMM out-of-range + missing WOO Chainlink fallback wa...]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — WOO price was manipulated to extreme levels within the sPMM system; a price deviation monitor against Chainlink would have flagged this ...]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — the attacker used a flash loan to pump and manipulate WOO price; detectable as an unusually large flash loan on a low-liquidity token]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the core WooPPV2 contract predates the exploit; the new risk factor was the newly added WOO lending market which changed the economic at...]"
+        }
+      ]
+    }
+  }
+}

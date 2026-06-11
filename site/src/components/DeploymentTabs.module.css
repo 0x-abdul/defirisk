@@ -1,0 +1,60 @@
+/* DeploymentTabs — CSS module. Ported verbatim from
+   d3a-detail-variants-v2.jsx da1Css `.da1 .deploy` + `.d` rules. */
+
+.deploy {
+  margin: 28px 0;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.lbl {
+  font-size: 10.5px;
+  color: var(--fg-3);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+.d {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  font-family: 'Geist', sans-serif;
+  letter-spacing: -0.02em;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+.d:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+}
+.d.on {
+  outline: 2px solid var(--fg);
+  outline-offset: 1px;
+}
+.tv {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--fg-2);
+  margin-left: 10px;
+  white-space: nowrap;
+}

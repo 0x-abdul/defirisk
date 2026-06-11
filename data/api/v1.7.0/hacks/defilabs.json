@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "defilabs",
+        "protocol_slug": null,
+        "protocol_name": "DeFiLabs",
+        "occurred_at": "2023-07-27",
+        "loss_usd": 1600000.0,
+        "category": "Yield / Staking",
+        "root_cause": "Backdoor Function in Staking Contract (Insider Rug Pull)",
+        "description": "DeFiLabs drained $1.6M from its own BSC staking contract via a hidden `withdrawFunds` backdoor function — an unaudited contract version that both Certik and Cyberscope had examined (but not covered) after it was already deployed.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N — vPoolv6 was not in scope for either Certik or Cyberscope, despite being the active user-facing contract] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N — vPoolv6 was not in scope for either Certik or Cyberscope, despite being the active user-facing contract]"
+        },
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited — vPoolv6 not in audit scope]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vPoolv6 was a new contract version, deployed and actively used but never audited] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vPoolv6 was a new contract version, deployed and actively used but never audited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None mentioned]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — typical BSC rug profile; team disappeared post-rug]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — vPoolv6 was a new contract version, deployed and actively used but never audited]"
+        }
+      ]
+    }
+  }
+}

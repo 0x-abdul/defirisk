@@ -1,0 +1,70 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "radiant-capital-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Radiant Capital (1st incident)",
+        "occurred_at": "2024-01-02",
+        "loss_usd": 4500000.0,
+        "category": "Lending / Money Market (Aave V2 / Compound-lineage fork)",
+        "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0",
+        "description": "Radiant Capital lost $4.5M just six seconds after activating a new USDC market — because the attacker monitored their governance proposal for weeks and had the exploit contract ready the moment the empty market went live.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Y — new USDC market activated via governance]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited code (Aave V2 fork) — but design risk not caught as critical]"
+        },
+        {
+          "factor_id": "RD-F-036",
+          "relevance": "related",
+          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]"
+        },
+        {
+          "factor_id": "RD-F-038",
+          "relevance": "causal",
+          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]"
+        },
+        {
+          "factor_id": "RD-F-046",
+          "relevance": "related",
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-072",
+          "relevance": "causal",
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action (Y/N): Y — governance activation of the new market was the trigger event]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Aave V2 fork]"
+        }
+      ]
+    }
+  }
+}

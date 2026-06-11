@@ -1,0 +1,82 @@
+# SSH-based deploy to Hetzner VPS.
+#
+# Triggers on pushes to main that touch site/ or scripts/ (code changes).
+# Data-only pushes (data/api/ from the nightly pipeline) do NOT trigger this
+# workflow — the nightly script rebuilds the site on the VPS directly after
+# running compose.py + dump.py, which is faster and avoids unnecessary
+# GitHub Actions minutes.
+#
+# Prerequisites — configure in repo Settings → Secrets → Actions:
+#   VPS_HOST       IPv4 address of the Hetzner CX32 VPS
+#   VPS_SSH_KEY    Private key for the github-actions-deploy key
+#                  (add the corresponding public key to rdapp@vps:~/.ssh/authorized_keys)
+#
+# Manual dispatch: Actions UI → Deploy to VPS → Run workflow
+# Force rebuild without a code change: use workflow_dispatch below.
+
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'scripts/compose.py'
+      - 'scripts/dump.py'
+      - 'scripts/rubric.py'
+      - 'db/migrations/**'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual deploy'
+        required: false
+        default: 'force rebuild'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: SSH deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Deploy via SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          echo "$VPS_SSH_KEY" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+
+          ssh -i /tmp/deploy_key \
+              -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=30 \
+              rdapp@"$VPS_HOST" << 'REMOTE'
+            set -euo pipefail
+            cd /opt/riskdashboard
+
+            echo "==> Pulling latest code..."
+            git pull origin main
+
+            echo "==> Rebuilding site..."
+            cd site && npm ci --prefer-offline && npm run build
+            cd ..
+
+            echo "==> Deploy complete at $(date -u +%Y-%m-%dT%H:%MZ)"
+          REMOTE
+
+          rm /tmp/deploy_key
+
+      - name: Smoke check
+        if: success()
+        run: |
+          sleep 5   # brief settle time after Nginx picks up new files
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
+            https://riskdashboard.xyz/)
+          if [ "$STATUS" != "200" ]; then
+            echo "Smoke check failed: HTTP $STATUS"
+            exit 1
+          fi
+          echo "Smoke check passed: HTTP $STATUS"

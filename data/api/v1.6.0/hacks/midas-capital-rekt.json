@@ -1,0 +1,85 @@
+{
+  "rubric_version": "v1.6.0",
+  "data_as_of": "2026-05-12T04:06:37Z",
+  "generated_at": "2026-05-12T04:06:40Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "midas-capital-rekt",
+        "protocol_slug": null,
+        "protocol_name": "Midas Capital",
+        "occurred_at": "2023-01-15",
+        "loss_usd": 660000.0,
+        "category": "Lending / Money Market",
+        "root_cause": "Read-only reentrancy on Curve LP token virtual price — inflated collateral valuation",
+        "description": "Midas Capital lost $660K when an attacker exploited a known read-only reentrancy bug in Curve LP tokens to inflate collateral value and overborrow jFIAT assets — a vulnerability that had already struck market.xyz three months earlier.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited new collateral integration; the read-only reentrancy risk was known from market.xyz (Oct 2022)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — newly added collateral type (WMATIC-stMATIC Curve LP) enabled shortly before exploit] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — newly added collateral type (WMATIC-stMATIC Curve LP) enabled shortly before exploit]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-050",
+          "relevance": "causal",
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-052",
+          "relevance": "related",
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]"
+        },
+        {
+          "factor_id": "RD-F-077",
+          "relevance": "causal",
+          "notes": "Prior exploit count [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-078",
+          "relevance": "causal",
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-079",
+          "relevance": "causal",
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — virtual_price() returned inflated value during reentrant window]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Yes — Compound V2 / Fuse fork architecture]"
+        },
+        {
+          "factor_id": "RD-F-127",
+          "relevance": "related",
+          "notes": "Upstream Compound has patches that may not be merged here [via dashboard_risk_factors/Forked?: Yes — Compound V2 / Fuse fork architecture]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — newly added collateral type (WMATIC-stMATIC Curve LP) enabled shortly before exploit]"
+        }
+      ]
+    }
+  }
+}

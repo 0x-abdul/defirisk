@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "yearn-rekt4",
+        "protocol_slug": null,
+        "protocol_name": "Yearn Finance (legacy iearn TUSD V1 vault — deployed 2020)",
+        "occurred_at": "2023-12-16",
+        "loss_usd": 293000.0,
+        "category": "Yield Aggregator / Vault (legacy V1)",
+        "root_cause": "Flash loan → misconfigured vault (TUSD vault tracking iSUSD/sUSD strategy) → share accounting inflation → Curve yPool drain",
+        "description": "A 2,100-day-old Yearn vault with a misconfigured strategy pointing to the wrong asset was drained for $293K — the same bug that cost $10M in April 2023, now copy-pasted from the archives.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited at time of exploit; legacy configuration error never caught]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-076",
+          "relevance": "related",
+          "notes": "Protocol age (Cat 5 — < 6 months age signal) [via dashboard_risk_factors/Protocol age: ~2,100 days (~5.75 years) at time of exploit]"
+        },
+        {
+          "factor_id": "RD-F-100",
+          "relevance": "illustrative",
+          "notes": "Flash loan > $10M origination — RT signal [via realtime_signals/Unusual borrowing: Y — 30M USDC Morpho flash loan is a strong signal on a legacy vault with minimal TVL]"
+        }
+      ]
+    }
+  }
+}

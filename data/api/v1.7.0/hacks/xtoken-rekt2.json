@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "xtoken-rekt2",
+        "protocol_slug": null,
+        "protocol_name": "xToken Market",
+        "occurred_at": "2021-08-30",
+        "loss_usd": 4500000.0,
+        "category": "Index / Passive Yield (wrapped SNX positions)",
+        "root_cause": "Public callFunction() in xSNXAdmin — same SNX price manipulation, different access control bug",
+        "description": "xToken was exploited a second time for $4.5M — same xSNX contract, same SNX price manipulation technique — but via a different bug: a single incorrect `require` statement that made a dYdX-only callback function publicly callable.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-008",
+          "relevance": "illustrative",
+          "notes": "Bug survived review (RD-F-008 = ignored disclosure; closest semantic match for audit-missed-bug) [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Audited — incorrect require() survived PeckShield review twice]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — SNX price crashed during attack sequence visible on DEXes]"
+        }
+      ]
+    }
+  }
+}

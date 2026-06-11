@@ -1,0 +1,125 @@
+---
+export type CalloutKind = 'info' | 'warning' | 'note';
+
+export interface Props {
+  kind?: CalloutKind;
+  label?: string;
+}
+
+const { kind = 'note', label } = Astro.props;
+
+const DEFAULT_LABEL: Record<CalloutKind, string> = {
+  info: 'Info',
+  warning: 'Warning',
+  note: 'Note',
+};
+
+const GLYPH: Record<CalloutKind, string> = {
+  info: 'i',
+  warning: '!',
+  note: '·',
+};
+
+const labelText = label ?? DEFAULT_LABEL[kind];
+---
+
+<div class:list={['callout', kind]} role="note">
+  <div class="ico" aria-hidden="true">
+    <span class="glyph">{GLYPH[kind]}</span>
+  </div>
+  <div class="ct">
+    <span class="clbl">{labelText}</span>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .callout {
+    margin: 18px 0;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    padding: 13px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--fg-3);
+    border-radius: 6px;
+    max-width: 65ch;
+  }
+  .callout .ico {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 1px;
+  }
+  .callout .ico .glyph {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--fg-3);
+    font-feature-settings: 'lnum';
+  }
+  .callout .ct {
+    font-size: 13px;
+    color: var(--fg-2);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .callout .ct .clbl {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 3px;
+    display: block;
+  }
+  .callout .ct :global(strong) {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .callout .ct :global(p) {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--fg-2);
+  }
+  .callout .ct :global(p + p) {
+    margin-top: 6px;
+  }
+  .callout.info {
+    border-left-color: var(--gA);
+    background: var(--gA-bg);
+    border-color: transparent;
+  }
+  .callout.info .ico .glyph {
+    background: var(--gA);
+  }
+  .callout.info .ct .clbl {
+    color: var(--gA);
+  }
+  .callout.warning {
+    border-left-color: var(--gF);
+    background: var(--gF-bg);
+    border-color: transparent;
+  }
+  .callout.warning .ico .glyph {
+    background: var(--gF);
+  }
+  .callout.warning .ct .clbl {
+    color: var(--gF);
+  }
+  .callout.note {
+    border-left-color: var(--fg-3);
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+</style>

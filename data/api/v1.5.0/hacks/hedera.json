@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "hedera",
+        "protocol_slug": null,
+        "protocol_name": "Hedera (Network-level — Hashgraph Smart Contract Service)",
+        "occurred_at": "2023-03-09",
+        "loss_usd": 515000.0,
+        "category": "DEX / AMM (Pangolin Hedera, HeliSwap — network-level exploit)",
+        "root_cause": "Smart Contract Service (HTS) Code Bug — Uniswap V2 Port Exploit",
+        "description": "A bug in Hedera's Smart Contract Service — specifically in Uniswap V2 code ported to Hedera Token Service — allowed an attacker to drain LP positions across multiple DEXs, triggering a chain-wide shutdown and $12M ecosystem TVL exodus from just ~$515K actually stolen.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-002",
+          "relevance": "related",
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2021 audit; exploit 2023)]"
+        },
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: The Uniswap V2 ports to HTS were relatively new]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-098",
+          "relevance": "illustrative",
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — post-attack panic caused $12M TVL exit, not pre-exploit signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability: Low]"
+        }
+      ]
+    }
+  }
+}

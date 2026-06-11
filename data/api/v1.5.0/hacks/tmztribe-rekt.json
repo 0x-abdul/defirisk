@@ -1,0 +1,45 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "tmztribe-rekt",
+        "protocol_slug": null,
+        "protocol_name": "TMXTribe",
+        "occurred_at": "2026-01-05",
+        "loss_usd": 1400000.0,
+        "category": "Perpetuals DEX (GMX fork)",
+        "root_cause": "Logic Bug — Mint/Stake/Swap Loop",
+        "description": "TMXTribe's GMX fork bled $1.4M through a mint/stake/swap loop for 36 uninterrupted hours — the team had a pause button, multiple security firms flagged it in real time, and nobody pushed it.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-004",
+          "relevance": "causal",
+          "notes": "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Unaudited]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: No]"
+        },
+        {
+          "factor_id": "RD-F-111",
+          "relevance": "causal",
+          "notes": "Team doxx status — pseudonymous-no-track-record class [via dashboard_risk_factors/Team anonymity: Anonymous — zero public communications post-exploit; team wallets deploying new contracts during exploit]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — GMX fork]"
+        }
+      ]
+    }
+  }
+}

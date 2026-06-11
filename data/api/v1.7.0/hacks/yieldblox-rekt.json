@@ -1,0 +1,40 @@
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-05-17T15:29:57Z",
+  "generated_at": "2026-05-18T11:38:41Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "yieldblox-rekt",
+        "protocol_slug": null,
+        "protocol_name": "YieldBlox / Script3 (Blend V2 community-managed pool)",
+        "occurred_at": "2026-02-22",
+        "loss_usd": 10970000.0,
+        "category": "Lending / Money Market (Blend V2)",
+        "root_cause": "Illiquid collateral oracle manipulation — single USTRY/USDC trade pumped price 100x → inflated collateral → undercollateralized borrow drain",
+        "description": "A single trade on a market with under $1/hour in volume pumped USTRY's price 100x, and Blend V2's oracle accepted it as truth — letting the attacker borrow $10.97M against $160K of real collateral.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-001",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: N — the smart contracts had no vulnerability; the exploit was in the oracle configuration (Reflector) and pool listing decision (USTRY as co...] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: N — the smart contracts had no vulnerability; the exploit was in the oracle configuration (Reflector) and pool listing decision (USTRY as co...]"
+        },
+        {
+          "factor_id": "RD-F-007",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]"
+        },
+        {
+          "factor_id": "RD-F-099",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly: Y — 100x price spike on USTRY with zero competing volume; Reflector reported $106.74 on a ~$1.06 asset; Oracle Adapter passed it without med...]"
+        }
+      ]
+    }
+  }
+}

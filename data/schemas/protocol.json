@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://riskdashboard.xyz/api/v1.5.0/schema/protocol.json",
+  "title": "Protocol summary (index entry)",
+  "description": "One entry in the index.json protocol list. Lightweight — use the per-slug endpoint for full factor scores.",
+  "type": "object",
+  "required": ["slug", "display_name", "protocol_type", "primary_chain", "headline_grade", "headline_badge", "rubric_version", "status"],
+  "properties": {
+    "slug": { "type": "string", "description": "URL-safe identifier, e.g. aave-v3" },
+    "display_name": { "type": "string" },
+    "protocol_type": { "type": "string", "enum": ["lending", "dex", "bridge", "perps", "cdp", "yield", "rwa", "restaking", "lst", "other"] },
+    "primary_chain": { "type": "string", "example": "ethereum" },
+    "headline_grade": { "type": ["string", "null"], "enum": ["A", "B", "C", "D", "F", null] },
+    "headline_badge": { "type": ["string", "null"], "enum": ["CLEAN", "ARCH", "CHRONIC", "EVENT", null] },
+    "total_value_secured_usd": { "type": ["number", "null"] },
+    "graded_at": { "type": ["string", "null"], "format": "date-time" },
+    "rubric_version": { "type": "string" },
+    "status": { "type": "string", "enum": ["live", "deprecated", "under_review"] },
+    "has_active_incident": { "type": ["boolean", "null"] }
+  }
+}

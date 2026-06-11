@@ -1,0 +1,51 @@
+---
+import type { Letter } from '../lib/rubric';
+
+export interface Props {
+  letter: Letter;
+  body?: string;
+  meaning?: string;
+}
+
+const MEANING: Record<Letter, string> = {
+  A: 'Resilient',
+  B: 'Sound',
+  C: 'Watch',
+  D: 'Compromised',
+  F: 'Failing',
+};
+
+const DEFAULT_BODY: Record<Letter, string> = {
+  A: 'Strong evidence across categories. No material gaps.',
+  B: 'Sound. Minor, well-documented gaps.',
+  C: 'Watch. Material gaps; monitor.',
+  D: 'Compromised. Meaningful structural risk.',
+  F: 'Failing. Disqualifying issues present.',
+};
+
+const { letter, body, meaning } = Astro.props;
+const meaningText = meaning ?? MEANING[letter];
+const bodyText = body && body.trim().length > 0 ? body : DEFAULT_BODY[letter];
+---
+
+<div class="verdict">
+  <b>{meaningText}.</b>
+  {bodyText}
+</div>
+
+<style>
+  .verdict {
+    font-size: 13px;
+    color: var(--fg-2);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .verdict b {
+    display: block;
+    color: var(--fg);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    letter-spacing: -0.01em;
+  }
+</style>

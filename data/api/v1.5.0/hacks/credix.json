@@ -1,0 +1,55 @@
+{
+  "rubric_version": "v1.5.0",
+  "data_as_of": "2026-05-04T19:56:06Z",
+  "generated_at": "2026-05-04T19:56:07Z",
+  "data": {
+    "hack_data": {
+      "hack": {
+        "id": "credix",
+        "protocol_slug": null,
+        "protocol_name": "Credix",
+        "occurred_at": "2025-08-05",
+        "loss_usd": 4500000.0,
+        "category": "Lending / Credit Market",
+        "root_cause": "Admin Privilege Abuse — Bridge Role Minting Unbacked Collateral",
+        "description": "An attacker who was granted Admin + Bridge roles on Credix's ACLManager six days before the exploit used the bridge minting function to fabricate $4.5M in phantom collateral, then borrowed all real liquidity from the protocol.",
+        "postmortem_url": null,
+        "funds_recovered_pct": null,
+        "is_active": false,
+        "status": "closed"
+      },
+      "linked_factors": [
+        {
+          "factor_id": "RD-F-006",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Unknown — Credix was new to Sonic chain; deployment recency unconfirmed] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Unknown — Credix was new to Sonic chain; deployment recency unconfirmed]"
+        },
+        {
+          "factor_id": "RD-F-027",
+          "relevance": "causal",
+          "notes": "★ Single admin EOA — when value mentions key compromise [via realtime_signals/Governance/admin action: Y — multisig granted both Admin and Bridge roles to attacker address 6 days prior; this is the root exploitable signal]"
+        },
+        {
+          "factor_id": "RD-F-090",
+          "relevance": "illustrative",
+          "notes": "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Y — ACLManager role grant (BRIDGE + Admin) to attacker address was visible on-chain 6 days before exploit; Tornado Cash-funded setup address...]"
+        },
+        {
+          "factor_id": "RD-F-101",
+          "relevance": "illustrative",
+          "notes": "Large governance proposal queued — RT signal would have fired [via realtime_signals/Governance/admin action: Y — multisig granted both Admin and Bridge roles to attacker address 6 days prior; this is the root exploitable signal]"
+        },
+        {
+          "factor_id": "RD-F-126",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Appears to be an Aave-style lending architecture (ACLManager, POOL_ADMIN, BRIDGE roles are characteristic of Aave v3); fork of Aave v3 archi...]"
+        },
+        {
+          "factor_id": "RD-F-146",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Unknown — Credix was new to Sonic chain; deployment recency unconfirmed]"
+        }
+      ]
+    }
+  }
+}
