@@ -154,9 +154,11 @@ CREATE TABLE "sources" (
   "is_archived"  boolean NOT NULL DEFAULT false,
   "archive_url"  text,
   "notes"        text,
-  "created_at"   timestamp with time zone NOT NULL DEFAULT now(),
-  UNIQUE ("source_type", COALESCE("url", ''), "reference")
+  "created_at"   timestamp with time zone NOT NULL DEFAULT now()
 );
+--> statement-breakpoint
+CREATE UNIQUE INDEX "sources_dedup_idx"
+  ON "sources" ("source_type", COALESCE("url", ''), "reference");
 --> statement-breakpoint
 CREATE INDEX "sources_url_idx"          ON "sources" ("url") WHERE url IS NOT NULL;
 --> statement-breakpoint
@@ -338,6 +340,28 @@ CREATE TABLE "change_log" (
 CREATE INDEX "change_log_entity_idx" ON "change_log" ("entity_type", "entity_id");
 --> statement-breakpoint
 CREATE INDEX "change_log_recent_idx" ON "change_log" ("changed_at" DESC);
+--> statement-breakpoint
+
+-- ── Pipeline Runs ────────────────────────────────────────────────────────────
+
+CREATE TABLE "pipeline_runs" (
+  "id"                 uuid PRIMARY KEY NOT NULL DEFAULT gen_random_uuid(),
+  "run_at"             timestamp with time zone NOT NULL DEFAULT now(),
+  "script_name"        text NOT NULL,
+  "cadence_bucket"     text,
+  "protocols_touched"  smallint NOT NULL DEFAULT 0,
+  "fetchers_invoked"   jsonb NOT NULL DEFAULT '[]'::jsonb,
+  "success_count"      smallint NOT NULL DEFAULT 0,
+  "error_count"        smallint NOT NULL DEFAULT 0,
+  "duration_seconds"   integer,
+  "triggered_by"       text NOT NULL,
+  "error_summary"      jsonb,
+  "notes"              text
+);
+--> statement-breakpoint
+CREATE INDEX "pipeline_runs_recent_idx"  ON "pipeline_runs" ("run_at" DESC);
+--> statement-breakpoint
+CREATE INDEX "pipeline_runs_script_idx"  ON "pipeline_runs" ("script_name", "run_at" DESC);
 --> statement-breakpoint
 
 -- ── Row Level Security ───────────────────────────────────────────────────────
