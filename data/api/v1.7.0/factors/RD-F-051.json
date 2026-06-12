@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -631,7 +631,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "On primary Chainlink feed staleness: contract reverts (MG:GLP:STALE_PRICE). Governor can call setManualOverridePrice() to unblock — human-triggered, not automatic. No automatic fallback to secondary oracle. Aave/Sky strategy failures contained — idle liquidity stays in pool.",
+          "evidence_summary": "On primary Chainlink feed staleness: contract reverts (MG:GLP:STALE_PRICE). Governor can call setManualOverridePrice() to unblock â€” human-triggered, not automatic. No automatic fallback to secondary oracle. Aave/Sky strategy failures contained â€” idle liquidity stays in pool.",
           "evidence_detail": "MapleGlobals getLatestPrice() reverts if updatedAt < block.timestamp - maxDelay. No automated secondary oracle fallback in the code path. setManualOverridePrice() available as emergency measure but requires governor action. Yellow because revert-on-staleness with human-triggered override is a documented but non-automatic fallback pattern.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",

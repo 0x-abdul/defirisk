@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,7 +1051,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "V2+V3 combined: User-level signal, not protocol-level. Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) is the canonical V3 approval management contract — approvals to it are expected and benign. No approvals from high-TVL V3 LPs to unverified contracts detected from public sources. Signal infrastructure (user-level approval monitoring) not configured in static assessment. Gray per methodology.",
+          "evidence_summary": "V2+V3 combined: User-level signal, not protocol-level. Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) is the canonical V3 approval management contract â€” approvals to it are expected and benign. No approvals from high-TVL V3 LPs to unverified contracts detected from public sources. Signal infrastructure (user-level approval monitoring) not configured in static assessment. Gray per methodology.",
           "evidence_detail": "Signal fires when a whale or top-TVL depositor grants a new approval to an unverified contract interacting with the protocol. For Uniswap V3: the expected approval path is ERC-20 token -> Permit2 (0x000000000022D473030F116dDEE9F6B43aC78BA3) which is a verified and well-known contract. Approvals directly to SwapRouter or SwapRouter02 are also expected. The risk this signal monitors is a user approving an *unverified* contract that then drains their approved tokens. No such pattern detected. Gray: user-level monitoring infrastructure not configured in static assessment.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",

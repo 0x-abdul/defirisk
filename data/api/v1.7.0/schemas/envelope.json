@@ -38,7 +38,7 @@
       "type": "number",
       "minimum": 0,
       "maximum": 100,
-      "description": "Protocol-level risk score (0\u2013100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5\u00d7, non-core 1.0\u00d7) plus up to 15 points critical-red penalty. Introduced in v1.7.0.",
+      "description": "Protocol-level risk score (0–100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5×, non-core 1.0×) plus up to 15 points critical-red penalty. Introduced in v1.7.0.",
       "examples": [
         9.0,
         34.0,
@@ -47,7 +47,7 @@
     },
     "category_severities": {
       "type": "object",
-      "description": "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0\u2013100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric).",
+      "description": "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0–100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric).",
       "additionalProperties": {
         "type": "number",
         "minimum": 0,

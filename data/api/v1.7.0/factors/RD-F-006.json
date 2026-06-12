@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,7 +1051,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V3: ToB signed off March 12 2021; ABDK core approximately March 23 2021; launch May 5 2021. Audit-to-deploy: ~43 days (ABDK) to 54 days (ToB) — both under 60-day threshold. V2: dapp.org.uk review completed April 2020; launch May 18 2020 — within 60 days. Both versions: green.",
+          "evidence_summary": "V3: ToB signed off March 12 2021; ABDK core approximately March 23 2021; launch May 5 2021. Audit-to-deploy: ~43 days (ABDK) to 54 days (ToB) â€” both under 60-day threshold. V2: dapp.org.uk review completed April 2020; launch May 18 2020 â€” within 60 days. Both versions: green.",
           "evidence_detail": "The RC cycle for V3 (rc.0 March 22 -> rc.2 April 20 -> v1.0.0 May 4) shows controlled post-audit stabilization with no material pool logic changes after the audit sign-off dates. For V2, the dapp.org.uk review was conducted during development (Jan-Apr 2020) and the report was finalized before the May 18 2020 launch, with the gap estimated at under 60 days for the final sign-off.",
           "collection_mode": "hybrid",
           "collected_at": "2026-05-12T10:36:11Z",
@@ -1156,16 +1156,6 @@
           "root_cause": "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
         },
         {
-          "hack_id": "dango-rekt",
-          "relevance": "causal",
-          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]",
-          "hack_protocol_name": "Dango (custom-L1 perpetual DEX; Grug engine on Tendermint)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2026-04-13",
-          "loss_usd": 1900000.0,
-          "root_cause": "Missing sign/positivity check on `donate()` input in the insurance-fund contract — negative value reversed accounting direction"
-        },
-        {
           "hack_id": "hyperbridge-rekt",
           "relevance": "causal",
           "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade]",
@@ -1174,6 +1164,16 @@
           "occurred_at": "2026-04-13",
           "loss_usd": 2500000.0,
           "root_cause": "Smart-contract proof-verification bypass — MMR bounds-check failure + missing proof-to-request binding + zero challenge period + single-step admin transfer"
+        },
+        {
+          "hack_id": "dango-rekt",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]",
+          "hack_protocol_name": "Dango (custom-L1 perpetual DEX; Grug engine on Tendermint)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2026-04-13",
+          "loss_usd": 1900000.0,
+          "root_cause": "Missing sign/positivity check on `donate()` input in the insurance-fund contract — negative value reversed accounting direction"
         },
         {
           "hack_id": "silo-finance-rekt",
@@ -1436,16 +1436,6 @@
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
-          "hack_id": "bedrock-rekt",
-          "relevance": "causal",
-          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — uniBTC vault was a recently deployed/upgraded contract that was not audited] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
-          "hack_protocol_name": "Bedrock (uniBTC vault)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2024-09-25",
-          "loss_usd": 2000000.0,
-          "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
-        },
-        {
           "hack_id": "onyx-protocol-rekt2",
           "relevance": "causal",
           "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Y — VUSD market newly added via governance]",
@@ -1454,6 +1444,16 @@
           "occurred_at": "2024-09-25",
           "loss_usd": 3800000.0,
           "root_cause": "Compound V2 empty-market donation attack — VUSD governance-added market"
+        },
+        {
+          "hack_id": "bedrock-rekt",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — uniBTC vault was a recently deployed/upgraded contract that was not audited] || Time between audit end and deploy [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || Time between audit end and deploy [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "hack_protocol_name": "Bedrock (uniBTC vault)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2024-09-25",
+          "loss_usd": 2000000.0,
+          "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
         },
         {
           "hack_id": "griffin-ai",
@@ -1526,16 +1526,6 @@
           "root_cause": "Call Injection via Unvalidated Swap Function"
         },
         {
-          "hack_id": "sonne-finance-rekt",
-          "relevance": "causal",
-          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market]",
-          "hack_protocol_name": "Sonne Finance",
-          "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
-          "loss_usd": 20000000.0,
-          "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
-        },
-        {
           "hack_id": "alexlab-rekt",
           "relevance": "causal",
           "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — attacker deployed malicious upgrades during the attack]",
@@ -1544,6 +1534,16 @@
           "occurred_at": "2024-05-14",
           "loss_usd": 4300000.0,
           "root_cause": "Phishing-compromised deployer private key → malicious proxy upgrades → vault drain"
+        },
+        {
+          "hack_id": "sonne-finance-rekt",
+          "relevance": "causal",
+          "notes": "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — New VELO market was being activated; the vulnerability existed in the base Compound V2 fork code activated by the new market]",
+          "hack_protocol_name": "Sonne Finance",
+          "hack_protocol_slug": null,
+          "occurred_at": "2024-05-14",
+          "loss_usd": 20000000.0,
+          "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "pike-rekt",
@@ -2056,14 +2056,14 @@
           "root_cause": "Dual oracle manipulation — VWAP oracle pre-poisoned via flash swap, then on-chain AMM oracle manipulated via flash loan — to inflate DEI collateral value and borrow far beyond real collateral worth"
         },
         {
-          "hack_id": "agave-hundred-rekt",
+          "hack_id": "deus-dao-rekt-1",
           "relevance": "causal",
-          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: No — established forks; no recent upgrades]",
-          "hack_protocol_name": "Agave DAO + Hundred Finance (dual attack)",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — newly launched DEI lending contract]",
+          "hack_protocol_name": "Deus DAO (DEI lending contract)",
           "hack_protocol_slug": null,
           "occurred_at": "2022-03-15",
-          "loss_usd": 11700000.0,
-          "root_cause": "ERC677 callAfterTransfer() reentrancy — flash loan collateral → nested borrow calls before debt balance update → multi-asset drain"
+          "loss_usd": 3000000.0,
+          "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation"
         },
         {
           "hack_id": "deus-dao-rekt",
@@ -2076,14 +2076,14 @@
           "root_cause": "Flash loan → spot price manipulation of Solidex USDC/DEI AMM pool (used as oracle) → user positions liquidated"
         },
         {
-          "hack_id": "deus-dao-rekt-1",
+          "hack_id": "agave-hundred-rekt",
           "relevance": "causal",
-          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: Yes — newly launched DEI lending contract]",
-          "hack_protocol_name": "Deus DAO (DEI lending contract)",
+          "notes": "Audit-deploy gap — alternate field name [via dashboard_risk_factors/Code newly deployed/upgraded?: No — established forks; no recent upgrades]",
+          "hack_protocol_name": "Agave DAO + Hundred Finance (dual attack)",
           "hack_protocol_slug": null,
           "occurred_at": "2022-03-15",
-          "loss_usd": 3000000.0,
-          "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation"
+          "loss_usd": 11700000.0,
+          "root_cause": "ERC677 callAfterTransfer() reentrancy — flash loan collateral → nested borrow calls before debt balance update → multi-asset drain"
         },
         {
           "hack_id": "bent-finance",

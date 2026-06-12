@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -281,7 +281,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "GOVMONITORING_ROLE (pause) is nominally distinct from DEFAULT_ADMIN_ROLE (upgrade/config) in the contract. However, both roles are controlled by the same 5-of-8 multisig in practice — no separate key holder identified for the pause role.",
+          "evidence_summary": "GOVMONITORING_ROLE (pause) is nominally distinct from DEFAULT_ADMIN_ROLE (upgrade/config) in the contract. However, both roles are controlled by the same 5-of-8 multisig in practice â€” no separate key holder identified for the pause role.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -631,7 +631,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "securityAdmin (3-of-6) holds pause capability; GovernorTimelock holds upgrade capability. These are distinct addresses — role separation confirmed.",
+          "evidence_summary": "securityAdmin (3-of-6) holds pause capability; GovernorTimelock holds upgrade capability. These are distinct addresses â€” role separation confirmed.",
           "evidence_detail": null,
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1052,7 +1052,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "V2: not applicable (immutable, no governance). V3: no guardian/pause-keeper role exists on V3 core contracts or governance. GovernorBravo cancel() is proposer-vote-based (not a guardian veto). No emergency fast-response capability. Combined: yellow (absence of guardian on V3 governance).",
-          "evidence_detail": "GovernorBravoDelegate source: no guardian field defined. cancel() function allows cancellation only if proposer's voting power drops below proposalThreshold — this is not a guardian veto. UniswapV3Factory: no pause function. V3 pools: no pause function. The 2-day Timelock window is the only buffer after a malicious proposal passes. This is standard for Compound Bravo pattern but lacks an emergency veto capability.",
+          "evidence_detail": "GovernorBravoDelegate source: no guardian field defined. cancel() function allows cancellation only if proposer's voting power drops below proposalThreshold â€” this is not a guardian veto. UniswapV3Factory: no pause function. V3 pools: no pause function. The 2-day Timelock window is the only buffer after a malicious proposal passes. This is standard for Compound Bravo pattern but lacks an emergency veto capability.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

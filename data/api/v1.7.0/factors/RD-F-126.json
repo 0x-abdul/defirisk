@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1052,7 +1052,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "Both V2 and V3 are original Uniswap Labs protocols, not forks of any upstream. V2 redesigned from V1 by the same team. V3 is an entirely new concentrated-liquidity design independent of V2. No upstream fork relationship in either GitHub repo. Pre-marked per profile flag `cat_8_not_applicable_both_versions: true`.",
-          "evidence_detail": "V2 GitHub repo (https://github.com/Uniswap/v2-core) has no upstream fork relationship. V3 GitHub repo (https://github.com/Uniswap/v3-core) has no upstream fork relationship. Both are original designs with independent whitepapers documenting their novel contributions. V2 has itself been forked by SushiSwap, PancakeSwap, and many others — but V2 is the original, not the fork.",
+          "evidence_detail": "V2 GitHub repo (https://github.com/Uniswap/v2-core) has no upstream fork relationship. V3 GitHub repo (https://github.com/Uniswap/v3-core) has no upstream fork relationship. Both are original designs with independent whitepapers documenting their novel contributions. V2 has itself been forked by SushiSwap, PancakeSwap, and many others â€” but V2 is the original, not the fork.",
           "collection_mode": "programmatic",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",
@@ -1826,16 +1826,6 @@
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
         },
         {
-          "hack_id": "cream-rekt",
-          "relevance": "causal",
-          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: Compound V2 fork]",
-          "hack_protocol_name": "Cream Finance",
-          "hack_protocol_slug": null,
-          "occurred_at": "2021-08-30",
-          "loss_usd": 18800000.0,
-          "root_cause": "ERC777 reentrancy via newly integrated AMP token — reentrant `borrow()` before state update"
-        },
-        {
           "hack_id": "cream-finance",
           "relevance": "causal",
           "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked?: Y — Cream Finance is a fork of Compound Finance]",
@@ -1844,6 +1834,16 @@
           "occurred_at": "2021-08-30",
           "loss_usd": 18800000.0,
           "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)"
+        },
+        {
+          "hack_id": "cream-rekt",
+          "relevance": "causal",
+          "notes": "Is-a-fork-of (Cat 8 anchor) [via dashboard_risk_factors/Forked: Compound V2 fork]",
+          "hack_protocol_name": "Cream Finance",
+          "hack_protocol_slug": null,
+          "occurred_at": "2021-08-30",
+          "loss_usd": 18800000.0,
+          "root_cause": "ERC777 reentrancy via newly integrated AMP token — reentrant `borrow()` before state update"
         },
         {
           "hack_id": "punkprotocol-rekt",

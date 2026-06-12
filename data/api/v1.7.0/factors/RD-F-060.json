@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -43,7 +43,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "Not applicable — no Chainlink feeds used.",
+          "evidence_summary": "Not applicable â€” no Chainlink feeds used.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-30T21:19:18Z",
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "Chainlink aggregators include minAnswer/maxAnswer bounds set by Chainlink. MapleGlobals does not independently verify these bounds. Known risk: if collateral asset crashes below minAnswer, feed returns minAnswer (floor), not real price. Cannot verify all bound configurations without direct RPC calls to each of 8+ feeds.",
-          "evidence_detail": "MapleGlobals getLatestPrice() does not check price_ against minAnswer/maxAnswer bounds — it only checks price_ > 0. For ETH/USD and BTC/USD, Chainlink feeds have historically had non-trivial minAnswer values that could mask severe crashes. Without direct RPC inspection of all feed configurations, this cannot be fully verified. Yellow due to known pattern applicability and inability to verify all bounds within assessment scope.",
+          "evidence_detail": "MapleGlobals getLatestPrice() does not check price_ against minAnswer/maxAnswer bounds â€” it only checks price_ > 0. For ETH/USD and BTC/USD, Chainlink feeds have historically had non-trivial minAnswer values that could mask severe crashes. Without direct RPC inspection of all feed configurations, this cannot be fully verified. Yellow due to known pattern applicability and inability to verify all bounds within assessment scope.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",

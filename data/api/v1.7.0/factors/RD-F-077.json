@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "1 documented incident: Orthogonal Trading credit default December 2022, ~$36M bad debt. Not a smart-contract exploit. Recovery was partial (depositors faced up to 80% losses). No smart-contract exploits on record. Yellow per methodology (1 incident with partial recovery).",
-          "evidence_detail": "Orthogonal Trading defaulted on eight loans totalling ~$36M on December 5, 2022. They misrepresented financial exposure to FTX. Pool cover was < $2M across affected pools. Kroll engaged for recovery. No full restitution confirmed. The broader FTX contagion cycle (Celsius, Alameda pool delegates also in distress) added to platform stress — total sour debt was approximately $54M per CoinDesk Dec 12 — but this is context for the same credit crisis period, not a separate discrete incident. Rekt DB: zero entries. hacksdatabase: no entries found for maple or orthogonal. Methodology threshold: green = 0 prior exploits; yellow = 1 exploit with full recovery (partial recovery here keeps it at yellow even though event class is credit, not code).",
+          "evidence_detail": "Orthogonal Trading defaulted on eight loans totalling ~$36M on December 5, 2022. They misrepresented financial exposure to FTX. Pool cover was < $2M across affected pools. Kroll engaged for recovery. No full restitution confirmed. The broader FTX contagion cycle (Celsius, Alameda pool delegates also in distress) added to platform stress â€” total sour debt was approximately $54M per CoinDesk Dec 12 â€” but this is context for the same credit crisis period, not a separate discrete incident. Rekt DB: zero entries. hacksdatabase: no entries found for maple or orthogonal. Methodology threshold: green = 0 prior exploits; yellow = 1 exploit with full recovery (partial recovery here keeps it at yellow even though event class is credit, not code).",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V2: 0 direct protocol exploits in 72 months. V3: 0 direct protocol exploits in 60 months. July 2022 phishing targeted user wallets via social engineering — protocol not exploited. V2 oracle consumer failures (Visor Finance, Inverse Finance) are consumer protocol failures, NOT V2 exploits — V2 TWAP worked as designed. Combined: green (0 direct protocol exploits).",
-          "evidence_detail": "Hacksdatabase grep over all 45 files referencing 'uniswap': no file records a direct V2 or V3 protocol exploit. Profile Â§10 seed list confirms zero V2 or V3 smart-contract-level incidents. Visor Finance (Dec 2021, ~$8.2M loss): the hack was a Visor Finance vVISR deposit() reentrancy + ownership bypass — V2 contracts operated as designed. Visor was a V3 LP manager that consumed V2 as a price oracle; V2 TWAP worked correctly. Inverse Finance Apr 2022 (~$15.6M) and Jun 2022 (~$5.8M): flash loan AMM oracle manipulation exploited Inverse Finance's oracle consumer logic — V2 TWAP accumulator worked as designed and V2 docs explicitly warn about manipulation cost. July 2022 phishing (~$4.7–8M): fake UniswapLP token airdrop targeting V3 LP addresses — social engineering, not a smart contract exploit. Protocol TVL was not touched. The Universal Router reentrancy (GHSA-7m37-cx35-qgmr) was patched before deployment — no user funds were ever at risk, so it is not an incident. REKT News, DeFiYield, SlowMist: no Uniswap protocol-level entry found in research. Score: green.",
+          "evidence_summary": "V2: 0 direct protocol exploits in 72 months. V3: 0 direct protocol exploits in 60 months. July 2022 phishing targeted user wallets via social engineering â€” protocol not exploited. V2 oracle consumer failures (Visor Finance, Inverse Finance) are consumer protocol failures, NOT V2 exploits â€” V2 TWAP worked as designed. Combined: green (0 direct protocol exploits).",
+          "evidence_detail": "Hacksdatabase grep over all 45 files referencing 'uniswap': no file records a direct V2 or V3 protocol exploit. Profile Â§10 seed list confirms zero V2 or V3 smart-contract-level incidents. Visor Finance (Dec 2021, ~$8.2M loss): the hack was a Visor Finance vVISR deposit() reentrancy + ownership bypass â€” V2 contracts operated as designed. Visor was a V3 LP manager that consumed V2 as a price oracle; V2 TWAP worked correctly. Inverse Finance Apr 2022 (~$15.6M) and Jun 2022 (~$5.8M): flash loan AMM oracle manipulation exploited Inverse Finance's oracle consumer logic â€” V2 TWAP accumulator worked as designed and V2 docs explicitly warn about manipulation cost. July 2022 phishing (~$4.7â€“8M): fake UniswapLP token airdrop targeting V3 LP addresses â€” social engineering, not a smart contract exploit. Protocol TVL was not touched. The Universal Router reentrancy (GHSA-7m37-cx35-qgmr) was patched before deployment â€” no user funds were ever at risk, so it is not an incident. REKT News, DeFiYield, SlowMist: no Uniswap protocol-level entry found in research. Score: green.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

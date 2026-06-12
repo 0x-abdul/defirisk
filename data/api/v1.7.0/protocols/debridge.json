@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": "2022-02-17",
         "headline_grade": "C",
         "total_value_secured_usd": 200000000.0,
-        "graded_at": "2026-05-12T04:38:07Z",
+        "graded_at": "2026-06-12T08:15:06Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -38,8 +38,9 @@
         },
         "cap_applied": "none",
         "cap_reason": null,
+        "is_published": true,
         "created_at": "2026-04-26T22:36:10Z",
-        "updated_at": "2026-05-12T04:38:07Z"
+        "updated_at": "2026-06-12T08:15:06Z"
       },
       "deployments": [
         {
@@ -762,7 +763,7 @@
           "factor_id": "RD-F-026",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "ETH: 5-of-8 confirmed via Safe API. BNB/Polygon/Arbitrum/Fantom multisig (0xa52842cd...) threshold/owners unconfirmed — Safe API returned 404. Avalanche (0x8ac842...) unconfirmed.",
+          "evidence_summary": "ETH: 5-of-8 confirmed via Safe API. BNB/Polygon/Arbitrum/Fantom multisig (0xa52842cd...) threshold/owners unconfirmed â€” Safe API returned 404. Avalanche (0x8ac842...) unconfirmed.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -958,7 +959,7 @@
           "factor_id": "RD-F-034",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "GOVMONITORING_ROLE (pause) is nominally distinct from DEFAULT_ADMIN_ROLE (upgrade/config) in the contract. However, both roles are controlled by the same 5-of-8 multisig in practice — no separate key holder identified for the pause role.",
+          "evidence_summary": "GOVMONITORING_ROLE (pause) is nominally distinct from DEFAULT_ADMIN_ROLE (upgrade/config) in the contract. However, both roles are controlled by the same 5-of-8 multisig in practice â€” no separate key holder identified for the pause role.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -979,7 +980,7 @@
           "factor_id": "RD-F-035",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Upgrade, fee, and oracle roles are technically distinct constants in the contract. In practice, all collapse to the 5-of-8 multisig — one key set controls all three role types.",
+          "evidence_summary": "Upgrade, fee, and oracle roles are technically distinct constants in the contract. In practice, all collapse to the 5-of-8 multisig â€” one key set controls all three role types.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1672,7 +1673,7 @@
           "factor_id": "RD-F-063",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "DMP surface TVL: ~$200M as of 2026-04-20 per coverage list. DefiLlama direct fetch blocked (403). TVL represents only DeBridgeGate-locked assets in transit; DLN surface is $0 by architectural design. $200M exceeds $100M coverage threshold. 30-day trend is unavailable — data gap.",
+          "evidence_summary": "DMP surface TVL: ~$200M as of 2026-04-20 per coverage list. DefiLlama direct fetch blocked (403). TVL represents only DeBridgeGate-locked assets in transit; DLN surface is $0 by architectural design. $200M exceeds $100M coverage threshold. 30-day trend is unavailable â€” data gap.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1693,7 +1694,7 @@
           "factor_id": "RD-F-064",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "Not assessed. DeBridgeGate contracts on Ethereum and other chains hold tokens on behalf of bridge users; the relevant concentration metric is per-asset balance of individual depositors. DefiLlama on-chain scan unavailable. Cannot determine if a single large depositor dominates. The 0-TVL DLN surface has no depositor concentration risk. Gap flagged for curator — on-chain enumeration of DeBridgeGate token balances required.",
+          "evidence_summary": "Not assessed. DeBridgeGate contracts on Ethereum and other chains hold tokens on behalf of bridge users; the relevant concentration metric is per-asset balance of individual depositors. DefiLlama on-chain scan unavailable. Cannot determine if a single large depositor dominates. The 0-TVL DLN surface has no depositor concentration risk. Gap flagged for curator â€” on-chain enumeration of DeBridgeGate token balances required.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1704,7 +1705,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-064 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-064 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1714,7 +1715,7 @@
           "factor_id": "RD-F-065",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "Two surfaces require distinct treatment. (1) DMP gate assets: standard ERC-20s and native ETH locked in transit — their external DEX liquidity is a function of the underlying tokens (USDT, USDC, ETH etc.), not deBridge-specific. These are liquid. (2) DBR token (governance): 2% buy-side depth of $91K (Meteora DEX), $8.9K (HTX), $24K (Gate) — total on-chain 2% depth sub-$300K against a $72M market cap. This is very thin; a $1M DBR sell would require >10% slippage on on-chain venues. DBR is not ...",
+          "evidence_summary": "Two surfaces require distinct treatment. (1) DMP gate assets: standard ERC-20s and native ETH locked in transit â€” their external DEX liquidity is a function of the underlying tokens (USDT, USDC, ETH etc.), not deBridge-specific. These are liquid. (2) DBR token (governance): 2% buy-side depth of $91K (Meteora DEX), $8.9K (HTX), $24K (Gate) â€” total on-chain 2% depth sub-$300K against a $72M market cap. This is very thin; a $1M DBR sell would require >10% slippage on on-chain venues. DBR is not ...",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1735,7 +1736,7 @@
           "factor_id": "RD-F-066",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — deBridge is a bridge, not a lending protocol. No borrow/supply markets exist.",
+          "evidence_summary": "N/A â€” deBridge is a bridge, not a lending protocol. No borrow/supply markets exist.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1746,7 +1747,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-066 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-066 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1756,7 +1757,7 @@
           "factor_id": "RD-F-067",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no lending markets; no collateral liquidation mechanism.",
+          "evidence_summary": "N/A â€” no lending markets; no collateral liquidation mechanism.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1767,7 +1768,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-067 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-067 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1777,7 +1778,7 @@
           "factor_id": "RD-F-068",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no collateral framework.",
+          "evidence_summary": "N/A â€” no collateral framework.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1788,7 +1789,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-068 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-068 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1798,7 +1799,7 @@
           "factor_id": "RD-F-069",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — deBridge does not issue a stablecoin. DBR is a governance/utility token.",
+          "evidence_summary": "N/A â€” deBridge does not issue a stablecoin. DBR is a governance/utility token.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1809,7 +1810,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-069 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-069 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1840,7 +1841,7 @@
           "factor_id": "RD-F-071",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no lending markets; no market-listing concept applies.",
+          "evidence_summary": "N/A â€” no lending markets; no market-listing concept applies.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1851,7 +1852,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-071 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-071 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1861,7 +1862,7 @@
           "factor_id": "RD-F-072",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no lending markets.",
+          "evidence_summary": "N/A â€” no lending markets.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1872,7 +1873,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-072 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-072 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1882,7 +1883,7 @@
           "factor_id": "RD-F-073",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no borrow caps; no lending.",
+          "evidence_summary": "N/A â€” no borrow caps; no lending.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1893,7 +1894,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-073 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-073 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1903,7 +1904,7 @@
           "factor_id": "RD-F-074",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no ERC-4626 vaults. DeBridgeGate uses direct token custody (lock/release), not a vault share model.",
+          "evidence_summary": "N/A â€” no ERC-4626 vaults. DeBridgeGate uses direct token custody (lock/release), not a vault share model.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1914,7 +1915,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-074 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-074 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -1924,7 +1925,7 @@
           "factor_id": "RD-F-075",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "N/A — no share-based vault. Not applicable for the same reason as RD-F-074.",
+          "evidence_summary": "N/A â€” no share-based vault. Not applicable for the same reason as RD-F-074.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1935,7 +1936,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 04-economic.md — RD-F-075 finding; no URL cited in original",
+              "reference": "Extracted from 04-economic.md â€” RD-F-075 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2733,7 +2734,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-111 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-111 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2754,7 +2755,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-112 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-112 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2775,7 +2776,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-113 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-113 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2796,7 +2797,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-114 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-114 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2817,7 +2818,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-115 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-115 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2838,7 +2839,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-116 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-116 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2859,7 +2860,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-117 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-117 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2880,7 +2881,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-118 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-118 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2901,7 +2902,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-119 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-119 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2922,7 +2923,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-120 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-120 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2943,7 +2944,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-121 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-121 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -2964,7 +2965,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-122 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-122 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -3429,7 +3430,7 @@
           "factor_id": "RD-F-142",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "Cannot assess. No public OZ upgrades-plugin storage layout check output found. DlnSource had 3 upgrades in 5 months (Jul–Dec 2025), creating elevated storage-layout collision risk that is not confirmed or cleared.",
+          "evidence_summary": "Cannot assess. No public OZ upgrades-plugin storage layout check output found. DlnSource had 3 upgrades in 5 months (Julâ€“Dec 2025), creating elevated storage-layout collision risk that is not confirmed or cleared.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -3450,7 +3451,7 @@
           "factor_id": "RD-F-143",
           "deployment_id": null,
           "score": "red",
-          "evidence_summary": "DeBridgeGate impl (0x797161bc...), DlnSource impl (0x322B481...), and DlnDestination impl (0xE540eb6B...) constructors do NOT call _disableInitializers(). All three core implementation contracts are potentially reinitializable if accessed directly — proxy takeover vector.",
+          "evidence_summary": "DeBridgeGate impl (0x797161bc...), DlnSource impl (0x322B481...), and DlnDestination impl (0xE540eb6B...) constructors do NOT call _disableInitializers(). All three core implementation contracts are potentially reinitializable if accessed directly â€” proxy takeover vector.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -4101,7 +4102,7 @@
           "factor_id": "RD-F-167",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "DeBridgeGate (legacy DMP product) holds ~$2M in locked assets on Ethereum. Not formally deprecated — still in active use. Admin retains full pause and upgrade control. Marginally applicable: older surface but not formally sunset.",
+          "evidence_summary": "DeBridgeGate (legacy DMP product) holds ~$2M in locked assets on Ethereum. Not formally deprecated â€” still in active use. Admin retains full pause and upgrade control. Marginally applicable: older surface but not formally sunset.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -4532,7 +4533,7 @@
             {
               "source_type": "curator_note",
               "url": null,
-              "reference": "Extracted from 07-dev-identity.md — RD-F-184 finding; no URL cited in original",
+              "reference": "Extracted from 07-dev-identity.md â€” RD-F-184 finding; no URL cited in original",
               "title": null,
               "retrieved_at": "2026-04-28T00:00:00Z"
             }
@@ -4542,7 +4543,7 @@
           "factor_id": "RD-F-185",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "DeBridgeGate has per-asset maxAmount cap (static single-tx cap, not time-windowed outflow rate-limiter) and a pause() function (chain-pause capability). DLN is 0-TVL intent-based — rate-limiting not applicable to DLN side. Yellow: emergency pause present; time-windowed outflow rate-limiter absent.",
+          "evidence_summary": "DeBridgeGate has per-asset maxAmount cap (static single-tx cap, not time-windowed outflow rate-limiter) and a pause() function (chain-pause capability). DLN is 0-TVL intent-based â€” rate-limiting not applicable to DLN side. Yellow: emergency pause present; time-windowed outflow rate-limiter absent.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -4561,6 +4562,36 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "C",
+          "critical_flag_count": 1,
+          "red_category_count": 1,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
+          "risk_score": 26.85,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:15:06Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "C",
+          "critical_flag_count": 1,
+          "red_category_count": 1,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
+          "risk_score": 26.85,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:14:55Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "C",
           "critical_flag_count": 1,

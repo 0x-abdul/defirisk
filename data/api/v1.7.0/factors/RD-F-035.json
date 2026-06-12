@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -281,7 +281,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Upgrade, fee, and oracle roles are technically distinct constants in the contract. In practice, all collapse to the 5-of-8 multisig — one key set controls all three role types.",
+          "evidence_summary": "Upgrade, fee, and oracle roles are technically distinct constants in the contract. In practice, all collapse to the 5-of-8 multisig â€” one key set controls all three role types.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-28T01:27:58Z",
@@ -1051,7 +1051,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V2: no roles (immutable). V3: upgrade path = immutable (no upgrader role on core). Fee enablement = Timelock. Oracle config = N/A (V3 does not consume external oracle). V3FeeAdapter.feeSetter = Timelock. Two-of-applicable-three roles are Timelock — acceptable for a DEX with no oracle role. Combined: green.",
+          "evidence_summary": "V2: no roles (immutable). V3: upgrade path = immutable (no upgrader role on core). Fee enablement = Timelock. Oracle config = N/A (V3 does not consume external oracle). V3FeeAdapter.feeSetter = Timelock. Two-of-applicable-three roles are Timelock â€” acceptable for a DEX with no oracle role. Combined: green.",
           "evidence_detail": "V3Factory: only setOwner() and enableFeeAmount() as privileged functions; both owned by Timelock. No oracle admin role exists (V3 exposes TWAP, does not consume external oracle). V3FeeAdapter: feeSetter=Timelock confirmed via protocol fee deployments docs. GovernorBravo admin = Timelock. Role separation is adequate for the DEX model.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",

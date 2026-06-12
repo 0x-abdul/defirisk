@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": null,
         "headline_grade": "A",
         "total_value_secured_usd": null,
-        "graded_at": "2026-05-12T04:38:07Z",
+        "graded_at": "2026-06-12T08:15:06Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -38,8 +38,9 @@
         },
         "cap_applied": "none",
         "cap_reason": null,
+        "is_published": true,
         "created_at": "2026-05-05T11:15:06Z",
-        "updated_at": "2026-05-12T04:38:07Z"
+        "updated_at": "2026-06-12T08:15:06Z"
       },
       "deployments": [
         {
@@ -1944,7 +1945,7 @@
           "factor_id": "RD-F-070",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "GMX v2 is not a Compound V2 fork. Profile §5 confirms: 'Not forked from any external protocol. GMX v2 is an original rewrite by the GMX core team.' The GM pool model uses ERC-20 market tokens (GM tokens) with a two-sided long/short collateral vault — not cToken supply/borrow accounting. MarketToken.sol source-code verified: declared as 'contract MarketToken is ERC20, Bank' — no Compound CErc20 interface, no totalSupply/totalBorrow lending primitives. The Compound donation/empty-market attack requires zero-supply and zero-borrow state on a cToken market followed by a direct token donation to inflate the exchange rate — none of these preconditions exist in GMX v2. The closely related first-depositor share-inflation risk is independently assessed as green under RD-F-075, with the RECEIVER_FOR_FIRST_DEPOSIT = address(1) guard confirmed in ExecuteDepositUtils.sol.",
+          "evidence_summary": "GMX v2 is not a Compound V2 fork. Profile §5 confirms: 'Not forked from any external protocol. GMX v2 is an original rewrite by the GMX core team.' The GM pool model uses ERC-20 market tokens (GM tokens) with a two-sided long/short collateral vault — not cToken supply/borrow accounting. MarketToken.sol source-code verified: declared as 'contract MarketToken is ERC20, Bank' — no Compound CErc20 interface, no totalSupply/totalBorrow lending primitives. The Compound donation/empty-market attack requires zero-supply and zero-borrow state on a cToken market followed by a direct token donation to inflate the exchange rate — none of these preconditions exist in GMX v2. CRITICAL FACTOR: not_applicable (not red). The closely related first-depositor share-inflation risk is independently assessed as green under RD-F-075, with the RECEIVER_FOR_FIRST_DEPOSIT = address(1) guard confirmed in ExecuteDepositUtils.sol.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-05-05T11:15:06Z",
@@ -4833,6 +4834,36 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "A",
+          "critical_flag_count": 0,
+          "red_category_count": 0,
+          "yellow_category_count": 1,
+          "gray_on_core_five": false,
+          "risk_score": 11.76,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:15:06Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "A",
+          "critical_flag_count": 0,
+          "red_category_count": 0,
+          "yellow_category_count": 1,
+          "gray_on_core_five": false,
+          "risk_score": 11.76,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:14:55Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "A",
           "critical_flag_count": 0,

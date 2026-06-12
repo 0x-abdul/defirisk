@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1156,16 +1156,6 @@
           "root_cause": "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
         },
         {
-          "hack_id": "dango-rekt",
-          "relevance": "related",
-          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]",
-          "hack_protocol_name": "Dango (custom-L1 perpetual DEX; Grug engine on Tendermint)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2026-04-13",
-          "loss_usd": 1900000.0,
-          "root_cause": "Missing sign/positivity check on `donate()` input in the insurance-fund contract — negative value reversed accounting direction"
-        },
-        {
           "hack_id": "hyperbridge-rekt",
           "relevance": "related",
           "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the HandlerV1 design flaws were longstanding, not from a recent upgrade]",
@@ -1174,6 +1164,16 @@
           "occurred_at": "2026-04-13",
           "loss_usd": 2500000.0,
           "root_cause": "Smart-contract proof-verification bypass — MMR bounds-check failure + missing proof-to-request binding + zero challenge period + single-step admin transfer"
+        },
+        {
+          "hack_id": "dango-rekt",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — perps contract live ~90 days at exploit (since Alpha Mainnet)]",
+          "hack_protocol_name": "Dango (custom-L1 perpetual DEX; Grug engine on Tendermint)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2026-04-13",
+          "loss_usd": 1900000.0,
+          "root_cause": "Missing sign/positivity check on `donate()` input in the insurance-fund contract — negative value reversed accounting direction"
         },
         {
           "hack_id": "silo-finance-rekt",
@@ -1796,16 +1796,6 @@
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
         },
         {
-          "hack_id": "cream-rekt",
-          "relevance": "related",
-          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: YES** — AMP token integration deployed via governance proposal Feb 10, 2021; exploit Aug 30, 2021. The integration was ~6.5 months old but w...]",
-          "hack_protocol_name": "Cream Finance",
-          "hack_protocol_slug": null,
-          "occurred_at": "2021-08-30",
-          "loss_usd": 18800000.0,
-          "root_cause": "ERC777 reentrancy via newly integrated AMP token — reentrant `borrow()` before state update"
-        },
-        {
           "hack_id": "cream-finance",
           "relevance": "related",
           "notes": "New deploys in last 30 days (fresh attack surface) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract] || New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: Y — AMP token integration added via governance Feb 10, 2021, six months before exploit; the new token type introduced the reentrancy surface]",
@@ -1814,6 +1804,16 @@
           "occurred_at": "2021-08-30",
           "loss_usd": 18800000.0,
           "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)"
+        },
+        {
+          "hack_id": "cream-rekt",
+          "relevance": "related",
+          "notes": "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded: YES** — AMP token integration deployed via governance proposal Feb 10, 2021; exploit Aug 30, 2021. The integration was ~6.5 months old but w...]",
+          "hack_protocol_name": "Cream Finance",
+          "hack_protocol_slug": null,
+          "occurred_at": "2021-08-30",
+          "loss_usd": 18800000.0,
+          "root_cause": "ERC777 reentrancy via newly integrated AMP token — reentrant `borrow()` before state update"
         },
         {
           "hack_id": "punkprotocol-rekt",

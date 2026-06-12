@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "V2+V3 combined structural N/A. V2 Factory (0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f): feeToSetter = address(0) — fully immutable, no admin tx possible. V3 Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984): no owner, no admin, no proxy, no upgrade path. V3 GovernorBravoDelegator governance txs go through 2-day timelock after DAO vote — expected governance process, not surprise admin pattern. No admin/upgrade tx structurally possible for V2 or V3 core.",
-          "evidence_detail": "Signal fires when a pending tx in the mempool targets a protocol admin contract with an upgrade/pause/setOracle/grantRole selector from a known admin key AND no matching queued governance proposal exists. For V2 and V3: no such tx is possible because core contracts have no admin key and no upgrade path. The only V3 governance-adjacent txs are GovernorBravoDelegator proposal submissions and Timelock executions — these go through the declared 2-day timelock process after DAO vote, which explicitly excludes them from the 'no matching queued proposal' suppression condition. N/A confirmed for both V2 and V3 core contracts.",
+          "evidence_summary": "V2+V3 combined structural N/A. V2 Factory (0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f): feeToSetter = address(0) â€” fully immutable, no admin tx possible. V3 Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984): no owner, no admin, no proxy, no upgrade path. V3 GovernorBravoDelegator governance txs go through 2-day timelock after DAO vote â€” expected governance process, not surprise admin pattern. No admin/upgrade tx structurally possible for V2 or V3 core.",
+          "evidence_detail": "Signal fires when a pending tx in the mempool targets a protocol admin contract with an upgrade/pause/setOracle/grantRole selector from a known admin key AND no matching queued governance proposal exists. For V2 and V3: no such tx is possible because core contracts have no admin key and no upgrade path. The only V3 governance-adjacent txs are GovernorBravoDelegator proposal submissions and Timelock executions â€” these go through the declared 2-day timelock process after DAO vote, which explicitly excludes them from the 'no matching queued proposal' suppression condition. N/A confirmed for both V2 and V3 core contracts.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "Maple does not operate a Security Council multisig governance model. Its governance is Snapshot â†’ daoMultisig â†’ GovernorTimelock. RD-F-182's SC threshold-reduction signal has no direct analog here.",
-          "evidence_detail": "RD-F-182 fires when a Security Council multisig executes threshold reduction (e.g., 3/5 â†’ 2/5) or timelock removal — the Drift Protocol Apr 2026 pattern. Maple's governance uses a Snapshot vote ratified by a DAO-level multisig feeding a GovernorTimelock with 1-day min delay. There is no separate Security Council with its own threshold management. The daoMultisig (Safe, 0xd6d4Bcde...) threshold is unknown (safe_api_gap flag), but it is the primary governance actor, not a supplementary Security Council layer. Signal not applicable per architecture.",
+          "evidence_detail": "RD-F-182 fires when a Security Council multisig executes threshold reduction (e.g., 3/5 â†’ 2/5) or timelock removal â€” the Drift Protocol Apr 2026 pattern. Maple's governance uses a Snapshot vote ratified by a DAO-level multisig feeding a GovernorTimelock with 1-day min delay. There is no separate Security Council with its own threshold management. The daoMultisig (Safe, 0xd6d4Bcde...) threshold is unknown (safe_api_gap flag), but it is the primary governance actor, not a supplementary Security Council layer. Signal not applicable per architecture.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "V2+V3 combined structural N/A. F182 monitors Security Council multisig threshold reductions (Drift Protocol pattern: 3/5 to 2/5 + timelock removal 6 days before $285M DPRK exploit). V2 has no governance and no multisig. V3 has no Security Council multisig — governance is a full DAO (GovernorBravoDelegator + 2-day Timelock) with no fixed signer set. V3 core contracts are immutable with no admin. No threshold-reduction event is possible in V2/V3 governance architecture.",
-          "evidence_detail": "Batch-24 taxonomy definition: 'Real-time signal: the bridge / protocol Security Council multisig executes a threshold reduction (e.g., 3/5 to 2/5), or a timelock removal, or a new-signer addition within <=14 days of either of the above.' V2 assessment: no governance, no multisig, fully immutable — signal has no trigger surface. V3 assessment: governance is a Compound Bravo DAO with no Security Council multisig. The 'signers' are UNI token holders voting via GovernorBravoDelegator. There is no fixed M/N multisig to track threshold changes on. The Timelock (0x1a9C8182C09F50C8318d769245beA52c32BE35BC) delay is set via DAO governance and cannot be changed unilaterally by any individual. The Drift Protocol analog (3/5 to 2/5 Security Council change + timelock removal by a small fixed set of key holders before a DPRK exploit) is not replicable in a full-DAO-governed system. N/A confirmed for both V2 and V3.",
+          "evidence_summary": "V2+V3 combined structural N/A. F182 monitors Security Council multisig threshold reductions (Drift Protocol pattern: 3/5 to 2/5 + timelock removal 6 days before $285M DPRK exploit). V2 has no governance and no multisig. V3 has no Security Council multisig â€” governance is a full DAO (GovernorBravoDelegator + 2-day Timelock) with no fixed signer set. V3 core contracts are immutable with no admin. No threshold-reduction event is possible in V2/V3 governance architecture.",
+          "evidence_detail": "Batch-24 taxonomy definition: 'Real-time signal: the bridge / protocol Security Council multisig executes a threshold reduction (e.g., 3/5 to 2/5), or a timelock removal, or a new-signer addition within <=14 days of either of the above.' V2 assessment: no governance, no multisig, fully immutable â€” signal has no trigger surface. V3 assessment: governance is a Compound Bravo DAO with no Security Council multisig. The 'signers' are UNI token holders voting via GovernorBravoDelegator. There is no fixed M/N multisig to track threshold changes on. The Timelock (0x1a9C8182C09F50C8318d769245beA52c32BE35BC) delay is set via DAO governance and cannot be changed unilaterally by any individual. The Drift Protocol analog (3/5 to 2/5 Security Council change + timelock removal by a small fixed set of key holders before a DPRK exploit) is not replicable in a full-DAO-governed system. N/A confirmed for both V2 and V3.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

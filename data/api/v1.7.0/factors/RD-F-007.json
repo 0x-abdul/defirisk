@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1476,16 +1476,6 @@
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
-          "hack_id": "bedrock-rekt",
-          "relevance": "related",
-          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None active at time of exploit; Bedrock invited attacker to become white-hat post-hack]",
-          "hack_protocol_name": "Bedrock (uniBTC vault)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2024-09-25",
-          "loss_usd": 2000000.0,
-          "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
-        },
-        {
           "hack_id": "onyx-protocol-rekt2",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown / not advertised publicly]",
@@ -1494,6 +1484,16 @@
           "occurred_at": "2024-09-25",
           "loss_usd": 3800000.0,
           "root_cause": "Compound V2 empty-market donation attack — VUSD governance-added market"
+        },
+        {
+          "hack_id": "bedrock-rekt",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None active at time of exploit; Bedrock invited attacker to become white-hat post-hack]",
+          "hack_protocol_name": "Bedrock (uniBTC vault)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2024-09-25",
+          "loss_usd": 2000000.0,
+          "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
         },
         {
           "hack_id": "griffin-ai",
@@ -1716,16 +1716,6 @@
           "root_cause": "Flash loan → misconfigured vault (TUSD vault tracking iSUSD/sUSD strategy) → share accounting inflation → Curve yPool drain"
         },
         {
-          "hack_id": "okx-dex-rekt",
-          "relevance": "related",
-          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
-          "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2023-12-13",
-          "loss_usd": 2700000.0,
-          "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
-        },
-        {
           "hack_id": "levana",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
@@ -1734,6 +1724,16 @@
           "occurred_at": "2023-12-13",
           "loss_usd": 1146000.0,
           "root_cause": "Oracle Price Delta Manipulation (Timing + Network Congestion)"
+        },
+        {
+          "hack_id": "okx-dex-rekt",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
+          "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2023-12-13",
+          "loss_usd": 2700000.0,
+          "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
         },
         {
           "hack_id": "yearn-rekt3",
@@ -1796,16 +1796,6 @@
           "root_cause": "Unprotected public swap function → sandwich attack via Curve WETH/WBTC pool — $50M flash loan"
         },
         {
-          "hack_id": "onyx-protocol-rekt",
-          "relevance": "related",
-          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
-          "hack_protocol_name": "Onyx Protocol",
-          "hack_protocol_slug": null,
-          "occurred_at": "2023-10-31",
-          "loss_usd": 2100000.0,
-          "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
-        },
-        {
           "hack_id": "unibot-rekt",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
@@ -1814,6 +1804,16 @@
           "occurred_at": "2023-10-31",
           "loss_usd": 640000.0,
           "root_cause": "Unvalidated arbitrary call in new router — transferFrom injection via approval drain"
+        },
+        {
+          "hack_id": "onyx-protocol-rekt",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
+          "hack_protocol_name": "Onyx Protocol",
+          "hack_protocol_slug": null,
+          "occurred_at": "2023-10-31",
+          "loss_usd": 2100000.0,
+          "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
         },
         {
           "hack_id": "nightmare-ftm-rekt",
@@ -2396,16 +2396,6 @@
           "root_cause": "Infinite mint via incomplete collateral validation — fake account chain bypasses all verification"
         },
         {
-          "hack_id": "deus-dao-rekt-1",
-          "relevance": "related",
-          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]",
-          "hack_protocol_name": "Deus DAO (DEI lending contract)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2022-03-15",
-          "loss_usd": 3000000.0,
-          "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation"
-        },
-        {
           "hack_id": "deus-dao-rekt",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]",
@@ -2424,6 +2414,16 @@
           "occurred_at": "2022-03-15",
           "loss_usd": 11700000.0,
           "root_cause": "ERC677 callAfterTransfer() reentrancy — flash loan collateral → nested borrow calls before debt balance update → multi-asset drain"
+        },
+        {
+          "hack_id": "deus-dao-rekt-1",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]",
+          "hack_protocol_name": "Deus DAO (DEI lending contract)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2022-03-15",
+          "loss_usd": 3000000.0,
+          "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation"
         },
         {
           "hack_id": "treasure-dao-rekt",
@@ -2586,16 +2586,6 @@
           "root_cause": "Reinitializable init() function + emergencyExit() drain on token vesting contracts"
         },
         {
-          "hack_id": "cream-finance",
-          "relevance": "causal",
-          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — not mentioned in post-mortem]",
-          "hack_protocol_name": "Cream Finance",
-          "hack_protocol_slug": null,
-          "occurred_at": "2021-08-30",
-          "loss_usd": 18800000.0,
-          "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)"
-        },
-        {
           "hack_id": "xtoken-rekt2",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown]",
@@ -2604,6 +2594,16 @@
           "occurred_at": "2021-08-30",
           "loss_usd": 4500000.0,
           "root_cause": "Public callFunction() in xSNXAdmin — same SNX price manipulation, different access control bug"
+        },
+        {
+          "hack_id": "cream-finance",
+          "relevance": "causal",
+          "notes": "Direct: bug bounty presence + max payout [via cross-hack: Factor 9: No Bug Bounty Program] || Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: Unknown — not mentioned in post-mortem]",
+          "hack_protocol_name": "Cream Finance",
+          "hack_protocol_slug": null,
+          "occurred_at": "2021-08-30",
+          "loss_usd": 18800000.0,
+          "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)"
         },
         {
           "hack_id": "polynetwork-rekt",
@@ -2676,16 +2676,6 @@
           "root_cause": "Reward Minting Manipulation (Balance Inflation)"
         },
         {
-          "hack_id": "autoshark-rekt",
-          "relevance": "related",
-          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]",
-          "hack_protocol_name": "AutoShark Finance",
-          "hack_protocol_slug": null,
-          "occurred_at": "2021-06-01",
-          "loss_usd": 745000.0,
-          "root_cause": "Flash loan + SharkMinter balance spoofing → excess native token minting"
-        },
-        {
           "hack_id": "levyathan-finance",
           "relevance": "related",
           "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None]",
@@ -2694,6 +2684,16 @@
           "occurred_at": "2021-06-01",
           "loss_usd": 1500000.0,
           "root_cause": "Exposed Private Key + Minting + emergencyWithdraw Bug"
+        },
+        {
+          "hack_id": "autoshark-rekt",
+          "relevance": "related",
+          "notes": "Bug bounty absent — baseline integrity gap [via dashboard_risk_factors/Bug bounty: None identified]",
+          "hack_protocol_name": "AutoShark Finance",
+          "hack_protocol_slug": null,
+          "occurred_at": "2021-06-01",
+          "loss_usd": 745000.0,
+          "root_cause": "Flash loan + SharkMinter balance spoofing → excess native token minting"
         },
         {
           "hack_id": "burgerswap-rekt",

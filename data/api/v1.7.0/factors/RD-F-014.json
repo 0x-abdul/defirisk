@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1052,7 +1052,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "V3: Custom lock modifier (slot0.unlocked flag) applied to mint, burn, swap, flash, setFeeProtocol. Equivalent to nonReentrant. V2: Custom lock modifier (unlocked uint) applied to mint, burn, swap, skim. Both versions protected. Green.",
-          "evidence_detail": "V3 pool uses `require(slot0.unlocked, 'LOK'); slot0.unlocked = false; _; slot0.unlocked = true;` — gas-efficient reentrancy guard stored in the Slot0 struct alongside sqrtPriceX96. This is a well-understood and thoroughly audited pattern. V2 uses the same conceptual approach with `uint private unlocked = 1` and a lock modifier on all state-mutating functions that make external calls.",
+          "evidence_detail": "V3 pool uses `require(slot0.unlocked, 'LOK'); slot0.unlocked = false; _; slot0.unlocked = true;` â€” gas-efficient reentrancy guard stored in the Slot0 struct alongside sqrtPriceX96. This is a well-understood and thoroughly audited pattern. V2 uses the same conceptual approach with `uint private unlocked = 1` and a lock modifier on all state-mutating functions that make external calls.",
           "collection_mode": "programmatic",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

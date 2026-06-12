@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V3: Pool uses typed callback interfaces (IUniswapV3MintCallback, IUniswapV3SwapCallback, IUniswapV3FlashCallback) — no generic call(target, data) with user-controlled target. Callback target is msg.sender. V2: Flash swap calls IUniswapV2Callee(to).uniswapV2Call() on transaction-supplied `to` — intentional by design, same address that initiated the swap. Green.",
-          "evidence_detail": "V3 core uses typed callback interfaces with fixed function signatures — the external call always goes to msg.sender of the initiating transaction via a specific typed interface. V2 UniswapV2Pair.swap() calls the `to` address with the IUniswapV2Callee interface if it's a flash swap callback — this is an intentional design where the callback address is supplied by the caller but the callback function selector is fixed. Neither version implements a free-form .call(target, data) with user-controlled target and data.",
+          "evidence_summary": "V3: Pool uses typed callback interfaces (IUniswapV3MintCallback, IUniswapV3SwapCallback, IUniswapV3FlashCallback) â€” no generic call(target, data) with user-controlled target. Callback target is msg.sender. V2: Flash swap calls IUniswapV2Callee(to).uniswapV2Call() on transaction-supplied `to` â€” intentional by design, same address that initiated the swap. Green.",
+          "evidence_detail": "V3 core uses typed callback interfaces with fixed function signatures â€” the external call always goes to msg.sender of the initiating transaction via a specific typed interface. V2 UniswapV2Pair.swap() calls the `to` address with the IUniswapV2Callee interface if it's a flash swap callback â€” this is an intentional design where the callback address is supplied by the caller but the callback function selector is fixed. Neither version implements a free-form .call(target, data) with user-controlled target and data.",
           "collection_mode": "programmatic",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

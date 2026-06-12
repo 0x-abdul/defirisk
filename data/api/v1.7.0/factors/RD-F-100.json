@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V2+V3 combined: V3 is itself a flash-loan provider (Pool.flash()). Signal fires when flash loan >=10M interacts with protocol oracle, lending market, or governor. V3 has no oracle consumed and no lending market. V3 governance uses checkpoint-based UNI voting — flash-loan governance manipulation structurally impossible. V2 has no governance. No flash-loan governance attack detected. Signal effectively non-fireable for V2/V3 given their architecture.",
-          "evidence_detail": "Flash-loan governance attack vector: requires (1) governance using spot token balance rather than checkpointed balance, (2) available flash loan large enough to meet quorum, (3) governance proposal that can be created and executed within one block or with minimal delay. V3 GovernorBravoDelegator uses getPriorVotes() which reads balance at the block of proposal creation — a flash loan executed in the same block as the vote cannot affect vote weight. V2: no governance exists at all. Data cache: borrow.present: false — V3 has no lending market. V2 and V3 do not consume oracle prices. Therefore, the only applicable flash-loan attack vector (governance via flash-loaned voting power) is structurally blocked by checkpoint design. Source: GovernorBravoDelegator at 0x408ED6354d4973f66138C91495F2f2FCbd8724C3 implements Compound Bravo governor with checkpoint voting.",
+          "evidence_summary": "V2+V3 combined: V3 is itself a flash-loan provider (Pool.flash()). Signal fires when flash loan >=10M interacts with protocol oracle, lending market, or governor. V3 has no oracle consumed and no lending market. V3 governance uses checkpoint-based UNI voting â€” flash-loan governance manipulation structurally impossible. V2 has no governance. No flash-loan governance attack detected. Signal effectively non-fireable for V2/V3 given their architecture.",
+          "evidence_detail": "Flash-loan governance attack vector: requires (1) governance using spot token balance rather than checkpointed balance, (2) available flash loan large enough to meet quorum, (3) governance proposal that can be created and executed within one block or with minimal delay. V3 GovernorBravoDelegator uses getPriorVotes() which reads balance at the block of proposal creation â€” a flash loan executed in the same block as the vote cannot affect vote weight. V2: no governance exists at all. Data cache: borrow.present: false â€” V3 has no lending market. V2 and V3 do not consume oracle prices. Therefore, the only applicable flash-loan attack vector (governance via flash-loaned voting power) is structurally blocked by checkpoint design. Source: GovernorBravoDelegator at 0x408ED6354d4973f66138C91495F2f2FCbd8724C3 implements Compound Bravo governor with checkpoint voting.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

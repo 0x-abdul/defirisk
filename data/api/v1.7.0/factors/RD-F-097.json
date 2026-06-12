@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Sybil-surge precursor is structurally inapplicable to Maple's KYC/KYB institutional lending model. Pool onboarding requires identity verification, making sybil EOA clusters unable to gain access. Signal not firing.",
-          "evidence_detail": "Threshold: multiple new EOAs submitting identical transaction patterns within short window. Observed state: structurally not applicable. Maple's pools — both Syrup USDC/USDT and institutional pools — require onboarding that is incompatible with sybil-pattern anonymous EOA clusters. Even retail Syrup pools have terms-of-service gating. The sybil precursor pattern targets permissionless DeFi AMMs and airdrop contracts, not institutional credit markets.",
+          "evidence_detail": "Threshold: multiple new EOAs submitting identical transaction patterns within short window. Observed state: structurally not applicable. Maple's pools â€” both Syrup USDC/USDT and institutional pools â€” require onboarding that is incompatible with sybil-pattern anonymous EOA clusters. Even retail Syrup pools have terms-of-service gating. The sybil precursor pattern targets permissionless DeFi AMMs and airdrop contracts, not institutional credit markets.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "V2+V3 combined: V2 and V3 are permissionless AMMs — high transaction volumes from many addresses are expected normal operation. Sybil-surge attacks are applicable to protocols with permissionless-pool oracle surfaces (Rhea Finance class); V2/V3 AMM model does not accept oracle inputs from permissionless pools. Signal not fireable against this architecture in static assessment. Gray per methodology.",
-          "evidence_detail": "Signal fires when multiple new EOAs submit identical transaction patterns within a short window (sybil setup). For V2 and V3: the relevant oracle attack vector (permissionless-pool oracle manipulation) does not apply — V2 and V3 do not read external oracle prices during swap execution. The V2 TWAP oracle is manipulable by moving pool price within a block, but this is not a sybil-based attack pattern — it is done by a single large swap, not by many identical transactions. Gray: signal architecture mismatch with V2/V3 AMM model; monitoring not configured in static assessment.",
+          "evidence_summary": "V2+V3 combined: V2 and V3 are permissionless AMMs â€” high transaction volumes from many addresses are expected normal operation. Sybil-surge attacks are applicable to protocols with permissionless-pool oracle surfaces (Rhea Finance class); V2/V3 AMM model does not accept oracle inputs from permissionless pools. Signal not fireable against this architecture in static assessment. Gray per methodology.",
+          "evidence_detail": "Signal fires when multiple new EOAs submit identical transaction patterns within a short window (sybil setup). For V2 and V3: the relevant oracle attack vector (permissionless-pool oracle manipulation) does not apply â€” V2 and V3 do not read external oracle prices during swap execution. The V2 TWAP oracle is manipulable by moving pool price within a block, but this is not a sybil-based attack pattern â€” it is done by a single large swap, not by many identical transactions. Gray: signal architecture mismatch with V2/V3 AMM model; monitoring not configured in static assessment.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

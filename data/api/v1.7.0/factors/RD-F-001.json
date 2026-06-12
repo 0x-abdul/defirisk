@@ -1,7 +1,7 @@
-﻿{
+{
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -9,7 +9,7 @@
         "category_id": 1,
         "name": "Audit scope mismatch",
         "description": "Check whether the commit SHA cited in the audit report matches the bytecode deployed at the production proxy/implementation address.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether the runtime bytecode deployed on-chain for all contracts holding user funds corresponds exactly to the code covered by the protocol's most recent audit report. A mismatch is recorded when the audit document cites a specific commit hash or contract address and the live deployed bytecode differs from the bytecode at that reference point. Assessment is performed via bytecode diffing against Etherscan-verified source and audit PDF metadata.\n\n**Why it matters**\nAudit scope mismatch is the single most frequent factor in the cross-hack database, appearing as a contributor in more than 25 documented exploits. When deployed code diverges from audited code, the entire security assurance of the audit is voided for that surface -- yet the protocol can still truthfully claim to have been audited, creating false confidence for depositors. Low-level proxy upgrade patterns hinder static analysis — post-audit divergence routinely goes undetected by standard tooling. Seven of thirteen audited protocols in the dataset were exploited via code explicitly outside audit scope.\n\n**Green / Yellow / Red**\nGreen: all contracts holding user funds have runtime bytecode matching the commit hash cited in the most recent audit, with no unaudited modifications post-deployment. Yellow: minor peripheral contracts (fee collectors, reward distributors) are unaudited, but core lending or bridge logic is fully covered. Red: the primary contracts holding user funds contain code that was not reviewed in any audit, or the deployed bytecode hash differs materially from the audited commit with no delta-audit covering the change.\n\n**Common gray cases**\nCurators legitimately cannot grade this factor when the protocol does not publish its audit report with a commit hash reference, or when Etherscan source verification is absent and bytecode diffing is therefore impossible.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Proposal 62 introduced a new Comptroller upgrade not covered by prior audit; the drip() vulnerability lived in the unaudited code.\n- **Fei/Rari Fuse** ($80M, 2022): Partial patch to CToken and Comptroller left exitMarket() uncovered; the introduced gap was in post-audit code.\n- **PancakeBunny** ($45M, 2021): Team upgraded to VaultFlipToFlip contracts after the Haechi audit closed; the flash-loan vector was in the unaudited upgrade.\n- **Hedgey Finance** ($44.7M, 2024): Vulnerable createLockedCampaign() function was deployed after audit completion.\n- **KyberSwap Elastic** ($48M, 2023): Sub-microscopic precision failure survived multiple audit rounds; deployed bytecode had diverged from reviewed code.\n\n***** Critical factor\nThis factor is critical under rubric v1.7.0: a single Red assessment here is sufficient to trigger a D or F grade regardless of all other category scores, because an unaudited primary attack surface nullifies the protocol's core security assurance.",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether the runtime bytecode deployed on-chain for all contracts holding user funds corresponds exactly to the code covered by the protocol's most recent audit report. A mismatch is recorded when the audit document cites a specific commit hash or contract address and the live deployed bytecode differs from the bytecode at that reference point. Assessment is performed via bytecode diffing against Etherscan-verified source and audit PDF metadata.\n\n**Why it matters**\nAudit scope mismatch is the single most frequent factor in the cross-hack database, appearing as a contributor in more than 25 documented exploits. When deployed code diverges from audited code, the entire security assurance of the audit is voided for that surface -- yet the protocol can still truthfully claim to have been audited, creating false confidence for depositors. Trail of Bits has documented that low-level proxy upgrade patterns hinder static analysis, compounding the risk that post-audit divergence goes undetected by standard tooling. Seven of thirteen audited protocols in the dataset were exploited via code explicitly outside audit scope, making this the clearest single indicator that an audit label is not a safety guarantee.\n\n**Green / Yellow / Red**\nGreen: all contracts holding user funds have runtime bytecode matching the commit hash cited in the most recent audit, with no unaudited modifications post-deployment. Yellow: minor peripheral contracts (fee collectors, reward distributors) are unaudited, but core lending or bridge logic is fully covered. Red: the primary contracts holding user funds contain code that was not reviewed in any audit, or the deployed bytecode hash differs materially from the audited commit with no delta-audit covering the change.\n\n**Common gray cases**\nCurators legitimately cannot grade this factor when the protocol does not publish its audit report with a commit hash reference, or when Etherscan source verification is absent and bytecode diffing is therefore impossible.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Proposal 62 introduced a new Comptroller upgrade not covered by prior audit; the drip() vulnerability lived in the unaudited code.\n- **Fei/Rari Fuse** ($80M, 2022): Partial patch to CToken and Comptroller left exitMarket() uncovered; the introduced gap was in post-audit code.\n- **PancakeBunny** ($45M, 2021): Team upgraded to VaultFlipToFlip contracts after the Haechi audit closed; the flash-loan vector was in the unaudited upgrade.\n- **Hedgey Finance** ($44.7M, 2024): Vulnerable createLockedCampaign() function was deployed after audit completion.\n- **KyberSwap Elastic** ($48M, 2023): Sub-microscopic precision failure survived multiple audit rounds; deployed bytecode had diverged from reviewed code.\n\n***** Critical factor\nThis factor is critical under rubric v1.5: a single Red assessment here is sufficient to trigger a D or F grade regardless of all other category scores, because an unaudited primary attack surface nullifies the protocol's core security assurance.",
         "is_critical": true,
         "curation_archetype": "PH",
         "measurement": "Check whether the commit SHA cited in the audit report matches the bytecode deployed at the production proxy/implementation address.",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V2: dapp.org.uk (2020) report commit consistent with deployed immutable V2 bytecode; Etherscan source verified. V3: Etherscan Exact Match on Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984) with v1.0.0 tag commit e3589b1 (May 4 2021). ToB high-severity findings (TOB-UNI-005, TOB-UNI-009) confirmed resolved before v1.0.0 tag. Post-v1.0.0 commits are network config only. Governance contracts not in ToB/ABDK scope — gap, not mismatch. Combined: green.",
-          "evidence_detail": "V2 Factory (0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f) is immutable — deployed bytecode cannot change post-deploy. V3 Factory Etherscan shows Exact Match with source submitted at v1.0.0 tag (commit e3589b1, May 4 2021). Trail of Bits signed off March 12 2021 and ABDK signed off approximately March 23 2021, both pre-launch. The RC cycle (rc.0 March 22 -> rc.2 April 20 -> v1.0.0 May 4) shows controlled post-audit stabilization with only configuration-level changes. GovernorBravoDelegator and Timelock were not in ToB/ABDK v3-core scope — this is a governance audit gap flagged separately; it does not constitute a scope mismatch for the AMM contracts that were audited.",
+          "evidence_summary": "V2: dapp.org.uk (2020) report commit consistent with deployed immutable V2 bytecode; Etherscan source verified. V3: Etherscan Exact Match on Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984) with v1.0.0 tag commit e3589b1 (May 4 2021). ToB high-severity findings (TOB-UNI-005, TOB-UNI-009) confirmed resolved before v1.0.0 tag. Post-v1.0.0 commits are network config only. Governance contracts not in ToB/ABDK scope â€” gap, not mismatch. Combined: green.",
+          "evidence_detail": "V2 Factory (0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f) is immutable â€” deployed bytecode cannot change post-deploy. V3 Factory Etherscan shows Exact Match with source submitted at v1.0.0 tag (commit e3589b1, May 4 2021). Trail of Bits signed off March 12 2021 and ABDK signed off approximately March 23 2021, both pre-launch. The RC cycle (rc.0 March 22 -> rc.2 April 20 -> v1.0.0 May 4) shows controlled post-audit stabilization with only configuration-level changes. GovernorBravoDelegator and Timelock were not in ToB/ABDK v3-core scope â€” this is a governance audit gap flagged separately; it does not constitute a scope mismatch for the AMM contracts that were audited.",
           "collection_mode": "hybrid",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",
@@ -1556,16 +1556,6 @@
           "root_cause": "Price Manipulation (Native Token Collateral)"
         },
         {
-          "hack_id": "mango-markets-rekt",
-          "relevance": "causal",
-          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — marked \"Out of Scope\" in rekt.news metadata; the spot price manipulation risk was not caught or addressed]",
-          "hack_protocol_name": "Mango Markets",
-          "hack_protocol_slug": null,
-          "occurred_at": "2022-10-11",
-          "loss_usd": 115000000.0,
-          "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
-        },
-        {
           "hack_id": "templedao-rekt",
           "relevance": "causal",
           "notes": "★ Audit scope mismatch — exploited code outside scope [via dashboard_risk_factors/Was exploited code in audit scope?: No — STAX staking contract was separate from audited Temple core vaults] || ★ Audit scope mismatch — full field name [via dashboard_risk_factors/Was exploited code in audit scope?: No — STAX staking contract was separate from audited Temple core vaults]",
@@ -1574,6 +1564,16 @@
           "occurred_at": "2022-10-11",
           "loss_usd": 2300000.0,
           "root_cause": "Missing access control in migrateStake() — unvalidated oldStaking parameter"
+        },
+        {
+          "hack_id": "mango-markets-rekt",
+          "relevance": "causal",
+          "notes": "★ Audit scope mismatch — alternate field name [via dashboard_risk_factors/Exploited code in scope?: No — marked \"Out of Scope\" in rekt.news metadata; the spot price manipulation risk was not caught or addressed]",
+          "hack_protocol_name": "Mango Markets",
+          "hack_protocol_slug": null,
+          "occurred_at": "2022-10-11",
+          "loss_usd": 115000000.0,
+          "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
         },
         {
           "hack_id": "curve-finance-rekt",

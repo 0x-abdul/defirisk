@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "V2+V3 combined structural N/A. V2 core uses constant-product invariant (x*y=k) — no external oracle consumed for swap pricing. V3 core uses constant-product invariant within tick ranges — no external oracle consumed. Both V2 and V3 EXPOSE TWAP oracles outbound but do not CONSUME any oracle. 19 Chainlink feeds in data cache are false positives (feeds reading V3 TWAP output or interface artifacts, not feeds consumed by V2/V3 core). Signal structurally inapplicable.",
-          "evidence_detail": "V2 oracle exposure: price0CumulativeLast, price1CumulativeLast (outbound TWAP accumulators). V3 oracle exposure: observe() function and cardinality slots (outbound TWAP service). Neither V2 nor V3 reads any external oracle during swap execution. The 19 Chainlink feeds in the data cache (USDT/USD, ETH/USD, BTC/USD, etc.) are feeds that READ V3 pool prices or are used by downstream integrators — they are NOT consumed by V2/V3 core Pool contracts. Source: V3 whitepaper Â§3 explicitly states no external price oracle is read during swaps. V3Factory source code at 0x1F98431c8aD98523631AE4a59f267346ea31F984 confirmed via Etherscan — no oracle feed read calls in core contracts.",
+          "evidence_summary": "V2+V3 combined structural N/A. V2 core uses constant-product invariant (x*y=k) â€” no external oracle consumed for swap pricing. V3 core uses constant-product invariant within tick ranges â€” no external oracle consumed. Both V2 and V3 EXPOSE TWAP oracles outbound but do not CONSUME any oracle. 19 Chainlink feeds in data cache are false positives (feeds reading V3 TWAP output or interface artifacts, not feeds consumed by V2/V3 core). Signal structurally inapplicable.",
+          "evidence_detail": "V2 oracle exposure: price0CumulativeLast, price1CumulativeLast (outbound TWAP accumulators). V3 oracle exposure: observe() function and cardinality slots (outbound TWAP service). Neither V2 nor V3 reads any external oracle during swap execution. The 19 Chainlink feeds in the data cache (USDT/USD, ETH/USD, BTC/USD, etc.) are feeds that READ V3 pool prices or are used by downstream integrators â€” they are NOT consumed by V2/V3 core Pool contracts. Source: V3 whitepaper Â§3 explicitly states no external price oracle is read during swaps. V3Factory source code at 0x1F98431c8aD98523631AE4a59f267346ea31F984 confirmed via Etherscan â€” no oracle feed read calls in core contracts.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",
@@ -1606,16 +1606,6 @@
           "root_cause": "SushiSwap TWAP Oracle Manipulation — Thin Liquidity Governance Token"
         },
         {
-          "hack_id": "deus-dao-rekt",
-          "relevance": "illustrative",
-          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — the sAMM-USDC/DEI pool price was severely distorted mid-transaction; detectable as a sharp oracle deviation]",
-          "hack_protocol_name": "Deus DAO (1st incident)",
-          "hack_protocol_slug": null,
-          "occurred_at": "2022-03-15",
-          "loss_usd": 3000000.0,
-          "root_cause": "Flash loan → spot price manipulation of Solidex USDC/DEI AMM pool (used as oracle) → user positions liquidated"
-        },
-        {
           "hack_id": "deus-dao-rekt-1",
           "relevance": "illustrative",
           "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — oracle price manipulated during the flash loan; detectable as a price spike/crash]",
@@ -1624,6 +1614,16 @@
           "occurred_at": "2022-03-15",
           "loss_usd": 3000000.0,
           "root_cause": "Flash loan oracle manipulation via Solidly AMM pool → user position liquidation"
+        },
+        {
+          "hack_id": "deus-dao-rekt",
+          "relevance": "illustrative",
+          "notes": "Oracle price deviation > X% from secondary source — RT signal would have fired [via realtime_signals/Oracle anomaly (Y/N): Y — the sAMM-USDC/DEI pool price was severely distorted mid-transaction; detectable as a sharp oracle deviation]",
+          "hack_protocol_name": "Deus DAO (1st incident)",
+          "hack_protocol_slug": null,
+          "occurred_at": "2022-03-15",
+          "loss_usd": 3000000.0,
+          "root_cause": "Flash loan → spot price manipulation of Solidex USDC/DEI AMM pool (used as oracle) → user positions liquidated"
         },
         {
           "hack_id": "meter-rekt",

@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "No on-chain price-deviation circuit breaker in MapleGlobals. Governor has setManualOverridePrice() as emergency mechanism but this requires human action. No automatic halt-on-deviation. Chainlink feeds have deviation triggers but these are at the oracle layer, not enforced within Maple contract logic.",
-          "evidence_detail": "MapleGlobals source inspected — only staleness check (updatedAt >= block.timestamp - maxDelay) present. No maxDeviationBps or priceGuard pattern found. The setManualOverridePrice() is a manual circuit breaker requiring governor intervention. Yellow because circuit breaker absent from contract logic, though manual override and Chainlink deviation trigger provide partial mitigation.",
+          "evidence_detail": "MapleGlobals source inspected â€” only staleness check (updatedAt >= block.timestamp - maxDelay) present. No maxDeviationBps or priceGuard pattern found. The setManualOverridePrice() is a manual circuit breaker requiring governor intervention. Yellow because circuit breaker absent from contract logic, though manual override and Chainlink deviation trigger provide partial mitigation.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",

@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No repeat incident. Single credit default in 2022. Root cause (no early-default enforcement on undercollateralized borrowers) was structurally addressed in V2. No post-V2 credit default found.",
-          "evidence_detail": "V2 redesign mandated overcollateralization for all loans and introduced an early-default declaration mechanism — the specific feature M11 Credit identified as missing (per Medium post). V2 has been in production since December 2022 with no subsequent credit defaults reported. October 2025 volatility event resulted in zero losses and zero defaults (per maple.finance/insights/maple-performance), suggesting the V2 model is more resilient. No same-root-cause repeat.",
+          "evidence_detail": "V2 redesign mandated overcollateralization for all loans and introduced an early-default declaration mechanism â€” the specific feature M11 Credit identified as missing (per Medium post). V2 has been in production since December 2022 with no subsequent credit defaults reported. October 2025 volatility event resulted in zero losses and zero defaults (per maple.finance/insights/maple-performance), suggesting the V2 model is more resilient. No same-root-cause repeat.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1052,7 +1052,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Zero direct protocol exploits. Same-root-cause repeat is structurally impossible at 0 incidents. The V2 TWAP consumer pattern (multiple downstream protocols misusing V2 TWAP) does not constitute a V2 protocol failure repeat per the scoping instruction. Combined: green.",
-          "evidence_detail": "Same-root-cause repeat requires â‰¥2 incidents with matching root-cause cluster. With zero direct protocol exploits on V2 or V3, the condition cannot be met. The scoping instruction explicitly states F079 does NOT fire for this protocol. The V2 TWAP oracle consumer failure pattern (Visor Finance Dec 2021, Inverse Finance Apr 2022 and Jun 2022) involves three separate consumer protocols each failing to validate oracle manipulation cost — but these are failures of consumer codebases, not V2. V2's TWAP accumulator worked as designed in all three cases. Score: green.",
+          "evidence_detail": "Same-root-cause repeat requires â‰¥2 incidents with matching root-cause cluster. With zero direct protocol exploits on V2 or V3, the condition cannot be met. The scoping instruction explicitly states F079 does NOT fire for this protocol. The V2 TWAP oracle consumer failure pattern (Visor Finance Dec 2021, Inverse Finance Apr 2022 and Jun 2022) involves three separate consumer protocols each failing to validate oracle manipulation cost â€” but these are failures of consumer codebases, not V2. V2's TWAP accumulator worked as designed in all three cases. Score: green.",
           "collection_mode": "programmatic",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

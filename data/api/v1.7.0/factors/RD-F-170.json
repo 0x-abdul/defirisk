@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "V2-core: Solidity 0.5.16 (EOL). V3-core: Solidity 0.7.6 confirmed (Etherscan: v0.7.6+commit.7338295f, 800 runs). 0.7.6 known bugs: DynamicArrayCleanup (medium), EmptyByteArrayCopy (medium) — neither applies to pool pattern (fixed-layout structs). UniversalRouter: 0.8.26 (no known high/critical bugs). Both V2 and V3 deployed immutably — no recompilation possible. Scored yellow for older compiler versions on known-bug lists. V2 (0.5.16): yellow; V3 (0.7.6): yellow. Combined: yellow.",
-          "evidence_detail": "Etherscan source verification for the V3 Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984) confirms compilation with v0.7.6+commit.7338295f using 800 optimizer runs. The hardhat.config.ts in the v3-core repo confirms `solidity: '0.7.6'`. Known bugs for Solidity 0.7.6 per Etherscan solcbuginfo include DynamicArrayCleanup (medium severity: incorrect clearing of storage arrays when a dynamic array is shortened) and EmptyByteArrayCopy (medium severity: copying empty byte arrays to storage). Neither pattern appears in the V3 Pool contract, which uses fixed-size struct slots (Slot0, Position, etc.). V2 uses Solidity 0.5.16 which also has known bugs from that era; the constant-product AMM pattern is similarly unlikely to trigger them. Both codebases are immutably deployed — the compiler version risk is historical and fixed, not ongoing.",
+          "evidence_summary": "V2-core: Solidity 0.5.16 (EOL). V3-core: Solidity 0.7.6 confirmed (Etherscan: v0.7.6+commit.7338295f, 800 runs). 0.7.6 known bugs: DynamicArrayCleanup (medium), EmptyByteArrayCopy (medium) â€” neither applies to pool pattern (fixed-layout structs). UniversalRouter: 0.8.26 (no known high/critical bugs). Both V2 and V3 deployed immutably â€” no recompilation possible. Scored yellow for older compiler versions on known-bug lists. V2 (0.5.16): yellow; V3 (0.7.6): yellow. Combined: yellow.",
+          "evidence_detail": "Etherscan source verification for the V3 Factory (0x1F98431c8aD98523631AE4a59f267346ea31F984) confirms compilation with v0.7.6+commit.7338295f using 800 optimizer runs. The hardhat.config.ts in the v3-core repo confirms `solidity: '0.7.6'`. Known bugs for Solidity 0.7.6 per Etherscan solcbuginfo include DynamicArrayCleanup (medium severity: incorrect clearing of storage arrays when a dynamic array is shortened) and EmptyByteArrayCopy (medium severity: copying empty byte arrays to storage). Neither pattern appears in the V3 Pool contract, which uses fixed-size struct slots (Slot0, Position, etc.). V2 uses Solidity 0.5.16 which also has known bugs from that era; the constant-product AMM pattern is similarly unlikely to trigger them. Both codebases are immutably deployed â€” the compiler version risk is historical and fixed, not ongoing.",
           "collection_mode": "programmatic",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

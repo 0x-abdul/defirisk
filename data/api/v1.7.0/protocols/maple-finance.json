@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": "2021-05-12",
         "headline_grade": "D",
         "total_value_secured_usd": 1699470906.0,
-        "graded_at": "2026-05-12T04:38:07Z",
+        "graded_at": "2026-06-12T08:15:06Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -38,8 +38,9 @@
         },
         "cap_applied": "none",
         "cap_reason": null,
+        "is_published": true,
         "created_at": "2026-04-27T05:38:08Z",
-        "updated_at": "2026-05-12T04:38:07Z"
+        "updated_at": "2026-06-12T08:15:06Z"
       },
       "deployments": [
         {
@@ -654,7 +655,7 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b",
-              "reference": "GovernorTimelock 0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b — confirmed contract with 1-day MIN_DELAY",
+              "reference": "GovernorTimelock 0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b â€” confirmed contract with 1-day MIN_DELAY",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
@@ -703,7 +704,7 @@
             {
               "source_type": "url",
               "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xd6d4Bcde6c816F17889f1Dd3000aF0261B03a196/",
-              "reference": "Safe API: daoMultisig 4-of-7, securityAdmin 3-of-6, operationalAdmin 3-of-5, globalAdmin 2-of-3 — all contracts",
+              "reference": "Safe API: daoMultisig 4-of-7, securityAdmin 3-of-6, operationalAdmin 3-of-5, globalAdmin 2-of-3 â€” all contracts",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
@@ -720,7 +721,7 @@
           "factor_id": "RD-F-028",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "daoMultisig 4-of-7 adequate; securityAdmin 3-of-6; operationalAdmin 3-of-5. globalAdmin is 2-of-3 — below peer norm for $1.7B TVL. Per methodology, one below norm = yellow.",
+          "evidence_summary": "daoMultisig 4-of-7 adequate; securityAdmin 3-of-6; operationalAdmin 3-of-5. globalAdmin is 2-of-3 â€” below peer norm for $1.7B TVL. Per methodology, one below norm = yellow.",
           "evidence_detail": null,
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -832,7 +833,7 @@
           "factor_id": "RD-F-033",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Upgrade and oracle/fee config timelocked via GovernorTimelock. Pause (setProtocolPause) callable by securityAdmin (3-of-6) without timelock — deliberate emergency design. 3-of-5 action types timelocked.",
+          "evidence_summary": "Upgrade and oracle/fee config timelocked via GovernorTimelock. Pause (setProtocolPause) callable by securityAdmin (3-of-6) without timelock â€” deliberate emergency design. 3-of-5 action types timelocked.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -860,7 +861,7 @@
           "factor_id": "RD-F-034",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "securityAdmin (3-of-6) holds pause capability; GovernorTimelock holds upgrade capability. These are distinct addresses — role separation confirmed.",
+          "evidence_summary": "securityAdmin (3-of-6) holds pause capability; GovernorTimelock holds upgrade capability. These are distinct addresses â€” role separation confirmed.",
           "evidence_detail": null,
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -990,7 +991,7 @@
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2025-sept-governor-timelock/0xMacro-Maple-Finance-timelock-Sept-2025.pdf",
-              "reference": "0xMacro GovernorTimelock audit Sept 2025 — does not resolve target allowlist gap",
+              "reference": "0xMacro GovernorTimelock audit Sept 2025 â€” does not resolve target allowlist gap",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1000,7 +1001,7 @@
           "factor_id": "RD-F-040",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "securityAdmin (3-of-6 Safe) holds CANCELLER_ROLE on GovernorTimelock. Can cancel queued proposals. This is a separate Safe from the proposer (daoMultisig) — provides meaningful veto.",
+          "evidence_summary": "securityAdmin (3-of-6 Safe) holds CANCELLER_ROLE on GovernorTimelock. Can cancel queued proposals. This is a separate Safe from the proposer (daoMultisig) â€” provides meaningful veto.",
           "evidence_detail": null,
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1028,7 +1029,7 @@
           "factor_id": "RD-F-041",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "No explicit rescue/emergencyWithdraw/sweep function identified in core contracts. setProtocolPause callable by securityAdmin (3-of-6) without timelock — pause, not drain. Internal scheduleCall timelock mechanism exists. Full enumeration of all 20+ proxy ABIs not completed.",
+          "evidence_summary": "No explicit rescue/emergencyWithdraw/sweep function identified in core contracts. setProtocolPause callable by securityAdmin (3-of-6) without timelock â€” pause, not drain. Internal scheduleCall timelock mechanism exists. Full enumeration of all 20+ proxy ABIs not completed.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1190,7 +1191,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "All active market oracle feeds are Chainlink push-feeds accessed via latestRoundData(). One custom stub (usdcUsdOracle 0x5DC5E14be1280E747cD036c089C96744EBF064E7) returns hardcoded 1e8. syrupRateProvider is a peripheral pool-derived rate oracle. No spot DEX oracles used.",
-          "evidence_detail": "MapleGlobals implementation (0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956) getLatestPrice() calls IChainlinkAggregatorV3Like(oracle_).latestRoundData(). Data-cache oracle_feeds[] lists 19 Chainlink feed entries (ETH/USD, BTC/USD, USDC/USD, USDT/USD, LINK/USD, UNI/USD, AVAX/USD, COMP/USD). Stub oracle at 0x5DC5E14be1280E747cD036c089C96744EBF064E7 returns pure 100000000 — scope of use needs clarification but Globals-level address is replaceable.",
+          "evidence_detail": "MapleGlobals implementation (0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956) getLatestPrice() calls IChainlinkAggregatorV3Like(oracle_).latestRoundData(). Data-cache oracle_feeds[] lists 19 Chainlink feed entries (ETH/USD, BTC/USD, USDC/USD, USDT/USD, LINK/USD, UNI/USD, AVAX/USD, COMP/USD). Stub oracle at 0x5DC5E14be1280E747cD036c089C96744EBF064E7 returns pure 100000000 â€” scope of use needs clarification but Globals-level address is replaceable.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1208,14 +1209,14 @@
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
               "reference": "MapleGlobals.sol oracle functions",
-              "title": "MapleGlobals source — setPriceOracle, getLatestPrice, priceOracleOf mapping",
+              "title": "MapleGlobals source â€” setPriceOracle, getLatestPrice, priceOracleOf mapping",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x5DC5E14be1280E747cD036c089C96744EBF064E7#code",
               "reference": "usdcUsdOracle stub contract 0x5DC5E14be1280E747cD036c089C96744EBF064E7",
-              "title": "usdcUsdOracle — hardcoded 1e8 return",
+              "title": "usdcUsdOracle â€” hardcoded 1e8 return",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1224,7 +1225,7 @@
           "factor_id": "RD-F-049",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Primary Chainlink feeds per asset. Manual override (setManualOverridePrice) acts as governor-triggered secondary, not automatic fallback. On staleness, contract reverts — no automatic switch to secondary oracle in code path.",
+          "evidence_summary": "Primary Chainlink feeds per asset. Manual override (setManualOverridePrice) acts as governor-triggered secondary, not automatic fallback. On staleness, contract reverts â€” no automatic switch to secondary oracle in code path.",
           "evidence_detail": "MapleGlobals getLatestPrice() checks manualOverridePrice first (returns if non-zero), then calls Chainlink feed. If feed is stale, reverts with MG:GLP:STALE_PRICE. Governor must call setManualOverridePrice() to unblock. No secondary oracle in the automatic path. Yellow because primary-only automatic path; manual override is human-triggered.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1256,15 +1257,15 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb#code",
-              "reference": "syrupRateProvider 0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb — immutable pool",
-              "title": "syrupRateProvider — immutable pool address",
+              "reference": "syrupRateProvider 0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb â€” immutable pool",
+              "title": "syrupRateProvider â€” immutable pool address",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/address-registry/blob/main/MapleAddressRegistryETH.md",
               "reference": "Maple address registry ETH",
-              "title": "Maple Address Registry — Ethereum",
+              "title": "Maple Address Registry â€” Ethereum",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1273,7 +1274,7 @@
           "factor_id": "RD-F-051",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "On primary Chainlink feed staleness: contract reverts (MG:GLP:STALE_PRICE). Governor can call setManualOverridePrice() to unblock — human-triggered, not automatic. No automatic fallback to secondary oracle. Aave/Sky strategy failures contained — idle liquidity stays in pool.",
+          "evidence_summary": "On primary Chainlink feed staleness: contract reverts (MG:GLP:STALE_PRICE). Governor can call setManualOverridePrice() to unblock â€” human-triggered, not automatic. No automatic fallback to secondary oracle. Aave/Sky strategy failures contained â€” idle liquidity stays in pool.",
           "evidence_detail": "MapleGlobals getLatestPrice() reverts if updatedAt < block.timestamp - maxDelay. No automated secondary oracle fallback in the code path. setManualOverridePrice() available as emergency measure but requires governor action. Yellow because revert-on-staleness with human-triggered override is a documented but non-automatic fallback pattern.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1315,7 +1316,7 @@
           "factor_id": "RD-F-053",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "No spot DEX pool oracle used for any live market. All collateral/pool-asset pricing goes through MapleGlobals.getLatestPrice() which calls Chainlink latestRoundData(). No slot0() or getReserves() calls in any price path. [â˜… CRITICAL — NOT RED]",
+          "evidence_summary": "No spot DEX pool oracle used for any live market. All collateral/pool-asset pricing goes through MapleGlobals.getLatestPrice() which calls Chainlink latestRoundData(). No slot0() or getReserves() calls in any price path. [â˜… CRITICAL â€” NOT RED]",
           "evidence_detail": "MapleGlobals implementation (0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956) getLatestPrice() function: IChainlinkAggregatorV3Like(oracle_).latestRoundData() is the sole price-fetch pattern. 19 Chainlink feeds in data-cache, all confirmed push-feeds with off-chain aggregation. No Uniswap v2/v3 pool price calls found in oracle path. RD-F-053 critical factor is NOT triggered.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1327,13 +1328,13 @@
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956#code",
               "reference": "MapleGlobals implementation 0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956 getLatestPrice()",
-              "title": "MapleGlobals implementation — getLatestPrice oracle call",
+              "title": "MapleGlobals implementation â€” getLatestPrice oracle call",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol getLatestPrice — Chainlink latestRoundData() call",
+              "reference": "MapleGlobals.sol getLatestPrice â€” Chainlink latestRoundData() call",
               "title": "MapleGlobals source",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1344,7 +1345,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "Protocol does not use DEX TWAP oracles. All feeds are Chainlink push-feeds. TWAP window duration is not applicable.",
-          "evidence_detail": "N/A — no TWAP oracles used.",
+          "evidence_detail": "N/A â€” no TWAP oracles used.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1354,8 +1355,8 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol — Chainlink latestRoundData() only",
-              "title": "MapleGlobals source — no TWAP",
+              "reference": "MapleGlobals.sol â€” Chainlink latestRoundData() only",
+              "title": "MapleGlobals source â€” no TWAP",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1365,7 +1366,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "No DEX pool feeds used. Chainlink aggregators use off-chain price aggregation, not DEX pool depth. Factor not applicable.",
-          "evidence_detail": "N/A — no DEX-TWAP oracle. All feeds are Chainlink push-feeds.",
+          "evidence_detail": "N/A â€” no DEX-TWAP oracle. All feeds are Chainlink push-feeds.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1378,7 +1379,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "No single-pool TWAP oracle used. Chainlink feeds aggregate multiple off-chain sources. Factor not applicable.",
-          "evidence_detail": "N/A — no DEX pool oracle used.",
+          "evidence_detail": "N/A â€” no DEX pool oracle used.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1391,7 +1392,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "No on-chain price-deviation circuit breaker in MapleGlobals. Governor has setManualOverridePrice() as emergency mechanism but this requires human action. No automatic halt-on-deviation. Chainlink feeds have deviation triggers but these are at the oracle layer, not enforced within Maple contract logic.",
-          "evidence_detail": "MapleGlobals source inspected — only staleness check (updatedAt >= block.timestamp - maxDelay) present. No maxDeviationBps or priceGuard pattern found. The setManualOverridePrice() is a manual circuit breaker requiring governor intervention. Yellow because circuit breaker absent from contract logic, though manual override and Chainlink deviation trigger provide partial mitigation.",
+          "evidence_detail": "MapleGlobals source inspected â€” only staleness check (updatedAt >= block.timestamp - maxDelay) present. No maxDeviationBps or priceGuard pattern found. The setManualOverridePrice() is a manual circuit breaker requiring governor intervention. Yellow because circuit breaker absent from contract logic, though manual override and Chainlink deviation trigger provide partial mitigation.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1401,7 +1402,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol — staleness check only, no deviation circuit breaker",
+              "reference": "MapleGlobals.sol â€” staleness check only, no deviation circuit breaker",
               "title": "MapleGlobals source",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1412,7 +1413,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "No on-chain circuit breaker threshold in Maple contracts. Factor is not applicable given F057 is yellow (no circuit breaker).",
-          "evidence_detail": "N/A — no circuit breaker threshold to read (see F057).",
+          "evidence_detail": "N/A â€” no circuit breaker threshold to read (see F057).",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1436,7 +1437,7 @@
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
               "reference": "MapleGlobals.sol getLatestPrice staleness check",
-              "title": "MapleGlobals source — staleness check implementation",
+              "title": "MapleGlobals source â€” staleness check implementation",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1446,7 +1447,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "Chainlink aggregators include minAnswer/maxAnswer bounds set by Chainlink. MapleGlobals does not independently verify these bounds. Known risk: if collateral asset crashes below minAnswer, feed returns minAnswer (floor), not real price. Cannot verify all bound configurations without direct RPC calls to each of 8+ feeds.",
-          "evidence_detail": "MapleGlobals getLatestPrice() does not check price_ against minAnswer/maxAnswer bounds — it only checks price_ > 0. For ETH/USD and BTC/USD, Chainlink feeds have historically had non-trivial minAnswer values that could mask severe crashes. Without direct RPC inspection of all feed configurations, this cannot be fully verified. Yellow due to known pattern applicability and inability to verify all bounds within assessment scope.",
+          "evidence_detail": "MapleGlobals getLatestPrice() does not check price_ against minAnswer/maxAnswer bounds â€” it only checks price_ > 0. For ETH/USD and BTC/USD, Chainlink feeds have historically had non-trivial minAnswer values that could mask severe crashes. Without direct RPC inspection of all feed configurations, this cannot be fully verified. Yellow due to known pattern applicability and inability to verify all bounds within assessment scope.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1456,7 +1457,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol getLatestPrice — no min/max bound check",
+              "reference": "MapleGlobals.sol getLatestPrice â€” no min/max bound check",
               "title": "MapleGlobals source",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1467,7 +1468,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No balanceOf-based pricing in MapleGlobals price path. Price path uses Chainlink latestRoundData() exclusively. No donation-manipulable LP token pricing found.",
-          "evidence_detail": "MapleGlobals getLatestPrice() source — no balanceOf call in price computation path. Chainlink feeds are off-chain aggregated, not pool-balance derived.",
+          "evidence_detail": "MapleGlobals getLatestPrice() source â€” no balanceOf call in price computation path. Chainlink feeds are off-chain aggregated, not pool-balance derived.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1477,7 +1478,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol getLatestPrice — no balanceOf in price path",
+              "reference": "MapleGlobals.sol getLatestPrice â€” no balanceOf in price path",
               "title": "MapleGlobals source",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1487,7 +1488,7 @@
           "factor_id": "RD-F-062",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "Liquidation is permissionless — any address can call liquidation functions when a loan is undercollateralized. No single keeper/relayer dependency for core liquidation path. Pool strategies (Aave/Sky) use internal protocol calls.",
+          "evidence_summary": "Liquidation is permissionless â€” any address can call liquidation functions when a loan is undercollateralized. No single keeper/relayer dependency for core liquidation path. Pool strategies (Aave/Sky) use internal protocol calls.",
           "evidence_detail": "Protocol docs and MapleGlobals source indicate permissionless liquidation design (institutional borrowers but liquidation is not keeper-gated). No Gelato or Chainlink Automation dependency in core liquidation path identified. AaveStrategy and SkyStrategy use direct calls, not external keeper interfaces.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1499,7 +1500,7 @@
               "source_type": "docs",
               "url": "https://docs.maple.finance/",
               "reference": "Maple Finance documentation",
-              "title": "Maple Finance Docs — liquidation design",
+              "title": "Maple Finance Docs â€” liquidation design",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1882,8 +1883,8 @@
             {
               "source_type": "docs",
               "url": "https://messari.io/project/maple-finance/profile",
-              "reference": "Maple Finance protocol profile Â§2 — lifecycle",
-              "title": "Messari — Maple Finance Profile",
+              "reference": "Maple Finance protocol profile Â§2 â€” lifecycle",
+              "title": "Messari â€” Maple Finance Profile",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -1893,7 +1894,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "1 documented incident: Orthogonal Trading credit default December 2022, ~$36M bad debt. Not a smart-contract exploit. Recovery was partial (depositors faced up to 80% losses). No smart-contract exploits on record. Yellow per methodology (1 incident with partial recovery).",
-          "evidence_detail": "Orthogonal Trading defaulted on eight loans totalling ~$36M on December 5, 2022. They misrepresented financial exposure to FTX. Pool cover was < $2M across affected pools. Kroll engaged for recovery. No full restitution confirmed. The broader FTX contagion cycle (Celsius, Alameda pool delegates also in distress) added to platform stress — total sour debt was approximately $54M per CoinDesk Dec 12 — but this is context for the same credit crisis period, not a separate discrete incident. Rekt DB: zero entries. hacksdatabase: no entries found for maple or orthogonal. Methodology threshold: green = 0 prior exploits; yellow = 1 exploit with full recovery (partial recovery here keeps it at yellow even though event class is credit, not code).",
+          "evidence_detail": "Orthogonal Trading defaulted on eight loans totalling ~$36M on December 5, 2022. They misrepresented financial exposure to FTX. Pool cover was < $2M across affected pools. Kroll engaged for recovery. No full restitution confirmed. The broader FTX contagion cycle (Celsius, Alameda pool delegates also in distress) added to platform stress â€” total sour debt was approximately $54M per CoinDesk Dec 12 â€” but this is context for the same credit crisis period, not a separate discrete incident. Rekt DB: zero entries. hacksdatabase: no entries found for maple or orthogonal. Methodology threshold: green = 0 prior exploits; yellow = 1 exploit with full recovery (partial recovery here keeps it at yellow even though event class is credit, not code).",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1903,21 +1904,21 @@
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk — Maple severs ties with Orthogonal Trading, Dec 5 2022",
+              "reference": "CoinDesk â€” Maple severs ties with Orthogonal Trading, Dec 5 2022",
               "title": "FTX Contagion Spreads as Orthogonal Trading Gets Default Notice for $36M Debt on Maple Finance",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/12/maple-finances-54m-of-sour-debt-shows-risks-of-crypto-lending-without-collateral",
-              "reference": "CoinDesk — $54M sour debt, Dec 12 2022",
+              "reference": "CoinDesk â€” $54M sour debt, Dec 12 2022",
               "title": "Maple Finance's $54M of Sour Debt Shows Risks of Crypto Lending Without Collateral",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "partner_feed",
               "url": null,
-              "reference": "Rekt DB via data cache — zero incidents listed for maple-finance",
+              "reference": "Rekt DB via data cache â€” zero incidents listed for maple-finance",
               "title": "Data cache sources.rekt.incidents = []",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1938,14 +1939,14 @@
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk — Orthogonal Trading default (sole known incident)",
+              "reference": "CoinDesk â€” Orthogonal Trading default (sole known incident)",
               "title": "FTX Contagion Spreads as Orthogonal Trading Gets Default Notice for $36M Debt",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "partner_feed",
               "url": null,
-              "reference": "Rekt DB via data cache — zero smart-contract incidents",
+              "reference": "Rekt DB via data cache â€” zero smart-contract incidents",
               "title": "Data cache sources.rekt.incidents = []",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1956,7 +1957,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No repeat incident. Single credit default in 2022. Root cause (no early-default enforcement on undercollateralized borrowers) was structurally addressed in V2. No post-V2 credit default found.",
-          "evidence_detail": "V2 redesign mandated overcollateralization for all loans and introduced an early-default declaration mechanism — the specific feature M11 Credit identified as missing (per Medium post). V2 has been in production since December 2022 with no subsequent credit defaults reported. October 2025 volatility event resulted in zero losses and zero defaults (per maple.finance/insights/maple-performance), suggesting the V2 model is more resilient. No same-root-cause repeat.",
+          "evidence_detail": "V2 redesign mandated overcollateralization for all loans and introduced an early-default declaration mechanism â€” the specific feature M11 Credit identified as missing (per Medium post). V2 has been in production since December 2022 with no subsequent credit defaults reported. October 2025 volatility event resulted in zero losses and zero defaults (per maple.finance/insights/maple-performance), suggesting the V2 model is more resilient. No same-root-cause repeat.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1966,14 +1967,14 @@
             {
               "source_type": "url",
               "url": "https://medium.com/@M11credit/m11-credit-update-on-orthogonal-trading-9f896c264f8f",
-              "reference": "M11 Credit Medium update — identifies early-default feature gap",
+              "reference": "M11 Credit Medium update â€” identifies early-default feature gap",
               "title": "M11 Credit Update on Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://maple.finance/insights/maple-performance",
-              "reference": "Maple — October 2025 volatility event, zero losses",
+              "reference": "Maple â€” October 2025 volatility event, zero losses",
               "title": "Maple Risk Management: October 10th, 2025 Volatility Event",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -1994,7 +1995,7 @@
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk — incident date Dec 5 2022",
+              "reference": "CoinDesk â€” incident date Dec 5 2022",
               "title": "FTX Contagion Spreads as Orthogonal Trading Gets Default Notice",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2005,7 +2006,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "Fast public communication (same-day, Dec 5 2022). V2 deployed Dec 11 (6 days) as structural fix. Kroll engaged for recovery. No comprehensive protocol-level post-mortem with named contracts/code diffs. Depositor compensation partial. Response quality: adequate speed, inadequate transparency and compensation.",
-          "evidence_detail": "Methodology grades response quality 1-5 on: compensation, transparency, root-cause depth, operational recovery. Maple severed ties with Orthogonal same day. V2 was released 6 days later with the early-default feature fix. Kroll hired for asset recovery. However: (1) No formal post-mortem document naming specific contracts, code diffs, or governance actions published by Maple Finance itself. (2) Depositor recovery was partial — pool cover was < $2M against ~$36M in losses; up to 80% depositor losses confirmed. (3) Root cause (borrower misrepresentation + platform's absence of early-default enforcement) was stated in media but not in a structured post-mortem. Score: yellow on balance — fast operational response and structural V2 fix, but transparency depth and compensation posture are below green standard.",
+          "evidence_detail": "Methodology grades response quality 1-5 on: compensation, transparency, root-cause depth, operational recovery. Maple severed ties with Orthogonal same day. V2 was released 6 days later with the early-default feature fix. Kroll hired for asset recovery. However: (1) No formal post-mortem document naming specific contracts, code diffs, or governance actions published by Maple Finance itself. (2) Depositor recovery was partial â€” pool cover was < $2M against ~$36M in losses; up to 80% depositor losses confirmed. (3) Root cause (borrower misrepresentation + platform's absence of early-default enforcement) was stated in media but not in a structured post-mortem. Score: yellow on balance â€” fast operational response and structural V2 fix, but transparency depth and compensation posture are below green standard.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2015,21 +2016,21 @@
             {
               "source_type": "url",
               "url": "https://www.theblock.co/post/194907/maple-finance-releases-version-2-0-after-36-million-default-on-platform",
-              "reference": "The Block — V2 release Dec 11",
+              "reference": "The Block â€” V2 release Dec 11",
               "title": "Maple Finance releases version 2.0 after $36M default",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://medium.com/@M11credit/m11-credit-update-on-orthogonal-trading-9f896c264f8f",
-              "reference": "M11 Credit Medium post — on-chain default declared Dec 13, Kroll engagement",
+              "reference": "M11 Credit Medium post â€” on-chain default declared Dec 13, Kroll engagement",
               "title": "M11 Credit Update on Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk — same-day announcement",
+              "reference": "CoinDesk â€” same-day announcement",
               "title": "Maple Finance severs ties with Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2040,7 +2041,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "M11 Credit Medium update published within days of default. No comprehensive protocol-level post-mortem with root cause, named contracts, and code diff found. V2 release served as implicit remediation. Published within 30 days but quality below green standard.",
-          "evidence_detail": "M11 Credit published a brief update on Medium within approximately 8 days of the incident. Maple Finance issued public statements via CoinDesk and other outlets. The V2 release (Dec 11) contained the early-default mechanism fix. However, no standalone Maple-authored post-mortem document with: (a) named contracts involved, (b) code-diff for the fix, (c) named pool delegates and borrowers, (d) timeline of Orthogonal's misrepresentations, and (e) governance remediation steps — was found in public records. Score: yellow (published within 30 days; quality insufficient for green). Green requires named root cause + named contracts + remediation timeline + code diff linkage.",
+          "evidence_detail": "M11 Credit published a brief update on Medium within approximately 8 days of the incident. Maple Finance issued public statements via CoinDesk and other outlets. The V2 release (Dec 11) contained the early-default mechanism fix. However, no standalone Maple-authored post-mortem document with: (a) named contracts involved, (b) code-diff for the fix, (c) named pool delegates and borrowers, (d) timeline of Orthogonal's misrepresentations, and (e) governance remediation steps â€” was found in public records. Score: yellow (published within 30 days; quality insufficient for green). Green requires named root cause + named contracts + remediation timeline + code diff linkage.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2050,7 +2051,7 @@
             {
               "source_type": "url",
               "url": "https://medium.com/@M11credit/m11-credit-update-on-orthogonal-trading-9f896c264f8f",
-              "reference": "M11 Credit Medium post — closest to post-mortem available",
+              "reference": "M11 Credit Medium post â€” closest to post-mortem available",
               "title": "M11 Credit Update on Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2060,7 +2061,7 @@
           "factor_id": "RD-F-083",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "Three Tier-1/Tier-2 audits of V2 in December 2022 (Spearbit, Trail of Bits, Three Sigma) — contemporaneous with the incident, as direct structural response. Continuous auditing through 2025 (15 total engagements, 6 firms).",
+          "evidence_summary": "Three Tier-1/Tier-2 audits of V2 in December 2022 (Spearbit, Trail of Bits, Three Sigma) â€” contemporaneous with the incident, as direct structural response. Continuous auditing through 2025 (15 total engagements, 6 firms).",
           "evidence_detail": "Profile Â§8 lists 15 audit engagements across 6 firms from December 2022 through November 2025. The three December 2022 audits (Spearbit, Trail of Bits, Three Sigma) on the V2 codebase directly followed the Orthogonal incident and covered the redesigned protocol. Green threshold: Tier-1/2 re-audit post-incident. All three firms (Spearbit: Tier-1, Trail of Bits: Tier-1, Three Sigma: Tier-2) qualify.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -2071,21 +2072,21 @@
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2022-december/Three-Sigma-Maple-Finance-Dec-2022.pdf",
-              "reference": "Three Sigma Dec 2022 — Maple V2 core protocol",
+              "reference": "Three Sigma Dec 2022 â€” Maple V2 core protocol",
               "title": "Three Sigma Maple V2 Audit December 2022",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2022-december/TrailOfBits-Maple.pdf",
-              "reference": "Trail of Bits Dec 2022 — Maple V2 core protocol",
+              "reference": "Trail of Bits Dec 2022 â€” Maple V2 core protocol",
               "title": "Trail of Bits Maple V2 Audit December 2022",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2022-december/Spearbit-maple.pdf",
-              "reference": "Spearbit Dec 2022 — Maple V2 core protocol",
+              "reference": "Spearbit Dec 2022 â€” Maple V2 core protocol",
               "title": "Spearbit Maple V2 Audit December 2022",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2095,7 +2096,7 @@
           "factor_id": "RD-F-084",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "30-day TVL change of âˆ’31.62% (data cache). A contraction of this magnitude over 30 days is consistent with CoV > 0.15, placing this in the yellow band (0.15–0.35). Full 90-day daily time-series not computed.",
+          "evidence_summary": "30-day TVL change of âˆ’31.62% (data cache). A contraction of this magnitude over 30 days is consistent with CoV > 0.15, placing this in the yellow band (0.15â€“0.35). Full 90-day daily time-series not computed.",
           "evidence_detail": "Data cache reports: tvl_30d_change_pct = -31.62%. TVL moved from approximately $2.5B to $1.70B in 30 days. This is a significant contraction. The CoV over 90 days cannot be precisely computed without the full daily time-series from DeFiLlama, but a 31% drop in the first 30 days of the window implies material volatility (Ïƒ/Î¼ > 0.15). The protocol had been on a strong growth trajectory (growing from ~$85M in Jan 2024 to ~$2.5B by early 2026), so this represents a market-cycle pull-back rather than a structural crisis. Score: yellow given available data.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -2106,7 +2107,7 @@
             {
               "source_type": "partner_feed",
               "url": null,
-              "reference": "DefiLlama TVL data via data cache — tvl_30d_change_pct: -31.62",
+              "reference": "DefiLlama TVL data via data cache â€” tvl_30d_change_pct: -31.62",
               "title": "Data cache sources.defillama (fetched 2026-04-27T05:07:17Z)",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2117,7 +2118,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "Public announcement same-day (Dec 5, 2022). On-chain default declaration ~8 days later (Dec 13). Fast public communication; measured on-chain enforcement. Exact minute-level timestamp not determinable from public sources.",
-          "evidence_detail": "Maple severed ties with Orthogonal and issued a public statement on December 5, 2022 — the same day the default was confirmed. M11 Credit declared the on-chain default on December 13, 2022 (per M11 Credit Medium post). So the official team statement came within hours of the event; the on-chain action took ~8 days. Score: yellow — initial communication was fast (within hours) but formal on-chain response took ~8 days. The methodology measures minutes from exploit to first official team statement; same-day public announcement is consistent with fast response, but sub-day precision is not available.",
+          "evidence_detail": "Maple severed ties with Orthogonal and issued a public statement on December 5, 2022 â€” the same day the default was confirmed. M11 Credit declared the on-chain default on December 13, 2022 (per M11 Credit Medium post). So the official team statement came within hours of the event; the on-chain action took ~8 days. Score: yellow â€” initial communication was fast (within hours) but formal on-chain response took ~8 days. The methodology measures minutes from exploit to first official team statement; same-day public announcement is consistent with fast response, but sub-day precision is not available.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2127,14 +2128,14 @@
             {
               "source_type": "url",
               "url": "https://medium.com/@M11credit/m11-credit-update-on-orthogonal-trading-9f896c264f8f",
-              "reference": "M11 Credit Medium — on-chain default Dec 13",
+              "reference": "M11 Credit Medium â€” on-chain default Dec 13",
               "title": "M11 Credit Update on Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk — same-day announcement Dec 5",
+              "reference": "CoinDesk â€” same-day announcement Dec 5",
               "title": "Maple Finance severs ties with Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2155,7 +2156,7 @@
             {
               "source_type": "url",
               "url": "https://maple.finance/insights/maple-performance",
-              "reference": "Maple October 2025 volatility event — no pause mentioned",
+              "reference": "Maple October 2025 volatility event â€” no pause mentioned",
               "title": "Maple Risk Management: October 10th, 2025 Volatility Event",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2187,7 +2188,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "GovernorTimelock deployed September 2025; withdrawal manager redeployed November 2025; multi-version loan contract history indicates ongoing new deploys. Not a full protocol redeployment, but new contract surfaces deployed within 12 months.",
-          "evidence_detail": "Profile Â§8 lists two audit events covering new deploys within last 12 months: (1) GovernorTimelock — audited and deployed September 2025 (0xMacro + Sherlock); (2) Withdrawal manager update — audited November 2025 (Spearbit + Sherlock). These represent new Ethereum mainnet contracts within the last 12 months. The multi-version loan contract history (FixedTermLoanV400 through V601, OpenTermLoanV101 through V201, PoolManagerV100 through V400) suggests Maple has an ongoing deployment cadence. Score: yellow — active new deployments within 12 months indicate fresh attack surface but not a full protocol redeployment from scratch.",
+          "evidence_detail": "Profile Â§8 lists two audit events covering new deploys within last 12 months: (1) GovernorTimelock â€” audited and deployed September 2025 (0xMacro + Sherlock); (2) Withdrawal manager update â€” audited November 2025 (Spearbit + Sherlock). These represent new Ethereum mainnet contracts within the last 12 months. The multi-version loan contract history (FixedTermLoanV400 through V601, OpenTermLoanV101 through V201, PoolManagerV100 through V400) suggests Maple has an ongoing deployment cadence. Score: yellow â€” active new deployments within 12 months indicate fresh attack surface but not a full protocol redeployment from scratch.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2197,14 +2198,14 @@
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2025-november/Spearbit-Maple-Finance-WM-Nov-2025.pdf",
-              "reference": "Spearbit — Withdrawal Manager Nov 2025",
+              "reference": "Spearbit â€” Withdrawal Manager Nov 2025",
               "title": "Spearbit Maple Finance Withdrawal Manager Audit November 2025",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "audit_report",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2025-sept-governor-timelock/0xMacro-Maple-Finance-timelock-Sept-2025.pdf",
-              "reference": "0xMacro — GovernorTimelock Sept 2025",
+              "reference": "0xMacro â€” GovernorTimelock Sept 2025",
               "title": "0xMacro Maple Finance GovernorTimelock Audit September 2025",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2214,8 +2215,8 @@
           "factor_id": "RD-F-089",
           "deployment_id": null,
           "score": "gray",
-          "evidence_summary": "No active DeFi insurance coverage on Maple V2 pools found. Maple's institutional, permissioned, overcollateralized lending pools are not underwritten by DeFi insurance providers (Nexus Mutual, Sherlock, Unslashed) — credit risk is structurally outside DeFi insurance scope. Gray per institutional-lending exemption (not red, as this is not a fixable oversight).",
-          "evidence_detail": "Maple V2 pools (syrupUSDC, syrupUSDT, Institutional Secured) are permissioned, KYC-gated, and use overcollateralized institutional borrowers. DeFi insurance providers underwrite smart-contract risk, not credit risk. Nexus Mutual and Sherlock lost money as depositors in Maple V1 pools during the 2022 incident — they were not acting as insurance underwriters but as liquidity providers. Per the agent spec CHRONIC pitfall: 'For permissioned/institutional tokens where DeFi insurance providers structurally exclude these by contract terms, score F089 as gray with curator_note — NOT red. Red would imply a fixable oversight; gray reflects evidence state.' This applies here.",
+          "evidence_summary": "No active DeFi insurance coverage on Maple V2 pools found. Maple's institutional, permissioned, overcollateralized lending pools are not underwritten by DeFi insurance providers (Nexus Mutual, Sherlock, Unslashed) â€” credit risk is structurally outside DeFi insurance scope. Gray per institutional-lending exemption (not red, as this is not a fixable oversight).",
+          "evidence_detail": "Maple V2 pools (syrupUSDC, syrupUSDT, Institutional Secured) are permissioned, KYC-gated, and use overcollateralized institutional borrowers. DeFi insurance providers underwrite smart-contract risk, not credit risk. Nexus Mutual and Sherlock lost money as depositors in Maple V1 pools during the 2022 incident â€” they were not acting as insurance underwriters but as liquidity providers. Per the agent spec CHRONIC pitfall: 'For permissioned/institutional tokens where DeFi insurance providers structurally exclude these by contract terms, score F089 as gray with curator_note â€” NOT red. Red would imply a fixable oversight; gray reflects evidence state.' This applies here.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2225,7 +2226,7 @@
             {
               "source_type": "url",
               "url": "https://blockworks.co/news/nexus-loses-millions-in-maple-finance-credit-pool",
-              "reference": "Blockworks — Nexus Mutual loss as depositor in Maple pools (not insurance underwriter)",
+              "reference": "Blockworks â€” Nexus Mutual loss as depositor in Maple pools (not insurance underwriter)",
               "title": "Nexus Mutual Loses Millions in Maple Finance Credit Pool",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2246,7 +2247,7 @@
             {
               "source_type": "docs",
               "url": "https://docs.maple.finance/technical-resources/security/security",
-              "reference": "Maple Finance security docs — KYC/KYB onboarding model",
+              "reference": "Maple Finance security docs â€” KYC/KYB onboarding model",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2267,7 +2268,7 @@
             {
               "source_type": "url",
               "url": "https://github.com/maple-labs/address-registry/blob/main/MapleAddressRegistryETH.md",
-              "reference": "Maple address registry — pool and withdrawal manager contracts",
+              "reference": "Maple address registry â€” pool and withdrawal manager contracts",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2288,7 +2289,7 @@
             {
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
-              "reference": "maple-finance 00-data-cache.json — sources.deployer.address = null",
+              "reference": "maple-finance 00-data-cache.json â€” sources.deployer.address = null",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2341,7 +2342,7 @@
           "deployment_id": null,
           "score": "gray",
           "evidence_summary": "No known exploit replay patterns against Maple's contract surfaces identified in public data. Selector pattern index not maintained.",
-          "evidence_detail": "Threshold: call-pattern matches known-exploit replay template (selector sequence, calldata shape). Observed state: not monitored. No Rekt DB entries for Maple Finance — no in-sample exploit to derive a replay template from.",
+          "evidence_detail": "Threshold: call-pattern matches known-exploit replay template (selector sequence, calldata shape). Observed state: not monitored. No Rekt DB entries for Maple Finance â€” no in-sample exploit to derive a replay template from.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2351,7 +2352,7 @@
             {
               "source_type": "url",
               "url": "https://rekt.news",
-              "reference": "Rekt DB — zero incidents for maple-finance",
+              "reference": "Rekt DB â€” zero incidents for maple-finance",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2383,7 +2384,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Sybil-surge precursor is structurally inapplicable to Maple's KYC/KYB institutional lending model. Pool onboarding requires identity verification, making sybil EOA clusters unable to gain access. Signal not firing.",
-          "evidence_detail": "Threshold: multiple new EOAs submitting identical transaction patterns within short window. Observed state: structurally not applicable. Maple's pools — both Syrup USDC/USDT and institutional pools — require onboarding that is incompatible with sybil-pattern anonymous EOA clusters. Even retail Syrup pools have terms-of-service gating. The sybil precursor pattern targets permissionless DeFi AMMs and airdrop contracts, not institutional credit markets.",
+          "evidence_detail": "Threshold: multiple new EOAs submitting identical transaction patterns within short window. Observed state: structurally not applicable. Maple's pools â€” both Syrup USDC/USDT and institutional pools â€” require onboarding that is incompatible with sybil-pattern anonymous EOA clusters. Even retail Syrup pools have terms-of-service gating. The sybil precursor pattern targets permissionless DeFi AMMs and airdrop contracts, not institutional credit markets.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2393,7 +2394,7 @@
             {
               "source_type": "docs",
               "url": "https://docs.maple.finance/syrupusdc-usdt-for-lenders/lending",
-              "reference": "Maple syrupUSDC/USDT onboarding — KYB required for institutional pools",
+              "reference": "Maple syrupUSDC/USDT onboarding â€” KYB required for institutional pools",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2404,7 +2405,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "TVL down -31.62% over 30 days ($2.5B â†’ $1.70B); 1-day change only -0.03%. 1h window signal not firing. 30d trend reflects orderly institutional outflow (lstBTC injunction, legal uncertainty, credit cycle), not exploit-drain. Yellow posture on trend.",
-          "evidence_detail": "Detection rule: TVL drops >X% within 1 hour vs 30d baseline. Observed: 1-day change -0.03% (not firing on 1h window). 30-day change -31.62% (attributable to: Cayman injunction blocking ~$150M lstBTC assets Nov 2025; February 2026 website security breach causing reputational drag; broader institutional credit cycle reallocation). No single-hour catastrophic drain event documented. Baseline (30d median): ~$2.1–2.5B range. Gradual orderly decline pattern vs exploit-drain pattern.",
+          "evidence_detail": "Detection rule: TVL drops >X% within 1 hour vs 30d baseline. Observed: 1-day change -0.03% (not firing on 1h window). 30-day change -31.62% (attributable to: Cayman injunction blocking ~$150M lstBTC assets Nov 2025; February 2026 website security breach causing reputational drag; broader institutional credit cycle reallocation). No single-hour catastrophic drain event documented. Baseline (30d median): ~$2.1â€“2.5B range. Gradual orderly decline pattern vs exploit-drain pattern.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2414,21 +2415,21 @@
             {
               "source_type": "url",
               "url": "https://defillama.com/protocol/maple-finance",
-              "reference": "DefiLlama TVL data — maple-finance, tvl_30d_change_pct: -31.62",
+              "reference": "DefiLlama TVL data â€” maple-finance, tvl_30d_change_pct: -31.62",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/policy/2025/11/20/core-foundation-wins-injunction-against-maple-finance-on-alleged-confidentiality-breach",
-              "reference": "Core Foundation injunction blocking syrupBTC launch — Cayman Islands Nov 2025",
+              "reference": "Core Foundation injunction blocking syrupBTC launch â€” Cayman Islands Nov 2025",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.ainvest.com/news/maple-finance-website-outage-36m-default-pressure-borrowed-flow-2602/",
-              "reference": "Maple Finance website outage and $36M default context — Ainvest Feb 2026",
+              "reference": "Maple Finance website outage and $36M default context â€” Ainvest Feb 2026",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2449,7 +2450,7 @@
             {
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
-              "reference": "00-data-cache.json oracle_feeds array — all 19 Chainlink feeds enumerated",
+              "reference": "00-data-cache.json oracle_feeds array â€” all 19 Chainlink feeds enumerated",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2470,14 +2471,14 @@
             {
               "source_type": "url",
               "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2025-november/Spearbit-Maple-Finance-WM-Nov-2025.pdf",
-              "reference": "Spearbit + Sherlock audits of Withdrawal Manager — Nov 2025",
+              "reference": "Spearbit + Sherlock audits of Withdrawal Manager â€” Nov 2025",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://maple.finance/insights/security-of-syrup",
-              "reference": "Maple Finance — withdrawal cooldowns prevent flash loan attacks (Security of Syrup blog)",
+              "reference": "Maple Finance â€” withdrawal cooldowns prevent flash loan attacks (Security of Syrup blog)",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2488,7 +2489,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Most recent governance activity is MIP-020 (routine SSF allocation, January 2026). No proposals with admin-role-change, upgrade, delegatecall, or SC-threshold-reduction patterns. GovernorTimelock 1-day delay active. Signal not firing.",
-          "evidence_detail": "Threshold: proposal queued with admin-role-change, upgrade, delegatecall, or flash-loanable proposer. Observed: MIP-020 (SSF allocation Jan 2026), MIP-019 (buyback model Oct 2025), MIP-017 (MPL conversion window Oct 2025) — all routine tokenomics. No proposals from <30-day-old addresses with privileged payloads detected. GovernorTimelock (0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b) min delay 86400s with daoMultisig as proposer provides structural resistance to flash-loan governance attacks.",
+          "evidence_detail": "Threshold: proposal queued with admin-role-change, upgrade, delegatecall, or flash-loanable proposer. Observed: MIP-020 (SSF allocation Jan 2026), MIP-019 (buyback model Oct 2025), MIP-017 (MPL conversion window Oct 2025) â€” all routine tokenomics. No proposals from <30-day-old addresses with privileged payloads detected. GovernorTimelock (0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b) min delay 86400s with daoMultisig as proposer provides structural resistance to flash-loan governance attacks.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2498,14 +2499,14 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b",
-              "reference": "GovernorTimelock at 0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b — minDelay 86400s",
+              "reference": "GovernorTimelock at 0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b â€” minDelay 86400s",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "governance_post",
               "url": "https://community.maple.finance/t/mip-020-h1-2026-ssf-allocation/1110",
-              "reference": "MIP-020 H1 2026 SSF Allocation — Maple Governance Forum",
+              "reference": "MIP-020 H1 2026 SSF Allocation â€” Maple Governance Forum",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2526,7 +2527,7 @@
             {
               "source_type": "docs",
               "url": "https://docs.maple.finance/technical-resources/security/security",
-              "reference": "Maple security docs — Tenderly Web3 Actions + OZ Defender + PagerDuty monitoring",
+              "reference": "Maple security docs â€” Tenderly Web3 Actions + OZ Defender + PagerDuty monitoring",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2547,7 +2548,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/address-registry/blob/main/MapleAddressRegistryETH.md",
-              "reference": "Maple address registry — CCIP Receiver 0x02B6A75..., SyrupOftAdapter 0x688AEe...",
+              "reference": "Maple address registry â€” CCIP Receiver 0x02B6A75..., SyrupOftAdapter 0x688AEe...",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2568,7 +2569,7 @@
             {
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
-              "reference": "00-data-cache.json oracle_feeds — USDC/USD 0.25% deviation threshold, USDT/USD 0.25%",
+              "reference": "00-data-cache.json oracle_feeds â€” USDC/USD 0.25% deviation threshold, USDT/USD 0.25%",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2579,7 +2580,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "February 2026: maple.finance website taken offline due to confirmed security breach. Smart contracts unaffected per Maple statement. Signal fired and cleared. Currently operating normally. Historical fire within recent window warrants yellow.",
-          "evidence_detail": "Threshold: hash of production frontend JS changes vs baseline, or DNS config change, without change-management allowlist match. Observed: February 2026 website outage described as security breach affecting website infrastructure only (smart contracts, user deposits unaffected). The mechanism is not publicly detailed — could be DNS hijack, CDN compromise, web server compromise. Signal fired (website down/compromised) and has since cleared (site restored). As of 2026-04-27, maple.finance and syrup.fi are operating. Historical fire within 60 days warrants yellow rather than green.",
+          "evidence_detail": "Threshold: hash of production frontend JS changes vs baseline, or DNS config change, without change-management allowlist match. Observed: February 2026 website outage described as security breach affecting website infrastructure only (smart contracts, user deposits unaffected). The mechanism is not publicly detailed â€” could be DNS hijack, CDN compromise, web server compromise. Signal fired (website down/compromised) and has since cleared (site restored). As of 2026-04-27, maple.finance and syrup.fi are operating. Historical fire within 60 days warrants yellow rather than green.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2589,7 +2590,7 @@
             {
               "source_type": "url",
               "url": "https://www.ainvest.com/news/maple-finance-website-outage-36m-default-pressure-borrowed-flow-2602/",
-              "reference": "Ainvest — Maple Finance website outage and $36M default (February 2026)",
+              "reference": "Ainvest â€” Maple Finance website outage and $36M default (February 2026)",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2610,7 +2611,7 @@
             {
               "source_type": "url",
               "url": "https://maple.finance/insights/syrupusdc-expands-to-solana",
-              "reference": "Maple Finance Solana expansion via CCIP — proof-verified bridge",
+              "reference": "Maple Finance Solana expansion via CCIP â€” proof-verified bridge",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2621,7 +2622,7 @@
           "deployment_id": null,
           "score": "gray",
           "evidence_summary": "Requires off-chain signing telemetry (team opt-in). Not available publicly. Will be gray for virtually all protocols.",
-          "evidence_detail": "Threshold: admin EOA signs from geography/device fingerprint inconsistent with prior history. Observed state: off-chain telemetry unavailable. Maple team is doxxed (Sydney Powell, Joe Flanagan — Australia-based), so geographic fingerprint expectations are established, but actual signing telemetry is not publicly available.",
+          "evidence_detail": "Threshold: admin EOA signs from geography/device fingerprint inconsistent with prior history. Observed state: off-chain telemetry unavailable. Maple team is doxxed (Sydney Powell, Joe Flanagan â€” Australia-based), so geographic fingerprint expectations are established, but actual signing telemetry is not publicly available.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2642,7 +2643,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Last commit to maple-labs/maple-core-v2 was 2026-02-19. No public reports of unauthorized force-push or non-protocol-account push to protected branches. No anomaly publicly detected.",
-          "evidence_detail": "Threshold: force-push or unauthorized push to main/production-tag branch. Observed: last commit 2026-02-19 (from data-cache github.last_commit_date). No public GitHub security advisory or report of unauthorized push. maple-labs org has standard branch protection expected for a protocol of this maturity (15 audit engagements, 6 firms). Phase-2 signal — GitHub monitoring not live in pipeline.",
+          "evidence_detail": "Threshold: force-push or unauthorized push to main/production-tag branch. Observed: last commit 2026-02-19 (from data-cache github.last_commit_date). No public GitHub security advisory or report of unauthorized push. maple-labs org has standard branch protection expected for a protocol of this maturity (15 audit engagements, 6 firms). Phase-2 signal â€” GitHub monitoring not live in pipeline.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2673,7 +2674,7 @@
             {
               "source_type": "url",
               "url": "https://x.com/maplefinance",
-              "reference": "Maple Finance X account @maplefinance — active official channel",
+              "reference": "Maple Finance X account @maplefinance â€” active official channel",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -2684,7 +2685,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "Governance on Snapshot (maple-protocol.eth) and GovernorTimelock shows normal cadence. MIPs 017-020 are sequential, well-spaced tokenomics proposals. No unusual proposal ratio detected.",
-          "evidence_detail": "Threshold: ratio of pending-to-executed proposals exceeds 30d baseline by >3Ïƒ. Observed: MIP-017 (Oct 2025), MIP-018 (Jul 2025), MIP-019 (Nov 2025), MIP-020 (Jan 2026) — normal sequential governance cadence. No proposal accumulation or stalling. Snapshot space maple-protocol.eth appears active and normally paced.",
+          "evidence_detail": "Threshold: ratio of pending-to-executed proposals exceeds 30d baseline by >3Ïƒ. Observed: MIP-017 (Oct 2025), MIP-018 (Jul 2025), MIP-019 (Nov 2025), MIP-020 (Jan 2026) â€” normal sequential governance cadence. No proposal accumulation or stalling. Snapshot space maple-protocol.eth appears active and normally paced.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -2694,7 +2695,7 @@
             {
               "source_type": "url",
               "url": "https://community.maple.finance/c/proposals/5",
-              "reference": "Maple Governance Forum — proposal topics listing",
+              "reference": "Maple Governance Forum â€” proposal topics listing",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3336,7 +3337,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "GitHub last commit 2026-02-19 (data-cache). Most recent audit: Nov 2025 (WM by Spearbit+Sherlock). Feb 2026 commits are post-audit and unverified by any public audit. Strong audit cadence historically but a ~3-month gap exists.",
-          "evidence_detail": "Maple has maintained excellent audit cadence through Nov 2025 (15 engagements across 6 firms). However, GitHub shows commits as recently as Feb 2026 which post-date the last audit. The scope of those Feb 2026 commits is unknown — could be tests/docs or code changes. Yellow because Maple's demonstrated cadence makes a silent major unaudited change less likely, but the 3-month post-audit gap is a documented finding.",
+          "evidence_detail": "Maple has maintained excellent audit cadence through Nov 2025 (15 engagements across 6 firms). However, GitHub shows commits as recently as Feb 2026 which post-date the last audit. The scope of those Feb 2026 commits is unknown â€” could be tests/docs or code changes. Yellow because Maple's demonstrated cadence makes a silent major unaudited change less likely, but the 3-month post-audit gap is a documented finding.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3465,7 +3466,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/maple-core-v2/search?q=_disableInitializers",
-              "reference": "GitHub search: maple-labs/maple-core-v2 for _disableInitializers — 0 results",
+              "reference": "GitHub search: maple-labs/maple-core-v2 for _disableInitializers â€” 0 results",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3538,7 +3539,7 @@
           "factor_id": "RD-F-147",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "Bridge surface confirmed: (1) Chainlink CCIP — Maple CCIP Receiver proxy (0x02B6A75c5D1F430F0614dc5AC8aD5F9D35fbA2c4) for syrupUSDC â†’ Solana bridging. (2) LayerZero OFT — SyrupOftAdapter (0x688AEe022AA544f150678B8E5720b6b96a9E9a2F) for SYRUP token cross-chain. Both are supplementary to core lending TVL.",
+          "evidence_summary": "Bridge surface confirmed: (1) Chainlink CCIP â€” Maple CCIP Receiver proxy (0x02B6A75c5D1F430F0614dc5AC8aD5F9D35fbA2c4) for syrupUSDC â†’ Solana bridging. (2) LayerZero OFT â€” SyrupOftAdapter (0x688AEe022AA544f150678B8E5720b6b96a9E9a2F) for SYRUP token cross-chain. Both are supplementary to core lending TVL.",
           "evidence_detail": "Profile Â§7 confirms both bridge surfaces. Address registry confirms both contract addresses. DefiLlama Solana TVL = $0 as of 2026-04-27 suggesting bridge TVL is minimal. Core lending product ($1.7B TVL) is entirely on Ethereum and not bridge-dependent.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -3549,7 +3550,7 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/address-registry/blob/main/MapleAddressRegistryETH.md",
-              "reference": "Maple address registry — CCIP Receiver and SyrupOftAdapter",
+              "reference": "Maple address registry â€” CCIP Receiver and SyrupOftAdapter",
               "title": "Maple Address Registry ETH",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
@@ -3566,8 +3567,8 @@
           "factor_id": "RD-F-148",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "CCIP uses Chainlink DON — validator count managed by Chainlink, not readable from MapleCCIPReceiver. CCIP DON typically uses multiple independent node operators. Cannot verify exact count from application contract. LayerZero surface assessed under RD-F-179.",
-          "evidence_detail": "MapleCCIPReceiver delegates all message authentication to CCIP Router (0x80226fc0ee2b096224eeac085bb9a8cba1196f7d). Chainlink CCIP's DON is not a classic multisig — validator count and threshold are Chainlink protocol parameters. For LayerZero OFT (SyrupOftAdapter), use RD-F-179.",
+          "evidence_summary": "CCIP uses Chainlink DON â€” validator count managed by Chainlink, not readable from MapleCCIPReceiver. CCIP DON typically uses multiple independent node operators. Cannot verify exact count from application contract. LayerZero surface assessed under RD-F-179.",
+          "evidence_detail": "MapleCCIPReceiver delegates all message authentication to CCIP Router (0x80226fc0ee2b096224eeac085bb9a8cba1196f7d). Chainlink CCIP's DON is not a classic multisig â€” validator count and threshold are Chainlink protocol parameters. For LayerZero OFT (SyrupOftAdapter), use RD-F-179.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3587,7 +3588,7 @@
           "factor_id": "RD-F-149",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "CCIP threshold managed by Chainlink protocol — not configurable by Maple or readable from MapleCCIPReceiver. Trusts Chainlink DON consensus. For LayerZero OFT, see RD-F-179.",
+          "evidence_summary": "CCIP threshold managed by Chainlink protocol â€” not configurable by Maple or readable from MapleCCIPReceiver. Trusts Chainlink DON consensus. For LayerZero OFT, see RD-F-179.",
           "evidence_detail": "CCIP message validation threshold is a Chainlink infrastructure parameter, not application-layer. Cannot be verified from Maple's contract. Yellow because threshold not directly confirmable.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -3598,7 +3599,7 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821#code",
-              "reference": "MapleCCIPReceiver impl — no threshold getter",
+              "reference": "MapleCCIPReceiver impl â€” no threshold getter",
               "title": "Maple CCIP Receiver implementation",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3629,7 +3630,7 @@
           "factor_id": "RD-F-151",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "MapleCCIPReceiver does not use ecrecover — relies on CCIP Router as trusted authority. SyrupOftAdapter delegates to LayerZero endpoint. Zero-address ecrecover vulnerability pattern (Wormhole class) is not applicable at application layer. Security depends on upstream router/endpoint trust. [â˜… CRITICAL — NOT RED]",
+          "evidence_summary": "MapleCCIPReceiver does not use ecrecover â€” relies on CCIP Router as trusted authority. SyrupOftAdapter delegates to LayerZero endpoint. Zero-address ecrecover vulnerability pattern (Wormhole class) is not applicable at application layer. Security depends on upstream router/endpoint trust. [â˜… CRITICAL â€” NOT RED]",
           "evidence_detail": "MapleCCIPReceiver (0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821) ccipReceive() function accepts messages only from official CCIP Router via CCIPDefensiveReceiverOnlyCCIPRouter pattern. No contract-level ecrecover. SyrupOftAdapter (0x08881C46f82325ce2e403097be40066fa8c326b2) delegates signature verification to LayerZero EndpointV2. Wormhole-class zero-address ecrecover bug is architecturally inapplicable to both designs. Yellow (not green) because the security model relies entirely on upstream provider trustworthiness which is partially gray.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -3640,8 +3641,8 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821#code",
-              "reference": "MapleCCIPReceiver impl 0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821 — ccipReceive function",
-              "title": "Maple CCIP Receiver implementation — ccipReceive",
+              "reference": "MapleCCIPReceiver impl 0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821 â€” ccipReceive function",
+              "title": "Maple CCIP Receiver implementation â€” ccipReceive",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
@@ -3668,8 +3669,8 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821#code",
-              "reference": "MapleCCIPReceiver impl — setChainType and message processing",
-              "title": "Maple CCIP Receiver — source chain validation",
+              "reference": "MapleCCIPReceiver impl â€” setChainType and message processing",
+              "title": "Maple CCIP Receiver â€” source chain validation",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -3689,8 +3690,8 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821#code",
-              "reference": "MapleCCIPReceiver impl — getMessage mapping and FailedMessage",
-              "title": "Maple CCIP Receiver — replay protection",
+              "reference": "MapleCCIPReceiver impl â€” getMessage mapping and FailedMessage",
+              "title": "Maple CCIP Receiver â€” replay protection",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -3699,8 +3700,8 @@
           "factor_id": "RD-F-154",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "CCIP does not use Merkle root validation — uses DON consensus. Nomad bytes32(0) bug class is architecturally inapplicable to CCIP design. No bytes32(0) root acceptance pattern in MapleCCIPReceiver or SyrupOftAdapter. [â˜… CRITICAL — NOT RED]",
-          "evidence_detail": "MapleCCIPReceiver source inspected — no Merkle root validation present. CCIP uses DON consensus model where message integrity is guaranteed by the protocol, not by application-layer Merkle proofs. The Nomad bug class (bytes32(0) as valid root) requires an application-layer root acceptance check that is absent in CCIP architecture. SyrupOftAdapter (LayerZero OFT) does not use root-based validation at application layer. Green with medium confidence because CCIP architecture renders the bug class structurally inapplicable.",
+          "evidence_summary": "CCIP does not use Merkle root validation â€” uses DON consensus. Nomad bytes32(0) bug class is architecturally inapplicable to CCIP design. No bytes32(0) root acceptance pattern in MapleCCIPReceiver or SyrupOftAdapter. [â˜… CRITICAL â€” NOT RED]",
+          "evidence_detail": "MapleCCIPReceiver source inspected â€” no Merkle root validation present. CCIP uses DON consensus model where message integrity is guaranteed by the protocol, not by application-layer Merkle proofs. The Nomad bug class (bytes32(0) as valid root) requires an application-layer root acceptance check that is absent in CCIP architecture. SyrupOftAdapter (LayerZero OFT) does not use root-based validation at application layer. Green with medium confidence because CCIP architecture renders the bug class structurally inapplicable.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3710,8 +3711,8 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821#code",
-              "reference": "MapleCCIPReceiver impl 0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821 — no Merkle root logic",
-              "title": "Maple CCIP Receiver — no Merkle root validation",
+              "reference": "MapleCCIPReceiver impl 0x23CEF2965Db19f67A996371F9Cb1A2F33D2b4821 â€” no Merkle root logic",
+              "title": "Maple CCIP Receiver â€” no Merkle root validation",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -3720,7 +3721,7 @@
           "factor_id": "RD-F-155",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "CCIP: Chainlink manages DON operator set rotation — not observable from MapleCCIPReceiver. LayerZero DVN: not assessed (layerzeroscan rate-limited). Cannot confirm rotation recency for either bridge surface.",
+          "evidence_summary": "CCIP: Chainlink manages DON operator set rotation â€” not observable from MapleCCIPReceiver. LayerZero DVN: not assessed (layerzeroscan rate-limited). Cannot confirm rotation recency for either bridge surface.",
           "evidence_detail": "No ValidatorSetUpdated event observable from MapleCCIPReceiver. CCIP DON rotation is Chainlink-managed. LayerZero DVN operator set not confirmed due to API rate-limiting.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -3774,14 +3775,14 @@
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
               "reference": "Data-cache DefiLlama chains breakdown",
-              "title": "Data cache — Solana TVL = $0",
+              "title": "Data cache â€” Solana TVL = $0",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x688AEe022AA544f150678B8E5720b6b96a9E9a2F",
               "reference": "SyrupOftAdapter token balance ~$1.07M",
-              "title": "SyrupOftAdapter — SYRUP token balance",
+              "title": "SyrupOftAdapter â€” SYRUP token balance",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -3801,7 +3802,7 @@
             {
               "source_type": "url",
               "url": "https://www.sentinelone.com/labs/contagious-interview-threat-actors-scout-cyber-intel-platforms-reveal-plans-and-ops/",
-              "reference": "SentinelOne — DPRK threat actors 2025 landscape",
+              "reference": "SentinelOne â€” DPRK threat actors 2025 landscape",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3843,7 +3844,7 @@
             {
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
-              "reference": "00-data-cache.json — github.package_json_present = false, foundry_toml_present = true",
+              "reference": "00-data-cache.json â€” github.package_json_present = false, foundry_toml_present = true",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3864,7 +3865,7 @@
             {
               "source_type": "url",
               "url": "https://www.ainvest.com/news/maple-finance-website-outage-36m-default-pressure-borrowed-flow-2602/",
-              "reference": "Maple Finance website outage Feb 2026 — elevated typosquat risk context",
+              "reference": "Maple Finance website outage Feb 2026 â€” elevated typosquat risk context",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3885,7 +3886,7 @@
             {
               "source_type": "local_reference",
               "url": "risk-dashboard/.research/protocols/maple-finance/00-data-cache.json",
-              "reference": "00-data-cache.json rekt.incidents = [] — no in-sample exploits",
+              "reference": "00-data-cache.json rekt.incidents = [] â€” no in-sample exploits",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3906,7 +3907,7 @@
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "Orthogonal Trading default Dec 2022 — credit event not smart contract exploit",
+              "reference": "Orthogonal Trading default Dec 2022 â€” credit event not smart contract exploit",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3917,7 +3918,7 @@
           "deployment_id": null,
           "score": "gray",
           "evidence_summary": "Paste/Sentry monitoring not configured. February 2026 website breach raises possibility of infrastructure credential exposure. No public paste-site credential dump referencing maple.finance or syrup.fi identified.",
-          "evidence_detail": "Threshold: active credential leak confirmed on paste site, Sentry-alt, or credential dump. Observed: not monitored via HaveIBeenPwned, PasteHunter, or equivalent. The February 2026 website security breach is relevant context — if it involved a web server or CDN compromise, infrastructure credentials may have been at risk. No public credential dump identified. Curator follow-up recommended post-incident.",
+          "evidence_detail": "Threshold: active credential leak confirmed on paste site, Sentry-alt, or credential dump. Observed: not monitored via HaveIBeenPwned, PasteHunter, or equivalent. The February 2026 website security breach is relevant context â€” if it involved a web server or CDN compromise, infrastructure credentials may have been at risk. No public credential dump identified. Curator follow-up recommended post-incident.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3927,7 +3928,7 @@
             {
               "source_type": "url",
               "url": "https://www.ainvest.com/news/maple-finance-website-outage-36m-default-pressure-borrowed-flow-2602/",
-              "reference": "Maple Finance website outage Feb 2026 — potential credential exposure context",
+              "reference": "Maple Finance website outage Feb 2026 â€” potential credential exposure context",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3938,7 +3939,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No scam-coordinator flag identified in Maple's Discord/Telegram/X channels. No ScamSniffer or Chainabuse entries linking Maple official channel admins to scam-coordinator watchlists.",
-          "evidence_detail": "Threshold: protocol-adjacent social channel admin flagged on scam-coordinator watchlist. Observed: no public reports of scam-coordinators operating within Maple's official social channels. Maple's primary social presence is @maplefinance on X with consistent identity. Protocol is Immunefi-listed with active bug bounty — institutional security posture inconsistent with scam-coordinator tolerance.",
+          "evidence_detail": "Threshold: protocol-adjacent social channel admin flagged on scam-coordinator watchlist. Observed: no public reports of scam-coordinators operating within Maple's official social channels. Maple's primary social presence is @maplefinance on X with consistent identity. Protocol is Immunefi-listed with active bug bounty â€” institutional security posture inconsistent with scam-coordinator tolerance.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3948,7 +3949,7 @@
             {
               "source_type": "url",
               "url": "https://immunefi.com/bug-bounty/maple/",
-              "reference": "Immunefi bug bounty program — maple.finance, active program since Jan 2022",
+              "reference": "Immunefi bug bounty program â€” maple.finance, active program since Jan 2022",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -3959,7 +3960,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "Maple V1 deprecated December 11, 2022. Docs still reference V1 UI as accessible for three legacy pools. On-chain balances of V1 contracts not independently confirmed as zero. Likely below $100K threshold but not on-chain verified. Yellow pending curator confirmation.",
-          "evidence_detail": "Maple V1 migration to V2 occurred December 11, 2022. Docs at https://docs.maple.finance/maple-1.0/maple-token-holders reference three V1 pools still accessible via V1 UI: Orthogonal USDC 01, Maven 11 USDC 01, Maven wETH 01. These are deprecated contracts with residual user positions that can still be claimed. The DefiLlama TVL data-cache records all TVL under the V2 slug; no V1-specific TVL breakout is available. Given the post-incident collapse (TVL from ~$900M to ~$20M in 2022-2023) and subsequent V2 migration, residual V1 pool balances are plausibly below the $100K material threshold — but this is not positively confirmed on-chain. F166 red threshold: > $100K in assets in officially-deprecated contracts. Score: yellow (surface still exists, material balance not confirmed as zero, curator action required for on-chain balance check). Not red because residual is plausibly below threshold; not green because V1 contracts are still referenced as active and no on-chain zero-balance confirmation exists.",
+          "evidence_detail": "Maple V1 migration to V2 occurred December 11, 2022. Docs at https://docs.maple.finance/maple-1.0/maple-token-holders reference three V1 pools still accessible via V1 UI: Orthogonal USDC 01, Maven 11 USDC 01, Maven wETH 01. These are deprecated contracts with residual user positions that can still be claimed. The DefiLlama TVL data-cache records all TVL under the V2 slug; no V1-specific TVL breakout is available. Given the post-incident collapse (TVL from ~$900M to ~$20M in 2022-2023) and subsequent V2 migration, residual V1 pool balances are plausibly below the $100K material threshold â€” but this is not positively confirmed on-chain. F166 red threshold: > $100K in assets in officially-deprecated contracts. Score: yellow (surface still exists, material balance not confirmed as zero, curator action required for on-chain balance check). Not red because residual is plausibly below threshold; not green because V1 contracts are still referenced as active and no on-chain zero-balance confirmation exists.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -3969,8 +3970,8 @@
             {
               "source_type": "docs",
               "url": "https://docs.maple.finance/maple-1.0/maple-token-holders",
-              "reference": "Maple V1 deprecation docs — still references three legacy pools as accessible",
-              "title": "Access to deprecated Maple 1.0 — Maple Finance Docs",
+              "reference": "Maple V1 deprecation docs â€” still references three legacy pools as accessible",
+              "title": "Access to deprecated Maple 1.0 â€” Maple Finance Docs",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -4157,14 +4158,14 @@
             {
               "source_type": "url",
               "url": "https://immunefi.com/bug-bounty/maple/information/",
-              "reference": "Immunefi — Maple bug bounty program",
+              "reference": "Immunefi â€” Maple bug bounty program",
               "title": "Maple Bug Bounties | Immunefi",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "docs",
               "url": "https://docs.maple.finance/technical-resources/security/security",
-              "reference": "Maple security docs — security@maple.finance contact",
+              "reference": "Maple security docs â€” security@maple.finance contact",
               "title": "Security | Maple Finance Docs",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -4175,7 +4176,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "No explicit written SLA for acknowledgment-time published by Maple (e.g., 72h ack commitment). Immunefi platform standard implies some SLA by convention but Maple has not publicly committed to a specific window.",
-          "evidence_detail": "Maple's security docs page and Immunefi program description do not state a specific acknowledgment-time SLA. Immunefi's platform infrastructure has its own standard processes but these are platform defaults, not Maple-specific commitments. No evidence of a publicly stated SLA found in docs, blog, or Immunefi program text as of 2026-04-27. Yellow threshold: SLA stated but not tested or SLA > 72h. Here the situation is: no SLA stated at all — which is effectively worse than yellow on the methodology scale, but given that an active program exists and the email channel is present, yellow is appropriate over red (red would require no disclosure channel at all or explicit evidence of non-response).",
+          "evidence_detail": "Maple's security docs page and Immunefi program description do not state a specific acknowledgment-time SLA. Immunefi's platform infrastructure has its own standard processes but these are platform defaults, not Maple-specific commitments. No evidence of a publicly stated SLA found in docs, blog, or Immunefi program text as of 2026-04-27. Yellow threshold: SLA stated but not tested or SLA > 72h. Here the situation is: no SLA stated at all â€” which is effectively worse than yellow on the methodology scale, but given that an active program exists and the email channel is present, yellow is appropriate over red (red would require no disclosure channel at all or explicit evidence of non-response).",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -4192,7 +4193,7 @@
             {
               "source_type": "url",
               "url": "https://immunefi.com/bug-bounty/maple/information/",
-              "reference": "Immunefi — Maple program (no SLA stated in description)",
+              "reference": "Immunefi â€” Maple program (no SLA stated in description)",
               "title": "Maple Bug Bounties | Immunefi",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -4203,7 +4204,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No evidence of a disclosed vulnerability that was known and ignored before exploitation. The sole incident (Orthogonal default) was a credit/counterparty event, not a smart-contract vulnerability. No prior-ignored disclosure found in any searched source.",
-          "evidence_detail": "Searched: rekt.news, CoinDesk coverage, M11 Credit post-mortem, hacksdatabase, public post-mortems. No evidence of a security researcher disclosing a vulnerability to Maple that was ignored before a subsequent exploit. The 2022 incident was a credit/operational failure — Orthogonal Trading misrepresented its financials; this was not a prior-disclosed-and-ignored code vulnerability. No smart-contract exploits have occurred. Green threshold: no evidence of prior known-ignored disclosure.",
+          "evidence_detail": "Searched: rekt.news, CoinDesk coverage, M11 Credit post-mortem, hacksdatabase, public post-mortems. No evidence of a security researcher disclosing a vulnerability to Maple that was ignored before a subsequent exploit. The 2022 incident was a credit/operational failure â€” Orthogonal Trading misrepresented its financials; this was not a prior-disclosed-and-ignored code vulnerability. No smart-contract exploits have occurred. Green threshold: no evidence of prior known-ignored disclosure.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -4213,14 +4214,14 @@
             {
               "source_type": "partner_feed",
               "url": null,
-              "reference": "Rekt DB — zero smart-contract incidents",
+              "reference": "Rekt DB â€” zero smart-contract incidents",
               "title": "Data cache sources.rekt.incidents = []",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://www.coindesk.com/markets/2022/12/05/maple-finance-severs-ties-with-orthogonal-trading-alleging-it-misrepresented-financial-position",
-              "reference": "CoinDesk coverage — no prior-ignored disclosure mentioned",
+              "reference": "CoinDesk coverage â€” no prior-ignored disclosure mentioned",
               "title": "Maple Finance severs ties with Orthogonal Trading",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -4231,7 +4232,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "No CVE or GHSA advisory found for Maple Finance (the DeFi protocol) in GitHub Advisory Database, NIST NVD, or public advisory feeds as of 2026-04-27.",
-          "evidence_detail": "Searched GitHub Advisory Database, CVEdetails.com, and general advisory sources on 2026-04-27. Results for 'Maple' on CVEdetails returned entries for 'Maplesoft Maple T.a.' (mathematical software — a different product). No GHSA or CVE entries found for the Maple Finance DeFi protocol. No smart-contract exploits have been publicly cataloged in a way that would generate a CVE/GHSA. Green threshold: no CVE/GHSA advisory issued.",
+          "evidence_detail": "Searched GitHub Advisory Database, CVEdetails.com, and general advisory sources on 2026-04-27. Results for 'Maple' on CVEdetails returned entries for 'Maplesoft Maple T.a.' (mathematical software â€” a different product). No GHSA or CVE entries found for the Maple Finance DeFi protocol. No smart-contract exploits have been publicly cataloged in a way that would generate a CVE/GHSA. Green threshold: no CVE/GHSA advisory issued.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -4241,7 +4242,7 @@
             {
               "source_type": "url",
               "url": "https://github.com/advisories",
-              "reference": "GitHub Advisory Database search — no entries for maple-finance DeFi",
+              "reference": "GitHub Advisory Database search â€” no entries for maple-finance DeFi",
               "title": "GitHub Advisory Database",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -4263,13 +4264,13 @@
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x688AEe022AA544f150678B8E5720b6b96a9E9a2F",
               "reference": "SyrupOftAdapter proxy 0x688AEe022AA544f150678B8E5720b6b96a9E9a2F",
-              "title": "SyrupOftAdapter proxy — LayerZero EndpointV2 interactions confirmed",
+              "title": "SyrupOftAdapter proxy â€” LayerZero EndpointV2 interactions confirmed",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "url",
               "url": "https://gist.github.com/IdoBn/7753f16fdb6810b11c5c87cdf11f8aa0",
-              "reference": "Blockaid DVN audit tool — for curator follow-up",
+              "reference": "Blockaid DVN audit tool â€” for curator follow-up",
               "title": "Blockaid LayerZero DVN audit script",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
@@ -4286,7 +4287,7 @@
           "factor_id": "RD-F-180",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "Oracle addresses in MapleGlobals stored in mutable mapping(address => PriceOracle). setPriceOracle(asset_, oracle_, maxDelay_) callable by onlyGovernor — fully admin-replaceable without contract redeployment. EXCEPTION: syrupRateProvider (peripheral, DeFi integrations only) has immutable pool address — not used in core lending liquidation path. [â˜… CRITICAL — NOT RED]",
+          "evidence_summary": "Oracle addresses in MapleGlobals stored in mutable mapping(address => PriceOracle). setPriceOracle(asset_, oracle_, maxDelay_) callable by onlyGovernor â€” fully admin-replaceable without contract redeployment. EXCEPTION: syrupRateProvider (peripheral, DeFi integrations only) has immutable pool address â€” not used in core lending liquidation path. [â˜… CRITICAL â€” NOT RED]",
           "evidence_detail": "MapleGlobals.sol: priceOracleOf is a mapping (not immutable). setPriceOracle() function: onlyGovernor, updates priceOracleOf[asset_].oracle and maxDelay. setManualOverridePrice() also available for emergency price override. syrupRateProvider (0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb) has immutable pool address (0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b) but serves Balancer-style DeFi integrations, not core lending liquidation pricing. The usdcUsdOracle stub (0x5DC5E14be1280E747cD036c089C96744EBF064E7) is a Globals-managed address that can be replaced by governor.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -4297,15 +4298,15 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol — mutable oracle mapping and setPriceOracle() function",
-              "title": "MapleGlobals source — setPriceOracle with onlyGovernor",
+              "reference": "MapleGlobals.sol â€” mutable oracle mapping and setPriceOracle() function",
+              "title": "MapleGlobals source â€” setPriceOracle with onlyGovernor",
               "retrieved_at": "2026-04-27T00:00:00Z"
             },
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb#code",
-              "reference": "syrupRateProvider 0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb — immutable pool",
-              "title": "syrupRateProvider — immutable pool address",
+              "reference": "syrupRateProvider 0xd2C59781F1Db84080A0592CE83Fe265642A4a8Eb â€” immutable pool",
+              "title": "syrupRateProvider â€” immutable pool address",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -4315,7 +4316,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "MapleGlobals oracle system requires governor-configured oracle addresses (onlyGovernor for setPriceOracle). No permissionless pool oracle acceptance. All oracle sources are whitelisted Chainlink feeds. No permissionless listing mechanism for oracle sources.",
-          "evidence_detail": "setPriceOracle() is onlyGovernor — adding a new oracle source requires a governance action. No factory-pattern or permissionless oracle registration path exists in MapleGlobals. Protocol cannot accept spot prices from permissionlessly-created pools.",
+          "evidence_detail": "setPriceOracle() is onlyGovernor â€” adding a new oracle source requires a governance action. No factory-pattern or permissionless oracle registration path exists in MapleGlobals. Protocol cannot accept spot prices from permissionlessly-created pools.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -4325,8 +4326,8 @@
             {
               "source_type": "github",
               "url": "https://github.com/maple-labs/globals-v2/blob/main/contracts/MapleGlobals.sol",
-              "reference": "MapleGlobals.sol setPriceOracle — onlyGovernor access control",
-              "title": "MapleGlobals source — permissioned oracle configuration",
+              "reference": "MapleGlobals.sol setPriceOracle â€” onlyGovernor access control",
+              "title": "MapleGlobals source â€” permissioned oracle configuration",
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
           ]
@@ -4336,7 +4337,7 @@
           "deployment_id": null,
           "score": "not_applicable",
           "evidence_summary": "Maple does not operate a Security Council multisig governance model. Its governance is Snapshot â†’ daoMultisig â†’ GovernorTimelock. RD-F-182's SC threshold-reduction signal has no direct analog here.",
-          "evidence_detail": "RD-F-182 fires when a Security Council multisig executes threshold reduction (e.g., 3/5 â†’ 2/5) or timelock removal — the Drift Protocol Apr 2026 pattern. Maple's governance uses a Snapshot vote ratified by a DAO-level multisig feeding a GovernorTimelock with 1-day min delay. There is no separate Security Council with its own threshold management. The daoMultisig (Safe, 0xd6d4Bcde...) threshold is unknown (safe_api_gap flag), but it is the primary governance actor, not a supplementary Security Council layer. Signal not applicable per architecture.",
+          "evidence_detail": "RD-F-182 fires when a Security Council multisig executes threshold reduction (e.g., 3/5 â†’ 2/5) or timelock removal â€” the Drift Protocol Apr 2026 pattern. Maple's governance uses a Snapshot vote ratified by a DAO-level multisig feeding a GovernorTimelock with 1-day min delay. There is no separate Security Council with its own threshold management. The daoMultisig (Safe, 0xd6d4Bcde...) threshold is unknown (safe_api_gap flag), but it is the primary governance actor, not a supplementary Security Council layer. Signal not applicable per architecture.",
           "collection_mode": "programmatic",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -4346,7 +4347,7 @@
             {
               "source_type": "etherscan",
               "url": "https://etherscan.io/address/0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b",
-              "reference": "GovernorTimelock 0x2eFFf88... — proposer=daoMultisig, executor=operationalAdmin, canceller=securityAdmin",
+              "reference": "GovernorTimelock 0x2eFFf88... â€” proposer=daoMultisig, executor=operationalAdmin, canceller=securityAdmin",
               "title": null,
               "retrieved_at": "2026-04-27T00:00:00Z"
             }
@@ -4438,6 +4439,36 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "D",
+          "critical_flag_count": 2,
+          "red_category_count": 0,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
+          "risk_score": 24.79,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:15:06Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "D",
+          "critical_flag_count": 2,
+          "red_category_count": 0,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
+          "risk_score": 24.79,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-06-12T08:14:55Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "D",
           "critical_flag_count": 2,

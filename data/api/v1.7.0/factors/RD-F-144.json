@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V3 Factory uses CREATE2 with salt=keccak256(token0,token1,fee); requires pool==address(0) before creating — prevents same-address redeploy with different bytecode. V2 uses CREATE for pair deployment — same pool address re-use is minimal risk (pair already exists). Combined: green.",
-          "evidence_detail": "UniswapV3Factory.createPool(): require(getPool[token0][token1][fee] == address(0), 'exists'); CREATE2 salt = keccak256(abi.encode(token0, token1, fee)). A different pool cannot be deployed to the same address — the factory check prevents this even if SELFDESTRUCT were used (which it is not). V2 Factory uses CREATE for UniswapV2Pair deployment: each pair has a deterministic address based on factory address + token0 + token1, but no CREATE2 redeploy risk since the pair already exists and the factory checks for its existence.",
+          "evidence_summary": "V3 Factory uses CREATE2 with salt=keccak256(token0,token1,fee); requires pool==address(0) before creating â€” prevents same-address redeploy with different bytecode. V2 uses CREATE for pair deployment â€” same pool address re-use is minimal risk (pair already exists). Combined: green.",
+          "evidence_detail": "UniswapV3Factory.createPool(): require(getPool[token0][token1][fee] == address(0), 'exists'); CREATE2 salt = keccak256(abi.encode(token0, token1, fee)). A different pool cannot be deployed to the same address â€” the factory check prevents this even if SELFDESTRUCT were used (which it is not). V2 Factory uses CREATE for UniswapV2Pair deployment: each pair has a deterministic address based on factory address + token0 + token1, but no CREATE2 redeploy risk since the pair already exists and the factory checks for its existence.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -1051,7 +1051,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "not_applicable",
-          "evidence_summary": "V2+V3 combined structural N/A. V2 and V3 core swap pricing uses constant-product invariant — no external stablecoin dependency for protocol solvency or swap execution. No lending market (data cache: borrow.present: false). Stablecoin depegs affect LP economic positions but not V2/V3 protocol solvency or swap function. Signal threshold condition (protocol exposure >=5% TVL in a way affecting solvency) is structurally inapplicable for AMMs.",
+          "evidence_summary": "V2+V3 combined structural N/A. V2 and V3 core swap pricing uses constant-product invariant â€” no external stablecoin dependency for protocol solvency or swap execution. No lending market (data cache: borrow.present: false). Stablecoin depegs affect LP economic positions but not V2/V3 protocol solvency or swap function. Signal threshold condition (protocol exposure >=5% TVL in a way affecting solvency) is structurally inapplicable for AMMs.",
           "evidence_detail": "Signal fires when a stablecoin depegs >2% AND protocol's exposure to that stable >=5% of protocol TVL in a way that affects protocol solvency. For V2 and V3: no such solvency dependency exists. V2 and V3 pools hold token pairs; if a stablecoin depegs, the pool price adjusts via arbitrage but the protocol itself (factory, router) has no collateral system, no solvency exposure, and no safety-critical stablecoin reads. LP positions suffer impermanent loss but this is an economic outcome for LPs, not a protocol-level solvency event. The protocol's operation (swap routing, fee collection) is unaffected by stablecoin depegs. Data cache: borrow.present: false. N/A confirmed.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",

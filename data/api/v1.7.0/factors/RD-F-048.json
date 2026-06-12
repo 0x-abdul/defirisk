@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "green",
           "evidence_summary": "All active market oracle feeds are Chainlink push-feeds accessed via latestRoundData(). One custom stub (usdcUsdOracle 0x5DC5E14be1280E747cD036c089C96744EBF064E7) returns hardcoded 1e8. syrupRateProvider is a peripheral pool-derived rate oracle. No spot DEX oracles used.",
-          "evidence_detail": "MapleGlobals implementation (0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956) getLatestPrice() calls IChainlinkAggregatorV3Like(oracle_).latestRoundData(). Data-cache oracle_feeds[] lists 19 Chainlink feed entries (ETH/USD, BTC/USD, USDC/USD, USDT/USD, LINK/USD, UNI/USD, AVAX/USD, COMP/USD). Stub oracle at 0x5DC5E14be1280E747cD036c089C96744EBF064E7 returns pure 100000000 — scope of use needs clarification but Globals-level address is replaceable.",
+          "evidence_detail": "MapleGlobals implementation (0x9BeAbb1B6f3Ad1ddb87B65148Ba5Eb6102334956) getLatestPrice() calls IChainlinkAggregatorV3Like(oracle_).latestRoundData(). Data-cache oracle_feeds[] lists 19 Chainlink feed entries (ETH/USD, BTC/USD, USDC/USD, USDT/USD, LINK/USD, UNI/USD, AVAX/USD, COMP/USD). Stub oracle at 0x5DC5E14be1280E747cD036c089C96744EBF064E7 returns pure 100000000 â€” scope of use needs clarification but Globals-level address is replaceable.",
           "collection_mode": "hybrid",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",

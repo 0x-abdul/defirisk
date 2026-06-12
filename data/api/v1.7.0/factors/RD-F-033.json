@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -631,7 +631,7 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Upgrade and oracle/fee config timelocked via GovernorTimelock. Pause (setProtocolPause) callable by securityAdmin (3-of-6) without timelock — deliberate emergency design. 3-of-5 action types timelocked.",
+          "evidence_summary": "Upgrade and oracle/fee config timelocked via GovernorTimelock. Pause (setProtocolPause) callable by securityAdmin (3-of-6) without timelock â€” deliberate emergency design. 3-of-5 action types timelocked.",
           "evidence_detail": null,
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "green",
-          "evidence_summary": "V2: no sensitive actions exist (immutable). V3: all sensitive actions route through Timelock. No bypass path exists for mint, fee switch, or enableFeeAmount. Core pools are immutable — no pause or upgrade action exists. Combined: green.",
-          "evidence_detail": "V3 Factory: enableFeeAmount() requires msg.sender == owner (= Timelock). setOwner() requires msg.sender == owner (= Timelock). V3FeeAdapter: feeSetter = Timelock. No rescue/emergency function on any contract. No oracle-setting function (V3 core does not consume external oracle). GovernorBravo admin = Timelock — no action bypasses it.",
+          "evidence_summary": "V2: no sensitive actions exist (immutable). V3: all sensitive actions route through Timelock. No bypass path exists for mint, fee switch, or enableFeeAmount. Core pools are immutable â€” no pause or upgrade action exists. Combined: green.",
+          "evidence_detail": "V3 Factory: enableFeeAmount() requires msg.sender == owner (= Timelock). setOwner() requires msg.sender == owner (= Timelock). V3FeeAdapter: feeSetter = Timelock. No rescue/emergency function on any contract. No oracle-setting function (V3 core does not consume external oracle). GovernorBravo admin = Timelock â€” no action bypasses it.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",

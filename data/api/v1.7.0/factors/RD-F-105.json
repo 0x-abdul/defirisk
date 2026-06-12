@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
   "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-05-18T11:38:41Z",
+  "generated_at": "2026-06-12T08:15:55Z",
   "data": {
     "factor_data": {
       "factor": {
@@ -632,7 +632,7 @@
           "deployment_id": null,
           "score": "yellow",
           "evidence_summary": "February 2026: maple.finance website taken offline due to confirmed security breach. Smart contracts unaffected per Maple statement. Signal fired and cleared. Currently operating normally. Historical fire within recent window warrants yellow.",
-          "evidence_detail": "Threshold: hash of production frontend JS changes vs baseline, or DNS config change, without change-management allowlist match. Observed: February 2026 website outage described as security breach affecting website infrastructure only (smart contracts, user deposits unaffected). The mechanism is not publicly detailed — could be DNS hijack, CDN compromise, web server compromise. Signal fired (website down/compromised) and has since cleared (site restored). As of 2026-04-27, maple.finance and syrup.fi are operating. Historical fire within 60 days warrants yellow rather than green.",
+          "evidence_detail": "Threshold: hash of production frontend JS changes vs baseline, or DNS config change, without change-management allowlist match. Observed: February 2026 website outage described as security breach affecting website infrastructure only (smart contracts, user deposits unaffected). The mechanism is not publicly detailed â€” could be DNS hijack, CDN compromise, web server compromise. Signal fired (website down/compromised) and has since cleared (site restored). As of 2026-04-27, maple.finance and syrup.fi are operating. Historical fire within 60 days warrants yellow rather than green.",
           "collection_mode": "manual",
           "collected_at": "2026-04-27T05:38:08Z",
           "data_as_of": "2026-04-27T05:38:08Z",
@@ -1051,8 +1051,8 @@
           "primary_chain": "ethereum",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "V2+V3 combined: Highly applicable — app.uniswap.org and uniswap.org serve one of the highest-TVL DEX frontends globally (~$2.74B combined). No current DNS/frontend compromise detected (2026-05-12). No TLS cert anomaly identified. CRITICAL GAP: No JS bundle hash baseline established — static assessment cannot definitively clear without active monitoring. 2022 phishing was fake LP airdrop token, NOT DNS/frontend compromise of main interface. Yellow: high-brand-recognition elevates attack probability; monitoring infrastructure not yet live.",
-          "evidence_detail": "Signal threshold: hash of any of {DNS A/AAAA record set, TLS cert issuer+serial, top-5 JS bundle hashes, IPFS CID} differs from last-known-good baseline AND no change-management entry in trailing 24h. Current state: app.uniswap.org and uniswap.org are live with valid TLS certificates as of assessment date. No unscheduled DNS changes detected. The 2022 phishing attack (fake UniswapLP token airdrop; ~$4.7-8M loss) was a social engineering attack via mass token airdrop to V3 LP addresses — NOT a DNS/CDN compromise of the main interface. This is a distinct attack vector from F105. No public reports of main interface compromise in 2024-2026. Yellow reasons: (a) T-09 classifies this as phase-2 signal requiring external monitoring stack; (b) Uniswap's ~$2.74B combined TVL and global DEX dominance make it the highest-priority target for DNS/frontend attacks in the coverage set; (c) no baseline hash has been established for this assessment; (d) Cloudflare, Vercel, or similar CDN configuration changes cannot be detected without active monitoring.",
+          "evidence_summary": "V2+V3 combined: Highly applicable â€” app.uniswap.org and uniswap.org serve one of the highest-TVL DEX frontends globally (~$2.74B combined). No current DNS/frontend compromise detected (2026-05-12). No TLS cert anomaly identified. CRITICAL GAP: No JS bundle hash baseline established â€” static assessment cannot definitively clear without active monitoring. 2022 phishing was fake LP airdrop token, NOT DNS/frontend compromise of main interface. Yellow: high-brand-recognition elevates attack probability; monitoring infrastructure not yet live.",
+          "evidence_detail": "Signal threshold: hash of any of {DNS A/AAAA record set, TLS cert issuer+serial, top-5 JS bundle hashes, IPFS CID} differs from last-known-good baseline AND no change-management entry in trailing 24h. Current state: app.uniswap.org and uniswap.org are live with valid TLS certificates as of assessment date. No unscheduled DNS changes detected. The 2022 phishing attack (fake UniswapLP token airdrop; ~$4.7-8M loss) was a social engineering attack via mass token airdrop to V3 LP addresses â€” NOT a DNS/CDN compromise of the main interface. This is a distinct attack vector from F105. No public reports of main interface compromise in 2024-2026. Yellow reasons: (a) T-09 classifies this as phase-2 signal requiring external monitoring stack; (b) Uniswap's ~$2.74B combined TVL and global DEX dominance make it the highest-priority target for DNS/frontend attacks in the coverage set; (c) no baseline hash has been established for this assessment; (d) Cloudflare, Vercel, or similar CDN configuration changes cannot be detected without active monitoring.",
           "collection_mode": "manual",
           "collected_at": "2026-05-12T10:36:11Z",
           "data_as_of": "2026-05-12T10:36:11Z",
