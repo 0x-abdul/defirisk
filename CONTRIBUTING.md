@@ -13,28 +13,19 @@ If you only have five minutes, the rules in one breath:
   "issue-flag" template; do not open a PR against the data.
 - Found a security issue? See [SECURITY.md](SECURITY.md).
 
-The full rules below are taken from
-`risk-dashboard/research/outputs/06-oss-posture.md` §4 and are non-negotiable
-for v1.
+The full rules below are non-negotiable for v1.
 
 ## What we accept via PR
 
 You can open a pull request to:
 
-- **Add an ingestion adapter** for an uncovered protocol. Adapter code lives
-  under `risk-dashboard/scripts/data-pipeline/fetchers/`. Each adapter must
-  return data conforming to the schema in
-  `risk-dashboard/scripts/data-pipeline/schemas/data-cache.schema.json`.
-- **Improve an existing adapter.** Bug fixes, efficiency improvements, or
-  added fields that fit the existing schema.
-- **Refine a factor definition** in the taxonomy
-  (`risk-dashboard/research/outputs/03-taxonomy.md`). Proposals must come
-  with evidence; the canonical taxonomy owner reviews.
-- **Propose a rubric threshold change** in
-  `risk-dashboard/research/outputs/05-scoring-decision.md`. Public debate is
-  expected; merges require maintainer approval after the comment window.
-- **Fix a frontend bug or improve accessibility.** The site lives under
-  `site/`. We particularly welcome WCAG 2.2 AA accessibility fixes.
+- **Improve site code or accessibility.** The site lives under `site/`. We
+  particularly welcome WCAG 2.2 AA accessibility fixes and performance improvements.
+- **Improve the scoring scripts.** `scripts/compose.py`, `scripts/dump.py`,
+  and `scripts/rubric.py` are MIT-licensed and open to improvement PRs.
+- **Propose a rubric threshold change.** Open a discussion issue with evidence;
+  public debate is expected before any merge.
+- **Improve DB migrations.** Schema improvements via `db/migrations/`.
 - **Improve documentation, examples, or translations.**
 
 ## What we never accept via PR
@@ -50,11 +41,10 @@ You can open a pull request to:
 - **Edits to `data/api/v1.x.x/protocols/*.json`.** These files are
   regenerated from the database on every deploy.
 
-The reasoning is in `06-oss-posture.md` §4.4: the blast radius of a missed
-bad PR (a protocol team submitting favourable data about itself) is bigger
-than the throughput gain. DeFiLlama accepts adapter PRs because adapter
-output is mechanically derivable on-chain data; risk data is opinionated, so
-the same model fails.
+The reasoning: the blast radius of a missed bad PR (a protocol team submitting
+favourable data about itself) is bigger than the throughput gain. Risk data is
+opinionated — unlike mechanically derivable on-chain metrics, it requires
+curator judgment. All data changes flow through the curator review path below.
 
 ## Disputes and issue-flags
 
@@ -78,53 +68,42 @@ link once launch is live).
 
 ## Protocol-team self-service
 
-If you represent a protocol that's covered (or wants to be covered) by the
-dashboard, there is a separate verified self-service path documented in
-`risk-dashboard/research/outputs/06-oss-posture.md` §4.3. In short:
-
-- You verify identity once via PR from your registered GitHub org, a
-  signed message from your registered multisig, or a DNS TXT record on
-  your protocol's domain.
-- You submit factual updates (audit links, multisig changes, timelock
-  changes, oracle config) through a structured form.
-- The curator team reviews within five business days. All diffs are
-  public.
-
-This path is not yet wired up for v1; the v1 issue-flag path covers the
-same need with manual triage.
+If you represent a protocol covered by the dashboard, use the Factual
+Correction issue template to submit updates (audit links, multisig changes,
+timelock changes, oracle config). The curator team reviews within five
+business days. All changes are public.
 
 ## Local development
 
-Prerequisites: Node 22, Python 3.11+, Docker (for local Postgres), git.
+Prerequisites: Node 22, Python 3.11+, Postgres 16, git.
 
 ```bash
-# Start local Postgres
-./scripts/db-up.sh
+# Install site dependencies
+cd site && npm install
 
-# Install JS deps (root and site/)
-npm install
-cd site && npm install && cd ..
+# Run the site (reads from data/api/v1.7.0/ — no DB needed for local preview)
+npm run dev
 
-# Apply schema + seed
-npm run db:push
-npm run db:seed
-
-# Run the site
-cd site && npm run dev
-
-# Run all CI gates locally
-./scripts/ci-local.sh
+# Run site tests
+npm test
 ```
 
-The data pipeline runs under `risk-dashboard/`:
+To run the scoring pipeline locally against a Postgres DB:
 
 ```bash
-cd risk-dashboard
-python scripts/data-pipeline/run.py <protocol-slug>
-```
+# Set connection string
+export LOCAL_DATABASE_URL=postgresql://user:pass@localhost:5432/risk_dashboard
 
-See `risk-dashboard/scripts/data-pipeline/README.md` (forthcoming) for the
-fetcher list and configuration details.
+# Apply schema
+psql $LOCAL_DATABASE_URL < db/migrations/0000_initial.sql
+# ... repeat for 0001–0007
+
+# Recompute grades
+python scripts/compose.py
+
+# Regenerate JSON data tree
+python scripts/dump.py
+```
 
 ## Pull-request expectations
 

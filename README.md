@@ -1,70 +1,117 @@
-# Risk Dashboard
+# DeFiRisk
 
-Open-source DeFi protocol risk intelligence: 184 risk factors across 13 categories, covering 80 protocols at rubric/API version `v1.7.0`.
+**Open-source DeFi protocol risk intelligence** — 80 protocols graded across 184 risk factors and 13 categories, updated nightly.
 
-**Build status:** pre-launch  
-**Active rubric/API version:** `v1.7.0`  
-**License:** MIT for code · CC-BY 4.0 for data/methodology
+**Live site:** [defirisk.co](https://defirisk.co)  
+**API version:** `v1.7.0`  
+**License:** MIT (code) · CC-BY 4.0 (data/methodology)
 
-## Start here
+---
 
-Read [`START_HERE.md`](START_HERE.md) before editing or reorganizing the repo. It explains the active source-of-truth paths, generated-data boundaries, research/vault structure, archive conventions, and move-safety rules.
+## What this is
 
-## What lives where
+DeFiRisk assigns letter grades (A–F) to DeFi protocols based on a structured rubric — not TVL or reputation. Every grade is evidence-backed, version-stamped, and publicly auditable.
 
-| Path | Purpose |
-|---|---|
-| `site/` | Astro frontend and static-site code. |
-| `data/api/v1.7.0/` | Current generated public API JSON for protocols, factors, hacks, and schemas. |
-| `config/rubric-version.json` | Active version/count config used by scripts and site loaders. |
-| `db/` | Database migrations and migration metadata. |
-| `scripts/` | Repo-root publishing/import/compose/dump/CI utilities. See [`SCRIPTS.md`](SCRIPTS.md). |
-| `risk-dashboard/` | Research/spec/evidence vault, protocol-fill workspace, engineering tickets, and research pipeline. |
-| `risk-dashboard/.research/protocols/` | Canonical per-protocol evidence and grading fragments. |
-| `risk-dashboard/research/outputs/` | Frozen risk taxonomy and scoring-methodology research outputs. |
-| `docs/` | Public/maintainer docs: API, deployment, recovery, methodology, release notes, archives. |
+The rubric covers 13 risk categories:
 
-## Product and methodology references
+| # | Category |
+|---|----------|
+| 1 | Smart Contract Security |
+| 2 | Oracle & Price Feed Risk |
+| 3 | Governance & Decentralization |
+| 4 | Custody & Key Management |
+| 5 | Incident History |
+| 6 | Liquidity & Market Risk |
+| 7 | Protocol Complexity |
+| 8 | Counterparty & Legal Risk |
+| 9 | Dependency Risk |
+| 10 | Transparency & Auditability |
+| 11 | Operational Security |
+| 12 | Economic Design |
+| 13 | Regulatory & Compliance |
 
-- Product spec: [`risk-dashboard/spec.md`](risk-dashboard/spec.md)
-- Engineering overview: [`risk-dashboard/engineering/README.md`](risk-dashboard/engineering/README.md)
-- Risk taxonomy: [`risk-dashboard/research/outputs/03-taxonomy.md`](risk-dashboard/research/outputs/03-taxonomy.md)
-- Scoring/rubric decision: [`risk-dashboard/research/outputs/05-scoring-decision.md`](risk-dashboard/research/outputs/05-scoring-decision.md)
-- Public API docs: [`docs/api.md`](docs/api.md)
-- Script/CWD guide: [`SCRIPTS.md`](SCRIPTS.md)
+A single-protocol page shows the letter grade, risk score, per-category grid, factor-level evidence, and incident history inline. The scoring methodology is open and versioned at `data/api/v1.7.0/rubric.json`.
 
-## Local development
+---
 
-```bash
-# 1. Start local Postgres
-./scripts/db-up.sh
+## Repository structure
 
-# 2. Install dependencies
-npm install
+| Path | Contents |
+|------|----------|
+| `site/` | Astro static site (MIT) |
+| `data/api/v1.7.0/` | Generated JSON data tree — protocol grades, factor scores, hacks, history (CC-BY 4.0) |
+| `db/migrations/` | Postgres schema migrations |
+| `scripts/compose.py` | Grade computation engine (reads DB → writes grades) |
+| `scripts/dump.py` | JSON export (reads DB → writes `data/api/`) |
+| `scripts/rubric.py` | Rubric math — score formula and grade thresholds |
+| `.github/` | CI, deploy workflow, issue templates |
 
-# 3. Apply schema + seed
-npm run db:push
-npm run db:seed
+---
 
-# 4. Run tests
-cd site && npm test
+## Public API
 
-# 5. Run all CI gates locally
-cd ..
-./scripts/ci-local.sh
+Every protocol has a versioned JSON endpoint:
+
+```
+https://defirisk.co/api/v1.7.0/protocols/<slug>.json
+https://defirisk.co/api/v1.7.0/index.json
+https://defirisk.co/api/v1.7.0/factors.json
+https://defirisk.co/api/v1.7.0/hacks.json
 ```
 
-## Generated data warning
+Every response is enveloped with `rubric_version` and `data_as_of`:
 
-The active public data under `data/api/v1.7.0/` is generated release output. Do not hand-edit it unless you are doing an explicit emergency/recovery fix. Normal changes should flow through the research evidence, DB import, compose, and dump pipeline described in `START_HERE.md` and `SCRIPTS.md`.
+```json
+{
+  "rubric_version": "v1.7.0",
+  "data_as_of": "2026-06-12T08:00Z",
+  "risk_score": 17.09,
+  "cap_applied": "none",
+  "data": { ... }
+}
+```
+
+---
+
+## Scoring methodology
+
+The risk score is a **core-five-weighted average** of per-category severity, plus a critical-flag penalty:
+
+- Each category severity: `(red×3 + yellow×1) / (denom×3) × 100` (gray excluded from denominator)
+- Critical-flag penalty: 5 points per critical red, capped at 15
+- Single-category cap: severity ≥ 60 → grade floor D; severity ≥ 90 → floor F
+
+| Score | Grade |
+|-------|-------|
+| 0–12 | A |
+| 13–22 | B |
+| 23–32 | C |
+| 33–49 | D |
+| 50+ | F |
+
+Full factor definitions are at `data/api/v1.7.0/rubric.json`.
+
+---
+
+## Contributing
+
+We welcome:
+- **Factual corrections** — wrong data with an on-chain source (use the Factual Correction issue template)
+- **Grade disputes** — rubric interpretation disagreements with evidence (use the Grade Dispute template)
+- **Coverage requests** — protocols not yet rated
+- **Code / site improvements** — open a PR against `site/` or the scoring scripts
+
+We do **not** accept direct edits to `data/api/` — all data flows through the evidence pipeline.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+
+---
 
 ## License
 
-| Directory | License |
-|---|---|
+| Path | License |
+|------|---------|
 | `site/`, `db/`, `scripts/`, `.github/` | [MIT](LICENSE) |
-| `data/`, `docs/methodology/`, methodology outputs | [CC-BY 4.0](LICENSE.data) |
+| `data/`, methodology | [CC-BY 4.0](LICENSE.data) |
 
-## Launch status
-
-P0 API-contract hardening has been verified clean for the current 80-protocol `v1.7.0` generated data set. Remaining pre-launch work is primarily launch/ops readiness, documentation freshness, public/private boundary cleanup, and deployment cutover.
+Data attribution: **DeFiRisk (defirisk.co), rubric v1.7.0**

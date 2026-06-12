@@ -28,8 +28,7 @@ Please include, where applicable:
 In scope:
 
 - The site under `site/` (Astro frontend, API routes).
-- The data pipeline under `risk-dashboard/scripts/data-pipeline/` and the
-  composer/dump scripts under `scripts/`.
+- The scoring pipeline scripts under `scripts/` (`compose.py`, `dump.py`, `rubric.py`).
 - The public read API and JSON envelopes under `data/api/`.
 - Dependency vulnerabilities and supply-chain integrity of the build.
 - The CI workflows under `.github/workflows/`.
@@ -75,9 +74,7 @@ security-relevant:
 - A factor score that demonstrably contradicts its cited sources.
 - A protocol page that misrepresents a deployment, multisig threshold, or
   oracle posture.
-- Evidence that a protocol team submitted false data through the verified
-  self-service path (per `risk-dashboard/research/outputs/06-oss-posture.md`
-  §4.3).
+- Evidence that a protocol team submitted false data through the curator review path.
 
 Reports of this kind can be filed publicly via the issue-flag path or
 privately via the channel above if the reporter has reason to keep it
@@ -86,5 +83,4 @@ confidential.
 ## Acknowledgements
 
 We maintain a public list of researchers who have responsibly disclosed
-issues at `docs/security/acknowledgements.md` (created when the first report
-lands).
+issues. The list will be added to this file when the first report lands.
