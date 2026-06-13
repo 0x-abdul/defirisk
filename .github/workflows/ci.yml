@@ -18,7 +18,7 @@ jobs:
     name: Lint (ruff)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
@@ -37,7 +37,7 @@ jobs:
       run:
         working-directory: site
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -60,7 +60,7 @@ jobs:
       has-perf-budget: ${{ steps.probe.outputs.has-perf-budget }}
       has-visual-baselines: ${{ steps.probe.outputs.has-visual-baselines }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - id: probe
         run: |
           [ -d risk-dashboard/scripts/data-pipeline ] && echo "has-pipeline=true" >> "$GITHUB_OUTPUT" || echo "has-pipeline=false" >> "$GITHUB_OUTPUT"
@@ -75,7 +75,7 @@ jobs:
     if: needs.check-files.outputs.has-pipeline == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
@@ -93,7 +93,7 @@ jobs:
     if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -108,7 +108,7 @@ jobs:
     name: Rubric tests (vitest)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -126,7 +126,7 @@ jobs:
     if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -145,7 +145,7 @@ jobs:
     name: Astro build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -179,7 +179,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -217,7 +217,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -245,7 +245,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Ensure changelog is append-only
@@ -264,7 +264,7 @@ jobs:
     name: OpenAPI spec check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Validate site/public/openapi.json
         run: |
           set -e
@@ -290,7 +290,7 @@ jobs:
     name: Accessibility check (axe-core)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -321,7 +321,7 @@ jobs:
     if: needs.check-files.outputs.has-perf-budget == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -369,7 +369,7 @@ jobs:
     name: Smoke tests (local preview)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -407,7 +407,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true  # informational until Linux baselines committed
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -447,7 +447,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '22'
@@ -505,7 +505,7 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install postgresql-client
         run: sudo apt-get install -y --no-install-recommends postgresql-client
 
