@@ -61,7 +61,7 @@ jobs:
             cd /opt/riskdashboard
 
             echo "==> Pulling latest code..."
-            git pull --ff-only origin main
+            git pull origin main
 
             echo "==> Rebuilding site..."
             cd site && npm ci --prefer-offline && npm run build
