@@ -63,19 +63,12 @@ const ledeCopy = isPreLaunch
   ? `Every protocol graded against ${TOTAL_FACTOR_COUNT} cited risk factors. Grades are in private review with protocol teams ahead of launch — the methodology and factor library are open below.`
   : 'An open-source field guide to DeFi risk. Every protocol graded, every factor cited — all in the open.';
 
-// Latest review date for kicker
+// Latest reviewed date (used in the how-to-read meta footer)
 const latestReviewedIso = baseList
   .map((p) => p.graded_at)
   .filter((s): s is string => typeof s === 'string' && s.length > 0)
   .sort()
   .reverse()[0];
-
-const latestReviewedDisplay = latestReviewedIso
-  ? new Date(latestReviewedIso).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    })
-  : 'pending';
 
 const buildSha = import.meta.env.PUBLIC_GIT_SHA;
 ---
@@ -86,14 +79,10 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
   <div class="hero">
     <div class="left">
       <div class="kicker">
-        {
-          isPreLaunch ? (
-            <span class="prelaunch"><span class="dot"></span>Pre-launch review</span>
-          ) : (
-            <span class="live"><span class="dot"></span>Live</span>
-          )
-        }
-        Rubric {RUBRIC_VERSION}{!isPreLaunch && ` · Last review ${latestReviewedDisplay}`}
+        {isPreLaunch && (
+          <span class="prelaunch"><span class="dot"></span>Pre-launch review</span>
+        )}
+        Rubric {RUBRIC_VERSION}
       </div>
       <h1>{headlineCopy}</h1>
       <p class="lede">{ledeCopy}</p>
@@ -274,25 +263,6 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-  .hero .left .kicker .live {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--gA);
-    background: var(--gA-bg);
-    padding: 2px 7px;
-    border-radius: 4px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .hero .left .kicker .live .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gA);
   }
   .hero .left .kicker .prelaunch {
     display: inline-flex;
