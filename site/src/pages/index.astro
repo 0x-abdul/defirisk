@@ -78,12 +78,11 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
 
   <div class="hero">
     <div class="left">
-      <div class="kicker">
-        {isPreLaunch && (
+      {isPreLaunch && (
+        <div class="kicker">
           <span class="prelaunch"><span class="dot"></span>Pre-launch review</span>
-        )}
-        Rubric {RUBRIC_VERSION}
-      </div>
+        </div>
+      )}
       <h1>{headlineCopy}</h1>
       <p class="lede">{ledeCopy}</p>
     </div>
