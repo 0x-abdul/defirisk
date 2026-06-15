@@ -66,6 +66,10 @@ jobs:
             # `git pull` errors with "Need to specify how to reconcile divergent
             # branches". Merge lets the local data commits coexist with incoming
             # code; --ff-only was removed earlier for the same reason (a187fce5).
+            # The merge needs a committer identity; the rdapp user has none
+            # configured, so set a repo-local one (idempotent) before pulling.
+            git config user.email "deploy@defirisk.co"
+            git config user.name "RiskDashboard Deploy"
             git pull --no-rebase origin main
 
             echo "==> Rebuilding site..."
