@@ -61,7 +61,12 @@ jobs:
             cd /opt/riskdashboard
 
             echo "==> Pulling latest code..."
-            git pull origin main
+            # --no-rebase (merge) is required: the VPS carries local nightly
+            # data commits (data/api/) that diverge from origin/main, so a bare
+            # `git pull` errors with "Need to specify how to reconcile divergent
+            # branches". Merge lets the local data commits coexist with incoming
+            # code; --ff-only was removed earlier for the same reason (a187fce5).
+            git pull --no-rebase origin main
 
             echo "==> Rebuilding site..."
             cd site && npm ci --prefer-offline && npm run build
