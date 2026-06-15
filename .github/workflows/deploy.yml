@@ -73,7 +73,18 @@ jobs:
             git pull --no-rebase origin main
 
             echo "==> Rebuilding site..."
-            cd site && npm ci --prefer-offline && npm run build
+            cd site
+            # Keep each build step on its own line: under `set -e` a failing
+            # command in an `&&` list does NOT abort the script, so chaining
+            # `npm ci && npm run build` let a broken build report success and
+            # serve a stale site. Separate statements fail loudly.
+            #
+            # Redirect npm's cache to a repo-local dir rdapp owns: the default
+            # ~/.npm contains root-owned files from an earlier root install,
+            # which makes `npm ci` fail with EACCES.
+            export npm_config_cache="/opt/riskdashboard/.npm-cache"
+            npm ci --prefer-offline
+            npm run build
             cd ..
 
             echo "==> Deploy complete at $(date -u +%Y-%m-%dT%H:%MZ)"
