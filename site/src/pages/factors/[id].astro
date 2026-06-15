@@ -149,7 +149,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         Methodology <span class="ct">how we score</span>
         <a class="alink" href="#methodology">#</a>
       </h2>
-      {methodologyParas.map((p) => <p set:html={inlineMarkdown(p)} />)}
+      {methodologyParas.map((p) => <p set:html={inlineMarkdown(p, { italics: true })} />)}
 
       <h2 id="measurement">
         Measurement <span class="ct">what to look for</span>

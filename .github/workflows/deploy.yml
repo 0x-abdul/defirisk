@@ -32,6 +32,15 @@ on:
         required: false
         default: 'force rebuild'
 
+# Serialize deploys. Two PRs merged seconds apart would otherwise run parallel
+# SSH deploys that both `npm ci` into the same VPS dir and clobber each other's
+# node_modules (build then fails with "astro: not found"). cancel-in-progress is
+# false so a queued deploy waits for the running one to finish rather than
+# cancelling it — every merged change still gets deployed, just one at a time.
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
