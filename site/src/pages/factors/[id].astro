@@ -8,6 +8,7 @@ import type { LinkedHack, HackRelevance } from '../../components/HackFactorLinks
 import { listFactors, getFactor } from '../../lib/data-loaders';
 import { CATEGORIES } from '../../data/categories';
 import { RUBRIC_VERSION } from '../../lib/rubric';
+import { inlineMarkdown } from '../../lib/inline-md';
 
 export async function getStaticPaths() {
   return listFactors().map((f) => ({ params: { id: f.id } }));
@@ -148,7 +149,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         Methodology <span class="ct">how we score</span>
         <a class="alink" href="#methodology">#</a>
       </h2>
-      {methodologyParas.map((p) => <p>{p}</p>)}
+      {methodologyParas.map((p) => <p set:html={inlineMarkdown(p)} />)}
 
       <h2 id="measurement">
         Measurement <span class="ct">what to look for</span>

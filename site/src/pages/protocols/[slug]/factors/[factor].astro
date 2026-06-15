@@ -7,6 +7,7 @@ import SourceList from '../../../../components/SourceList.astro';
 import { listProtocols, getProtocol, getFactor } from '../../../../lib/data-loaders';
 import { CATEGORIES } from '../../../../data/categories';
 import { RUBRIC_VERSION } from '../../../../lib/rubric';
+import { inlineMarkdown } from '../../../../lib/inline-md';
 
 export async function getStaticPaths() {
   const paths: Array<{ params: { slug: string; factor: string } }> = [];
@@ -114,7 +115,7 @@ const sources = ((matching.sources ?? []) as Array<{
             <h2 id="evidence">
               Evidence summary <a class="alink" href="#evidence">#</a>
             </h2>
-            <p>{evidenceSummary}</p>
+            <p set:html={inlineMarkdown(evidenceSummary)} />
           </>
         )
       }
@@ -125,7 +126,7 @@ const sources = ((matching.sources ?? []) as Array<{
             <h2 id="detail">
               Detail <a class="alink" href="#detail">#</a>
             </h2>
-            <p>{evidenceDetail}</p>
+            <p set:html={inlineMarkdown(evidenceDetail)} />
           </>
         )
       }
