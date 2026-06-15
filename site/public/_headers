@@ -55,6 +55,14 @@
   X-Robots-Tag: noindex, nofollow
   Cache-Control: private, no-store
 
+# ── Owner-only control index (Nginx Basic Auth gated; see docs/deploy-vps.md) ──
+# The real access gate is Nginx Basic Auth on /control/. These directives keep
+# the page out of crawler indexes and edge caches as defense-in-depth, mirroring
+# the /unpublished/* rule above.
+/control/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: private, no-store
+
 # ── Sitemap, robots, favicon ────────────────────────────────────────────────
 /sitemap-*.xml
   Cache-Control: public, max-age=3600

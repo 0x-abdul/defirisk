@@ -49,10 +49,19 @@ const gradeDist: Array<{ g: Letter; n: number }> = (['A', 'B', 'C', 'D', 'F'] as
   (g) => ({ g, n: items.filter((p) => p.headline_grade === g).length }),
 );
 
+// When nothing is published yet, the homepage must not advertise a "Live"
+// dashboard or render "0 protocols" / "$0.0B" zero widgets. It degrades to an
+// honest pre-launch state and restores the normal directory automatically the
+// moment the first protocol is published.
+const isPreLaunch = items.length === 0;
+
 // Hero copy
-const headlineCopy = `${items.length} protocols, ${TOTAL_FACTOR_COUNT} risk factors, ${TOTAL_CATEGORY_COUNT} categories.`;
-const ledeCopy =
-  'An open-source field guide to DeFi risk. Every protocol graded, every factor cited — all in the open.';
+const headlineCopy = isPreLaunch
+  ? 'An open-source field guide to DeFi risk.'
+  : `${items.length} protocols, ${TOTAL_FACTOR_COUNT} risk factors, ${TOTAL_CATEGORY_COUNT} categories.`;
+const ledeCopy = isPreLaunch
+  ? `Every protocol graded against ${TOTAL_FACTOR_COUNT} cited risk factors. Grades are in private review with protocol teams ahead of launch — the methodology and factor library are open below.`
+  : 'An open-source field guide to DeFi risk. Every protocol graded, every factor cited — all in the open.';
 
 // Latest review date for kicker
 const latestReviewedIso = baseList
@@ -77,13 +86,38 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
   <div class="hero">
     <div class="left">
       <div class="kicker">
-        <span class="live"><span class="dot"></span>Live</span>
-        Rubric {RUBRIC_VERSION} · Last review {latestReviewedDisplay}
+        {
+          isPreLaunch ? (
+            <span class="prelaunch"><span class="dot"></span>Pre-launch review</span>
+          ) : (
+            <span class="live"><span class="dot"></span>Live</span>
+          )
+        }
+        Rubric {RUBRIC_VERSION}{!isPreLaunch && ` · Last review ${latestReviewedDisplay}`}
       </div>
       <h1>{headlineCopy}</h1>
       <p class="lede">{ledeCopy}</p>
     </div>
 
+    {isPreLaunch ? (
+      <div class="prelaunchPanel">
+        <div class="sp-h">
+          <span>Status</span>
+          <span class="sp-h-r">Rubric {RUBRIC_VERSION}</span>
+        </div>
+        <p class="pl-body">
+          The dashboard is being shared privately with each protocol team for a
+          factual-accuracy review before grades go public. Coverage opens here as
+          teams confirm their data.
+        </p>
+        <div class="pl-meta">
+          <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
+          <span><i>categories</i><b>{TOTAL_CATEGORY_COUNT}</b></span>
+          <span><i>status</i><b>in review</b></span>
+        </div>
+        <a class="pl-cta" href="/methodology/">How we grade →</a>
+      </div>
+    ) : (
     <div class="statsPanel">
       <div class="sp-h">
         <span>Coverage · at a glance</span>
@@ -125,20 +159,39 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         </div>
       </div>
     </div>
+    )}
   </div>
 
-  <section class="sec">
-    <!-- client:idle — page is static-rendered with the canonical list visible
-         immediately; Preact hydration runs after first paint via requestIdleCallback
-         so initial TBT on slow mobile CPUs stays low. Filters become interactive
-         within a frame of idle. -->
-    <ProtocolListView
-      client:idle
-      protocols={items}
-      categories={CATEGORIES}
-      chains={CHAINS}
-    />
-  </section>
+  {isPreLaunch ? (
+    <section class="sec">
+      <div class="emptyState">
+        <h2>Protocol grades are in private review</h2>
+        <p>
+          Every covered protocol has been graded and shared with its team for a
+          one-week factual-accuracy review before publication. Grades appear here
+          as teams confirm their data. In the meantime, explore the open rubric
+          and the full factor library.
+        </p>
+        <div class="emptyState-cta">
+          <a href="/methodology/">Read the methodology →</a>
+          <a href="/factors/">Browse all factors →</a>
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="sec">
+      {/* client:idle — page is static-rendered with the canonical list visible
+          immediately; Preact hydration runs after first paint via requestIdleCallback
+          so initial TBT on slow mobile CPUs stays low. Filters become interactive
+          within a frame of idle. */}
+      <ProtocolListView
+        client:idle
+        protocols={items}
+        categories={CATEGORIES}
+        chains={CHAINS}
+      />
+    </section>
+  )}
 
   <section class="sec foot-htr">
     <div class="sechead">
@@ -240,6 +293,117 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     height: 6px;
     border-radius: 50%;
     background: var(--gA);
+  }
+  .hero .left .kicker .prelaunch {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--gC);
+    background: var(--gC-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero .left .kicker .prelaunch .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gC);
+  }
+
+  /* ─── Pre-launch panel (replaces stats panel when no protocol is published) ─── */
+  .prelaunchPanel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .prelaunchPanel .pl-body {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg-2);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .prelaunchPanel .pl-meta {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+  .prelaunchPanel .pl-meta i {
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-3);
+    margin-right: 8px;
+    font-size: 11px;
+  }
+  .prelaunchPanel .pl-meta b {
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg);
+    font-weight: 500;
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+  }
+  .prelaunchPanel .pl-cta {
+    align-self: flex-start;
+    font-size: 12.5px;
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .prelaunchPanel .pl-cta:hover {
+    text-decoration: underline;
+  }
+
+  /* ─── Empty state (replaces protocol list when no protocol is published) ─── */
+  .emptyState {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 40px 28px;
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .emptyState h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .emptyState p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--fg-2);
+    margin: 0 auto;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+  .emptyState-cta {
+    margin-top: 18px;
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .emptyState-cta a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .emptyState-cta a:hover {
+    text-decoration: underline;
   }
   .hero h1 {
     margin: 0;

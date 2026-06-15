@@ -174,7 +174,7 @@ function buildDefault(h) {
           h('div', { style: { fontSize: 58, fontWeight: 700, color: C.ink, lineHeight: 1.05, letterSpacing: '-0.02em', marginTop: -14 } },
             'DeFi risk.'),
           h('div', { style: { fontSize: 24, color: C.muted, letterSpacing: '-0.01em', marginTop: 6 } },
-            '40 protocols \xb7 184 risk factors \xb7 open source'),
+            '184 risk factors \xb7 13 categories \xb7 open source'),
         ),
       ),
       // Right column: A–F grade pills at 75% opacity

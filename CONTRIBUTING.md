@@ -73,6 +73,29 @@ Correction issue template to submit updates (audit links, multisig changes,
 timelock changes, oracle config). The curator team reviews within five
 business days. All changes are public.
 
+## Pre-publication review window
+
+Before a protocol's grade goes public, its team is given a private review
+window. If you received a private link, here's what it means:
+
+- **Your link** looks like `https://defirisk.co/unpublished/<slug>-<token>/`.
+  It is unguessable, unlisted, `noindex`, and not linked anywhere on the site —
+  the page is **not public** and won't appear in search or on the homepage.
+- **You have ~one week** (the exact date is in the message you received) to
+  review your protocol's data for factual accuracy.
+- **To flag an error**, open a [Factual Correction](.github/ISSUE_TEMPLATE/factual-correction.md)
+  issue with the factor ID (e.g. `RD-F-027`), the current vs. correct value, and
+  a source (URL, contract address, audit PDF page, or on-chain tx). You can also
+  reply on the channel the link came from and we'll file it for you.
+- **What we can fix:** factual data points with a verifiable source. The letter
+  grade itself is computed deterministically from the factor scores — correcting
+  a factor may move the grade, but we don't hand-edit grades. Rubric
+  disagreements go through the [Grade Dispute](.github/ISSUE_TEMPLATE/grade-dispute.md)
+  template instead.
+- **Going live:** once you've reviewed (or the window closes), your protocol is
+  published and moves to its public URL `https://defirisk.co/protocols/<slug>/`.
+  Nothing is published until you've had the chance to review.
+
 ## Local development
 
 Prerequisites: Node 22, Python 3.11+, Postgres 16, git.

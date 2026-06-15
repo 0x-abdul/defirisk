@@ -55,7 +55,8 @@ export default defineConfig({
         !page.includes('/dev/') &&
         !page.includes('/data/api/') &&
         !page.includes('/api/') &&
-        !page.includes('/unpublished/'),
+        !page.includes('/unpublished/') &&
+        !page.includes('/control/'),
       serialize: (item) => ({
         ...item,
         priority: sitemapPriority(item.url),
