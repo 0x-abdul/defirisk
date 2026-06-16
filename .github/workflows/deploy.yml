@@ -79,7 +79,22 @@ jobs:
             # configured, so set a repo-local one (idempotent) before pulling.
             git config user.email "deploy@defirisk.co"
             git config user.name "RiskDashboard Deploy"
-            git pull --no-rebase origin main
+
+            # History-rewrite guard: normally we merge-pull (above). But if main's
+            # history was rewritten upstream (e.g. a force-push to strip commit
+            # trailers), the previous origin tip is no longer an ancestor of the
+            # new one, and a merge would create a tangled commit or hard conflict
+            # (the divergent-branch failure from #11/#15). Detect that and instead
+            # hard-reset to origin/main. The local data commits dropped here are
+            # regenerated on the next nightly run, so this is safe.
+            prev_remote=$(git rev-parse origin/main)
+            git fetch origin main
+            if git merge-base --is-ancestor "$prev_remote" origin/main; then
+              git pull --no-rebase origin main
+            else
+              echo "==> origin/main was rewritten upstream; hard-resetting (data regenerates nightly)"
+              git reset --hard origin/main
+            fi
 
             echo "==> Rebuilding site..."
             cd site
