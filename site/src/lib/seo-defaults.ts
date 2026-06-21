@@ -5,6 +5,11 @@ export const SITE_URL = 'https://defirisk.co';
 export const DEFAULT_OG_IMAGE = '/og/default.png';
 export const TWITTER_HANDLE = '@defirisk';
 
+// Canonical public source repo. Used to build issue-template links for the
+// corrections/disputes channels (see /corrections).
+export const REPO_URL = 'https://github.com/0x-abdul/defirisk';
+export const ISSUE_NEW_URL = `${REPO_URL}/issues/new`;
+
 export const ORG_JSON_LD = {
   '@type': 'Organization',
   name: SITE_NAME,
