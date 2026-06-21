@@ -5,6 +5,11 @@ labels: factual-correction
 assignees: ''
 ---
 
+<!-- Wrong channel?
+     - The data is right but the rubric was applied wrongly? → use Grade Dispute.
+     - You want to change the rubric itself? → use Rubric Proposal.
+     See https://defirisk.co/contributions/#corrections for which channel fits. -->
+
 **Protocol:** <!-- e.g. Aave v3 -->
 
 **Factor or field:** <!-- e.g. RD-F-001 audit scope, TVL, governance threshold -->

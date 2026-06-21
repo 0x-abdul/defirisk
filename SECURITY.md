@@ -39,7 +39,8 @@ Out of scope:
 
 - Findings against forks or unauthorised mirrors.
 - Disagreements with a protocol's risk grade (these go through the public
-  dispute path described in [CONTRIBUTING.md](CONTRIBUTING.md#disputes-and-issue-flags)).
+  corrections and disputes path described in
+  [CONTRIBUTING.md](CONTRIBUTING.md#corrections-and-disputes)).
 - Theoretical issues without a working reproduction.
 - Social-engineering tests against maintainers without prior agreement.
 - Findings that depend on physical access to a maintainer's machine.
@@ -76,7 +77,8 @@ security-relevant:
   oracle posture.
 - Evidence that a protocol team submitted false data through the curator review path.
 
-Reports of this kind can be filed publicly via the issue-flag path or
+Reports of this kind can be filed publicly via a
+[Factual Correction](.github/ISSUE_TEMPLATE/factual-correction.md) or
 privately via the channel above if the reporter has reason to keep it
 confidential.
 
