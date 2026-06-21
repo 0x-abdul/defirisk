@@ -1,0 +1,320 @@
+---
+import Page from '../components/Page.astro';
+import Callout from '../components/Callout.astro';
+import { REPO_URL, ISSUE_NEW_URL } from '../lib/seo-defaults';
+
+const today = new Date().toISOString().slice(0, 10);
+
+const FACTUAL_CORRECTION_URL = `${ISSUE_NEW_URL}?template=factual-correction.md`;
+const GRADE_DISPUTE_URL = `${ISSUE_NEW_URL}?template=grade-dispute.md`;
+const RUBRIC_PROPOSAL_URL = `${ISSUE_NEW_URL}?template=rubric-proposal.md`;
+const COVERAGE_REQUEST_URL = `${ISSUE_NEW_URL}?template=coverage-request.md`;
+const ISSUES_URL = `${REPO_URL}/issues`;
+const CONTRIBUTING_URL = `${REPO_URL}/blob/main/CONTRIBUTING.md`;
+const SECURITY_URL = `${REPO_URL}/blob/main/SECURITY.md`;
+
+const toc = [
+  { id: 'overview', n: 'Overview' },
+  {
+    id: 'improve',
+    n: 'Improve the dashboard',
+    sub: [
+      { id: 'code', n: 'Code & docs' },
+      { id: 'coverage', n: 'Request coverage' },
+    ],
+  },
+  {
+    id: 'corrections',
+    n: 'Correct or challenge',
+    sub: [
+      { id: 'factual-correction', n: 'Factual Correction' },
+      { id: 'grade-dispute', n: 'Grade Dispute' },
+      { id: 'rubric-proposal', n: 'Rubric Proposal' },
+    ],
+  },
+  { id: 'what-we-can-fix', n: 'What we never accept' },
+  { id: 'review-window', n: 'Pre-publication review' },
+  { id: 'timelines', n: 'Timelines' },
+  { id: 'audit-trail', n: 'Audit trail' },
+  { id: 'security', n: 'Security' },
+];
+---
+
+<Page
+  pageTitle="Contributions"
+  description="How to contribute to defirisk.co — improve the open-source dashboard, request coverage, or correct and challenge an assessment. All in public."
+  crumbs={[{ n: 'Contributions' }]}
+  toc={toc}
+  hero={{
+    h1: 'Contributions',
+    lede: 'defirisk.co is an open-source public good. You can improve the project, request coverage, or correct and challenge an assessment — all in public.',
+    meta: [
+      { label: 'Last updated', value: today },
+      { label: 'Code', value: 'MIT' },
+      { label: 'Data', value: 'CC BY 4.0' },
+    ],
+  }}
+>
+  <h2 id="overview">Overview <a class="alink" href="#overview">#</a></h2>
+  <p>
+    There are two kinds of contribution, with different audiences. If you are a
+    <strong>developer or researcher</strong>, you can improve the code, docs, and rubric, or ask us
+    to cover a new protocol. If you represent a <strong>protocol</strong> (or you have spotted an
+    error in one), you can correct a fact or challenge a grade. Both kinds resolve in public.
+  </p>
+
+  <div class="ttable" tabindex="0" role="region" aria-label="Ways to contribute">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:200px">You want to…</th>
+          <th>How</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Improve code, docs, or the rubric</b></td>
+          <td>
+            Open a pull request — see <a class="link" href="#code">Code &amp; docs</a>.
+          </td>
+        </tr>
+        <tr>
+          <td><b>Get a protocol covered</b></td>
+          <td>
+            File a coverage request — see <a class="link" href="#coverage">Request coverage</a>.
+          </td>
+        </tr>
+        <tr>
+          <td><b>Fix a wrong data point</b></td>
+          <td>
+            File a <a class="link" href="#factual-correction">Factual Correction</a>.
+          </td>
+        </tr>
+        <tr>
+          <td><b>Challenge how a grade was reached</b></td>
+          <td>
+            File a <a class="link" href="#grade-dispute">Grade Dispute</a> or
+            <a class="link" href="#rubric-proposal">Rubric Proposal</a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="improve">Improve the dashboard <a class="alink" href="#improve">#</a></h2>
+
+  <h3 id="code">Code &amp; docs <a class="alink" href="#code">#</a></h3>
+  <p>
+    The site, scoring pipeline, schema, and rubric definitions are all open source. Pull requests
+    are welcome to:
+  </p>
+  <ul>
+    <li>
+      <strong>The site</strong> (<code>site/</code>) — especially WCAG 2.2 AA accessibility fixes
+      and performance improvements.
+    </li>
+    <li>
+      <strong>The scoring scripts</strong> (<code>compose.py</code>, <code>dump.py</code>,
+      <code>rubric.py</code>) and <strong>database migrations</strong> (<code>db/migrations/</code>).
+    </li>
+    <li><strong>Documentation, examples, and translations.</strong></li>
+  </ul>
+  <p>
+    One topic per PR, with tests for new code paths and a short description of what changed and why.
+    Full expectations, code style, and licensing are in
+    <a class="link" href={CONTRIBUTING_URL}>CONTRIBUTING.md</a>.
+  </p>
+  <Callout kind="info" label="Data is not editable by PR">
+    <p>
+      Pull requests cannot write to per-protocol factor scores or letter grades, and cannot edit
+      the generated <code>data/api/</code> tree — those are regenerated from the database on every
+      deploy. To change what a protocol page says, use the correction and dispute channels below.
+    </p>
+  </Callout>
+
+  <h3 id="coverage">Request coverage <a class="alink" href="#coverage">#</a></h3>
+  <p>
+    Want a protocol added to the dashboard? File a coverage request with the protocol name, chain,
+    approximate TVL, known audits, and any conflict-of-interest disclosure. The baseline scope bar
+    is live for more than 12 months, TVL over $50M, on an EVM or otherwise supported chain. Requests
+    are logged and prioritised against the published criteria.
+  </p>
+  <p>
+    <a class="link" href={COVERAGE_REQUEST_URL}>File a coverage request →</a>
+  </p>
+
+  <h2 id="corrections">Correct or challenge an assessment <a class="alink" href="#corrections">#</a></h2>
+  <p>
+    Everything we publish about a protocol is open to challenge, and every challenge is resolved in
+    public. There are three channels, and which one you use depends on what you are claiming is
+    wrong — the <strong>evidence</strong>, the <strong>judgment</strong>, or the
+    <strong>rubric</strong> itself. Picking the right one is the only thing you have to get right; if
+    you file in the wrong place we re-route it and say so on the thread.
+  </p>
+
+  <div class="ttable" tabindex="0" role="region" aria-label="Correction channels">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:170px">Channel</th>
+          <th>You're claiming…</th>
+          <th style="width:200px">Outcome</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Factual Correction</b></td>
+          <td>a data point is wrong, and you can cite a source.</td>
+          <td>Factor re-evidenced; the letter is recomputed.</td>
+        </tr>
+        <tr>
+          <td><b>Grade Dispute</b></td>
+          <td>the facts are right, but the rubric was applied incorrectly.</td>
+          <td>Re-adjudication; the factor flips, stays, or is rewritten.</td>
+        </tr>
+        <tr>
+          <td><b>Rubric Proposal</b></td>
+          <td>the rule itself is miscalibrated.</td>
+          <td>Public debate; a versioned change to the rubric.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <Callout kind="info" label="The grade is never hand-edited">
+    <p>
+      A letter grade is a deterministic function of the underlying factor scores. We never patch a
+      grade directly — we correct or re-adjudicate the <em>factor</em>, and the letter recomputes
+      from there. That is why a successful challenge always targets a specific factor, never the
+      letter.
+    </p>
+  </Callout>
+
+  <h3 id="factual-correction">Factual Correction <a class="alink" href="#factual-correction">#</a></h3>
+  <p>
+    Use this when a specific data point is factually wrong and you can prove it: an audit link, a
+    multisig threshold, a timelock delay, an oracle configuration, a TVL figure. A correction needs
+    a <strong>verifiable source</strong> — a URL, a contract address, an audit PDF page, or an
+    on-chain transaction. With that, we update the factor's evidence and the letter recomputes at the
+    next pipeline run.
+  </p>
+  <p>
+    <a class="link" href={FACTUAL_CORRECTION_URL}>Open a Factual Correction →</a>
+  </p>
+
+  <h3 id="grade-dispute">Grade Dispute <a class="alink" href="#grade-dispute">#</a></h3>
+  <p>
+    Use this when the facts are not in question but you believe the rubric was applied incorrectly:
+    a predicate was misread, a critical flag was miscounted, or a factor was scored against the
+    wrong threshold. A Grade Dispute is resolved through the
+    <a class="link" href="/methodology/#appeals">appeals process</a> in the methodology: the
+    maintainer re-adjudicates the disputed factor against the same predicates as the original
+    assessment, and the decision is published with full reasoning. The factor either flips, stays,
+    or is rewritten, and the letter recomputes.
+  </p>
+  <p>
+    <a class="link" href={GRADE_DISPUTE_URL}>Open a Grade Dispute →</a>
+  </p>
+
+  <h3 id="rubric-proposal">Rubric Proposal <a class="alink" href="#rubric-proposal">#</a></h3>
+  <p>
+    Use this when the disagreement is with the rubric itself, not with any single assessment: a
+    category is mis-specified, a critical factor is too broad, or a threshold is poorly calibrated.
+    Rubric proposals are filed as public issues, reviewed by the maintainer, and either accepted
+    into a future rubric version, deferred to a later revision, or declined with a public note.
+    Because the rubric is versioned, an accepted proposal changes future grades transparently — see
+    the <a class="link" href="/methodology/changelog/">rubric changelog</a>.
+  </p>
+  <p>
+    <a class="link" href={RUBRIC_PROPOSAL_URL}>Propose a rubric change →</a>
+  </p>
+
+  <h2 id="what-we-can-fix">What we never accept <a class="alink" href="#what-we-can-fix">#</a></h2>
+  <p>
+    We correct <strong>factual data points that carry a verifiable source</strong>. We do not accept
+    direct edits to factor scores or letter grades — not even a well-meaning pull request that
+    "fixes a single field." The data layer is populated only by the pipeline and curator review,
+    because the blast radius of a missed bad edit (a protocol team submitting favourable data about
+    itself) is larger than the throughput a shortcut would buy. Every data change flows through one
+    of the three channels above.
+  </p>
+
+  <h2 id="review-window">Pre-publication review <a class="alink" href="#review-window">#</a></h2>
+  <p>
+    Before a protocol's grade goes public, its team is given a private window to check it for
+    factual accuracy. <strong>Nothing is published until the team has had the chance to review.</strong>
+  </p>
+  <ul>
+    <li>
+      <strong>Your link</strong> looks like
+      <code>https://defirisk.co/unpublished/&lt;slug&gt;-&lt;token&gt;/</code>. It is unguessable,
+      unlisted, <code>noindex</code>, and not linked anywhere on the site — the page is not public
+      and will not appear in search or on the homepage.
+    </li>
+    <li>
+      <strong>You have about one week</strong> — the exact date is in the message that carried your
+      link.
+    </li>
+    <li>
+      <strong>To flag an error</strong>, open a Factual Correction (for data) or a Grade Dispute
+      (for rubric application) using the channels above, or simply reply on the channel your link
+      came from and we will file it for you.
+    </li>
+    <li>
+      <strong>Going live:</strong> once you have reviewed, or the window closes, your protocol moves
+      to its public URL <code>https://defirisk.co/protocols/&lt;slug&gt;/</code>.
+    </li>
+  </ul>
+  <Callout kind="note">
+    <p>
+      Are you a protocol team that received a private link? The review window is the same three
+      channels described here — you just have a private page and a deadline. Start with a Factual
+      Correction if a number or link is wrong.
+    </p>
+  </Callout>
+
+  <h2 id="timelines">Timelines <a class="alink" href="#timelines">#</a></h2>
+  <p>
+    Every submission is <strong>acknowledged and triaged within five business days</strong>. From
+    there:
+  </p>
+  <ul>
+    <li>
+      A straightforward <strong>Factual Correction</strong> with a clean source is applied at the
+      next pipeline run after the evidence is verified.
+    </li>
+    <li>
+      A <strong>Grade Dispute</strong> reaches a <strong>published decision within 14 days</strong>
+      of being filed, with full reasoning recorded on the thread.
+    </li>
+    <li>
+      A <strong>Rubric Proposal</strong> has no fixed clock — it is debated in public and resolved
+      when a rubric version is cut.
+    </li>
+  </ul>
+  <Callout kind="warning" label="A challenge does not pause the grade">
+    <p>
+      For already-published protocols, the grade stays live throughout a dispute. We do not gate
+      publication on the dispute calendar or redact pages during a review window. If a challenge
+      succeeds, the historical record shows both the before and after grade with the date of change.
+    </p>
+  </Callout>
+
+  <h2 id="audit-trail">Audit trail <a class="alink" href="#audit-trail">#</a></h2>
+  <p>
+    Every correction and dispute is a public issue on the
+    <a class="link" href={ISSUES_URL}>source repository</a>. The decision and the reasoning behind
+    it are recorded on that thread, which becomes the permanent, citable record for the protocol.
+    There is no private channel for changing a grade — if a number moved, the issue that moved it is
+    public. Each protocol page links to its own corrections and disputes so the trail is one click
+    from the assessment it concerns.
+  </p>
+
+  <h2 id="security">Security <a class="alink" href="#security">#</a></h2>
+  <p>
+    Found falsified data, a page that misrepresents a deployment, or anything security-relevant?
+    Those can be reported publicly through a Factual Correction, or privately if the reporter has
+    reason to keep it confidential. See
+    <a class="link" href={SECURITY_URL}>SECURITY.md</a> for the private channel and what is in scope.
+  </p>
+</Page>
