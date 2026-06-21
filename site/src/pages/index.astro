@@ -95,8 +95,8 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         </div>
         <p class="pl-body">
           The dashboard is being shared privately with each protocol team for a
-          factual-accuracy review before grades go public. Coverage opens here as
-          teams confirm their data.
+          <a class="pl-link" href="/contributions/#review-window">factual-accuracy review</a>
+          before grades go public. Coverage opens here as teams confirm their data.
         </p>
         <div class="pl-meta">
           <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
@@ -163,6 +163,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         <div class="emptyState-cta">
           <a href="/methodology/">Read the methodology →</a>
           <a href="/factors/">Browse all factors →</a>
+          <a href="/contributions/#review-window">How review works →</a>
         </div>
       </div>
     </section>
@@ -299,6 +300,16 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     color: var(--fg-2);
     margin: 0;
     text-wrap: pretty;
+  }
+  .prelaunchPanel .pl-body .pl-link {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  .prelaunchPanel .pl-body .pl-link:hover {
+    text-decoration-color: var(--fg);
   }
   .prelaunchPanel .pl-meta {
     display: flex;
