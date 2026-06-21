@@ -1,6 +1,6 @@
 export const SITE_NAME = 'DeFi Risk';
 export const SITE_DESCRIPTION =
-  'A field guide for DeFi risk. Open-source rubric, neutral framing, candid about its own limitations.';
+  'defirisk.co is an open-source risk transparency dashboard for defi protocols. Open-source rubric, neutral framing, candid about its own limitations.';
 export const SITE_URL = 'https://defirisk.co';
 export const DEFAULT_OG_IMAGE = '/og/default.png';
 export const TWITTER_HANDLE = '@defirisk';

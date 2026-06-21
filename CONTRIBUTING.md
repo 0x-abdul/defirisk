@@ -85,9 +85,9 @@ business days. All changes are public.
 ## Pre-publication review window
 
 Before a protocol's grade goes public, its team is given a private review
-window. The public-facing version of this guide is at
-<https://defirisk.co/contributions/#review-window>. If you received a private
-link, here's what it means:
+window. The correction and dispute channels are documented publicly at
+<https://defirisk.co/contributions/#corrections>. If you received a private link,
+here's what it means:
 
 - **Your link** looks like `https://defirisk.co/unpublished/<slug>-<token>/`.
   It is unguessable, unlisted, `noindex`, and not linked anywhere on the site —

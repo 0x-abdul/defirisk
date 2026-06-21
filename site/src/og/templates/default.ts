@@ -6,7 +6,9 @@ export function defaultCard(data: {
   description?: string;
 }): SatoriNode {
   const title = data.title ?? 'DeFi Risk';
-  const description = data.description ?? 'A field guide for DeFi risk. Open-source rubric, neutral.';
+  const description =
+    data.description ??
+    'defirisk.co is an open-source risk transparency dashboard for defi protocols. Open-source rubric, neutral.';
 
   return h('div', {
     style: {
