@@ -28,6 +28,7 @@ import DeploymentTabs from '../components/DeploymentTabs';
 import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loaders';
 import { loadCuratorSidecar } from '../lib/curator-sidecar';
 import { RUBRIC_VERSION } from '../lib/rubric';
+import { REPO_URL, ISSUE_NEW_URL } from '../lib/seo-defaults';
 import type { Letter } from '../lib/rubric';
 import { TOTAL_FACTOR_COUNT } from '../lib/rubric-constants';
 import { CATEGORIES, chainMeta } from '../data/categories';
@@ -214,6 +215,13 @@ function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | '
 const envelopeHref = reviewMode
   ? null
   : `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
+
+// Corrections & disputes links (see /corrections). The factual-correction and
+// grade-dispute templates are the two channels a protocol team uses; the
+// per-slug issue search is the public audit trail for this protocol.
+const correctionHref = `${ISSUE_NEW_URL}?template=factual-correction.md`;
+const disputeHref = `${ISSUE_NEW_URL}?template=grade-dispute.md`;
+const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue ${slug}`)}`;
 ---
 
 <Base
@@ -227,11 +235,29 @@ const envelopeHref = reviewMode
     reviewMode && (
       <div slot="banner" class="review-banner" role="status">
         <span class="review-icon" aria-hidden="true">🔍</span>
-        <span class="review-text">
-          <b>Pending review</b> — This assessment has not yet been published on the
-          dashboard. You have been shared this link so you can review the data before it goes live.
-          If you spot any errors, please reach out.
-        </span>
+        <div class="review-text">
+          <p class="review-lead">
+            <b>Pending review</b> — this assessment is not yet published. You have this private
+            link so your team can check it for factual accuracy before it goes live. The review
+            window is about one week; the exact date is in the message that carried this link.
+          </p>
+          <ul class="review-actions">
+            <li>
+              A number, link, or config is <b>wrong</b>?
+              <a href={correctionHref}>File a Factual Correction</a> with a source.
+            </li>
+            <li>
+              The facts are right but you think the <b>rubric was misapplied</b>?
+              <a href={disputeHref}>File a Grade Dispute</a>.
+            </li>
+          </ul>
+          <p class="review-note">
+            We correct the underlying <b>factor</b>, never the letter directly — the grade
+            recomputes from the corrected evidence. You can also reply on the channel this link
+            came from. Full process:
+            <a href="/contributions/#review-window">Corrections &amp; disputes</a>.
+          </p>
+        </div>
       </div>
     )
   }
@@ -500,6 +526,16 @@ const envelopeHref = reviewMode
         <span><b>factors</b> {TOTAL_FACTOR_COUNT}</span>
         <span><b>protocol</b> {slug}</span>
       </div>
+
+      {
+        !reviewMode && (
+          <p class="corrections-line">
+            Spot an error? <a href={correctionHref}>Correct a fact</a> or
+            <a href={disputeHref}> dispute the grade</a> — every change is public.
+            <a href={protocolIssuesHref}> Corrections &amp; disputes for {displayName} →</a>
+          </p>
+        )
+      }
     </div>
   </div>
 </Base>
@@ -528,6 +564,35 @@ const envelopeHref = reviewMode
   .review-banner .review-text b {
     color: var(--fg);
     font-weight: 600;
+  }
+  .review-banner .review-text p {
+    margin: 0;
+  }
+  .review-banner .review-lead {
+    max-width: 78ch;
+  }
+  .review-banner .review-actions {
+    margin: 7px 0 0;
+    padding-left: 18px;
+    max-width: 78ch;
+  }
+  .review-banner .review-actions li {
+    margin: 2px 0;
+  }
+  .review-banner .review-note {
+    margin-top: 7px;
+    color: var(--fg-3);
+    max-width: 78ch;
+  }
+  .review-banner .review-text a {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+  .review-banner .review-text a:hover {
+    text-decoration-color: var(--fg);
   }
 
   /* ─── Cap banner (M1 v4 single-category override) ─── */
@@ -905,6 +970,22 @@ const envelopeHref = reviewMode
     color: var(--fg);
     font-weight: 500;
     margin-right: 6px;
+  }
+  .corrections-line {
+    margin: 12px 2px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--fg-3);
+  }
+  .corrections-line a {
+    color: var(--fg-2);
+    text-decoration: underline;
+    text-decoration-color: var(--border-2);
+    text-underline-offset: 2px;
+  }
+  .corrections-line a:hover {
+    color: var(--fg);
+    text-decoration-color: var(--fg);
   }
 
   /* ─── Mobile (under 900px) ─── Collapse 300px sticky rail to top of single-col stack */
