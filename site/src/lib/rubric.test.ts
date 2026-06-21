@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { grade, computeGradeFromFactors, type GradeInputs } from './rubric';
 import type { RawFactorScore, FactorMeta } from './rubric';
-import sparkFixture from '../../tests/fixtures/rubric/spark.json' assert { type: 'json' };
-import aaveV3Fixture from '../../tests/fixtures/rubric/aave-v3.json' assert { type: 'json' };
-import uniswapV4Fixture from '../../tests/fixtures/rubric/uniswap-v4.json' assert { type: 'json' };
-import bridgeFixture from '../../tests/fixtures/rubric/bridge.json' assert { type: 'json' };
-import perpsDexFixture from '../../tests/fixtures/rubric/perps-dex.json' assert { type: 'json' };
+import sparkFixture from '../../tests/fixtures/rubric/spark.json' with { type: 'json' };
+import aaveV3Fixture from '../../tests/fixtures/rubric/aave-v3.json' with { type: 'json' };
+import uniswapV4Fixture from '../../tests/fixtures/rubric/uniswap-v4.json' with { type: 'json' };
+import bridgeFixture from '../../tests/fixtures/rubric/bridge.json' with { type: 'json' };
+import perpsDexFixture from '../../tests/fixtures/rubric/perps-dex.json' with { type: 'json' };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
