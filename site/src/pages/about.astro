@@ -1,6 +1,5 @@
 ---
 import Page from '../components/Page.astro';
-import Callout from '../components/Callout.astro';
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -8,7 +7,7 @@ const toc = [
   { id: 'mission', n: 'Mission' },
   { id: 'maintainer', n: 'Maintainer' },
   { id: 'independence', n: 'Independence' },
-  { id: 'disputes', n: 'Methodology disputes' },
+  { id: 'disputes', n: 'Corrections & disputes' },
   { id: 'licenses', n: 'Code & data licenses' },
   { id: 'contact', n: 'Contact' },
 ];
@@ -50,25 +49,32 @@ const toc = [
     influence one. defirisk.co is an open-source public good for the DeFi community.
   </p>
 
-  <h2 id="disputes">Methodology disputes <a class="alink" href="#disputes">#</a></h2>
-  <p>There are two kinds of disagreement we treat differently.</p>
+  <h2 id="disputes">Corrections &amp; disputes <a class="alink" href="#disputes">#</a></h2>
   <p>
-    A <strong>grade dispute</strong> targets a specific factor on a specific assessment. It says:
-    this citation is wrong, this predicate was misapplied, or this evidence is outdated. Grade
-    disputes are handled through the
-    <a class="link" href="/methodology/#appeals">appeals process</a> documented in the
-    methodology.
+    Everything we publish is open to challenge through three channels, depending on what you are
+    claiming is wrong:
   </p>
+  <ul>
+    <li>
+      <strong>Factual Correction</strong> — a specific data point is wrong and you can cite a
+      source. We re-evidence the factor and the letter recomputes.
+    </li>
+    <li>
+      <strong>Grade Dispute</strong> — the facts are right but the rubric was applied incorrectly.
+      Resolved through the <a class="link" href="/methodology/#appeals">appeals process</a> by
+      re-adjudicating the disputed factor.
+    </li>
+    <li>
+      <strong>Rubric Proposal</strong> — the rule itself is miscalibrated. Filed as a public issue,
+      reviewed by the maintainer, and either accepted into a future rubric version, deferred, or
+      declined with a public note.
+    </li>
+  </ul>
   <p>
-    A <strong>rubric dispute</strong> targets the rubric itself. It says: this category is
-    mis-specified, this critical factor is too broad, or this threshold is poorly calibrated.
-    Rubric disputes are filed as issues against the public repo, reviewed by the maintainer,
-    and either accepted into a future rubric version, deferred to a future revision, or declined
-    with a public note.
-  </p>
-  <p>
-    Both classes of dispute are public from the moment they are filed. We do not pause grades or
-    redact pages during a dispute window.
+    Every challenge is public from the moment it is filed, and we do not pause grades or redact
+    pages while one is open. The full process — what each channel is for, what counts as a
+    verifiable source, and the timelines — lives on the
+    <a class="link" href="/contributions/#corrections">Contributions</a> page.
   </p>
 
   <h2 id="licenses">Code &amp; data licenses <a class="alink" href="#licenses">#</a></h2>
@@ -95,7 +101,10 @@ const toc = [
   </ul>
 
   <h2 id="contact">Contact <a class="alink" href="#contact">#</a></h2>
-  <p>For grade disputes, use the appeals system.</p>
+  <p>
+    To correct a fact or dispute a grade, use the
+    <a class="link" href="/contributions/#corrections">Contributions</a> channels.
+  </p>
   <p>
     For coverage requests — new protocols, new chains, new sectors — submit a public post on X
     tagging <a class="link" href="https://x.com/0x_abdul">@0x_Abdul</a> with the protocol name,
