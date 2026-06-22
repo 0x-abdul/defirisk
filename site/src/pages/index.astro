@@ -57,11 +57,11 @@ const isPreLaunch = items.length === 0;
 
 // Hero copy
 const headlineCopy = isPreLaunch
-  ? 'An open-source field guide to DeFi risk.'
+  ? 'An open-source risk transparency dashboard for defi protocols.'
   : `${items.length} protocols, ${TOTAL_FACTOR_COUNT} risk factors, ${TOTAL_CATEGORY_COUNT} categories.`;
 const ledeCopy = isPreLaunch
   ? `Every protocol graded against ${TOTAL_FACTOR_COUNT} cited risk factors. Grades are in private review with protocol teams ahead of launch — the methodology and factor library are open below.`
-  : 'An open-source field guide to DeFi risk. Every protocol graded, every factor cited — all in the open.';
+  : 'An open-source risk transparency dashboard for defi protocols. Every protocol graded, every factor cited — all in the open.';
 
 // Latest reviewed date (used in the how-to-read meta footer)
 const latestReviewedIso = baseList
@@ -95,8 +95,8 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         </div>
         <p class="pl-body">
           The dashboard is being shared privately with each protocol team for a
-          <a class="pl-link" href="/contributions/#review-window">factual-accuracy review</a>
-          before grades go public. Coverage opens here as teams confirm their data.
+          factual-accuracy review before grades go public. Coverage opens here as teams confirm
+          their data.
         </p>
         <div class="pl-meta">
           <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
@@ -163,7 +163,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         <div class="emptyState-cta">
           <a href="/methodology/">Read the methodology →</a>
           <a href="/factors/">Browse all factors →</a>
-          <a href="/contributions/#review-window">How review works →</a>
+          <a href="/contributions/#corrections">Correction channels →</a>
         </div>
       </div>
     </section>
@@ -212,8 +212,8 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     <div class="ftr-cols">
       <div class="ftr-col ftr-about">
         <p>
-          <b>DeFi Risk</b> is an open-source field guide to DeFi risk. Every protocol graded,
-          every factor cited — all in the open.
+          <b>DeFi Risk</b> is an open-source risk transparency dashboard for defi protocols. Every
+          protocol graded, every factor cited — all in the open.
         </p>
       </div>
       <div class="ftr-col">
@@ -300,16 +300,6 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     color: var(--fg-2);
     margin: 0;
     text-wrap: pretty;
-  }
-  .prelaunchPanel .pl-body .pl-link {
-    color: var(--fg);
-    text-decoration: underline;
-    text-decoration-color: var(--border-2);
-    text-underline-offset: 2px;
-    text-decoration-thickness: 1px;
-  }
-  .prelaunchPanel .pl-body .pl-link:hover {
-    text-decoration-color: var(--fg);
   }
   .prelaunchPanel .pl-meta {
     display: flex;
