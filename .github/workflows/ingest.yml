@@ -1,9 +1,9 @@
 # Nightly Bucket A refresh — continuous-cadence factors (E-30 Phase 3)
 #
-# Runs refresh-continuous.py for all protocols at 03:00 UTC every day
-# (after the nightly data pipeline has settled). Updates TVL, oracle
-# depth, utilization rate, and days-since-exploit for all 57 protocols,
-# then re-runs compose.py and dump.py to refresh static exports.
+# Runs refresh-continuous.py for all protocols at 03:00 UTC every day.
+# Updates protocol/deployment TVL plus conservative factor-level metrics
+# that can be refreshed from stable sources. The script re-runs compose.py
+# when factor scores change and always re-runs dump.py after DB updates.
 #
 # Prerequisites (repo Settings → Secrets and variables → Actions):
 #   DATABASE_URL          — Supabase pooler connection string (M5+)
@@ -20,7 +20,6 @@ name: Nightly ingest (Bucket A — continuous cadence)
 on:
   schedule:
     - cron: '0 3 * * *'   # 03:00 UTC daily
-    - cron: '0 4 * * 0'   # 04:00 UTC Sunday — weekly history prune (E-32)
   workflow_dispatch:        # manual: gh workflow run ingest.yml
 
 permissions:
@@ -41,7 +40,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python dependencies
-        run: pip install 'psycopg[binary]' requests
+        run: pip install 'psycopg[binary]'
 
       - name: Check prerequisites
         id: prereq
@@ -67,17 +66,3 @@ jobs:
       - name: Skip notice (pre-M5)
         if: steps.prereq.outputs.skip == 'true'
         run: echo "Nightly ingest skipped — DATABASE_URL not configured (pre-M5)."
-
-      - name: Detect grade changes (E-34)
-        if: steps.prereq.outputs.skip != 'true'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          python scripts/detect-grade-changes.py
-
-      - name: Run prune-history.py (Sundays only, E-32)
-        if: steps.prereq.outputs.skip != 'true' && github.event.schedule == '0 4 * * 0'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          python scripts/prune-history.py
