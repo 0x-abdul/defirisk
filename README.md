@@ -42,6 +42,7 @@ A single-protocol page shows the letter grade, risk score, per-category grid, fa
 | `data/api/v1.7.0/` | Generated JSON data tree — protocol grades, factor scores, hacks, history (CC-BY 4.0) |
 | `db/migrations/` | Postgres schema migrations |
 | `scripts/compose.py` | Grade computation engine (reads DB → writes grades) |
+| `scripts/refresh-continuous.py` | Continuous metric refresh (TVL/current factors -> compose/dump) |
 | `scripts/dump.py` | JSON export (reads DB → writes `data/api/`) |
 | `scripts/rubric.py` | Rubric math — score formula and grade thresholds |
 | `.github/` | CI, deploy workflow, issue templates |
@@ -104,6 +105,35 @@ We welcome:
 We do **not** accept direct edits to `data/api/` — all data flows through the evidence pipeline.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+
+---
+
+## Continuous refresh operations
+
+The nightly continuous refresh is intentionally narrower than a full manual
+protocol reassessment. It updates regularly changing metrics from durable
+programmatic sources, then regenerates exports:
+
+```bash
+DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all
+DATABASE_URL=postgres://... python scripts/refresh-continuous.py --protocol aave-v3
+DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all --dry-run
+```
+
+`DATABASE_URL` or `LOCAL_DATABASE_URL` must point at the Postgres database.
+The script fetches DeFiLlama by `protocols.defillama_slug`, updates protocol
+TVL, mappable deployment TVL, and conservative factor scores such as
+RD-F-063, RD-F-084, RD-F-080, and RD-F-066 when the source data is sufficient.
+It never overwrites existing values with null or zero on fetch failures.
+
+If factor scores change, `compose.py` runs before export so grades and risk
+scores reflect the refreshed factor data. `dump.py` always runs after
+successful DB updates so `data/api/v1.7.0/` and `status.json` are regenerated.
+
+Not every current-looking metric is safe to automate yet. Oracle pool depth,
+liquidity depth, top depositor concentration, and many episodic event factors
+remain manual or future-pipeline work until the source mappings and thresholds
+are machine-readable enough to avoid false precision.
 
 ---
 

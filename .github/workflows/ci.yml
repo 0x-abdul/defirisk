@@ -86,6 +86,19 @@ jobs:
       - name: Run legacy offline test (schema validation + dry-run)
         run: python risk-dashboard/scripts/data-pipeline/tests/test_offline.py
 
+  script-tests:
+    name: Public script tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install test deps
+        run: pip install pytest
+      - name: Run public script tests
+        run: pytest scripts/tests -q
+
   # ── 1. Schema drift check ────────────────────────────────────────────────────
   schema-check:
     name: Schema check (drizzle-kit)

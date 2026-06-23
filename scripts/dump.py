@@ -136,9 +136,16 @@ def get_connection_url() -> str:
 
 
 def fetch_data_as_of(cur: Any) -> str:
-    """Return ISO-8601 UTC timestamp of the latest factor_score collected_at."""
+    """Return ISO-8601 UTC timestamp of the latest exported DB refresh."""
     cur.execute(
-        "SELECT MAX(collected_at) AS max_ts FROM factor_scores WHERE is_current = true"
+        """
+        SELECT GREATEST(
+            (SELECT MAX(collected_at) FROM factor_scores WHERE is_current = true),
+            (SELECT MAX(updated_at) FROM protocols
+             WHERE total_value_secured_usd IS NOT NULL),
+            (SELECT MAX(updated_at) FROM deployments WHERE tvs_usd IS NOT NULL)
+        ) AS max_ts
+        """
     )
     row = cur.fetchone()
     if row and row["max_ts"]:
@@ -629,7 +636,7 @@ def emit_status_json(
     fleet_freshness: list[dict] = []
     for p in protocols:
         graded_at = p.get("graded_at")
-        data_as_of_p = p.get("data_as_of") or p.get("graded_at")
+        data_as_of_p = p.get("data_as_of") or p.get("updated_at") or p.get("graded_at")
         if hasattr(graded_at, "isoformat"):
             graded_at = graded_at.isoformat()
         if hasattr(data_as_of_p, "isoformat"):
