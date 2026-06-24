@@ -1,13 +1,13 @@
 ---
 name: Rubric proposal
-about: Propose a change to the rubric itself — a category, factor, or threshold
+about: "Propose a change to the rubric itself: a category, factor, or threshold"
 labels: rubric-proposal
 assignees: ''
 ---
 
 <!-- Wrong channel?
-     - A specific data point is wrong (with a source)? → use Factual Correction.
-     - A grade misapplied the rubric to one protocol? → use Grade Dispute.
+     - A specific data point is wrong (with a source)? Use Factual Correction.
+     - A grade misapplied the rubric to one protocol? Use Grade Dispute.
      This template is only for changing the rubric itself, for all protocols. -->
 
 **What part of the rubric:**
