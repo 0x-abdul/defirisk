@@ -9,7 +9,7 @@
  *     unguessable (~4.3B possibilities).
  *
  * This route exists ONLY for the curator-controlled pre-launch review
- * window — a protocol team is sent the link, has ~1 week to flag errors,
+ * window: a protocol team is sent the link, has ~1 week to flag errors,
  * then is_published is flipped via scripts/set_published.py and the
  * protocol moves to /protocols/<slug>/ at the next dump.py run.
  *
@@ -21,7 +21,7 @@
  *   - listProtocols() / index.json / sitemap / RSS never reference these
  *     protocols
  *
- * Data path: data/api/<rubric>/unpublished/<slug>-<token>/index.json — kept
+ * Data path: data/api/<rubric>/unpublished/<slug>-<token>/index.json, kept
  * separate from data/api/<rubric>/protocols/<slug>.json so the public JSON
  * tree never contains unpublished protocol files.
  */
@@ -47,4 +47,4 @@ if (!detail) {
 {/* No canonical passed: reviewMode propagates noindex=true to Base, which now
     suppresses <link rel="canonical"> + og:url entirely. The prior
     canonical={Astro.url.toString()} leaked the secret review URL into
-    canonical metadata — see p0-response 2026-05-30 (P0 #4). */}
+    canonical metadata; see p0-response 2026-05-30 (P0 #4). */}

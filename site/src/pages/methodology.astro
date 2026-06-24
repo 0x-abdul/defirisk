@@ -58,7 +58,7 @@ const toc = [
     severities are aggregated into a protocol risk score (0–100) with core-five categories
     weighted 1.5×; the risk score is bucketed into a letter band. Critical-flag reds carry an
     additional penalty and can force the bottom two grades regardless of the score. There is no
-    hidden weight vector and no trained model — every step of the derivation is published.
+    hidden weight vector and no trained model; every step of the derivation is published.
   </p>
 
   <h3 id="overview-shape">Shape of a grade <a class="alink" href="#overview-shape">#</a></h3>
@@ -74,7 +74,7 @@ const toc = [
     Each of the {TOTAL_FACTOR_COUNT} evidence factors is reviewed against a fixed citation list:
     audit reports, on-chain state, governance forums, public incident records, source repos, and
     operator disclosures. Every factor row on a protocol page links to its sources. If a
-    citation cannot be made public, the factor is marked <code>n/a — under embargo</code> and the
+    citation cannot be made public, the factor is marked <code>n/a, under embargo</code> and the
     underlying claim does not contribute to the grade.
   </p>
 
@@ -82,7 +82,7 @@ const toc = [
     <p>
       We do not score user experience, frontend hosting, token price, marketing surface, or
       community sentiment. Where a category technically applies but the protocol does not use the
-      relevant primitive — e.g. an isolated AMM with no oracle dependency — the category is
+      relevant primitive, e.g. an isolated AMM with no oracle dependency, the category is
       marked <code>n/a</code> and excluded from the severity calculation entirely.
     </p>
   </Callout>
@@ -156,7 +156,7 @@ const toc = [
       count assessed (non-gray) factors only:
       <code>severity = (red × 3 + yellow × 1) / (assessed × 3) × 100</code>.
       A category with all green factors scores 0; all red scores 100. Gray factors are excluded
-      from the denominator — data gaps neither help nor hurt the protocol.
+      from the denominator; data gaps neither help nor hurt the protocol.
     </li>
     <li>
       <strong>Protocol risk score.</strong> A weighted average of per-category severities, where
@@ -183,8 +183,8 @@ const toc = [
   <p>Examples of critical-factor categories include:</p>
   <ul>
     <li>
-      <strong>Live admin without delay.</strong> Any path that lets a single key — or a single
-      multisig threshold — execute a state-changing upgrade with no timelock delay.
+      <strong>Live admin without delay.</strong> Any path that lets a single key, or a single
+      multisig threshold, execute a state-changing upgrade with no timelock delay.
     </li>
     <li>
       <strong>Unaudited live primitive.</strong> A core primitive (matching engine, lending
@@ -233,8 +233,8 @@ const toc = [
   <p>
     Core-five categories carry a 1.5× weight in the protocol risk score, and are the only
     categories subject to the single-category cap override (severity ≥ 60 → D floor; ≥ 90 → F
-    override). The remaining eight categories — economic risk, real-time signals, dev identity,
-    post-deploy hygiene, cross-chain, threat intelligence, tooling, and response hygiene — are
+    override). The remaining eight categories, economic risk, real-time signals, dev identity,
+    post-deploy hygiene, cross-chain, threat intelligence, tooling, and response hygiene, are
     weighted at 1.0× and cannot trigger the cap. They contribute to the risk score in full, but
     a single weakness in one of those eight categories has less leverage than the same weakness
     in a core-five category.
@@ -244,14 +244,14 @@ const toc = [
   <p>
     When the facts are right but you believe the rubric was applied incorrectly, the channel is a
     <strong>Grade Dispute</strong>, resolved through the appeals process below. (If a data point is
-    simply wrong, that is a Factual Correction instead — see
+    simply wrong, that is a Factual Correction instead; see
     <a class="link" href="/contributions/#corrections">Corrections &amp; disputes</a> for which channel
     fits.)
     Every dispute is public from the moment it is filed.
   </p>
   <ol>
     <li>
-      <strong>Open a dispute</strong> against a specific factor — not against the letter. Letters
+      <strong>Open a dispute</strong> against a specific factor, not against the letter. Letters
       are downstream of factors, so a successful appeal targets the underlying evidence.
     </li>
     <li>
@@ -265,7 +265,7 @@ const toc = [
     <li>
       <strong>Decision published.</strong> Every dispute is acknowledged and triaged within five
       business days, and reaches a published decision within 14 days of filing, with full
-      reasoning. The factor either flips, stays, or is rewritten — and the resulting letter is
+      reasoning. The factor either flips, stays, or is rewritten, and the resulting letter is
       recomputed.
     </li>
   </ol>

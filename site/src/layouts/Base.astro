@@ -35,7 +35,7 @@ const {
 
 const fullTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
 // Noindex pages must NOT emit <link rel="canonical"> or og:url pointing at
-// themselves — that contradicts the noindex signal and, in the case of
+// themselves because that contradicts the noindex signal and, in the case of
 // /unpublished/<slug>-<token>/, would leak the secret review URL into
 // canonical metadata. See p0-response 2026-05-30 (P0 #4).
 const canonicalUrl = noindex
@@ -75,13 +75,13 @@ const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={`${SITE_NAME} — Grade changes`}
+      title={`${SITE_NAME} | Grade changes`}
       href="/feeds/grade-changes.xml"
     />
     <link
       rel="alternate"
       type="application/feed+json"
-      title={`${SITE_NAME} — Grade changes`}
+      title={`${SITE_NAME} | Grade changes`}
       href="/feeds/grade-changes.json"
     />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />

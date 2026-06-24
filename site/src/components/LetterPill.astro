@@ -7,7 +7,7 @@ export interface Props {
   letter: Letter;
   size?: LetterPillSize;
   meaning?: string;
-  /** Numeric risk score rendered as a string (e.g. "14.3") — displayed in hero size only. */
+  /** Numeric risk score rendered as a string (e.g. "14.3"), displayed in hero size only. */
   score?: string;
   ariaLabel?: string;
 }
@@ -42,7 +42,7 @@ const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
 }
 
 <style>
-  /* Mini — 18×18, used in filter chips next to "Grade A" labels */
+  /* Mini: 18×18, used in filter chips next to "Grade A" labels */
   .gpill {
     display: inline-flex;
     align-items: center;
@@ -70,7 +70,7 @@ const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
     background: var(--gF);
   }
 
-  /* Medium — 34×34, used in protocol row Grade column */
+  /* Medium: 34×34, used in protocol row Grade column */
   .gpill-lg {
     display: inline-flex;
     align-items: center;
@@ -100,7 +100,7 @@ const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
     background: var(--gF);
   }
 
-  /* Hero — 256×256 (or container-sized), used in protocol detail rail */
+  /* Hero: 256×256 (or container-sized), used in protocol detail rail */
   .gradebig {
     width: 100%;
     aspect-ratio: 1;

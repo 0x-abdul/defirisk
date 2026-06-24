@@ -85,7 +85,7 @@ const stubSources = [
   { source_type: 'audit_report' as const, url: 'https://example.com/audit.pdf', title: 'Pashov Audit Group · v3.6 review', retrieved_at: '2026-04-27T00:00:00Z', primary: true },
   { source_type: 'governance_post' as const, url: 'https://forum.example.com/p/429', title: 'Governance proposal 429', retrieved_at: '2026-04-27T00:00:00Z' },
   { source_type: 'curator_note' as const, url: null, reference: 'Internal triage 2026-04-27', title: 'Curator triage note' },
-  { source_type: 'etherscan' as const, url: 'https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2', title: 'Aave v3 Pool — Ethereum mainnet' },
+  { source_type: 'etherscan' as const, url: 'https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2', title: 'Aave v3 Pool: Ethereum mainnet' },
 ];
 
 const stubLinkedHacks = [
@@ -115,7 +115,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>LetterPill — 3 sizes</h2>
+      <h2>LetterPill: 3 sizes</h2>
       <div class="row">
         <span class="muted">mini (18×18):</span>
         <LetterPill letter="A" size="mini" />
@@ -143,7 +143,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>FilterChip — variants</h2>
+      <h2>FilterChip: variants</h2>
       <div class="row">
         <span class="muted">basic + count:</span>
         <FilterChip label="Ethereum" count={17} />
@@ -198,7 +198,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>DeploymentChip — 9 chains</h2>
+      <h2>DeploymentChip: 9 chains</h2>
       <div class="deploy">
         <span class="lbl">Deployments</span>
         {
@@ -210,7 +210,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>IncidentBanner — 3 variants</h2>
+      <h2>IncidentBanner: 3 variants</h2>
       <p class="muted">Rendered top-level (no real incidents data; Phase 3.5 visual verification harness).</p>
       <div class="banner-stack">
         <IncidentBanner
@@ -229,7 +229,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>Callout — info / warning / note</h2>
+      <h2>Callout: info / warning / note</h2>
       <Callout kind="info" label="Heads up"><p>This is an info callout. Use for clarifications and reader notes.</p></Callout>
       <Callout kind="warning" label="Appeals do not pause the grade"><p>This is a warning callout. Use for risks that need attention.</p></Callout>
       <Callout kind="note"><p>This is a note callout (default). Use for asides without color emphasis.</p></Callout>
@@ -241,7 +241,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>BigGradeCard — 256×256 hero card with meaning + score</h2>
+      <h2>BigGradeCard: 256×256 hero card with meaning + score</h2>
       <div class="grade-row">
         <div class="grade-stub"><BigGradeCard letter="A" meaning="Resilient" /></div>
         <div class="grade-stub"><BigGradeCard letter="C" meaning="Watch" /></div>
@@ -250,7 +250,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>VerdictBlock — 5 letter defaults</h2>
+      <h2>VerdictBlock: 5 letter defaults</h2>
       <div class="verdict-stack">
         <VerdictBlock letter="A" />
         <VerdictBlock letter="B" />
@@ -261,7 +261,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>CategoryCard — 3 light states with FactorTable inside</h2>
+      <h2>CategoryCard: 3 light states with FactorTable inside</h2>
       <CategoryCard id="demo-red" name="Governance & admin (red)" light="red" bars={['r', 'r', 'y', 'y', 'g', 'g']} count="6 of 24" open>
         <FactorTable factors={stubFactors} />
       </CategoryCard>
@@ -274,7 +274,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>GovernanceSignalRow — multisig / timelock rows</h2>
+      <h2>GovernanceSignalRow: multisig / timelock rows</h2>
       <dl class="signal-meta">
         <GovernanceSignalRow label="Multisig" light="green" value="7 / 13" sub="Governance" />
         <GovernanceSignalRow label="Multisig" light="yellow" value="3 / 5" sub="Council" />
@@ -296,7 +296,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>VersionMarker — H2 with version pill + date</h2>
+      <h2>VersionMarker: H2 with version pill + date</h2>
       <VersionMarker id="vm-current" version="v1.6.0" date="2026-05-11" current>
         Current version
       </VersionMarker>
@@ -309,7 +309,7 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>FactorCard — sticky-rail standalone (factor surface)</h2>
+      <h2>FactorCard: sticky-rail standalone (factor surface)</h2>
       <div class="rail-stub">
         <FactorCard
           factorId="RD-F-001"
@@ -330,22 +330,22 @@ const stubLinkedHacks = [
     </section>
 
     <section class="block">
-      <h2>HackFactorLinks — relevance pills (causal / illustrative / related)</h2>
+      <h2>HackFactorLinks: relevance pills (causal / illustrative / related)</h2>
       <HackFactorLinks hacks={stubLinkedHacks} />
     </section>
 
     <section class="block">
-      <h2>SourceList — 10 source types with primary + corroborating chips</h2>
+      <h2>SourceList: 10 source types with primary + corroborating chips</h2>
       <SourceList heading="Sources" sources={stubSources} />
     </section>
 
     <section class="block">
-      <h2>IncidentTable — historical hacks</h2>
+      <h2>IncidentTable: historical hacks</h2>
       <IncidentTable hacks={stubHacks} heading="Historical incidents" />
     </section>
 
     <section class="block">
-      <h2>MethodologyTable — rubric thresholds (badge column dropped per PD-035)</h2>
+      <h2>MethodologyTable: rubric thresholds (badge column dropped per PD-035)</h2>
       <MethodologyTable />
     </section>
   </div>
@@ -454,7 +454,7 @@ const stubLinkedHacks = [
     border-bottom: none;
   }
 
-  /* BigGradeCard hero examples — fix containers to 200px so the gallery doesn't blow out */
+  /* BigGradeCard hero examples: fix containers to 200px so the gallery doesn't blow out */
   .grade-row {
     display: grid;
     grid-template-columns: repeat(3, 200px);

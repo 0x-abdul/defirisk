@@ -16,7 +16,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
 const generatedAtDisplay = status.generated_at.slice(0, 19).replace('T', ' ') + ' UTC';
 const rubricFrozenDisplay = status.rubric_frozen_at
   ? status.rubric_frozen_at.slice(0, 10)
-  : '—';
+  : 'N/A';
 
 const coveragePctProtocols =
   status.protocols_target > 0
@@ -40,18 +40,18 @@ const freshnessCounts = status.per_protocol.reduce(
 ---
 
 <Base
-  title="System status — DeFi Risk"
+  title="System status | DeFi Risk"
   description="Live operational status: rubric version, build SHA, fleet freshness, per-protocol last-updated timestamps, and pipeline run history."
 >
   <div class="container">
     <div class="masthead">
       <div class="crumb">System status</div>
       <h1>Status</h1>
-      <p class="lede">What version of the dashboard you're reading, when the data was last refreshed, and the health of the ingestion pipeline. This page is regenerated every nightly build — see "generated at" below.</p>
+      <p class="lede">What version of the dashboard you're reading, when the data was last refreshed, and the health of the ingestion pipeline. This page is regenerated every nightly build; see "generated at" below.</p>
       <div class="meta-row">
         <span><b>Rubric</b> {RUBRIC_VERSION}</span>
         <span><b>Schema</b> {status.schema_version}</span>
-        <span><b>Build</b> <code>{buildSha ?? '—'}</code></span>
+        <span><b>Build</b> <code>{buildSha ?? 'N/A'}</code></span>
         <span><b>Generated</b> {generatedAtDisplay}</span>
       </div>
     </div>
@@ -63,7 +63,7 @@ const freshnessCounts = status.per_protocol.reduce(
           <tr><th scope="row">Rubric version</th><td><code>{RUBRIC_VERSION}</code> · <a href="/methodology/#changelog">changelog</a></td></tr>
           <tr><th scope="row">Rubric frozen at</th><td>{rubricFrozenDisplay}</td></tr>
           <tr><th scope="row">DB schema version</th><td><code>{status.schema_version}</code> · <a href={`/api/${RUBRIC_VERSION}/schema/envelope.json`}>envelope schema</a></td></tr>
-          <tr><th scope="row">Build commit</th><td><code>{buildSha ?? '— (set PUBLIC_GIT_SHA at build time)'}</code></td></tr>
+          <tr><th scope="row">Build commit</th><td><code>{buildSha ?? 'N/A (set PUBLIC_GIT_SHA at build time)'}</code></td></tr>
           <tr><th scope="row">Coverage target</th><td>{COVERAGE_TARGET_CATEGORIES} categories · {COVERAGE_TARGET_FACTORS} factors · {status.critical_factors_target} critical ★</td></tr>
           <tr><th scope="row">Page generated at</th><td><code>{status.generated_at}</code></td></tr>
         </tbody>
@@ -126,10 +126,10 @@ const freshnessCounts = status.per_protocol.reduce(
                 return (
                   <tr class={`freshness-row freshness-${fc}`}>
                     <td><a href={`/protocols/${p.slug}/`}>{p.display_name}</a></td>
-                    <td class="mono">{p.letter ?? '—'}</td>
-                    <td class="mono">{p.graded_at?.slice(0, 10) ?? '—'}</td>
-                    <td class="mono">{p.data_as_of?.slice(0, 10) ?? '—'}</td>
-                    <td class="num mono">{p.days_stale ?? '—'}</td>
+                    <td class="mono">{p.letter ?? 'N/A'}</td>
+                    <td class="mono">{p.graded_at?.slice(0, 10) ?? 'N/A'}</td>
+                    <td class="mono">{p.data_as_of?.slice(0, 10) ?? 'N/A'}</td>
+                    <td class="num mono">{p.days_stale ?? 'N/A'}</td>
                   </tr>
                 );
               })}
@@ -141,7 +141,7 @@ const freshnessCounts = status.per_protocol.reduce(
 
     <section class="section">
       <div class="section-head"><span class="section-num">§04</span><h2>Cadence buckets</h2><span class="tag">refresh schedule</span></div>
-      <p class="muted">Every factor in the 184-factor taxonomy is annotated with a refresh cadence. The dashboard's pipeline runs the right script at the right interval — most factors don't need to be re-checked nightly. Bucket counts are derived from the cadence column in the methodology template.</p>
+      <p class="muted">Every factor in the 184-factor taxonomy is annotated with a refresh cadence. The dashboard's pipeline runs the right script at the right interval; most factors don't need to be re-checked nightly. Bucket counts are derived from the cadence column in the methodology template.</p>
       <table class="mtable">
         <thead>
           <tr>
@@ -193,11 +193,11 @@ const freshnessCounts = status.per_protocol.reduce(
               <tr>
                 <td class="mono">{r.run_at.slice(0, 19).replace('T', ' ')}</td>
                 <td class="mono">{r.script_name}</td>
-                <td class="mono">{r.cadence_bucket ?? '—'}</td>
+                <td class="mono">{r.cadence_bucket ?? 'N/A'}</td>
                 <td class="num">{r.protocols_touched}</td>
                 <td class="num">{r.success_count}</td>
                 <td class="num">{r.error_count}</td>
-                <td class="num">{r.duration_seconds ?? '—'}s</td>
+                <td class="num">{r.duration_seconds == null ? 'N/A' : `${r.duration_seconds}s`}</td>
                 <td class="muted">{r.triggered_by}</td>
               </tr>
             ))}
@@ -209,10 +209,10 @@ const freshnessCounts = status.per_protocol.reduce(
     <section class="section">
       <div class="section-head"><span class="section-num">§06</span><h2>Data freshness policy</h2></div>
       <ul class="policy">
-        <li><b>Green</b> — last-updated within {FRESHNESS_GREEN_DAYS} days. Treat as current.</li>
-        <li><b>Yellow</b> — {FRESHNESS_GREEN_DAYS + 1} to {FRESHNESS_YELLOW_DAYS} days. Episodic factors expected to land here between weekly sweeps; static factors are normal at any age.</li>
-        <li><b>Red</b> — &gt; {FRESHNESS_YELLOW_DAYS} days for a continuous-cadence factor, or &gt; 90 days for an episodic factor. Surface as a stale-data flag on the protocol page.</li>
-        <li><b>Gray</b> — never assessed. Pre-M3a state for new protocols.</li>
+        <li><b>Green</b>: last-updated within {FRESHNESS_GREEN_DAYS} days. Treat as current.</li>
+        <li><b>Yellow</b>: {FRESHNESS_GREEN_DAYS + 1} to {FRESHNESS_YELLOW_DAYS} days. Episodic factors expected to land here between weekly sweeps; static factors are normal at any age.</li>
+        <li><b>Red</b>: &gt; {FRESHNESS_YELLOW_DAYS} days for a continuous-cadence factor, or &gt; 90 days for an episodic factor. Surface as a stale-data flag on the protocol page.</li>
+        <li><b>Gray</b>: never assessed. Pre-M3a state for new protocols.</li>
       </ul>
       <p class="muted">Active incidents are surfaced via the per-protocol incident banner and do <em>not</em> change the structural letter grade (PD-033). The EVENT badge mechanism returns alongside the v1.1 streaming-signal engine.</p>
     </section>

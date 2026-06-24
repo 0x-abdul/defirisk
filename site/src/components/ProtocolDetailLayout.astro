@@ -1,6 +1,6 @@
 ---
 /**
- * ProtocolDetailLayout — shared body for the protocol detail page.
+ * ProtocolDetailLayout shared body for the protocol detail page.
  *
  * Rendered by two routes:
  *   - /protocols/<slug>/                    (published; canonical public URL)
@@ -11,7 +11,7 @@
  *   - whether `reviewMode` is true (adds the "Pending review" banner; the
  *     /unpublished/ route also passes noindex to <Base>)
  *
- * Everything below this comment is identical for both — keeping the body
+ * Everything below this comment is identical for both; keeping the body
  * in a single component prevents drift between published and review
  * renders of the same protocol.
  */
@@ -56,8 +56,8 @@ const proto = detail.protocol as Record<string, unknown>;
 const slug = (proto.slug as string) ?? '';
 const headlineGrade = (proto.headline_grade ?? null) as Letter | null;
 const displayName = (proto.display_name as string) ?? slug;
-const protocolType = (proto.protocol_type as string) ?? '—';
-const primaryChain = (proto.primary_chain as string) ?? '—';
+const protocolType = (proto.protocol_type as string) ?? 'N/A';
+const primaryChain = (proto.primary_chain as string) ?? 'N/A';
 const description = (proto.description as string) ?? '';
 const gradedAt = (proto.graded_at as string | null) ?? null;
 const tvlUsd = ((): number => {
@@ -114,7 +114,7 @@ type ScoreRecord = {
   evidence_summary: string;
   category_id: number;
   factor_name: string;
-  /** PD-039 (2026-05-11) — null on graded scores; populated on gray/not_assessed. */
+  /** PD-039 (2026-05-11): null on graded scores; populated on gray/not_assessed. */
   gap_reason: GapReason | null;
 };
 
@@ -173,20 +173,20 @@ for (const s of scoreRecords) {
 const taxonomyCounts: Record<number, number> = {};
 for (const f of factors) taxonomyCounts[f.category_id] = (taxonomyCounts[f.category_id] ?? 0) + 1;
 
-// Active incidents only render on the published view — unpublished review
+// Active incidents only render on the published view; unpublished review
 // pages are pre-launch and should not surface incident banners from the
 // public ledger (the protocol isn't on the public dashboard yet).
 const incidents = reviewMode ? [] : listIncidents();
 const activeIncident = incidents.find((i) => i.protocol_slug === slug && i.status === 'open');
 
-// Curator sidecar — verdict body + multisig/timelock cells when upstream pipeline
+// Curator sidecar: verdict body + multisig/timelock cells when upstream pipeline
 // doesn't yet emit them. Null for most protocols pending curator pass.
 const curator = loadCuratorSidecar(slug);
 const multisigCell = curator?.multisig ?? null;
 const timelockCell = curator?.timelock ?? null;
 
 function fmtTvl(usd: number): string {
-  if (!Number.isFinite(usd) || usd <= 0) return '—';
+  if (!Number.isFinite(usd) || usd <= 0) return 'N/A';
   if (usd >= 1e9) return `$${(usd / 1e9).toFixed(1)}B`;
   if (usd >= 1e6) return `$${(usd / 1e6).toFixed(1)}M`;
   if (usd >= 1e3) return `$${(usd / 1e3).toFixed(0)}K`;
@@ -195,7 +195,7 @@ function fmtTvl(usd: number): string {
 
 const lastAssessedDisplay = gradedAt
   ? new Date(gradedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  : '—';
+  : 'N/A';
 
 // Severity-bar pattern for catcards. Take up to 18 bars per category.
 function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | 'g'> {
@@ -209,7 +209,7 @@ function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | '
 // JSON-envelope link target. For published pages the file lives at
 // /api/<rubric>/protocols/<slug>.json. For review pages the JSON sits
 // under /api/<rubric>/unpublished/<slug>-<token>/index.json, but we
-// derive the path off the route slug — the layout doesn't know the
+// derive the path off the route slug because the layout doesn't know the
 // review token, so on the review page we hide the JSON link instead
 // of pointing it at a stale published path.
 const envelopeHref = reviewMode
@@ -237,7 +237,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
         <span class="review-icon" aria-hidden="true">🔍</span>
         <div class="review-text">
           <p class="review-lead">
-            <b>Pending review</b> — this assessment is not yet published. You have this private
+            <b>Pending review</b>: this assessment is not yet published. You have this private
             link so your team can check it for factual accuracy before it goes live. The review
             window is about one week; the exact date is in the message that carried this link.
           </p>
@@ -252,7 +252,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
             </li>
           </ul>
           <p class="review-note">
-            We correct the underlying <b>factor</b>, never the letter directly — the grade
+            We correct the underlying <b>factor</b>, never the letter directly. The grade
             recomputes from the corrected evidence. You can also reply on the channel this link
             came from. Full process:
             <a href="/contributions/#corrections">Corrections &amp; disputes</a>.
@@ -285,7 +285,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
       <div class:list={['cap-banner', capApplied === 'F' ? 'cap-f' : 'cap-d']}>
         <span class="cap-icon" aria-hidden="true">{capApplied === 'F' ? '⚠' : '▲'}</span>
         <span class="cap-text">
-          <b>Grade capped to {capApplied}</b> — {capReason}
+          <b>Grade capped to {capApplied}</b>: {capReason}
         </span>
       </div>
     )
@@ -303,7 +303,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
             />
           ) : (
             <div class="gradebig-unscored" aria-label="Not yet scored">
-              <span class="l">—</span>
+              <span class="l">N/A</span>
               <span class="m">Pending</span>
             </div>
           )
@@ -352,13 +352,13 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
         <GovernanceSignalRow
           label="Multisig"
           light={multisigCell?.light ?? 'gray'}
-          value={multisigCell?.value ?? '—'}
+          value={multisigCell?.value ?? 'N/A'}
           sub={multisigCell?.sub ?? 'curator pending'}
         />
         <GovernanceSignalRow
           label="Timelock"
           light={timelockCell?.light ?? 'gray'}
-          value={timelockCell?.value ?? '—'}
+          value={timelockCell?.value ?? 'N/A'}
           sub={timelockCell?.sub ?? 'curator pending'}
         />
       </div>
@@ -376,7 +376,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
                   <span class:list={['dot', cl]} aria-hidden="true" />
                   <span>{c.short ?? c.name}</span>
                 </span>
-                <span class="ct">{issues > 0 ? `${issues}` : '—'}</span>
+                <span class="ct">{issues > 0 ? `${issues}` : 'N/A'}</span>
               </a>
             );
           })
@@ -522,7 +522,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
 
       <div class="envelope">
         <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
-        <span><b>graded_at</b> {gradedAt?.slice(0, 19).replace('T', ' ') ?? '—'}</span>
+        <span><b>graded_at</b> {gradedAt?.slice(0, 19).replace('T', ' ') ?? 'N/A'}</span>
         <span><b>factors</b> {TOTAL_FACTOR_COUNT}</span>
         <span><b>protocol</b> {slug}</span>
       </div>
@@ -531,7 +531,7 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
         !reviewMode && (
           <p class="corrections-line">
             Spot an error? <a href={correctionHref}>Correct a fact</a> or
-            <a href={disputeHref}> dispute the grade</a> — every change is public.
+            <a href={disputeHref}> dispute the grade</a>. Every change is public.
             <a href={protocolIssuesHref}> Corrections &amp; disputes for {displayName} →</a>
           </p>
         )

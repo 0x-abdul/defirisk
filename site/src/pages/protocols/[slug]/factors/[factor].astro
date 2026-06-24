@@ -57,7 +57,7 @@ const sources = ((matching.sources ?? []) as Array<{
 ---
 
 <Base
-  title={`${displayName} · ${f.id} — ${f.name}`}
+  title={`${displayName} · ${f.id} | ${f.name}`}
   description={`${displayName} scored ${score} on ${f.id}: ${f.name}`}
 >
   <TopBar slot="topbar" />
@@ -79,7 +79,7 @@ const sources = ((matching.sources ?? []) as Array<{
         categoryHref={`/factors/?cat=${f.category_id}`}
         factorName={f.name}
         meta={[
-          { label: 'Cadence', value: f.cadence ?? '—' },
+          { label: 'Cadence', value: f.cadence ?? 'N/A' },
           { label: 'Protocol', value: displayName },
           {
             label: 'Score on this protocol',
@@ -88,7 +88,7 @@ const sources = ((matching.sources ?? []) as Array<{
           },
           {
             label: 'Last assessed',
-            value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? '—',
+            value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? 'N/A',
           },
           { label: 'Severity gate', value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup' },
         ]}
@@ -102,7 +102,7 @@ const sources = ((matching.sources ?? []) as Array<{
           <span>{f.name}</span>
         </h1>
         <p class="sub">
-          {displayName}'s assessment for {f.id} — scored
+          {displayName}'s assessment for {f.id}, scored
           <span class:list={['pip', score]}>{score}</span>
           on the {RUBRIC_VERSION} rubric. The evidence below is the curator's reasoning for this
           score.
@@ -157,7 +157,7 @@ const sources = ((matching.sources ?? []) as Array<{
         <span><b>protocol</b> {slug}</span>
         <span><b>factor</b> {f.id}</span>
         <span><b>score</b> {score}</span>
-        <span><b>collected_at</b> {(matching.collected_at as string | undefined)?.slice(0, 19).replace('T', ' ') ?? '—'}</span>
+        <span><b>collected_at</b> {(matching.collected_at as string | undefined)?.slice(0, 19).replace('T', ' ') ?? 'N/A'}</span>
       </div>
     </main>
   </div>

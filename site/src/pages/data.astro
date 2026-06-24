@@ -17,7 +17,7 @@ const toc = [
 
 const baseUrlExample = `https://defirisk.co/api/${RUBRIC_VERSION}/`;
 
-// Two distinct envelope shapes — kept in sync with the real wire JSON
+// Two distinct envelope shapes, kept in sync with the real wire JSON
 // (data/api/${RUBRIC_VERSION}/index.json + protocols/aave-v3.json).
 //
 // index.json: lightweight list, no M1 fields at envelope level or per row.
@@ -94,7 +94,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
 
   <h2 id="endpoints">Endpoints <a class="alink" href="#endpoints">#</a></h2>
   <p>
-    All endpoints return JSON wrapped in the envelope contract. No pagination cursor at v1 —
+    All endpoints return JSON wrapped in the envelope contract. No pagination cursor at v1;
     the dataset is small enough to ship in a single payload per list endpoint.
   </p>
 
@@ -102,7 +102,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     <div class="ep">
       <span class="verb">GET</span>
       <span class="path">/api/{RUBRIC_VERSION}/index.json</span>
-      <span class="desc">Lightweight protocol index — slug, grade, TVL</span>
+      <span class="desc">Lightweight protocol index: slug, grade, TVL</span>
     </div>
     <div class="ep">
       <span class="verb">GET</span>
@@ -146,7 +146,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
   <CodeBlock title="protocol detail envelope (with M1 v4 fields)" lang="json" code={envelopeExample} />
 
   <p style="margin-top:1.5rem">
-    The <code>index.json</code> / list envelopes omit the four M1 v4 fields —
+    The <code>index.json</code> / list envelopes omit the four M1 v4 fields;
     they are protocol-specific and only appear on protocol-detail responses
     and at the envelope top level. List rows are lightweight on purpose:
   </p>
@@ -154,18 +154,18 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
 
   <ul>
     <li>
-      <strong><code>rubric_version</code></strong> — the rubric this response was computed
+      <strong><code>rubric_version</code></strong>: the rubric this response was computed
       against. Grades are only meaningful against a specific rubric version.
     </li>
     <li>
-      <strong><code>data_as_of</code></strong> — the snapshot timestamp of the underlying data
+      <strong><code>data_as_of</code></strong>: the snapshot timestamp of the underlying data
       (when the upstream pipeline last refreshed).
     </li>
     <li>
-      <strong><code>generated_at</code></strong> — when this particular file was produced.
+      <strong><code>generated_at</code></strong>: when this particular file was produced.
     </li>
     <li>
-      <strong><code>data</code></strong> — the requested resource. An object keyed by resource
+      <strong><code>data</code></strong>: the requested resource. An object keyed by resource
       type (e.g. <code>data.protocols</code>, <code>data.protocol_data</code>); never
       <code>null</code>.
     </li>
@@ -177,23 +177,23 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
   </p>
   <ul>
     <li>
-      <strong><code>risk_score</code></strong> — numeric 0–100 (2 decimal places, per dump.py <code>round(_, 2)</code>). A
+      <strong><code>risk_score</code></strong>: numeric 0–100 (2 decimal places, per dump.py <code>round(_, 2)</code>). A
       core-five-weighted average of per-category severity scores plus a critical-red penalty
       (5 pts per critical red, capped at 15). Lower is safer. This is the primary input to
       the letter-grade bands.
     </li>
     <li>
-      <strong><code>category_severities</code></strong> — <code>Record&lt;string, number&gt;</code>.
+      <strong><code>category_severities</code></strong>: <code>Record&lt;string, number&gt;</code>.
       Maps each category id (as a string, e.g. <code>"1"</code>) to its 0–100 severity score.
       Gray factors are excluded from the denominator; 0 means all green or no graded factors.
     </li>
     <li>
-      <strong><code>cap_applied</code></strong> — <code>"none" | "D" | "F"</code>. When a
+      <strong><code>cap_applied</code></strong>: <code>"none" | "D" | "F"</code>. When a
       core-five category has severity ≥ 60, the grade is capped to D; ≥ 90 caps to F. This
       field records whether a cap was applied.
     </li>
     <li>
-      <strong><code>cap_reason</code></strong> — human-readable explanation of the cap
+      <strong><code>cap_reason</code></strong>: human-readable explanation of the cap
       (e.g. <code>"Cat 5 severity 67 ≥ 60 (core-five cap)"</code>), or <code>null</code> when
       <code>cap_applied</code> is <code>"none"</code>.
     </li>

@@ -1,10 +1,10 @@
 /**
- * curator-sidecar.ts — reads curator-authored protocol fields from
+ * curator-sidecar.ts: reads curator-authored protocol fields from
  * data/curator/<RUBRIC_VERSION>/protocols/<slug>.json. Sidecar covers fields that
  * are not yet propagated by the upstream pipeline (verdict_body,
  * multisig + timelock control-surface cells).
  *
- * Returns null when no sidecar exists for a slug — the bulk of protocols
+ * Returns null when no sidecar exists for a slug; the bulk of protocols
  * sit in that state until a curator pass fills them in.
  *
  * Validation is structural / lightweight: the file is checked-in,

@@ -39,7 +39,7 @@ function pipKind(l: FactorLight): string {
   return 'gray';
 }
 
-/** PD-039 — Tooltip copy for the pip when score is gray/not_assessed.
+/** PD-039: Tooltip copy for the pip when score is gray/not_assessed.
  *  Distinguishes protocol-side opacity from our pipeline gaps so the GRAY
  *  cell doesn't read as a protocol penalty. */
 function pipTooltip(l: FactorLight, gr?: GapReason | null): string | undefined {
@@ -48,17 +48,17 @@ function pipTooltip(l: FactorLight, gr?: GapReason | null): string | undefined {
   // gray or not_assessed
   switch (gr) {
     case 'protocol_opacity':
-      return 'GRAY — protocol opaque (closed source / undocumented)';
+      return 'GRAY: protocol opaque (closed source / undocumented)';
     case 'pipeline_unimplemented':
-      return 'GRAY — measurement pending (our pipeline gap, not a protocol issue)';
+      return 'GRAY: measurement pending (our pipeline gap, not a protocol issue)';
     case 'external_api_blocked':
-      return 'GRAY — measurement pending (external API blocked)';
+      return 'GRAY: measurement pending (external API blocked)';
     case 'requires_curator_input':
-      return 'GRAY — measurement pending (curator review needed)';
+      return 'GRAY: measurement pending (curator review needed)';
     case 'not_applicable':
-      return 'GRAY — not applicable';
+      return 'GRAY: not applicable';
     default:
-      return l === 'not_assessed' ? 'Not assessed' : 'GRAY — no measurement available';
+      return l === 'not_assessed' ? 'Not assessed' : 'GRAY: no measurement available';
   }
 }
 ---

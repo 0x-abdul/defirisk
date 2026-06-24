@@ -4,7 +4,7 @@ import VersionMarker from '../../components/VersionMarker.astro';
 import { RUBRIC_VERSION } from '../../lib/rubric';
 
 const toc = [
-  { id: 'v1-7-0', n: `${RUBRIC_VERSION} — current` },
+  { id: 'v1-7-0', n: `${RUBRIC_VERSION} current` },
   { id: 'v1-6-0', n: 'v1.6.0 (superseded)' },
   { id: 'ds-v1-1', n: 'Design system v1.1' },
   { id: 'v1-5-0', n: 'v1.5.0' },
@@ -38,7 +38,7 @@ const toc = [
   </p>
 
   <VersionMarker id="v1-7-0" version={RUBRIC_VERSION} date="2026-05-12" current>
-    M1 v4 — severity-based scoring (Curve &amp; Calibrate)
+    M1 v4: severity-based scoring (Curve &amp; Calibrate)
   </VersionMarker>
   <ul>
     <li>
@@ -49,7 +49,7 @@ const toc = [
     <li>
       <strong>Per-category severity:</strong> each category receives a severity score
       <code>(red × 3 + yellow × 1) / (assessed × 3) × 100</code>. Gray factors are excluded
-      from the denominator — data gaps neither help nor hurt the protocol.
+      from the denominator; data gaps neither help nor hurt the protocol.
     </li>
     <li>
       <strong>Protocol risk score:</strong> core-five-weighted average of per-category severities
@@ -76,7 +76,7 @@ const toc = [
       <strong>Calibration/launch result:</strong> initial calibration used the pre-backlog cohort;
       the launch generated-data tree expanded coverage substantially under <code>v1.7.0</code>.
       The current protocol count and grade distribution should be read from
-      <code>data/api/v1.7.0/index.json</code> — that file is the source of truth.
+      <code>data/api/v1.7.0/index.json</code>; that file is the source of truth.
     </li>
     <li>
       <strong>API:</strong> <code>data/api/v1.7.0/</code> is the canonical tree. The v1.6.0
@@ -104,7 +104,7 @@ const toc = [
       <strong>Preserved unchanged</strong> the four-count letter rubric (critical-flag,
       red-category, yellow-category, gray-on-core-five), category-red integrity rule,
       single-factor-sufficient overrides, and letter-ineligible states. v1.5 lookup logic is
-      preserved verbatim — only the badge surfacing layer is gone.
+      preserved verbatim; only the badge surfacing layer is gone.
     </li>
     <li>
       Active-incident state surfaces as a non-rubric presentation banner on the protocol detail
@@ -119,13 +119,13 @@ const toc = [
       <strong>Documented accessibility tradeoff:</strong> the canonical D3 design system uses
       color-on-tint patterns for letter pills and severity chips (e.g., grade-A green letter
       <code>#118a4d</code> on green tint <code>#dff2e3</code> at 10.5px). These render at
-      ~3.8:1 contrast — under the WCAG 2 AA 4.5:1 threshold for small text. The patterns are
+      ~3.8:1 contrast, under the WCAG 2 AA 4.5:1 threshold for small text. The patterns are
       load-bearing for the design's editorial identity; tightening contrast would change
       the visual contract. Body-text tokens (<code>--fg-3</code>, <code>--fg-4</code>) were
       darkened in this release for AA compliance (5.2:1 / 5.0:1). An opt-in
       <strong>High-contrast mode</strong> (AA button in the header) toggles a
       <code>data-prefer-contrast</code> attribute that swaps grade colors + tints for
-      AA-clean variants without changing the default visual contract — see Design system v1.1
+      AA-clean variants without changing the default visual contract; see Design system v1.1
       below.
     </li>
   </ul>
@@ -144,12 +144,12 @@ const toc = [
       to avoid FOUC.
     </li>
     <li>
-      <strong>Note:</strong> share-preview OG cards continue to use the canonical palette —
+      <strong>Note:</strong> share-preview OG cards continue to use the canonical palette;
       they are server-rendered PNGs and do not inherit the per-user opt-in.
     </li>
     <li>
       <strong>Note:</strong> the rubric version (<code>{RUBRIC_VERSION}</code>) is unaffected
-      — this is a UI-only milestone tracked under the design system, not the rubric.
+      this is a UI-only milestone tracked under the design system, not the rubric.
     </li>
   </ul>
 

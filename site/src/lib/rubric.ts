@@ -47,7 +47,7 @@ export interface FactorMeta {
 }
 
 /**
- * Inputs to grade() — factor-level aggregates for a single protocol.
+ * Inputs to grade(): factor-level aggregates for a single protocol.
  * The old integer fields (critical_flag_count etc.) are retained on this type
  * for display purposes but no longer drive the letter grade under M1 v4.
  */
@@ -214,7 +214,7 @@ export function grade(inputs: GradeInputs): ComputedGrade {
  *
  * Note: The CAT4_EVENT_CASCADE rule is retained under M1 v4 (handoff §6 default
  * "keep"). When has_active_incident=true, event-driven Cat 4 factors
- * (RD-F-063/066/067) are capped at yellow for the severity computation —
+ * (RD-F-063/066/067) are capped at yellow for the severity computation;
  * they are not structural design failures. critical_red_count is computed
  * from the original (uncapped) scores, matching Python compose.py exactly.
  */
@@ -246,7 +246,7 @@ export function computeGradeFromFactors(
     }
     const counts = byCategory.get(catId)!;
 
-    // Cat 4 event-cascade integrity rule (retained under M1 — mirrors compose.py).
+    // Cat 4 event-cascade integrity rule (retained under M1; mirrors compose.py).
     // critical_red_count uses the original score; the cascade only affects
     // the category severity counts used in the weighted-average computation.
     let score = fs.score;

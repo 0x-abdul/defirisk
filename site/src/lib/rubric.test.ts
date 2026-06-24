@@ -18,10 +18,10 @@ function allGreen(greenPerCat = 5): GradeInputs {
   return { category_counts, critical_red_count: 0 };
 }
 
-// ── Case A — pure green ──────────────────────────────────────────────────────
+// ── Case A: pure green ───────────────────────────────────────────────────────
 // All 13 categories all green. Expected: A, risk_score=0.
 
-describe('grade() — Case A (pure green)', () => {
+describe('grade(): Case A (pure green)', () => {
   const result = grade(allGreen());
 
   it('returns letter A', () => {
@@ -45,13 +45,13 @@ describe('grade() — Case A (pure green)', () => {
   });
 });
 
-// ── Case B — single critical red ─────────────────────────────────────────────
+// ── Case B: single critical red ──────────────────────────────────────────────
 // Cat 1: 1 critical red, 9 green → severity = (1×3)/(10×3)×100 = 10.
 // base_risk = 10 (only cat with denom>0 for this test).
 // critical_penalty = 5, risk_score = 15.
 // Letter: critical_reds=1 AND risk ≤ 20 → B.
 
-describe('grade() — Case B (single critical red)', () => {
+describe('grade(): Case B (single critical red)', () => {
   // Cat 1 only has factors to keep base_risk low; others are empty (all-gray).
   const inputs: GradeInputs = {
     category_counts: {
@@ -83,12 +83,12 @@ describe('grade() — Case B (single critical red)', () => {
   });
 });
 
-// ── Case D — 2 critical reds ─────────────────────────────────────────────────
+// ── Case D: 2 critical reds ──────────────────────────────────────────────────
 // Cats 1 and 2 each get 1 critical red + 9 green → severity=10 each.
 // base_risk = 10, critical_penalty=10, risk_score=20.
 // Letter: critical_reds=2 → D.
 
-describe('grade() — Case D (2 critical reds)', () => {
+describe('grade(): Case D (2 critical reds)', () => {
   const inputs: GradeInputs = {
     category_counts: {
       1: { red: 1, yellow: 0, green: 9, gray: 0 },
@@ -118,11 +118,11 @@ describe('grade() — Case D (2 critical reds)', () => {
   });
 });
 
-// ── Case F — 3 critical reds ─────────────────────────────────────────────────
+// ── Case F: 3 critical reds ──────────────────────────────────────────────────
 // Cats 1, 2, 3 each get 1 critical red + 9 green → severity=10 each.
 // critical_penalty=15, risk_score≈25. Letter: critical_reds=3 → F.
 
-describe('grade() — Case F (3 critical reds)', () => {
+describe('grade(): Case F (3 critical reds)', () => {
   const inputs: GradeInputs = {
     category_counts: {
       1: { red: 1, yellow: 0, green: 9, gray: 0 },
@@ -145,11 +145,11 @@ describe('grade() — Case F (3 critical reds)', () => {
   });
 });
 
-// ── Case F (high risk score) — risk > 55, 0 critical reds ───────────────────
+// ── Case F (high risk score): risk > 55, 0 critical reds ─────────────────────
 // All 13 cats: red=2, green=1 → severity=66.7 each.
 // base_risk ≈ 66.7, risk_score ≈ 66.7 (> 55) → F.
 
-describe('grade() — Case F (high risk score path, 0 critical reds)', () => {
+describe('grade(): Case F (high risk score path, 0 critical reds)', () => {
   const category_counts: GradeInputs['category_counts'] = {};
   for (let i = 1; i <= 13; i++) {
     category_counts[i] = { red: 2, yellow: 0, green: 1, gray: 0 };
@@ -169,7 +169,7 @@ describe('grade() — Case F (high risk score path, 0 critical reds)', () => {
   });
 });
 
-// ── Case C — moderate risk score, 0 critical reds ────────────────────────────
+// ── Case C: moderate risk score, 0 critical reds ─────────────────────────────
 // risk_score 20 < x ≤ 35, 0 critical reds → C.
 // Cat 1 (core-five): red=1, yellow=2, green=6 → denom=9,
 //   severity=(3+2)/(27)×100=18.5 (stays green on display)
@@ -189,7 +189,7 @@ describe('grade() — Case F (high risk score path, 0 critical reds)', () => {
 // risk = 20 → riskScore 20 is NOT > 20 per spec ("> 20 → C"), so that's B boundary.
 // Use 6 non-core cats red=2, green=2: base = 300/13.5 ≈ 22.2 → C (> 20)
 
-describe('grade() — Case C (moderate risk score)', () => {
+describe('grade(): Case C (moderate risk score)', () => {
   const category_counts: GradeInputs['category_counts'] = {};
   // Core five (1,2,3,5,8): all green
   for (const catId of [1, 2, 3, 5, 8]) {
@@ -219,7 +219,7 @@ describe('grade() — Case C (moderate risk score)', () => {
   });
 });
 
-// ── Case cap-D — single core-five category severity ≥ 60, natural grade A ───
+// ── Case cap-D: single core-five category severity ≥ 60, natural grade A ─────
 // Cat 1 (core-five): red=2, green=1, yellow=0 → severity=66.7
 // All other cats: green=5 → severity=0
 // base_risk = (66.7×1.5 + 0 for all others with denom>0) / total_weight
@@ -229,7 +229,7 @@ describe('grade() — Case C (moderate risk score)', () => {
 // risk_score ≈ 6.45, critical_reds=0 → natural A
 // cap: Cat 1 severity 66.7 ≥ 60 → cap D → letter D
 
-describe('grade() — Case cap-D (core-five severity ≥ 60, natural grade overridden to D)', () => {
+describe('grade(): Case cap-D (core-five severity ≥ 60, natural grade overridden to D)', () => {
   const category_counts: GradeInputs['category_counts'] = {};
   // Cat 1 (core-five): severity = (2×3)/(3×3)×100 = 66.7
   category_counts[1] = { red: 2, yellow: 0, green: 1, gray: 0 };
@@ -258,13 +258,13 @@ describe('grade() — Case cap-D (core-five severity ≥ 60, natural grade overr
   });
 });
 
-// ── Case cap-F — single core-five category severity ≥ 90 ────────────────────
+// ── Case cap-F: single core-five category severity ≥ 90 ──────────────────────
 // Cat 1 (core-five): red=3, green=0, yellow=0 → severity=100
 // All other cats: green=5 → severity=0
 // base_risk = (100×1.5) / 15.5 ≈ 9.68 → natural A
 // cap: Cat 1 severity 100 ≥ 90 → cap F → letter F
 
-describe('grade() — Case cap-F (core-five severity ≥ 90, natural grade overridden to F)', () => {
+describe('grade(): Case cap-F (core-five severity ≥ 90, natural grade overridden to F)', () => {
   const category_counts: GradeInputs['category_counts'] = {};
   // Cat 1 (core-five): all red → severity=100
   category_counts[1] = { red: 3, yellow: 0, green: 0, gray: 0 };
@@ -294,7 +294,7 @@ describe('grade() — Case cap-F (core-five severity ≥ 90, natural grade overr
 
 // ── Additional grade boundary checks ────────────────────────────────────────
 
-describe('grade() — band boundary: risk_score exactly at boundaries', () => {
+describe('grade(): band boundary: risk_score exactly at boundaries', () => {
   /** Build inputs with a single core-five cat and a given target base risk.
    *  Cat 1 only has denom>0, so base_risk = severity.
    *  severity = (red×3 + yellow×1) / (denom×3) × 100.
@@ -302,7 +302,7 @@ describe('grade() — band boundary: risk_score exactly at boundaries', () => {
    *  Instead use only Cat 4 (non-core) so cap rule doesn't fire.
    */
   it('risk 12 AND critical_reds=0 → A (exactly at boundary)', () => {
-    // Cat 4 (non-core): yellow=1, green=24 → severity=(1)/(75)×100=1.33 — too low.
+    // Cat 4 (non-core): yellow=1, green=24 → severity=(1)/(75)×100=1.33, too low.
     // Let's construct a case with risk_score ≈ 12 using a non-core cat.
     // Cat 4: red=0, yellow=12, green=24 → denom=36, severity=(12)/(108)×100 = 11.11
     // Only cat4 has denom>0: base_risk = 11.11×1.0/1.0 = 11.11 < 12 → A
@@ -317,7 +317,7 @@ describe('grade() — band boundary: risk_score exactly at boundaries', () => {
   });
 
   it('risk > 12 AND critical_reds=0 → B', () => {
-    // Cat 4: yellow=13, green=24 → severity=(13)/(111)×100 = 11.71 — still ≤12
+    // Cat 4: yellow=13, green=24 → severity=(13)/(111)×100 = 11.71, still ≤12
     // Cat 4: red=1, yellow=0, green=6 → denom=7, severity=(3)/(21)×100 = 14.3 > 12 → B
     const category_counts: GradeInputs['category_counts'] = {};
     category_counts[4] = { red: 1, yellow: 0, green: 6, gray: 0 };
@@ -419,7 +419,7 @@ describe('computeGradeFromFactors()', () => {
 // Cascade factors: RD-F-063, RD-F-066, RD-F-067 (all Cat 4, non-critical).
 // Non-cascade Cat 4 factor: RD-F-060 (not in the cascade set).
 
-describe('computeGradeFromFactors() — CAT4_EVENT_CASCADE', () => {
+describe('computeGradeFromFactors(): CAT4_EVENT_CASCADE', () => {
   // 3 Cat 4 cascade factors + 3 green Cat 4 non-cascade factors.
   // Cat 4 has 6 factors total (denom=6).
   // Without incident: 3 reds → severity = (3×3)/(6×3)×100 = 50 → yellow light
@@ -468,7 +468,7 @@ describe('computeGradeFromFactors() — CAT4_EVENT_CASCADE', () => {
   });
 
   it('has_active_incident=true: non-cascade Cat 4 reds are NOT capped', () => {
-    // RD-F-060 is not in the cascade set — a red on it stays red even with incident.
+    // RD-F-060 is not in the cascade set; a red on it stays red even with incident.
     const scoresWithNonCascadeRed: RawFactorScore[] = [
       { factor_id: 'RD-F-060', score: 'red' }, // NOT cascade-eligible
       { factor_id: 'RD-F-061', score: 'green' },

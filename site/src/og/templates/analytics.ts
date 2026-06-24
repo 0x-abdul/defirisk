@@ -11,7 +11,7 @@ export function analyticsCard(data: {
     { label: 'Protocols graded', value: String(data.protocolCount ?? '57') },
     { label: 'Evidence factors', value: String(data.factorCount ?? '184') },
     { label: 'Hacks indexed', value: String(data.hackCount ?? '311') },
-    { label: 'TVL covered', value: data.tvsTotal ?? '—' },
+    { label: 'TVL covered', value: data.tvsTotal ?? 'N/A' },
   ];
 
   return h('div', {

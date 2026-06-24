@@ -1,5 +1,5 @@
 /**
- * hack-facets.ts — Facet derivation + URL-state serializer for the hacks explorer (E-33).
+ * hack-facets.ts: Facet derivation + URL-state serializer for the hacks explorer (E-33).
  */
 
 export interface ExplorerHack {
@@ -141,7 +141,7 @@ export function paramsToFilters(search: string): ExplorerFilters {
 // ── Formatting helpers ────────────────────────────────────────────────────────
 
 export function fmtLoss(v: number | null | undefined): string {
-  if (v == null || v === 0) return '—';
+  if (v == null || v === 0) return 'N/A';
   if (v >= 1e9) return `$${(v / 1e9).toFixed(1)}B`;
   if (v >= 1e6) return `$${(v / 1e6).toFixed(0)}M`;
   if (v >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
@@ -149,6 +149,6 @@ export function fmtLoss(v: number | null | undefined): string {
 }
 
 export function fmtDate(s: string | null | undefined): string {
-  if (!s) return '—';
+  if (!s) return 'N/A';
   return s.slice(0, 10);
 }

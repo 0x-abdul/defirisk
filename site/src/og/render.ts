@@ -1,5 +1,5 @@
 /**
- * OG image renderer — wraps satori + @resvg/resvg-js.
+ * OG image renderer wrapping satori + @resvg/resvg-js.
  * Used by site/scripts/build-og-images.mjs at build time only.
  */
 import { readFileSync } from 'node:fs';

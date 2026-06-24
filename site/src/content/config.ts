@@ -1,5 +1,5 @@
 /**
- * Content collection schemas — single source of truth for the JSON shapes
+ * Content collection schemas: single source of truth for the JSON shapes
  * that flow from `data/api/<RUBRIC_VERSION>/` through the build.
  *
  * The actual file reading lives in `site/src/lib/data-loaders.ts` (Node
@@ -67,7 +67,7 @@ export const factorListSchema = z.object({
   deprecated_in_rubric: z.string().nullable().optional(),
 });
 
-/** Full factor methodology — appears under `data.factor_data.factor` in
+/** Full factor methodology: appears under `data.factor_data.factor` in
  *  factors/<id>.json. */
 export const factorMethodologySchema = z.object({
   id: z.string(),
@@ -109,7 +109,7 @@ export const factorScoredProtocolSchema = z.object({
   collected_at: z.string(),
   data_as_of: z.string(),
   collected_by: z.string(),
-  // PD-039 (2026-05-11) — why a GRAY / not_assessed cell couldn't be measured.
+  // PD-039 (2026-05-11): why a GRAY / not_assessed cell couldn't be measured.
   // Null on graded scores (green/yellow/red).
   gap_reason: z
     .enum([

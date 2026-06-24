@@ -2,7 +2,7 @@ import { h, type SatoriNode } from '../render.ts';
 
 // Colors mirror the D3 tokens from site/src/styles/tokens.css (light mode).
 // OG cards are static PNGs and render once at build time, so a hardcoded
-// light-mode palette is correct — they cannot toggle to dark via CSS vars.
+// light-mode palette is correct because they cannot toggle to dark via CSS vars.
 export const COLORS = {
   bg: '#fafaf9',
   ink: '#0f1011',
@@ -97,6 +97,6 @@ export function gradePill(letter: string, size: number = 80): SatoriNode {
       color: text,
       flexShrink: 0,
     },
-  }, letter === 'ineligible' ? '—' : letter);
+  }, letter === 'ineligible' ? 'N/A' : letter);
 }
 
