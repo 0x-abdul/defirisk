@@ -29,7 +29,7 @@ export function inlineMarkdown(
   if (opts.italics) {
     // Only match when the asterisks hug non-space text on a single line (real
     // `*italic*`), never ` * ` (multiplication) or `*` used as a list/separator
-    // marker — the `\n` exclusion stops a stray pair spanning multiple lines.
+    // marker; the `\n` exclusion stops a stray pair spanning multiple lines.
     out = out.replace(/(?<!\*)\*(\S(?:[^*\n]*\S)?)\*(?!\*)/g, '<em>$1</em>');
   }
   return out.replace(/\n/g, '<br>');

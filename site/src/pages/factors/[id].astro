@@ -40,7 +40,7 @@ const totalProtocols = scored.length;
 
 const linkedHacks: LinkedHack[] = detail.linked_hacks.map((h) => ({
   id: h.hack_id,
-  title: h.hack_protocol_name ? `${h.hack_protocol_name} — ${h.root_cause ?? 'incident'}` : h.hack_id,
+  title: h.hack_protocol_name ? `${h.hack_protocol_name}: ${h.root_cause ?? 'incident'}` : h.hack_id,
   occurred_at: h.occurred_at,
   loss_usd: h.loss_usd,
   root_cause: h.root_cause,
@@ -59,30 +59,30 @@ function sectionParas(blob: string | null | undefined): string[] {
 const methodologyParas = sectionParas(f.scoring_methodology);
 const measurementText = f.measurement ?? f.description;
 
-/** PD-039 — distinguish "GRAY because the protocol is opaque" from "GRAY because
+/** PD-039: distinguish "GRAY because the protocol is opaque" from "GRAY because
  *  our pipeline can't measure this yet." Read by `title=` on each pip. */
 function pipTooltip(score: string, gr: string | null | undefined): string | undefined {
   if (score === 'green' || score === 'yellow' || score === 'red') return undefined;
   if (score === 'not_applicable') return 'Not applicable to this protocol';
   switch (gr) {
     case 'protocol_opacity':
-      return 'GRAY — protocol opaque (closed source / undocumented)';
+      return 'GRAY, protocol opaque (closed source / undocumented)';
     case 'pipeline_unimplemented':
-      return 'GRAY — measurement pending (our pipeline gap, not a protocol issue)';
+      return 'GRAY, measurement pending (our pipeline gap, not a protocol issue)';
     case 'external_api_blocked':
-      return 'GRAY — measurement pending (external API blocked)';
+      return 'GRAY, measurement pending (external API blocked)';
     case 'requires_curator_input':
-      return 'GRAY — measurement pending (curator review needed)';
+      return 'GRAY, measurement pending (curator review needed)';
     case 'not_applicable':
-      return 'GRAY — not applicable';
+      return 'GRAY, not applicable';
     default:
-      return score === 'not_assessed' ? 'Not assessed' : 'GRAY — no measurement available';
+      return score === 'not_assessed' ? 'Not assessed' : 'GRAY, no measurement available';
   }
 }
 ---
 
 <Base
-  title={`${f.id} — ${f.name}`}
+  title={`${f.id} | ${f.name}`}
   description={`${f.name}: ${f.description}`}
 >
   <TopBar slot="topbar" />
@@ -105,7 +105,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         categoryHref="/factors/"
         factorName={f.name}
         meta={[
-          { label: 'Cadence', value: f.cadence ?? '—' },
+          { label: 'Cadence', value: f.cadence ?? 'N/A' },
           { label: 'Curation', value: f.curation_archetype },
           { label: 'Carried', value: `${totalProtocols} of ${totalProtocols}` },
           {
@@ -163,7 +163,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
       <div class="infogrid">
         <div class="ig">
           <div class="lbl">Data source</div>
-          <div class="v">{f.data_source ?? '—'}</div>
+          <div class="v">{f.data_source ?? 'N/A'}</div>
         </div>
         <div class="ig">
           <div class="lbl">Output format</div>
@@ -174,11 +174,11 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         </div>
         <div class="ig">
           <div class="lbl">Evidence artifact</div>
-          <div class="v">{f.evidence_artifact ?? '—'}</div>
+          <div class="v">{f.evidence_artifact ?? 'N/A'}</div>
         </div>
         <div class="ig">
           <div class="lbl">Confidence signal</div>
-          <div class="v">{f.confidence_signal ?? '—'}</div>
+          <div class="v">{f.confidence_signal ?? 'N/A'}</div>
         </div>
       </div>
 
@@ -538,7 +538,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
     margin-right: 6px;
   }
 
-  /* ─── Mobile (under 900px) ─── */
+  /* Mobile (under 900px) */
   @media (max-width: 900px) {
     .rdf-page {
       grid-template-columns: minmax(0, 1fr);

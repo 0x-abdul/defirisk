@@ -11,9 +11,9 @@ export interface Props {
 const { hacks, heading, showProtocol = true } = Astro.props;
 
 function fmtLoss(v: number | string | null | undefined): string {
-  if (v === null || v === undefined) return '—';
+  if (v === null || v === undefined) return 'N/A';
   const n = typeof v === 'string' ? parseFloat(v) : v;
-  if (!Number.isFinite(n) || n <= 0) return '—';
+  if (!Number.isFinite(n) || n <= 0) return 'N/A';
   if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
   if (n >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
   if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
@@ -50,10 +50,10 @@ const sorted = hacks
               </span>
             )}
             <span class="title">
-              <span class="head-line">{h.root_cause || '—'}</span>
+              <span class="head-line">{h.root_cause || 'N/A'}</span>
               {h.description && <span class="desc">{h.description}</span>}
             </span>
-            <span class="date">{h.occurred_at?.slice(0, 10) ?? '—'}</span>
+            <span class="date">{h.occurred_at?.slice(0, 10) ?? 'N/A'}</span>
             <span class="loss r-align">{fmtLoss(h.loss_usd)}</span>
           </div>
         ))}

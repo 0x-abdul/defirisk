@@ -60,8 +60,8 @@ const headlineCopy = isPreLaunch
   ? 'An open-source risk transparency dashboard for defi protocols.'
   : `${items.length} protocols, ${TOTAL_FACTOR_COUNT} risk factors, ${TOTAL_CATEGORY_COUNT} categories.`;
 const ledeCopy = isPreLaunch
-  ? `Every protocol graded against ${TOTAL_FACTOR_COUNT} cited risk factors. Grades are in private review with protocol teams ahead of launch — the methodology and factor library are open below.`
-  : 'An open-source risk transparency dashboard for defi protocols. Every protocol graded, every factor cited — all in the open.';
+  ? `Every protocol graded against ${TOTAL_FACTOR_COUNT} cited risk factors. Grades are in private review with protocol teams ahead of launch; the methodology and factor library are open below.`
+  : 'An open-source risk transparency dashboard for defi protocols. Every protocol graded, every factor cited, all in the open.';
 
 // Latest reviewed date (used in the how-to-read meta footer)
 const latestReviewedIso = baseList
@@ -169,7 +169,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     </section>
   ) : (
     <section class="sec">
-      {/* client:idle — page is static-rendered with the canonical list visible
+      {/* client:idle: page is static-rendered with the canonical list visible
           immediately; Preact hydration runs after first paint via requestIdleCallback
           so initial TBT on slow mobile CPUs stays low. Filters become interactive
           within a frame of idle. */}
@@ -189,7 +189,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     <div class="htr-body">
       <p>
         Every protocol is graded against {TOTAL_FACTOR_COUNT} evidence factors across {TOTAL_CATEGORY_COUNT}
-        risk categories — audits, governance, oracle dependencies, economic design, operational history,
+        risk categories: audits, governance, oracle dependencies, economic design, operational history,
         and more. Each category receives a 0–100 severity score (weighted by red and yellow findings);
         the letter grade is bucketed from a core-five-weighted protocol risk score, with critical-factor
         reds adding a direct penalty and single-category caps ensuring no catastrophically weak area can
@@ -202,7 +202,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     </div>
     <div class="htr-meta">
       <span><i>rubric_version</i><b>{RUBRIC_VERSION}</b></span>
-      <span><i>graded_at</i><b>{latestReviewedIso?.slice(0, 10) ?? '—'}</b></span>
+      <span><i>graded_at</i><b>{latestReviewedIso?.slice(0, 10) ?? 'N/A'}</b></span>
       <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
       <span><i>protocols_v1</i><b>{items.length}</b></span>
     </div>
@@ -213,7 +213,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
       <div class="ftr-col ftr-about">
         <p>
           <b>DeFi Risk</b> is an open-source risk transparency dashboard for defi protocols. Every
-          protocol graded, every factor cited — all in the open.
+          protocol graded, every factor cited, all in the open.
         </p>
       </div>
       <div class="ftr-col">
@@ -245,7 +245,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
 </Base>
 
 <style>
-  /* ─── Hero (5fr 7fr) — verbatim from d3-variants-v2.jsx .hero ─── */
+  /* Hero (5fr 7fr): verbatim from d3-variants-v2.jsx .hero */
   .hero {
     padding: 32px 24px 24px;
     border-bottom: 1px solid var(--border);
@@ -284,7 +284,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     background: var(--gC);
   }
 
-  /* ─── Pre-launch panel (replaces stats panel when no protocol is published) ─── */
+  /* Pre-launch panel (replaces stats panel when no protocol is published) */
   .prelaunchPanel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -336,7 +336,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     text-decoration: underline;
   }
 
-  /* ─── Empty state (replaces protocol list when no protocol is published) ─── */
+  /* Empty state (replaces protocol list when no protocol is published) */
   .emptyState {
     border: 1px dashed var(--border);
     border-radius: 10px;
@@ -390,7 +390,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     max-width: 380px;
   }
 
-  /* ─── Stats panel (gap:1px;background:var(--border) creates internal dividers) ─── */
+  /* Stats panel (gap:1px;background:var(--border) creates internal dividers) */
   .statsPanel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -510,12 +510,12 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     background: var(--gF);
   }
 
-  /* ─── Section wrapper ─── */
+  /* Section wrapper */
   .sec {
     padding: 22px 24px;
   }
 
-  /* ─── How-to-read editorial section ─── */
+  /* How-to-read editorial section */
   .foot-htr {
     padding-top: 30px;
     padding-bottom: 18px;
@@ -604,7 +604,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     font-size: 11px;
   }
 
-  /* ─── Footer ─── */
+  /* Footer */
   .ftr {
     background: var(--surface-2);
     border-top: 1px solid var(--border);
@@ -669,7 +669,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     margin-left: 4px;
   }
 
-  /* ─── Mobile (under 900px) ─── */
+  /* Mobile (under 900px) */
   @media (max-width: 900px) {
     .hero {
       grid-template-columns: 1fr;

@@ -3,7 +3,7 @@ import ProtocolDetailLayout from '../../components/ProtocolDetailLayout.astro';
 import { listPublishedProtocolSlugs, getProtocol } from '../../lib/data-loaders';
 
 export async function getStaticPaths() {
-  // Published protocols only — unpublished ones render at /unpublished/<slug>-<token>/.
+  // Published protocols only; unpublished ones render at /unpublished/<slug>-<token>/.
   return listPublishedProtocolSlugs().map((slug) => ({ params: { slug } }));
 }
 

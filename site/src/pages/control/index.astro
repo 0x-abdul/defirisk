@@ -1,13 +1,13 @@
 ---
 /**
- * Owner-only control index — review-link directory.
+ * Owner-only control index: review-link directory.
  *
  * Lists every protocol currently in pre-publication review with its
  * unguessable /unpublished/<slug>-<token>/ URL (the link to send each
  * protocol team), plus the protocols already published. The page exists so
  * the curator can grab review links without touching the DB or the JSON tree.
  *
- * ACCESS CONTROL — this page is NOT self-protecting. It must be gated by
+ * ACCESS CONTROL: this page is NOT self-protecting. It must be gated by
  * HTTP Basic Auth at the web-server level on /control/. The hardening below
  * only keeps it out of crawlers and out of any on-site link graph:
  *   - <Base noindex />            → <meta name="robots" noindex,nofollow>
@@ -68,12 +68,12 @@ const published: PublishedRow[] = listPublishedProtocolSlugs()
   .sort((a, b) => a.display_name.localeCompare(b.display_name));
 ---
 
-<Base title="Control — review links" noindex>
+<Base title="Control | review links" noindex>
   <div class="wrap">
     <header class="head">
       <h1>Review-link control</h1>
       <p class="sub">
-        Private. Protected by Nginx Basic Auth — not linked anywhere, noindex.
+        Private. Protected by Nginx Basic Auth; not linked anywhere, noindex.
         Rubric {RUBRIC_VERSION}.
       </p>
       <div class="counts">
@@ -84,7 +84,7 @@ const published: PublishedRow[] = listPublishedProtocolSlugs()
     </header>
 
     <section>
-      <h2>In review — send these links ({inReview.length})</h2>
+      <h2>In review: send these links ({inReview.length})</h2>
       {inReview.length === 0 ? (
         <p class="empty">No protocols are currently unpublished.</p>
       ) : (
@@ -97,7 +97,7 @@ const published: PublishedRow[] = listPublishedProtocolSlugs()
               <tr>
                 <td class="name">{r.display_name}</td>
                 <td class="mono">{r.slug}</td>
-                <td class="mono">{r.grade ?? '—'}</td>
+                <td class="mono">{r.grade ?? 'N/A'}</td>
                 <td class="mono link">
                   <a href={r.reviewUrl} target="_blank" rel="noopener">{r.reviewUrl}</a>
                 </td>
@@ -112,7 +112,7 @@ const published: PublishedRow[] = listPublishedProtocolSlugs()
     </section>
 
     <section>
-      <h2>Published — live on the public site ({published.length})</h2>
+      <h2>Published: live on the public site ({published.length})</h2>
       {published.length === 0 ? (
         <p class="empty">Nothing published yet.</p>
       ) : (
@@ -125,7 +125,7 @@ const published: PublishedRow[] = listPublishedProtocolSlugs()
               <tr>
                 <td class="name">{r.display_name}</td>
                 <td class="mono">{r.slug}</td>
-                <td class="mono">{r.grade ?? '—'}</td>
+                <td class="mono">{r.grade ?? 'N/A'}</td>
                 <td class="mono link">
                   <a href={`/protocols/${r.slug}/`} target="_blank" rel="noopener">
                     /protocols/{r.slug}/

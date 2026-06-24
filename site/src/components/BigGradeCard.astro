@@ -5,7 +5,7 @@ import type { Letter } from '../lib/rubric';
 export interface Props {
   letter: Letter;
   meaning: string;
-  /** Numeric risk score 0–100 (1 decimal place). Optional — renders in the bottom-right of the hero card. */
+  /** Numeric risk score 0–100 (1 decimal place). Optional; renders in the bottom-right of the hero card. */
   score?: number;
 }
 
@@ -14,4 +14,4 @@ const { letter, meaning, score } = Astro.props;
 const scoreDisplay = typeof score === 'number' ? score.toFixed(1) : undefined;
 ---
 
-<LetterPill letter={letter} size="hero" meaning={meaning} score={scoreDisplay} ariaLabel={`Grade ${letter} — ${meaning}${typeof score === 'number' ? ` — risk score ${score.toFixed(1)}` : ''}`} />
+<LetterPill letter={letter} size="hero" meaning={meaning} score={scoreDisplay} ariaLabel={`Grade ${letter}, ${meaning}${typeof score === 'number' ? `, risk score ${score.toFixed(1)}` : ''}`} />

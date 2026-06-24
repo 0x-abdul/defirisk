@@ -1,5 +1,5 @@
 /**
- * feed-generator.ts — RSS 2.0 + JSON Feed 1.1 builder for the grade-change feed (E-34).
+ * feed-generator.ts: RSS 2.0 + JSON Feed 1.1 builder for the grade-change feed (E-34).
  */
 import { SITE_NAME, SITE_URL } from './seo-defaults';
 
@@ -59,7 +59,7 @@ export function buildRssFeed(changes: GradeChange[]): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escapeXml(SITE_NAME)} — Grade Changes</title>
+    <title>${escapeXml(SITE_NAME)} | Grade Changes</title>
     <link>${SITE_URL}/changes/</link>
     <description>Protocol risk grade upgrades and downgrades from DeFi Risk.</description>
     <language>en</language>
@@ -74,7 +74,7 @@ ${items}
 export function buildJsonFeed(changes: GradeChange[]): object {
   return {
     version: 'https://jsonfeed.org/version/1.1',
-    title: `${SITE_NAME} — Grade Changes`,
+    title: `${SITE_NAME} | Grade Changes`,
     home_page_url: `${SITE_URL}/changes/`,
     feed_url: `${SITE_URL}/feeds/grade-changes.json`,
     description: 'Protocol risk grade upgrades and downgrades from DeFi Risk.',

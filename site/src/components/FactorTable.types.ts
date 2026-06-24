@@ -1,5 +1,5 @@
 /**
- * Type definitions for FactorTable.astro — extracted to a .ts module so
+ * Type definitions for FactorTable.astro, extracted to a .ts module so
  * type-only imports don't pull the .astro file through esbuild's JS parser
  * (esbuild 0.21.5 + vite 5.4 misroutes union types in .astro frontmatter
  * in some configurations). See FactorTable.astro for the component.

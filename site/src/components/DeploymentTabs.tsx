@@ -14,7 +14,7 @@ interface Props {
 }
 
 function fmtTvs(usd: number): string {
-  if (!Number.isFinite(usd) || usd <= 0) return '—';
+  if (!Number.isFinite(usd) || usd <= 0) return 'N/A';
   if (usd >= 1e9) return `$${(usd / 1e9).toFixed(1)}B`;
   if (usd >= 1e6) return `$${(usd / 1e6).toFixed(1)}M`;
   if (usd >= 1e3) return `$${(usd / 1e3).toFixed(0)}K`;
