@@ -1,118 +1,180 @@
-# DeFiRisk
+# defirisk.co
 
-**Open-source DeFi protocol risk intelligence** — 80 protocols graded across 184 risk factors and 13 categories, updated nightly.
+defirisk.co is an open-source risk transparency dashboard for defi protocols.
+It grades protocol deployments against a public, versioned rubric and publishes
+the evidence trail behind each assessment.
 
-**Live site:** [defirisk.co](https://defirisk.co)  
-**API version:** `v1.7.0`  
-**License:** MIT (code) · CC-BY 4.0 (data/methodology)
+- **Live site:** [defirisk.co](https://defirisk.co)
+- **Rubric version:** `v1.7.0`
+- **Code license:** MIT
+- **Data and methodology license:** CC BY 4.0
 
----
+## What this project does
 
-## What this is
+defirisk.co grades structural protocol risk. It does not predict exploits, rank
+token quality, score marketing, or measure community sentiment.
 
-DeFiRisk assigns letter grades (A–F) to DeFi protocols based on a structured rubric — not TVL or reputation. Every grade is evidence-backed, version-stamped, and publicly auditable.
+Each assessment is built from cited evidence: audit reports, on-chain state,
+governance forums, public incident records, source repositories, and operator
+disclosures. The rubric is deterministic, which means the same evidence should
+produce the same letter grade under the same rubric version.
 
-The rubric covers 13 risk categories:
+Every published assessment is intended to answer three questions:
 
-| # | Category |
-|---|----------|
-| 1 | Smart Contract Security |
-| 2 | Oracle & Price Feed Risk |
-| 3 | Governance & Decentralization |
-| 4 | Custody & Key Management |
-| 5 | Incident History |
-| 6 | Liquidity & Market Risk |
-| 7 | Protocol Complexity |
-| 8 | Counterparty & Legal Risk |
-| 9 | Dependency Risk |
-| 10 | Transparency & Auditability |
-| 11 | Operational Security |
-| 12 | Economic Design |
-| 13 | Regulatory & Compliance |
+- What structural risks are visible from public evidence?
+- Which rubric factors drove the result?
+- What sources support the finding?
 
-A single-protocol page shows the letter grade, risk score, per-category grid, factor-level evidence, and incident history inline. The scoring methodology is open and versioned at `data/api/v1.7.0/rubric.json`.
+The public product context lives on the
+[About](https://defirisk.co/about/) page. The full grading process is documented
+in the [Methodology](https://defirisk.co/methodology/).
 
----
+## Repository layout
 
-## Repository structure
+| Path | Purpose |
+|------|---------|
+| `site/` | Astro static site for defirisk.co |
+| `data/api/v1.7.0/` | Generated JSON exports, schemas, rubric data, factor data, protocol data, history, and status files |
+| `db/migrations/` | Postgres schema migrations for the grading pipeline |
+| `scripts/compose.py` | Computes rubric grades from database factor scores |
+| `scripts/dump.py` | Exports versioned static JSON under `data/api/` |
+| `scripts/rubric.py` | Rubric constants, score formula, thresholds, and grade logic |
+| `scripts/refresh-continuous.py` | Refreshes selected programmatic metrics, then recomposes and exports |
+| `.github/` | CI, deploy workflow, issue templates, and contribution templates |
 
-| Path | Contents |
-|------|----------|
-| `site/` | Astro static site (MIT) |
-| `data/api/v1.7.0/` | Generated JSON data tree — protocol grades, factor scores, hacks, history (CC-BY 4.0) |
-| `db/migrations/` | Postgres schema migrations |
-| `scripts/compose.py` | Grade computation engine (reads DB → writes grades) |
-| `scripts/refresh-continuous.py` | Continuous metric refresh (TVL/current factors -> compose/dump) |
-| `scripts/dump.py` | JSON export (reads DB → writes `data/api/`) |
-| `scripts/rubric.py` | Rubric math — score formula and grade thresholds |
-| `.github/` | CI, deploy workflow, issue templates |
+## Local development
 
----
+The site can run from the checked-in JSON data. A database is not required for
+normal frontend development.
+
+```bash
+cd site
+npm install
+npm run dev
+```
+
+Useful site commands:
+
+```bash
+npm run build
+npm test
+npm run typecheck
+npm run lint
+npm run test:smoke
+npm run test:a11y
+```
+
+To run the grading pipeline locally, point `DATABASE_URL` or
+`LOCAL_DATABASE_URL` at Postgres, apply the migrations, then run:
+
+```bash
+python scripts/compose.py
+python scripts/dump.py
+```
+
+`compose.py` recomputes grades from current factor scores. `dump.py` regenerates
+the static API tree consumed by the site.
 
 ## Public API
 
-Every protocol has a versioned JSON endpoint:
+The public API is static JSON under a versioned base path:
 
-```
-https://defirisk.co/api/v1.7.0/protocols/<slug>.json
-https://defirisk.co/api/v1.7.0/index.json
-https://defirisk.co/api/v1.7.0/factors.json
-https://defirisk.co/api/v1.7.0/hacks.json
+```text
+https://defirisk.co/api/v1.7.0/
 ```
 
-Every response is enveloped with `rubric_version` and `data_as_of`:
+Main endpoints:
 
-```json
-{
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-06-12T08:00Z",
-  "risk_score": 17.09,
-  "cap_applied": "none",
-  "data": { ... }
-}
+```text
+GET /api/v1.7.0/index.json
+GET /api/v1.7.0/protocols/{slug}.json
+GET /api/v1.7.0/factors.json
+GET /api/v1.7.0/factors/{id}.json
+GET /api/v1.7.0/hacks.json
+GET /api/v1.7.0/rubric.json
+GET /api/v1.7.0/changes.json
 ```
 
----
+Successful responses are wrapped in a stable envelope with:
 
-## Scoring methodology
+- `rubric_version`: the rubric used to compute the response.
+- `data_as_of`: the data snapshot timestamp.
+- `generated_at`: the file generation timestamp.
+- `data`: the requested resource payload.
 
-The risk score is a **core-five-weighted average** of per-category severity, plus a critical-flag penalty:
+Protocol detail responses also include M1 v4 rubric fields at the envelope
+level: `risk_score`, `category_severities`, `cap_applied`, and `cap_reason`.
 
-- Each category severity: `(red×3 + yellow×1) / (denom×3) × 100` (gray excluded from denominator)
-- Critical-flag penalty: 5 points per critical red, capped at 15
-- Single-category cap: severity ≥ 60 → grade floor D; severity ≥ 90 → floor F
+When citing downstream data, include both `rubric_version` and `data_as_of`.
+A grade is only meaningful against the rubric version that produced it.
 
-| Score | Grade |
-|-------|-------|
-| 0–12 | A |
-| 13–22 | B |
-| 23–32 | C |
-| 33–49 | D |
-| 50+ | F |
+The live API reference is at [defirisk.co/data](https://defirisk.co/data/).
 
-Full factor definitions are at `data/api/v1.7.0/rubric.json`.
+## Scoring model
 
----
+Rubric v1.7.0 produces a protocol letter grade from cited factor evidence.
+The pipeline has three main steps.
+
+1. Per-category severity
+
+   Each assessed factor is scored green, yellow, red, or gray. Gray means not
+   applicable or not assessed and is excluded from the denominator.
+
+   ```text
+   severity = (red * 3 + yellow * 1) / (assessed * 3) * 100
+   ```
+
+2. Protocol risk score
+
+   Category severities are aggregated into a 0 to 100 risk score. Core-five
+   categories are weighted at 1.5x and all other categories at 1.0x. A
+   critical-red penalty adds 5 points per critical red, capped at 15.
+
+   The core-five categories are code and audits, governance and admin controls,
+   oracle and external dependencies, operational history, and fork or dependency
+   lineage.
+
+3. Letter band and caps
+
+   The risk score and critical-red count produce the natural letter grade. A
+   weak core-five category can cap the result at D or force F.
+
+| Grade | Meaning | First matching rule |
+|-------|---------|---------------------|
+| A | Resilient | Risk score <= 12 and no critical flags |
+| B | Sound | Risk score <= 20 with no critical flags, or exactly one critical flag with risk score <= 20 |
+| C | Watch | Risk score > 20 and <= 35, with no more than one critical flag |
+| D | Compromised | Risk score > 35 and <= 55, at least two critical flags, or a core-five category severity >= 60 |
+| F | Failing | Risk score > 55, at least three critical flags, or a core-five category severity >= 90 |
+
+The full factor definitions and rubric metadata are published in
+`data/api/v1.7.0/factors.json` and `data/api/v1.7.0/rubric.json`. You can also
+browse them on the live
+[factor library](https://defirisk.co/factors/).
 
 ## Contributing
 
-We welcome:
-- **Factual corrections** — wrong data with an on-chain source (use the Factual Correction issue template)
-- **Grade disputes** — rubric interpretation disagreements with evidence (use the Grade Dispute template)
-- **Coverage requests** — protocols not yet rated
-- **Code / site improvements** — open a PR against `site/` or the scoring scripts
+Pull requests are welcome for code, documentation, accessibility,
+performance, schemas, migrations, and scoring pipeline improvements.
 
-We do **not** accept direct edits to `data/api/` — all data flows through the evidence pipeline.
+Direct edits to generated data are not accepted. Do not open a PR that edits
+per-protocol factor scores, letter grades, or files under
+`data/api/v1.7.0/protocols/`. Those files are pipeline output.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+Use the public issue channels instead:
 
----
+- **Coverage Request:** ask for a protocol to be assessed.
+- **Factual Correction:** report a wrong data point with a verifiable source.
+- **Grade Dispute:** challenge how the rubric was applied to established facts.
+- **Rubric Proposal:** propose a change to the rubric itself.
+
+The canonical guide is [CONTRIBUTING.md](CONTRIBUTING.md), with public process
+details at [defirisk.co/contributions](https://defirisk.co/contributions/).
 
 ## Continuous refresh operations
 
-The nightly continuous refresh is intentionally narrower than a full manual
-protocol reassessment. It updates regularly changing metrics from durable
-programmatic sources, then regenerates exports:
+`scripts/refresh-continuous.py` updates regularly changing metrics from durable
+programmatic sources, then runs the compose and dump steps when needed.
 
 ```bash
 DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all
@@ -120,28 +182,14 @@ DATABASE_URL=postgres://... python scripts/refresh-continuous.py --protocol aave
 DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all --dry-run
 ```
 
-`DATABASE_URL` or `LOCAL_DATABASE_URL` must point at the Postgres database.
-The script fetches DeFiLlama by `protocols.defillama_slug`, updates protocol
-TVL, mappable deployment TVL, and conservative factor scores such as
-RD-F-063, RD-F-084, RD-F-080, and RD-F-066 when the source data is sufficient.
-It never overwrites existing values with null or zero on fetch failures.
+The refresh script does not overwrite existing values with null or zero when a
+fetch fails. It is intentionally narrower than a full reassessment. Metrics
+that need judgment, source mapping, or episodic context remain manual until the
+pipeline can update them without false precision.
 
-If factor scores change, `compose.py` runs before export so grades and risk
-scores reflect the refreshed factor data. `dump.py` always runs after
-successful DB updates so `data/api/v1.7.0/` and `status.json` are regenerated.
+## License and attribution
 
-Not every current-looking metric is safe to automate yet. Oracle pool depth,
-liquidity depth, top depositor concentration, and many episodic event factors
-remain manual or future-pipeline work until the source mappings and thresholds
-are machine-readable enough to avoid false precision.
+Code in `site/`, `db/`, `scripts/`, and `.github/` is MIT licensed. Data,
+evidence factors, citation lists, and methodology are CC BY 4.0.
 
----
-
-## License
-
-| Path | License |
-|------|---------|
-| `site/`, `db/`, `scripts/`, `.github/` | [MIT](LICENSE) |
-| `data/`, methodology | [CC-BY 4.0](LICENSE.data) |
-
-Data attribution: **DeFiRisk (defirisk.co), rubric v1.7.0**
+For data reuse, attribution to `defirisk.co, rubric v1.7.0` is sufficient.
