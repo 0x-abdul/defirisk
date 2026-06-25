@@ -6,8 +6,8 @@ assignees: ''
 ---
 
 <!-- Wrong channel?
-     - The data is right but the rubric was applied wrongly? → use Grade Dispute.
-     - You want to change the rubric itself? → use Rubric Proposal.
+     - The data is right but the rubric was applied wrongly? Use Grade Dispute.
+     - You want to change the rubric itself? Use Rubric Proposal.
      See https://defirisk.co/contributions/#corrections for which channel fits. -->
 
 **Protocol:** <!-- e.g. Aave v3 -->

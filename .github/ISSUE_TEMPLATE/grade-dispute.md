@@ -6,8 +6,8 @@ assignees: ''
 ---
 
 <!-- Wrong channel?
-     - A specific data point is wrong (with a source)? → use Factual Correction.
-     - You want to change the rubric itself, for all protocols? → use Rubric Proposal.
+     - A specific data point is wrong (with a source)? Use Factual Correction.
+     - You want to change the rubric itself, for all protocols? Use Rubric Proposal.
      See https://defirisk.co/contributions/#corrections for which channel fits. -->
 
 **Protocol:**
