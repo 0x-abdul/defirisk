@@ -182,6 +182,13 @@ DATABASE_URL=postgres://... python scripts/refresh-continuous.py --protocol aave
 DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all --dry-run
 ```
 
+In production, `.github/workflows/ingest.yml` runs this daily at 03:00 UTC by
+SSHing into the VPS with `VPS_HOST` and `VPS_SSH_KEY`, sourcing
+`/opt/riskdashboard/.env`, and using `DATABASE_URL` or `LOCAL_DATABASE_URL`.
+The production Postgres instance is local to the VPS, so the workflow runs the
+refresh there, commits the regenerated `data/api` snapshot in the VPS worktree,
+and rebuilds the static dashboard so `/api/...` reflects the refreshed values.
+
 The refresh script does not overwrite existing values with null or zero when a
 fetch fails. It is intentionally narrower than a full reassessment. Metrics
 that need judgment, source mapping, or episodic context remain manual until the

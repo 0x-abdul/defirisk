@@ -1,26 +1,27 @@
-# Nightly Bucket A refresh — continuous-cadence factors (E-30 Phase 3)
+# Nightly Bucket A refresh - continuous-cadence factors.
 #
-# Runs refresh-continuous.py for all protocols at 03:00 UTC every day.
-# Updates protocol/deployment TVL plus conservative factor-level metrics
-# that can be refreshed from stable sources. The script re-runs compose.py
-# when factor scores change and always re-runs dump.py after DB updates.
+# Production Postgres is local to the VPS, so this workflow runs the refresh
+# on /opt/riskdashboard over SSH instead of trying to connect from a GitHub
+# hosted runner. The remote script sources /opt/riskdashboard/.env, runs the
+# continuous refresh, commits regenerated data/api files locally on the VPS,
+# and rebuilds the static site so public API files are updated in place.
 #
-# Prerequisites (repo Settings → Secrets and variables → Actions):
-#   DATABASE_URL          — Supabase pooler connection string (M5+)
-#
-# [!] Pre-M5: DATABASE_URL is not configured — the script detects this and
-#     exits early after printing a skip notice. The workflow still runs to
-#     confirm the skip; no error is emitted.
-#
-# Replaced the old "full T-16 pipeline × all fetchers" model (fan-out
-# savings: ~85% fewer fetcher calls per week for S/E-cadence factors).
+# Prerequisites (repo Settings -> Secrets and variables -> Actions):
+#   VPS_HOST     - IPv4 address or hostname of the production VPS
+#   VPS_SSH_KEY  - Private key for the github-actions-deploy key
 
-name: Nightly ingest (Bucket A — continuous cadence)
+name: Nightly ingest (Bucket A - continuous cadence)
 
 on:
   schedule:
     - cron: '0 3 * * *'   # 03:00 UTC daily
-  workflow_dispatch:        # manual: gh workflow run ingest.yml
+  workflow_dispatch:
+
+# Share the deploy lock because both workflows mutate /opt/riskdashboard and
+# run npm install/build in the same VPS worktree.
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -29,40 +30,123 @@ jobs:
   refresh-continuous:
     name: Refresh continuous-cadence factors
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
 
     steps:
-      - uses: actions/checkout@v7
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Install Python dependencies
-        run: pip install 'psycopg[binary]'
-
-      - name: Check prerequisites
+      - name: Check VPS prerequisites
         id: prereq
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "SKIP: DATABASE_URL not set — configure at M5 Supabase cutover."
+          if [ -z "$VPS_HOST" ] || [ -z "$VPS_SSH_KEY" ]; then
+            echo "SKIP: VPS_HOST or VPS_SSH_KEY is not configured."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - name: Run refresh-continuous.py
+      - name: Run refresh-continuous.py on VPS
         if: steps.prereq.outputs.skip != 'true'
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
-          python scripts/refresh-continuous.py --all
+          (umask 177; echo "$VPS_SSH_KEY" > /tmp/ingest_key)
+          trap 'rm -f /tmp/ingest_key' EXIT
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          echo "$VPS_HOST ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpn9P0m/4sJCsgGPubzi78FvRs9Q82TtcI022O4lgwe" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
-      - name: Skip notice (pre-M5)
+          ssh -i /tmp/ingest_key \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=30 \
+              rdapp@"$VPS_HOST" << 'REMOTE'
+            set -euo pipefail
+            cd /opt/riskdashboard
+
+            git config user.email "deploy@defirisk.co"
+            git config user.name "RiskDashboard Deploy"
+
+            # Preserve generated data from an interrupted prior run before
+            # pulling code. Only data/api is committed by this maintenance job.
+            git add data/api 2>/dev/null || true
+            if ! git diff --cached --quiet; then
+              git commit -m "Update nightly data snapshot"
+            fi
+
+            echo "==> Pulling latest code..."
+            prev_remote=$(git rev-parse origin/main 2>/dev/null || echo "")
+            git fetch origin main
+            if [ -n "$prev_remote" ] && git merge-base --is-ancestor "$prev_remote" origin/main; then
+              git pull --no-rebase origin main
+            else
+              echo "==> origin/main changed unexpectedly; hard-resetting before refresh"
+              git reset --hard origin/main
+            fi
+
+            if [ ! -f .env ]; then
+              echo "ERROR: /opt/riskdashboard/.env is missing."
+              exit 1
+            fi
+
+            set -a
+            . ./.env
+            set +a
+            if [ -z "${DATABASE_URL:-}" ] && [ -n "${LOCAL_DATABASE_URL:-}" ]; then
+              export DATABASE_URL="$LOCAL_DATABASE_URL"
+            fi
+            if [ -z "${DATABASE_URL:-}" ]; then
+              echo "ERROR: DATABASE_URL or LOCAL_DATABASE_URL is missing in /opt/riskdashboard/.env."
+              exit 1
+            fi
+
+            PYTHON="python3"
+            if [ -x venv/bin/python ]; then
+              PYTHON="venv/bin/python"
+            fi
+
+            "$PYTHON" - << 'PY'
+          import importlib.util
+          import subprocess
+          import sys
+
+          if importlib.util.find_spec("psycopg") is None:
+              subprocess.check_call([sys.executable, "-m", "pip", "install", "psycopg[binary]"])
+          PY
+
+            echo "==> Refreshing continuous metrics..."
+            "$PYTHON" scripts/refresh-continuous.py --all
+
+            echo "==> Committing regenerated public data..."
+            git add data/api
+            if git diff --cached --quiet; then
+              echo "No data/api changes to commit."
+            else
+              git commit -m "Update nightly data snapshot"
+            fi
+
+            echo "==> Rebuilding site..."
+            cd site
+            export npm_config_cache="/opt/riskdashboard/.npm-cache"
+            npm ci --prefer-offline
+            npm run build
+
+            echo "==> Nightly ingest complete at $(date -u +%Y-%m-%dT%H:%MZ)"
+          REMOTE
+
+      - name: Smoke check
+        if: steps.prereq.outputs.skip != 'true'
+        run: |
+          sleep 5
+          STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
+            https://defirisk.co/)
+          if [ "$STATUS" != "200" ]; then
+            echo "Smoke check failed: HTTP $STATUS"
+            exit 1
+          fi
+          echo "Smoke check passed: HTTP $STATUS"
+
+      - name: Skip notice
         if: steps.prereq.outputs.skip == 'true'
-        run: echo "Nightly ingest skipped — DATABASE_URL not configured (pre-M5)."
+        run: echo "Nightly ingest skipped because VPS secrets are not configured."
