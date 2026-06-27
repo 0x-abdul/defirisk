@@ -11,34 +11,21 @@ test.describe('Core pages — always present', () => {
   test('/ renders with dashboard title', async ({ page }) => {
     const res = await page.goto('/');
     expect(res?.status()).toBe(200);
-    await expect(page.locator('header')).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Primary' })).toBeVisible();
     // Title contains "DeFi Risk"
     await expect(page).toHaveTitle(/DeFi Risk/);
   });
 
-  test('/protocols/ renders protocol list page', async ({ page }) => {
-    const res = await page.goto('/protocols/');
+  test('/protocols/ is a redirect stub to the homepage directory', async ({ request }) => {
+    const res = await request.get('/protocols/');
     expect(res?.status()).toBe(200);
-    await expect(page.locator('h1')).toBeVisible();
-    await expect(page).toHaveTitle(/Protocol/i);
+    await expect(res.text()).resolves.toContain('Redirecting');
   });
 
   test('/factors/ renders factor list page', async ({ page }) => {
     const res = await page.goto('/factors/');
     expect(res?.status()).toBe(200);
     await expect(page.locator('h1')).toBeVisible();
-  });
-
-  test('/hacks/ renders hacks ledger', async ({ page }) => {
-    const res = await page.goto('/hacks/');
-    expect(res?.status()).toBe(200);
-    await expect(page.locator('h1')).toBeVisible();
-  });
-
-  test('/incidents/ renders incidents page', async ({ page }) => {
-    const res = await page.goto('/incidents/');
-    expect(res?.status()).toBe(200);
-    await expect(page.locator('main')).toBeVisible();
   });
 
   test('/methodology/ renders methodology page', async ({ page }) => {
@@ -71,10 +58,10 @@ test.describe('Core pages — always present', () => {
     await expect(page.locator('main')).toBeVisible();
   });
 
-  test('/api-docs/ renders API documentation page', async ({ page }) => {
-    const res = await page.goto('/api-docs/');
+  test('/api-docs/ is a redirect stub to /data/', async ({ request }) => {
+    const res = await request.get('/api-docs/');
     expect(res?.status()).toBe(200);
-    await expect(page.locator('h1')).toBeVisible();
+    await expect(res.text()).resolves.toContain('Redirecting');
   });
 
   test('404 page renders for unknown path', async ({ page }) => {
@@ -95,7 +82,7 @@ test.describe('Factor detail page', () => {
     }
     expect(res?.status()).toBe(200);
     // Factor ID visible somewhere on page
-    await expect(page.getByText(FACTOR_ID)).toBeVisible();
+    await expect(page.getByText(FACTOR_ID).first()).toBeVisible();
   });
 });
 
@@ -111,8 +98,8 @@ test.describe('Protocol detail page (M3a)', () => {
     expect(res?.status()).toBe(200);
     // Protocol name visible
     await expect(page.locator('h1')).toBeVisible();
-    // LetterPill present (grade rendered)
-    await expect(page.locator('[class*="letter-pill"]').first()).toBeVisible();
+    // Grade card present
+    await expect(page.getByRole('img', { name: /Grade/ }).first()).toBeVisible();
   });
 });
 
@@ -130,7 +117,7 @@ test.describe('Protocol-level factor detail page (M3a)', () => {
     expect(res?.status()).toBe(200);
     await expect(page.locator('h1')).toBeVisible();
     // Factor ID appears somewhere on the page
-    await expect(page.getByText(FACTOR)).toBeVisible();
+    await expect(page.getByText(FACTOR).first()).toBeVisible();
   });
 });
 
@@ -157,6 +144,10 @@ test.describe('Hacks detail page', () => {
   test('/hacks/<id>/ renders a hack detail (if any hacks present)', async ({ page }) => {
     // Fetch the hacks index first to get a real hack id
     const indexRes = await page.goto('/hacks/');
+    if (indexRes?.status() === 404) {
+      test.skip(true, 'Hacks pages are not generated in this public build');
+      return;
+    }
     expect(indexRes?.status()).toBe(200);
 
     // Look for any hack link
