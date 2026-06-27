@@ -27,9 +27,9 @@ export default defineConfig({
     // Smoke tests don't need a full browser — use lighter API testing for JSON endpoints.
   },
   // Only spin up a local server when testing localhost; skip when BASE_URL points elsewhere.
-  webServer: BASE_URL.startsWith('http://localhost')
+  webServer: !process.env.PLAYWRIGHT_SKIP_WEBSERVER && BASE_URL.startsWith('http://localhost')
     ? {
-        command: 'npm run preview -- --port 4321',
+        command: 'node ./node_modules/astro/astro.js preview --port 4321',
         url: 'http://localhost:4321',
         reuseExistingServer: !process.env.CI,
         timeout: 60_000,
