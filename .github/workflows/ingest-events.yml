@@ -1,18 +1,16 @@
-# Weekly Bucket B refresh — episodic-cadence factors (E-30 Phase 4)
+# Weekly Bucket B refresh - episodic-cadence factors (E-30 Phase 4)
 #
 # Runs refresh-events.py for all protocols at 05:00 UTC every Monday.
-# Two-stage: probes for discrete change events first, then re-grades only
-# the protocols where something changed.
+# The first public event refresh reconciles curated active-incident state,
+# re-grades only protocols where the incident flag changed, then regenerates
+# static exports.
 #
-# Episodic factors include: pause activations, post-exploit response scores,
-# signer rotations, new audits, governance proposals, bug-bounty disclosures.
+# Prerequisites (repo Settings -> Secrets and variables -> Actions):
+#   DATABASE_URL - Supabase pooler connection string (M5+)
 #
-# Prerequisites (repo Settings → Secrets and variables → Actions):
-#   DATABASE_URL          — Supabase pooler connection string (M5+)
-#
-# [!] Pre-M5: DATABASE_URL is not configured — workflow skips gracefully.
+# Pre-M5: DATABASE_URL is not configured, so the workflow skips gracefully.
 
-name: Weekly ingest (Bucket B — episodic cadence)
+name: Weekly ingest (Bucket B - episodic cadence)
 
 on:
   schedule:
@@ -39,20 +37,11 @@ jobs:
       - name: Install Python dependencies
         run: pip install 'psycopg[binary]'
 
-      - name: Check refresh-events.py availability
-        id: script
-        run: |
-          if [ -f scripts/refresh-events.py ]; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Check prerequisites
         id: prereq
         run: |
           if [ -z "$DATABASE_URL" ]; then
-            echo "SKIP: DATABASE_URL not set — configure at M5 Supabase cutover."
+            echo "SKIP: DATABASE_URL not set - configure at M5 Supabase cutover."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
@@ -61,7 +50,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Run refresh-events.py
-        if: steps.prereq.outputs.skip != 'true' && steps.script.outputs.available == 'true'
+        if: steps.prereq.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
@@ -71,9 +60,4 @@ jobs:
 
       - name: Skip notice (pre-M5)
         if: steps.prereq.outputs.skip == 'true'
-        run: echo "Weekly event refresh skipped — DATABASE_URL not configured (pre-M5)."
-
-      - name: Skip notice (event refresh not implemented)
-        if: steps.prereq.outputs.skip != 'true' && steps.script.outputs.available != 'true'
-        run: |
-          echo "Weekly event refresh skipped — scripts/refresh-events.py is not implemented in the public repo yet."
+        run: echo "Weekly event refresh skipped - DATABASE_URL not configured (pre-M5)."
