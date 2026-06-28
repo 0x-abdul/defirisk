@@ -33,7 +33,6 @@ jobs:
         id: site_build
         run: npm run build
         working-directory: site
-        continue-on-error: true
 
       - name: Install Playwright Chromium browser
         if: steps.site_build.outcome == 'success'
@@ -49,7 +48,6 @@ jobs:
         if: steps.site_build.outcome == 'success'
         run: npx playwright test --config=playwright.a11y.config.ts --project=chromium
         working-directory: site
-        continue-on-error: true  # informational: pre-existing violations, tracked separately
 
       - name: Upload a11y results (on failure)
         if: steps.axe_tests.outcome == 'failure'
