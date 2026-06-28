@@ -278,25 +278,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Validate site/public/openapi.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Validate OpenAPI artifacts
         run: |
           set -e
-          file="site/public/openapi.json"
-          if [ ! -f "$file" ]; then
-            echo "FAIL: $file not found — run npx tsx scripts/gen-openapi.ts"
+          for file in site/public/openapi.json data/api/v1.7.0/openapi.json; do
+            if [ ! -f "$file" ]; then
+              echo "FAIL: $file not found"
+              exit 1
+            fi
+            version=$(jq -r '.openapi' "$file")
+            if [ "$version" != "3.1.0" ]; then
+              echo "FAIL: $file openapi field is '$version', expected '3.1.0'"
+              exit 1
+            fi
+            path_count=$(jq '.paths | length' "$file")
+            if [ "$path_count" -lt 9 ]; then
+              echo "FAIL: only $path_count paths in $file, expected >=9"
+              exit 1
+            fi
+            jq -e '.paths["/openapi.yaml"]' "$file" >/dev/null
+            echo "OK: $file is OpenAPI 3.1 with $path_count paths"
+          done
+
+          cmp -s site/public/openapi.json data/api/v1.7.0/openapi.json || {
+            echo "FAIL: site/public/openapi.json and data/api/v1.7.0/openapi.json drifted"
             exit 1
-          fi
-          version=$(jq -r '.openapi' "$file")
-          if [ "$version" != "3.1.0" ]; then
-            echo "FAIL: openapi field is '$version', expected '3.1.0'"
-            exit 1
-          fi
-          path_count=$(jq '.paths | length' "$file")
-          if [ "$path_count" -lt 8 ]; then
-            echo "FAIL: only $path_count paths in spec, expected ≥8"
-            exit 1
-          fi
-          echo "OK: OpenAPI 3.1 spec with $path_count paths"
+          }
+
+          node scripts/generate-openapi-yaml.mjs
+          git diff --exit-code -- site/public/openapi.yaml data/api/v1.7.0/openapi.yaml
+
+          for file in site/public/openapi.yaml data/api/v1.7.0/openapi.yaml; do
+            if [ ! -f "$file" ]; then
+              echo "FAIL: $file not found"
+              exit 1
+            fi
+            grep -Eq '^openapi: "?3\.1\.0"?' "$file"
+            grep -q '"/openapi.yaml":' "$file"
+            echo "OK: $file is present and documents /openapi.yaml"
+          done
 
   # ── 9. Accessibility (axe-core) ─────────────────────────────────────────────
   a11y-check:

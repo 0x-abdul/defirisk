@@ -696,6 +696,33 @@
           }
         }
       }
+    },
+    "/openapi.yaml": {
+      "get": {
+        "operationId": "getOpenApiSpecYaml",
+        "summary": "OpenAPI 3.1 spec (YAML)",
+        "description": "YAML rendering of the same OpenAPI document published at /openapi.json.",
+        "tags": [
+          "metadata"
+        ],
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.1 specification in YAML format",
+            "content": {
+              "application/yaml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/yaml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "tags": [

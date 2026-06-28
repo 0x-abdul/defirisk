@@ -1,0 +1,636 @@
+openapi: "3.1.0"
+info:
+  title: "Risk Dashboard Public JSON API"
+  version: "v1.7.0"
+  description:
+    |-
+      Read-only static JSON API for the Risk Dashboard.
+      
+      Every response is wrapped in the canonical envelope (rubric_version + data_as_of + generated_at + data).
+      
+      All data is licensed under CC BY 4.0. No authentication required.
+      
+      Base path: `https://defirisk.co/api/v1.7.0/`
+  license:
+    name: "CC BY 4.0 (data) / MIT (code)"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+  contact:
+    name: "Risk Dashboard"
+    url: "https://defirisk.co/about/"
+servers:
+  -
+    url: "https://defirisk.co/api/v1.7.0"
+    description: "Production (Hetzner VPS / Caddy)"
+paths:
+  "/index.json":
+    get:
+      operationId: "listProtocols"
+      summary: "Protocol list"
+      description: "Lightweight index of all graded protocols with headline grade. For full factor scores, risk_score, and category_severities use the per-slug endpoint."
+      tags:
+        - "protocols"
+      responses:
+        "200":
+          description: "Protocol list envelope"
+          headers:
+            Cache-Control:
+              schema:
+                type: "string"
+              example: "public, max-age=3600, stale-while-revalidate=86400"
+            Content-Type:
+              schema:
+                type: "string"
+              example: "application/json"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  protocols:
+                    -
+                      slug: "aave-v3"
+                      display_name: "Aave v3"
+                      protocol_type: "lending"
+                      primary_chain: "ethereum"
+                      headline_grade: "B"
+                      total_value_secured_usd: 14063906193
+                      graded_at: "2026-05-12T04:38:07Z"
+                      rubric_version: "v1.7.0"
+                      status: "live"
+                      has_active_incident: true
+  "/protocols/{slug}.json":
+    get:
+      operationId: "getProtocol"
+      summary: "Protocol detail"
+      description:
+        |-
+          Full protocol record: deployments, all 184 factor scores with evidence summaries, and grade history.
+          
+          The envelope carries four M1 v4 rubric fields at the top level (v1.7.0+):
+          
+          - `risk_score` (number 0–100, 2-decimal): weighted-average category severity + critical-red penalty.
+          
+          - `category_severities` (object): per-category severity keyed by category ID 1–13.
+          
+          - `cap_applied` ('none'|'D'|'F'): whether a core-five category cap overrode the natural letter.
+          
+          - `cap_reason` (string|null): human-readable cap explanation, e.g. "Cat 5 severity 67 >= 60 (core-five cap)".
+      tags:
+        - "protocols"
+      parameters:
+        -
+          name: "slug"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "Protocol slug, e.g. `aave-v3`"
+          example: "aave-v3"
+      responses:
+        "200":
+          description: "Protocol detail envelope (includes risk_score, category_severities, cap_applied, cap_reason at envelope level)"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                risk_score: 0
+                category_severities: {}
+                cap_applied: "none"
+                cap_reason: null
+                data:
+                  protocol_data:
+                    protocol:
+                      slug: "aave-v3"
+                      display_name: "Aave v3"
+                      protocol_type: "lending"
+                      primary_chain: "ethereum"
+                      headline_grade: "B"
+                      total_value_secured_usd: 14063906193
+                      graded_at: "2026-05-12T04:38:07Z"
+                      rubric_version: "v1.7.0"
+                      status: "live"
+                      has_active_incident: true
+                    deployments: []
+                    factor_scores: []
+  "/factors.json":
+    get:
+      operationId: "listFactors"
+      summary: "Factor encyclopedia"
+      description: "All 184 factors: id, category, name, description, is_critical, curation archetype."
+      tags:
+        - "factors"
+      responses:
+        "200":
+          description: "Factor list envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  factors:
+                    -
+                      id: "RD-F-001"
+                      category_id: 1
+                      name: "Audit scope mismatch"
+                      description: "Check whether the commit SHA cited in the audit report matches the bytecode deployed at the production proxy/implementation address."
+                      is_critical: true
+                      curation_archetype: "PH"
+                      introduced_in_rubric: "v1.5.0"
+                      deprecated_in_rubric: null
+  "/factors/{id}.json":
+    get:
+      operationId: "getFactor"
+      summary: "Factor detail"
+      description: "Full per-factor blob: methodology, scored_protocols (how every protocol in the coverage list scores on this factor), and linked_hacks."
+      tags:
+        - "factors"
+      parameters:
+        -
+          name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            pattern: "^RD-F-\\d{3}$"
+          description: "Factor ID, e.g. `RD-F-001`"
+          example: "RD-F-001"
+      responses:
+        "200":
+          description: "Factor detail envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  factor_data:
+                    factor:
+                      id: "RD-F-001"
+                      category_id: 1
+                      name: "Audit scope mismatch"
+                      description: "Check whether the commit SHA cited in the audit report matches the bytecode deployed at the production proxy/implementation address."
+                      is_critical: true
+                      curation_archetype: "PH"
+                      introduced_in_rubric: "v1.5.0"
+                      deprecated_in_rubric: null
+                    scored_protocols: []
+                    linked_hacks: []
+  "/hacks.json":
+    get:
+      operationId: "listHacks"
+      summary: "Hack ledger"
+      description: "All documented DeFi security incidents with root-cause analysis and linked risk factors."
+      tags:
+        - "hacks"
+      responses:
+        "200":
+          description: "Hack list envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  hacks:
+                    -
+                      id: "kelp-dao-rekt"
+                      protocol_slug: null
+                      protocol_name: "Kelp DAO (rsETH liquid restaking)"
+                      occurred_at: "2026-04-18"
+                      loss_usd: 292000000
+                      category: "Liquid Restaking Token (LRT) / Cross-Chain Bridge"
+                      root_cause: "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
+                      description: "An attacker forged a single LayerZero message to drain $292M in rsETH from Kelp DAO's mainnet bridge reserve, then weaponized the unbacked tokens as Aave collateral to borrow $196M in ETH — all inside the 46-minute window before Kelp could pause."
+                      postmortem_url: null
+                      funds_recovered_pct: null
+                      is_active: false
+                      status: "closed"
+                      linked_factors:
+                        -
+                          factor_id: "RD-F-004"
+                          relevance: "causal"
+                          notes: "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited or out-of-scope code (bridge contracts excluded from bug bounty; audit coverage of lzReceive configuration unconfirmed)]"
+                        -
+                          factor_id: "RD-F-006"
+                          relevance: "causal"
+                          notes: "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+                        -
+                          factor_id: "RD-F-090"
+                          relevance: "illustrative"
+                          notes: "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Six attacker wallets funded via Tornado Cash ~10 hours before exploit (07:35 UTC); no documented anomalous rsETH-bridge or OFTAdapter activi...]"
+                        -
+                          factor_id: "RD-F-146"
+                          relevance: "related"
+                          notes: "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+                        -
+                          factor_id: "RD-F-148"
+                          relevance: "causal"
+                          notes: "Bridge validator count (M) — LayerZero DVN sub-field [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+                        -
+                          factor_id: "RD-F-149"
+                          relevance: "related"
+                          notes: "Bridge validator threshold (k-of-M) [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+  "/hacks/{id}.json":
+    get:
+      operationId: "getHack"
+      summary: "Hack detail"
+      description: "Per-hack blob: full incident record + linked_factors with relevance and notes."
+      tags:
+        - "hacks"
+      parameters:
+        -
+          name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+          description: "Hack slug, e.g. `kelp-dao-rekt`"
+          example: "kelp-dao-rekt"
+      responses:
+        "200":
+          description: "Hack detail envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  hack_data:
+                    hack:
+                      id: "kelp-dao-rekt"
+                      protocol_slug: null
+                      protocol_name: "Kelp DAO (rsETH liquid restaking)"
+                      occurred_at: "2026-04-18"
+                      loss_usd: 292000000
+                      category: "Liquid Restaking Token (LRT) / Cross-Chain Bridge"
+                      root_cause: "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
+                      description: "An attacker forged a single LayerZero message to drain $292M in rsETH from Kelp DAO's mainnet bridge reserve, then weaponized the unbacked tokens as Aave collateral to borrow $196M in ETH — all inside the 46-minute window before Kelp could pause."
+                      postmortem_url: null
+                      funds_recovered_pct: null
+                      is_active: false
+                      status: "closed"
+                      linked_factors:
+                        -
+                          factor_id: "RD-F-004"
+                          relevance: "causal"
+                          notes: "Audit count likely 0; floor display [via dashboard_risk_factors/Vulnerability in audited or unaudited code: Likely unaudited or out-of-scope code (bridge contracts excluded from bug bounty; audit coverage of lzReceive configuration unconfirmed)]"
+                        -
+                          factor_id: "RD-F-006"
+                          relevance: "causal"
+                          notes: "Audit-deploy gap (RD-F-006 time between audit and deploy) [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...] || Audit-deploy gap — alternate field name [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+                        -
+                          factor_id: "RD-F-090"
+                          relevance: "illustrative"
+                          notes: "Mixer withdrawal → protocol interaction [via realtime_signals/Pre-exploit on-chain signals: Six attacker wallets funded via Tornado Cash ~10 hours before exploit (07:35 UTC); no documented anomalous rsETH-bridge or OFTAdapter activi...]"
+                        -
+                          factor_id: "RD-F-146"
+                          relevance: "related"
+                          notes: "New deploys in last 30 days — fresh attack surface [via dashboard_risk_factors/Exploited code newly deployed/upgraded?: N — the 1/1 DVN configuration had been in place at least since Jan 2025 (when flagged); this was a long-latent misconfiguration, not a new d...]"
+                        -
+                          factor_id: "RD-F-148"
+                          relevance: "causal"
+                          notes: "Bridge validator count (M) — LayerZero DVN sub-field [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+                        -
+                          factor_id: "RD-F-149"
+                          relevance: "related"
+                          notes: "Bridge validator threshold (k-of-M) [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]"
+                    linked_factors: []
+  "/incidents.json":
+    get:
+      operationId: "listIncidents"
+      summary: "Active incidents"
+      description: "Active security incidents driving per-protocol presentation banners (PD-033). Does not affect structural letter grades."
+      tags:
+        - "incidents"
+      responses:
+        "200":
+          description: "Incidents envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:06:40Z"
+                data:
+                  incidents: []
+  "/rubric.json":
+    get:
+      operationId: "getRubric"
+      summary: "Rubric metadata"
+      description: "Frozen rubric metadata: version, frozen_at, changelog_url, notes."
+      tags:
+        - "metadata"
+      responses:
+        "200":
+          description: "Rubric envelope"
+          content:
+            "application/json":
+              schema:
+                "$ref": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+              example:
+                rubric_version: "v1.7.0"
+                data_as_of: "2026-05-12T04:06:37Z"
+                generated_at: "2026-05-12T04:38:24Z"
+                data:
+                  version: "v1.7.0"
+                  frozen_at: "2026-05-12T00:00:00Z"
+                  changelog_url: "https://github.com/0x-Abdul/riskproduct/blob/main/risk-dashboard/research/outputs/05-scoring-decision.md"
+                  notes: "M1 v4 Curve & Calibrate rubric: severity-based 0-100 risk score, core-five-weighted average, single-category cap override. Replaces deterministic-integer v1.6.0."
+  "/schema/envelope.json":
+    get:
+      operationId: "getEnvelopeSchemaDraft07"
+      summary: "Envelope JSON Schema (Draft-07, legacy)"
+      description: "JSON Schema Draft-07 for the canonical envelope. Kept for back-compat. Prefer /schemas/envelope.json (Draft 2020-12)."
+      tags:
+        - "metadata"
+      responses:
+        "200":
+          description: "JSON Schema document (Draft-07)"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+              example:
+                "$schema": "https://json-schema.org/draft/2020-12/schema"
+                "$id": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+                title: "RiskProduct API canonical envelope"
+                description: "Envelope wrapping every API response under /api/v1.7.0/. Resolves PD-008: rubric_version and data_as_of are mandatory on every response so downstream integrators can distinguish protocol-data changes from rubric-version bumps. Protocol envelopes additionally carry risk_score, category_severities, cap_applied, and cap_reason (M1 v4 rubric, introduced in v1.7.0). The `data` field shape varies per endpoint."
+                type: "object"
+                required:
+                  - "rubric_version"
+                  - "data_as_of"
+                  - "generated_at"
+                  - "data"
+                additionalProperties: false
+                properties:
+                  rubric_version:
+                    type: "string"
+                    pattern: "^v\\d+\\.\\d+\\.\\d+$"
+                    description: "Frozen rubric version string, e.g. v1.7.0. Matches the published rubric changelog entry current at grade-computation time."
+                    examples:
+                      - "v1.7.0"
+                  data_as_of:
+                    type: "string"
+                    format: "date-time"
+                    description: "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. Distinct from generated_at: the rubric may re-evaluate without new factor data arriving. May be the Unix epoch (1970-01-01T00:00:00Z) when no scores have been collected."
+                  generated_at:
+                    type: "string"
+                    format: "date-time"
+                    description: "ISO-8601 UTC timestamp of when this dump ran (when the JSON file was last written by dump.py)."
+                  data:
+                    type: "object"
+                    description: "Endpoint-specific payload. Shape documented per-path in openapi.json."
+                  risk_score:
+                    type: "number"
+                    minimum: 0
+                    maximum: 100
+                    description: "Protocol-level risk score (0–100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5×, non-core 1.0×) plus up to 15 points critical-red penalty. Introduced in v1.7.0."
+                    examples:
+                      - 9
+                      - 34
+                      - 62
+                  category_severities:
+                    type: "object"
+                    description: "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0–100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric)."
+                    additionalProperties:
+                      type: "number"
+                      minimum: 0
+                      maximum: 100
+                  cap_applied:
+                    type: "string"
+                    enum:
+                      - "none"
+                      - "D"
+                      - "F"
+                    description: "Whether the single-category core-five cap overrode the natural letter grade. 'none' = no cap; 'D' = capped at D; 'F' = capped at F. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+                    examples:
+                      - "none"
+                      - "D"
+                      - "F"
+                  cap_reason:
+                    type:
+                      - "string"
+                      - "null"
+                    description: "Human-readable explanation of the cap, e.g. 'Cat 5 severity 67 >= 60 (core-five cap)'. null when cap_applied='none'. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+                    examples:
+                      - null
+                      - "Cat 5 severity 67 >= 60 (core-five cap)"
+  "/schemas/envelope.json":
+    get:
+      operationId: "getEnvelopeSchema"
+      summary: "Envelope JSON Schema (Draft 2020-12, canonical)"
+      description: "JSON Schema Draft 2020-12 for the canonical envelope. Every response under /api/v1.7.0/ validates against this. Includes risk_score, category_severities, cap_applied, cap_reason fields added in v1.7.0."
+      tags:
+        - "metadata"
+      responses:
+        "200":
+          description: "JSON Schema document (Draft 2020-12)"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+              example:
+                "$schema": "https://json-schema.org/draft/2020-12/schema"
+                "$id": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+                title: "RiskProduct API canonical envelope"
+                description: "Envelope wrapping every API response under /api/v1.7.0/. Resolves PD-008: rubric_version and data_as_of are mandatory on every response so downstream integrators can distinguish protocol-data changes from rubric-version bumps. Protocol envelopes additionally carry risk_score, category_severities, cap_applied, and cap_reason (M1 v4 rubric, introduced in v1.7.0). The `data` field shape varies per endpoint."
+                type: "object"
+                required:
+                  - "rubric_version"
+                  - "data_as_of"
+                  - "generated_at"
+                  - "data"
+                additionalProperties: false
+                properties:
+                  rubric_version:
+                    type: "string"
+                    pattern: "^v\\d+\\.\\d+\\.\\d+$"
+                    description: "Frozen rubric version string, e.g. v1.7.0. Matches the published rubric changelog entry current at grade-computation time."
+                    examples:
+                      - "v1.7.0"
+                  data_as_of:
+                    type: "string"
+                    format: "date-time"
+                    description: "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. Distinct from generated_at: the rubric may re-evaluate without new factor data arriving. May be the Unix epoch (1970-01-01T00:00:00Z) when no scores have been collected."
+                  generated_at:
+                    type: "string"
+                    format: "date-time"
+                    description: "ISO-8601 UTC timestamp of when this dump ran (when the JSON file was last written by dump.py)."
+                  data:
+                    type: "object"
+                    description: "Endpoint-specific payload. Shape documented per-path in openapi.json."
+                  risk_score:
+                    type: "number"
+                    minimum: 0
+                    maximum: 100
+                    description: "Protocol-level risk score (0–100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5×, non-core 1.0×) plus up to 15 points critical-red penalty. Introduced in v1.7.0."
+                    examples:
+                      - 9
+                      - 34
+                      - 62
+                  category_severities:
+                    type: "object"
+                    description: "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0–100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric)."
+                    additionalProperties:
+                      type: "number"
+                      minimum: 0
+                      maximum: 100
+                  cap_applied:
+                    type: "string"
+                    enum:
+                      - "none"
+                      - "D"
+                      - "F"
+                    description: "Whether the single-category core-five cap overrode the natural letter grade. 'none' = no cap; 'D' = capped at D; 'F' = capped at F. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+                    examples:
+                      - "none"
+                      - "D"
+                      - "F"
+                  cap_reason:
+                    type:
+                      - "string"
+                      - "null"
+                    description: "Human-readable explanation of the cap, e.g. 'Cat 5 severity 67 >= 60 (core-five cap)'. null when cap_applied='none'. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+                    examples:
+                      - null
+                      - "Cat 5 severity 67 >= 60 (core-five cap)"
+  "/openapi.json":
+    get:
+      operationId: "getOpenApiSpec"
+      summary: "OpenAPI 3.1 spec"
+      description: "This document. Machine-readable description of all API paths."
+      tags:
+        - "metadata"
+      responses:
+        "200":
+          description: "OpenAPI 3.1 specification"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+  "/openapi.yaml":
+    get:
+      operationId: "getOpenApiSpecYaml"
+      summary: "OpenAPI 3.1 spec (YAML)"
+      description: "YAML rendering of the same OpenAPI document published at /openapi.json."
+      tags:
+        - "metadata"
+      responses:
+        "200":
+          description: "OpenAPI 3.1 specification in YAML format"
+          content:
+            "application/yaml":
+              schema:
+                type: "string"
+            "text/yaml":
+              schema:
+                type: "string"
+tags:
+  -
+    name: "protocols"
+    description: "Protocol risk grades and factor scores"
+  -
+    name: "factors"
+    description: "184-factor taxonomy and per-protocol scoring"
+  -
+    name: "hacks"
+    description: "Historical DeFi security incidents"
+  -
+    name: "incidents"
+    description: "Active incident banners (PD-033)"
+  -
+    name: "metadata"
+    description: "Rubric metadata, schemas, and this spec"
+components:
+  schemas:
+    Envelope:
+      "$schema": "https://json-schema.org/draft/2020-12/schema"
+      "$id": "https://defirisk.co/api/v1.7.0/schemas/envelope.json"
+      title: "RiskProduct API canonical envelope"
+      description: "Envelope wrapping every API response under /api/v1.7.0/. Resolves PD-008: rubric_version and data_as_of are mandatory on every response so downstream integrators can distinguish protocol-data changes from rubric-version bumps. Protocol envelopes additionally carry risk_score, category_severities, cap_applied, and cap_reason (M1 v4 rubric, introduced in v1.7.0). The `data` field shape varies per endpoint."
+      type: "object"
+      required:
+        - "rubric_version"
+        - "data_as_of"
+        - "generated_at"
+        - "data"
+      additionalProperties: false
+      properties:
+        rubric_version:
+          type: "string"
+          pattern: "^v\\d+\\.\\d+\\.\\d+$"
+          description: "Frozen rubric version string, e.g. v1.7.0. Matches the published rubric changelog entry current at grade-computation time."
+          examples:
+            - "v1.7.0"
+        data_as_of:
+          type: "string"
+          format: "date-time"
+          description: "ISO-8601 UTC timestamp of the most recent factor_score collected_at across the response payload. Distinct from generated_at: the rubric may re-evaluate without new factor data arriving. May be the Unix epoch (1970-01-01T00:00:00Z) when no scores have been collected."
+        generated_at:
+          type: "string"
+          format: "date-time"
+          description: "ISO-8601 UTC timestamp of when this dump ran (when the JSON file was last written by dump.py)."
+        data:
+          type: "object"
+          description: "Endpoint-specific payload. Shape documented per-path in openapi.json."
+        risk_score:
+          type: "number"
+          minimum: 0
+          maximum: 100
+          description: "Protocol-level risk score (0–100, 2-decimal precision). Present only on protocol envelopes (protocols/<slug>.json). Computed by the M1 v4 rubric: weighted-average category severity across 13 categories (core-five weighted 1.5×, non-core 1.0×) plus up to 15 points critical-red penalty. Introduced in v1.7.0."
+          examples:
+            - 9
+            - 34
+            - 62
+        category_severities:
+          type: "object"
+          description: "Per-category severity scores keyed by category ID string (\"1\" through \"13\"). Each value is a number 0–100. Present only on protocol envelopes. 0 when denom=0 (all factors gray/gap). Introduced in v1.7.0 (M1 rubric)."
+          additionalProperties:
+            type: "number"
+            minimum: 0
+            maximum: 100
+        cap_applied:
+          type: "string"
+          enum:
+            - "none"
+            - "D"
+            - "F"
+          description: "Whether the single-category core-five cap overrode the natural letter grade. 'none' = no cap; 'D' = capped at D; 'F' = capped at F. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+          examples:
+            - "none"
+            - "D"
+            - "F"
+        cap_reason:
+          type:
+            - "string"
+            - "null"
+          description: "Human-readable explanation of the cap, e.g. 'Cat 5 severity 67 >= 60 (core-five cap)'. null when cap_applied='none'. Present only on protocol envelopes. Introduced in v1.7.0 (M1 rubric)."
+          examples:
+            - null
+            - "Cat 5 severity 67 >= 60 (core-five cap)"
+externalDocs:
+  description: "Risk Dashboard methodology and data page"
+  url: "https://defirisk.co/data/"
