@@ -65,7 +65,7 @@ jobs:
         run: |
           [ -d risk-dashboard/scripts/data-pipeline ] && echo "has-pipeline=true" >> "$GITHUB_OUTPUT" || echo "has-pipeline=false" >> "$GITHUB_OUTPUT"
           [ -f package.json ] && echo "has-root-package=true" >> "$GITHUB_OUTPUT" || echo "has-root-package=false" >> "$GITHUB_OUTPUT"
-          [ -f scripts/ci/check-perf-budget.ts ] && echo "has-perf-budget=true" >> "$GITHUB_OUTPUT" || echo "has-perf-budget=false" >> "$GITHUB_OUTPUT"
+          [ -f scripts/ci/check-perf-budget.mjs ] && echo "has-perf-budget=true" >> "$GITHUB_OUTPUT" || echo "has-perf-budget=false" >> "$GITHUB_OUTPUT"
           ls site/tests/visual/__snapshots__/*linux* 2>/dev/null | grep -q . && echo "has-visual-baselines=true" >> "$GITHUB_OUTPUT" || echo "has-visual-baselines=false" >> "$GITHUB_OUTPUT"
 
   # ── 0c. Pipeline tests (pytest) ──────────────────────────────────────────────
@@ -83,8 +83,6 @@ jobs:
         run: pip install pytest selectolax
       - name: Run pytest (test_rekt + test_defillama + future per-fetcher tests)
         run: pytest risk-dashboard/scripts/data-pipeline/tests/ -v
-      - name: Run legacy offline test (schema validation + dry-run)
-        run: python risk-dashboard/scripts/data-pipeline/tests/test_offline.py
 
   script-tests:
     name: Public script tests (pytest)
@@ -368,7 +366,7 @@ jobs:
         run: npm run build
         working-directory: site
       - name: Check JS bundle budgets
-        run: npx tsx scripts/ci/check-perf-budget.ts
+        run: node scripts/ci/check-perf-budget.mjs
 
       # Lighthouse: informational only (does not block CI). Score ≥90 is the target.
       # Requires @lhci/cli — install via: npm i -D @lhci/cli (in site/ devDependencies).
