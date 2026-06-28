@@ -27,12 +27,14 @@ export default defineConfig({
     baseURL: 'http://localhost:4321',
     viewport: { width: 1280, height: 800 },
   },
-  webServer: {
-    command: 'npm run preview -- --port 4321',
-    url: 'http://localhost:4321',
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  webServer: process.env.PLAYWRIGHT_SKIP_WEBSERVER
+    ? undefined
+    : {
+        command: 'node ./node_modules/astro/astro.js preview --port 4321',
+        url: 'http://localhost:4321',
+        reuseExistingServer: !process.env.CI,
+        timeout: 60_000,
+      },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
