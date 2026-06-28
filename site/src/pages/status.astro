@@ -37,6 +37,37 @@ const freshnessCounts = status.per_protocol.reduce(
   },
   { green: 0, yellow: 0, red: 0, gray: 0 } as Record<string, number>,
 );
+
+const bucketRows = CADENCE_BUCKETS.map((bucket) => {
+  const freshness = bucket.code === 'C' || bucket.code === 'E' || bucket.code === 'S'
+    ? status.bucket_freshness[bucket.code]
+    : null;
+  const hasRun = Boolean(freshness?.last_run_at);
+  const hasErrors = (freshness?.total_errors ?? 0) > 0;
+  const state =
+    bucket.code === 'RT'
+      ? 'Deferred'
+      : !hasRun
+        ? 'No runs'
+        : hasErrors
+          ? 'Partial failures'
+          : 'OK';
+  return { ...bucket, freshness, state };
+});
+
+const problemRuns = status.pipeline_runs.filter((r) => r.error_count > 0);
+
+function formatRunErrors(run: (typeof status.pipeline_runs)[number]): string {
+  const errors = run.error_summary ?? [];
+  if (errors.length === 0) return `${run.error_count} error(s)`;
+  return errors
+    .slice(0, 3)
+    .map((err) => {
+      const subject = err.protocol ?? 'unknown';
+      return `${subject}: ${err.error ?? 'error'}`;
+    })
+    .join('; ');
+}
 ---
 
 <Base
@@ -141,7 +172,7 @@ const freshnessCounts = status.per_protocol.reduce(
 
     <section class="section">
       <div class="section-head"><span class="section-num">§04</span><h2>Cadence buckets</h2><span class="tag">refresh schedule</span></div>
-      <p class="muted">Every factor in the 184-factor taxonomy is annotated with a refresh cadence. The dashboard's pipeline runs the right script at the right interval; most factors don't need to be re-checked nightly. Bucket counts are derived from the cadence column in the methodology template.</p>
+      <p class="muted">Every factor in the 184-factor taxonomy is annotated with a refresh cadence. Bucket counts are derived from the cadence column in the methodology template; run health below comes from the exported pipeline log.</p>
       <table class="mtable">
         <thead>
           <tr>
@@ -150,16 +181,24 @@ const freshnessCounts = status.per_protocol.reduce(
             <th class="num">Factors</th>
             <th>Refresh model</th>
             <th>SLA</th>
+            <th>Last run</th>
+            <th class="num">30d OK</th>
+            <th class="num">30d Err</th>
+            <th>State</th>
           </tr>
         </thead>
         <tbody>
-          {CADENCE_BUCKETS.map((b) => (
+          {bucketRows.map((b) => (
             <tr>
               <td class="mono"><b>{b.code}</b></td>
               <td>{b.label}</td>
               <td class="num">{b.count}</td>
               <td>{b.refresh}</td>
               <td class="muted">{b.sla}</td>
+              <td class="mono">{b.freshness?.last_run_at ? b.freshness.last_run_at.slice(0, 10) : 'N/A'}</td>
+              <td class="num">{b.freshness?.total_successes ?? 'N/A'}</td>
+              <td class={`num ${(b.freshness?.total_errors ?? 0) > 0 ? 'warn' : ''}`}>{b.freshness?.total_errors ?? 'N/A'}</td>
+              <td><span class={`state state-${b.state.toLowerCase().replaceAll(' ', '-')}`}>{b.state}</span></td>
             </tr>
           ))}
         </tbody>
@@ -175,34 +214,48 @@ const freshnessCounts = status.per_protocol.reduce(
           <p class="muted">Until then, freshness above is computed directly from per-protocol envelopes (graded_at / data_as_of), not from a separate run log.</p>
         </div>
       ) : (
-        <table class="mtable">
-          <thead>
-            <tr>
-              <th>Run at</th>
-              <th>Script</th>
-              <th>Bucket</th>
-              <th class="num">Protocols</th>
-              <th class="num">OK</th>
-              <th class="num">Err</th>
-              <th class="num">Duration</th>
-              <th>Trigger</th>
-            </tr>
-          </thead>
-          <tbody>
-            {status.pipeline_runs.map((r) => (
+        <>
+          {problemRuns.length > 0 && (
+            <div class="run-alert">
+              <p><b>Partial pipeline failures detected.</b></p>
+              <ul>
+                {problemRuns.slice(0, 5).map((r) => (
+                  <li><code>{r.script_name}</code> at <code>{r.run_at.slice(0, 19).replace('T', ' ')}</code>: {formatRunErrors(r)}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <table class="mtable">
+            <thead>
               <tr>
-                <td class="mono">{r.run_at.slice(0, 19).replace('T', ' ')}</td>
-                <td class="mono">{r.script_name}</td>
-                <td class="mono">{r.cadence_bucket ?? 'N/A'}</td>
-                <td class="num">{r.protocols_touched}</td>
-                <td class="num">{r.success_count}</td>
-                <td class="num">{r.error_count}</td>
-                <td class="num">{r.duration_seconds == null ? 'N/A' : `${r.duration_seconds}s`}</td>
-                <td class="muted">{r.triggered_by}</td>
+                <th>Run at</th>
+                <th>Script</th>
+                <th>Bucket</th>
+                <th class="num">Protocols</th>
+                <th class="num">OK</th>
+                <th class="num">Err</th>
+                <th class="num">Duration</th>
+                <th>Errors</th>
+                <th>Trigger</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {status.pipeline_runs.map((r) => (
+                <tr class={r.error_count > 0 ? 'run-error' : ''}>
+                  <td class="mono">{r.run_at.slice(0, 19).replace('T', ' ')}</td>
+                  <td class="mono">{r.script_name}</td>
+                  <td class="mono">{r.cadence_bucket ?? 'N/A'}</td>
+                  <td class="num">{r.protocols_touched}</td>
+                  <td class="num">{r.success_count}</td>
+                  <td class="num">{r.error_count}</td>
+                  <td class="num">{r.duration_seconds == null ? 'N/A' : `${r.duration_seconds}s`}</td>
+                  <td class="muted">{r.error_count > 0 ? formatRunErrors(r) : 'None'}</td>
+                  <td class="muted">{r.triggered_by}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
     </section>
 
@@ -287,6 +340,29 @@ const freshnessCounts = status.per_protocol.reduce(
   }
   .empty-state p:first-child { margin-top: 0; }
   .empty-state p:last-child { margin-bottom: 0; }
+
+  .warn { color: #b91c1c; font-weight: 600; }
+  .state {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--n-200);
+    border-radius: 4px;
+    font-size: var(--t-xs);
+    font-weight: 600;
+  }
+  .state-ok { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
+  .state-partial-failures { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
+  .state-no-runs, .state-deferred { color: var(--n-600); background: var(--n-50); }
+  .run-alert {
+    border: 1px solid #fecaca;
+    background: #fef2f2;
+    border-radius: 4px;
+    padding: var(--s-3);
+    margin-bottom: var(--s-3);
+  }
+  .run-alert p { margin-top: 0; }
+  .run-alert ul { margin-bottom: 0; padding-left: var(--s-4); }
+  .run-error td { background: #fff7f7; }
 
   .policy { padding-left: var(--s-4); }
   .policy li { margin-bottom: 8px; color: var(--n-700); }

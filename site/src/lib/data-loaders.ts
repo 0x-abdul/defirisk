@@ -402,13 +402,24 @@ export function listGradeChanges(): import('./feed-generator').GradeChange[] {
 export interface PipelineRun {
   run_at: string;
   script_name: string;
-  cadence_bucket: 'C' | 'E' | 'S' | null;
+  cadence_bucket: string | null;
   protocols_touched: number;
   fetchers_invoked: string[];
   success_count: number;
   error_count: number;
   duration_seconds: number | null;
   triggered_by: string;
+  error_summary?: { protocol?: string; error?: string }[] | null;
+  notes?: string | null;
+}
+
+export interface BucketFreshness {
+  cadence_bucket: 'C' | 'E' | 'S';
+  last_run_at: string | null;
+  run_count_30: number;
+  total_errors: number;
+  total_successes: number;
+  success_rate_pct: number | null;
 }
 
 export interface ProtocolFreshness {
@@ -438,6 +449,7 @@ export interface StatusSummary {
   // Pipeline runs (Phase 3: populated when status.json is emitted by dump.py)
   pipeline_runs: PipelineRun[];
   pipeline_runs_source: 'live' | 'unwired';
+  bucket_freshness: Record<'C' | 'E' | 'S', BucketFreshness>;
 }
 
 const COVERAGE_TARGET = 57;
@@ -483,18 +495,42 @@ export function getStatusSummary(): StatusSummary {
   const protocolsGraded = perProtocol.filter((p) => p.letter !== null).length;
   const criticalFactorsCovered = factors.filter((f) => f.is_critical).length;
 
-  const statusEnv = readJson('status.json');
-  const liveRuns =
-    statusEnv && typeof statusEnv === 'object'
-      ? ((statusEnv as { data?: { runs?: PipelineRun[] } }).data?.runs ?? [])
-      : null;
+  const emptyBucket = (cadence_bucket: 'C' | 'E' | 'S'): BucketFreshness => ({
+    cadence_bucket,
+    last_run_at: null,
+    run_count_30: 0,
+    total_errors: 0,
+    total_successes: 0,
+    success_rate_pct: null,
+  });
+  const statusEnv = readJson('status.json') as
+    | {
+        generated_at?: string;
+        data_as_of?: string;
+        data?: {
+          runs?: PipelineRun[];
+          bucket_freshness?: Partial<Record<'C' | 'E' | 'S', BucketFreshness>>;
+          meta?: { generated_at?: string; data_as_of?: string };
+        };
+      }
+    | null;
+  const liveRuns = statusEnv?.data?.runs ?? null;
+  const bucketFreshness = {
+    C: statusEnv?.data?.bucket_freshness?.C ?? emptyBucket('C'),
+    E: statusEnv?.data?.bucket_freshness?.E ?? emptyBucket('E'),
+    S: statusEnv?.data?.bucket_freshness?.S ?? emptyBucket('S'),
+  };
+  const generatedAt =
+    statusEnv?.data?.meta?.generated_at
+    ?? statusEnv?.generated_at
+    ?? new Date().toISOString();
 
   return {
     rubric_version: RUBRIC_VERSION,
     rubric_frozen_at: rubric?.frozen_at ?? null,
     build_sha: (import.meta.env.PUBLIC_GIT_SHA as string | undefined) ?? null,
     schema_version: SCHEMA_VERSION,
-    generated_at: new Date().toISOString(),
+    generated_at: generatedAt,
     protocols_target: COVERAGE_TARGET,
     protocols_graded: protocolsGraded,
     protocols_pending: COVERAGE_TARGET - protocolsGraded,
@@ -509,5 +545,6 @@ export function getStatusSummary(): StatusSummary {
     }),
     pipeline_runs: liveRuns ?? [],
     pipeline_runs_source: liveRuns ? 'live' : 'unwired',
+    bucket_freshness: bucketFreshness,
   };
 }
