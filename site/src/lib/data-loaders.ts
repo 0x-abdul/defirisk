@@ -89,6 +89,37 @@ function _getFactorMeta(): FactorMeta[] {
   return _cachedFactorMeta;
 }
 
+function applyComputedGradeFields(
+  detail: ProtocolDetail,
+  gradeContext: Record<string, unknown> = detail.protocol as Record<string, unknown>,
+): ProtocolDetail | null {
+  const factorScores = detail.factor_scores as RawFactorScore[];
+  if (factorScores.length === 0) return null;
+
+  const proto = detail.protocol as Record<string, unknown>;
+  const computed = computeGradeFromFactors(
+    factorScores,
+    _getFactorMeta(),
+    {
+      has_active_incident: gradeContext.has_active_incident as boolean | null | undefined,
+      total_value_secured_usd: gradeContext.total_value_secured_usd as
+        | number
+        | string
+        | null
+        | undefined,
+      launched_at: gradeContext.launched_at as string | null | undefined,
+    },
+  );
+  proto.headline_grade = computed.letter;
+  proto.category_lights = computed.category_lights;
+  proto.risk_score = computed.risk_score;
+  proto.cap_applied = computed.cap_applied;
+  proto.cap_reason = computed.cap_reason;
+  proto.category_severities = computed.category_severities;
+
+  return detail;
+}
+
 // ── List loaders ─────────────────────────────────────────────────────────────
 
 /** All scored protocols. Grade fields are computed fresh from factor_scores;
@@ -96,7 +127,6 @@ function _getFactorMeta(): FactorMeta[] {
 export function listProtocols(): Protocol[] {
   const env = readJson('index.json');
   const arr = unwrapEnvelope<unknown[]>(env, 'protocols') ?? [];
-  const factorMeta = _getFactorMeta();
   const result: Protocol[] = [];
 
   for (const p of arr) {
@@ -105,19 +135,11 @@ export function listProtocols(): Protocol[] {
 
     const detailEnv = readJson(path.join('protocols', `${slug}.json`));
     const detail = unwrapEnvelope<ProtocolDetail>(detailEnv, 'protocol_data');
-    const factorScores = (detail?.factor_scores ?? []) as RawFactorScore[];
-    if (factorScores.length === 0) continue;
+    if (!detail) continue;
 
-    const computed = computeGradeFromFactors(factorScores, factorMeta, {
-      has_active_incident: obj.has_active_incident as boolean | null | undefined,
-      total_value_secured_usd: obj.total_value_secured_usd as
-        | number
-        | string
-        | null
-        | undefined,
-      launched_at: obj.launched_at as string | null | undefined,
-    });
-    obj.headline_grade = computed.letter;
+    const computedDetail = applyComputedGradeFields(detail, obj);
+    if (!computedDetail) continue;
+    obj.headline_grade = (computedDetail.protocol as Record<string, unknown>).headline_grade;
     result.push({ ...obj, id: slug } as Protocol);
   }
 
@@ -162,31 +184,7 @@ export function getProtocolByReviewPath(review: string): ProtocolDetail | null {
   const detail = unwrapEnvelope<ProtocolDetail>(env, 'protocol_data');
   if (!detail) return null;
 
-  const factorScores = detail.factor_scores as RawFactorScore[];
-  if (factorScores.length === 0) return null;
-
-  const proto = detail.protocol as Record<string, unknown>;
-  const computed = computeGradeFromFactors(
-    factorScores,
-    _getFactorMeta(),
-    {
-      has_active_incident: proto.has_active_incident as boolean | null | undefined,
-      total_value_secured_usd: proto.total_value_secured_usd as
-        | number
-        | string
-        | null
-        | undefined,
-      launched_at: proto.launched_at as string | null | undefined,
-    },
-  );
-  proto.headline_grade = computed.letter;
-  proto.category_lights = computed.category_lights;
-  proto.risk_score = computed.risk_score;
-  proto.cap_applied = computed.cap_applied;
-  proto.cap_reason = computed.cap_reason;
-  proto.category_severities = computed.category_severities;
-
-  return detail;
+  return applyComputedGradeFields(detail);
 }
 
 /** All hacks in the historical ledger (lightweight rows; per-hack details via getHack). */
@@ -222,31 +220,7 @@ export function getProtocol(slug: string): ProtocolDetail | null {
   const detail = unwrapEnvelope<ProtocolDetail>(env, 'protocol_data');
   if (!detail) return null;
 
-  const factorScores = detail.factor_scores as RawFactorScore[];
-  if (factorScores.length === 0) return null;
-
-  const proto = detail.protocol as Record<string, unknown>;
-  const computed = computeGradeFromFactors(
-    factorScores,
-    _getFactorMeta(),
-    {
-      has_active_incident: proto.has_active_incident as boolean | null | undefined,
-      total_value_secured_usd: proto.total_value_secured_usd as
-        | number
-        | string
-        | null
-        | undefined,
-      launched_at: proto.launched_at as string | null | undefined,
-    },
-  );
-  proto.headline_grade = computed.letter;
-  proto.category_lights = computed.category_lights;
-  proto.risk_score = computed.risk_score;
-  proto.cap_applied = computed.cap_applied;
-  proto.cap_reason = computed.cap_reason;
-  proto.category_severities = computed.category_severities;
-
-  return detail;
+  return applyComputedGradeFields(detail);
 }
 
 /** Full per-factor blob: methodology + 7-field template + scored protocols
