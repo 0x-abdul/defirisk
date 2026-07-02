@@ -18,7 +18,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { z } from 'astro:content';
+import { z } from 'astro/zod';
 
 import {
   RUBRIC_VERSION,
@@ -38,7 +38,7 @@ import {
   hackSchema,
   hackDetailSchema,
   incidentSchema,
-} from '../content/config';
+} from './content-schemas';
 
 // ── Path resolution ──────────────────────────────────────────────────────────
 
@@ -93,7 +93,7 @@ function applyComputedGradeFields(
   detail: ProtocolDetail,
   gradeContext: Record<string, unknown> = detail.protocol as Record<string, unknown>,
 ): ProtocolDetail | null {
-  const factorScores = detail.factor_scores as RawFactorScore[];
+  const factorScores = detail.factor_scores as unknown as RawFactorScore[];
   if (factorScores.length === 0) return null;
 
   const proto = detail.protocol as Record<string, unknown>;
