@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { execFile, spawn } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -73,6 +74,16 @@ function killWindowsTree(pid) {
   });
 }
 
+function resolvePackageBin(packageName, binName = packageName) {
+  const packageRoot = path.join(SITE_ROOT, 'node_modules', packageName);
+  const packageJson = JSON.parse(readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
+  const bin = typeof packageJson.bin === 'string' ? packageJson.bin : packageJson.bin?.[binName];
+  if (!bin) {
+    throw new Error(`Cannot resolve ${packageName} bin ${binName}`);
+  }
+  return path.join(packageRoot, bin);
+}
+
 async function stopPreview(child) {
   if (!child || child.exitCode !== null) return;
   if (process.platform === 'win32') {
@@ -93,7 +104,7 @@ try {
   if (isLocalURL(baseURL) && !(await isReady(baseURL))) {
     preview = spawn(
       process.execPath,
-      [path.join(SITE_ROOT, 'node_modules', 'astro', 'astro.js'), 'preview', '--port', port],
+      [resolvePackageBin('astro'), 'preview', '--port', port],
       {
         cwd: SITE_ROOT,
         stdio: ['ignore', 'pipe', 'pipe'],
