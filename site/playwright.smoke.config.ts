@@ -29,7 +29,7 @@ export default defineConfig({
   // Only spin up a local server when testing localhost; skip when BASE_URL points elsewhere.
   webServer: !process.env.PLAYWRIGHT_SKIP_WEBSERVER && BASE_URL.startsWith('http://localhost')
     ? {
-        command: 'node ./node_modules/astro/astro.js preview --port 4321',
+        command: 'node ./node_modules/astro/bin/astro.mjs preview --port 4321',
         url: 'http://localhost:4321',
         reuseExistingServer: !process.env.CI,
         timeout: 60_000,
