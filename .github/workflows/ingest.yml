@@ -127,6 +127,7 @@ jobs:
             fi
 
             echo "==> Rebuilding site..."
+            . scripts/ci/use-node-22.sh
             cd site
             export npm_config_cache="/opt/riskdashboard/.npm-cache"
             npm ci --prefer-offline

@@ -100,6 +100,7 @@ jobs:
             fi
 
             echo "==> Rebuilding site..."
+            . scripts/ci/use-node-22.sh
             cd site
             # Keep each build step on its own line: under `set -e` a failing
             # command in an `&&` list does NOT abort the script, so chaining
