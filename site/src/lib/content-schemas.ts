@@ -1,5 +1,5 @@
 /**
- * Content collection schemas: single source of truth for the JSON shapes
+ * Data schemas: single source of truth for the JSON shapes
  * that flow from `data/api/<RUBRIC_VERSION>/` through the build.
  *
  * The actual file reading lives in `site/src/lib/data-loaders.ts` (Node
@@ -7,12 +7,11 @@
  * imported by data-loaders.ts and used to derive TypeScript types via
  * `z.infer<>`; pages import the types via `Protocol`, `Factor`, etc.
  *
- * The `defineCollection` bindings at the bottom keep Astro's content-
- * collection plumbing wired in case a future change wants to switch from
- * the inline loaders to `getCollection()` semantics.
+ * These schemas intentionally live outside `src/content/` so Astro does not
+ * treat them as legacy content collection configuration.
  */
 
-import { defineCollection, z } from 'astro:content';
+import { z } from 'astro/zod';
 
 // ── Protocols ────────────────────────────────────────────────────────────────
 
@@ -47,10 +46,10 @@ export const protocolListSchema = z.object({
 
 /** Full protocol detail from protocols/<slug>.json envelope. */
 export const protocolDetailSchema = z.object({
-  protocol: z.record(z.unknown()), // shape mirrors db/schema.ts protocols
-  deployments: z.array(z.record(z.unknown())).default([]),
-  factor_scores: z.array(z.record(z.unknown())).default([]),
-  grade_history: z.array(z.record(z.unknown())).default([]),
+  protocol: z.record(z.string(), z.unknown()), // shape mirrors db/schema.ts protocols
+  deployments: z.array(z.record(z.string(), z.unknown())).default([]),
+  factor_scores: z.array(z.record(z.string(), z.unknown())).default([]),
+  grade_history: z.array(z.record(z.string(), z.unknown())).default([]),
 });
 
 // ── Factors ──────────────────────────────────────────────────────────────────
@@ -187,11 +186,3 @@ export const incidentSchema = z.object({
   status: z.enum(['open', 'closed']),
 });
 
-// ── Astro content-collection bindings ────────────────────────────────────────
-
-const protocols = defineCollection({ type: 'data', schema: protocolListSchema });
-const factors = defineCollection({ type: 'data', schema: factorListSchema });
-const hacks = defineCollection({ type: 'data', schema: hackSchema });
-const incidents = defineCollection({ type: 'data', schema: incidentSchema });
-
-export const collections = { protocols, factors, hacks, incidents };
