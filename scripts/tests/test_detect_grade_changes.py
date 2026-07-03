@@ -24,11 +24,39 @@ class FakeCursor:
     def fetchone(self):
         return self.fetches.pop(0) if self.fetches else None
 
+    def fetchall(self):
+        return self.fetches.pop(0) if self.fetches else []
+
 
 def test_is_upgrade_uses_grade_order() -> None:
     assert detect.is_upgrade("C", "B") is True
     assert detect.is_upgrade("B", "C") is False
     assert detect.is_upgrade("A", "A") is False
+
+
+def test_find_grade_changes_defaults_to_one_snapshot_date() -> None:
+    cur = FakeCursor(fetches=[[{"protocol_slug": "aave-v3"}]])
+
+    rows = detect.find_grade_changes(
+        cur,
+        snapshot_date="2026-07-03",
+        backfill=False,
+    )
+
+    sql, params = cur.executed[0]
+    assert "AND snapshot_date = %s" in sql
+    assert params == ("2026-07-03",)
+    assert rows == [{"protocol_slug": "aave-v3"}]
+
+
+def test_find_grade_changes_backfill_scans_all_history() -> None:
+    cur = FakeCursor(fetches=[[]])
+
+    detect.find_grade_changes(cur, snapshot_date="2026-07-03", backfill=True)
+
+    sql, params = cur.executed[0]
+    assert "AND snapshot_date = %s" not in sql
+    assert params is None
 
 
 def test_insert_grade_changes_dry_run_does_not_write() -> None:

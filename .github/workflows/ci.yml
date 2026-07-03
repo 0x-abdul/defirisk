@@ -319,6 +319,18 @@ jobs:
             echo "OK: $file is present and documents /openapi.yaml"
           done
 
+  # 8b. Public export boundary
+  public-export-boundary:
+    name: Public export boundary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Assert public API export contains only published cohort data
+        run: node scripts/ci/check-public-export-boundary.mjs
+
   # ── 9. Accessibility (axe-core) ─────────────────────────────────────────────
   a11y-check:
     name: Accessibility check (axe-core)

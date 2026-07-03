@@ -68,20 +68,20 @@ function run(command, args, options) {
   });
 }
 
+function resolvePackageBin(packageName, binName = packageName) {
+  const packageJsonPath = path.join(SITE_ROOT, 'node_modules', packageName, 'package.json');
+  const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+  const bin = typeof pkg.bin === 'string' ? pkg.bin : pkg.bin?.[binName];
+  if (!bin) {
+    throw new Error(`Package ${packageName} does not declare a ${binName} bin.`);
+  }
+  return path.join(path.dirname(packageJsonPath), bin);
+}
+
 function killWindowsTree(pid) {
   return new Promise((resolve) => {
     execFile('taskkill', ['/pid', String(pid), '/T', '/F'], () => resolve());
   });
-}
-
-function resolvePackageBin(packageName, binName = packageName) {
-  const packageRoot = path.join(SITE_ROOT, 'node_modules', packageName);
-  const packageJson = JSON.parse(readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
-  const bin = typeof packageJson.bin === 'string' ? packageJson.bin : packageJson.bin?.[binName];
-  if (!bin) {
-    throw new Error(`Cannot resolve ${packageName} bin ${binName}`);
-  }
-  return path.join(packageRoot, bin);
 }
 
 async function stopPreview(child) {
@@ -118,7 +118,7 @@ try {
   const code = await run(
     process.execPath,
     [
-      path.join(SITE_ROOT, 'node_modules', 'playwright', 'cli.js'),
+      resolvePackageBin('playwright'),
       'test',
       `--config=${config}`,
       ...extraArgs,
