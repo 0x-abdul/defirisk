@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import time
+from datetime import datetime, timezone
 from typing import Any
 
 try:
@@ -96,9 +97,25 @@ def update_pipeline_run(
         pass
 
 
-def find_grade_changes(cur: Any) -> list[dict[str, Any]]:
+def default_snapshot_date() -> str:
+    """Return the UTC date used by compose.py snapshot rows."""
+    return datetime.now(tz=timezone.utc).date().isoformat()
+
+
+def find_grade_changes(
+    cur: Any,
+    *,
+    snapshot_date: str | None,
+    backfill: bool,
+) -> list[dict[str, Any]]:
+    date_filter = ""
+    params: tuple[str, ...] | None = None
+    if not backfill:
+        date_filter = "AND snapshot_date = %s"
+        params = (snapshot_date or default_snapshot_date(),)
+
     cur.execute(
-        """
+        f"""
         WITH ordered AS (
             SELECT
                 pgh.*,
@@ -121,8 +138,10 @@ def find_grade_changes(cur: Any) -> list[dict[str, Any]]:
         FROM ordered
         WHERE previous_grade IS NOT NULL
           AND previous_grade <> grade_letter
+          {date_filter}
         ORDER BY snapshot_date_after ASC, protocol_slug ASC
-        """
+        """,
+        params,
     )
     return cur.fetchall()
 
@@ -166,13 +185,23 @@ def insert_grade_changes(cur: Any, rows: list[dict[str, Any]], dry_run: bool) ->
     return inserted
 
 
-def run(conn_str: str, *, dry_run: bool) -> int:
+def run(
+    conn_str: str,
+    *,
+    dry_run: bool,
+    snapshot_date: str | None,
+    backfill: bool,
+) -> int:
     started = time.monotonic()
     conn = connect(conn_str)
     with conn:
         with conn.cursor(row_factory=dict_row) as cur:
             run_id = None if dry_run else create_pipeline_run(cur)
-            rows = find_grade_changes(cur)
+            rows = find_grade_changes(
+                cur,
+                snapshot_date=snapshot_date,
+                backfill=backfill,
+            )
             inserted = insert_grade_changes(cur, rows, dry_run)
             if not dry_run:
                 update_pipeline_run(
@@ -191,12 +220,30 @@ def run(conn_str: str, *, dry_run: bool) -> int:
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Detect protocol grade changes")
     parser.add_argument("--dry-run", action="store_true", help="Preview without writes")
+    parser.add_argument(
+        "--snapshot-date",
+        default=default_snapshot_date(),
+        help=(
+            "Only detect transitions whose new snapshot has this UTC date "
+            "(default: today). Ignored with --backfill."
+        ),
+    )
+    parser.add_argument(
+        "--backfill",
+        action="store_true",
+        help="Scan all historical snapshots instead of only today's new snapshots.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    return run(get_connection_url(), dry_run=args.dry_run)
+    return run(
+        get_connection_url(),
+        dry_run=args.dry_run,
+        snapshot_date=args.snapshot_date,
+        backfill=args.backfill,
+    )
 
 
 if __name__ == "__main__":
