@@ -9,7 +9,7 @@
  * review link. This check fails that build instead of shipping the mismatch.
  */
 
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,6 +45,7 @@ function main() {
 
   const missingJson = [];
   const missingHtml = [];
+  const invalidHtml = [];
 
   for (const review of reviewDirs) {
     const jsonPath = path.join(unpublishedDir, review, 'index.json');
@@ -57,10 +58,20 @@ function main() {
 
     if (!existsSync(htmlPath)) {
       missingHtml.push(path.relative(REPO_ROOT, htmlPath));
+      continue;
+    }
+
+    const html = readFileSync(htmlPath, 'utf8');
+    if (
+      !html.includes('review-banner')
+      || !html.includes('Pending review')
+      || !html.includes('noindex,nofollow')
+    ) {
+      invalidHtml.push(path.relative(REPO_ROOT, htmlPath));
     }
   }
 
-  if (missingJson.length > 0 || missingHtml.length > 0) {
+  if (missingJson.length > 0 || missingHtml.length > 0 || invalidHtml.length > 0) {
     console.error('[review-artifacts] unpublished review artifact mismatch');
     console.error(`  API root : ${apiRoot}`);
     console.error(`  dist root: ${distRoot}`);
@@ -75,6 +86,12 @@ function main() {
       console.error(`  missing HTML review pages (${missingHtml.length}):`);
       for (const item of missingHtml.slice(0, 10)) console.error(`    - ${item}`);
       if (missingHtml.length > 10) console.error(`    ... ${missingHtml.length - 10} more`);
+    }
+
+    if (invalidHtml.length > 0) {
+      console.error(`  HTML review pages missing private-review markers (${invalidHtml.length}):`);
+      for (const item of invalidHtml.slice(0, 10)) console.error(`    - ${item}`);
+      if (invalidHtml.length > 10) console.error(`    ... ${invalidHtml.length - 10} more`);
     }
 
     console.error('\nRegenerate data/api before running astro build, then rebuild the site.');

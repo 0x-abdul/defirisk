@@ -231,46 +231,47 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
   canonical={canonical}
 >
   <TopBar slot="topbar" />
-  {
-    reviewMode && (
-      <div slot="banner" class="review-banner" role="status">
-        <span class="review-icon" aria-hidden="true">🔍</span>
-        <div class="review-text">
-          <p class="review-lead">
-            <b>Pending review</b>: this assessment is not yet published. You have this private
-            link so your team can check it for factual accuracy before it goes live. The review
-            window is about one week; the exact date is in the message that carried this link.
-          </p>
-          <ul class="review-actions">
-            <li>
-              A number, link, or config is <b>wrong</b>?
-              <a href={correctionHref}>File a Factual Correction</a> with a source.
-            </li>
-            <li>
-              The facts are right but you think the <b>rubric was misapplied</b>?
-              <a href={disputeHref}>File a Grade Dispute</a>.
-            </li>
-          </ul>
-          <p class="review-note">
-            We correct the underlying <b>factor</b>, never the letter directly. The grade
-            recomputes from the corrected evidence. You can also reply on the channel this link
-            came from. Full process:
-            <a href="/contributions/#corrections">Corrections &amp; disputes</a>.
-          </p>
+  <Fragment slot="banner">
+    {
+      reviewMode && (
+        <div class="review-banner" role="status">
+          <span class="review-icon" aria-hidden="true">🔍</span>
+          <div class="review-text">
+            <p class="review-lead">
+              <b>Pending review</b>: this assessment is not yet published. You have this private
+              link so your team can check it for factual accuracy before it goes live. The review
+              window is about one week; the exact date is in the message that carried this link.
+            </p>
+            <ul class="review-actions">
+              <li>
+                A number, link, or config is <b>wrong</b>?
+                <a href={correctionHref}>File a Factual Correction</a> with a source.
+              </li>
+              <li>
+                The facts are right but you think the <b>rubric was misapplied</b>?
+                <a href={disputeHref}>File a Grade Dispute</a>.
+              </li>
+            </ul>
+            <p class="review-note">
+              We correct the underlying <b>factor</b>, never the letter directly. The grade
+              recomputes from the corrected evidence. You can also reply on the channel this link
+              came from. Full process:
+              <a href="/contributions/#corrections">Corrections &amp; disputes</a>.
+            </p>
+          </div>
         </div>
-      </div>
-    )
-  }
-  {
-    activeIncident && (
-      <IncidentBanner
-        slot="banner"
-        variant={activeIncident.severity}
-        headline={activeIncident.headline}
-        dismissKey={`incident-${activeIncident.id}`}
-      />
-    )
-  }
+      )
+    }
+    {
+      activeIncident && (
+        <IncidentBanner
+          variant={activeIncident.severity}
+          headline={activeIncident.headline}
+          dismissKey={`incident-${activeIncident.id}`}
+        />
+      )
+    }
+  </Fragment>
 
   <Breadcrumb
     items={[
