@@ -118,6 +118,9 @@ jobs:
             echo "==> Refreshing continuous metrics..."
             "$PYTHON" scripts/refresh-continuous.py --all
 
+            echo "==> Regenerating API export..."
+            "$PYTHON" scripts/dump.py
+
             echo "==> Committing regenerated public data..."
             git add data/api
             if git diff --cached --quiet; then

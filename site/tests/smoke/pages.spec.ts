@@ -5,7 +5,26 @@
  * structural content. Fast (~2s per page). Does not test axe — that's E-22.
  */
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { test, expect } from '@playwright/test';
+
+const API_VERSION = 'v1.7.0';
+
+function firstReviewEntry(): string | null {
+  const unpublishedRoot = path.resolve(process.cwd(), '..', 'data', 'api', API_VERSION, 'unpublished');
+
+  if (!fs.existsSync(unpublishedRoot)) return null;
+
+  return (
+    fs
+      .readdirSync(unpublishedRoot, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort()[0] ?? null
+  );
+}
 
 test.describe('Core pages — always present', () => {
   test('/ renders with dashboard title', async ({ page }) => {
@@ -122,11 +141,20 @@ test.describe('Protocol-level factor detail page (M3a)', () => {
 });
 
 test.describe('Unpublished review page', () => {
-  // No unpublished fixtures exist in data/api/v1.7.0/unpublished/ at time of writing.
-  // This test asserts that a well-formed but non-existent token returns 404 (or
-  // the site's custom 404 page), proving the route does not 500 on bad tokens.
-  // When a real unpublished fixture is added, extend this suite with a 200-assert.
   const BOGUS_REVIEW = 'test-protocol-deadbeef';
+
+  test('renders a real unpublished review page when review data exists', async ({ page }) => {
+    const review = firstReviewEntry();
+
+    if (!review) {
+      test.skip(true, 'No unpublished review data in this build');
+      return;
+    }
+
+    const res = await page.goto(`/unpublished/${review}/`);
+    expect(res?.status()).toBe(200);
+    await expect(page.locator('.review-banner')).toContainText('Pending review');
+  });
 
   test(`/unpublished/${BOGUS_REVIEW}/ returns 404 for unknown token`, async ({ page }) => {
     const res = await page.goto(`/unpublished/${BOGUS_REVIEW}/`);
