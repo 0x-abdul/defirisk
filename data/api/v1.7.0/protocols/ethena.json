@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,14 +16,14 @@
         "launched_at": "2024-02-19",
         "headline_grade": "B",
         "total_value_secured_usd": 3790619996.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:41Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
-        "risk_score": 14.62,
+        "risk_score": 14.52,
         "category_severities": {
           "1": 6.0606060606060606,
-          "2": 25.757575757575758,
+          "2": 24.637681159420293,
           "3": 17.647058823529413,
           "4": 22.22222222222222,
           "5": 16.666666666666664,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-04-28T13:36:05Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:40Z"
       },
       "deployments": [
         {
@@ -1021,21 +1021,35 @@
         {
           "factor_id": "RD-F-039",
           "deployment_id": null,
-          "score": "not_assessed",
-          "evidence_summary": "No on-chain Governor or proposal executor contract exists. No proposal execution path with delegatecall or arbitrary call. Governance is Snapshot-only off-chain signal; execution is manual multisig signing. No delegatecall-in-proposal risk applies by construction.",
-          "evidence_detail": null,
+          "score": "green",
+          "evidence_summary": "Ethena governance uses forum/Snapshot signaling and manual multisig/admin execution rather than an on-chain proposal executor. No proposal-supplied arbitrary call/delegatecall target path was identified.",
+          "evidence_detail": "Ethena documentation states that fully on-chain governance is not practical or viable at present and links governance to the forum and Snapshot. No verified on-chain proposal executor accepting proposal-supplied arbitrary call/delegatecall targets was identified.",
           "collection_mode": "manual",
-          "collected_at": "2026-04-28T13:58:51Z",
-          "data_as_of": "2026-04-28T13:58:51Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T13:39:24Z",
+          "data_as_of": "2026-07-02T13:39:24Z",
+          "collected_by": "protocol-addition-orchestrator",
           "gap_reason": null,
           "sources": [
             {
-              "source_type": "curator_note",
-              "url": null,
-              "reference": ".research/protocols/ethena/00-data-cache.json",
-              "title": "Data cache: governance.timelock_address null, governance.type snapshot_only",
-              "retrieved_at": "2026-04-28T00:00:00Z"
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance",
+              "reference": "Ethena governance docs: fully on-chain governance is not practical or viable at present; forum and Snapshot links",
+              "title": "Governance | Ethena Docs",
+              "retrieved_at": "2026-07-02T13:39:25Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions",
+              "reference": "Ethena key trust assumptions: DEFAULT_ADMIN_ROLE granted to protocol multisig and sensitive roles documented",
+              "title": "Key Trust Assumptions | Ethena Docs",
+              "retrieved_at": "2026-07-02T13:39:25Z"
+            },
+            {
+              "source_type": "url",
+              "url": "https://snapshot.org/#/ethenagovernance.eth",
+              "reference": "Ethena Snapshot governance space",
+              "title": "Ethena Governance Snapshot Space",
+              "retrieved_at": "2026-07-02T13:39:25Z"
             }
           ]
         },
@@ -4750,6 +4764,21 @@
           "red_category_count": 0,
           "yellow_category_count": 4,
           "gray_on_core_five": false,
+          "risk_score": 14.52,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:41Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "B",
+          "critical_flag_count": 0,
+          "red_category_count": 0,
+          "yellow_category_count": 4,
+          "gray_on_core_five": false,
           "risk_score": 14.62,
           "cap_applied": "none",
           "cap_reason": null,
@@ -4882,10 +4911,10 @@
       ]
     }
   },
-  "risk_score": 14.62,
+  "risk_score": 14.52,
   "category_severities": {
     "1": 6.0606060606060606,
-    "2": 25.757575757575758,
+    "2": 24.637681159420293,
     "3": 17.647058823529413,
     "4": 22.22222222222222,
     "5": 16.666666666666664,

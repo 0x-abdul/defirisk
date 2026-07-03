@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,14 +16,14 @@
         "launched_at": null,
         "headline_grade": "C",
         "total_value_secured_usd": null,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:40Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
-        "risk_score": 30.9,
+        "risk_score": 30.74,
         "category_severities": {
           "1": 20.634920634920633,
-          "2": 34.92063492063492,
+          "2": 33.33333333333333,
           "3": 30.555555555555557,
           "4": 50.0,
           "5": 46.666666666666664,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-05-05T12:41:36Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:39Z"
       },
       "deployments": [
         {
@@ -1168,28 +1168,28 @@
         {
           "factor_id": "RD-F-039",
           "deployment_id": null,
-          "score": "gray",
-          "evidence_summary": "Balancer uses Snapshot off-chain voting with no on-chain governor or executor contract. No proposal calldata is submitted to an on-chain governor for execution. The 6-of-11 multisig enacts Snapshot votes as discrete Safe transactions. v3 internal delegatecall uses fixed immutable addresses (VaultExtension, VaultAdmin), not proposal-supplied targets. No on-chain delegatecall proposal execution attack surface exists.",
-          "evidence_detail": null,
+          "score": "green",
+          "evidence_summary": "Balancer uses Snapshot/off-chain voting with no on-chain governor or proposal executor contract. DAO and OpCo multisigs execute approved actions as discrete Safe transactions. Balancer v3 Vault delegatecalls only to immutable VaultExtension/VaultAdmin addresses, not proposal-supplied targets.",
+          "evidence_detail": "No proposal-supplied arbitrary call/delegatecall executor path was identified. Snapshot/off-chain governance is manually enacted by multisig, while v3 delegatecall targets are fixed immutable internal extension/admin addresses.",
           "collection_mode": "manual",
-          "collected_at": "2026-05-05T12:41:36Z",
-          "data_as_of": "2026-05-05T12:41:36Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T13:39:16Z",
+          "data_as_of": "2026-07-02T13:39:16Z",
+          "collected_by": "protocol-addition-orchestrator",
           "gap_reason": null,
           "sources": [
             {
-              "source_type": "curator_note",
-              "url": null,
-              "reference": "Data cache: governor_address: null — no on-chain governor exists",
-              "title": "Data cache governance section",
-              "retrieved_at": "2026-05-05T00:00:00Z"
+              "source_type": "docs",
+              "url": "https://docs.balancer.fi/concepts/governance/multisig.html",
+              "reference": "Balancer governance docs: multisigs enact BAL holder off-chain votes and use Safe-based execution",
+              "title": "Balancer Multisig",
+              "retrieved_at": "2026-07-02T13:39:16Z"
             },
             {
               "source_type": "docs",
               "url": "https://docs.balancer.fi/developer-reference/contracts/vault-api.html",
-              "reference": "v3 Vault API — delegatecall to fixed immutable VaultExtension/VaultAdmin addresses",
+              "reference": "Balancer v3 Vault API: VaultExtension/VaultAdmin are fixed governance-callable components",
               "title": "Balancer v3 Vault API",
-              "retrieved_at": "2026-05-05T00:00:00Z"
+              "retrieved_at": "2026-07-02T13:39:16Z"
             }
           ]
         },
@@ -5090,6 +5090,21 @@
           "red_category_count": 1,
           "yellow_category_count": 5,
           "gray_on_core_five": false,
+          "risk_score": 30.74,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:40Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "C",
+          "critical_flag_count": 1,
+          "red_category_count": 1,
+          "yellow_category_count": 5,
+          "gray_on_core_five": false,
           "risk_score": 30.9,
           "cap_applied": "none",
           "cap_reason": null,
@@ -5207,10 +5222,10 @@
       ]
     }
   },
-  "risk_score": 30.9,
+  "risk_score": 30.74,
   "category_severities": {
     "1": 20.634920634920633,
-    "2": 34.92063492063492,
+    "2": 33.33333333333333,
     "3": 30.555555555555557,
     "4": 50.0,
     "5": 46.666666666666664,

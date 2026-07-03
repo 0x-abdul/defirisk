@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": "2021-05-12",
         "headline_grade": "D",
         "total_value_secured_usd": 1699470906.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:44Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-04-27T05:38:08Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:44Z"
       },
       "deployments": [
         {
@@ -973,27 +973,34 @@
           "factor_id": "RD-F-039",
           "deployment_id": null,
           "score": "red",
-          "evidence_summary": "GovernorTimelock executeProposals uses call() on proposal-supplied target with no on-chain target allowlist. Any contract can be targeted with arbitrary calldata after 1-day delay. Proposer gated to daoMultisig but no target restriction.",
-          "evidence_detail": "The GovernorTimelock at 0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b uses low-level call() in its executeProposals function with no enumerated allowlist of permitted target contracts. This is the Beanstalk-class unconstrained governance executor pattern. The 1-day timelock + securityAdmin canceller provide partial mitigation but do not eliminate the risk: a compromised 4-of-7 daoMultisig can queue a malicious proposal to drain protocol funds if the protocol's contracts allow such calls.",
-          "collection_mode": "programmatic",
-          "collected_at": "2026-04-27T05:38:08Z",
-          "data_as_of": "2026-04-27T05:38:08Z",
-          "collected_by": "m3a-orchestrator",
+          "evidence_summary": "GovernorTimelock executes proposal-supplied target/calldata via call() with no strict target allowlist; executor can reach MapleTreasury/admin surfaces.",
+          "evidence_detail": "GovernorTimelock executeProposals executes proposal-supplied contract targets/calldata via call() with no strict target allowlist verified. Red remains under calibration because the executor can reach MapleTreasury/admin surfaces, including MapleTreasury reclaimERC20/pull-funds style paths and broad governor-permissioned protocol actions/upgrades. Only a 1-day delay/window and multisig proposer/executor/canceller roles mitigate. Current packet/address-registry context identifies daoMultisig as 4-of-7, securityAdmin as 3-of-6, and operationalAdmin as 3-of-5.",
+          "collection_mode": "manual",
+          "collected_at": "2026-07-02T17:09:52Z",
+          "data_as_of": "2026-07-02T17:09:52Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
           "gap_reason": null,
           "sources": [
             {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x2eFFf88747EB5a3FF00d4d8d0f0800E306C0426b#code",
-              "reference": "GovernorTimelock source code: executeProposals uses low-level call() with no target allowlist",
-              "title": null,
-              "retrieved_at": "2026-04-27T00:00:00Z"
+              "source_type": "docs",
+              "url": "https://docs.maple.finance/technical-resources/singletons/governor-timelock",
+              "reference": "Maple GovernorTimelock singleton docs",
+              "title": "Governor Timelock",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             },
             {
-              "source_type": "audit_report",
-              "url": "https://github.com/maple-labs/maple-core-v2/blob/main/audits/2025-sept-governor-timelock/0xMacro-Maple-Finance-timelock-Sept-2025.pdf",
-              "reference": "0xMacro GovernorTimelock audit Sept 2025 â€” does not resolve target allowlist gap",
-              "title": null,
-              "retrieved_at": "2026-04-27T00:00:00Z"
+              "source_type": "github",
+              "url": "https://github.com/maple-labs/address-registry/blob/main/MapleAddressRegistryETH.md",
+              "reference": "Maple address registry roles including daoMultisig/securityAdmin/operationalAdmin",
+              "title": "MapleAddressRegistryETH.md",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.maple.finance/technical-resources/singletons/maple-treasury",
+              "reference": "MapleTreasury singleton docs",
+              "title": "Maple Treasury",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -4439,6 +4446,21 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "D",
+          "critical_flag_count": 2,
+          "red_category_count": 0,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
+          "risk_score": 24.79,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:44Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "D",
           "critical_flag_count": 2,

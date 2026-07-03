@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,14 +16,14 @@
         "launched_at": "2022-10-13",
         "headline_grade": "F",
         "total_value_secured_usd": 189311617.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:46Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
-        "risk_score": 38.34,
+        "risk_score": 38.12,
         "category_severities": {
           "1": 37.878787878787875,
-          "2": 39.58333333333333,
+          "2": 37.254901960784316,
           "3": 27.083333333333332,
           "4": 24.242424242424242,
           "5": 17.77777777777778,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-05-16T11:12:56Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:46Z"
       },
       "deployments": [
         {
@@ -1126,21 +1126,21 @@
         {
           "factor_id": "RD-F-039",
           "deployment_id": null,
-          "score": "gray",
-          "evidence_summary": "BeraVote governor contract address not located in any accessible source. No automated on-chain proposal execution confirmed — proposals pass to Leavitt Innovations LLC for manual execution. Cannot assess delegatecall/call path in proposal execution without governor contract source.",
-          "evidence_detail": null,
+          "score": "green",
+          "evidence_summary": "No automated arbitrary proposal executor is verified; BeraVote-approved proposals are implemented manually by Leavitt Innovations, LLC.",
+          "evidence_detail": "Dolomite governance documentation states BeraVote-approved proposals are implemented by Leavitt Innovations, LLC. No automated proposal-supplied arbitrary call/delegatecall executor was verified. Manual/operator execution belongs to admin-risk factors, not RD-F-039.",
           "collection_mode": "manual",
-          "collected_at": "2026-05-16T11:12:56Z",
-          "data_as_of": "2026-05-16T11:12:56Z",
-          "collected_by": "m3a-orchestrator",
-          "gap_reason": "protocol_opacity",
+          "collected_at": "2026-07-02T17:09:55Z",
+          "data_as_of": "2026-07-02T17:09:55Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
+          "gap_reason": null,
           "sources": [
             {
               "source_type": "docs",
               "url": "https://docs.dolomite.io/dolomite-governance",
-              "reference": "docs.dolomite.io/dolomite-governance — Leavitt Innovations executes passed proposals manually",
-              "title": "Dolomite Governance — human execution model",
-              "retrieved_at": "2026-05-16T14:00:00Z"
+              "reference": "Dolomite governance docs: BeraVote proposals implemented by Leavitt Innovations, LLC",
+              "title": "Dolomite Governance",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -4876,6 +4876,21 @@
           "red_category_count": 0,
           "yellow_category_count": 7,
           "gray_on_core_five": false,
+          "risk_score": 38.12,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:46Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "F",
+          "critical_flag_count": 4,
+          "red_category_count": 0,
+          "yellow_category_count": 7,
+          "gray_on_core_five": false,
           "risk_score": 38.34,
           "cap_applied": "none",
           "cap_reason": null,
@@ -4948,10 +4963,10 @@
       ]
     }
   },
-  "risk_score": 38.34,
+  "risk_score": 38.12,
   "category_severities": {
     "1": 37.878787878787875,
-    "2": 39.58333333333333,
+    "2": 37.254901960784316,
     "3": 27.083333333333332,
     "4": 24.242424242424242,
     "5": 17.77777777777778,
