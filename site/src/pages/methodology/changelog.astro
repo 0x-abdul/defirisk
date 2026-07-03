@@ -5,6 +5,7 @@ import { RUBRIC_VERSION } from '../../lib/rubric';
 
 const toc = [
   { id: 'v1-7-0', n: `${RUBRIC_VERSION} current` },
+  { id: 'v1-7-0-rd-f-039', n: 'RD-F-039 recalibration' },
   { id: 'v1-6-0', n: 'v1.6.0 (superseded)' },
   { id: 'ds-v1-1', n: 'Design system v1.1' },
   { id: 'v1-5-0', n: 'v1.5.0' },
@@ -83,6 +84,28 @@ const toc = [
       folder is archived for rollback and version-comparison. New envelope fields:
       <code>risk_score</code>, <code>category_severities</code>, <code>cap_applied</code>,
       <code>cap_reason</code>.
+    </li>
+  </ul>
+
+  <VersionMarker id="v1-7-0-rd-f-039" version="v1.7.0 patch" date="2026-07-03">
+    RD-F-039 proposal execution recalibration
+  </VersionMarker>
+  <ul>
+    <li>
+      <strong>Recalibrated</strong> RD-F-039 application for governance proposal execution
+      paths that use <code>call</code> without executor-storage <code>delegatecall</code>.
+      Unrestricted proposal-supplied calls remain risk-bearing, but they are no longer treated
+      as equivalent to arbitrary-code execution in the executor's own storage.
+    </li>
+    <li>
+      <strong>Applied</strong> the decision to the public v1.7.0 cohort only: Balancer,
+      Ethena, Venus Protocol, JustLend DAO, Maple Finance, deBridge, Dolomite, Wormhole,
+      and Stargate Finance.
+    </li>
+    <li>
+      <strong>API impact:</strong> no schema, route, envelope, or rubric-version change.
+      The public API remains <code>v1.7.0</code>; affected protocol pages and the
+      RD-F-039 factor page are regenerated from the public DB export.
     </li>
   </ul>
 
