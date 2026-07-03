@@ -99,6 +99,41 @@ jobs:
               git reset --hard origin/main
             fi
 
+            echo "==> Regenerating API export..."
+            if [ -f .env ]; then
+              set -a
+              . ./.env
+              set +a
+            else
+              echo "Missing .env on VPS; cannot regenerate data/api"
+              exit 1
+            fi
+
+            if [ -z "${DATABASE_URL:-}" ] && [ -n "${LOCAL_DATABASE_URL:-}" ]; then
+              export DATABASE_URL="$LOCAL_DATABASE_URL"
+            fi
+
+            if [ -z "${DATABASE_URL:-}" ]; then
+              echo "DATABASE_URL/LOCAL_DATABASE_URL is required to regenerate data/api"
+              exit 1
+            fi
+
+            PYTHON="python3"
+            if [ -x venv/bin/python ]; then
+              PYTHON="venv/bin/python"
+            fi
+
+            "$PYTHON" - << 'PY'
+          import importlib.util
+          import subprocess
+          import sys
+
+          if importlib.util.find_spec("psycopg") is None:
+              subprocess.check_call([sys.executable, "-m", "pip", "install", "psycopg[binary]"])
+          PY
+
+            "$PYTHON" scripts/dump.py
+
             echo "==> Rebuilding site..."
             . scripts/ci/use-node-22.sh
             cd site
