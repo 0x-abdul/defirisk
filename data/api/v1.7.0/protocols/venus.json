@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": "2020-11-01",
         "headline_grade": "D",
         "total_value_secured_usd": 1261745749.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:42Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-04-28T18:30:49Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:42Z"
       },
       "deployments": [
         {
@@ -1141,20 +1141,41 @@
           "factor_id": "RD-F-039",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Timelock.sol executeTransaction uses call (not delegatecall): target.call.value(value)(callData). No target allowlist enforced. Any address can be called if a VIP passes. The call pattern (not delegatecall) means execution context is the target contract's storage, limiting self-referential damage. Combined with the 1-hour Critical VIP window and guardian cancel capability, assessed as yellow. Not red because delegatecall is the catastrophic variant (Beanstalk class).",
-          "evidence_detail": null,
+          "evidence_summary": "Governor Bravo routes proposal-supplied targets, values, signatures, and calldata to route-specific timelocks; Timelock executes target.call.value(value)(callData), not delegatecall, with no target allowlist.",
+          "evidence_detail": "Venus Governor Bravo supports NORMAL, FASTTRACK, and CRITICAL proposal routes and passes proposal-supplied target/value/signature/calldata arrays to route-specific timelocks. Timelock.executeTransaction uses target.call.value(value)(callData) and does not enforce a target allowlist. Critical VIPs have a short path documented as 6h voting period plus 1h timelock delay. Safeguards include XVS Vault checkpointed voting power, 1.5M XVS quorum, bounded proposal thresholds, max 10 actions, route-specific timelocks, and guardian/proposer/threshold-drop cancellation before execution. Yellow is retained: arbitrary call/no allowlist plus 1h Critical path is material, but available evidence does not prove delegatecall execution, a direct Critical-VIP full-drain path, or a malicious proposal-executor attack/near-miss. Unsupported 2021 governance-attack citation is rejected; Chainalysis/Hexagate describes a 2025 social-engineering incident and governance recovery action, not a 2021 proposal-executor cancellation.",
           "collection_mode": "manual",
-          "collected_at": "2026-04-28T18:30:49Z",
-          "data_as_of": "2026-04-28T18:30:49Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T17:09:48Z",
+          "data_as_of": "2026-07-02T17:09:48Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
           "gap_reason": null,
           "sources": [
             {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x213c446ec11e45b15a6E29C1C1b402B8897f606d",
+              "reference": "BscScan CriticalTimelock 0x213c446ec11e45b15a6E29C1C1b402B8897f606d",
+              "title": "CriticalTimelock",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/governance/governance-process",
+              "reference": "Venus governance proposal route timing docs: Normal/Fast Track/Critical VIP timing",
+              "title": "Venus Governance Process",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
               "source_type": "github",
-              "url": "https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/Timelock.sol",
-              "reference": "Timelock.sol executeTransaction",
-              "title": "Timelock.sol — target.call.value(value)(callData); no allowlist; call not delegatecall",
-              "retrieved_at": "2026-04-28T00:00:00Z"
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/GovernorBravoDelegate.sol",
+              "reference": "Venus GovernorBravoDelegate.sol proposal route and queue/execute payload handling",
+              "title": "GovernorBravoDelegate.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/Timelock.sol",
+              "reference": "Venus Timelock.sol executeTransaction uses target.call.value(value)(callData)",
+              "title": "Timelock.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -5094,6 +5115,21 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "D",
+          "critical_flag_count": 2,
+          "red_category_count": 1,
+          "yellow_category_count": 8,
+          "gray_on_core_five": false,
+          "risk_score": 38.28,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:42Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "D",
           "critical_flag_count": 2,

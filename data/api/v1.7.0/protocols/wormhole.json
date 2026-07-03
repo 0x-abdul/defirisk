@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,14 +16,14 @@
         "launched_at": "2021-08-04",
         "headline_grade": "B",
         "total_value_secured_usd": 4300000.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:47Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
-        "risk_score": 14.28,
+        "risk_score": 17.64,
         "category_severities": {
           "1": 13.636363636363635,
-          "2": 0.0,
+          "2": 33.33333333333333,
           "3": 0.0,
           "4": 22.22222222222222,
           "5": 0.0,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-04-26T15:54:25Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:47Z"
       },
       "deployments": [
         {
@@ -888,21 +888,35 @@
         {
           "factor_id": "RD-F-039",
           "deployment_id": null,
-          "score": "gray",
-          "evidence_summary": "`delegatecall`/`call` in proposal execution, no allowlist | MultiGov `SpokeMessageExecutor` → `SpokeAirlock` forwards calldata to target addresses in proposal payloads. The architecture uses `.call()` (not `delegatecall`) according to standard OZ Governor pattern. No explicit target allowlist confirmed in public docs; MultiGov has been audited by Cyfrin (Oct 2024, Feb 2025), Sherlock (Mar 2025), Sec3/Zellic (Feb 2025) without publicly reported critical allowlist-bypass findings. Cannot fully ...",
-          "evidence_detail": null,
+          "score": "yellow",
+          "evidence_summary": "MultiGov supports arbitrary proposal target/value/calldata execution via Governor/Timelock and spoke executors; no strict target allowlist was verified.",
+          "evidence_detail": "Wormhole MultiGov uses OZ Governor/Timelock-style hub call arrays and spoke executors that forward proposal target/value/calldata. No delegatecall is shown in the proposal path, but no strict target allowlist was verified. The surface is mitigated by timelock, checkpointing, quorum/threshold controls, Wormhole verification, and proposal extension.",
           "collection_mode": "manual",
-          "collected_at": "2026-04-28T01:38:43Z",
-          "data_as_of": "2026-04-28T01:38:43Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T17:09:57Z",
+          "data_as_of": "2026-07-02T17:09:57Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
           "gap_reason": null,
           "sources": [
             {
-              "source_type": "curator_note",
-              "url": null,
-              "reference": "Extracted from 02-governance-admin.md — RD-F-039; no URL cited",
-              "title": null,
-              "retrieved_at": "2026-04-28T00:00:00Z"
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/HubGovernor.sol",
+              "reference": "HubGovernor.sol proposal execution arrays",
+              "title": "HubGovernor.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/multigov/concepts/architecture/",
+              "reference": "Wormhole MultiGov architecture docs describe hub governor/timelock and spoke execution",
+              "title": "MultiGov Architecture",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/SpokeMessageExecutor.sol",
+              "reference": "SpokeMessageExecutor.sol forwards target/value/calldata for spoke execution",
+              "title": "SpokeMessageExecutor.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -4024,6 +4038,21 @@
           "letter": "B",
           "critical_flag_count": 0,
           "red_category_count": 0,
+          "yellow_category_count": 3,
+          "gray_on_core_five": true,
+          "risk_score": 17.64,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:47Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "B",
+          "critical_flag_count": 0,
+          "red_category_count": 0,
           "yellow_category_count": 2,
           "gray_on_core_five": true,
           "risk_score": 14.28,
@@ -4188,10 +4217,10 @@
       ]
     }
   },
-  "risk_score": 14.28,
+  "risk_score": 17.64,
   "category_severities": {
     "1": 13.636363636363635,
-    "2": 0.0,
+    "2": 33.33333333333333,
     "3": 0.0,
     "4": 22.22222222222222,
     "5": 0.0,

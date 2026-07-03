@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,14 +16,14 @@
         "launched_at": "2022-02-17",
         "headline_grade": "C",
         "total_value_secured_usd": 200000000.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:45Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
-        "risk_score": 26.85,
+        "risk_score": 26.65,
         "category_severities": {
           "1": 17.46031746031746,
-          "2": 31.25,
+          "2": 29.411764705882355,
           "3": 8.333333333333332,
           "4": 0.0,
           "5": 0.0,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-04-26T22:36:10Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:45Z"
       },
       "deployments": [
         {
@@ -1063,21 +1063,28 @@
         {
           "factor_id": "RD-F-039",
           "deployment_id": null,
-          "score": "gray",
-          "evidence_summary": "No on-chain Governor or proposal executor. delegatecall-in-proposal attack surface not present.",
-          "evidence_detail": null,
+          "score": "green",
+          "evidence_summary": "No current on-chain arbitrary proposal executor is identified; DAO staking/on-chain proposals are described as upcoming and current protocol control is manual multisig execution.",
+          "evidence_detail": "deBridge DAO staking/on-chain proposals are described as upcoming. Current protocol control is manual multisig execution, so the RD-F-039 proposal-supplied call/delegatecall surface is absent. Multisig custody/admin execution risk belongs to adjacent admin-key and timelock factors, not this proposal-executor factor.",
           "collection_mode": "manual",
-          "collected_at": "2026-04-28T01:27:58Z",
-          "data_as_of": "2026-04-28T01:27:58Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T17:09:53Z",
+          "data_as_of": "2026-07-02T17:09:53Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
           "gap_reason": null,
           "sources": [
             {
-              "source_type": "curator_note",
-              "url": null,
-              "reference": "Gray — insufficient public evidence found; on-chain search and docs reviewed, no positive signal.",
-              "title": null,
-              "retrieved_at": "2026-04-28T01:27:59Z"
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/multisig-evm-transactions",
+              "reference": "deBridge multisig-evm-transactions repository documents manual multisig transaction execution workflow",
+              "title": "multisig-evm-transactions",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://debridge.com/support/how-does-dao-staking-work/",
+              "reference": "deBridge DAO staking support page describes DAO staking/proposals as upcoming",
+              "title": "How does DAO staking work?",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -4568,6 +4575,21 @@
           "red_category_count": 1,
           "yellow_category_count": 3,
           "gray_on_core_five": false,
+          "risk_score": 26.65,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:45Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
+        {
+          "letter": "C",
+          "critical_flag_count": 1,
+          "red_category_count": 1,
+          "yellow_category_count": 3,
+          "gray_on_core_five": false,
           "risk_score": 26.85,
           "cap_applied": "none",
           "cap_reason": null,
@@ -4745,10 +4767,10 @@
       ]
     }
   },
-  "risk_score": 26.85,
+  "risk_score": 26.65,
   "category_severities": {
     "1": 17.46031746031746,
-    "2": 31.25,
+    "2": 29.411764705882355,
     "3": 8.333333333333332,
     "4": 0.0,
     "5": 0.0,

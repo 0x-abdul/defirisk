@@ -1,7 +1,7 @@
 {
   "rubric_version": "v1.7.0",
-  "data_as_of": "2026-05-17T15:29:57Z",
-  "generated_at": "2026-06-12T08:25:02Z",
+  "data_as_of": "2026-07-03T10:12:48Z",
+  "generated_at": "2026-07-03T10:15:06Z",
   "data": {
     "protocol_data": {
       "protocol": {
@@ -16,7 +16,7 @@
         "launched_at": "2020-12-07",
         "headline_grade": "C",
         "total_value_secured_usd": 3586096828.0,
-        "graded_at": "2026-06-12T08:20:55Z",
+        "graded_at": "2026-07-03T10:12:43Z",
         "rubric_version": "v1.7.0",
         "status": "live",
         "has_active_incident": false,
@@ -40,7 +40,7 @@
         "cap_reason": null,
         "is_published": true,
         "created_at": "2026-05-17T10:25:32Z",
-        "updated_at": "2026-06-12T08:20:55Z"
+        "updated_at": "2026-07-03T10:12:43Z"
       },
       "deployments": [
         {
@@ -973,27 +973,41 @@
           "factor_id": "RD-F-039",
           "deployment_id": null,
           "score": "yellow",
-          "evidence_summary": "Timelock executes proposals via target.call() (not delegatecall). GovernorBravoDelegator fallback uses delegatecall internally for routing to implementation — this is the proxy mechanism, not proposal execution. No target allowlist exists: proposals can target any address. Standard Compound-Bravo posture. Risk is mitigated by 600M WJST quorum requirement but not eliminated. Scored yellow not red because call (not delegatecall) limits blast radius to value transfer / external call, not Timelock storage corruption.",
-          "evidence_detail": null,
+          "evidence_summary": "GovernorBravo proposals can carry arbitrary targets/values/calldata and Timelock executes target.call.value(value)(callData) with no target allowlist; safeguards keep this yellow, not red.",
+          "evidence_detail": "GovernorBravoDelegator TEqiF5JbhDPD77yjEfnEMncGRZNDt2uogD queues proposal-supplied targets, values, signatures, and calldatas. Timelock TRWNvb15NmfNKNLhQpxefFz7cNjrYjEw7x executes target.call.value(value)(callData) and no target allowlist was verified. Yellow, not red: execution is plain call, not delegatecall, constrained by prior-block WJST voting, 200M JST proposal threshold, 600M JST quorum, roughly 3-day vote, 48h Timelock, and cancel path; no one-proposal full user-principal drain path is confirmed. CToken._reduceReserves is a reserve-only path, not a direct drain of supplied user principal.",
           "collection_mode": "manual",
-          "collected_at": "2026-05-17T10:25:32Z",
-          "data_as_of": "2026-05-17T10:25:32Z",
-          "collected_by": "m3a-orchestrator",
+          "collected_at": "2026-07-02T17:09:50Z",
+          "data_as_of": "2026-07-02T17:09:50Z",
+          "collected_by": "codex-rd-f-039-final-2026-07-02",
           "gap_reason": null,
           "sources": [
             {
               "source_type": "github",
-              "url": "https://raw.githubusercontent.com/justlend/justlend-protocol/main/contracts/Timelock.sol",
-              "reference": "Timelock.sol: (bool success, bytes memory returnData) = target.call.value(value)(callData) — uses call not delegatecall. No target allowlist in executeTransaction.",
-              "title": "JustLend Timelock.sol — executeTransaction uses call",
-              "retrieved_at": "2026-05-17T00:00:00Z"
+              "url": "https://raw.githubusercontent.com/justlend/justlend-protocol/main/contracts/CToken.sol",
+              "reference": "JustLend CToken.sol _reduceReserves reserve accounting path",
+              "title": "CToken.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             },
             {
               "source_type": "github",
-              "url": "https://github.com/justlend/justlend-protocol/blob/main/contracts/Governance/Bravo/GovernorBravoInterfaces.sol",
-              "reference": "GovernorBravoInterfaces.sol: Proposal struct contains address[] targets, uint[] values, string[] signatures, bytes[] calldatas — no allowlist on targets field.",
-              "title": "JustLend GovernorBravoInterfaces.sol — no target allowlist",
-              "retrieved_at": "2026-05-17T00:00:00Z"
+              "url": "https://raw.githubusercontent.com/justlend/justlend-protocol/main/contracts/Timelock.sol",
+              "reference": "JustLend Timelock.sol executeTransaction call path",
+              "title": "Timelock.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/justlend/justlend-protocol/main/contracts/Governance/Bravo/GovernorBravoDelegate.sol",
+              "reference": "JustLend GovernorBravoDelegate.sol proposal target/value/calldata handling",
+              "title": "GovernorBravoDelegate.sol",
+              "retrieved_at": "2026-07-02T00:00:00Z"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.justlend.org/developers/supply_and_borrow_market/governance/",
+              "reference": "JustLend governance docs threshold/quorum/voting/timelock parameters",
+              "title": "JustLend Governance",
+              "retrieved_at": "2026-07-02T00:00:00Z"
             }
           ]
         },
@@ -4618,6 +4632,21 @@
         }
       ],
       "grade_history": [
+        {
+          "letter": "C",
+          "critical_flag_count": 1,
+          "red_category_count": 2,
+          "yellow_category_count": 2,
+          "gray_on_core_five": false,
+          "risk_score": 31.14,
+          "cap_applied": "none",
+          "cap_reason": null,
+          "graded_at": "2026-07-03T10:12:43Z",
+          "triggered_by": "compose.py",
+          "notes": null,
+          "deployment_id": null,
+          "rubric_version": "v1.7.0"
+        },
         {
           "letter": "C",
           "critical_flag_count": 1,
