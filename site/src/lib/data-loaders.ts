@@ -44,7 +44,22 @@ import {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_ROOT = path.resolve(__dirname, '../../../data/api', RUBRIC_VERSION);
+
+function resolveDataRoot(): string {
+  if (process.env.DEFIRISK_API_ROOT) {
+    return path.resolve(process.env.DEFIRISK_API_ROOT);
+  }
+
+  const candidates = [
+    path.resolve(process.cwd(), '..', 'data', 'api', RUBRIC_VERSION),
+    path.resolve(__dirname, '../../../data/api', RUBRIC_VERSION),
+    path.resolve(__dirname, '../../../../data/api', RUBRIC_VERSION),
+  ];
+
+  return candidates.find((candidate) => existsSync(candidate)) ?? candidates[0];
+}
+
+const DATA_ROOT = resolveDataRoot();
 
 function readJson(relpath: string): unknown {
   const filepath = path.join(DATA_ROOT, relpath);

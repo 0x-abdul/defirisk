@@ -31,6 +31,8 @@ import {
   getProtocolByReviewPath,
 } from '../../lib/data-loaders';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   return listUnpublishedReviewEntries().map((review) => ({ params: { review } }));
 }
