@@ -20,6 +20,40 @@ except ImportError:  # pragma: no cover - CLI dependency guard
 SCRIPT_NAME = "prune-history.py"
 
 
+def has_scope_columns(cur: Any, table: str) -> bool:
+    cur.execute(
+        """
+        SELECT count(*) AS count
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = %s
+          AND column_name IN ('scope_level', 'family_slug', 'surface_id')
+        """,
+        (table,),
+    )
+    row = cur.fetchone()
+    count = row["count"] if isinstance(row, dict) else row[0]
+    return int(count) == 3
+
+
+def protocol_partition(cur: Any) -> str:
+    if not has_scope_columns(cur, "protocol_grade_history"):
+        return "protocol_slug"
+    return (
+        "protocol_slug, scope_level, COALESCE(family_slug, ''), "
+        "COALESCE(surface_id::text, '')"
+    )
+
+
+def factor_partition(cur: Any) -> str:
+    if not has_scope_columns(cur, "factor_score_history"):
+        return "protocol_slug, factor_id"
+    return (
+        "protocol_slug, scope_level, COALESCE(family_slug, ''), "
+        "COALESCE(surface_id::text, ''), COALESCE(deployment_id::text, ''), factor_id"
+    )
+
+
 def get_connection_url() -> str:
     url = os.environ.get("DATABASE_URL") or os.environ.get("LOCAL_DATABASE_URL")
     if not url:
@@ -99,12 +133,13 @@ def update_pipeline_run(
 
 
 def count_protocol_rows_to_prune(cur: Any) -> int:
+    partition = protocol_partition(cur)
     cur.execute(
-        """
+        f"""
         WITH ranked AS (
             SELECT id,
                    ROW_NUMBER() OVER (
-                       PARTITION BY protocol_slug, date_trunc('month', snapshot_date)
+                       PARTITION BY {partition}, date_trunc('month', snapshot_date)
                        ORDER BY snapshot_date ASC, snapshot_at ASC
                    ) AS rn
             FROM protocol_grade_history
@@ -123,12 +158,13 @@ def count_protocol_rows_to_prune(cur: Any) -> int:
 
 
 def count_factor_rows_to_prune(cur: Any) -> int:
+    partition = factor_partition(cur)
     cur.execute(
-        """
+        f"""
         WITH ranked AS (
             SELECT id,
                    ROW_NUMBER() OVER (
-                       PARTITION BY protocol_slug, factor_id,
+                       PARTITION BY {partition},
                                     date_trunc('month', snapshot_date)
                        ORDER BY snapshot_date ASC, snapshot_at ASC
                    ) AS rn
@@ -148,12 +184,13 @@ def count_factor_rows_to_prune(cur: Any) -> int:
 
 
 def prune_protocol_rows(cur: Any) -> int:
+    partition = protocol_partition(cur)
     cur.execute(
-        """
+        f"""
         WITH ranked AS (
             SELECT id,
                    ROW_NUMBER() OVER (
-                       PARTITION BY protocol_slug, date_trunc('month', snapshot_date)
+                       PARTITION BY {partition}, date_trunc('month', snapshot_date)
                        ORDER BY snapshot_date ASC, snapshot_at ASC
                    ) AS rn
             FROM protocol_grade_history
@@ -175,12 +212,13 @@ def prune_protocol_rows(cur: Any) -> int:
 
 
 def prune_factor_rows(cur: Any) -> int:
+    partition = factor_partition(cur)
     cur.execute(
-        """
+        f"""
         WITH ranked AS (
             SELECT id,
                    ROW_NUMBER() OVER (
-                       PARTITION BY protocol_slug, factor_id,
+                       PARTITION BY {partition},
                                     date_trunc('month', snapshot_date)
                        ORDER BY snapshot_date ASC, snapshot_at ASC
                    ) AS rn

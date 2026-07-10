@@ -33,6 +33,18 @@ class FakeConn:
         return iter(())
 
 
+class PartitionCursor:
+    def __init__(self, count: int) -> None:
+        self.count = count
+        self.executed: list[tuple[str, tuple | None]] = []
+
+    def execute(self, sql, params=None) -> None:
+        self.executed.append((sql, params))
+
+    def fetchone(self):
+        return {"count": self.count}
+
+
 def test_run_dry_run_counts_without_deleting(monkeypatch) -> None:
     conn = FakeConn()
     calls: list[str] = []
@@ -68,3 +80,11 @@ def test_run_prunes_and_updates_pipeline_run(monkeypatch) -> None:
     assert calls[2][2]["deleted_protocol_rows"] == 2
     assert calls[2][2]["deleted_factor_rows"] == 3
     assert conn.closed is True
+
+
+def test_scope_partitions_keep_surfaces_independent() -> None:
+    cur = PartitionCursor(count=3)
+
+    assert "scope_level" in prune.protocol_partition(cur)
+    assert "surface_id" in prune.factor_partition(cur)
+    assert "deployment_id" in prune.factor_partition(cur)

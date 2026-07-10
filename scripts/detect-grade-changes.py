@@ -22,6 +22,22 @@ SCRIPT_NAME = "detect-grade-changes.py"
 GRADE_ORDER = {"A": 0, "B": 1, "C": 2, "D": 3, "F": 4}
 
 
+def has_scope_columns(cur: Any, table: str) -> bool:
+    cur.execute(
+        """
+        SELECT count(*) AS count
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = %s
+          AND column_name IN ('scope_level', 'family_slug', 'surface_id')
+        """,
+        (table,),
+    )
+    row = cur.fetchone()
+    count = row["count"] if isinstance(row, dict) else row[0]
+    return int(count) == 3
+
+
 def get_connection_url() -> str:
     url = os.environ.get("DATABASE_URL") or os.environ.get("LOCAL_DATABASE_URL")
     if not url:
@@ -114,6 +130,20 @@ def find_grade_changes(
         date_filter = "AND snapshot_date = %s"
         params = (snapshot_date or default_snapshot_date(),)
 
+    scoped = has_scope_columns(cur, "protocol_grade_history")
+    scope_select = (
+        "scope_level, family_slug, surface_id, NULL::uuid AS deployment_id,"
+        if scoped
+        else "'surface'::text AS scope_level, NULL::text AS family_slug, "
+             "NULL::uuid AS surface_id, NULL::uuid AS deployment_id,"
+    )
+    partition = (
+        "protocol_slug, scope_level, COALESCE(family_slug, ''), "
+        "COALESCE(surface_id::text, '')"
+        if scoped
+        else "protocol_slug"
+    )
+
     cur.execute(
         f"""
         WITH ordered AS (
@@ -123,12 +153,13 @@ def find_grade_changes(
                 LAG(snapshot_date) OVER w AS previous_snapshot_date
             FROM protocol_grade_history pgh
             WINDOW w AS (
-                PARTITION BY protocol_slug
+                PARTITION BY {partition}
                 ORDER BY snapshot_date ASC, snapshot_at ASC
             )
         )
         SELECT
             protocol_slug,
+            {scope_select}
             previous_grade AS from_grade,
             grade_letter AS to_grade,
             rubric_version,
@@ -148,38 +179,59 @@ def find_grade_changes(
 
 def insert_grade_changes(cur: Any, rows: list[dict[str, Any]], dry_run: bool) -> int:
     inserted = 0
+    if dry_run:
+        for row in rows:
+            reason = (
+                f"Grade changed from {row['from_grade']} to {row['to_grade']} "
+                f"between {row['snapshot_date_before']} and {row['snapshot_date_after']}."
+            )
+            print(f"[dry-run] {row['protocol_slug']}: {reason}")
+        return len(rows)
+
+    scoped = has_scope_columns(cur, "grade_changes")
     for row in rows:
         reason = (
             f"Grade changed from {row['from_grade']} to {row['to_grade']} "
             f"between {row['snapshot_date_before']} and {row['snapshot_date_after']}."
         )
-        if dry_run:
-            print(f"[dry-run] {row['protocol_slug']}: {reason}")
-            inserted += 1
-            continue
-        cur.execute(
-            """
-            INSERT INTO grade_changes
-                (protocol_slug, from_grade, to_grade, rubric_version,
-                 snapshot_date_before, snapshot_date_after, reason,
-                 is_upgrade, source_run_id)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (protocol_slug, snapshot_date_before, snapshot_date_after)
-            DO NOTHING
-            RETURNING id
-            """,
-            (
-                row["protocol_slug"],
-                row["from_grade"],
-                row["to_grade"],
-                row["rubric_version"],
-                row["snapshot_date_before"],
-                row["snapshot_date_after"],
-                reason,
-                is_upgrade(row["from_grade"], row["to_grade"]),
-                row["source_run_id"],
-            ),
-        )
+        if scoped:
+            cur.execute(
+                """
+                INSERT INTO grade_changes
+                    (protocol_slug, scope_level, family_slug, surface_id, deployment_id,
+                     from_grade, to_grade, rubric_version,
+                     snapshot_date_before, snapshot_date_after, reason,
+                     is_upgrade, source_run_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT DO NOTHING
+                RETURNING id
+                """,
+                (
+                    row["protocol_slug"], row["scope_level"], row["family_slug"],
+                    row["surface_id"], row["deployment_id"], row["from_grade"],
+                    row["to_grade"], row["rubric_version"],
+                    row["snapshot_date_before"], row["snapshot_date_after"], reason,
+                    is_upgrade(row["from_grade"], row["to_grade"]), row["source_run_id"],
+                ),
+            )
+        else:
+            cur.execute(
+                """
+                INSERT INTO grade_changes
+                    (protocol_slug, from_grade, to_grade, rubric_version,
+                     snapshot_date_before, snapshot_date_after, reason,
+                     is_upgrade, source_run_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT DO NOTHING
+                RETURNING id
+                """,
+                (
+                    row["protocol_slug"], row["from_grade"], row["to_grade"],
+                    row["rubric_version"], row["snapshot_date_before"],
+                    row["snapshot_date_after"], reason,
+                    is_upgrade(row["from_grade"], row["to_grade"]), row["source_run_id"],
+                ),
+            )
         if cur.fetchone() is not None:
             inserted += 1
     return inserted

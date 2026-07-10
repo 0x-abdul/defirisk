@@ -106,25 +106,23 @@ function _getFactorMeta(): FactorMeta[] {
 
 function applyComputedGradeFields(
   detail: ProtocolDetail,
-  gradeContext: Record<string, unknown> = detail.protocol as Record<string, unknown>,
+  gradeContext: Record<string, unknown> = detail.protocol as Record<string, unknown>
 ): ProtocolDetail | null {
-  const factorScores = detail.factor_scores as unknown as RawFactorScore[];
+  const primarySurface = (
+    (detail.surfaces as Array<Record<string, unknown>> | undefined) ?? []
+  ).find((surface) => surface.is_primary) as Record<string, unknown> | undefined;
+  const surfaceScores = (primarySurface?.factor_scores as RawFactorScore[] | undefined) ?? [];
+  const legacyScores = detail.factor_scores as unknown as RawFactorScore[];
+  const factorScores = legacyScores.length > 0 ? legacyScores : surfaceScores;
   if (factorScores.length === 0) return null;
 
   const proto = detail.protocol as Record<string, unknown>;
-  const computed = computeGradeFromFactors(
-    factorScores,
-    _getFactorMeta(),
-    {
-      has_active_incident: gradeContext.has_active_incident as boolean | null | undefined,
-      total_value_secured_usd: gradeContext.total_value_secured_usd as
-        | number
-        | string
-        | null
-        | undefined,
-      launched_at: gradeContext.launched_at as string | null | undefined,
-    },
-  );
+  const computed = computeGradeFromFactors(factorScores, _getFactorMeta(), {
+    has_active_incident: gradeContext.has_active_incident as boolean | null | undefined,
+    total_value_secured_usd: gradeContext.total_value_secured_usd as
+      number | string | null | undefined,
+    launched_at: gradeContext.launched_at as string | null | undefined,
+  });
   proto.headline_grade = computed.letter;
   proto.category_lights = computed.category_lights;
   proto.risk_score = computed.risk_score;
@@ -257,7 +255,7 @@ export function getHack(id: string): HackDetail | null {
 /** Every (protocol, score) pair currently graded for a given factor.
  *  Powers the global factor page's sortable all-protocols table. */
 export function listScoresForFactor(
-  factorId: string,
+  factorId: string
 ): NonNullable<FactorDetail['scored_protocols']> {
   return getFactor(factorId)?.scored_protocols ?? [];
 }
@@ -266,7 +264,7 @@ export function listScoresForFactor(
  *  "related historical hacks" panel). Sorted by occurred_at desc by
  *  dump.py; consumers may re-sort. */
 export function listLinkedHacksForFactor(
-  factorId: string,
+  factorId: string
 ): NonNullable<FactorDetail['linked_hacks']> {
   return getFactor(factorId)?.linked_hacks ?? [];
 }
@@ -304,10 +302,12 @@ export function getHacksWithFacets(): ExplorerHack[] {
   const protocols = listProtocols();
   const factors = listFactors();
 
-  const chainBySlug = new Map(protocols.map((p) => {
-    const obj = p as unknown as Record<string, unknown>;
-    return [obj.slug as string, (obj.primary_chain as string) ?? null];
-  }));
+  const chainBySlug = new Map(
+    protocols.map((p) => {
+      const obj = p as unknown as Record<string, unknown>;
+      return [obj.slug as string, (obj.primary_chain as string) ?? null];
+    })
+  );
 
   const criticalById = new Map(factors.map((f) => [f.id, f.is_critical]));
 
@@ -324,9 +324,12 @@ export function getHacksWithFacets(): ExplorerHack[] {
     }));
 
     const lossRaw = obj.loss_usd;
-    const loss_usd = lossRaw != null
-      ? (typeof lossRaw === 'string' ? parseFloat(lossRaw) || null : (lossRaw as number))
-      : null;
+    const loss_usd =
+      lossRaw != null
+        ? typeof lossRaw === 'string'
+          ? parseFloat(lossRaw) || null
+          : (lossRaw as number)
+        : null;
 
     return {
       id: h.id,
@@ -383,7 +386,7 @@ export type { GradeChange } from './feed-generator';
 /** Most recent grade change events (up to 200). Returns [] when changes.json is absent. */
 export function listGradeChanges(): import('./feed-generator').GradeChange[] {
   const env = readJson('changes.json');
-  return (unwrapEnvelope<import('./feed-generator').GradeChange[]>(env, 'changes') ?? []);
+  return unwrapEnvelope<import('./feed-generator').GradeChange[]>(env, 'changes') ?? [];
 }
 
 // ── Status page (E-30) ───────────────────────────────────────────────────────
@@ -492,17 +495,15 @@ export function getStatusSummary(): StatusSummary {
     total_successes: 0,
     success_rate_pct: null,
   });
-  const statusEnv = readJson('status.json') as
-    | {
-        generated_at?: string;
-        data_as_of?: string;
-        data?: {
-          runs?: PipelineRun[];
-          bucket_freshness?: Partial<Record<'C' | 'E' | 'S', BucketFreshness>>;
-          meta?: { generated_at?: string; data_as_of?: string };
-        };
-      }
-    | null;
+  const statusEnv = readJson('status.json') as {
+    generated_at?: string;
+    data_as_of?: string;
+    data?: {
+      runs?: PipelineRun[];
+      bucket_freshness?: Partial<Record<'C' | 'E' | 'S', BucketFreshness>>;
+      meta?: { generated_at?: string; data_as_of?: string };
+    };
+  } | null;
   const liveRuns = statusEnv?.data?.runs ?? null;
   const bucketFreshness = {
     C: statusEnv?.data?.bucket_freshness?.C ?? emptyBucket('C'),
@@ -510,9 +511,7 @@ export function getStatusSummary(): StatusSummary {
     S: statusEnv?.data?.bucket_freshness?.S ?? emptyBucket('S'),
   };
   const generatedAt =
-    statusEnv?.data?.meta?.generated_at
-    ?? statusEnv?.generated_at
-    ?? new Date().toISOString();
+    statusEnv?.data?.meta?.generated_at ?? statusEnv?.generated_at ?? new Date().toISOString();
 
   return {
     rubric_version: RUBRIC_VERSION,

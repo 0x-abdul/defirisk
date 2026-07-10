@@ -124,10 +124,24 @@ def _fetch_factor_scores(cur: psycopg.Cursor, protocol_slug: str) -> list[dict]:
     """Fetch all current factor_scores with category and is_critical metadata."""
     cur.execute(
         """SELECT fs.id, fs.factor_id, fs.score,
+                  fs.scope_level, fs.family_slug, fs.surface_id, fs.deployment_id,
                   f.category_id, f.is_critical
            FROM factor_scores fs
            JOIN factors f ON f.id = fs.factor_id
            WHERE fs.protocol_slug = %s AND fs.is_current = true""",
+        (protocol_slug,),
+    )
+    return cur.fetchall()
+
+
+def _fetch_surfaces(cur: psycopg.Cursor, protocol_slug: str) -> list[dict]:
+    cur.execute(
+        """SELECT surface_id::text AS surface_id, family_slug, surface_slug,
+                  display_name, status, launched_at, primary_chain, tvs_usd,
+                  scope_note, is_primary, legacy_slug
+           FROM protocol_surfaces
+           WHERE family_slug = %s
+           ORDER BY is_primary DESC, surface_slug""",
         (protocol_slug,),
     )
     return cur.fetchall()
@@ -151,22 +165,33 @@ def _insert_grade_history(
     graded_at: datetime,
     triggered_by: str,
     risk_score: float | None = None,
+    category_severities: dict | None = None,
     cap_applied: str | None = None,
     cap_reason: str | None = None,
+    scope_level: str = "surface",
+    family_slug: str | None = None,
+    surface_id: str | None = None,
+    deployment_id: str | None = None,
 ) -> str:
     cur.execute(
         """INSERT INTO grade_history
-               (protocol_slug, rubric_version, letter,
+               (protocol_slug, deployment_id, scope_level, family_slug, surface_id,
+                rubric_version, letter,
                 critical_flag_count, red_category_count, yellow_category_count,
                 gray_on_core_five, graded_at, triggered_by,
-                risk_score, cap_applied, cap_reason)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                risk_score, category_severities, cap_applied, cap_reason)
+           VALUES (%s, %s::uuid, %s, %s, %s::uuid,
+                   %s, %s, %s, %s, %s, %s, %s, %s,
+                   %s, %s::jsonb, %s, %s)
            RETURNING id""",
         (
-            protocol_slug, rubric_version, letter,
+            protocol_slug, deployment_id, scope_level, family_slug, surface_id,
+            rubric_version, letter,
             critical_flag_count, red_category_count, yellow_category_count,
             gray_on_core_five, graded_at, triggered_by,
-            risk_score, cap_applied, cap_reason,
+            risk_score,
+            json.dumps(category_severities) if category_severities is not None else None,
+            cap_applied, cap_reason,
         ),
     )
     return cur.fetchone()["id"]
@@ -185,18 +210,24 @@ def _upsert_protocol_grade_snapshot(
     snapshot_at: datetime,
     source_run_id: str | None,
     notes: str | None = None,
+    scope_level: str = "surface",
+    family_slug: str | None = None,
+    surface_id: str | None = None,
 ) -> None:
-    """Insert one protocol_grade_history row; idempotent on (slug, date)."""
+    """Insert one scoped protocol_grade_history row; idempotent per scope/date."""
     snapshot_date = snapshot_at.date()
     cur.execute(
         """INSERT INTO protocol_grade_history
-               (protocol_slug, snapshot_at, snapshot_date, rubric_version,
+               (protocol_slug, scope_level, family_slug, surface_id,
+                snapshot_at, snapshot_date, rubric_version,
                 grade_letter, critical_count, red_count, yellow_count,
                 gray_core_five, source_run_id, notes)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-           ON CONFLICT (protocol_slug, snapshot_date) DO NOTHING""",
+           VALUES (%s, %s, %s, %s::uuid,
+                   %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+           ON CONFLICT DO NOTHING""",
         (
-            protocol_slug, snapshot_at, snapshot_date, rubric_version,
+            protocol_slug, scope_level, family_slug, surface_id,
+            snapshot_at, snapshot_date, rubric_version,
             letter, critical_count, red_count, yellow_count,
             gray_core_five, source_run_id, notes,
         ),
@@ -212,18 +243,28 @@ def _upsert_factor_score_snapshots(
     snapshot_at: datetime,
     source_run_id: str | None,
     notes: str | None = None,
+    scope_level: str = "surface",
+    family_slug: str | None = None,
+    surface_id: str | None = None,
+    deployment_id: str | None = None,
 ) -> None:
-    """Insert one factor_score_history row per factor; idempotent on (slug, factor, date)."""
+    """Insert one scoped factor_score_history row per effective factor."""
     snapshot_date = snapshot_at.date()
     cur.executemany(
         """INSERT INTO factor_score_history
-               (protocol_slug, factor_id, snapshot_at, snapshot_date,
+               (protocol_slug, scope_level, family_slug, surface_id, deployment_id,
+                factor_id, snapshot_at, snapshot_date,
                 score_color, score_value, rubric_version, source_run_id, notes)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-           ON CONFLICT (protocol_slug, factor_id, snapshot_date) DO NOTHING""",
+           VALUES (%s, %s, %s, %s::uuid, %s::uuid,
+                   %s, %s, %s, %s, %s, %s, %s, %s)
+           ON CONFLICT DO NOTHING""",
         [
             (
                 protocol_slug,
+                scope_level,
+                family_slug,
+                surface_id,
+                deployment_id,
                 fs["factor_id"],
                 snapshot_at,
                 snapshot_date,
@@ -320,6 +361,78 @@ def _update_protocol_grade(
 # Note: _age_months is no longer used by grade() under M1 v4 (TVL/age floors
 # for A grade were removed in v1.7.0).  Kept here for any external callers
 # (dump.py envelope assembly, detect-grade-changes.py, etc.).
+
+def _update_family_grade(
+    cur: psycopg.Cursor,
+    *,
+    family_slug: str,
+    letter: str,
+    rubric_version: str,
+    graded_at: datetime,
+    risk_score: float | None = None,
+    category_severities: dict | None = None,
+    cap_applied: str | None = None,
+    cap_reason: str | None = None,
+) -> None:
+    cur.execute(
+        """UPDATE protocol_families
+           SET headline_grade       = %s,
+               rubric_version       = %s,
+               graded_at            = %s,
+               risk_score           = %s,
+               category_severities  = %s::jsonb,
+               cap_applied          = %s,
+               cap_reason           = %s,
+               updated_at           = now()
+           WHERE family_slug = %s""",
+        (
+            letter,
+            rubric_version,
+            graded_at,
+            risk_score,
+            json.dumps(category_severities) if category_severities is not None else None,
+            cap_applied,
+            cap_reason,
+            family_slug,
+        ),
+    )
+
+
+def _update_surface_grade(
+    cur: psycopg.Cursor,
+    *,
+    surface_id: str,
+    letter: str,
+    rubric_version: str,
+    graded_at: datetime,
+    risk_score: float | None = None,
+    category_severities: dict | None = None,
+    cap_applied: str | None = None,
+    cap_reason: str | None = None,
+) -> None:
+    cur.execute(
+        """UPDATE protocol_surfaces
+           SET headline_grade       = %s,
+               rubric_version       = %s,
+               graded_at            = %s,
+               risk_score           = %s,
+               category_severities  = %s::jsonb,
+               cap_applied          = %s,
+               cap_reason           = %s,
+               updated_at           = now()
+           WHERE surface_id = %s::uuid""",
+        (
+            letter,
+            rubric_version,
+            graded_at,
+            risk_score,
+            json.dumps(category_severities) if category_severities is not None else None,
+            cap_applied,
+            cap_reason,
+            surface_id,
+        ),
+    )
+
 
 def _age_months(launched_at: date | None) -> int:
     if launched_at is None:
@@ -425,8 +538,41 @@ def compute_grade(
         "category_lights": category_lights,
     }
 
-
 # ── Main ──────────────────────────────────────────────────────────────────────
+
+def _surface_context(protocol: dict, surface: dict) -> dict:
+    """Use surface launch/TVS metadata when present without changing rubric inputs."""
+    context = dict(protocol)
+    if surface.get("launched_at") is not None:
+        context["launched_at"] = surface["launched_at"]
+    if surface.get("tvs_usd") is not None:
+        context["total_value_secured_usd"] = surface["tvs_usd"]
+    return context
+
+
+def _effective_surface_scores(factor_scores: list[dict], surface_id: str) -> list[dict]:
+    """Apply family -> surface specificity for a surface headline grade."""
+    effective: dict[str, dict] = {}
+    surface_id_str = str(surface_id)
+
+    for fs in factor_scores:
+        if fs.get("scope_level") == "family":
+            effective[fs["factor_id"]] = dict(fs)
+
+    for fs in factor_scores:
+        if fs.get("scope_level") == "surface" and str(fs.get("surface_id")) == surface_id_str:
+            effective[fs["factor_id"]] = dict(fs)
+
+    return sorted(effective.values(), key=lambda fs: fs["factor_id"])
+
+
+def _has_surface_scores(factor_scores: list[dict], surface_id: str) -> bool:
+    surface_id_str = str(surface_id)
+    return any(
+        fs.get("scope_level") == "surface" and str(fs.get("surface_id")) == surface_id_str
+        for fs in factor_scores
+    )
+
 
 def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = False) -> int:
     try:
@@ -475,81 +621,130 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
         skipped = 0
 
         for protocol in protocols:
-            psluq = protocol["slug"]
+            pslug = protocol["slug"]
             with conn.cursor(row_factory=dict_row) as cur:
-                factor_scores = _fetch_factor_scores(cur, psluq)
+                factor_scores = _fetch_factor_scores(cur, pslug)
+                surfaces = _fetch_surfaces(cur, pslug)
 
             if not factor_scores:
-                print(f"  SKIP {psluq}: no current factor scores")
+                print(f"  SKIP {pslug}: no current factor scores")
                 skipped += 1
                 continue
 
-            g = compute_grade(protocol, factor_scores, categories)
-
-            print(
-                f"  {psluq}: {g['letter']} "
-                f"(score={g['risk_score']:.1f} crit={g['critical_flag_count']} "
-                f"cap={g['cap_applied']})"
-            )
-
-            if dry_run:
-                processed += 1
+            if not surfaces:
+                print(f"  SKIP {pslug}: no protocol_surfaces rows; run migration/backfill first")
+                skipped += 1
                 continue
 
-            with conn.transaction():
-                with conn.cursor(row_factory=dict_row) as cur:
-                    _insert_grade_history(
-                        cur,
-                        protocol_slug=psluq,
-                        rubric_version=rubric_version,
-                        letter=g["letter"],
-                        critical_flag_count=g["critical_flag_count"],
-                        red_category_count=g["red_category_count"],
-                        yellow_category_count=g["yellow_category_count"],
-                        gray_on_core_five=g["gray_on_core_five"],
-                        graded_at=graded_at,
-                        triggered_by="compose.py",
-                        risk_score=g["risk_score"],
-                        cap_applied=g["cap_applied"],
-                        cap_reason=g["cap_reason"],
-                    )
-                    _update_protocol_grade(
-                        cur,
-                        protocol_slug=psluq,
-                        letter=g["letter"],
-                        rubric_version=rubric_version,
-                        graded_at=graded_at,
-                        risk_score=g["risk_score"],
-                        category_severities=g["category_severities"],
-                        cap_applied=g["cap_applied"],
-                        cap_reason=g["cap_reason"],
-                    )
-                    # E-32: daily snapshots for analytics + grade-change feed.
-                    # Idempotent — re-running on the same calendar day is a no-op.
-                    # --skip-history suppresses both writes for development convenience.
-                    if not skip_history:
-                        _upsert_protocol_grade_snapshot(
+            for surface in surfaces:
+                if (
+                    surface.get("status") == "deprecated"
+                    and not surface.get("is_primary")
+                    and not _has_surface_scores(factor_scores, surface["surface_id"])
+                ):
+                    print(f"  SKIP {pslug}/{surface['surface_slug']}: deprecated surface with no current surface scores")
+                    skipped += 1
+                    continue
+
+                effective_scores = _effective_surface_scores(factor_scores, surface["surface_id"])
+                if not effective_scores:
+                    print(f"  SKIP {pslug}/{surface['surface_slug']}: no effective factor scores")
+                    skipped += 1
+                    continue
+
+                g = compute_grade(_surface_context(protocol, surface), effective_scores, categories)
+
+                print(
+                    f"  {pslug}/{surface['surface_slug']}: {g['letter']} "
+                    f"(score={g['risk_score']:.1f} crit={g['critical_flag_count']} "
+                    f"cap={g['cap_applied']})"
+                )
+
+                if dry_run:
+                    processed += 1
+                    continue
+
+                with conn.transaction():
+                    with conn.cursor(row_factory=dict_row) as cur:
+                        _insert_grade_history(
                             cur,
-                            protocol_slug=psluq,
+                            protocol_slug=pslug,
                             rubric_version=rubric_version,
                             letter=g["letter"],
-                            critical_count=g["critical_flag_count"],
-                            red_count=g["red_category_count"],
-                            yellow_count=g["yellow_category_count"],
-                            gray_core_five=g["gray_on_core_five"],
-                            snapshot_at=graded_at,
-                            source_run_id=run_id,
+                            critical_flag_count=g["critical_flag_count"],
+                            red_category_count=g["red_category_count"],
+                            yellow_category_count=g["yellow_category_count"],
+                            gray_on_core_five=g["gray_on_core_five"],
+                            graded_at=graded_at,
+                            triggered_by="compose.py",
+                            risk_score=g["risk_score"],
+                            category_severities=g["category_severities"],
+                            cap_applied=g["cap_applied"],
+                            cap_reason=g["cap_reason"],
+                            scope_level="surface",
+                            surface_id=surface["surface_id"],
                         )
-                        _upsert_factor_score_snapshots(
+                        _update_surface_grade(
                             cur,
-                            protocol_slug=psluq,
-                            factor_scores=factor_scores,
+                            surface_id=surface["surface_id"],
+                            letter=g["letter"],
                             rubric_version=rubric_version,
-                            snapshot_at=graded_at,
-                            source_run_id=run_id,
+                            graded_at=graded_at,
+                            risk_score=g["risk_score"],
+                            category_severities=g["category_severities"],
+                            cap_applied=g["cap_applied"],
+                            cap_reason=g["cap_reason"],
                         )
+                        if surface.get("is_primary"):
+                            _update_protocol_grade(
+                                cur,
+                                protocol_slug=pslug,
+                                letter=g["letter"],
+                                rubric_version=rubric_version,
+                                graded_at=graded_at,
+                                risk_score=g["risk_score"],
+                                category_severities=g["category_severities"],
+                                cap_applied=g["cap_applied"],
+                                cap_reason=g["cap_reason"],
+                            )
+                            _update_family_grade(
+                                cur,
+                                family_slug=pslug,
+                                letter=g["letter"],
+                                rubric_version=rubric_version,
+                                graded_at=graded_at,
+                                risk_score=g["risk_score"],
+                                category_severities=g["category_severities"],
+                                cap_applied=g["cap_applied"],
+                                cap_reason=g["cap_reason"],
+                            )
+                        if not skip_history:
+                            _upsert_protocol_grade_snapshot(
+                                cur,
+                                protocol_slug=pslug,
+                                rubric_version=rubric_version,
+                                letter=g["letter"],
+                                critical_count=g["critical_flag_count"],
+                                red_count=g["red_category_count"],
+                                yellow_count=g["yellow_category_count"],
+                                gray_core_five=g["gray_on_core_five"],
+                                snapshot_at=graded_at,
+                                source_run_id=run_id,
+                                scope_level="surface",
+                                surface_id=surface["surface_id"],
+                            )
+                            _upsert_factor_score_snapshots(
+                                cur,
+                                protocol_slug=pslug,
+                                factor_scores=effective_scores,
+                                rubric_version=rubric_version,
+                                snapshot_at=graded_at,
+                                source_run_id=run_id,
+                                scope_level="surface",
+                                surface_id=surface["surface_id"],
+                            )
 
-            processed += 1
+                processed += 1
 
         # Update the pipeline_runs row with final counts.
         if run_id is not None:

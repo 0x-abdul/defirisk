@@ -22,16 +22,14 @@ export const protocolListSchema = z.object({
   display_name: z.string(),
   protocol_type: z.string(),
   primary_chain: z.string(),
+  surface_count: z.number().int().positive().optional(),
+  primary_surface_slug: z.string().nullable().optional(),
+  legacy_caveat: z.string().nullable().optional(),
   headline_grade: z.enum(['A', 'B', 'C', 'D', 'F']).nullable().optional(),
   total_value_secured_usd: z.union([z.number(), z.string()]).nullable().optional(),
   graded_at: z.string().nullable().optional(),
   rubric_version: z.string().nullable().optional(),
-  status: z.enum([
-    'live',
-    'under_assessment_review',
-    'under_regulatory_review',
-    'deprecated',
-  ]),
+  status: z.enum(['live', 'under_assessment_review', 'under_regulatory_review', 'deprecated']),
   has_active_incident: z.boolean(),
   // ── M1 v4 rubric fields (v1.7.0+) ──────────────────────────────────────────
   /** Numeric risk score 0–100. Core-five-weighted severity average plus critical-red penalty. */
@@ -47,6 +45,8 @@ export const protocolListSchema = z.object({
 /** Full protocol detail from protocols/<slug>.json envelope. */
 export const protocolDetailSchema = z.object({
   protocol: z.record(z.string(), z.unknown()), // shape mirrors db/schema.ts protocols
+  family: z.record(z.string(), z.unknown()).optional(),
+  surfaces: z.array(z.record(z.string(), z.unknown())).default([]),
   deployments: z.array(z.record(z.string(), z.unknown())).default([]),
   factor_scores: z.array(z.record(z.string(), z.unknown())).default([]),
   grade_history: z.array(z.record(z.string(), z.unknown())).default([]),
@@ -94,14 +94,7 @@ export const factorScoredProtocolSchema = z.object({
   protocol_name: z.string().nullable().optional(),
   primary_chain: z.string().nullable().optional(),
   deployment_id: z.string().nullable().optional(),
-  score: z.enum([
-    'green',
-    'yellow',
-    'red',
-    'gray',
-    'not_assessed',
-    'not_applicable',
-  ]),
+  score: z.enum(['green', 'yellow', 'red', 'gray', 'not_assessed', 'not_applicable']),
   evidence_summary: z.string(),
   evidence_detail: z.string().nullable().optional(),
   collection_mode: z.enum(['programmatic', 'manual', 'hybrid']),
@@ -185,4 +178,3 @@ export const incidentSchema = z.object({
   closed_at: z.string().nullable().optional(),
   status: z.enum(['open', 'closed']),
 });
-

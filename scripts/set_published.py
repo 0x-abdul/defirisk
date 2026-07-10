@@ -29,6 +29,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 try:
     import psycopg
@@ -36,6 +37,12 @@ try:
 except ImportError:
     print("ERROR: psycopg (v3) not installed. Run: pip install 'psycopg[binary]'")
     sys.exit(1)
+
+
+def has_family_table(cur: Any) -> bool:
+    cur.execute("SELECT to_regclass('public.protocol_families') IS NOT NULL AS present")
+    row = cur.fetchone()
+    return bool(row["present"] if isinstance(row, dict) else row[0])
 
 
 def _print_table(rows: list[dict]) -> None:
@@ -74,12 +81,46 @@ def run(
                 _print_table(rows)
                 return 0
 
-            # Resolve target slugs.
+            family_mode = has_family_table(cur)
+
+            # Resolve target slugs. In family mode, retained standalone legacy
+            # rows are compatibility inputs, not publication targets.
             if all_protocols:
-                cur.execute("SELECT slug FROM protocols ORDER BY slug")
+                if family_mode and publish:
+                    cur.execute(
+                        """
+                        SELECT p.slug
+                        FROM protocols p
+                        WHERE NOT EXISTS (
+                          SELECT 1
+                          FROM protocol_surfaces ps
+                          WHERE ps.legacy_slug = p.slug
+                            AND ps.family_slug <> p.slug
+                        )
+                        ORDER BY p.slug
+                        """
+                    )
+                else:
+                    cur.execute("SELECT slug FROM protocols ORDER BY slug")
                 targets = [r["slug"] for r in cur.fetchall()]
             else:
                 targets = slugs
+                if family_mode and targets:
+                    cur.execute(
+                        """
+                        SELECT legacy_slug, family_slug
+                        FROM protocol_surfaces
+                        WHERE (legacy_slug = ANY(%s) OR family_slug = ANY(%s))
+                          AND family_slug <> legacy_slug
+                        """,
+                        (targets, targets),
+                    )
+                    aliases = {row["legacy_slug"]: row["family_slug"] for row in cur.fetchall()}
+                    if publish:
+                        targets = list(dict.fromkeys(aliases.get(slug, slug) for slug in targets))
+                    else:
+                        related = [value for item in aliases.items() for value in item]
+                        targets = list(dict.fromkeys([*targets, *related]))
                 # Validate every requested slug exists before mutating anything.
                 cur.execute(
                     "SELECT slug FROM protocols WHERE slug = ANY(%s)", (targets,)
@@ -105,9 +146,18 @@ def run(
             before = {r["slug"]: r["is_published"] for r in cur.fetchall()}
 
             cur.execute(
-                "UPDATE protocols SET is_published = %s WHERE slug = ANY(%s)",
+                "UPDATE protocols SET is_published = %s, updated_at = now() WHERE slug = ANY(%s)",
                 (publish, targets),
             )
+            if family_mode:
+                cur.execute(
+                    """
+                    UPDATE protocol_families
+                    SET is_published = %s, updated_at = now()
+                    WHERE family_slug = ANY(%s)
+                    """,
+                    (publish, targets),
+                )
             conn.commit()
 
             verb = "published" if publish else "unpublished"
@@ -115,7 +165,7 @@ def run(
             print(f"\n{verb.capitalize()} {len(targets)} protocol(s) "
                   f"({len(changed)} changed, {len(targets) - len(changed)} already {verb}):")
             for s in targets:
-                mark = "→" if before.get(s) is not publish else " "
+                mark = "*" if before.get(s) is not publish else " "
                 print(f"  {mark} {s}")
     finally:
         conn.close()

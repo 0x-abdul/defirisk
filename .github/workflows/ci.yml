@@ -93,7 +93,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install test deps
-        run: pip install pytest
+        run: pip install pytest 'psycopg[binary]>=3.1'
       - name: Run public script tests
         run: pytest scripts/tests -q
 
@@ -164,10 +164,17 @@ jobs:
           cache-dependency-path: site/package.json
       - run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - run: npm run build
         working-directory: site
-        continue-on-error: true
-        # Astro scaffold not complete until E-11; build is expected to fail until then
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
+      - name: Assert family API compatibility and routes
+        run: >-
+          python scripts/ci/assert-family-build.py
+          --api-root _local/family-api-fixture/v1.7.0
+          --dist-root site/dist
 
   # ── 5. Rubric version 4-layer pin assertion ──────────────────────────────────
   rubric-version-pin:
@@ -357,7 +364,6 @@ jobs:
         if: steps.site_build.outcome == 'success'
         run: npm run test:a11y
         working-directory: site
-
   # ── 10. Performance budget ───────────────────────────────────────────────────
   perf-budget:
     name: Performance budget (JS bundle sizes)
@@ -552,8 +558,10 @@ jobs:
       - uses: actions/checkout@v7
       - name: Install postgresql-client
         run: sudo apt-get install -y --no-install-recommends postgresql-client
+      - name: Install PostgreSQL Python driver
+        run: pip install 'psycopg[binary]>=3.1'
 
-      - name: Replay db/migrations/*.sql in filename order on empty Postgres
+      - name: Replay db/migrations/*.sql with family backfill fixture
         env:
           DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
         run: |
@@ -570,10 +578,59 @@ jobs:
           unset IFS
           echo "Applying ${#files[@]} migration(s) in order:"
           for f in "${files[@]}"; do
-            echo "  → $f"
-            psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
+            if [ "$(basename "$f")" = "0008_protocol_surfaces.sql" ]; then
+              echo "  seeding synthetic pre-family rows before 0008"
+              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
+                -f scripts/ci/family-pre-0008-fixture.sql
+            fi
+            if [ "$(basename "$f")" = "0008_protocol_surfaces.sql" ]; then
+              echo "  applying $f (migration contains its transaction boundary)"
+              psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
+              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
+                -f scripts/ci/assert-family-backfill.sql
+              echo "  replaying 0008 to prove default surfaces are not recreated"
+              psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
+              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
+                -f scripts/ci/assert-family-backfill.sql
+            else
+              echo "  applying $f"
+              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction -f "$f"
+            fi
           done
           echo "OK: all migrations applied cleanly"
+
+      - name: Import, compose, and dump a synthetic family
+        env:
+          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+        run: |
+          set -euo pipefail
+          psql "$DSN" -v ON_ERROR_STOP=1 -c \
+            "UPDATE protocols SET has_active_incident = true WHERE slug = 'fixture-family'; UPDATE protocol_families SET has_active_incident = true WHERE family_slug = 'fixture-family';"
+          psql "$DSN" -v ON_ERROR_STOP=1 -c \
+            "UPDATE protocols SET has_active_incident = true WHERE slug = 'fixture-peer'; UPDATE protocol_families SET has_active_incident = true WHERE family_slug = 'fixture-peer';"
+          python scripts/import-protocol-assessment.py new-family \
+            --grading-file scripts/ci/family-legacy-incident-fixture.json \
+            --apply --expected-database risk_dashboard \
+            --allow-protected-database --i-understand-protected-database \
+            --skip-compose
+          inherited_incident="$(psql "$DSN" -Atc "SELECT p.has_active_incident::text || '|' || pf.has_active_incident::text FROM protocols p JOIN protocol_families pf ON pf.family_slug = p.slug WHERE p.slug = 'new-family'")"
+          test "$inherited_incident" = "true|true"
+          python scripts/import-protocol-assessment.py fixture-family \
+            --grading-file scripts/ci/family-import-fixture.json \
+            --apply --expected-database risk_dashboard \
+            --allow-protected-database --i-understand-protected-database \
+            --skip-compose
+          incident_state="$(psql "$DSN" -Atc "SELECT p.has_active_incident::text || '|' || pf.has_active_incident::text FROM protocols p JOIN protocol_families pf ON pf.family_slug = p.slug WHERE p.slug = 'fixture-family'")"
+          test "$incident_state" = "true|true"
+          DATABASE_URL="$DSN" python scripts/compose.py --protocol fixture-family
+          DATABASE_URL="$DSN" python scripts/dump.py --out-root _local/family-db-dump
+          python scripts/ci/assert-family-build.py \
+            --api-root _local/family-db-dump/api/v1.7.0
+          python scripts/cleanup-multiversion-runtime-artifacts.py \
+            --dry-run --manifest scripts/ci/family-cleanup-fixture.json \
+            --db-url "$DSN" --expected-database risk_dashboard \
+            --allow-protected-database --i-understand-protected-database
 
       - name: Verify resulting schema looks sane
         env:
@@ -586,7 +643,7 @@ jobs:
             protocols deployments factors factor_scores
             factor_score_sources sources hacks hack_factor_links
             grade_history protocol_grade_history grade_changes
-            rubric_versions categories
+            rubric_versions categories protocol_families protocol_surfaces
           )
           missing=()
           for t in "${required_tables[@]}"; do

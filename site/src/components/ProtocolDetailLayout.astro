@@ -25,6 +25,7 @@ import GovernanceSignalRow from '../components/GovernanceSignalRow.astro';
 import IncidentBanner from '../components/IncidentBanner.astro';
 import FactorTable from '../components/FactorTable.astro';
 import DeploymentTabs from '../components/DeploymentTabs';
+import ProtocolSurfaceExplorer from '../components/ProtocolSurfaceExplorer';
 import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loaders';
 import { loadCuratorSidecar } from '../lib/curator-sidecar';
 import { RUBRIC_VERSION } from '../lib/rubric';
@@ -73,7 +74,10 @@ const categoryLights =
 const riskScore = ((): number | null => {
   const v = proto.risk_score;
   if (typeof v === 'number' && Number.isFinite(v)) return v;
-  if (typeof v === 'string') { const n = parseFloat(v); return Number.isFinite(n) ? n : null; }
+  if (typeof v === 'string') {
+    const n = parseFloat(v);
+    return Number.isFinite(n) ? n : null;
+  }
   return null;
 })();
 const categorySeverities =
@@ -82,8 +86,7 @@ const capApplied = (proto.cap_applied as 'none' | 'D' | 'F' | null | undefined) 
 const capReason = (proto.cap_reason as string | null | undefined) ?? null;
 
 // Deployments
-const deploymentsRaw =
-  (detail.deployments as Array<Record<string, unknown>>) ?? [];
+const deploymentsRaw = (detail.deployments as Array<Record<string, unknown>>) ?? [];
 const deployments = deploymentsRaw.map((d) => {
   const chainId = (d.chain as string) ?? '';
   const m = chainMeta(chainId);
@@ -105,8 +108,7 @@ const deployments = deploymentsRaw.map((d) => {
 const factors = listFactors();
 const factorById = new Map(factors.map((f) => [f.id, f]));
 
-const factorScoresRaw =
-  (detail.factor_scores as Array<Record<string, unknown>>) ?? [];
+const factorScoresRaw = (detail.factor_scores as Array<Record<string, unknown>>) ?? [];
 
 type ScoreRecord = {
   factor_id: string;
@@ -143,13 +145,13 @@ const totals = scoreRecords.reduce(
     else if (s.score === 'green') acc.g++;
     return acc;
   },
-  { r: 0, y: 0, g: 0 },
+  { r: 0, y: 0, g: 0 }
 );
 
 // Critical factor count: load factors marked is_critical
 const CRITICAL_IDS = new Set(factors.filter((f) => f.is_critical).map((f) => f.id));
 const criticalRed = scoreRecords.filter(
-  (s) => CRITICAL_IDS.has(s.factor_id) && s.score === 'red',
+  (s) => CRITICAL_IDS.has(s.factor_id) && s.score === 'red'
 ).length;
 
 const categoryRollup: Record<
@@ -194,7 +196,11 @@ function fmtTvl(usd: number): string {
 }
 
 const lastAssessedDisplay = gradedAt
-  ? new Date(gradedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  ? new Date(gradedAt).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
   : 'N/A';
 
 // Severity-bar pattern for catcards. Take up to 18 bars per category.
@@ -206,15 +212,45 @@ function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | '
   return bars.slice(0, 18);
 }
 
+const categoryCards = CATEGORIES.map((category) => {
+  const counts = categoryRollup[category.id];
+  const total = taxonomyCounts[category.id] ?? 0;
+  const light = categoryLights[category.id] ?? 'gray';
+  const order: Record<string, number> = {
+    red: 0,
+    yellow: 1,
+    gray: 2,
+    not_assessed: 2,
+    not_applicable: 2,
+    green: 3,
+  };
+  const rows: FactorRow[] = counts.records
+    .sort((a, b) => (order[a.score] ?? 4) - (order[b.score] ?? 4))
+    .map((score) => ({
+      factor_id: score.factor_id,
+      light: score.score,
+      headline: score.factor_name,
+      evidence: score.evidence_summary,
+      gap_reason: score.gap_reason,
+      href:
+        score.score !== 'green' && !reviewMode
+          ? `/protocols/${slug}/factors/${score.factor_id}/`
+          : undefined,
+    }));
+  const severity = categorySeverities
+    ? (categorySeverities[String(category.id)] ?? undefined)
+    : undefined;
+
+  return { category, counts, total, light, rows, severity };
+});
+
 // JSON-envelope link target. For published pages the file lives at
 // /api/<rubric>/protocols/<slug>.json. For review pages the JSON sits
 // under /api/<rubric>/unpublished/<slug>-<token>/index.json, but we
 // derive the path off the route slug because the layout doesn't know the
 // review token, so on the review page we hide the JSON link instead
 // of pointing it at a stale published path.
-const envelopeHref = reviewMode
-  ? null
-  : `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
+const envelopeHref = reviewMode ? null : `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
 
 // Corrections & disputes links (see /corrections). The factual-correction and
 // grade-dispute templates are the two channels a protocol team uses; the
@@ -222,6 +258,19 @@ const envelopeHref = reviewMode
 const correctionHref = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 const disputeHref = `${ISSUE_NEW_URL}?template=grade-dispute.md`;
 const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue ${slug}`)}`;
+const surfaces = (detail.surfaces as Array<Record<string, unknown>> | undefined) ?? [];
+const multiSurface = surfaces.length > 1;
+const legacyCaveat =
+  ((detail.family as Record<string, unknown> | undefined)?.legacy_caveat as
+    string | null | undefined) ??
+  (proto.legacy_caveat as string | null | undefined) ??
+  null;
+const factorMeta = factors.map((factor) => ({
+  id: factor.id,
+  name: factor.name,
+  category_id: factor.category_id,
+  is_critical: factor.is_critical,
+}));
 ---
 
 <Base
@@ -235,7 +284,9 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
     {
       reviewMode && (
         <div class="review-banner" role="status">
-          <span class="review-icon" aria-hidden="true">🔍</span>
+          <span class="review-icon" aria-hidden="true">
+            🔍
+          </span>
           <div class="review-text">
             <p class="review-lead">
               <b>Pending review</b>: this assessment is not yet published. You have this private
@@ -284,7 +335,9 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
   {
     capApplied !== 'none' && capReason && (
       <div class:list={['cap-banner', capApplied === 'F' ? 'cap-f' : 'cap-d']}>
-        <span class="cap-icon" aria-hidden="true">{capApplied === 'F' ? '⚠' : '▲'}</span>
+        <span class="cap-icon" aria-hidden="true">
+          {capApplied === 'F' ? '⚠' : '▲'}
+        </span>
         <span class="cap-text">
           <b>Grade capped to {capApplied}</b>: {capReason}
         </span>
@@ -340,12 +393,17 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
             {criticalRed} of {CRITICAL_IDS.size}
           </b>
         </div>
-        {riskScore !== null && (
-          <div class="mi">
-            <span>Risk score</span>
-            <b class="mono">{riskScore.toFixed(1)}<span class="mi-unit"> / 100</span></b>
-          </div>
-        )}
+        {
+          riskScore !== null && (
+            <div class="mi">
+              <span>Risk score</span>
+              <b class="mono">
+                {riskScore.toFixed(1)}
+                <span class="mi-unit"> / 100</span>
+              </b>
+            </div>
+          )
+        }
         <div class="mi">
           <span>Severity (R / Y / G)</span>
           <b class="mono">{totals.r} · {totals.y} · {totals.g}</b>
@@ -364,37 +422,45 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
         />
       </div>
 
-      <h5>Categories</h5>
-      <nav class="toc" aria-label="Category jump links">
-        {
-          CATEGORIES.map((c) => {
-            const cl = categoryLights[c.id] ?? 'gray';
-            const counts = categoryRollup[c.id];
-            const issues = counts.r + counts.y;
-            return (
-              <a href={`#cat-${c.id}`}>
-                <span class="lbl">
-                  <span class:list={['dot', cl]} aria-hidden="true" />
-                  <span>{c.short ?? c.name}</span>
-                </span>
-                <span class="ct">{issues > 0 ? `${issues}` : 'N/A'}</span>
-              </a>
-            );
-          })
-        }
-      </nav>
+      {
+        !multiSurface && (
+          <>
+            <h5>Categories</h5>
+            <nav class="toc" aria-label="Category jump links">
+              {CATEGORIES.map((c) => {
+                const cl = categoryLights[c.id] ?? 'gray';
+                const counts = categoryRollup[c.id];
+                const issues = counts.r + counts.y;
+                return (
+                  <a href={`#cat-${c.id}`}>
+                    <span class="lbl">
+                      <span class:list={['dot', cl]} aria-hidden="true" />
+                      <span>{c.short ?? c.name}</span>
+                    </span>
+                    <span class="ct">{issues > 0 ? `${issues}` : 'N/A'}</span>
+                  </a>
+                );
+              })}
+            </nav>
+          </>
+        )
+      }
 
       <div class="actions">
-        {envelopeHref && (
-          <a href={envelopeHref}>
-            JSON envelope <span class="arr">↗</span>
-          </a>
-        )}
-        {!reviewMode && (
-          <a href={`/factors/?protocol=${slug}`}>
-            All factors <span class="arr">→</span>
-          </a>
-        )}
+        {
+          envelopeHref && (
+            <a href={envelopeHref}>
+              JSON envelope <span class="arr">↗</span>
+            </a>
+          )
+        }
+        {
+          !reviewMode && (
+            <a href={`/factors/?protocol=${slug}`}>
+              All factors <span class="arr">→</span>
+            </a>
+          )
+        }
       </div>
     </aside>
 
@@ -423,103 +489,88 @@ const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue 
             <span>Categories</span>
             <b>{CATEGORIES.length}</b>
           </div>
-          {riskScore !== null && (
-            <div class="mi">
-              <span>Risk score</span>
-              <b>{riskScore.toFixed(1)}</b>
-            </div>
-          )}
+          {
+            riskScore !== null && (
+              <div class="mi">
+                <span>Risk score</span>
+                <b>{riskScore.toFixed(1)}</b>
+              </div>
+            )
+          }
         </div>
       </div>
 
       {
-        deployments.length > 0 && (
-          <DeploymentTabs client:visible deployments={deployments} />
+        multiSurface ? (
+          <ProtocolSurfaceExplorer
+            client:load
+            familySlug={slug}
+            surfaces={surfaces}
+            categories={CATEGORIES}
+            factors={factorMeta}
+            reviewMode={reviewMode}
+            legacyCaveat={legacyCaveat}
+          />
+        ) : (
+          <>
+            {deployments.length > 0 && <DeploymentTabs client:visible deployments={deployments} />}
+
+            <section class="sec">
+              <div class="head">
+                <span class="num">01</span>
+                <h2>Risk profile at a glance</h2>
+                <span class="right">
+                  {Object.values(categoryLights).filter((l) => l === 'red').length} red ·{' '}
+                  {Object.values(categoryLights).filter((l) => l === 'yellow').length} yellow ·{' '}
+                  {Object.values(categoryLights).filter((l) => l === 'green').length} green
+                </span>
+              </div>
+              <div class="catstrip">
+                {CATEGORIES.map((c) => {
+                  const l = categoryLights[c.id] ?? 'gray';
+                  const ct = taxonomyCounts[c.id] ?? 0;
+                  return (
+                    <a
+                      href={`#cat-${c.id}`}
+                      class:list={['ck', l]}
+                      title={`${c.name} · ${l}`}
+                      aria-label={`${c.name} category: ${l}, ${ct} factors`}
+                    >
+                      {ct}
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section class="sec">
+              <div class="head">
+                <span class="num">02</span>
+                <h2>Categories &amp; evidence</h2>
+                <span class="right">
+                  {TOTAL_FACTOR_COUNT} factors · {CATEGORIES.length} categories
+                </span>
+              </div>
+
+              {categoryCards.map(({ category, counts, total, light, rows, severity }) => {
+                return (
+                  <CategoryCard
+                    id={String(category.id)}
+                    name={category.name}
+                    light={light}
+                    bars={makeBars(counts)}
+                    count={`${counts.records.length} of ${total}`}
+                    severity={severity}
+                    open
+                  >
+                    <FactorTable factors={rows} />
+                  </CategoryCard>
+                );
+              })}
+            </section>
+          </>
         )
       }
-
-      <section class="sec">
-        <div class="head">
-          <span class="num">01</span>
-          <h2>Risk profile at a glance</h2>
-          <span class="right">
-            {Object.values(categoryLights).filter((l) => l === 'red').length} red ·{' '}
-            {Object.values(categoryLights).filter((l) => l === 'yellow').length} yellow ·{' '}
-            {Object.values(categoryLights).filter((l) => l === 'green').length} green
-          </span>
-        </div>
-        <div class="catstrip">
-          {
-            CATEGORIES.map((c) => {
-              const l = categoryLights[c.id] ?? 'gray';
-              const ct = taxonomyCounts[c.id] ?? 0;
-              return (
-                <a
-                  href={`#cat-${c.id}`}
-                  class:list={['ck', l]}
-                  title={`${c.name} · ${l}`}
-                  aria-label={`${c.name} category: ${l}, ${ct} factors`}
-                >
-                  {ct}
-                </a>
-              );
-            })
-          }
-        </div>
-      </section>
-
-      <section class="sec">
-        <div class="head">
-          <span class="num">02</span>
-          <h2>Categories &amp; evidence</h2>
-          <span class="right">
-            {TOTAL_FACTOR_COUNT} factors · {CATEGORIES.length} categories
-          </span>
-        </div>
-
-        {
-          CATEGORIES.map((c) => {
-            const counts = categoryRollup[c.id];
-            const total = taxonomyCounts[c.id] ?? 0;
-            const light = categoryLights[c.id] ?? 'gray';
-            const rows: FactorRow[] = counts.records
-              .sort((a, b) => {
-                const order = { red: 0, yellow: 1, gray: 2, not_assessed: 2, not_applicable: 2, green: 3 } as Record<
-                  string,
-                  number
-                >;
-                return (order[a.score] ?? 4) - (order[b.score] ?? 4);
-              })
-              .map((s) => ({
-                factor_id: s.factor_id,
-                light: s.score,
-                headline: s.factor_name,
-                evidence: s.evidence_summary,
-                gap_reason: s.gap_reason,
-                href:
-                  s.score !== 'green' && !reviewMode
-                    ? `/protocols/${slug}/factors/${s.factor_id}/`
-                    : undefined,
-              }));
-            const catSeverity = categorySeverities
-              ? (categorySeverities[String(c.id)] ?? undefined)
-              : undefined;
-            return (
-              <CategoryCard
-                id={String(c.id)}
-                name={c.name}
-                light={light}
-                bars={makeBars(counts)}
-                count={`${counts.records.length} of ${total}`}
-                severity={catSeverity}
-                open
-              >
-                <FactorTable factors={rows} />
-              </CategoryCard>
-            );
-          })
-        }
-      </section>
 
       <div class="envelope">
         <span><b>rubric_version</b> {RUBRIC_VERSION}</span>

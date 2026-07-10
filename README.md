@@ -38,6 +38,8 @@ in the [Methodology](https://defirisk.co/methodology/).
 | `db/migrations/` | Postgres schema migrations for the grading pipeline |
 | `scripts/compose.py` | Computes rubric grades from database factor scores |
 | `scripts/dump.py` | Exports versioned static JSON under `data/api/` |
+| `scripts/import-protocol-assessment.py` | Validates and imports family/surface assessment bundles |
+| `scripts/cleanup-multiversion-runtime-artifacts.py` | Audits and removes explicitly manifested legacy runtime artifacts |
 | `scripts/rubric.py` | Rubric constants, score formula, thresholds, and grade logic |
 | `scripts/refresh-continuous.py` | Refreshes selected programmatic metrics, then recomposes and exports |
 | `.github/` | CI, deploy workflow, issue templates, and contribution templates |
@@ -74,6 +76,49 @@ python scripts/dump.py
 
 `compose.py` recomputes grades from current factor scores. `dump.py` regenerates
 the static API tree consumed by the site.
+
+### Protocol families and surfaces
+
+A canonical protocol slug represents a family. A family may contain one or
+more independently scored surfaces, such as protocol versions or product
+lines. Existing protocols migrate to one primary `default` surface, so their
+current database rows, JSON endpoints, and dashboard URLs remain compatible.
+Optional legacy surface slugs export redirect-compatible JSON and history
+aliases while canonical family files expose the full `surfaces` array.
+
+Apply `db/migrations/0008_protocol_surfaces.sql` only after creating a database
+backup and restoring it into staging. The migration must be run atomically:
+
+```bash
+psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 \
+  -f db/migrations/0008_protocol_surfaces.sql
+psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 \
+  -f scripts/ci/assert-family-staging.sql
+```
+
+For a production-clone rehearsal, dump the static API before and after the
+migration, then prove that every legacy JSON file remains a recursive subset
+of the family-aware export (the only ignored value is `generated_at`):
+
+```bash
+python scripts/ci/compare-single-surface-api.py \
+  /tmp/before/api/v1.7.0 /tmp/after/api/v1.7.0
+```
+
+Assessment imports default to validation-only behavior and intentionally ignore
+`DATABASE_URL`. Use `LOCAL_DATABASE_URL`, name the expected database, and pass
+the explicit apply flag only after reviewing the dry-run output:
+
+```bash
+python scripts/import-protocol-assessment.py family-slug \
+  --grading-file path/to/grading.json --dry-run
+python scripts/import-protocol-assessment.py family-slug \
+  --grading-file path/to/grading.json --apply \
+  --expected-database risk_dashboard_family_staging
+```
+
+Protected or non-local databases require additional acknowledgement flags. Run
+each tool with `--help` for the complete guarded workflow.
 
 ## Public API
 

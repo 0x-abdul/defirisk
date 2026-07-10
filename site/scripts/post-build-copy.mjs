@@ -18,10 +18,14 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const SITE_ROOT = path.resolve(__dirname, '..');           // .../site
-const REPO_ROOT = path.resolve(SITE_ROOT, '..');           // repo root
-const SRC = path.join(REPO_ROOT, 'data', 'api');           // repo/data/api
-const DST = path.join(SITE_ROOT, 'dist', 'api');           // site/dist/api
+const SITE_ROOT = path.resolve(__dirname, '..'); // .../site
+const REPO_ROOT = path.resolve(SITE_ROOT, '..'); // repo root
+const OVERRIDE_ROOT = process.env.DEFIRISK_API_ROOT
+  ? path.resolve(process.env.DEFIRISK_API_ROOT)
+  : null;
+const SRC = OVERRIDE_ROOT ?? path.join(REPO_ROOT, 'data', 'api');
+const DST = path.join(SITE_ROOT, 'dist', 'api'); // site/dist/api
+const COPY_TARGET = OVERRIDE_ROOT ? path.join(DST, path.basename(OVERRIDE_ROOT)) : DST;
 
 async function exists(p) {
   try {
@@ -35,9 +39,7 @@ async function exists(p) {
 async function main() {
   if (!(await exists(SRC))) {
     console.error(`[post-build-copy] ERROR: source not found: ${SRC}`);
-    console.error(
-      `[post-build-copy]   Run scripts/dump.py first to generate the API JSON dumps.`,
-    );
+    console.error(`[post-build-copy]   Run scripts/dump.py first to generate the API JSON dumps.`);
     process.exit(1);
   }
   if (!(await exists(path.dirname(DST)))) {
@@ -45,8 +47,10 @@ async function main() {
     process.exit(1);
   }
 
-  await cp(SRC, DST, { recursive: true });
-  console.log(`[post-build-copy] copied ${path.relative(REPO_ROOT, SRC)} → ${path.relative(REPO_ROOT, DST)}`);
+  await cp(SRC, COPY_TARGET, { recursive: true });
+  console.log(
+    `[post-build-copy] copied ${path.relative(REPO_ROOT, SRC)} → ${path.relative(REPO_ROOT, COPY_TARGET)}`
+  );
 
   // Strip canonical-preview fixtures from dist/. They live in public/ so the
   // dev server can serve them for visual-rebuild verification, but they should

@@ -543,30 +543,56 @@ def factor_update_changed(existing: dict[str, Any], update: FactorUpdate) -> boo
 class PostgresRepository:
     def __init__(self, conn: Any) -> None:
         self.conn = conn
+        self._family_schema: bool | None = None
+
+    def family_schema_present(self) -> bool:
+        if self._family_schema is not None:
+            return self._family_schema
+        with self.conn.cursor(row_factory=dict_row) as cur:
+            cur.execute(
+                "SELECT to_regclass('public.protocol_surfaces') IS NOT NULL AS present"
+            )
+            row = cur.fetchone()
+        self._family_schema = bool(row and row["present"])
+        return self._family_schema
 
     def transaction(self) -> Any:
         return self.conn.transaction()
 
     def fetch_protocols(self, slug: str | None) -> list[dict[str, Any]]:
         with self.conn.cursor(row_factory=dict_row) as cur:
-            if slug:
+            if self.family_schema_present():
+                where = "WHERE p.slug = %s" if slug else ""
+                params = (slug,) if slug else ()
                 cur.execute(
-                    """
-                    SELECT slug, display_name, defillama_slug, primary_chain,
-                           total_value_secured_usd, has_active_incident
-                    FROM protocols
-                    WHERE slug = %s
+                    f"""
+                    SELECT p.slug, p.display_name, p.defillama_slug, p.primary_chain,
+                           p.total_value_secured_usd, p.has_active_incident,
+                           pf.primary_surface_id,
+                           count(ps.surface_id)::int AS surface_count
+                    FROM protocols p
+                    JOIN protocol_families pf ON pf.family_slug = p.slug
+                    LEFT JOIN protocol_surfaces ps ON ps.family_slug = p.slug
+                    {where}
+                    GROUP BY p.slug, pf.primary_surface_id
+                    ORDER BY p.slug
                     """,
-                    (slug,),
+                    params,
                 )
             else:
+                where = "WHERE slug = %s" if slug else ""
+                params = (slug,) if slug else ()
                 cur.execute(
-                    """
+                    f"""
                     SELECT slug, display_name, defillama_slug, primary_chain,
-                           total_value_secured_usd, has_active_incident
+                           total_value_secured_usd, has_active_incident,
+                           NULL::uuid AS primary_surface_id,
+                           1::int AS surface_count
                     FROM protocols
+                    {where}
                     ORDER BY slug
-                    """
+                    """,
+                    params,
                 )
             return cur.fetchall()
 
@@ -585,8 +611,36 @@ class PostgresRepository:
 
     def fetch_factor_scores(self, slug: str) -> dict[str, dict[str, Any]]:
         with self.conn.cursor(row_factory=dict_row) as cur:
-            cur.execute(
-                """
+            if self.family_schema_present():
+                cur.execute(
+                    """
+                    SELECT fs.id, fs.protocol_slug, fs.scope_level, fs.family_slug,
+                           fs.surface_id, fs.deployment_id, fs.factor_id,
+                           fs.rubric_version, fs.score, fs.evidence_summary,
+                           fs.evidence_detail, fs.collection_mode, fs.collected_at,
+                           fs.data_as_of, fs.collected_by, fs.notes,
+                           s.source_type, s.url AS source_url,
+                           s.reference AS source_reference, s.title AS source_title
+                    FROM factor_scores fs
+                    JOIN protocol_families pf ON pf.family_slug = fs.protocol_slug
+                    LEFT JOIN factor_score_sources fss ON fss.factor_score_id = fs.id
+                    LEFT JOIN sources s ON s.id = fss.source_id
+                    WHERE fs.protocol_slug = %s
+                      AND fs.is_current = true
+                      AND fs.scope_level <> 'deployment'
+                      AND (
+                        (fs.scope_level = 'surface' AND fs.surface_id = pf.primary_surface_id)
+                        OR (fs.scope_level = 'family' AND fs.family_slug = pf.family_slug)
+                      )
+                    ORDER BY fs.factor_id,
+                             CASE fs.scope_level WHEN 'surface' THEN 0 ELSE 1 END,
+                             fs.id, s.id
+                    """,
+                    (slug,),
+                )
+            else:
+                cur.execute(
+                    """
                 SELECT fs.id, fs.protocol_slug, fs.deployment_id, fs.factor_id,
                        fs.rubric_version, fs.score, fs.evidence_summary,
                        fs.evidence_detail, fs.collection_mode, fs.collected_at,
@@ -600,15 +654,19 @@ class PostgresRepository:
                 ORDER BY fs.factor_id, s.id
                 """,
                 (slug,),
-            )
+                )
             rows = cur.fetchall()
 
         scores: dict[str, dict[str, Any]] = {}
+        selected_ids: dict[str, Any] = {}
         for row in rows:
             factor_id = row["factor_id"]
             if factor_id not in scores:
                 scores[factor_id] = dict(row)
                 scores[factor_id]["sources"] = []
+                selected_ids[factor_id] = row["id"]
+            if row["id"] != selected_ids[factor_id]:
+                continue
             if row["source_type"] is not None:
                 scores[factor_id]["sources"].append(
                     {
@@ -656,14 +714,34 @@ class PostgresRepository:
 
     def update_protocol_tvl(self, slug: str, tvl_usd: Decimal) -> None:
         with self.conn.cursor() as cur:
+            rounded = _round_money(tvl_usd)
             cur.execute(
                 """
                 UPDATE protocols
                 SET total_value_secured_usd = %s, updated_at = now()
                 WHERE slug = %s
                 """,
-                (_round_money(tvl_usd), slug),
+                (rounded, slug),
             )
+            if self.family_schema_present():
+                cur.execute(
+                    """
+                    UPDATE protocol_families
+                    SET total_value_secured_usd = %s, updated_at = now()
+                    WHERE family_slug = %s
+                    """,
+                    (rounded, slug),
+                )
+                cur.execute(
+                    """
+                    UPDATE protocol_surfaces ps
+                    SET tvs_usd = %s, updated_at = now()
+                    FROM protocol_families pf
+                    WHERE pf.family_slug = %s
+                      AND ps.surface_id = pf.primary_surface_id
+                    """,
+                    (rounded, slug),
+                )
 
     def update_deployment_tvl(self, deployment_id: Any, tvl_usd: Decimal, share: Decimal) -> None:
         with self.conn.cursor() as cur:
@@ -731,30 +809,41 @@ class PostgresRepository:
                 "UPDATE factor_scores SET is_current = false WHERE id = %s",
                 (existing["id"],),
             )
-            cur.execute(
+            if self.family_schema_present():
+                insert_sql = """
+                    INSERT INTO factor_scores
+                        (protocol_slug, scope_level, family_slug, surface_id,
+                         deployment_id, factor_id, rubric_version,
+                         score, evidence_summary, evidence_detail, collection_mode,
+                         collected_at, collected_by, data_as_of, is_current, notes)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'programmatic',
+                            %s, %s, %s, true, %s)
+                    RETURNING id
                 """
-                INSERT INTO factor_scores
-                    (protocol_slug, deployment_id, factor_id, rubric_version,
-                     score, evidence_summary, evidence_detail, collection_mode,
-                     collected_at, collected_by, data_as_of, is_current, notes)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, 'programmatic',
-                        %s, %s, %s, true, %s)
-                RETURNING id
-                """,
-                (
-                    existing["protocol_slug"],
-                    existing["deployment_id"],
-                    update.factor_id,
-                    existing["rubric_version"],
-                    update.score,
-                    update.evidence_summary,
-                    update.evidence_detail,
-                    collected_at,
-                    COLLECTED_BY,
-                    update.data_as_of,
+                insert_params = (
+                    existing["protocol_slug"], existing.get("scope_level", "surface"),
+                    existing.get("family_slug"), existing.get("surface_id"),
+                    existing["deployment_id"], update.factor_id, existing["rubric_version"],
+                    update.score, update.evidence_summary, update.evidence_detail,
+                    collected_at, COLLECTED_BY, update.data_as_of, "continuous refresh",
+                )
+            else:
+                insert_sql = """
+                    INSERT INTO factor_scores
+                        (protocol_slug, deployment_id, factor_id, rubric_version,
+                         score, evidence_summary, evidence_detail, collection_mode,
+                         collected_at, collected_by, data_as_of, is_current, notes)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, 'programmatic',
+                            %s, %s, %s, true, %s)
+                    RETURNING id
+                """
+                insert_params = (
+                    existing["protocol_slug"], existing["deployment_id"], update.factor_id,
+                    existing["rubric_version"], update.score, update.evidence_summary,
+                    update.evidence_detail, collected_at, COLLECTED_BY, update.data_as_of,
                     "continuous refresh",
-                ),
-            )
+                )
+            cur.execute(insert_sql, insert_params)
             new_id = cur.fetchone()["id"]
             cur.executemany(
                 """
@@ -838,6 +927,16 @@ def _deployment_updates(
 ) -> tuple[list[tuple[dict[str, Any], Decimal, Decimal]], list[str]]:
     if not deployments or not metrics.chain_tvls:
         return [], []
+    chain_counts: dict[str, int] = {}
+    for deployment in deployments:
+        chain = str(deployment["chain"])
+        chain_counts[chain] = chain_counts.get(chain, 0) + 1
+    duplicate_chains = sorted(chain for chain, count in chain_counts.items() if count > 1)
+    if duplicate_chains:
+        return [], [
+            "deployment TVL skipped for chains with multiple deployment keys: "
+            + ", ".join(duplicate_chains)
+        ]
     deployment_chains = {str(dep["chain"]) for dep in deployments}
     by_chain = {str(dep["chain"]): dep for dep in deployments}
     updates: list[tuple[dict[str, Any], Decimal, Decimal]] = []
@@ -876,6 +975,12 @@ def refresh_protocol(
 ) -> ProtocolResult:
     slug = protocol["slug"]
     result = ProtocolResult(slug=slug, status="ok")
+    if int(protocol.get("surface_count") or 1) > 1:
+        result.status = "skipped"
+        result.skipped.append(
+            "multi-surface family requires an explicitly scoped refresh bundle"
+        )
+        return result
     defillama_slug = protocol.get("defillama_slug")
     if not defillama_slug:
         result.status = "skipped"
