@@ -54,6 +54,8 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      - uses: actions/checkout@v7
+
       - name: Deploy via SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -65,42 +67,20 @@ jobs:
           echo "$VPS_HOST ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpn9P0m/4sJCsgGPubzi78FvRs9Q82TtcI022O4lgwe" >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
+          scp -i /tmp/deploy_key \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=30 \
+              scripts/ci/sync-vps-checkout.sh \
+              rdapp@"$VPS_HOST":/tmp/defirisk-sync-vps-checkout.sh
+
           ssh -i /tmp/deploy_key \
               -o StrictHostKeyChecking=yes \
               -o ConnectTimeout=30 \
               rdapp@"$VPS_HOST" << 'REMOTE'
             set -euo pipefail
+            trap 'rm -f /tmp/defirisk-sync-vps-checkout.sh' EXIT
+            bash /tmp/defirisk-sync-vps-checkout.sh /opt/riskdashboard origin main
             cd /opt/riskdashboard
-
-            echo "==> Pulling latest code..."
-            # --no-rebase (merge) is required: the VPS carries local nightly
-            # data commits (data/api/) that diverge from origin/main, so a bare
-            # `git pull` errors with "Need to specify how to reconcile divergent
-            # branches". Merge lets the local data commits coexist with incoming
-            # code; --ff-only was removed earlier for the same reason (a187fce5).
-            # The merge needs a committer identity; the rdapp user has none
-            # configured, so set a repo-local one (idempotent) before pulling.
-            git config user.email "deploy@defirisk.co"
-            git config user.name "RiskDashboard Deploy"
-
-            # History-rewrite guard: normally we merge-pull (above). But if main's
-            # history was rewritten upstream (e.g. a force-push to strip commit
-            # trailers), the previous origin tip is no longer an ancestor of the
-            # new one, and a merge would create a tangled commit or hard conflict
-            # (the divergent-branch failure from #11/#15). Detect that and instead
-            # hard-reset to origin/main. The local data commits dropped here are
-            # regenerated on the next nightly run, so this is safe.
-            prev_remote=$(git rev-parse origin/main)
-            git fetch origin main
-            if git ls-files -u | grep -q .; then
-              echo "==> VPS checkout has unresolved merge files; hard-resetting (data regenerates below)"
-              git reset --hard origin/main
-            elif git merge-base --is-ancestor "$prev_remote" origin/main; then
-              git pull --no-rebase origin main
-            else
-              echo "==> origin/main was rewritten upstream; hard-resetting (data regenerates nightly)"
-              git reset --hard origin/main
-            fi
 
             echo "==> Regenerating API export..."
             if [ -f .env ]; then
