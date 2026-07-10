@@ -1,0 +1,29 @@
+---
+import ProtocolDetailLayout from '../../../components/ProtocolDetailLayout.astro';
+import { listPublishedProtocolSlugs, getProtocol } from '../../../lib/data-loaders';
+
+export async function getStaticPaths() {
+  // Published protocols only - unpublished ones render at /unpublished/<slug>-<token>/.
+  return listPublishedProtocolSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params as { slug: string };
+const detail = getProtocol(slug);
+
+if (!detail) {
+  return Astro.redirect('/404');
+}
+
+const proto = detail.protocol as Record<string, unknown>;
+const canonicalFamily = proto.canonical_family_slug as string | undefined;
+if (canonicalFamily && canonicalFamily !== slug) {
+  const selectedSurface = proto.selected_surface_slug as string | undefined;
+  let redirectPath = `/protocols/${canonicalFamily}/`;
+  if (selectedSurface) {
+    redirectPath += `?surface=${encodeURIComponent(selectedSurface)}`;
+  }
+  return Astro.redirect(redirectPath);
+}
+---
+
+<ProtocolDetailLayout detail={detail} />

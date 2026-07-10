@@ -97,6 +97,20 @@ class EventRepository:
                 """,
                 (has_active_incident, slug),
             )
+            cur.execute(
+                "SELECT to_regclass('public.protocol_families') IS NOT NULL AS present"
+            )
+            row = cur.fetchone()
+            family_table_present = bool(row["present"] if isinstance(row, dict) else row[0])
+            if family_table_present:
+                cur.execute(
+                    """
+                    UPDATE protocol_families
+                    SET has_active_incident = %s, updated_at = now()
+                    WHERE family_slug = %s
+                    """,
+                    (has_active_incident, slug),
+                )
 
     def create_pipeline_run(self, triggered_by: str) -> Any | None:
         try:

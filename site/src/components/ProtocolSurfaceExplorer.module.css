@@ -1,0 +1,387 @@
+.shell {
+  display: grid;
+  gap: 22px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 28px 0 2px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.tab {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab:hover,
+.tab.active {
+  background: var(--surface-2);
+  color: var(--fg);
+}
+
+.section {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+}
+
+.sectionHead,
+.surfaceHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.sectionHead h2,
+.surfaceHead h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.surfaceHead p,
+.sectionHead > span:last-child {
+  margin: 6px 0 0;
+  color: var(--fg-3);
+  font-size: 12px;
+}
+
+.num {
+  display: inline-block;
+  margin: 2px 0 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--fg-4);
+}
+
+.caveat {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--gD);
+  background: color-mix(in srgb, var(--gD) 8%, transparent);
+  color: var(--fg-2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.compare {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.compare th,
+.compare td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.compare th {
+  color: var(--fg-3);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.compare tr:last-child td {
+  border-bottom: 0;
+}
+
+.linkButton {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--border-2);
+  text-underline-offset: 3px;
+}
+
+.status {
+  text-transform: capitalize;
+  color: var(--fg-2);
+}
+
+.grade {
+  font-family: 'Geist Mono', monospace;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.gradeBox {
+  min-width: 88px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: right;
+  background: var(--surface);
+}
+
+.gradeBox span {
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.gradeBox b {
+  display: block;
+  margin-top: 4px;
+  color: var(--fg-3);
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+}
+
+.chainSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.chainButton {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--fg-2);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.chainButton:hover,
+.chainActive {
+  border-color: var(--fg-3);
+  color: var(--fg);
+  background: var(--surface-2);
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metrics span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: baseline;
+  min-height: 28px;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--fg-3);
+  font-size: 12px;
+}
+
+.metrics b {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(46px, 1fr));
+  gap: 6px;
+}
+
+.categoryPill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--fg-2);
+  background: var(--surface);
+}
+
+.categoryPill span {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.categoryPill b {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+}
+
+.red {
+  --tone: var(--gF);
+}
+
+.yellow {
+  --tone: var(--gD);
+}
+
+.green {
+  --tone: var(--gA);
+}
+
+.gray,
+.not_assessed,
+.not_applicable {
+  --tone: var(--fg-4);
+}
+
+.categoryPill.red,
+.categoryPill.yellow,
+.categoryPill.green,
+.categoryPill.gray {
+  border-color: color-mix(in srgb, var(--tone) 32%, var(--border));
+  box-shadow: inset 0 3px 0 var(--tone);
+}
+
+.factorGroups {
+  display: grid;
+  gap: 18px;
+}
+
+.factorGroup {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.factorGroup header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.factorGroup h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--fg);
+}
+
+.factorGroup header span {
+  color: var(--fg-3);
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+}
+
+.factorRows {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.factorRow {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 54px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.factorRow:hover {
+  background: var(--surface-2);
+}
+
+.scoreDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tone);
+}
+
+.factorMain {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.factorMain b {
+  color: var(--fg);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.factorMain small {
+  color: var(--fg-3);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.factorScore {
+  color: var(--fg-3);
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .tab {
+    flex: 0 0 auto;
+  }
+
+  .surfaceHead,
+  .sectionHead {
+    display: block;
+  }
+
+  .gradeBox {
+    margin-top: 12px;
+    text-align: left;
+  }
+
+  .factorRow {
+    grid-template-columns: 10px minmax(0, 1fr);
+  }
+
+  .factorScore {
+    grid-column: 2;
+  }
+}

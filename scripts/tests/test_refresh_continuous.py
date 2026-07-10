@@ -251,6 +251,46 @@ def test_all_mode_keeps_per_protocol_failures_nonfatal() -> None:
     assert results[1].error is None
 
 
+def test_multi_surface_family_is_skipped_before_fetch() -> None:
+    repo = FakeRepo()
+    called = False
+
+    def fetcher(slug: str):
+        nonlocal called
+        called = True
+        return llama_payload()
+
+    result = refresh.refresh_protocol(
+        repo=repo,
+        protocol={
+            "slug": "example",
+            "surface_count": 2,
+            "defillama_slug": "example",
+        },
+        dry_run=False,
+        fetcher=fetcher,
+    )
+
+    assert result.status == "skipped"
+    assert "explicitly scoped refresh bundle" in result.skipped[0]
+    assert called is False
+
+
+def test_duplicate_chain_deployments_are_not_collapsed() -> None:
+    deployments = [
+        {"id": "one", "chain": "ethereum", "deployment_key": "one"},
+        {"id": "two", "chain": "ethereum", "deployment_key": "two"},
+    ]
+
+    updates, skipped = refresh._deployment_updates(
+        deployments,
+        refresh.parse_defillama_payload(llama_payload()),
+    )
+
+    assert updates == []
+    assert "multiple deployment keys" in skipped[0]
+
+
 def test_days_since_exploit_scoring() -> None:
     assert refresh._score_days_since_exploit(True, None) == "red"
     assert refresh._score_days_since_exploit(False, None) == "green"

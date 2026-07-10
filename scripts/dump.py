@@ -46,6 +46,7 @@ except ImportError:
 
 RUBRIC_VERSION = "v1.7.0"
 API_PATH = Path("data") / "api" / RUBRIC_VERSION
+CAT4_EVENT_CASCADE = frozenset({"RD-F-063", "RD-F-066", "RD-F-067"})
 
 
 # ---------------------------------------------------------------------------
@@ -179,11 +180,48 @@ def fetch_protocols(cur: Any) -> list[dict]:
     return cur.fetchall()
 
 
+def fetch_families_by_slug(cur: Any) -> dict[str, dict]:
+    cur.execute(
+        """
+        SELECT
+            family_slug, display_name, description, homepage_url,
+            protocol_type, primary_chain, primary_surface_id::text AS primary_surface_id,
+            headline_grade, total_value_secured_usd, risk_score,
+            category_severities, cap_applied, cap_reason, graded_at,
+            rubric_version, status, has_active_incident, is_published,
+            legacy_caveat, created_at, updated_at
+        FROM protocol_families
+        ORDER BY family_slug
+        """
+    )
+    return {row["family_slug"]: dict(row) for row in cur.fetchall()}
+
+
+def fetch_surfaces_by_family(cur: Any) -> dict[str, list[dict]]:
+    cur.execute(
+        """
+        SELECT
+            surface_id::text AS surface_id, family_slug, surface_slug,
+            display_name, status, launched_at, primary_chain, tvs_usd,
+            headline_grade, risk_score, category_severities, cap_applied,
+            cap_reason, graded_at, rubric_version, scope_note, is_primary,
+            legacy_slug, created_at, updated_at
+        FROM protocol_surfaces
+        ORDER BY family_slug, is_primary DESC, surface_slug
+        """
+    )
+    result: dict[str, list[dict]] = {}
+    for row in cur.fetchall():
+        result.setdefault(row["family_slug"], []).append(dict(row))
+    return result
+
+
 def fetch_deployments_by_protocol(cur: Any) -> dict[str, list[dict]]:
     cur.execute(
         """
         SELECT
-            id, protocol_slug, chain, anchor_address, display_name,
+            id, protocol_slug, surface_id::text AS surface_id, deployment_key,
+            chain, anchor_address, display_name,
             tvs_usd, tvs_share, letter, category_grid,
             deployed_at, created_at, updated_at
         FROM deployments
@@ -208,6 +246,9 @@ def fetch_factor_scores_by_protocol(cur: Any) -> dict[str, list[dict]]:
         SELECT
             fs.id           AS score_id,
             fs.protocol_slug,
+            fs.scope_level,
+            fs.family_slug,
+            fs.surface_id::text AS surface_id,
             fs.deployment_id,
             fs.factor_id,
             fs.score,
@@ -247,6 +288,10 @@ def fetch_factor_scores_by_protocol(cur: Any) -> dict[str, list[dict]]:
         if score_id not in by_slug[slug]:
             by_slug[slug][score_id] = {
                 "factor_id": row["factor_id"],
+                "score_id": str(row["score_id"]),
+                "scope_level": row["scope_level"],
+                "family_slug": row["family_slug"],
+                "surface_id": row["surface_id"],
                 "deployment_id": str(row["deployment_id"]) if row["deployment_id"] else None,
                 "score": row["score"],
                 "evidence_summary": row["evidence_summary"],
@@ -282,10 +327,11 @@ def fetch_grade_history_by_protocol(cur: Any) -> dict[str, list[dict]]:
     cur.execute(
         """
         SELECT
-            protocol_slug, deployment_id, rubric_version,
+            protocol_slug, deployment_id, scope_level, family_slug, surface_id::text AS surface_id,
+            rubric_version,
             letter, critical_flag_count, red_category_count,
             yellow_category_count, gray_on_core_five,
-            risk_score, cap_applied, cap_reason,
+            risk_score, category_severities, cap_applied, cap_reason,
             graded_at, triggered_by, notes
         FROM grade_history
         ORDER BY protocol_slug, graded_at DESC
@@ -303,11 +349,15 @@ def fetch_grade_history_by_protocol(cur: Any) -> dict[str, list[dict]]:
             "gray_on_core_five": row["gray_on_core_five"],
             # v1.7.0 M1 fields (nullable for pre-v1.7.0 history rows)
             "risk_score": float(row["risk_score"]) if row["risk_score"] is not None else None,
+            "category_severities": row["category_severities"],
             "cap_applied": row["cap_applied"],
             "cap_reason": row["cap_reason"],
             "graded_at": row["graded_at"],
             "triggered_by": row["triggered_by"],
             "notes": row["notes"],
+            "scope_level": row["scope_level"],
+            "family_slug": row["family_slug"],
+            "surface_id": row["surface_id"],
             "deployment_id": str(row["deployment_id"]) if row["deployment_id"] else None,
             "rubric_version": row["rubric_version"],
         }
@@ -386,25 +436,44 @@ def fetch_factor_scores_by_factor(cur: Any) -> dict[str, list[dict]]:
     """
     cur.execute(
         """
-        SELECT
-            fs.factor_id,
-            fs.protocol_slug,
-            p.display_name AS protocol_name,
-            p.primary_chain,
-            fs.deployment_id,
-            fs.score,
-            fs.evidence_summary,
-            fs.evidence_detail,
-            fs.collection_mode,
-            fs.collected_at,
-            fs.data_as_of,
-            fs.collected_by,
-            fs.gap_reason    -- PD-039 (2026-05-11)
-        FROM factor_scores fs
-        LEFT JOIN protocols p ON p.slug = fs.protocol_slug
-        WHERE fs.is_current = true
-          AND p.is_published = true   -- never expose unpublished protocols in cross-factor tables
-        ORDER BY fs.factor_id, p.display_name NULLS LAST
+        WITH candidate_scores AS (
+            SELECT
+                fs.factor_id,
+                fs.protocol_slug,
+                p.display_name AS protocol_name,
+                p.primary_chain,
+                fs.scope_level,
+                fs.family_slug,
+                fs.surface_id::text AS surface_id,
+                fs.deployment_id,
+                fs.score,
+                fs.evidence_summary,
+                fs.evidence_detail,
+                fs.collection_mode,
+                fs.collected_at,
+                fs.data_as_of,
+                fs.collected_by,
+                fs.gap_reason,
+                CASE
+                    WHEN fs.scope_level = 'surface' AND fs.surface_id = pf.primary_surface_id THEN 2
+                    WHEN fs.scope_level = 'family' AND fs.family_slug = pf.family_slug THEN 1
+                    ELSE 0
+                END AS precedence
+            FROM factor_scores fs
+            JOIN protocols p ON p.slug = fs.protocol_slug
+            JOIN protocol_families pf ON pf.family_slug = p.slug
+            WHERE fs.is_current = true
+              AND p.is_published = true
+        ),
+        effective_scores AS (
+            SELECT DISTINCT ON (protocol_slug, factor_id) *
+            FROM candidate_scores
+            WHERE precedence > 0
+            ORDER BY protocol_slug, factor_id, precedence DESC, collected_at DESC
+        )
+        SELECT *
+        FROM effective_scores
+        ORDER BY factor_id, protocol_name NULLS LAST
         """
     )
     rows = cur.fetchall()
@@ -415,6 +484,9 @@ def fetch_factor_scores_by_factor(cur: Any) -> dict[str, list[dict]]:
             "protocol_slug": row["protocol_slug"],
             "protocol_name": row["protocol_name"],
             "primary_chain": row["primary_chain"],
+            "scope_level": row["scope_level"],
+            "family_slug": row["family_slug"],
+            "surface_id": row["surface_id"],
             "deployment_id": str(row["deployment_id"]) if row["deployment_id"] else None,
             "score": row["score"],
             "evidence_summary": row["evidence_summary"],
@@ -483,12 +555,15 @@ def fetch_all_grade_snapshots(cur: Any, limit_per_protocol: int = 365) -> dict[s
                    grade_letter, critical_count, red_count,
                    yellow_count, gray_core_five
             FROM (
-                SELECT *,
+                SELECT pgh.*,
                        ROW_NUMBER() OVER (
-                           PARTITION BY protocol_slug
+                           PARTITION BY pgh.protocol_slug
                            ORDER BY snapshot_date DESC
                        ) AS rn
-                FROM protocol_grade_history
+                FROM protocol_grade_history pgh
+                JOIN protocol_families pf ON pf.family_slug = pgh.protocol_slug
+                WHERE pgh.scope_level = 'surface'
+                  AND pgh.surface_id = pf.primary_surface_id
             ) sub
             WHERE rn <= %s
             ORDER BY protocol_slug, snapshot_date ASC
@@ -514,12 +589,52 @@ def fetch_all_grade_snapshots(cur: Any, limit_per_protocol: int = 365) -> dict[s
         return {}
 
 
+def fetch_grade_snapshots_by_surface(cur: Any, limit_per_surface: int = 365) -> dict[str, list[dict]]:
+    """Fetch scoped daily snapshots keyed by surface UUID, oldest first."""
+    cur.execute(
+        """
+        SELECT surface_id::text AS surface_id, snapshot_date, rubric_version,
+               grade_letter, critical_count, red_count, yellow_count, gray_core_five
+        FROM (
+            SELECT pgh.*,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY pgh.protocol_slug, pgh.surface_id
+                       ORDER BY snapshot_date DESC
+                   ) AS rn
+            FROM protocol_grade_history pgh
+            WHERE pgh.scope_level = 'surface'
+              AND pgh.surface_id IS NOT NULL
+        ) scoped
+        WHERE rn <= %s
+        ORDER BY surface_id, snapshot_date ASC
+        """,
+        (limit_per_surface,),
+    )
+    result: dict[str, list[dict]] = {}
+    for row in cur.fetchall():
+        result.setdefault(row["surface_id"], []).append(
+            {
+                "snapshot_date": row["snapshot_date"],
+                "rubric_version": row["rubric_version"],
+                "grade_letter": row["grade_letter"],
+                "critical_count": row["critical_count"],
+                "red_count": row["red_count"],
+                "yellow_count": row["yellow_count"],
+                "gray_core_five": row["gray_core_five"],
+            }
+        )
+    return result
+
+
 def fetch_grade_changes(cur: Any, limit: int = 200) -> list[dict]:
     """Fetch the most recent grade change events for the /changes/ feed."""
     try:
         cur.execute(
             """
             SELECT gc.id, gc.protocol_slug, p.display_name AS protocol_name,
+                   gc.scope_level, gc.family_slug,
+                   gc.surface_id::text AS surface_id,
+                   gc.deployment_id::text AS deployment_id,
                    gc.detected_at, gc.from_grade, gc.to_grade,
                    gc.rubric_version,
                    gc.snapshot_date_before, gc.snapshot_date_after,
@@ -547,6 +662,195 @@ def fetch_active_incidents(cur: Any) -> list[dict]:
         """
     )
     return cur.fetchall()
+
+
+def _primary_surface(surfaces: list[dict]) -> dict | None:
+    for surface in surfaces:
+        if surface.get("is_primary"):
+            return surface
+    return surfaces[0] if surfaces else None
+
+
+def _legacy_alias_targets(surfaces_by_slug: dict[str, list[dict]]) -> dict[str, str]:
+    return {
+        surface["legacy_slug"]: family_slug
+        for family_slug, family_surfaces in surfaces_by_slug.items()
+        for surface in family_surfaces
+        if surface.get("legacy_slug") and surface.get("legacy_slug") != family_slug
+    }
+
+
+def _surfaces_with_current_scores(surfaces: list[dict], factor_scores: list[dict]) -> list[dict]:
+    scored_surface_ids = {
+        score.get("surface_id")
+        for score in factor_scores
+        if score.get("scope_level") in {"surface", "deployment"}
+        and score.get("surface_id")
+    }
+    family_scored = any(score.get("scope_level") == "family" for score in factor_scores)
+    filtered = [
+        surface
+        for surface in surfaces
+        if (
+            surface.get("status") != "deprecated"
+            or surface.get("is_primary")
+            or surface.get("surface_id") in scored_surface_ids
+        )
+        and (
+            surface.get("is_primary")
+            or family_scored
+            or surface.get("surface_id") in scored_surface_ids
+        )
+    ]
+    return filtered or surfaces
+
+
+def _effective_surface_scores(factor_scores: list[dict], surface_id: str) -> list[dict]:
+    effective: OrderedDict[str, dict] = OrderedDict()
+    for score in factor_scores:
+        if score.get("scope_level") == "family":
+            effective[score["factor_id"]] = dict(score)
+    for score in factor_scores:
+        if score.get("scope_level") == "surface" and score.get("surface_id") == surface_id:
+            effective[score["factor_id"]] = dict(score)
+    return sorted(effective.values(), key=lambda score: score["factor_id"])
+
+
+def _deployment_overrides(factor_scores: list[dict], deployment_id: str) -> list[dict]:
+    return sorted(
+        [
+            dict(score)
+            for score in factor_scores
+            if score.get("scope_level") == "deployment"
+            and score.get("deployment_id") == deployment_id
+        ],
+        key=lambda score: score["factor_id"],
+    )
+
+
+def _effective_deployment_scores(
+    surface_scores: list[dict],
+    factor_scores: list[dict],
+    deployment_id: str,
+) -> list[dict]:
+    effective = OrderedDict((score["factor_id"], dict(score)) for score in surface_scores)
+    for score in _deployment_overrides(factor_scores, deployment_id):
+        effective[score["factor_id"]] = score
+    return list(effective.values())
+
+
+def _category_severities_for_scores(
+    scores: list[dict],
+    factor_categories: dict[str, int],
+    *,
+    has_active_incident: bool,
+) -> dict[str, float]:
+    counts: dict[int, dict[str, int]] = {}
+    for score in scores:
+        factor_id = score.get("factor_id")
+        category_id = factor_categories.get(factor_id)
+        color = score.get("score")
+        if (
+            has_active_incident
+            and category_id == 4
+            and factor_id in CAT4_EVENT_CASCADE
+            and color == "red"
+        ):
+            color = "yellow"
+        if category_id is None or color not in {"green", "yellow", "red"}:
+            continue
+        category = counts.setdefault(category_id, {"green": 0, "yellow": 0, "red": 0})
+        category[color] += 1
+
+    severities: dict[str, float] = {}
+    for category_id, category in counts.items():
+        denominator = category["green"] + category["yellow"] + category["red"]
+        if denominator == 0:
+            continue
+        severity = (
+            (category["red"] * 3 + category["yellow"])
+            / (denominator * 3)
+            * 100.0
+        )
+        severities[str(category_id)] = severity
+    return severities
+
+
+def _compat_factor_scores(scores: list[dict]) -> list[dict]:
+    """Preserve the legacy top-level factor_scores shape for default views."""
+    compat: list[dict] = []
+    for score in scores:
+        row = dict(score)
+        for key in ("score_id", "scope_level", "family_slug", "surface_id"):
+            row.pop(key, None)
+        compat.append(row)
+    return compat
+
+
+def _compat_grade_history(history: list[dict]) -> list[dict]:
+    compat: list[dict] = []
+    for entry in history:
+        row = dict(entry)
+        for key in ("scope_level", "family_slug", "surface_id", "category_severities"):
+            row.pop(key, None)
+        compat.append(row)
+    return compat
+
+
+def _surface_grade_history(grade_history: list[dict], surface_id: str) -> list[dict]:
+    return [
+        dict(entry)
+        for entry in grade_history
+        if entry.get("scope_level") == "surface" and entry.get("surface_id") == surface_id
+    ]
+
+
+def build_surface_payloads(
+    surfaces: list[dict],
+    factor_scores: list[dict],
+    deployments: list[dict],
+    grade_history: list[dict],
+    factor_categories: dict[str, int] | None = None,
+    *,
+    has_active_incident: bool = False,
+) -> list[dict]:
+    factor_categories = factor_categories or {}
+    payloads: list[dict] = []
+    for surface in surfaces:
+        surface_id = surface["surface_id"]
+        surface_deployments = [
+            dict(dep) for dep in deployments if dep.get("surface_id") == surface_id
+        ]
+        surface_scores = _effective_surface_scores(factor_scores, surface_id)
+        deployment_scores: dict[str, list[dict]] = {}
+        deployment_category_severities: dict[str, dict[str, float]] = {}
+        deployment_overrides: dict[str, list[dict]] = {}
+        for dep in surface_deployments:
+            dep_id = str(dep["id"])
+            overrides = _deployment_overrides(factor_scores, dep_id)
+            effective_deployment_scores = surface_scores
+            if overrides:
+                deployment_overrides[dep_id] = overrides
+                effective_deployment_scores = _effective_deployment_scores(
+                    surface_scores,
+                    factor_scores,
+                    dep_id,
+                )
+                deployment_scores[dep_id] = effective_deployment_scores
+            deployment_category_severities[dep_id] = _category_severities_for_scores(
+                effective_deployment_scores,
+                factor_categories,
+                has_active_incident=has_active_incident,
+            )
+        payload = dict(surface)
+        payload["deployments"] = surface_deployments
+        payload["factor_scores"] = surface_scores
+        payload["deployment_overrides"] = deployment_overrides
+        payload["deployment_factor_scores"] = deployment_scores
+        payload["deployment_category_severities"] = deployment_category_severities
+        payload["grade_history"] = _surface_grade_history(grade_history, surface_id)
+        payloads.append(payload)
+    return payloads
 
 
 def fetch_pipeline_runs(cur: Any, limit: int = 30) -> list[dict]:
@@ -881,6 +1185,8 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             data_as_of = fetch_data_as_of(cur)
 
             protocols = fetch_protocols(cur)
+            families_by_slug = fetch_families_by_slug(cur)
+            surfaces_by_slug = fetch_surfaces_by_family(cur)
             deployments_by_slug = fetch_deployments_by_protocol(cur)
             factor_scores_by_slug = fetch_factor_scores_by_protocol(cur)
             grade_history_by_slug = fetch_grade_history_by_protocol(cur)
@@ -893,6 +1199,7 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             active_incidents = fetch_active_incidents(cur)
             pipeline_runs = fetch_pipeline_runs(cur)
             grade_snapshots_by_slug = fetch_all_grade_snapshots(cur)
+            grade_snapshots_by_surface = fetch_grade_snapshots_by_surface(cur)
             grade_changes = fetch_grade_changes(cur)
 
     conn.close()
@@ -919,7 +1226,6 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
 
     api_dir = out_root / "api" / RUBRIC_VERSION
     print(f"\nWriting files under {api_dir}/")
-
     # ------------------------------------------------------------------
     # 0. Prune stale per-protocol files.
     #
@@ -944,12 +1250,23 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
     for p in protocols:
         if not p.get("is_published"):
             continue
+        family = families_by_slug.get(p["slug"], {})
+        surfaces = _surfaces_with_current_scores(
+            surfaces_by_slug.get(p["slug"], []),
+            factor_scores_by_slug.get(p["slug"], []),
+        )
+        primary_surface = _primary_surface(surfaces)
         index_protocols.append(
             {
                 "slug": p["slug"],
                 "display_name": p["display_name"],
                 "protocol_type": p["protocol_type"],
                 "primary_chain": p["primary_chain"],
+                "surface_count": len(surfaces) or 1,
+                "primary_surface_slug": (
+                    primary_surface.get("surface_slug") if primary_surface else "default"
+                ),
+                "legacy_caveat": family.get("legacy_caveat"),
                 "headline_grade": p["headline_grade"],
                 "total_value_secured_usd": p["total_value_secured_usd"],
                 "graded_at": p["graded_at"],
@@ -982,8 +1299,14 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
     # /unpublished/ URL.
     # ------------------------------------------------------------------
     unpublished_count = 0
+    published_protocol_slugs = {p["slug"] for p in protocols if p.get("is_published")}
+    legacy_alias_targets = _legacy_alias_targets(surfaces_by_slug)
+    factor_categories = {factor["id"]: int(factor["category_id"]) for factor in factors}
+    alias_count = 0
     for p in protocols:
         slug = p["slug"]
+        if slug in legacy_alias_targets:
+            continue
         is_pub = bool(p.get("is_published"))
         protocol_dict = dict(p)
         review_token = protocol_dict.get("review_token")
@@ -993,12 +1316,91 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             protocol_dict.pop("review_token", None)
 
         # Convert any UUID-ish deployment_id values to strings in nested data
-        factor_scores = factor_scores_by_slug.get(slug, [])
-        grade_history = grade_history_by_slug.get(slug, [])
-        deps = deployments_by_slug.get(slug, [])
+        raw_factor_scores = factor_scores_by_slug.get(slug, [])
+        raw_grade_history = grade_history_by_slug.get(slug, [])
+        raw_deps = deployments_by_slug.get(slug, [])
+        family = families_by_slug.get(slug)
+        surfaces = _surfaces_with_current_scores(
+            surfaces_by_slug.get(slug, []),
+            raw_factor_scores,
+        )
+
+        if family is None:
+            family = {
+                "family_slug": slug,
+                "display_name": p["display_name"],
+                "description": p.get("description"),
+                "homepage_url": p.get("homepage_url"),
+                "protocol_type": p.get("protocol_type"),
+                "primary_chain": p.get("primary_chain"),
+                "primary_surface_id": None,
+                "legacy_caveat": None,
+            }
+
+        if not surfaces:
+            surfaces = [
+                {
+                    "surface_id": None,
+                    "family_slug": slug,
+                    "surface_slug": "default",
+                    "display_name": p["display_name"],
+                    "status": "active",
+                    "launched_at": p.get("launched_at"),
+                    "primary_chain": p.get("primary_chain"),
+                    "tvs_usd": p.get("total_value_secured_usd"),
+                    "headline_grade": p.get("headline_grade"),
+                    "risk_score": p.get("risk_score"),
+                    "category_severities": p.get("category_severities"),
+                    "cap_applied": p.get("cap_applied"),
+                    "cap_reason": p.get("cap_reason"),
+                    "graded_at": p.get("graded_at"),
+                    "rubric_version": p.get("rubric_version"),
+                    "scope_note": None,
+                    "is_primary": True,
+                    "legacy_slug": slug,
+                }
+            ]
+
+        primary_surface = _primary_surface(surfaces)
+        primary_surface_id = primary_surface.get("surface_id") if primary_surface else None
+        surface_payloads = build_surface_payloads(
+            surfaces,
+            raw_factor_scores,
+            raw_deps,
+            raw_grade_history,
+            factor_categories,
+            has_active_incident=bool(p.get("has_active_incident")),
+        )
+        primary_payload = next(
+            (
+                surface
+                for surface in surface_payloads
+                if surface.get("surface_id") == primary_surface_id
+            ),
+            surface_payloads[0] if surface_payloads else None,
+        )
+        factor_scores = (
+            _compat_factor_scores(primary_payload.get("factor_scores", []))
+            if primary_payload
+            else _compat_factor_scores(raw_factor_scores)
+        )
+        grade_history = (
+            _compat_grade_history(primary_payload.get("grade_history", []))
+            if primary_payload
+            else _compat_grade_history(raw_grade_history)
+        )
+        deps = primary_payload.get("deployments", []) if primary_payload else raw_deps
+
+        protocol_dict["primary_surface_slug"] = (
+            primary_surface.get("surface_slug") if primary_surface else "default"
+        )
+        protocol_dict["legacy_caveat"] = family.get("legacy_caveat")
+        protocol_dict["surface_count"] = len(surfaces)
 
         blob = {
             "protocol": protocol_dict,
+            "family": family,
+            "surfaces": surface_payloads,
             "deployments": deps,
             "factor_scores": factor_scores,
             "grade_history": grade_history,
@@ -1039,6 +1441,66 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             dry_run,
         )
 
+        if is_pub:
+            for surface in surface_payloads:
+                legacy_slug = surface.get("legacy_slug")
+                if not legacy_slug or legacy_slug == slug or legacy_slug in published_protocol_slugs:
+                    continue
+                alias_protocol = dict(protocol_dict)
+                alias_protocol["slug"] = legacy_slug
+                alias_protocol["canonical_family_slug"] = slug
+                alias_protocol["selected_surface_slug"] = surface.get("surface_slug")
+                alias_protocol["primary_surface_slug"] = protocol_dict.get("primary_surface_slug")
+                alias_protocol["display_name"] = surface.get("display_name") or alias_protocol.get("display_name")
+                alias_protocol["primary_chain"] = surface.get("primary_chain") or alias_protocol.get("primary_chain")
+                alias_protocol["launched_at"] = surface.get("launched_at") or alias_protocol.get("launched_at")
+                alias_protocol["total_value_secured_usd"] = (
+                    surface.get("tvs_usd")
+                    if surface.get("tvs_usd") is not None
+                    else alias_protocol.get("total_value_secured_usd")
+                )
+                alias_protocol["headline_grade"] = surface.get("headline_grade") or alias_protocol.get("headline_grade")
+                alias_protocol["risk_score"] = (
+                    surface.get("risk_score")
+                    if surface.get("risk_score") is not None
+                    else alias_protocol.get("risk_score")
+                )
+                alias_protocol["category_severities"] = (
+                    surface.get("category_severities")
+                    if surface.get("category_severities") is not None
+                    else alias_protocol.get("category_severities")
+                )
+                alias_protocol["cap_applied"] = surface.get("cap_applied") or alias_protocol.get("cap_applied")
+                alias_protocol["cap_reason"] = (
+                    surface.get("cap_reason")
+                    if surface.get("cap_reason") is not None
+                    else alias_protocol.get("cap_reason")
+                )
+                alias_protocol["graded_at"] = surface.get("graded_at") or alias_protocol.get("graded_at")
+                alias_protocol["rubric_version"] = surface.get("rubric_version") or alias_protocol.get("rubric_version")
+                alias_blob = {
+                    "protocol": alias_protocol,
+                    "family": family,
+                    "surfaces": surface_payloads,
+                    "deployments": surface.get("deployments", []),
+                    "factor_scores": _compat_factor_scores(surface.get("factor_scores", [])),
+                    "grade_history": _compat_grade_history(surface.get("grade_history", [])),
+                }
+                write_json(
+                    api_dir / "protocols" / f"{legacy_slug}.json",
+                    make_envelope(
+                        {"protocol_data": alias_blob},
+                        data_as_of,
+                        generated_at,
+                        risk_score=surface.get("risk_score"),
+                        category_severities=surface.get("category_severities"),
+                        cap_applied=surface.get("cap_applied"),
+                        cap_reason=surface.get("cap_reason"),
+                    ),
+                    dry_run,
+                )
+                alias_count += 1
+
     # ------------------------------------------------------------------
     # 2b. protocols/<slug>/history.json — daily grade snapshot series (E-32)
     #
@@ -1050,6 +1512,8 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
     history_files = 0
     for p in protocols:
         slug = p["slug"]
+        if slug in legacy_alias_targets:
+            continue
         snapshots = grade_snapshots_by_slug.get(slug, [])
         if not snapshots:
             continue
@@ -1086,6 +1550,48 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             target = api_dir / "unpublished" / f"{slug}-{review_token}" / "history.json"
         write_json(target, envelope, dry_run)
         history_files += 1
+
+    # Preserve legacy history endpoints for surface aliases. The canonical
+    # family history remains the primary surface series.
+    for p in protocols:
+        if not p.get("is_published"):
+            continue
+        family_slug = p["slug"]
+        for surface in surfaces_by_slug.get(family_slug, []):
+            legacy_slug = surface.get("legacy_slug")
+            surface_id = surface.get("surface_id")
+            if (
+                not legacy_slug
+                or legacy_slug == family_slug
+                or legacy_slug in published_protocol_slugs
+                or not surface_id
+            ):
+                continue
+            snapshots = grade_snapshots_by_surface.get(surface_id, [])
+            if not snapshots:
+                continue
+            series_window = {
+                "from": str(snapshots[0]["snapshot_date"]),
+                "to": str(snapshots[-1]["snapshot_date"]),
+            }
+            write_json(
+                api_dir / "protocols" / legacy_slug / "history.json",
+                {
+                    "rubric_version": RUBRIC_VERSION,
+                    "data_as_of": data_as_of,
+                    "generated_at": generated_at,
+                    "series_window": series_window,
+                    "data": {
+                        "protocol_slug": legacy_slug,
+                        "canonical_family_slug": family_slug,
+                        "selected_surface_slug": surface.get("surface_slug"),
+                        "series_window": series_window,
+                        "series": snapshots,
+                    },
+                },
+                dry_run,
+            )
+            history_files += 1
 
     # ------------------------------------------------------------------
     # 2c. history.json — fleet-wide grade snapshot index (E-32)
@@ -1352,6 +1858,7 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
     print(
         f"\nDone."
         f"\n  protocols     : {published_count} published in protocols/, {unpublished_count} in unpublished/ ({len(protocols)} total)"
+        f"\n  aliases       : {alias_count} legacy surface alias files"
         f"\n  history.json  : {history_files} per-protocol + 1 fleet index"
         f"\n  factors       : {len(factors)} per-factor + 1 index"
         f"\n  hacks         : {len(hacks)} per-hack + 1 index"

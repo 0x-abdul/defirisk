@@ -21,6 +21,32 @@ class FakeRepo:
         self.updates.append((slug, has_active_incident))
 
 
+class RecordingCursor:
+    def __init__(self, family_table: bool) -> None:
+        self.family_table = family_table
+        self.executed: list[tuple[str, object]] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        return None
+
+    def execute(self, sql, params=None) -> None:
+        self.executed.append((sql, params))
+
+    def fetchone(self):
+        return {"present": self.family_table}
+
+
+class RecordingConn:
+    def __init__(self, family_table: bool) -> None:
+        self.cur = RecordingCursor(family_table)
+
+    def cursor(self, *args, **kwargs):
+        return self.cur
+
+
 def test_refresh_protocol_updates_changed_incident_flag() -> None:
     repo = FakeRepo()
     result = events.refresh_protocol(
@@ -104,3 +130,14 @@ def test_all_mode_keeps_protocol_errors_nonfatal() -> None:
     assert results[1].slug == "ok"
     assert results[1].error is None
     assert repo.updates == [("ok", True)]
+
+
+def test_repository_mirrors_incident_flag_to_family_table() -> None:
+    conn = RecordingConn(family_table=True)
+    repo = events.EventRepository(conn)
+
+    repo.update_protocol_incident_flag("example", True)
+
+    sql = "\n".join(statement for statement, _ in conn.cur.executed)
+    assert "UPDATE protocols" in sql
+    assert "UPDATE protocol_families" in sql

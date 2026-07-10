@@ -1,0 +1,97 @@
+{
+  "protocol": {
+    "slug": "fixture-family",
+    "display_name": "Fixture Family",
+    "description": "Synthetic family import fixture.",
+    "protocol_type": "lending",
+    "primary_chain": "ethereum",
+    "status": "live",
+    "total_value_secured_usd": 1500000
+  },
+  "family": {
+    "family_slug": "fixture-family",
+    "display_name": "Fixture Family",
+    "description": "Synthetic family import fixture.",
+    "protocol_type": "lending",
+    "primary_chain": "ethereum",
+    "primary_surface_slug": "core",
+    "legacy_caveat": "Legacy links select the corresponding surface."
+  },
+  "surfaces": [
+    {
+      "surface_slug": "core",
+      "display_name": "Core markets",
+      "primary_chain": "ethereum",
+      "tvs_usd": 1000000,
+      "is_primary": true
+    },
+    {
+      "surface_slug": "v2",
+      "display_name": "Version 2",
+      "primary_chain": "arbitrum",
+      "tvs_usd": 500000,
+      "legacy_slug": "fixture-v2"
+    }
+  ],
+  "deployments": [
+    {
+      "surface_slug": "core",
+      "chain": "ethereum",
+      "deployment_key": "primary",
+      "display_name": "Core Ethereum",
+      "tvs_usd": 1000000
+    },
+    {
+      "surface_slug": "v2",
+      "chain": "arbitrum",
+      "deployment_key": "primary",
+      "display_name": "Version 2 Arbitrum",
+      "tvs_usd": 500000
+    }
+  ],
+  "factor_scores": [
+    {
+      "factor_id": "RD-F-001",
+      "scope_level": "family",
+      "score": "green",
+      "evidence_summary": "Synthetic family-level evidence.",
+      "collection_mode": "manual",
+      "sources": [
+        {
+          "source_type": "docs",
+          "reference": "Synthetic family import fixture"
+        }
+      ]
+    },
+    {
+      "factor_id": "RD-F-002",
+      "scope_level": "surface",
+      "surface_slug": "core",
+      "score": "yellow",
+      "evidence_summary": "Synthetic primary-surface evidence.",
+      "collection_mode": "manual",
+      "sources": [
+        {
+          "source_type": "docs",
+          "reference": "Synthetic primary surface fixture"
+        }
+      ]
+    },
+    {
+      "factor_id": "RD-F-002",
+      "scope_level": "deployment",
+      "surface_slug": "v2",
+      "chain": "arbitrum",
+      "deployment_key": "primary",
+      "score": "red",
+      "evidence_summary": "Synthetic deployment evidence.",
+      "collection_mode": "manual",
+      "sources": [
+        {
+          "source_type": "docs",
+          "reference": "Synthetic deployment fixture"
+        }
+      ]
+    }
+  ]
+}

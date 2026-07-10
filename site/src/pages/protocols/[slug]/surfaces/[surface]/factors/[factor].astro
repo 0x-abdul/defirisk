@@ -1,30 +1,43 @@
 ---
-import Base from '../../../../layouts/Base.astro';
-import TopBar from '../../../../components/TopBar.astro';
-import Breadcrumb from '../../../../components/Breadcrumb.astro';
-import FactorCard from '../../../../components/FactorCard.astro';
-import SourceList from '../../../../components/SourceList.astro';
-import { listPublishedProtocolSlugs, getProtocol, getFactor } from '../../../../lib/data-loaders';
-import { CATEGORIES } from '../../../../data/categories';
-import { RUBRIC_VERSION } from '../../../../lib/rubric';
-import { inlineMarkdown } from '../../../../lib/inline-md';
+import Base from '../../../../../../layouts/Base.astro';
+import TopBar from '../../../../../../components/TopBar.astro';
+import Breadcrumb from '../../../../../../components/Breadcrumb.astro';
+import FactorCard from '../../../../../../components/FactorCard.astro';
+import SourceList from '../../../../../../components/SourceList.astro';
+import { listProtocols, getProtocol, getFactor } from '../../../../../../lib/data-loaders';
+import { CATEGORIES } from '../../../../../../data/categories';
+import { RUBRIC_VERSION } from '../../../../../../lib/rubric';
+import { inlineMarkdown } from '../../../../../../lib/inline-md';
 
 export async function getStaticPaths() {
-  const paths: Array<{ params: { slug: string; factor: string } }> = [];
-  for (const slug of listPublishedProtocolSlugs()) {
-    const detail = getProtocol(slug);
+  const paths: Array<{ params: { slug: string; surface: string; factor: string } }> = [];
+  for (const p of listProtocols()) {
+    const detail = getProtocol(p.slug);
     if (!detail) continue;
-    const scores = (detail.factor_scores ?? []) as Array<Record<string, unknown>>;
-    for (const s of scores) {
-      const fid = s.factor_id as string;
-      if (!fid) continue;
-      paths.push({ params: { slug, factor: fid } });
+    const surfaces = (detail.surfaces ?? []) as Array<Record<string, unknown>>;
+    for (const surface of surfaces) {
+      const surfaceSlug = surface.surface_slug as string | undefined;
+      if (!surfaceSlug) continue;
+      const scores = (surface.factor_scores ?? []) as Array<Record<string, unknown>>;
+      for (const score of scores) {
+        const factorId = score.factor_id as string | undefined;
+        if (!factorId) continue;
+        paths.push({ params: { slug: p.slug, surface: surfaceSlug, factor: factorId } });
+      }
     }
   }
   return paths;
 }
 
-const { slug, factor: factorId } = Astro.params as { slug: string; factor: string };
+const {
+  slug,
+  surface: surfaceSlug,
+  factor: factorId,
+} = Astro.params as {
+  slug: string;
+  surface: string;
+  factor: string;
+};
 const protocolDetail = getProtocol(slug);
 const factorDetail = getFactor(factorId);
 
@@ -34,20 +47,19 @@ if (!protocolDetail || !factorDetail) {
 
 const proto = protocolDetail.protocol as Record<string, unknown>;
 const displayName = (proto.display_name as string) ?? slug;
-const canonicalFamily = proto.canonical_family_slug as string | undefined;
-const selectedSurface = proto.selected_surface_slug as string | undefined;
+const surfaces = (protocolDetail.surfaces ?? []) as Array<Record<string, unknown>>;
+const surface = surfaces.find((entry) => entry.surface_slug === surfaceSlug);
 
-if (canonicalFamily && selectedSurface && canonicalFamily !== slug) {
-  return Astro.redirect(
-    `/protocols/${canonicalFamily}/surfaces/${encodeURIComponent(selectedSurface)}/factors/${factorId}/`
-  );
+if (!surface) {
+  return Astro.redirect(`/protocols/${slug}/`);
 }
 
-const scores = (protocolDetail.factor_scores ?? []) as Array<Record<string, unknown>>;
-const matching = scores.find((s) => s.factor_id === factorId);
+const surfaceName = (surface.display_name as string) ?? surfaceSlug;
+const scores = (surface.factor_scores ?? []) as Array<Record<string, unknown>>;
+const matching = scores.find((score) => score.factor_id === factorId);
 
 if (!matching) {
-  return Astro.redirect(`/protocols/${slug}/`);
+  return Astro.redirect(`/protocols/${slug}/?surface=${encodeURIComponent(surfaceSlug)}`);
 }
 
 const f = factorDetail.factor;
@@ -63,12 +75,12 @@ const sources = (
     title?: string | null;
     retrieved_at?: string | null;
   }>
-).map((s, i) => ({ ...s, primary: i === 0 }));
+).map((source, i) => ({ ...source, primary: i === 0 }));
 ---
 
 <Base
-  title={`${displayName} · ${f.id} | ${f.name}`}
-  description={`${displayName} scored ${score} on ${f.id}: ${f.name}`}
+  title={`${displayName} ${surfaceName} / ${f.id} / ${f.name}`}
+  description={`${surfaceName} scored ${score} on ${f.id}: ${f.name}`}
 >
   <TopBar slot="topbar" />
 
@@ -76,6 +88,7 @@ const sources = (
     items={[
       { n: 'Protocols', href: '/' },
       { n: displayName, href: `/protocols/${slug}/` },
+      { n: surfaceName, href: `/protocols/${slug}/?surface=${surfaceSlug}` },
       { n: f.id },
     ]}
   />
@@ -89,16 +102,17 @@ const sources = (
         categoryHref={`/factors/?cat=${f.category_id}`}
         factorName={f.name}
         meta={[
-          { label: 'Cadence', value: f.cadence ?? 'N/A' },
+          { label: 'Cadence', value: f.cadence ?? '-' },
           { label: 'Protocol', value: displayName },
+          { label: 'Surface', value: surfaceName },
           {
-            label: 'Score on this protocol',
+            label: 'Score on this surface',
             value: score,
             crit: score === 'red',
           },
           {
             label: 'Last assessed',
-            value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? 'N/A',
+            value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? '-',
           },
           {
             label: 'Severity gate',
@@ -114,16 +128,16 @@ const sources = (
           {
             f.is_critical && (
               <span class="star-big" aria-label="Critical factor">
-                ★
+                *
               </span>
             )
           }
           <span>{f.name}</span>
         </h1>
         <p class="sub">
-          {displayName}'s assessment for {f.id}, scored
+          {surfaceName} assessment for {f.id}, scored
           <span class:list={['pip', score]}>{score}</span>
-          on the {RUBRIC_VERSION} rubric. The evidence below is the curator's reasoning for this score.
+          on the {RUBRIC_VERSION} rubric.
         </p>
       </div>
 
@@ -175,21 +189,16 @@ const sources = (
       <p>{f.description}</p>
       <p>
         <a class="link" href={`/factors/${f.id}/`}>
-          See the full factor methodology and distribution across all protocols →
+          See the full factor methodology and distribution across all protocols
         </a>
       </p>
 
       <div class="envelope">
         <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
         <span><b>protocol</b> {slug}</span>
+        <span><b>surface</b> {surfaceSlug}</span>
         <span><b>factor</b> {f.id}</span>
         <span><b>score</b> {score}</span>
-        <span
-          ><b>collected_at</b>
-          {
-            (matching.collected_at as string | undefined)?.slice(0, 19).replace('T', ' ') ?? 'N/A'
-          }</span
-        >
       </div>
     </main>
   </div>
@@ -221,26 +230,23 @@ const sources = (
     margin: 0;
     font-size: 30px;
     font-weight: 600;
-    letter-spacing: -0.025em;
     line-height: 1.1;
-    text-wrap: balance;
     display: flex;
     align-items: center;
     gap: 12px;
     color: var(--fg);
   }
-  .body .hero h1 .star-big {
+  .star-big {
     color: var(--gF);
     font-size: 22px;
     line-height: 1;
   }
-  .body .hero .sub {
+  .sub {
     font-size: 14px;
     color: var(--fg-2);
     margin: 12px 0 0;
     line-height: 1.55;
     max-width: 62ch;
-    text-wrap: pretty;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -250,13 +256,12 @@ const sources = (
     margin: 36px 0 12px;
     font-size: 20px;
     font-weight: 600;
-    letter-spacing: -0.015em;
     color: var(--fg);
     display: flex;
     align-items: baseline;
     gap: 8px;
   }
-  .body h2 .alink {
+  .alink {
     font-family: 'Geist Mono', monospace;
     font-size: 13px;
     color: var(--fg-4);
@@ -272,9 +277,8 @@ const sources = (
     line-height: 1.7;
     margin: 0 0 12px;
     max-width: 62ch;
-    text-wrap: pretty;
   }
-  .body .link {
+  .link {
     color: var(--fg);
     text-decoration: underline;
     text-decoration-color: var(--border-2);
@@ -283,69 +287,54 @@ const sources = (
   .pip {
     display: inline-flex;
     align-items: center;
-    height: 20px;
+    min-height: 20px;
     padding: 0 8px;
     font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.04em;
     text-transform: uppercase;
     border-radius: 4px;
+    border: 1px solid var(--border);
   }
   .pip.red {
     color: var(--gF);
-    background: var(--gF-bg);
+    border-color: color-mix(in srgb, var(--gF) 45%, var(--border));
   }
   .pip.yellow {
-    color: var(--gC);
-    background: var(--gC-bg);
+    color: var(--gD);
+    border-color: color-mix(in srgb, var(--gD) 45%, var(--border));
   }
   .pip.green {
     color: var(--gA);
-    background: var(--gA-bg);
-  }
-  .pip.gray {
-    color: var(--fg-3);
-    background: var(--surface-2);
+    border-color: color-mix(in srgb, var(--gA) 45%, var(--border));
   }
   .envelope {
     margin-top: 36px;
-    padding: 14px 16px;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
     display: flex;
-    gap: 22px;
     flex-wrap: wrap;
+    gap: 10px 16px;
     font-family: 'Geist Mono', monospace;
     font-size: 11px;
     color: var(--fg-3);
-    letter-spacing: 0.01em;
   }
   .envelope b {
     color: var(--fg);
-    font-weight: 500;
-    margin-right: 6px;
+    font-weight: 600;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 820px) {
     .rdf-page {
-      grid-template-columns: 1fr;
+      display: block;
     }
     .rail {
       position: static;
       max-height: none;
-      overflow: visible;
-      border-right: none;
+      border-right: 0;
       border-bottom: 1px solid var(--border);
-      padding: 24px 18px;
     }
     .body {
-      padding: 24px 18px 48px;
-      max-width: 100%;
-    }
-    .body .hero h1 {
-      font-size: 24px;
-      flex-wrap: wrap;
+      padding: 28px 20px 64px;
     }
   }
 </style>
