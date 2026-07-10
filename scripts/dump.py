@@ -172,7 +172,7 @@ def fetch_protocols(cur: Any) -> list[dict]:
             graded_at, rubric_version, status, has_active_incident,
             risk_score, category_severities, cap_applied, cap_reason,
             is_published, review_token,
-            created_at, updated_at
+            last_refreshed, created_at, updated_at
         FROM protocols
         ORDER BY slug
         """

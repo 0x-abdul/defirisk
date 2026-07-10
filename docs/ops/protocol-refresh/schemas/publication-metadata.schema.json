@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://defirisk.co/schemas/protocol-refresh/publication-metadata.schema.json",
+  "title": "Protocol refresh publication metadata proposal",
+  "description": "A local proposal only. Validation does not authorize or perform GitHub activity.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "refresh_id",
+    "family_slug",
+    "approval_state",
+    "approved_public_payload_sha256"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "refresh_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+    "family_slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "approval_state": { "const": "approved" },
+    "approved_public_payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "issue": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://github\\.com/[^/\\s]+/[^/\\s]+/issues/[1-9][0-9]*/?$"
+        },
+        "reference": {
+          "type": "string",
+          "pattern": "^(?:[^/#\\s]+/[^/#\\s]+)?#[1-9][0-9]*$"
+        },
+        "title": { "type": "string" },
+        "body": { "type": "string" }
+      }
+    },
+    "branch_name": { "type": "string" },
+    "worktree_name": { "type": "string" },
+    "commit_message": { "type": "string" },
+    "pull_request": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "body": { "type": "string" }
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "required": ["body"],
+            "properties": { "body": { "type": "string" } }
+          }
+        ]
+      }
+    }
+  }
+}
