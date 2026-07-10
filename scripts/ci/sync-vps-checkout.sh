@@ -14,8 +14,19 @@ if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null || true)" != "true" ]; t
   exit 1
 fi
 
+rebase_merge=$(git rev-parse --git-path rebase-merge)
+rebase_apply=$(git rev-parse --git-path rebase-apply)
+rebase_head_name=""
+for rebase_dir in "$rebase_merge" "$rebase_apply"; do
+  if [ -f "$rebase_dir/head-name" ]; then
+    IFS= read -r rebase_head_name < "$rebase_dir/head-name"
+    break
+  fi
+done
+
 current_branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
-if [ "$current_branch" != "$branch" ]; then
+if [ "$current_branch" != "$branch" ] && \
+   [ "$rebase_head_name" != "refs/heads/$branch" ]; then
   echo "ERROR: deployment checkout is on the wrong branch" >&2
   exit 1
 fi
@@ -36,12 +47,11 @@ git fetch --no-tags "$remote" \
 target=$(git rev-parse --verify "refs/remotes/$remote/$branch^{commit}")
 
 # Fetch succeeds before any tracked state is discarded. Abort stale operations
-# quietly so token-bearing generated paths cannot be copied into workflow logs.
+# quietly so generated paths cannot be copied into workflow logs.
 if [ -f "$(git rev-parse --git-path MERGE_HEAD)" ]; then
   git merge --abort >/dev/null 2>&1 || true
 fi
-if [ -d "$(git rev-parse --git-path rebase-merge)" ] || \
-   [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+if [ -d "$rebase_merge" ] || [ -d "$rebase_apply" ]; then
   git rebase --abort >/dev/null 2>&1 || git am --abort >/dev/null 2>&1 || true
 fi
 if [ -f "$(git rev-parse --git-path CHERRY_PICK_HEAD)" ]; then
@@ -49,6 +59,12 @@ if [ -f "$(git rev-parse --git-path CHERRY_PICK_HEAD)" ]; then
 fi
 if [ -f "$(git rev-parse --git-path REVERT_HEAD)" ]; then
   git revert --abort >/dev/null 2>&1 || true
+fi
+
+current_branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
+if [ "$current_branch" != "$branch" ]; then
+  echo "ERROR: deployment checkout did not return to the expected branch" >&2
+  exit 1
 fi
 
 local_commit_count=$(git rev-list --count "$target"..HEAD 2>/dev/null || echo 0)
@@ -77,8 +93,7 @@ for state_path in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD; do
     exit 1
   fi
 done
-if [ -d "$(git rev-parse --git-path rebase-merge)" ] || \
-   [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+if [ -d "$rebase_merge" ] || [ -d "$rebase_apply" ]; then
   echo "ERROR: deployment checkout still has an unfinished rebase" >&2
   exit 1
 fi

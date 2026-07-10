@@ -1,10 +1,8 @@
 # SSH-based deploy to Hetzner VPS.
 #
-# Triggers on pushes to main that touch site/ or scripts/ (code changes).
-# Data-only pushes (data/api/ from the nightly pipeline) do NOT trigger this
-# workflow — the nightly script rebuilds the site on the VPS directly after
-# running compose.py + dump.py, which is faster and avoids unnecessary
-# GitHub Actions minutes.
+# Triggers on pushes to main that touch the site or deployment code. Changes
+# limited to data/api do not trigger this workflow; the nightly workflow
+# rebuilds the site on the VPS directly after refreshing and exporting data.
 #
 # Prerequisites — configure in repo Settings → Secrets → Actions:
 #   VPS_HOST       IPv4 address of the Hetzner CX32 VPS
@@ -20,7 +18,9 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/deploy.yml'
       - 'site/**'
+      - 'scripts/ci/sync-vps-checkout.sh'
       - 'scripts/compose.py'
       - 'scripts/detect-grade-changes.py'
       - 'scripts/dump.py'
