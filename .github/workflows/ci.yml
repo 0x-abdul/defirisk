@@ -93,7 +93,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install test deps
-        run: pip install pytest
+        run: pip install pytest 'psycopg[binary]>=3.1'
       - name: Run public script tests
         run: pytest scripts/tests -q
 
