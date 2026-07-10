@@ -251,6 +251,9 @@ def test_vps_workflows_use_shared_stateless_sync() -> None:
         assert "git commit" not in workflow
         assert "git add data/api" not in workflow
         assert "git config user." not in workflow
+        assert "scp " not in workflow
+        assert "'bash -s -- /opt/riskdashboard origin main'" in workflow
+        assert "ref: main" in workflow
 
     deploy = (ROOT / ".github" / "workflows" / "deploy.yml").read_text(
         encoding="utf-8"

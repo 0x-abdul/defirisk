@@ -48,6 +48,8 @@ jobs:
 
       - uses: actions/checkout@v7
         if: steps.prereq.outputs.skip != 'true'
+        with:
+          ref: main
 
       - name: Run refresh-continuous.py on VPS
         if: steps.prereq.outputs.skip != 'true'
@@ -61,19 +63,18 @@ jobs:
           echo "$VPS_HOST ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpn9P0m/4sJCsgGPubzi78FvRs9Q82TtcI022O4lgwe" >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
-          scp -i /tmp/ingest_key \
+          ssh -i /tmp/ingest_key \
               -o StrictHostKeyChecking=yes \
               -o ConnectTimeout=30 \
-              scripts/ci/sync-vps-checkout.sh \
-              rdapp@"$VPS_HOST":/tmp/defirisk-sync-vps-checkout.sh
+              rdapp@"$VPS_HOST" \
+              'bash -s -- /opt/riskdashboard origin main' \
+              < scripts/ci/sync-vps-checkout.sh
 
           ssh -i /tmp/ingest_key \
               -o StrictHostKeyChecking=yes \
               -o ConnectTimeout=30 \
-              rdapp@"$VPS_HOST" << 'REMOTE'
+          rdapp@"$VPS_HOST" << 'REMOTE'
             set -euo pipefail
-            trap 'rm -f /tmp/defirisk-sync-vps-checkout.sh' EXIT
-            bash /tmp/defirisk-sync-vps-checkout.sh /opt/riskdashboard origin main
             cd /opt/riskdashboard
 
             if [ ! -f .env ]; then
