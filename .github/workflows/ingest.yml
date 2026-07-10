@@ -2,9 +2,9 @@
 #
 # Production Postgres is local to the VPS, so this workflow runs the refresh
 # on /opt/riskdashboard over SSH instead of trying to connect from a GitHub
-# hosted runner. The remote script sources /opt/riskdashboard/.env, runs the
-# continuous refresh, commits regenerated data/api files locally on the VPS,
-# and rebuilds the static site so public API files are updated in place.
+# hosted runner. The remote script synchronizes the disposable tracked
+# checkout, sources /opt/riskdashboard/.env, runs the continuous refresh, and
+# rebuilds the static site so public API files are updated in place.
 #
 # Prerequisites (repo Settings -> Secrets and variables -> Actions):
 #   VPS_HOST     - IPv4 address or hostname of the production VPS
@@ -46,6 +46,11 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - uses: actions/checkout@v7
+        if: steps.prereq.outputs.skip != 'true'
+        with:
+          ref: main
+
       - name: Run refresh-continuous.py on VPS
         if: steps.prereq.outputs.skip != 'true'
         env:
@@ -61,29 +66,16 @@ jobs:
           ssh -i /tmp/ingest_key \
               -o StrictHostKeyChecking=yes \
               -o ConnectTimeout=30 \
-              rdapp@"$VPS_HOST" << 'REMOTE'
+              rdapp@"$VPS_HOST" \
+              'bash -s -- /opt/riskdashboard origin main' \
+              < scripts/ci/sync-vps-checkout.sh
+
+          ssh -i /tmp/ingest_key \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=30 \
+          rdapp@"$VPS_HOST" << 'REMOTE'
             set -euo pipefail
             cd /opt/riskdashboard
-
-            git config user.email "deploy@defirisk.co"
-            git config user.name "RiskDashboard Deploy"
-
-            # Preserve generated data from an interrupted prior run before
-            # pulling code. Only data/api is committed by this maintenance job.
-            git add data/api 2>/dev/null || true
-            if ! git diff --cached --quiet; then
-              git commit -m "Update nightly data snapshot"
-            fi
-
-            echo "==> Pulling latest code..."
-            prev_remote=$(git rev-parse origin/main 2>/dev/null || echo "")
-            git fetch origin main
-            if [ -n "$prev_remote" ] && git merge-base --is-ancestor "$prev_remote" origin/main; then
-              git pull --no-rebase origin main
-            else
-              echo "==> origin/main changed unexpectedly; hard-resetting before refresh"
-              git reset --hard origin/main
-            fi
 
             if [ ! -f .env ]; then
               echo "ERROR: /opt/riskdashboard/.env is missing."
@@ -120,14 +112,6 @@ jobs:
 
             echo "==> Regenerating API export..."
             "$PYTHON" scripts/dump.py
-
-            echo "==> Committing regenerated public data..."
-            git add data/api
-            if git diff --cached --quiet; then
-              echo "No data/api changes to commit."
-            else
-              git commit -m "Update nightly data snapshot"
-            fi
 
             echo "==> Rebuilding site..."
             . scripts/ci/use-node-22.sh

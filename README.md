@@ -186,8 +186,10 @@ In production, `.github/workflows/ingest.yml` runs this daily at 03:00 UTC by
 SSHing into the VPS with `VPS_HOST` and `VPS_SSH_KEY`, sourcing
 `/opt/riskdashboard/.env`, and using `DATABASE_URL` or `LOCAL_DATABASE_URL`.
 The production Postgres instance is local to the VPS, so the workflow runs the
-refresh there, commits the regenerated `data/api` snapshot in the VPS worktree,
-and rebuilds the static dashboard so `/api/...` reflects the refreshed values.
+refresh there and rebuilds the static dashboard so `/api/...` reflects the
+refreshed values. The VPS checkout is synchronized to `origin/main` before each
+run; generated `data/api` files remain uncommitted and are replaced on the next
+run rather than creating a second, divergent Git history on the server.
 
 The refresh script does not overwrite existing values with null or zero when a
 fetch fails. It is intentionally narrower than a full reassessment. Metrics
