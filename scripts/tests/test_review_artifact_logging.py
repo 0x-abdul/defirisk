@@ -43,6 +43,14 @@ def run_review_check(api_root: Path, dist_root: Path) -> subprocess.CompletedPro
         ("invalid_html", 1, "missing private-review markers: 1"),
         ("missing_pending", 1, "missing private-review markers: 1"),
         ("missing_noindex", 1, "missing private-review markers: 1"),
+        ("missing_asset", 1, "missing local asset references: 1"),
+        ("missing_relative_asset", 1, "missing local asset references: 1"),
+        ("missing_asset_with_query", 1, "missing local asset references: 1"),
+        ("encoded_traversal_asset", 1, "missing local asset references: 1"),
+        ("directory_asset", 1, "missing local asset references: 1"),
+        ("existing_asset", 0, "verified 1 unpublished review page(s)"),
+        ("existing_relative_asset", 0, "verified 1 unpublished review page(s)"),
+        ("external_assets", 0, "verified 1 unpublished review page(s)"),
         ("valid", 0, "verified 1 unpublished review page(s)"),
     ],
 )
@@ -62,17 +70,73 @@ def test_review_artifact_logs_only_aggregate_results(
         review_dir.mkdir(parents=True)
         if case != "missing_json":
             (review_dir / "index.json").write_text("{}", encoding="utf-8")
-        if case in {"invalid_html", "missing_pending", "missing_noindex", "valid"}:
+        if case in {
+            "invalid_html",
+            "missing_pending",
+            "missing_noindex",
+            "missing_asset",
+            "missing_relative_asset",
+            "missing_asset_with_query",
+            "encoded_traversal_asset",
+            "directory_asset",
+            "existing_asset",
+            "existing_relative_asset",
+            "external_assets",
+            "valid",
+        }:
             html_dir = dist_root / "unpublished" / review
             html_dir.mkdir(parents=True)
             html_by_case = {
                 "invalid_html": "invalid",
                 "missing_pending": "review-banner noindex,nofollow",
                 "missing_noindex": "review-banner Pending review",
+                "missing_asset": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="/chains/mono/missing.svg">'
+                ),
+                "missing_relative_asset": (
+                    "review-banner Pending review noindex,nofollow "
+                    "<img src=./assets/missing.svg>"
+                ),
+                "missing_asset_with_query": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="/chains/mono/missing.svg?v=1#icon">'
+                ),
+                "encoded_traversal_asset": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="/..%2Foutside.svg">'
+                ),
+                "directory_asset": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="/chains/mono/directory.svg">'
+                ),
+                "existing_asset": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="/chains/mono/existing.svg">'
+                ),
+                "existing_relative_asset": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="./assets/existing.svg?version=1">'
+                ),
+                "external_assets": (
+                    'review-banner Pending review noindex,nofollow '
+                    '<img src="//cdn.example/missing.svg">'
+                    '<img src="data:image/svg+xml;base64,PHN2Zy8+">'
+                ),
                 "valid": "review-banner Pending review noindex,nofollow",
             }
             html = html_by_case[case]
             (html_dir / "index.html").write_text(html, encoding="utf-8")
+            if case == "existing_asset":
+                asset = dist_root / "chains" / "mono" / "existing.svg"
+                asset.parent.mkdir(parents=True)
+                asset.write_text("<svg/>", encoding="utf-8")
+            if case == "existing_relative_asset":
+                asset = html_dir / "assets" / "existing.svg"
+                asset.parent.mkdir(parents=True)
+                asset.write_text("<svg/>", encoding="utf-8")
+            if case == "directory_asset":
+                (dist_root / "chains" / "mono" / "directory.svg").mkdir(parents=True)
 
     result = run_review_check(api_root, dist_root)
     output = result.stdout + result.stderr
