@@ -3,11 +3,13 @@
 - Refresh ID: `2026-07-11-aave-family-surfaces`
 - Protocol family: `aave`
 - Surfaces: `v2`, `v3` (primary), `v4`
-- Effective date: pending production authorization
+- Effective date: `2026-07-11`
 - Rubric version: `v1.7.0`
 - Public issue: https://github.com/0x-abdul/defirisk/issues/146
-- Public payload SHA-256:
+- Public artifact file SHA-256:
   `214bb33d6a64652439ec8d07436370fbc7feb8c74621fe996d6b3c44d0b40484`
+- Public payload SHA-256:
+  `2e1b41b87c76c2c0f25bc8e8f441df00d0c40f5d3e33bd287bfbea558c77f5d8`
 
 ## Scope
 
@@ -26,8 +28,9 @@ and the 19 named deployments. Cleanup is limited to stale standalone
 `aave-v3/default` rows after replacement and alias verification. Every other
 protocol, family, surface, factor, deployment, and field is out of scope.
 
-This pull request records the review only. It does not directly change
-generated files under `data/api/` or write protocol scores or grades.
+This pull request records the reviewed migration and its verification. The
+production operation was separately authorized by exact plan checksum and did
+not hand-edit generated files under `data/api/`.
 
 ## Accepted Changes
 
@@ -52,11 +55,22 @@ The staging compose result is `v2=C/21.30`, `v3=B/16.29`, and `v4=C/21.39`.
 - Canonical overview and `?surface=` views validated: `yes`
 - Cleanup dry-run reviewed before staging apply: `yes`
 - Unrelated generated API semantic changes: `none`
-- Production backup and rollback rehearsal reference: fresh backup restored to
-  isolated staging; schema assertion, cleanup audit, and post-cleanup checks
+- Production backup and rollback rehearsal reference: backup SHA-256
+  `30f3842a9e2e6191e65faa2e549f561909b1d878a79ece44df730f5cbaf8d31c`,
+  restore-tested at `2026-07-11T10:19:07Z`
+- Production operation plan SHA-256:
+  `b7274ea7ad3abcf529305d0123acb05bc8d84ca4cc6373e7da8fdf34d5281746`
+- Production transaction: `succeeded`; cleanup audit SHA-256
+  `0b5ddf4b35b9a2d7d7f661201e77cfd3651f1711aad0230cfe63df2a68d9724f`
+- Production state verified: `yes`; verification SHA-256
+  `6444c663fb76ca9c20e80f71e3855fa794e083bd4d0c9bf8fd2271a2c1a5d426`
+- Unrelated protocol verification: `188` protocol detail files with zero
+  semantic changes; verification SHA-256
+  `257d050c070035c7d08691537e09bf0917a2c095a1d3a9b1ce2e597268a0dc27`
+- Deployment workflow: [run 29149772942](https://github.com/0x-abdul/defirisk/actions/runs/29149772942),
+  `success`
+- Live family and surface output verified: `yes`; `9` targeted browser checks
   passed
-- Production state verified: `pending`
-- Live family and surface output verified: `pending`
 
 Repository script tests, site tests, type checking, a production-style site
 build, and targeted browser checks passed against the post-cleanup temporary
@@ -64,8 +78,8 @@ output.
 
 ## Result
 
-The family migration is complete in isolated staging and ready for review.
-Production and live verification remain pending. This record and its linked
-issue do not authorize a production database write or deployment; that
-requires separate approval for a named operation and a fresh production
-preflight.
+The Aave family migration is complete in production and verified live. The
+canonical family, three surfaces, aliases, deployments, factor scopes, and
+historical hack remap match the reviewed target. This was the pilot migration;
+overall family-migration rollout readiness remains pending completion of the
+pilot evidence and follow-up operational review.
