@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+from datetime import date
 from pathlib import Path
 
 
@@ -11,6 +12,29 @@ dump = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 sys.modules[SPEC.name] = dump
 SPEC.loader.exec_module(dump)
+
+
+def test_fetch_protocols_selects_last_refreshed_for_detail_export() -> None:
+    class Cursor:
+        query = ""
+
+        def execute(self, query: str) -> None:
+            self.query = query
+
+        def fetchall(self):
+            return [
+                {
+                    "slug": "fixture-family",
+                    "last_refreshed": date(2026, 7, 11),
+                }
+            ]
+
+    cursor = Cursor()
+    protocols = dump.fetch_protocols(cursor)
+    protocol_dict = dict(protocols[0])
+
+    assert "last_refreshed" in cursor.query
+    assert protocol_dict["last_refreshed"] == date(2026, 7, 11)
 
 
 def test_surface_payloads_preserve_primary_compatibility_and_overlays() -> None:
