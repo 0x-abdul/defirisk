@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
 
-from scripts.protocol_refresh_migrations import (
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from protocol_refresh_migrations import (
     ContractError,
     MigrationState,
     _record_pending_migrations,

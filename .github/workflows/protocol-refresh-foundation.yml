@@ -75,6 +75,11 @@ jobs:
       DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install runtime verification dependencies
+        run: pip install 'psycopg[binary]>=3.1'
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-client
       - name: Create disposable runtime role
