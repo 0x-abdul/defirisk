@@ -39,6 +39,26 @@ def test_fetch_protocols_selects_last_refreshed_for_detail_export() -> None:
     assert protocol_dict["last_refreshed"] == date(2026, 7, 11)
 
 
+def test_fetch_deployments_uses_total_deterministic_order() -> None:
+    class Cursor:
+        query = ""
+
+        def execute(self, query: str) -> None:
+            self.query = query
+
+        def fetchall(self):
+            return []
+
+    cursor = Cursor()
+    assert dump.fetch_deployments_by_protocol(cursor) == {}
+
+    normalized_query = " ".join(cursor.query.split())
+    assert (
+        "ORDER BY protocol_slug, chain, surface_id NULLS LAST, "
+        "deployment_key NULLS LAST, id"
+    ) in normalized_query
+
+
 def test_write_json_does_not_log_tokenized_path(tmp_path, capsys) -> None:
     fake_token = "deadbeef"
     target = (

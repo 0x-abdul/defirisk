@@ -226,7 +226,12 @@ def fetch_deployments_by_protocol(cur: Any) -> dict[str, list[dict]]:
             tvs_usd, tvs_share, letter, category_grid,
             deployed_at, created_at, updated_at
         FROM deployments
-        ORDER BY protocol_slug, chain
+        ORDER BY
+            protocol_slug,
+            chain,
+            surface_id NULLS LAST,
+            deployment_key NULLS LAST,
+            id
         """
     )
     rows = cur.fetchall()
