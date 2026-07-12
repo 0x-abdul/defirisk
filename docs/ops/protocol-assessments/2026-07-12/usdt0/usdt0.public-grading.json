@@ -1,0 +1,3488 @@
+{
+  "_meta": {
+    "factor_count": 184,
+    "fragment_count": 7,
+    "merged_at": "2026-07-12T18:29:27Z",
+    "merged_by": "merge-grading-fragments.py"
+  },
+  "deployments": [
+    {
+      "anchor_address": "0x6C96dE32CEa08842dcc4058c14d3aaAD7Fa41dee",
+      "chain": "ethereum",
+      "deployed_at": "2025-01-08",
+      "display_name": "USDT0 (Ethereum)",
+      "tvs_share": 1.0,
+      "tvs_usd": 3634031788
+    },
+    {
+      "anchor_address": "0x1cB6De532588fCA4a21B7209DE7C456AF8434A65",
+      "chain": "ink",
+      "deployed_at": null,
+      "display_name": "USDT0 (Ink)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x14E4A1B13bf7F943c8ff7C51fb60FA964A298D92",
+      "chain": "arbitrum",
+      "deployed_at": null,
+      "display_name": "USDT0 (Arbitrum)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x3Dc96399109df5ceb2C226664A086140bD0379cB",
+      "chain": "berachain",
+      "deployed_at": null,
+      "display_name": "USDT0 (Berachain)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x567287d2A9829215a37e3B88843d32f9221E7588",
+      "chain": "flare",
+      "deployed_at": null,
+      "display_name": "USDT0 (Flare)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x3f82943338a8a76c35BFA0c1828aA27fd43a34E4",
+      "chain": "corn",
+      "deployed_at": null,
+      "display_name": "USDT0 (Corn)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0xF03b4d9AC1D5d1E7c4cEf54C2A313b9fe051A0aD",
+      "chain": "optimism",
+      "deployed_at": null,
+      "display_name": "USDT0 (Optimism)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0xc07bE8994D035631c36fb4a89C918CeFB2f03EC3",
+      "chain": "unichain",
+      "deployed_at": null,
+      "display_name": "USDT0 (Unichain)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x56Fe74A2e3b484b921c447357203431a3485CC60",
+      "chain": "sei",
+      "deployed_at": null,
+      "display_name": "USDT0 (Sei)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x904861a24F30EC96ea7CFC3bE9EA4B476d237e98",
+      "chain": "hyperliquid",
+      "deployed_at": null,
+      "display_name": "USDT0 (HyperLiquid)",
+      "tvs_share": null,
+      "tvs_usd": null
+    },
+    {
+      "anchor_address": "0x1a594d5d5d1c426281C1064B07f23F57B2716B61",
+      "chain": "rootstock",
+      "deployed_at": null,
+      "display_name": "USDT0 (Rootstock)",
+      "tvs_share": null,
+      "tvs_usd": null
+    }
+  ],
+  "factor_scores": [
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Audit repo lists project and Arbitrum reports; DEPLOYMENTS.md lists many current chain implementations. Ethereum implementation is Sourcify full-match, but all-chain audit-to-bytecode matching was not completed.",
+      "evidence_summary": "Multiple official audits exist, but no public commit/reproducible-build mapping ties all current deployments to audited bytecode.",
+      "factor_id": "RD-F-001",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        },
+        {
+          "reference": "USDT0 deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Audit recency is acceptable at launch but stale for a 17-month live bridge surface unless current deployments are separately verified.",
+      "evidence_summary": "Most visible audits are January 2025 while the live registry is multi-chain as of June 2026.",
+      "factor_id": "RD-F-002",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Reports were downloaded from official repo, but local pdftotext/pypdf/PyPDF2/pdfplumber were unavailable; no finding-level resolution verification was possible.",
+      "evidence_summary": "Audit finding resolution could not be checked because PDF text extraction was unavailable.",
+      "factor_id": "RD-F-003",
+      "notes": "Needs PDF text extraction and on-chain finding-resolution review.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "PDF extraction unavailable in local environment",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Official repo lists ChainSecurity, Guardian, Paladin, and OpenZeppelin reports.",
+      "factor_id": "RD-F-004",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Audit set includes high-reputation firms including ChainSecurity and OpenZeppelin.",
+      "factor_id": "RD-F-005",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Exact block deploy-to-report delta was not fully reconstructed; scored green on launch proximity, not all-chain current coverage.",
+      "evidence_summary": "Audit dates and first-live timing are both January 2025, with no obvious launch drift.",
+      "factor_id": "RD-F-006",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No public bug bounty or max payout was found in official/profile sources.",
+      "factor_id": "RD-F-007",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No public bug bounty or max payout was found in official/profile sources.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 official site reviewed for public bug bounty/security disclosure surface",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 official site",
+          "url": "https://usdt0.to/"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No ignored bounty disclosure found, but no bounty/SIRT channel surfaced.",
+      "factor_id": "RD-F-008",
+      "notes": "Absence of a public bounty makes ignored-disclosure verification weak.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No ignored bounty disclosure found, but no bounty/SIRT channel surfaced.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No public formal verification report found in official USDT0 materials.",
+      "factor_id": "RD-F-009",
+      "notes": "No Certora/Halmos/Kani report identified.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No published Slither/Mythril/Semgrep output found and no local tool run was performed.",
+      "factor_id": "RD-F-010",
+      "notes": "Needs analyzer run on verified source.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No static analyzer output collected in this pass",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "Verified Ethereum OAdapter source tree has no selfdestruct hit.",
+      "factor_id": "RD-F-011",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata/source scan",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "No USDT0 user-controlled delegatecall path found; only OZ Address helper contains delegatecall.",
+      "factor_id": "RD-F-012",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata/source scan",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "No arbitrary user-supplied target/data call found in scoped OAdapter source.",
+      "factor_id": "RD-F-013",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata/source scan",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "No nonReentrant guard found; OFT flow is inherited/audited but not analyzer-proven here.",
+      "factor_id": "RD-F-014",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata/source scan",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No ERC-777/ERC-721/ERC-1155 hook integration found for scoped ERC-20/OFT bridge surface.",
+      "factor_id": "RD-F-015",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "LayerZero OFT technical reference",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        },
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No Slither divide-before-multiply output available.",
+      "factor_id": "RD-F-016",
+      "notes": "Needs Slither run.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No Slither run performed",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "USDT 6-decimal bridge uses OFT decimal conversion; no bug found, but no analyzer proof was run.",
+      "factor_id": "RD-F-017",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero OFT technical reference",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        },
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Signed/unsigned confusion requires symbolic/static analysis not available in this pass.",
+      "factor_id": "RD-F-018",
+      "notes": "Needs analyzer run.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No symbolic/static analyzer run performed",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "Verified scoped OAdapter source tree has no ecrecover use.",
+      "factor_id": "RD-F-019",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify Ethereum OAdapter metadata/source scan",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No EIP-712/signature path exists in scoped OAdapter source.",
+      "factor_id": "RD-F-020",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Ethereum OAdapter uses TransparentUpgradeableProxy/ProxyAdmin, not UUPS.",
+      "factor_id": "RD-F-021",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Verified source: function initialize(address _delegate) public initializer.",
+      "evidence_summary": "Public initialize is protected by the OZ initializer modifier.",
+      "factor_id": "RD-F-022",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify contracts/OAdapterUpgradeable.sol",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "Implementation constructor calls _disableInitializers().",
+      "factor_id": "RD-F-023",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify contracts/OAdapterUpgradeable.sol",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Multi-chain OFT/token/proxy/admin surface is broader than the profile cap and complexity/audit-day ratio was not quantified.",
+      "factor_id": "RD-F-024",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Official registry lists per-chain Safes/ProxyAdmins. Ethereum OAdapter and ProxyAdmin owner() calls resolve to Safe 0x4DFF...0bf8.",
+      "evidence_summary": "Multisig-administered upgradeable contracts; no timelock found.",
+      "factor_id": "RD-F-025",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "Ethereum RPC owner() reads: OAdapter and ProxyAdmin owned by 0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Registry lists Safes and ProxyAdmins across Ethereum, Ink, Arbitrum, Berachain, Flare, Corn, Optimism, Unichain, Sei, HyperLiquid, and Rootstock.",
+      "evidence_summary": "Multiple per-chain Safe and ProxyAdmin addresses exist; full role enumeration across all chains remains incomplete.",
+      "factor_id": "RD-F-026",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Safe API confirms 3-of-5 for Ethereum/Arbitrum/Optimism/Unichain/Ink/Berachain/HyperLiquid; RPC confirms major ProxyAdmins owned by Safes.",
+      "evidence_summary": "Confirmed major admin paths are Safe-owned, not lone EOA-owned.",
+      "factor_id": "RD-F-027",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Safe API Ethereum Safe 0x4DFF...0bf8 threshold=3 owners=5",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "Safe API Ethereum USDT0 Safe",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        },
+        {
+          "reference": "RPC owner() checks for Ethereum/Arbitrum/Optimism/Unichain/Berachain ProxyAdmins returned Safe owners",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Safe API reports 3 threshold and 5 owners on major chains; no public signer identity/custody attestation was found.",
+      "evidence_summary": "3-of-5 is meaningful but thin for ~$3.6B TVS, and signer independence is not public.",
+      "factor_id": "RD-F-028",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Safe API Ethereum threshold=3 owners=5",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "Safe API Ethereum USDT0 Safe",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        },
+        {
+          "reference": "Profile TVS $3,634,031,788 as of 2026-06-23",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Safe API exposes owner addresses but not custody, ASN, or institutional labels.",
+      "evidence_summary": "Signer hosting/custody independence was not publicly attributable.",
+      "factor_id": "RD-F-029",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Safe owners collected; no public signer custody labels found",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Owner addresses were collected but not classified with wallet-behavior or CTI feeds.",
+      "evidence_summary": "Hot-wallet behavior was not assessed without transaction-heuristic tooling.",
+      "factor_id": "RD-F-030",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No wallet-behavior heuristic or CTI feed available in this pass",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Public RPC broad log scan returned 403, leaving signer rotation unresolved.",
+      "evidence_summary": "Rotation history not verified; Safe API current state only.",
+      "factor_id": "RD-F-031",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Safe current state fetched; historical signer-change event scan blocked by RPC 403",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Official registry lists Safe and ProxyAdmin entries but no timelock. ProxyAdmin owner() reads returned Safes.",
+      "evidence_summary": "No timelock found; ProxyAdmin owner can upgrade via Safe without a visible delay.",
+      "factor_id": "RD-F-032",
+      "scope_level": "surface",
+      "score": "red",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md has Safe/ProxyAdmin entries but no timelock entries",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "ProxyAdmin owner() reads on Ethereum/Arbitrum/Optimism/Unichain/Berachain returned Safes",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify source shows `setPeer`, `setDelegate`, `setEnforcedOptions`, and `setMsgInspector` are onlyOwner; owner resolves to Safe.",
+      "evidence_summary": "No timelock found for upgrades or owner-gated OApp actions.",
+      "factor_id": "RD-F-033",
+      "scope_level": "surface",
+      "score": "red",
+      "sources": [
+        {
+          "reference": "Sourcify metadata for Ethereum OAdapter implementation",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "No timelock found in official registry/profile",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Source inspection surfaced owner-only OApp config functions but no separate pauser/guardian role.",
+      "evidence_summary": "No distinct guardian/pause role found; OApp owner controls operational config.",
+      "factor_id": "RD-F-034",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify source grep for onlyOwner and pause/guardian functions",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Ethereum ProxyAdmin owner and OAdapter owner both resolve to the same Safe.",
+      "evidence_summary": "Upgrade and OApp config authority converge on Safe-administered owners; no oracle role exists in bridge scope.",
+      "factor_id": "RD-F-035",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Ethereum RPC owner() calls: OAdapter proxy owner and ProxyAdmin owner resolve to 0x4DFF...0bf8",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "Safe API for Ethereum USDT0 Safe threshold/owner evidence",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "Safe API Ethereum USDT0 Safe",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile found no Snapshot, Tally, forum, proposal venue, or governor; admin model is multisig/ProxyAdmin/OApp owner.",
+      "evidence_summary": "No token-holder governance was found for scoped USDT0 admin.",
+      "factor_id": "RD-F-036",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Same basis as RD-F-036.",
+      "evidence_summary": "No governance-token quorum exists in scoped admin model.",
+      "factor_id": "RD-F-037",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "No timelock or proposal venue was found; Safe ownership was verified.",
+      "evidence_summary": "No proposal/timelock delay; Safe execution can be immediate after threshold signing.",
+      "factor_id": "RD-F-038",
+      "scope_level": "surface",
+      "score": "red",
+      "sources": [
+        {
+          "reference": "Official registry lists Safe/ProxyAdmin ownership but no timelock",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "Safe API Ethereum threshold=3 owners=5",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "Safe API Ethereum USDT0 Safe",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Scoped admin is Safe/ProxyAdmin/OApp owner, not Governor executor.",
+      "evidence_summary": "No proposal executor contract was found.",
+      "factor_id": "RD-F-039",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Official registry lists admin Safes only; no veto/guardian/timelock role surfaced.",
+      "evidence_summary": "No distinct veto/guardian multisig found beyond the same admin Safe.",
+      "factor_id": "RD-F-040",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify grep found owner config functions but no direct rescue/emergencyWithdraw on OAdapter.",
+      "evidence_summary": "No direct `rescue` or `emergencyWithdraw` function found in Ethereum OAdapter source.",
+      "factor_id": "RD-F-041",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify source grep for rescue/emergency/withdraw",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify source shows OFTAdapter lock model on Ethereum; registry lists token extensions on other chains that require separate verification.",
+      "evidence_summary": "Ethereum OAdapter does not mint, but destination token extension mint/burn caps were not fully verified.",
+      "factor_id": "RD-F-042",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "OAdapterUpgradeable source and LayerZero OFTAdapter inherited source",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "Registry lists destination token extension deployments",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "RPC owner() for OAdapter and ProxyAdmin resolves to 0x4DFF...0bf8 Safe.",
+      "evidence_summary": "Current admin is Safe, not deployer EOA; t+7 historical transfer not reconstructed.",
+      "factor_id": "RD-F-043",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Ethereum RPC owner() for OAdapter and ProxyAdmin resolves to Safe 0x4DFF...0bf8",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "Safe API Ethereum threshold=3 owners=5",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "Safe API Ethereum USDT0 Safe",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Public evidence only; admin-wallet flagged-address interaction was not assessed.",
+      "evidence_summary": "No Chainalysis/TRM/curator watchlist check available.",
+      "factor_id": "RD-F-044",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No private CTI/watchlist feed available for admin wallet proximity",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile found no forum, Snapshot, Tally, or proposal venue.",
+      "evidence_summary": "No public proposal venue or deploy proposal found to compare constructor args against.",
+      "factor_id": "RD-F-045",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Profile records no public forum/proposal venue as of 2026-06-24",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify full-match metadata exists for Ethereum implementation; official registry links explorer pages for live anchors.",
+      "evidence_summary": "Current Ethereum implementation is Sourcify full match; no unverified anchor identified.",
+      "factor_id": "RD-F-046",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify full match metadata for Ethereum OAdapter implementation",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 admin is multisig/ProxyAdmin/OApp owner based, not token-governed.",
+      "evidence_summary": "No governance token voting power exists for scoped admin model.",
+      "factor_id": "RD-F-047",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 is profiled as an omnichain USDT bridge/OFT transfer surface; profile Section 7 identifies no price oracle.",
+      "evidence_summary": "No collateral-price oracle provider identified for the scoped bridge/OFT transfer surface.",
+      "factor_id": "RD-F-048",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No collateral-price oracle provider identified for the scoped bridge/OFT transfer surface.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "LayerZero OFT reference reviewed for bridge/OFT transfer surface rather than collateral-price oracle design",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "LayerZero OFT technical reference",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No scoped collateral markets or price-feed roles were identified.",
+      "evidence_summary": "No Primary/Secondary/Fallback price oracle roles apply; USDT0 bridges one stablecoin asset.",
+      "factor_id": "RD-F-049",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No Primary/Secondary/Fallback price oracle roles apply; USDT0 bridges one stablecoin asset.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "LayerZero OFT reference reviewed for transfer roles and absence of price-oracle roles in scoped OFT surface",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "LayerZero OFT technical reference",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Dependency graph is identifiable, but several dependencies are external to USDT0 and per-chain LayerZero configuration remains unverified.",
+      "evidence_summary": "Material dependencies are Tether USDT, LayerZero Endpoint/OFT/OApp, DVN/security-stack config, and upgrade/admin infrastructure.",
+      "factor_id": "RD-F-050",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero OFT technical reference",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        },
+        {
+          "reference": "Everdawn-Labs usdt0-audit-reports DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Fallback behavior on oracle failure is structurally moot for this bridge transfer surface.",
+      "evidence_summary": "No protocol price oracle is used.",
+      "factor_id": "RD-F-051",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "LayerZero and Tether dependencies can impair bridge transfers; the report keeps issuer/reserve risk out of scope while identifying token and messaging dependency paths.",
+      "evidence_summary": "Breakage boundary is documented, but per-chain LayerZero config and Tether-token operational controls were not fully verified.",
+      "factor_id": "RD-F-052",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Critical factor not triggered; no DEX spot oracle, collateral market, or TWAP source was identified.",
+      "evidence_summary": "No spot DEX price oracle is used by the scoped bridge surface.",
+      "factor_id": "RD-F-053",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No spot DEX price oracle is used by the scoped bridge surface.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "LayerZero OFT reference reviewed for bridge/OFT transfer mechanics rather than DEX spot pricing",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "LayerZero OFT technical reference",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "TWAP duration is moot because there is no DEX oracle.",
+      "evidence_summary": "No DEX/TWAP price oracle.",
+      "factor_id": "RD-F-054",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Underlying oracle-pool depth is moot.",
+      "evidence_summary": "No DEX oracle pool.",
+      "factor_id": "RD-F-055",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Single-pool oracle factor is moot.",
+      "evidence_summary": "No pool-sourced price oracle.",
+      "factor_id": "RD-F-056",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Bridge rate limits/pauses should be assessed under bridge/post-deploy controls, not Cat 3 price deviation.",
+      "evidence_summary": "No price-oracle deviation circuit breaker applies to this bridge transfer surface.",
+      "factor_id": "RD-F-057",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No price-oracle circuit breaker was needed for a non-pricing bridge surface.",
+      "evidence_summary": "No price-deviation threshold applies.",
+      "factor_id": "RD-F-058",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Oracle staleness checks are structurally moot.",
+      "evidence_summary": "No price feed exists.",
+      "factor_id": "RD-F-059",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Chainlink min/max bound misconfiguration is moot.",
+      "evidence_summary": "No Chainlink feed identified.",
+      "factor_id": "RD-F-060",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The adapter-held USDT balance is a TVS/custody measurement, not a price oracle or LP valuation path.",
+      "evidence_summary": "DefiLlama uses USDT balanceOf for TVS measurement, but no protocol pricing path trusts LP balanceOf.",
+      "factor_id": "RD-F-061",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: DefiLlama uses USDT balanceOf for TVS measurement, but no protocol pricing path trusts LP balanceOf.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "DefiLlama USDT0 adapter reads USDT balances for TVS measurement, not protocol price-oracle valuation",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "DefiLlama USDT0 adapter",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No single keeper was proven, but the LayerZero executor/DVN path requires per-chain verification before this can be green.",
+      "evidence_summary": "LayerZero execution/liveness is an external dependency; executor/DVN redundancy was not verified per-chain.",
+      "factor_id": "RD-F-062",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "DefiLlama `/protocol/usdt0` lists USDT0 as a Bridge with current Ethereum TVS of $3,634,031,788 on 2026-06-23. The adapter reads Ethereum USDT balanceOf the Ethereum OAdapter proxy, so this is bridge TVS/custody value rather than normal protocol deposits.",
+      "evidence_summary": "DefiLlama shows $3.634B USDT0 bridge TVS on 2026-06-23, +1.42% over 30 days; metric is adapter-held Ethereum USDT, not deposits.",
+      "factor_id": "RD-F-063",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "DefiLlama USDT0 API",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        },
+        {
+          "reference": "DefiLlama USDT0 adapter",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 DefiLlama adapter",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "DefiLlama currentChainTvls reports Ethereum only. The adapter adds only Ethereum USDT held by 0x6C96...41dee. Official deployments are multi-chain, so the relevant bridge concentration is not depositor top-10 share but source-chain custody/token concentration.",
+      "evidence_summary": "100% of DefiLlama TVS is Ethereum USDT in one OAdapter; intended for USDT0 but concentrated by asset, chain, and custody address.",
+      "factor_id": "RD-F-064",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "DefiLlama currentChainTvls",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        },
+        {
+          "reference": "DefiLlama USDT0 adapter",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 DefiLlama adapter",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        },
+        {
+          "reference": "Official deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The bridge's primary capacity is locked Ethereum USDT in the OAdapter. No local data cache exists and no source in the packet enumerates destination-chain exit liquidity, per-chain bridge limits, or slippage depth. Yellow reflects incomplete withdrawal-capacity evidence, not a proven shortfall.",
+      "evidence_summary": "USDT is the sole custody asset, but destination-chain withdrawal liquidity/caps and 2%/5% exit depth were not available in the cache/profile.",
+      "factor_id": "RD-F-065",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "DefiLlama adapter locks/adds USDT only",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 DefiLlama adapter",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        },
+        {
+          "reference": "No 00-data-cache.json present; profile warns cache absent",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "Local packet review"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 is scoped as a bridge/OFT transfer surface. The profile identifies no lending, CDP, or perps market register.",
+      "evidence_summary": "No borrow/supply utilization surface exists for the scoped bridge.",
+      "factor_id": "RD-F-066",
+      "notes": "Structural N/A: utilization rate applies to lending markets, not a USDT OFT/OAdapter bridge.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "This factor is lending-market oriented. DefiLlama's USDT0 hacks array was empty, but incident history is handled outside this Cat 4 bad-debt row.",
+      "evidence_summary": "Lending bad-debt socialization is structurally N/A for the scoped bridge; DefiLlama lists no direct USDT0 hacks.",
+      "factor_id": "RD-F-067",
+      "notes": "Structural N/A for lending bad debt; bridge incidents would be assessed by ops-history/Cat 10 if present.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "For a bridge, stress collateralization maps to locked source-chain assets versus redeemable destination-chain liabilities. DefiLlama verifies the locked Ethereum USDT side, while official deployments show multiple destination chains. This pass did not scan every destination token totalSupply.",
+      "evidence_summary": "Locked Ethereum USDT was verified via DefiLlama, but full cross-chain minted USDT0 supply versus collateral was not reconciled.",
+      "factor_id": "RD-F-068",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "DefiLlama USDT0 TVS",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        },
+        {
+          "reference": "Official multi-chain deployments",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "LayerZero describes OFT/OFTAdapter as cross-chain token transfer infrastructure, including adapter use for already-deployed ERC-20 tokens. DefiLlama and the profile classify USDT0 as a bridge. Tether issuer reserve/legal risk is outside this scoped factor.",
+      "evidence_summary": "USDT0 is an OFT/OAdapter transfer surface for existing USDT, not an algorithmic or under-collateralized stablecoin design.",
+      "factor_id": "RD-F-069",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "LayerZero OFT technical reference",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "Omnichain Fungible Token Technical Reference",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        },
+        {
+          "reference": "DefiLlama category Bridge",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 is a LayerZero OFT/OAdapter bridge, not a Compound fork or lending protocol. No market register with totalSupply/totalBorrow semantics exists in the profile.",
+      "evidence_summary": "No Compound V2-style market or cToken empty-market surface exists in the scoped bridge packet.",
+      "factor_id": "RD-F-070",
+      "notes": "Structural N/A: critical RD-F-070 applies to listed Compound-style markets or equivalent share markets, not this scoped bridge surface.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No borrow-enabled market listing process exists in the scoped USDT0 bridge packet.",
+      "evidence_summary": "Lending-market seed-deposit requirements do not apply to bridge chain/OFT deployments.",
+      "factor_id": "RD-F-071",
+      "notes": "Structural N/A unless a live lending market or share vault is added to scope.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The official registry lists OFT/token/proxy/admin/Safe deployments across multiple chains. The profile found multisig-administered upgradeable contracts but no governance forum/proposal venue/timelock. Yellow reflects missing threshold evidence for adding or changing chain deployments.",
+      "evidence_summary": "Mapped to bridge chain/OFT additions: deployments are curated, but public sources did not document a chain-addition threshold or timelock.",
+      "factor_id": "RD-F-072",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Official deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "Profile governance section: no forum/proposal venue/timelock found",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "Local profile review"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The scoped protocol is a bridge/OFT transfer surface, not a lending protocol with per-asset borrow caps.",
+      "evidence_summary": "No borrow markets, collateral assets, or oracle-driven borrow caps are in scope.",
+      "factor_id": "RD-F-073",
+      "notes": "Structural N/A for non-lending bridge.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The profile and deployment registry identify OFT/OAdapter/token extension contracts, not ERC-4626 vault accounting.",
+      "evidence_summary": "No ERC-4626/share vault surface identified in the scoped USDT0 bridge packet.",
+      "factor_id": "RD-F-074",
+      "notes": "Structural N/A unless a live ERC-4626 or share-vault surface is added to scope.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 transfers/credits bridge token balances; no share-vault first-depositor mint/redeem accounting was identified.",
+      "evidence_summary": "No first-depositor/share-inflation surface identified in the scoped bridge packet.",
+      "factor_id": "RD-F-075",
+      "notes": "Structural N/A unless a live share-vault market is added to scope.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Profile metadata sets launched_at to 2025-01-08 and the profile lifecycle cites the same adapter start date. This clears the 12-month live-age floor for Cat 5 age context.",
+      "evidence_summary": "USDT0 has been live since at least 2025-01-08; about 17 months at assessment.",
+      "factor_id": "RD-F-076",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No direct USDT0 bridge/OFT/OAdapter incident was found in the profile incident pointer or public searches for USDT0 exploit, hack, postmortem, advisory, Rekt, and Everdawn terms. No local data cache or hacksdatabase was present.",
+      "evidence_summary": "Prior direct USDT0 exploit count is 0.",
+      "factor_id": "RD-F-077",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Searched profile incident pointer and public terms: USDT0 exploit, USDT0 hack, USDT0 post-mortem, Everdawn USDT0 exploit, site:rekt.news USDT0, CVE/GHSA/advisory terms; no direct incident found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 direct incident search note"
+        },
+        {
+          "reference": "DefiLlama hacks API reviewed for direct USDT0 exploit entries",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama Hacks API",
+          "url": "https://api.llama.fi/hacks"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The direct incident register is empty, so the chronic-count threshold is not met. Adjacent LayerZero/Stargate/Tether/downstream incidents are excluded absent primary tie to USDT0.",
+      "evidence_summary": "No evidence of 3 or more direct USDT0 incidents.",
+      "factor_id": "RD-F-078",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Direct incident search found zero USDT0 bridge/OFT/OAdapter incidents; no data cache or local hacksdatabase available.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 chronic incident search note"
+        },
+        {
+          "reference": "DefiLlama hacks API reviewed for repeated direct USDT0 exploit entries",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama Hacks API",
+          "url": "https://api.llama.fi/hacks"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "With zero direct incidents found, there is no repeated root-cause cluster to count for USDT0 itself.",
+      "evidence_summary": "No repeated same-root-cause direct USDT0 exploit found.",
+      "factor_id": "RD-F-079",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Direct USDT0 incident register empty after profile, public incident, Rekt, postmortem, and advisory searches.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 repeat-root-cause search note"
+        },
+        {
+          "reference": "DefiLlama hacks API reviewed for same-root-cause direct USDT0 exploit entries",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama Hacks API",
+          "url": "https://api.llama.fi/hacks"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No direct exploit date is recorded because no direct USDT0 incident was found.",
+      "evidence_summary": "No last direct USDT0 exploit date exists; incident register is empty.",
+      "factor_id": "RD-F-080",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "No direct USDT0 incident or postmortem date surfaced in searched sources as of 2026-06-24.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 last-incident date note"
+        },
+        {
+          "reference": "DefiLlama hacks API reviewed for last direct USDT0 exploit date",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama Hacks API",
+          "url": "https://api.llama.fi/hacks"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Post-exploit response scoring is structurally not applicable when the direct incident register is empty.",
+      "evidence_summary": "No direct USDT0 exploit to score for compensation, transparency, root-cause depth, or operational recovery.",
+      "factor_id": "RD-F-081",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Post-mortem timeliness is not applicable because no direct exploit/postmortem event was found.",
+      "evidence_summary": "No direct USDT0 exploit requiring a post-mortem was found.",
+      "factor_id": "RD-F-082",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Auditor re-engagement after exploit is not applicable to an empty direct incident register.",
+      "evidence_summary": "No direct USDT0 exploit triggering a post-exploit re-audit requirement was found.",
+      "factor_id": "RD-F-083",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "programmatic",
+      "evidence_detail": "Fetched DefiLlama protocol time series for USDT0 and computed population standard deviation over the last 90 TVS points. Low CoV supports green for TVL stability.",
+      "evidence_summary": "DefiLlama 90 trailing points: 2026-03-27 to 2026-06-23, mean ~$3.77B, stdev ~$210.0M, CoV 0.0557.",
+      "factor_id": "RD-F-084",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "DefiLlama protocol API /protocol/usdt0",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "There is no first exploit transaction or official incident response timestamp to measure.",
+      "evidence_summary": "No direct USDT0 exploit; incident-response minutes are not applicable.",
+      "factor_id": "RD-F-085",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Public searches did not surface a USDT0 pause event; the profile and official registry show a live deployed surface.",
+      "evidence_summary": "No public deliberate USDT0 pause/emergency-stop activation in the trailing 12 months was found.",
+      "factor_id": "RD-F-086",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Searched USDT0 pause, emergency stop, bridge halted, incident, exploit, and official channel terms; no activation found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 pause activation search note"
+        },
+        {
+          "reference": "Everdawn-Labs USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No prolonged pause/halt report surfaced in public searches; profile marks USDT0 live.",
+      "evidence_summary": "No public evidence found of USDT0 being paused for more than 7 consecutive days in the last year.",
+      "factor_id": "RD-F-087",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Searched USDT0 paused, halted, bridge down, outage, incident, and exploit terms; no >7 day pause evidence found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 prolonged pause search note"
+        },
+        {
+          "reference": "USDT0 official site reviewed for live status; no prolonged-pause notice found in scoped public review",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 official site",
+          "url": "https://usdt0.to/"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "The official registry lists current multi-chain deployments. The audit repo lists Arbitrum upgrade reports, but no deprecated-retired address set or forced migration surfaced.",
+      "evidence_summary": "No evidence found of a last-year redeployment retiring the current USDT0 address set.",
+      "factor_id": "RD-F-088",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "Everdawn-Labs usdt0-audit-reports README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit reports README",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Searches for Nexus Mutual, Sherlock, Unslashed, Immunefi/bug bounty, and equivalent coverage did not surface active USDT0 cover. For a multi-billion-dollar bridge/OFT custody surface this is scored red.",
+      "evidence_summary": "No active external insurance coverage found for the roughly $3.6B USDT0 bridge custody surface.",
+      "factor_id": "RD-F-089",
+      "scope_level": "surface",
+      "score": "red",
+      "sources": [
+        {
+          "reference": "Searched USDT0 coverage across Nexus Mutual, Sherlock, Unslashed, Immunefi, and general web terms; no active external insurance coverage found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 insurance coverage search note"
+        },
+        {
+          "reference": "DefiLlama protocol API /protocol/usdt0",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Public searches for USDT0 plus Tornado/Railgun/Lazarus terms found no direct-touch evidence, but no Chainalysis/TRM/Arkham cluster feed was available. Signal remains applicable to the OAdapter/OFT contracts.",
+      "evidence_summary": "No public mixer-to-USDT0 hit found; CTI/wallet-cluster data unavailable.",
+      "factor_id": "RD-F-090",
+      "notes": "Defaulted yellow rather than green because public search cannot clear mixer proximity.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Public search: USDT0 mixer/Tornado/Railgun/Lazarus direct-touch terms; no direct hit",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 profile scope and deployed Ethereum OAdapter",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "USDT0 Ethereum OAdapter",
+          "url": "https://etherscan.io/address/0x6C96dE32CEa08842dcc4058c14d3aaAD7Fa41dee"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "DefiLlama TVS does not show current severe drain, but this precursor requires transaction-level pattern matching across bridge flows.",
+      "evidence_summary": "No active public partial-drain pattern; live tx clustering unavailable.",
+      "factor_id": "RD-F-091",
+      "notes": "Requires live adapter/OFT event and transaction clustering.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "DefiLlama USDT0 API",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No 00-data-cache.json exists, and profile did not provide deployer funding source. Static pass cannot determine unusual deployer-wallet mempool patterns.",
+      "evidence_summary": "Deployer seed and mempool feed unavailable.",
+      "factor_id": "RD-F-092",
+      "notes": "Requires deployer seed plus mempool baseline.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: Deployer seed and mempool feed unavailable.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No active incident or attacker wallet was identified; abnormal gas-price willingness requires live mempool plus threat-wallet labeling.",
+      "evidence_summary": "No attacker wallet or mempool priority-fee feed available.",
+      "factor_id": "RD-F-093",
+      "notes": "Requires threat-wallet and mempool feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "DefiLlama hacks array empty for USDT0",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No programmatic scan was available for fresh contracts similar to USDT0/OFT exploit templates.",
+      "evidence_summary": "No new-deploy bytecode-similarity sweep available.",
+      "factor_id": "RD-F-094",
+      "notes": "Requires chain-wide bytecode similarity monitor.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No on-chain bytecode-similarity feed available in this static pass",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Selector/call-pattern replay cannot be assessed without a maintained exploit-template database and mempool/history monitor.",
+      "evidence_summary": "No exploit-template selector monitor available.",
+      "factor_id": "RD-F-095",
+      "notes": "Requires exploit-template and selector-pattern monitoring.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No selector-pattern monitor available for USDT0 static assessment",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT approvals to the OAdapter are structurally possible, but high-TVL user approval alerts require holder/approval indexer data.",
+      "evidence_summary": "Approval monitoring around OAdapter possible but not observable here.",
+      "factor_id": "RD-F-096",
+      "notes": "Requires top-holder and approval event monitor.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "DefiLlama adapter counts Ethereum USDT balance at OAdapter",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No clustering/indexer was available to detect identical-pattern EOAs around USDT0 contracts.",
+      "evidence_summary": "Sybil burst detection feed unavailable.",
+      "factor_id": "RD-F-097",
+      "notes": "Requires transaction clustering feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No sybil transaction clustering feed available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "programmatic",
+      "evidence_detail": "DefiLlama USDT0 API returned current Ethereum TVS USD 3,634,031,788. Computed latest vs 30d median was -0.05%, and max daily drop in the sampled 30d window was -2.79%, below the severe-drop signal.",
+      "evidence_summary": "No TVS anomaly: USD 3.634B latest, -0.05% vs 30d median.",
+      "factor_id": "RD-F-098",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "DefiLlama USDT0 API",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile identifies no oracle dependency for the scoped USDT0 bridge/OFT surface.",
+      "evidence_summary": "No scoped price oracle for USDT0 bridge/OFT transfer surface.",
+      "factor_id": "RD-F-099",
+      "notes": "Oracle deviation is structurally absent for this transfer surface.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 scope is bridge/OFT/OAdapter transfer; no flash-loan-targetable lending market or protocol LP token was identified.",
+      "evidence_summary": "No protocol LP token/lending market/borrow surface target identified.",
+      "factor_id": "RD-F-100",
+      "notes": "Structurally not a flash-loan oracle/lending target in this scope.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile found no governance forum/proposal venue; admin control routes through Safe and ProxyAdmin/LayerZero config, not a queued governor proposal.",
+      "evidence_summary": "No public token-governor or proposal queue found.",
+      "factor_id": "RD-F-101",
+      "notes": "Safe admin txs are assessed under RD-F-102/RD-F-103/RD-F-182.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Safe history shows mined USDT0 config/admin calls, including setConfig/setPeer/setEnforcedOptions, but this factor is specifically pre-confirmation mempool visibility.",
+      "evidence_summary": "Applicable admin/config tx surface, but no mempool feed.",
+      "factor_id": "RD-F-102",
+      "notes": "Requires mempool listener and per-protocol admin allowlist.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Safe multisig transaction history for USDT0 Ethereum Safe",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8/multisig-transactions/"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Ethereum Safe history shows recent setConfig, setPeer, setSendLibrary, setReceiveLibrary, and setEnforcedOptions calls. No direct signer/threshold change was observed in the reviewed history, but schedule/DVN/security-stack and per-chain baselines are incomplete.",
+      "evidence_summary": "Recent LayerZero/OFT config changes observed; baseline incomplete.",
+      "factor_id": "RD-F-103",
+      "notes": "Needs decoded LayerZero config and per-chain scheduled-change allowlist.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Safe multisig transaction history for USDT0 Ethereum Safe",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8/multisig-transactions/"
+        },
+        {
+          "reference": "LayerZero security stack and DVN docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "programmatic",
+      "evidence_detail": "CoinGecko simple price returned Tether at USD 0.998818 with last_updated_at 1782260383; no >2% depeg for the bridge's USDT dependency.",
+      "evidence_summary": "USDT price USD 0.998818, within 2% depeg threshold.",
+      "factor_id": "RD-F-104",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "CoinGecko Tether simple price",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd&include_24hr_change=true&include_last_updated_at=true"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "DNS resolution for usdt0.to returned A 76.76.21.21 and HTTPS fetch returned 200, but no bundle hash or DNS history baseline was available to detect drift.",
+      "evidence_summary": "Site resolves and returns 200; no historical hash/DNS baseline.",
+      "factor_id": "RD-F-105",
+      "notes": "Requires production bundle hash baseline and DNS/cert history monitor.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 official site",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://usdt0.to"
+        },
+        {
+          "reference": "Resolve-DnsName usdt0.to returned A 76.76.21.21; crt.sh JSON fetch failed with 404 in this environment",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "USDT0 is a cross-chain OFT/OAdapter protocol, but this signal needs per-chain deposit/mint/proof event correlation across official deployments.",
+      "evidence_summary": "Cross-chain mint-without-proof correlation unavailable.",
+      "factor_id": "RD-F-106",
+      "notes": "Requires cross-chain event index over all official USDT0 deployments.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 official deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Off-chain signer geography/device telemetry is not public. Ethereum Safe owner addresses are visible but not device/geography metadata.",
+      "evidence_summary": "Admin geography/device telemetry unavailable.",
+      "factor_id": "RD-F-107",
+      "notes": "Requires wallet security/provider telemetry.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Safe Ethereum admin record",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "programmatic",
+      "evidence_detail": "GitHub branches API reports main protected true, default branch main, latest pushed_at 2026-03-26T18:06:01Z. No public force-push/sensitive-branch risk signal was found.",
+      "evidence_summary": "Main branch protected; latest public commit 2026-03-26.",
+      "factor_id": "RD-F-108",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs/usdt0-audit-reports branches",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/branches"
+        },
+        {
+          "reference": "Everdawn-Labs/usdt0-audit-reports repo metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile identifies official X handle, but no social monitoring feed was available to quantify impersonation/scam spike.",
+      "evidence_summary": "No social-listening feed or scam-spike baseline.",
+      "factor_id": "RD-F-109",
+      "notes": "Requires social-listening and impersonator baseline.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Profile official USDT0 X handle",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://x.com/USDT0_to"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No Snapshot/Tally/Governor/proposal venue found for USDT0 in profile sources.",
+      "evidence_summary": "No governance proposal system found.",
+      "factor_id": "RD-F-110",
+      "notes": "Pending/executed proposal ratio is structurally absent.",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Official USDT0 sources identify the product, deployment registry, X account, and Everdawn-Labs GitHub org, but do not publish a real-name deployer/admin signer/team roster. GitHub org API reports no public members.",
+      "evidence_summary": "USDT0/Everdawn operating identities are mostly pseudonymous; no public real-name deployer/admin signer/team roster was found.",
+      "factor_id": "RD-F-111",
+      "notes": "Scope is USDT0 deployer/admin/signers/team only, not Tether issuer or generic LayerZero/Stargate identities.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 protocol profile official channels",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "USDT0 official site",
+          "url": "https://usdt0.to/"
+        },
+        {
+          "reference": "Everdawn-Labs GitHub org: no public members",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "Everdawn-Labs public members API",
+          "url": "https://api.github.com/orgs/Everdawn-Labs/public_members"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "The public surface has project/account attestations, audit reports, and verified deployment registry entries, but no LinkedIn/conference/prior-employer trails for deployer/admin signers.",
+      "evidence_summary": "Accountability surface is limited to official website and X, GitHub deployment/audit repo, audits, and explorer labels; not person-level accountability.",
+      "factor_id": "RD-F-112",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs usdt0-audit-reports",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit/deployment repository",
+          "url": "https://github.com/Everdawn-Labs/usdt0-audit-reports"
+        },
+        {
+          "reference": "Profile found no forum/proposal venue, bug bounty, or SIRT email; no public team page found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 accountability surface search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Because the public packet does not identify individual team members or signer identities, this factor cannot distinguish clean history from unknown history.",
+      "evidence_summary": "No named USDT0 team member list was found, so prior/current protocol involvement cannot be mapped.",
+      "factor_id": "RD-F-113",
+      "notes": "Missing public identities prevent a reliable involvement-history map.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Searched official site, GitHub org, contributors, and public web terms for USDT0/Everdawn team identities; no roster found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 team involvement search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Etherscan identifies the Ethereum OAdapter proxy creator as 0x1a6362AD64ccFF5902D46D875B36e8798267d154. The creator page shows 322 transactions and a Bitfinex Hot Wallet funded-by label. No data cache or provider trace was available to classify all prior history.",
+      "evidence_summary": "Creator has 322 Ethereum transactions and first-funding label from Bitfinex, but full deploy-window/cross-chain history was not provider-traced.",
+      "factor_id": "RD-F-114",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Ethereum OAdapter creator panel",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "title": "USDT0 OAdapterUpgradeable on Etherscan",
+          "url": "https://etherscan.io/address/0x6C96dE32CEa08842dcc4058c14d3aaAD7Fa41dee"
+        },
+        {
+          "reference": "Creator address funded-by label and transaction count",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "title": "USDT0 creator/admin operator on Etherscan",
+          "url": "https://etherscan.io/address/0x1a6362AD64ccFF5902D46D875B36e8798267d154"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Public searches for USDT0/Everdawn rug, scam, exploit, Lazarus, and named-team terms found no direct adverse affiliation. The result remains gray because signer/team identities are mostly unknown.",
+      "evidence_summary": "No direct evidence links USDT0 deployer/admin/team to a prior rug, but missing identities prevent a full affiliation check.",
+      "factor_id": "RD-F-115",
+      "notes": "Absence of public adverse evidence is not a full curator rug-list check.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public searches for USDT0/Everdawn rug/exit-scam affiliations found no direct match; no named team roster found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 rug-affiliation search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "The official repo is a deployment/audit registry. GitHub commits include pseudonymous Everdawn commits and GuardianAudits report updates, not a complete admin-permissioned contract-source workflow.",
+      "evidence_summary": "Audit/deployment repo commits are visible, but no full contract-source PR workflow was found for admin-permissioned code changes.",
+      "factor_id": "RD-F-116",
+      "notes": "No source repo PR history was available to compute contributor tenure for admin-permissioned code changes.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs usdt0-audit-reports commits",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit/deployment repo commits API",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/commits?per_page=10"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The Etherscan creator/admin page does not show a resolved name or public identity binding in the scraped page. No other ENS/NameStone attribution surfaced in public searches.",
+      "evidence_summary": "No ENS/NameStone or real-identity binding was found for the creator/admin operator in the reviewed public packet.",
+      "factor_id": "RD-F-117",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Creator address page showed raw address and Bitfinex funded-by label, not an ENS/identity binding",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "title": "USDT0 creator/admin operator on Etherscan",
+          "url": "https://etherscan.io/address/0x1a6362AD64ccFF5902D46D875B36e8798267d154"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Public handles were sparse. GuardianAudits is an audit-firm contributor, not USDT0 team. No direct handle reuse across failed/rugged projects was found, but the identity set is incomplete.",
+      "evidence_summary": "No reusable team handles beyond Everdawn-Labs, USDT0_to, Clearwood, and GuardianAudits were linked to failed/rugged projects.",
+      "factor_id": "RD-F-118",
+      "notes": "Incomplete identity set prevents a full handle-reuse check.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 repo contributors: Clearwood, GuardianAudits, David-AAL",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit/deployment repo contributors API",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/contributors"
+        },
+        {
+          "reference": "Public searches for USDT0/Everdawn/Clearwood failed/rugged project handle reuse found no direct match.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 handle-reuse search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "The official packet does not publish a USDT0 team geography. Commit times in the audit/deployment repo therefore cannot be used as a timezone anomaly signal.",
+      "evidence_summary": "No stated team geography was found; audit/deployment repo commit timestamps cannot be compared to a claimed geography.",
+      "factor_id": "RD-F-119",
+      "notes": "No claimed geography baseline.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 repo commits API",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit/deployment repo commits API",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/commits?per_page=10"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Searches did not surface public interviews where video/voice consistency could be assessed for USDT0 deployer/admin identities.",
+      "evidence_summary": "No public interviews or team-video artifacts were found for USDT0 deployer/admin identities.",
+      "factor_id": "RD-F-120",
+      "notes": "No interview artifacts found.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public searches for USDT0/Everdawn interviews, conference talks, and team videos found no assessable artifacts.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 interview/video search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "GitHub org metadata shows Everdawn-Labs is not verified and has no public members. Safe API verifies threshold and owners for the Ethereum Safe but provides no owner labels.",
+      "evidence_summary": "OSINT depth is shallow: GitHub org is unverified, has no public members, and Safe owners are unlabeled.",
+      "factor_id": "RD-F-121",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs org metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "Everdawn-Labs GitHub org API",
+          "url": "https://api.github.com/orgs/Everdawn-Labs"
+        },
+        {
+          "reference": "Safe API Ethereum Safe record",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 Ethereum Safe API",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The public repo and profile do not identify contributor payment wallets. Without payment-wallet mapping and Chainalysis/TRM/Arkham-style cluster data, this factor cannot be cleanly scored.",
+      "evidence_summary": "No contributor payment wallets were identified and no provider-grade DPRK routing check was available.",
+      "factor_id": "RD-F-122",
+      "notes": "No contributor payment-wallet seed; no provider-grade DPRK feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No 00-data-cache.json; public repo/Safe data did not expose contributor payment wallets or DPRK cluster routing.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 contributor payment-wallet gap note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "The creator/admin operator has visible 2026 Safe exec, LayerZero Set Config/Set Library/Set Peer, and ownership-transfer transactions. The profile found no forum/proposal venue, so public discussion linkage is missing. No direct evidence supports a red insider implant finding.",
+      "evidence_summary": "Admin/config changes are visible, and no public governance/proposal venue exists; no malicious rescue/implant evidence was found.",
+      "factor_id": "RD-F-123",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Creator/admin operator transactions show Safe exec and LayerZero config operations",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "title": "USDT0 creator/admin operator on Etherscan",
+          "url": "https://etherscan.io/address/0x1a6362AD64ccFF5902D46D875B36e8798267d154"
+        },
+        {
+          "reference": "Profile found no governance forum or proposal venue for matching admin/config changes to public discussion.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 no-public-governance-venue note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Etherscan shows the creator/admin operator was funded by Bitfinex Hot Wallet. Public searches for the creator and USDT0 with Tornado/Railgun terms found no direct hit. Because the local data cache is absent and no provider-grade 30-day mixer trace was available, this remains yellow rather than green.",
+      "evidence_summary": "First-funding label is Bitfinex Hot Wallet, not a mixer; no public Tornado/Railgun evidence found, but full 30-day provider trace unavailable.",
+      "factor_id": "RD-F-124",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Creator address funded-by label: Bitfinex Hot Wallet",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "title": "USDT0 creator/admin operator on Etherscan",
+          "url": "https://etherscan.io/address/0x1a6362AD64ccFF5902D46D875B36e8798267d154"
+        },
+        {
+          "reference": "Searched USDT0/Everdawn/creator address with Tornado Cash and Railgun terms; no direct mixer evidence found. No 00-data-cache.json/provider trace.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 mixer-proximity search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Public searches for USDT0/Everdawn/creator address with DPRK/Lazarus terms found no direct deployer/team attribution. Adjacent LayerZero/Kelp/Lazarus attacker context was excluded because it does not evidence USDT0 developer linkage. Without Chainalysis/TRM/Arkham, this cannot be green-cleared.",
+      "evidence_summary": "No reputable public source attributes USDT0 creator/admin/team to DPRK/Lazarus; no provider-grade 3-hop clean check available.",
+      "factor_id": "RD-F-125",
+      "notes": "No DPRK escalation: RD-F-125 is not red.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Searched USDT0, Everdawn-Labs, creator address, Safe address, DPRK, Lazarus, OFAC, Chainalysis terms; no direct deployer/team linkage found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 DPRK/Lazarus direct-touch search note"
+        },
+        {
+          "reference": "Safe API owner list; owner identities unlabeled and not provider cluster-checked",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 Ethereum Safe API",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "USDT0 is not a conventional protocol fork; it composes LayerZero OFT/OAdapter and OZ primitives.",
+      "factor_id": "RD-F-126",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify imports LayerZero OFTAdapterUpgradeable",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Upstream LayerZero/OZ patch status was not matched to exact package versions.",
+      "factor_id": "RD-F-127",
+      "notes": "Needs exact dependency manifest and advisory matching.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No public application dependency manifest found",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No 90-day upstream advisory applicability check completed for exact package versions.",
+      "factor_id": "RD-F-128",
+      "notes": "Needs OSV/GitHub advisory matching against pinned versions.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Exact package versions not fully recoverable from public repo",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No fork baseline or package artifact diff was quantified.",
+      "factor_id": "RD-F-129",
+      "notes": "USDT0 is package-composed, not a conventional fork.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No fork baseline or package artifact diff was quantified.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No fork-of-fork lineage identified; dependency composition is first-order.",
+      "factor_id": "RD-F-130",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No fork-of-fork lineage identified; dependency composition is first-order.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 deployment registry reviewed for deployed OAdapter/OFT topology rather than fork-of-fork lineage",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "USDT0 has fresh project/deployment audits rather than relying only on upstream audits.",
+      "factor_id": "RD-F-131",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No lending/market economic parameter fork model exists for scoped bridge/OFT surface.",
+      "factor_id": "RD-F-132",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No public package manifest was available to verify whether security-critical deps are pinned.",
+      "factor_id": "RD-F-133",
+      "notes": "Official repo is audit/deployment reports only.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "Malicious-release matching was not completed because exact dependency versions were not fully known.",
+      "factor_id": "RD-F-134",
+      "notes": "Needs dependency manifest or package lock.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Exact dependency versions not fully recoverable from public repo",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "OZ v5.1-era files and LayerZero packages are visible, but exact package versions/advisories were not fully resolved.",
+      "factor_id": "RD-F-135",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify metadata source list",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify metadata supports source verification for Ethereum implementation; audit repo contains reports/deployments, not signed release tags.",
+      "evidence_summary": "Verified/Sourcify source exists, but no signed release-tag bytecode mapping was found.",
+      "factor_id": "RD-F-136",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify full match metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Audit Reports README",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Ethereum `eth_getLogs` broad scan returned 403 for proxy/admin addresses.",
+      "evidence_summary": "Recent upgrade count not verified; public RPC log scan was blocked.",
+      "factor_id": "RD-F-137",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public RPC eth_getLogs scan returned 403 for Ethereum proxy/admin upgrade history",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "No timelock found; ProxyAdmins are owned by Safes.",
+      "evidence_summary": "No recent hot patch verified, but any upgrade path appears non-timelocked.",
+      "factor_id": "RD-F-138",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md has Safe/ProxyAdmin entries but no timelock",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        },
+        {
+          "reference": "ProxyAdmin owner() reads returned Safe owners; no timelock found",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Official audit repo lists January 2025 ChainSecurity/Guardian/Paladin and Arbitrum ChainSecurity/Guardian/OpenZeppelin reports.",
+      "evidence_summary": "Audit coverage is public, but deployed bytecode-to-report coverage was not fully matched across chains.",
+      "factor_id": "RD-F-139",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README lists project and Arbitrum deployment/upgrade audits",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Audit Reports README",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No primary development repo or vulnerability PR list was available from the official audit/deployment repo.",
+      "evidence_summary": "No known vulnerability PR/fix gap identified; source repo is audit/deployment oriented.",
+      "factor_id": "RD-F-140",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No fix-merged-not-deployed signal found in official audit/deployment repo",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify source was checked; profile warning keeps DVN/security-stack config as a specialist gap.",
+      "evidence_summary": "No test-mode parameter was found in Ethereum source, but per-chain LayerZero/DVN config was not verified.",
+      "factor_id": "RD-F-141",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify source metadata for Ethereum OAdapter",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "Profile flags LayerZero DVN/security-stack config for specialist verification",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Official registry lists TransparentUpgradeableProxy and ProxyAdmin patterns across chains.",
+      "evidence_summary": "Upgradeable proxies and multiple implementations exist; no OZ storage-layout report found in public repo.",
+      "factor_id": "RD-F-142",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md proxy/admin pattern",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify source for `contracts/OAdapterUpgradeable.sol` shows `_disableInitializers()` in the constructor.",
+      "evidence_summary": "Ethereum OAdapter implementation constructor calls `_disableInitializers()`.",
+      "factor_id": "RD-F-143",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "contracts/OAdapterUpgradeable.sol constructor calls _disableInitializers()",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Registry lists proxies and implementations; no factory was identified.",
+      "evidence_summary": "No CREATE2 factory/redeploy pattern found in scoped evidence.",
+      "factor_id": "RD-F-144",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "USDT0 DEPLOYMENTS.md lists proxy/implementation/admin contracts, not a CREATE2 factory",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 Deployments",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "No local build reproduction was run; only Sourcify metadata was verified for Ethereum implementation.",
+      "evidence_summary": "Sourcify full match supports reproducibility for Ethereum implementation, but all-chain builds were not reproduced locally.",
+      "factor_id": "RD-F-145",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify full match metadata for Ethereum OAdapter implementation",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Official registry current state was reviewed, but no chain-wide deploy-event cache was available.",
+      "evidence_summary": "Full multi-chain deploy scan not completed.",
+      "factor_id": "RD-F-146",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No chain-wide last-30-day deploy-event scan completed; no data cache present",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile flags both has_bridge_surface and is_a_bridge as true; official deployments enumerate OFT/OAdapter contracts.",
+      "evidence_summary": "USDT0's core surface is LayerZero OFT/OAdapter bridging.",
+      "factor_id": "RD-F-147",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No evidence of an unsafe count was found, but the required endpoint configuration was not available in the packet.",
+      "evidence_summary": "For LayerZero OFT, validator-equivalent data is DVN configuration; per-chain DVN count was not independently read.",
+      "factor_id": "RD-F-148",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "LayerZero OFT safety depends on configured DVN threshold, which remains unverified for USDT0 pathways.",
+      "evidence_summary": "Per-chain DVN threshold not verified; no evidence of 1/1, but the threshold is load-bearing.",
+      "factor_id": "RD-F-149",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No data cache or provider-grade DVN operator custody scan was available.",
+      "evidence_summary": "DVN/operator co-hosting and independence were not verified.",
+      "factor_id": "RD-F-150",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No 00-data-cache.json; DVN operator independence not assessed",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The Wormhole-style ecrecover-zero bug was not identified in the USDT0 app path; residual risk is LayerZero/DVN dependency configuration.",
+      "evidence_summary": "No app-local signature verifier found; verification is delegated to LayerZero security stack and endpoint delivery.",
+      "factor_id": "RD-F-151",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Ethereum OAdapter implementation 0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "url": "https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4"
+        },
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "LayerZero OFT design binds messages to source/destination endpoint identity and trusted peer configuration.",
+      "evidence_summary": "LayerZero OApp/OFT routing uses endpoint IDs and peer configuration; per-peer config still needs endpoint verification.",
+      "factor_id": "RD-F-152",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "LayerZero OFT technical reference",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/technical-reference/oft-reference"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Replay protection is handled by the LayerZero endpoint/messaging path rather than a bespoke USDT0 nonce verifier.",
+      "evidence_summary": "LayerZero docs describe nonce verification/commitment before endpoint execution.",
+      "factor_id": "RD-F-153",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The Nomad-style default-root acceptance pattern was not identified in USDT0's app path.",
+      "evidence_summary": "No app-local Merkle-root acceptance path identified; LayerZero path uses payload-hash verification.",
+      "factor_id": "RD-F-154",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        },
+        {
+          "reference": "Ethereum OAdapter implementation",
+          "retrieved_at": "2026-06-24",
+          "source_type": "etherscan",
+          "url": "https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Rotation recency requires endpoint event reads for each chain/pathway.",
+      "evidence_summary": "DVN/security-stack rotation history was not scanned from endpoint events.",
+      "factor_id": "RD-F-155",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No endpoint event scan performed for USDT0 DVN rotation history",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No public source in this pass resolved whether more than 30% of verifier capacity shares custody.",
+      "evidence_summary": "DVN/key-custody independence not verified.",
+      "factor_id": "RD-F-156",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No provider-grade DVN custody or operator independence scan available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The denominator for TVL-per-validator is unavailable; large bridge TVS makes this a material open risk rather than a green state.",
+      "evidence_summary": "DefiLlama TVS is about $3.63B in the Ethereum OAdapter, but DVN count is unverified, so ratio is not computed.",
+      "factor_id": "RD-F-157",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: DefiLlama TVS is about $3.63B in the Ethereum OAdapter, but DVN count is unverified, so ratio is not computed.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "DefiLlama USDT0 protocol API used for TVS magnitude in bridge validator-materiality review",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "DefiLlama USDT0 protocol API",
+          "url": "https://api.llama.fi/protocol/usdt0"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Public searches for USDT0 with Lazarus/threat/drain terms did not surface direct-touch evidence. A curated threat-actor cluster feed was not available.",
+      "evidence_summary": "No public threat-actor direct touch found; CTI feed unavailable.",
+      "factor_id": "RD-F-158",
+      "notes": "Cannot green-clear without partner CTI.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Public search: USDT0 Lazarus/threat actor/direct touch terms; no direct hit",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 official site used as direct protocol scope anchor for threat-actor direct-touch review",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 official site",
+          "url": "https://usdt0.to/"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No threat-cluster feed or failing low-gas tx monitor was available for USDT0 contracts.",
+      "evidence_summary": "Mempool probe detection unavailable.",
+      "factor_id": "RD-F-159",
+      "notes": "Requires mempool plus curated threat-cluster feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No mempool/threat-cluster probe feed available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "USDT0 packet has no data cache or contract dependency inventory for advisory matching. GitHub advisory free-text search did not yield reliable USDT0-specific results.",
+      "evidence_summary": "No dependency tree/cache; GitHub advisory search was noisy.",
+      "factor_id": "RD-F-160",
+      "notes": "Requires dependency inventory and targeted OSV/GHSA matching.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "GitHub advisories free-text query returned unrelated results",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://api.github.com/advisories"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "usdt0.to resolved and served HTTP 200. No domain-registration/typosquat feed was available; crt.sh JSON fetch failed in this environment.",
+      "evidence_summary": "Current DNS checked; typosquat registration feed unavailable.",
+      "factor_id": "RD-F-161",
+      "notes": "Requires domain-monitoring feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 official site",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://usdt0.to"
+        },
+        {
+          "reference": "Resolve-DnsName usdt0.to returned A 76.76.21.21; crt.sh JSON fetch failed with 404",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No chain-wide deploy scan was available to identify exploit-template selector patterns relevant to OFT/OAdapter bridge contracts.",
+      "evidence_summary": "Known-exploit-template deploy scan unavailable.",
+      "factor_id": "RD-F-162",
+      "notes": "Requires exploit-template and deployment monitor.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No exploit-template deployment monitor available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The taxonomy treats bridge reconnaissance as a known peer-class risk. Public searches found no direct USDT0 pre-strike reconnaissance, so this is peer-class caution rather than a direct-touch finding.",
+      "evidence_summary": "Bridge/OFT peer-class recon risk exists; no direct USDT0 evidence.",
+      "factor_id": "RD-F-163",
+      "notes": "Needs maintained bridge CTI address pack for direct-touch checks.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: Bridge/OFT peer-class recon risk exists; no direct USDT0 evidence.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "LayerZero DVN/security-stack docs support bridge peer-class recon risk context for OFT security review",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "title": "LayerZero DVN/security stack docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No paste, Sentry, or credential-dump feed was available to check USDT0 infrastructure strings or leaked keys.",
+      "evidence_summary": "Paste/credential-dump feed unavailable.",
+      "factor_id": "RD-F-164",
+      "notes": "Requires credential-leak feed.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No paste/credential-dump feed available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No Telegram/Discord scam-coordinator watchlist was available for USDT0 social channels.",
+      "evidence_summary": "Curator social watchlist unavailable.",
+      "factor_id": "RD-F-165",
+      "notes": "Requires curator social watchlist.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No Telegram/Discord scam-coordinator watchlist available",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The profile and official deployment registry identify current live contracts across chains and no retired/deprecated USDT0 surface. No deprecation notice was found in official sources reviewed.",
+      "evidence_summary": "No officially deprecated USDT0 contract surface still holding material value was found.",
+      "factor_id": "RD-F-166",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Everdawn-Labs USDT0 DEPLOYMENTS.md",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile lifecycle shows live deployments and no deprecated/sunset surface; registry lists current deployments.",
+      "evidence_summary": "No deprecated USDT0 router/contract surface found in profile or official registry.",
+      "factor_id": "RD-F-167",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Profile and official registry reviewed; no deprecated USDT0 surface identified",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 deployment registry reviewed for current deployments and no deprecated router entry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Profile and official registry do not identify deprecated USDT0 routers.",
+      "evidence_summary": "No deprecated router/surface found, so no stale-approval target identified.",
+      "factor_id": "RD-F-168",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Profile and official registry reviewed; no deprecated USDT0 router found",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        },
+        {
+          "reference": "USDT0 deployment registry reviewed for current deployments and no deprecated router entry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 deployments registry",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Sourcify metadata reports compiler 0.8.22+commit.4fc1097e, optimizer enabled true, runs 200.",
+      "evidence_summary": "Verified Ethereum implementation uses Solidity 0.8.22 with optimizer enabled; no known-bug red flag found.",
+      "factor_id": "RD-F-170",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Sourcify compiler metadata",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "Solidity bugs list",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://raw.githubusercontent.com/ethereum/solidity/develop/docs/bugs.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No bytecode similarity/behavior-deviation diff against audited upstream artifacts was performed.",
+      "factor_id": "RD-F-171",
+      "notes": "Needs bytecode diff against LayerZero package build artifacts.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "No bytecode similarity diff run",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No AI co-authorship evidence found, but the public repo lacks critical Solidity commit history.",
+      "factor_id": "RD-F-172",
+      "notes": "Audit/deployment repo is not the source-development repo.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "USDT0 audit repo README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No official self-disclosure of AI-generated Solidity was found.",
+      "factor_id": "RD-F-173",
+      "notes": "Absence only from official/profile sources searched.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public-source review disposition: No official self-disclosure of AI-generated Solidity was found.",
+          "retrieved_at": "2026-06-25",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_summary": "Visible implementation uses modern Solidity, but dependency manifest is absent so full dependency-tree EOL status is unresolved.",
+      "factor_id": "RD-F-174",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify compiler metadata and sources",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "The official site and official GitHub audit/deployment repo do not publish a disclosure channel in reviewed content; raw SECURITY.md returned 404; Immunefi/public searches found no USDT0 program.",
+      "evidence_summary": "No public security-disclosure channel found: no bug bounty, SIRT email, SECURITY.md, or disclosure page surfaced.",
+      "factor_id": "RD-F-175",
+      "scope_level": "surface",
+      "score": "red",
+      "sources": [
+        {
+          "reference": "USDT0 official site",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "USDT0 official site",
+          "url": "https://usdt0.to/"
+        },
+        {
+          "reference": "Everdawn-Labs usdt0-audit-reports README",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit reports README",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/README.md"
+        },
+        {
+          "reference": "SECURITY.md at Everdawn-Labs/usdt0-audit-reports returned 404; Immunefi/security contact searches found no USDT0 disclosure channel.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 disclosure channel search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No disclosure policy, bug bounty, SIRT page, or SECURITY.md was found, so no public response/acknowledgement SLA could be verified.",
+      "evidence_summary": "No public acknowledgement-time SLA was found.",
+      "factor_id": "RD-F-176",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Official site, official GitHub repo, SECURITY.md path, and public disclosure searches did not surface an acknowledgement-time SLA.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 disclosure SLA search note"
+        },
+        {
+          "reference": "USDT0 audit/deployment repository reviewed for public security advisory/disclosure material",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 audit/deployment repository",
+          "url": "https://github.com/Everdawn-Labs/usdt0-audit-reports"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No direct USDT0 exploit/postmortem or ignored-disclosure narrative surfaced. Adjacent LayerZero/OApp warnings are not imported absent a USDT0-specific primary tie.",
+      "evidence_summary": "No evidence found that a known USDT0 vulnerability disclosure was ignored before a direct exploit.",
+      "factor_id": "RD-F-177",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "Searched USDT0 postmortem, vulnerability disclosure, ignored report, incident, exploit, and advisory terms; no ignored disclosure found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 ignored-disclosure search note"
+        },
+        {
+          "reference": "GitHub advisories API reviewed for direct USDT0 advisory/ignored-disclosure evidence",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "USDT0 GitHub security advisories API",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/security-advisories"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "GitHub security advisories endpoint for the official repo returned an empty list; public CVE/GHSA/advisory searches found no USDT0 advisory.",
+      "evidence_summary": "No CVE, GHSA, GitHub security advisory, or equivalent public advisory against USDT0 was found.",
+      "factor_id": "RD-F-178",
+      "scope_level": "surface",
+      "score": "green",
+      "sources": [
+        {
+          "reference": "GitHub security advisories endpoint returned empty for Everdawn-Labs/usdt0-audit-reports.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "title": "GitHub security advisories API",
+          "url": "https://api.github.com/repos/Everdawn-Labs/usdt0-audit-reports/security-advisories"
+        },
+        {
+          "reference": "Searched USDT0 CVE, GHSA, vulnerability advisory, and Everdawn USDT0 advisory terms; no advisory found.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 CVE/GHSA/advisory search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No 1/1 configuration was proven, but the precise USDT0 security-stack state remains the key specialist gap.",
+      "evidence_summary": "LayerZero DVN config is required, but per-chain DVNs, threshold, libraries, and executor settings were not independently read.",
+      "factor_id": "RD-F-179",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "LayerZero DVN/security stack docs",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Critical immutable-oracle factor is moot because USDT0 has no collateral oracle.",
+      "evidence_summary": "No oracle source address exists in the scoped bridge surface.",
+      "factor_id": "RD-F-180",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "Permissionless-pool lending oracle factor is structurally moot.",
+      "evidence_summary": "USDT0 is not a lending protocol and does not accept permissionless-pool collateral prices.",
+      "factor_id": "RD-F-181",
+      "scope_level": "surface",
+      "score": "not_applicable",
+      "sources": [],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "Safe API reports Ethereum Safe threshold 3 of 5 owners. Reviewed history shows config methods, not threshold-reduction methods, but official deployments are multi-chain and per-chain Safe/ProxyAdmin history was not fully verified.",
+      "evidence_summary": "Ethereum Safe currently 3-of-5; per-chain threshold history incomplete.",
+      "factor_id": "RD-F-182",
+      "notes": "Needs all-chain Safe/ProxyAdmin owner and threshold history.",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Safe Ethereum admin record",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "url": "https://safe-client.safe.global/v1/chains/1/safes/0x4DFF9b5b0143E642a3F63a5bcf2d1C328e600bf8"
+        },
+        {
+          "reference": "USDT0 official deployments registry",
+          "retrieved_at": "2026-06-24",
+          "source_type": "docs",
+          "url": "https://raw.githubusercontent.com/Everdawn-Labs/usdt0-audit-reports/main/DEPLOYMENTS.md"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_summary": "No public bounty scope was found for the highest-TVL Ethereum OAdapter.",
+      "factor_id": "RD-F-183",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "DefiLlama adapter targets Ethereum OAdapter USDT balance",
+          "retrieved_at": "2026-06-24",
+          "source_type": "github",
+          "url": "https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/usdt0/index.js"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "manual",
+      "evidence_detail": "No public evidence surfaced of a real-capital social-engineering persona tied to USDT0 deployer/admin/signers/team. This cannot be fully ruled out because contributor identities and payment-wallet mappings are absent.",
+      "evidence_summary": "No USDT0 contributor/integrator persona with >=$1M credibility deposits was identified; identity/payment-wallet mapping remains absent.",
+      "factor_id": "RD-F-184",
+      "notes": "No persona seed or payment-wallet mapping available.",
+      "scope_level": "surface",
+      "score": "gray",
+      "sources": [
+        {
+          "reference": "Public searches for USDT0/Everdawn social-engineering persona, contributor deposits, and integrator credibility deposits found no direct evidence.",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note",
+          "title": "USDT0 F184 persona search note"
+        }
+      ],
+      "surface_slug": "default"
+    },
+    {
+      "collection_mode": "hybrid",
+      "evidence_detail": "OApp owner can set enforced options, but that is not equivalent to a clear outflow cap/rate limiter. LayerZero security config remains a handoff gap.",
+      "evidence_summary": "No USDT0-specific outflow rate limiter or protocol-triggerable chain pause was verified.",
+      "factor_id": "RD-F-185",
+      "scope_level": "surface",
+      "score": "yellow",
+      "sources": [
+        {
+          "reference": "Sourcify source shows setEnforcedOptions owner function",
+          "retrieved_at": "2026-06-24",
+          "source_type": "url",
+          "title": "OAdapterUpgradeable Sourcify metadata",
+          "url": "https://repo.sourcify.dev/contracts/full_match/1/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4/metadata.json"
+        },
+        {
+          "reference": "No USDT0-specific rate limiter or chain pause verified in official registry/profile",
+          "retrieved_at": "2026-06-24",
+          "source_type": "curator_note"
+        }
+      ],
+      "surface_slug": "default"
+    }
+  ],
+  "family": {
+    "description": "Omnichain USDT transfer surface using LayerZero OFT/OAdapter infrastructure.",
+    "display_name": "USDT0",
+    "family_slug": "usdt0",
+    "homepage_url": "https://usdt0.to",
+    "legacy_caveat": null,
+    "primary_chain": "ethereum",
+    "primary_surface_slug": "default",
+    "protocol_type": "bridge"
+  },
+  "protocol": {
+    "defillama_slug": "usdt0",
+    "description": "Omnichain USDT transfer surface using LayerZero OFT/OAdapter infrastructure.",
+    "display_name": "USDT0",
+    "github_org": "Everdawn-Labs",
+    "has_active_incident": false,
+    "has_bridge_surface": true,
+    "homepage_url": "https://usdt0.to",
+    "is_a_bridge": true,
+    "launched_at": "2025-01-08",
+    "primary_chain": "ethereum",
+    "protocol_type": "bridge",
+    "slug": "usdt0",
+    "status": "live",
+    "total_value_secured_usd": 3634031788
+  },
+  "surfaces": [
+    {
+      "display_name": "USDT0",
+      "is_primary": true,
+      "launched_at": "2025-01-08",
+      "legacy_slug": "usdt0",
+      "primary_chain": "ethereum",
+      "scope_note": "Omnichain USDT transfer surface using LayerZero OFT/OAdapter infrastructure; Tether reserve quality and issuer solvency remain outside the DeFi protocol-risk grading scope.",
+      "status": "active",
+      "surface_slug": "default",
+      "tvs_usd": 3634031788
+    }
+  ]
+}
