@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import sys
@@ -100,11 +99,34 @@ def make_semantic_verifier(
         output_path = getattr(dump_result, "output_path", None)
         if not isinstance(before_output_path, Path) or not isinstance(output_path, Path):
             raise ContractError("before/after dump runners did not return their output paths")
-        protocol_path = output_path / "api" / rubric_version / "protocols" / f"{family_slug}.json"
+        before_api_root = before_output_path / "api" / rubric_version
+        api_root = output_path / "api" / rubric_version
         try:
-            document = json.loads(protocol_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
-            raise ContractError(f"cannot verify generated protocol output {protocol_path}: {exc}") from exc
+            from protocol_refresh_public.contracts import (
+                ContractError as OutputContractError,
+            )
+            from protocol_refresh_public.output import (
+                resolve_protocol_output,
+                verify_output_isolation,
+            )
+        except ImportError:
+            from scripts.protocol_refresh_public.contracts import (
+                ContractError as OutputContractError,
+            )
+            from scripts.protocol_refresh_public.output import (
+                resolve_protocol_output,
+                verify_output_isolation,
+            )
+        try:
+            before_target = resolve_protocol_output(before_api_root, family_slug)
+            target = resolve_protocol_output(api_root, family_slug)
+        except OutputContractError as exc:
+            raise ContractError(str(exc)) from None
+        if before_target.relative_path != target.relative_path:
+            raise ContractError(
+                "generated output changed the target publication location or review token"
+            )
+        document = target.document
         protocol_data = _protocol_payload(document)
         protocol = protocol_data.get("protocol")
         if not isinstance(protocol, dict) or protocol.get("slug") != family_slug:
@@ -120,14 +142,13 @@ def make_semantic_verifier(
                 f"generated surface scope mismatch: expected {sorted(expected_surfaces)}, got {list(actual)}"
             )
         try:
-            from protocol_refresh_public.output import verify_output_isolation
-        except ImportError:
-            from scripts.protocol_refresh_public.output import verify_output_isolation
-        report = verify_output_isolation(
-            before_output_path / "api" / rubric_version,
-            output_path / "api" / rubric_version,
-            family_slug,
-        )
+            report = verify_output_isolation(
+                before_api_root,
+                api_root,
+                family_slug,
+            )
+        except OutputContractError as exc:
+            raise ContractError(str(exc)) from None
         if not report["isolated"]:
             raise ContractError(
                 "generated output changed unrelated protocol semantics: "

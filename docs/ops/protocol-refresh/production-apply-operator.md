@@ -163,6 +163,21 @@ failure is fatal. `dump.py` exports `protocols.last_refreshed` into the protocol
 detail payload; semantic verification requires it to equal the approved
 effective refresh date.
 
+Semantic verification supports both generated detail layouts:
+
+- published: `api/<rubric>/protocols/<family>.json`;
+- unpublished: the protocol's existing opaque review directory under
+  `api/<rubric>/unpublished/`.
+
+The verifier identifies an unpublished target from the canonical family slug
+inside its payload, never from a slug-prefix or review-token guess. Exactly one
+target must exist, and its publication location must match before and after, so
+the refresh cannot publish, unpublish, or rotate a review token. Reports and
+errors redact opaque unpublished directory names. Only the resolved detail file
+and a `history.json` payload naming that same family are target-owned; any other
+file beneath either directory is unrelated and fails isolation. Do not add
+tokenized paths to operator notes, receipts, issue text, or pull-request text.
+
 ## Failure And Recovery
 
 Before commit, any error rolls back the source transaction. After source
