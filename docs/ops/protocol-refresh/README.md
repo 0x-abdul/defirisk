@@ -154,10 +154,21 @@ python scripts/verify-protocol-output.py <before-api-root> <after-api-root> `
   --family <family-slug>
 ```
 
+The verifier resolves the target by the canonical family slug embedded in its
+generated protocol payload. It supports both published
+`protocols/<family>.json` output and the existing opaque unpublished review
+directory, while requiring exactly one matching target document. The target's
+publication location must be identical before and after the refresh: a refresh
+cannot publish, unpublish, or rotate its review token.
+
 The verifier ignores only export `generated_at` values and target-family rows.
-It rejects added, removed, or changed JSON files and aggregate rows that cannot
-be attributed to the target family. A passing comparison does not replace
-factor, grade, alias, history, publication-state, or live-site verification.
+Only the target detail document and a history document whose payload names the
+same canonical family are target-owned files. It rejects every other added,
+removed, or changed JSON file and aggregate row that cannot be attributed to
+the target family. Unpublished paths are redacted in reports and failures so
+review tokens do not enter logs or receipts. A passing comparison does not
+replace factor, grade, alias, history, publication-state, or live-site
+verification.
 
 ## Public Change Record
 
