@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import sys
 import uuid
 from collections import OrderedDict
@@ -225,7 +226,12 @@ def fetch_deployments_by_protocol(cur: Any) -> dict[str, list[dict]]:
             tvs_usd, tvs_share, letter, category_grid,
             deployed_at, created_at, updated_at
         FROM deployments
-        ORDER BY protocol_slug, chain
+        ORDER BY
+            protocol_slug,
+            chain,
+            surface_id NULLS LAST,
+            deployment_key NULLS LAST,
+            id
         """
     )
     rows = cur.fetchall()
@@ -1152,13 +1158,25 @@ ENVELOPE_SCHEMA: dict = _derive_draft07_from_2020(ENVELOPE_SCHEMA_2020)
 # ---------------------------------------------------------------------------
 
 def write_json(path: Path, payload: Any, dry_run: bool) -> None:
-    """Serialise payload to JSON and write to path (or print in dry-run mode)."""
+    """Serialise payload to JSON without logging token-bearing output paths."""
     if dry_run:
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    content = to_json(payload)
-    path.write_text(content, encoding="utf-8")
-    print(f"  wrote  {path}")
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        content = to_json(payload)
+        path.write_text(content, encoding="utf-8")
+    except OSError:
+        raise RuntimeError("failed to write generated JSON output") from None
+
+
+def prune_generated_output(api_dir: Path) -> None:
+    for prune_dir in (api_dir / "protocols", api_dir / "unpublished"):
+        if not prune_dir.exists():
+            continue
+        try:
+            shutil.rmtree(prune_dir)
+        except OSError:
+            raise RuntimeError("failed to prune generated API output") from None
 
 
 # ---------------------------------------------------------------------------
@@ -1225,7 +1243,7 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
         return
 
     api_dir = out_root / "api" / RUBRIC_VERSION
-    print(f"\nWriting files under {api_dir}/")
+    print("\nWriting generated API files.")
     # ------------------------------------------------------------------
     # 0. Prune stale per-protocol files.
     #
@@ -1238,10 +1256,7 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
     # Other top-level files (index.json, factors/, hacks/, schema/, etc.)
     # are overwritten by name and don't need pruning.
     # ------------------------------------------------------------------
-    import shutil
-    for prune_dir in (api_dir / "protocols", api_dir / "unpublished"):
-        if prune_dir.exists():
-            shutil.rmtree(prune_dir)
+    prune_generated_output(api_dir)
 
     # ------------------------------------------------------------------
     # 1. index.json — published protocols only

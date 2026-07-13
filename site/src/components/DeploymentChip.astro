@@ -1,4 +1,6 @@
 ---
+import { chainIconPath } from '../lib/chain-icons';
+
 export interface Props {
   name: string;
   color: string;
@@ -12,6 +14,7 @@ export interface Props {
 const { name, color, mark, chainId, on = false, href, title } = Astro.props;
 const Tag = href ? 'a' : 'button';
 const titleResolved = title ?? name;
+const iconPath = chainIconPath(chainId);
 ---
 
 <Tag
@@ -23,16 +26,13 @@ const titleResolved = title ?? name;
   aria-pressed={href ? undefined : on ? 'true' : 'false'}
   style={`background: ${color};`}
 >
-  {chainId ? (
-    <img
-      src={`/chains/mono/${chainId}.svg`}
-      width="14"
-      height="14"
-      alt=""
-      aria-hidden="true"
-      class="chain-icon"
-    />
-  ) : mark}
+  {
+    iconPath ? (
+      <img src={iconPath} width="14" height="14" alt="" aria-hidden="true" class="chain-icon" />
+    ) : (
+      mark
+    )
+  }
 </Tag>
 
 <style>

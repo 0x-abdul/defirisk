@@ -13,6 +13,7 @@ from protocol_refresh_public.contracts import (
     ContractError,
     build_public_handoff,
     canonical_sha256,
+    canonical_surface_fingerprint,
     load_json_strict,
     verify_public_handoff,
 )
@@ -52,6 +53,14 @@ def accepted_changes(*, changed: bool = True) -> dict:
         "refresh_type": "targeted_surface_update",
         "rubric_version": "v1.7.0",
         "effective_refresh_date": "2026-07-11",
+        "topology_contract": {
+            "mode": "preserve_canonical",
+            "canonical_surface_slugs": ["v2", "v3"],
+            "canonical_surface_fingerprint": canonical_surface_fingerprint(
+                "fixture-family", ["v2", "v3"]
+            ),
+            "operator_approval_artifact_sha256": None,
+        },
         "scope": {
             "allowed_surfaces": ["v2", "v3"],
             "allowed_factor_ids": ["RD-F-001"],
@@ -175,11 +184,26 @@ def test_allowlist_rejects_command_and_unknown_payload_fields(target, field, val
         build_public_handoff(document, approved_status(document))
 
 
-def test_allowlist_rejects_curator_source_and_public_secret_material() -> None:
+def test_allowlist_accepts_public_safe_curator_source_and_rejects_secret_material() -> None:
     curator = accepted_changes()
+    curator["changes"]["factor_scores"][0]["score"] = "gray"
     curator["changes"]["factor_scores"][0]["sources"][0]["source_type"] = "curator_note"
-    with pytest.raises(ContractError, match="curator_note"):
-        build_public_handoff(curator, approved_status(curator))
+    handoff = build_public_handoff(curator, approved_status(curator))
+    assert handoff["payload"]["changes"]["factor_scores"][0]["sources"][0][
+        "source_type"
+    ] == "curator_note"
+
+    public_channel_check = accepted_changes()
+    public_factor = public_channel_check["changes"]["factor_scores"][0]
+    public_factor["score"] = "gray"
+    public_factor["sources"] = [
+        {
+            "source_type": "curator_note",
+            "url": "https://example.com/community",
+            "reference": "Searched public Discord admin and channel records.",
+        }
+    ]
+    build_public_handoff(public_channel_check, approved_status(public_channel_check))
 
     secret = accepted_changes()
     secret["changes"]["factor_scores"][0]["evidence_summary"] = (
@@ -187,6 +211,18 @@ def test_allowlist_rejects_curator_source_and_public_secret_material() -> None:
     )
     with pytest.raises(ContractError, match="secret-like material"):
         build_public_handoff(secret, approved_status(secret))
+
+    private_note = accepted_changes()
+    private_factor = private_note["changes"]["factor_scores"][0]
+    private_factor["score"] = "gray"
+    private_factor["sources"] = [
+        {
+            "source_type": "curator_note",
+            "reference": "Internal maintainer memo from Slack",
+        }
+    ]
+    with pytest.raises(ContractError, match="curator-only material"):
+        build_public_handoff(private_note, approved_status(private_note))
 
 
 @pytest.mark.parametrize("field", ["is_primary", "legacy_slug"])
@@ -217,7 +253,7 @@ def test_factor_db_values_fail_closed(field, value) -> None:
         build_public_handoff(document, approved_status(document))
 
 
-@pytest.mark.parametrize("source_type", ["pdf", "curator_note", "internal"])
+@pytest.mark.parametrize("source_type", ["pdf", "internal"])
 def test_source_type_must_match_public_db_enum(source_type: str) -> None:
     document = accepted_changes()
     document["changes"]["factor_scores"][0]["sources"][0]["source_type"] = source_type
@@ -249,11 +285,45 @@ def test_source_reference_must_be_non_empty(reference) -> None:
         build_public_handoff(document, approved_status(document))
 
 
+def test_independent_source_type_requires_public_http_locator() -> None:
+    document = accepted_changes()
+    document["changes"]["factor_scores"][0]["sources"] = [
+        {"source_type": "docs", "reference": "internal memo"}
+    ]
+
+    with pytest.raises(ContractError, match=r"public HTTP\(S\) locator"):
+        build_public_handoff(document, approved_status(document))
+
+
 def test_factor_replacement_requires_at_least_one_source() -> None:
     document = accepted_changes()
     document["changes"]["factor_scores"][0]["sources"] = []
 
     with pytest.raises(ContractError, match="at least one citation"):
+        build_public_handoff(document, approved_status(document))
+
+
+def test_gray_factor_replacement_requires_source_or_public_safe_curator_note() -> None:
+    document = accepted_changes()
+    factor = document["changes"]["factor_scores"][0]
+    factor["score"] = "gray"
+    factor["sources"] = []
+
+    with pytest.raises(ContractError, match="at least one citation"):
+        build_public_handoff(document, approved_status(document))
+
+
+@pytest.mark.parametrize("score", ["green", "yellow", "red"])
+@pytest.mark.parametrize("source_type", ["curator_note", "partner_feed"])
+def test_decisive_scores_reject_conditional_only_sources(score: str, source_type: str) -> None:
+    document = accepted_changes()
+    factor = document["changes"]["factor_scores"][0]
+    factor["score"] = score
+    factor["sources"] = [
+        {"source_type": source_type, "reference": "Public-safe contextual note"}
+    ]
+
+    with pytest.raises(ContractError, match="independently verifiable public source"):
         build_public_handoff(document, approved_status(document))
 
 
@@ -264,6 +334,29 @@ def test_factor_replacement_accepts_valid_source_citation() -> None:
 
     handoff = build_public_handoff(document, approved_status(document))
     assert handoff["payload"]["changes"]["factor_scores"][0]["sources"] == [source]
+
+
+@pytest.mark.parametrize("score", ["not_assessed", "not_applicable"])
+def test_source_optional_scores_accept_empty_sources(score: str) -> None:
+    document = accepted_changes()
+    factor = document["changes"]["factor_scores"][0]
+    factor["score"] = score
+    factor["sources"] = []
+
+    handoff = build_public_handoff(document, approved_status(document))
+    assert handoff["payload"]["changes"]["factor_scores"][0]["sources"] == []
+
+
+def test_topology_attestation_rejects_surface_and_fingerprint_drift() -> None:
+    document = accepted_changes()
+    document["topology_contract"]["canonical_surface_slugs"] = ["v3"]
+    with pytest.raises(ContractError, match="canonical topology"):
+        build_public_handoff(document, approved_status(document))
+
+    document = accepted_changes()
+    document["topology_contract"]["canonical_surface_fingerprint"] = "0" * 64
+    with pytest.raises(ContractError, match="fingerprint"):
+        build_public_handoff(document, approved_status(document))
 
 
 @pytest.mark.parametrize("relation", ["supporting", "secondary", "", None])
@@ -305,11 +398,14 @@ def test_collection_mode_accepts_exact_db_enum(collection_mode: str) -> None:
         "governance_post",
         "docs",
         "partner_feed",
+        "curator_note",
         "commit_sha",
     ],
 )
 def test_source_type_accepts_exact_public_db_enum(source_type: str) -> None:
     document = accepted_changes()
+    if source_type in {"partner_feed", "curator_note"}:
+        document["changes"]["factor_scores"][0]["score"] = "gray"
     source = document["changes"]["factor_scores"][0]["sources"][0]
     source["source_type"] = source_type
     source["relation"] = "primary"
@@ -321,7 +417,7 @@ def test_source_type_accepts_exact_public_db_enum(source_type: str) -> None:
     "unsafe_value",
     [
         {"review_token": "abcd1234"},
-        {"source_type": "curator_note", "reference": "private"},
+        {"source_type": "curator_note", "reference": "private review evidence"},
         {"reference": r"C:\\Users\\person\\notes.json"},
         {"url": "https://example.com/unpublished/family.json?review_token=abc"},
         {"password": "not-for-public"},
@@ -424,6 +520,46 @@ def test_handoff_checksum_detects_tampering() -> None:
     errors = verify_public_handoff(handoff)
     assert "handoff payload_sha256 mismatch" in errors
     assert "handoff artifact_sha256 mismatch" in errors
+
+
+def test_handoff_artifact_hash_covers_source_approval() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["source_approval"]["status_sha256"] = "0" * 64
+
+    assert "handoff artifact_sha256 mismatch" in verify_public_handoff(handoff)
+
+
+def test_recomputed_payload_hash_does_not_hide_stale_artifact_hash() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["payload"]["rubric_version"] = "v9.9.9"
+    handoff["integrity"]["payload_sha256"] = canonical_sha256(handoff["payload"])
+
+    errors = verify_public_handoff(handoff)
+    assert "handoff payload_sha256 mismatch" not in errors
+    assert "handoff artifact_sha256 mismatch" in errors
+
+
+def test_published_schema_fully_constrains_payload_shape() -> None:
+    schema_path = (
+        Path(__file__).resolve().parents[2]
+        / "docs"
+        / "ops"
+        / "protocol-refresh"
+        / "schemas"
+        / "public-handoff.schema.json"
+    )
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    payload = schema["$defs"]["payload"]
+
+    assert schema["properties"]["schema_version"] == {"const": "1.1"}
+    assert payload["additionalProperties"] is False
+    assert set(payload["required"]) == set(accepted_changes())
+    assert set(payload["properties"]) == set(accepted_changes())
+    assert schema["$defs"]["changes"]["additionalProperties"] is False
+    assert schema["$defs"]["factorScoreChange"]["additionalProperties"] is False
+    assert schema["$defs"]["source"]["additionalProperties"] is False
 
 
 def test_fixture_is_json_serializable() -> None:

@@ -9,7 +9,7 @@
  * review link. This check fails that build instead of shipping the mismatch.
  */
 
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,64 +34,107 @@ function listDirectories(dir) {
     .sort();
 }
 
+const ASSET_EXTENSION = /\.(?:css|gif|ico|jpe?g|js|png|svg|webp|woff2?)$/i;
+const REVIEW_ORIGIN = 'https://review.invalid';
+
+function countMissingLocalAssets(html, review) {
+  const reference = /\b(?:src|href)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi;
+  let missing = 0;
+
+  for (const match of html.matchAll(reference)) {
+    const value = match[1] ?? match[2] ?? match[3] ?? '';
+    let parsed;
+    try {
+      parsed = new URL(value, `${REVIEW_ORIGIN}/unpublished/${encodeURIComponent(review)}/`);
+    } catch {
+      missing += 1;
+      continue;
+    }
+    if (parsed.origin !== REVIEW_ORIGIN) continue;
+
+    let pathname;
+    try {
+      pathname = decodeURIComponent(parsed.pathname);
+    } catch {
+      missing += 1;
+      continue;
+    }
+    if (!ASSET_EXTENSION.test(pathname)) continue;
+
+    const relative = pathname.replace(/^\/+/, '');
+    const assetPath = path.resolve(distRoot, relative);
+    const fromDist = path.relative(distRoot, assetPath);
+    const insideDist = fromDist !== '' && !fromDist.startsWith('..') && !path.isAbsolute(fromDist);
+    if (!insideDist) {
+      missing += 1;
+      continue;
+    }
+    try {
+      if (!statSync(assetPath).isFile()) missing += 1;
+    } catch {
+      missing += 1;
+    }
+  }
+
+  return missing;
+}
+
 function main() {
   const unpublishedDir = path.join(apiRoot, 'unpublished');
   const reviewDirs = listDirectories(unpublishedDir);
 
   if (reviewDirs.length === 0) {
-    console.log(`[review-artifacts] no unpublished review data under ${unpublishedDir}; nothing to check`);
+    console.log('[review-artifacts] no unpublished review data; nothing to check');
     return;
   }
 
-  const missingJson = [];
-  const missingHtml = [];
-  const invalidHtml = [];
+  let missingJson = 0;
+  let missingHtml = 0;
+  let invalidHtml = 0;
+  let missingAssets = 0;
 
   for (const review of reviewDirs) {
     const jsonPath = path.join(unpublishedDir, review, 'index.json');
     const htmlPath = path.join(distRoot, 'unpublished', review, 'index.html');
 
     if (!existsSync(jsonPath)) {
-      missingJson.push(path.relative(REPO_ROOT, jsonPath));
+      missingJson += 1;
       continue;
     }
 
     if (!existsSync(htmlPath)) {
-      missingHtml.push(path.relative(REPO_ROOT, htmlPath));
+      missingHtml += 1;
       continue;
     }
 
     const html = readFileSync(htmlPath, 'utf8');
     if (
-      !html.includes('review-banner')
-      || !html.includes('Pending review')
-      || !html.includes('noindex,nofollow')
+      !html.includes('review-banner') ||
+      !html.includes('Pending review') ||
+      !html.includes('noindex,nofollow')
     ) {
-      invalidHtml.push(path.relative(REPO_ROOT, htmlPath));
+      invalidHtml += 1;
     }
+    missingAssets += countMissingLocalAssets(html, review);
   }
 
-  if (missingJson.length > 0 || missingHtml.length > 0 || invalidHtml.length > 0) {
+  if (missingJson > 0 || missingHtml > 0 || invalidHtml > 0 || missingAssets > 0) {
     console.error('[review-artifacts] unpublished review artifact mismatch');
-    console.error(`  API root : ${apiRoot}`);
-    console.error(`  dist root: ${distRoot}`);
 
-    if (missingJson.length > 0) {
-      console.error(`  missing JSON index files (${missingJson.length}):`);
-      for (const item of missingJson.slice(0, 10)) console.error(`    - ${item}`);
-      if (missingJson.length > 10) console.error(`    ... ${missingJson.length - 10} more`);
+    if (missingJson > 0) {
+      console.error(`  missing JSON index files: ${missingJson}`);
     }
 
-    if (missingHtml.length > 0) {
-      console.error(`  missing HTML review pages (${missingHtml.length}):`);
-      for (const item of missingHtml.slice(0, 10)) console.error(`    - ${item}`);
-      if (missingHtml.length > 10) console.error(`    ... ${missingHtml.length - 10} more`);
+    if (missingHtml > 0) {
+      console.error(`  missing HTML review pages: ${missingHtml}`);
     }
 
-    if (invalidHtml.length > 0) {
-      console.error(`  HTML review pages missing private-review markers (${invalidHtml.length}):`);
-      for (const item of invalidHtml.slice(0, 10)) console.error(`    - ${item}`);
-      if (invalidHtml.length > 10) console.error(`    ... ${invalidHtml.length - 10} more`);
+    if (invalidHtml > 0) {
+      console.error(`  HTML review pages missing private-review markers: ${invalidHtml}`);
+    }
+
+    if (missingAssets > 0) {
+      console.error(`  missing local asset references: ${missingAssets}`);
     }
 
     console.error('\nRegenerate data/api before running astro build, then rebuild the site.');
@@ -101,4 +144,9 @@ function main() {
   console.log(`[review-artifacts] verified ${reviewDirs.length} unpublished review page(s)`);
 }
 
-main();
+try {
+  main();
+} catch {
+  console.error('[review-artifacts] check failed before completion');
+  process.exit(1);
+}
