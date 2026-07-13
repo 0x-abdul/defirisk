@@ -527,6 +527,45 @@ def verify_production_topology(
             f"expected {sorted(gradeable)}, got {sorted(named)}"
         )
 
+    projected_status = {slug: status for slug, status, _is_primary, _has_scores in rows}
+    for change in document["changes"]["surfaces"]:
+        if "status" in change["fields"]:
+            projected_status[change["surface_slug"]] = change["fields"]["status"]
+    projected_gradeable = {
+        slug
+        for slug, _status, is_primary, has_scores in rows
+        if projected_status[slug] != "deprecated" or is_primary or has_scores
+    }
+    if projected_gradeable != canonical_surfaces:
+        raise ContractError(
+            "surface status changes would alter canonical gradeable topology: "
+            f"expected {sorted(canonical_surfaces)}, got {sorted(projected_gradeable)}"
+        )
+
+
+def _production_topology_rows(
+    conn: Any,
+    family_slug: str,
+    *,
+    lock: bool = False,
+) -> list[tuple[str, str, bool, bool]]:
+    lock_clause = " FOR UPDATE OF ps" if lock else ""
+    with conn.cursor() as cur:
+        cur.execute(
+            f"""
+            SELECT ps.surface_slug, ps.status::text, ps.is_primary,
+                   EXISTS (
+                     SELECT 1 FROM factor_scores fs
+                     WHERE fs.surface_id = ps.surface_id AND fs.is_current = true
+                   )
+            FROM protocol_surfaces ps
+            WHERE ps.family_slug = %s
+            ORDER BY ps.surface_slug{lock_clause}
+            """,
+            (family_slug,),
+        )
+        return cur.fetchall()
+
 
 def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
     """Perform read-only schema/ownership checks and build a production plan."""
@@ -556,21 +595,6 @@ def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
         )
         if cur.fetchone()[0] != 1:
             raise ContractError("expected exactly one canonical protocol_families row")
-        cur.execute(
-            """
-            SELECT ps.surface_slug, ps.status::text, ps.is_primary,
-                   EXISTS (
-                     SELECT 1 FROM factor_scores fs
-                     WHERE fs.surface_id = ps.surface_id AND fs.is_current = true
-                   )
-            FROM protocol_surfaces ps
-            WHERE ps.family_slug = %s
-            ORDER BY ps.surface_slug
-            """,
-            (plan.family_slug,),
-        )
-        rows = cur.fetchall()
-        verify_production_topology(document, rows)
         cur.execute("SELECT version FROM rubric_versions WHERE is_active = true")
         active = [row[0] for row in cur.fetchall()]
         if active != [document["rubric_version"]]:
@@ -584,6 +608,11 @@ def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
         found = [row[0] for row in cur.fetchall()]
         if found != list(plan.factors):
             raise ContractError("allowed factor IDs do not exactly match active database rows")
+
+    verify_production_topology(
+        document,
+        _production_topology_rows(conn, plan.family_slug),
+    )
 
     hashes = snapshot_hashes(conn, plan.family_slug)
     identity = database_identity(conn)
@@ -835,6 +864,10 @@ def apply_transaction(
     document = handoff.payload
     plan = build_apply_plan(document)
     row_counts = {key: 0 for key in plan.operation_counts}
+    verify_production_topology(
+        document,
+        _production_topology_rows(conn, plan.family_slug, lock=True),
+    )
     current_factor_hashes = production_factor_hashes(
         normalized_snapshot(conn, plan.family_slug, target=True),
         document["changes"]["factor_scores"],
@@ -1646,11 +1679,31 @@ def _apply_refresh_locked(
 
 
 def _acquire_family_session_lock(conn: Any, family_slug: str) -> None:
-    with conn.cursor() as cur:
-        cur.execute(
-            "SELECT pg_advisory_lock(hashtext(%s))",
-            (f"protocol-refresh:{family_slug}",),
-        )
+    acquired = False
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT pg_advisory_lock(hashtext(%s))",
+                (f"protocol-refresh:{family_slug}",),
+            )
+            cur.fetchone()
+        acquired = True
+        # A session lock survives commit. Start the serializable snapshot only
+        # after any prior holder has completed and this session owns the lock.
+        conn.commit()
+        with conn.cursor() as cur:
+            cur.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+    except Exception:
+        conn.rollback()
+        if acquired:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT pg_advisory_unlock(hashtext(%s))",
+                    (f"protocol-refresh:{family_slug}",),
+                )
+                cur.fetchone()
+            conn.commit()
+        raise
 
 
 def _release_family_session_lock(conn: Any, family_slug: str) -> None:

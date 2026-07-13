@@ -10,9 +10,10 @@ from copy import deepcopy
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
-PUBLIC_SCHEMA_VERSION = "1.0"
+PUBLIC_SCHEMA_VERSION = "1.1"
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 FACTOR_RE = re.compile(r"^RD-F-(?!169$)[0-9]{3}$")
@@ -40,6 +41,7 @@ SOURCE_TYPES = {
 }
 SOURCE_OPTIONAL_SCORES = {"not_assessed", "not_applicable"}
 CONDITIONAL_SOURCE_TYPES = {"curator_note", "partner_feed"}
+PUBLIC_HTTP_SOURCE_TYPES = SOURCE_TYPES - CONDITIONAL_SOURCE_TYPES
 # Migration 0000 declares text NOT NULL DEFAULT 'primary' and no other relation value.
 SOURCE_RELATIONS = {"primary"}
 PROTOCOL_FIELDS = {
@@ -156,6 +158,17 @@ def canonical_surface_fingerprint(family_slug: str, surface_slugs: list[str]) ->
     return canonical_sha256(
         {"family_slug": family_slug, "surface_slugs": sorted(surface_slugs)}
     )
+
+
+def _has_public_http_locator(source: dict[str, Any]) -> bool:
+    for field in ("url", "reference"):
+        value = source.get(field)
+        if not isinstance(value, str):
+            continue
+        parsed = urlparse(value.strip())
+        if parsed.scheme in {"http", "https"} and parsed.hostname:
+            return True
+    return False
 
 
 def _require_object(value: Any, label: str, errors: list[str]) -> dict[str, Any]:
@@ -287,8 +300,10 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         errors,
     )
     canonical_surface_values = topology.get("canonical_surface_slugs")
-    if isinstance(canonical_surface_values, list) and canonical_surface_values != sorted(
-        canonical_surface_values
+    if (
+        isinstance(canonical_surface_values, list)
+        and all(isinstance(item, str) for item in canonical_surface_values)
+        and canonical_surface_values != sorted(canonical_surface_values)
     ):
         errors.append("topology_contract canonical surfaces must be sorted")
     if topology.get("mode") != "preserve_canonical":
@@ -509,6 +524,12 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
                 reference = source.get("reference")
                 if not isinstance(reference, str) or not reference.strip():
                     errors.append(f"{source_label}.reference must be a non-empty string")
+                if source_type in PUBLIC_HTTP_SOURCE_TYPES and not _has_public_http_locator(
+                    source
+                ):
+                    errors.append(
+                        f"{source_label} requires a public HTTP(S) locator"
+                    )
                 if "relation" in source:
                     relation = source.get("relation")
                     if not isinstance(relation, str) or relation not in SOURCE_RELATIONS:
@@ -516,6 +537,7 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
             if score in {"green", "yellow", "red"} and not any(
                 isinstance(source, dict)
                 and source.get("source_type") not in CONDITIONAL_SOURCE_TYPES
+                and _has_public_http_locator(source)
                 for source in sources
             ):
                 errors.append(

@@ -263,7 +263,7 @@ def test_protocol_authorization_is_separate_and_exactly_bound() -> None:
         validate_production_authorization_receipt(
             authorization_receipt(), artifact_sha256=SHA_A, plan_sha256=SHA_A
         )
-    with pytest.raises(ContractError, match="receipt_type"):
+    with pytest.raises(ContractError, match="schema_version|receipt_type"):
         validate_production_authorization_receipt(public_handoff().artifact)
 
 
@@ -449,6 +449,37 @@ def test_apply_contract_allows_public_safe_gray_curator_note() -> None:
     assert validate_apply_payload(payload)["changes"]["factor_scores"][0]["sources"][0][
         "source_type"
     ] == "curator_note"
+
+
+def test_apply_contract_rejects_non_public_independent_locator() -> None:
+    payload = factor_artifact()["payload"]
+    payload["changes"]["factor_scores"][0]["sources"][0]["reference"] = (
+        "internal memo"
+    )
+
+    with pytest.raises(ContractError, match=r"public HTTP\(S\) locator"):
+        validate_apply_payload(payload)
+
+
+@pytest.mark.parametrize("score", ["green", "yellow", "red"])
+@pytest.mark.parametrize("source_type", ["curator_note", "partner_feed"])
+def test_apply_contract_rejects_conditional_only_decisive_scores(
+    score: str,
+    source_type: str,
+) -> None:
+    payload = factor_artifact(score="gray", source_type=source_type)["payload"]
+    payload["changes"]["factor_scores"][0]["score"] = score
+
+    with pytest.raises(ContractError, match="independently verifiable public source"):
+        validate_apply_payload(payload)
+
+
+def test_apply_contract_rejects_source_less_gray_score() -> None:
+    payload = factor_artifact(score="gray", source_type="curator_note")["payload"]
+    payload["changes"]["factor_scores"][0]["sources"] = []
+
+    with pytest.raises(ContractError, match="sources must be non-empty"):
+        validate_apply_payload(payload)
 
 
 def test_no_change_verifier_allows_only_last_refreshed() -> None:

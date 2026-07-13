@@ -193,12 +193,36 @@ def test_allowlist_accepts_public_safe_curator_source_and_rejects_secret_materia
         "source_type"
     ] == "curator_note"
 
+    public_channel_check = accepted_changes()
+    public_factor = public_channel_check["changes"]["factor_scores"][0]
+    public_factor["score"] = "gray"
+    public_factor["sources"] = [
+        {
+            "source_type": "curator_note",
+            "url": "https://example.com/community",
+            "reference": "Searched public Discord admin and channel records.",
+        }
+    ]
+    build_public_handoff(public_channel_check, approved_status(public_channel_check))
+
     secret = accepted_changes()
     secret["changes"]["factor_scores"][0]["evidence_summary"] = (
         "-----BEGIN PRIVATE KEY-----"
     )
     with pytest.raises(ContractError, match="secret-like material"):
         build_public_handoff(secret, approved_status(secret))
+
+    private_note = accepted_changes()
+    private_factor = private_note["changes"]["factor_scores"][0]
+    private_factor["score"] = "gray"
+    private_factor["sources"] = [
+        {
+            "source_type": "curator_note",
+            "reference": "Internal maintainer memo from Slack",
+        }
+    ]
+    with pytest.raises(ContractError, match="curator-only material"):
+        build_public_handoff(private_note, approved_status(private_note))
 
 
 @pytest.mark.parametrize("field", ["is_primary", "legacy_slug"])
@@ -261,11 +285,45 @@ def test_source_reference_must_be_non_empty(reference) -> None:
         build_public_handoff(document, approved_status(document))
 
 
+def test_independent_source_type_requires_public_http_locator() -> None:
+    document = accepted_changes()
+    document["changes"]["factor_scores"][0]["sources"] = [
+        {"source_type": "docs", "reference": "internal memo"}
+    ]
+
+    with pytest.raises(ContractError, match=r"public HTTP\(S\) locator"):
+        build_public_handoff(document, approved_status(document))
+
+
 def test_factor_replacement_requires_at_least_one_source() -> None:
     document = accepted_changes()
     document["changes"]["factor_scores"][0]["sources"] = []
 
     with pytest.raises(ContractError, match="at least one citation"):
+        build_public_handoff(document, approved_status(document))
+
+
+def test_gray_factor_replacement_requires_source_or_public_safe_curator_note() -> None:
+    document = accepted_changes()
+    factor = document["changes"]["factor_scores"][0]
+    factor["score"] = "gray"
+    factor["sources"] = []
+
+    with pytest.raises(ContractError, match="at least one citation"):
+        build_public_handoff(document, approved_status(document))
+
+
+@pytest.mark.parametrize("score", ["green", "yellow", "red"])
+@pytest.mark.parametrize("source_type", ["curator_note", "partner_feed"])
+def test_decisive_scores_reject_conditional_only_sources(score: str, source_type: str) -> None:
+    document = accepted_changes()
+    factor = document["changes"]["factor_scores"][0]
+    factor["score"] = score
+    factor["sources"] = [
+        {"source_type": source_type, "reference": "Public-safe contextual note"}
+    ]
+
+    with pytest.raises(ContractError, match="independently verifiable public source"):
         build_public_handoff(document, approved_status(document))
 
 
@@ -462,6 +520,46 @@ def test_handoff_checksum_detects_tampering() -> None:
     errors = verify_public_handoff(handoff)
     assert "handoff payload_sha256 mismatch" in errors
     assert "handoff artifact_sha256 mismatch" in errors
+
+
+def test_handoff_artifact_hash_covers_source_approval() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["source_approval"]["status_sha256"] = "0" * 64
+
+    assert "handoff artifact_sha256 mismatch" in verify_public_handoff(handoff)
+
+
+def test_recomputed_payload_hash_does_not_hide_stale_artifact_hash() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["payload"]["rubric_version"] = "v9.9.9"
+    handoff["integrity"]["payload_sha256"] = canonical_sha256(handoff["payload"])
+
+    errors = verify_public_handoff(handoff)
+    assert "handoff payload_sha256 mismatch" not in errors
+    assert "handoff artifact_sha256 mismatch" in errors
+
+
+def test_published_schema_fully_constrains_payload_shape() -> None:
+    schema_path = (
+        Path(__file__).resolve().parents[2]
+        / "docs"
+        / "ops"
+        / "protocol-refresh"
+        / "schemas"
+        / "public-handoff.schema.json"
+    )
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    payload = schema["$defs"]["payload"]
+
+    assert schema["properties"]["schema_version"] == {"const": "1.1"}
+    assert payload["additionalProperties"] is False
+    assert set(payload["required"]) == set(accepted_changes())
+    assert set(payload["properties"]) == set(accepted_changes())
+    assert schema["$defs"]["changes"]["additionalProperties"] is False
+    assert schema["$defs"]["factorScoreChange"]["additionalProperties"] is False
+    assert schema["$defs"]["source"]["additionalProperties"] is False
 
 
 def test_fixture_is_json_serializable() -> None:

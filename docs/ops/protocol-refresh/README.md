@@ -48,6 +48,8 @@ live-site state.
 The exporter accepts `accepted-changes.json` plus its matching `status.json`
 from the internal process. Do not copy internal research folders, review notes,
 curator records, protocol packets, or publication queues into this repository.
+The public handoff envelope is schema `1.1`; its enclosed accepted-changes
+payload remains schema `1.0`.
 
 The exporter fails unless:
 
@@ -66,8 +68,9 @@ The exporter fails unless:
 gaps may use a public-safe `curator_note`; supplied curator notes remain subject
 to the same path, credential, unpublished-material, and private-review scans as
 every other public source. Green, yellow, and red rows require at least one
-independently verifiable public source, so a curator note or partner feed alone
-is insufficient.
+independently verifiable public source with an HTTP(S) locator, so a curator
+note, partner feed, internal memo, or source label without a public locator is
+insufficient.
 
 The exporter removes only the known internal actor/note fields
 `factor_scores[].collected_by`, `sources[].retrieved_by`, and

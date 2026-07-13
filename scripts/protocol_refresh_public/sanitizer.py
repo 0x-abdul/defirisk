@@ -49,6 +49,16 @@ CURATOR_ONLY_PATTERNS = (
     re.compile(r"\bcurator[-_ ]only\b", re.IGNORECASE),
     re.compile(r"\binternal[-_ ]only\b", re.IGNORECASE),
     re.compile(r"\bprivate review\b", re.IGNORECASE),
+    re.compile(
+        r"\binternal (?:maintainer |research )?(?:memo|note|source|communication)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\bprivate (?:maintainer |research )?(?:memo|note|source|communication)\b",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\b(?:private|internal) (?:slack|discord)\b", re.IGNORECASE),
+    re.compile(r"\b(?:slack|discord) (?:dm|direct message)\b", re.IGNORECASE),
 )
 
 TOP_LEVEL_FIELDS = {

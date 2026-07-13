@@ -250,6 +250,79 @@ def test_production_topology_must_match_hash_bound_attestation() -> None:
         verify_production_topology(document, drifted_rows)
 
 
+def test_surface_status_change_cannot_alter_attested_gradeable_topology() -> None:
+    document = handoff(changed=False).payload
+    document["scope"]["allowed_surface_fields"] = ["status"]
+    document["changes"]["surfaces"] = [
+        {"surface_slug": "v3", "fields": {"status": "deprecated"}}
+    ]
+
+    with pytest.raises(ContractError, match="would alter canonical gradeable topology"):
+        verify_production_topology(document, [("v3", "active", False, False)])
+
+
+def test_family_lock_precedes_fresh_serializable_transaction() -> None:
+    events: list[tuple[str, object]] = []
+
+    class Cursor:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def execute(self, statement, params=None):
+            events.append((statement, params))
+
+        def fetchone(self):
+            return (True,)
+
+    class Connection:
+        def cursor(self):
+            return Cursor()
+
+        def commit(self):
+            events.append(("COMMIT", None))
+
+        def rollback(self):
+            events.append(("ROLLBACK", None))
+
+    refresh_db._acquire_family_session_lock(Connection(), "example")
+
+    assert events == [
+        (
+            "SELECT pg_advisory_lock(hashtext(%s))",
+            ("protocol-refresh:example",),
+        ),
+        ("COMMIT", None),
+        ("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE", None),
+    ]
+
+
+def test_apply_transaction_revalidates_and_locks_topology_before_hashing() -> None:
+    document = handoff(changed=False)
+    conn = FakeConnection()
+    with (
+        patch.object(
+            refresh_db,
+            "_production_topology_rows",
+            side_effect=ContractError("transaction topology drift"),
+        ) as topology,
+        patch.object(refresh_db, "normalized_snapshot") as snapshot,
+    ):
+        with pytest.raises(ContractError, match="transaction topology drift"):
+            refresh_db.apply_transaction(
+                conn,
+                document,
+                production_plan={"production_before": {}},
+                authorization_id="approval:123",
+                backup_id="backup:123",
+            )
+
+    topology.assert_called_once_with(conn, "example", lock=True)
+    snapshot.assert_not_called()
+
+
 def test_compose_transition_allows_only_grade_fields_and_append_only_history() -> None:
     before = compose_snapshot(description="source-approved")
     grade_only = compose_snapshot(
@@ -358,7 +431,7 @@ def test_no_change_apply_updates_date_without_pipeline() -> None:
         )
     assert result["pipeline_ran"] is False
     assert result["after_snapshot"] == after_normalized
-    assert conn.commits == 2
+    assert conn.commits == 3
     assert conn.rollbacks == 0
     finish.assert_called_once()
     assert finish.call_args.kwargs["success"] is True
@@ -416,7 +489,7 @@ def test_each_post_commit_failure_is_compensated_and_failed_audit_is_preserved(
                 dump_runner=lambda **_kwargs: dump_result,
                 semantic_verifier=verifier,
             )
-    assert conn.commits == 3
+    assert conn.commits == 4
     assert conn.rollbacks == 1
     compensate.assert_called_once()
     finish.assert_called_once()
@@ -463,7 +536,7 @@ def test_unproved_compensation_still_attempts_to_preserve_failed_audit() -> None
                 dump_runner=lambda **_kwargs: 0,
                 semantic_verifier=lambda **_kwargs: True,
             )
-    assert conn.commits == 2
+    assert conn.commits == 3
     assert conn.rollbacks == 2
     finish.assert_called_once()
     assert finish.call_args.kwargs["success"] is False
