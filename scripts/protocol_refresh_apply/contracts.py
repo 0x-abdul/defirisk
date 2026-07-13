@@ -102,8 +102,11 @@ SOURCE_TYPES = {
     "governance_post",
     "docs",
     "partner_feed",
+    "curator_note",
     "commit_sha",
 }
+SOURCE_OPTIONAL_SCORES = {"not_assessed", "not_applicable"}
+CONDITIONAL_SOURCE_TYPES = {"curator_note", "partner_feed"}
 SOURCE_RELATIONS = {"primary"}
 
 
@@ -265,7 +268,8 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
         if not isinstance(sources, list):
             errors.append(f"payload.changes.factor_scores[{index}].sources must be an array")
             continue
-        if not sources:
+        score = entry.get("score")
+        if not sources and score not in SOURCE_OPTIONAL_SCORES:
             errors.append(
                 f"payload.changes.factor_scores[{index}].sources must be non-empty"
             )
@@ -298,6 +302,15 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
                     f"payload.changes.factor_scores[{index}].sources[{source_index}]."
                     f"relation must be one of {sorted(SOURCE_RELATIONS)}"
                 )
+        if score in {"green", "yellow", "red"} and not any(
+            isinstance(source, dict)
+            and source.get("source_type") not in CONDITIONAL_SOURCE_TYPES
+            for source in sources
+        ):
+            errors.append(
+                f"payload.changes.factor_scores[{index}] requires an independently "
+                "verifiable public source"
+            )
 
     baseline = payload.get("baseline")
     if not isinstance(baseline, dict):

@@ -497,6 +497,37 @@ def _current_factor_row(
     return rows[0][0] if rows else None
 
 
+def verify_production_topology(
+    document: dict[str, Any],
+    rows: list[tuple[str, str, bool, bool]],
+) -> None:
+    """Bind the approved topology attestation to the live gradeable surfaces."""
+    existing = {row[0] for row in rows}
+    named = set(document["surface_slugs"])
+    if not named <= existing:
+        raise ContractError(
+            f"handoff names unknown/foreign surfaces: {sorted(named - existing)}"
+        )
+    gradeable = {
+        slug
+        for slug, status, is_primary, has_scores in rows
+        if status != "deprecated" or is_primary or has_scores
+    }
+    canonical_surfaces = set(
+        document["topology_contract"]["canonical_surface_slugs"]
+    )
+    if canonical_surfaces != gradeable:
+        raise ContractError(
+            "topology attestation does not match production gradeable surfaces: "
+            f"expected {sorted(gradeable)}, got {sorted(canonical_surfaces)}"
+        )
+    if document["refresh_type"] == "full_family_refresh" and named != gradeable:
+        raise ContractError(
+            "full family refresh must enumerate every gradeable surface: "
+            f"expected {sorted(gradeable)}, got {sorted(named)}"
+        )
+
+
 def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
     """Perform read-only schema/ownership checks and build a production plan."""
     document = handoff.payload
@@ -539,21 +570,7 @@ def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
             (plan.family_slug,),
         )
         rows = cur.fetchall()
-        existing = {row[0] for row in rows}
-        named = set(plan.surfaces)
-        if not named <= existing:
-            raise ContractError(f"handoff names unknown/foreign surfaces: {sorted(named - existing)}")
-        if document["refresh_type"] == "full_family_refresh":
-            gradeable = {
-                slug
-                for slug, status, is_primary, has_scores in rows
-                if status != "deprecated" or is_primary or has_scores
-            }
-            if named != gradeable:
-                raise ContractError(
-                    "full family refresh must enumerate every gradeable surface: "
-                    f"expected {sorted(gradeable)}, got {sorted(named)}"
-                )
+        verify_production_topology(document, rows)
         cur.execute("SELECT version FROM rubric_versions WHERE is_active = true")
         active = [row[0] for row in cur.fetchall()]
         if active != [document["rubric_version"]]:

@@ -61,9 +61,16 @@ TOP_LEVEL_FIELDS = {
     "refresh_type",
     "rubric_version",
     "effective_refresh_date",
+    "topology_contract",
     "scope",
     "baseline",
     "changes",
+}
+TOPOLOGY_FIELDS = {
+    "mode",
+    "canonical_surface_slugs",
+    "canonical_surface_fingerprint",
+    "operator_approval_artifact_sha256",
 }
 SCOPE_FIELDS = {
     "allowed_surfaces",
@@ -142,6 +149,12 @@ def _exact_or_known_fields(
 def sanitize_accepted_changes(document: dict[str, Any]) -> dict[str, Any]:
     """Strip only known private fields and reject every unknown payload shape."""
     result = _exact_or_known_fields(document, label="$", public=TOP_LEVEL_FIELDS)
+    result["topology_contract"] = _exact_or_known_fields(
+        document.get("topology_contract"),
+        label="$.topology_contract",
+        public=TOPOLOGY_FIELDS,
+        required=TOPOLOGY_FIELDS,
+    )
     result["scope"] = _exact_or_known_fields(
         document.get("scope"), label="$.scope", public=SCOPE_FIELDS, required=SCOPE_FIELDS
     )
@@ -209,8 +222,6 @@ def sanitize_accepted_changes(document: dict[str, Any]) -> dict[str, Any]:
                 stripped=STRIPPED_SOURCE_FIELDS,
                 required=REQUIRED_SOURCE_FIELDS,
             )
-            if sanitized_source.get("source_type") == "curator_note":
-                raise ContractError(f"{source_label} uses forbidden curator_note source")
             sanitized_sources.append(sanitized_source)
         sanitized_factor["sources"] = sanitized_sources
         sanitized_factors.append(sanitized_factor)
@@ -227,8 +238,6 @@ def find_private_material(value: Any) -> list[str]:
         if isinstance(item, dict):
             if item.get("is_published") is False:
                 errors.append(f"{path}.is_published exposes unpublished material")
-            if item.get("source_type") == "curator_note":
-                errors.append(f"{path}.source_type is curator-only material")
             for key, child in item.items():
                 normalized = key.casefold()
                 if normalized in FORBIDDEN_KEYS:

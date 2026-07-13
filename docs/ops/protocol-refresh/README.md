@@ -53,12 +53,21 @@ The exporter fails unless:
 
 - the accepted artifact names exactly one canonical family;
 - its declared surfaces and factors exactly contain every changed target;
+- its `preserve_canonical` topology attestation matches the approved family
+  and canonical surfaces and contains no migration authority;
 - family, surface, and deployment factor scopes are internally consistent;
 - status is exactly `local_ready_for_review`, locally `approved`, and not
   production-authorized;
 - the status checksum equals the canonical SHA-256 of the accepted artifact;
 - no secret, credentialed URL, local path, unpublished/review token, or
-  curator-only field or value is present.
+  private curator material is present.
+
+`not_assessed` and `not_applicable` factor rows may omit sources. Gray evidence
+gaps may use a public-safe `curator_note`; supplied curator notes remain subject
+to the same path, credential, unpublished-material, and private-review scans as
+every other public source. Green, yellow, and red rows require at least one
+independently verifiable public source, so a curator note or partner feed alone
+is insufficient.
 
 The exporter removes only the known internal actor/note fields
 `factor_scores[].collected_by`, `sources[].retrieved_by`, and

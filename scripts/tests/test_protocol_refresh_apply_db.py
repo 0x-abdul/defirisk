@@ -18,6 +18,7 @@ from protocol_refresh_apply.db import (
     build_apply_plan,
     preflight,
     verify_compose_owned_transition,
+    verify_production_topology,
     verify_refresh_date_monotonic,
 )
 
@@ -61,6 +62,14 @@ def handoff(*, changed: bool) -> PublicHandoff:
         "refresh_type": "full_family_refresh",
         "rubric_version": "v1.7.0",
         "effective_refresh_date": "2026-07-11",
+        "topology_contract": {
+            "mode": "preserve_canonical",
+            "canonical_surface_slugs": ["v3"],
+            "canonical_surface_fingerprint": canonical_sha256(
+                {"family_slug": "example", "surface_slugs": ["v3"]}
+            ),
+            "operator_approval_artifact_sha256": None,
+        },
         "scope": {
             "allowed_surfaces": ["v3"],
             "allowed_factor_ids": ["RD-F-001"],
@@ -229,6 +238,16 @@ def test_preflight_rejects_backward_date_before_snapshot_or_plan() -> None:
         with pytest.raises(ContractError, match="predates current last_refreshed"):
             preflight(Connection(), handoff(changed=False))
     snapshots.assert_not_called()
+
+
+def test_production_topology_must_match_hash_bound_attestation() -> None:
+    document = handoff(changed=False).payload
+    rows = [("v3", "active", True, True)]
+    verify_production_topology(document, rows)
+
+    drifted_rows = rows + [("v4", "active", False, True)]
+    with pytest.raises(ContractError, match="topology attestation"):
+        verify_production_topology(document, drifted_rows)
 
 
 def test_compose_transition_allows_only_grade_fields_and_append_only_history() -> None:

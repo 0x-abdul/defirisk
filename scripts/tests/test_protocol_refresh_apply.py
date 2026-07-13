@@ -30,7 +30,10 @@ from protocol_refresh_apply.db import (
     verify_compensation,
     verify_no_change_date_only,
 )
-from protocol_refresh_public.contracts import build_public_handoff
+from protocol_refresh_public.contracts import (
+    build_public_handoff,
+    canonical_surface_fingerprint,
+)
 
 
 SHA_A = "a" * 64
@@ -55,6 +58,14 @@ def accepted_changes(*, changed: bool = False) -> dict:
         "refresh_type": "full_family_refresh",
         "rubric_version": "v1.7.0",
         "effective_refresh_date": "2026-07-11",
+        "topology_contract": {
+            "mode": "preserve_canonical",
+            "canonical_surface_slugs": ["v3"],
+            "canonical_surface_fingerprint": canonical_surface_fingerprint(
+                "example", ["v3"]
+            ),
+            "operator_approval_artifact_sha256": None,
+        },
         "scope": {
             "allowed_surfaces": ["v3"],
             "allowed_factor_ids": ["RD-F-001"],
@@ -402,14 +413,15 @@ def test_factor_and_source_database_enums_are_validated_independently() -> None:
         "governance_post",
         "docs",
         "partner_feed",
+        "curator_note",
         "commit_sha",
     ):
-        validate_public_handoff(factor_artifact(source_type=source_type))
+        score = "gray" if source_type in {"partner_feed", "curator_note"} else "green"
+        validate_public_handoff(factor_artifact(score=score, source_type=source_type))
 
     invalid_cases = [
         ({"score": "blue"}, "score must be one of"),
         ({"collection_mode": "automated"}, "collection_mode must be one of"),
-        ({"source_type": "curator_note"}, "source_type must be one of"),
         ({"relation": "supporting"}, "relation must be one of"),
         ({"evidence_summary": "   "}, "evidence_summary must be non-empty"),
         ({"reference": "   "}, "reference must be non-empty"),
@@ -423,6 +435,20 @@ def test_factor_and_source_database_enums_are_validated_independently() -> None:
             (source if key in {"source_type", "reference", "relation"} else factor)[key] = value
         with pytest.raises(ContractError, match=message):
             validate_apply_payload(payload)
+
+
+@pytest.mark.parametrize("score", ["not_assessed", "not_applicable"])
+def test_apply_contract_allows_source_optional_scores(score: str) -> None:
+    payload = deepcopy(factor_artifact(score=score)["payload"])
+    payload["changes"]["factor_scores"][0]["sources"] = []
+    assert validate_apply_payload(payload)["changes"]["factor_scores"][0]["sources"] == []
+
+
+def test_apply_contract_allows_public_safe_gray_curator_note() -> None:
+    payload = factor_artifact(score="gray", source_type="curator_note")["payload"]
+    assert validate_apply_payload(payload)["changes"]["factor_scores"][0]["sources"][0][
+        "source_type"
+    ] == "curator_note"
 
 
 def test_no_change_verifier_allows_only_last_refreshed() -> None:

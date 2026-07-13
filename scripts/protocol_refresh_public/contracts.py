@@ -35,8 +35,11 @@ SOURCE_TYPES = {
     "governance_post",
     "docs",
     "partner_feed",
+    "curator_note",
     "commit_sha",
 }
+SOURCE_OPTIONAL_SCORES = {"not_assessed", "not_applicable"}
+CONDITIONAL_SOURCE_TYPES = {"curator_note", "partner_feed"}
 # Migration 0000 declares text NOT NULL DEFAULT 'primary' and no other relation value.
 SOURCE_RELATIONS = {"primary"}
 PROTOCOL_FIELDS = {
@@ -149,6 +152,12 @@ def canonical_sha256(value: Any) -> str:
     return hashlib.sha256(canonical_json_bytes(value)).hexdigest()
 
 
+def canonical_surface_fingerprint(family_slug: str, surface_slugs: list[str]) -> str:
+    return canonical_sha256(
+        {"family_slug": family_slug, "surface_slugs": sorted(surface_slugs)}
+    )
+
+
 def _require_object(value: Any, label: str, errors: list[str]) -> dict[str, Any]:
     if not isinstance(value, dict):
         errors.append(f"{label} must be an object")
@@ -231,6 +240,7 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         "refresh_type",
         "rubric_version",
         "effective_refresh_date",
+        "topology_contract",
         "scope",
         "baseline",
         "changes",
@@ -261,6 +271,41 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         errors.append("rubric_version is required")
     if not _valid_date(document.get("effective_refresh_date")):
         errors.append("effective_refresh_date must be a valid YYYY-MM-DD date")
+
+    topology = _require_object(document.get("topology_contract"), "topology_contract", errors)
+    topology_fields = {
+        "mode",
+        "canonical_surface_slugs",
+        "canonical_surface_fingerprint",
+        "operator_approval_artifact_sha256",
+    }
+    if set(topology) != topology_fields:
+        errors.append(f"topology_contract fields must exactly equal {sorted(topology_fields)}")
+    canonical_surfaces = _require_unique_slugs(
+        topology.get("canonical_surface_slugs"),
+        "topology_contract.canonical_surface_slugs",
+        errors,
+    )
+    canonical_surface_values = topology.get("canonical_surface_slugs")
+    if isinstance(canonical_surface_values, list) and canonical_surface_values != sorted(
+        canonical_surface_values
+    ):
+        errors.append("topology_contract canonical surfaces must be sorted")
+    if topology.get("mode") != "preserve_canonical":
+        errors.append("public refresh topology_contract.mode must be preserve_canonical")
+    if topology.get("operator_approval_artifact_sha256") is not None:
+        errors.append("public refresh cannot carry a topology migration approval")
+    if isinstance(family, str) and canonical_surfaces:
+        expected_fingerprint = canonical_surface_fingerprint(
+            family, sorted(canonical_surfaces)
+        )
+        if topology.get("canonical_surface_fingerprint") != expected_fingerprint:
+            errors.append("topology_contract canonical surface fingerprint is invalid")
+    if document.get("refresh_type") == "full_family_refresh":
+        if canonical_surfaces != surfaces:
+            errors.append("full family refresh must exactly match canonical topology")
+    elif not surfaces <= canonical_surfaces:
+        errors.append("targeted refresh cannot broaden canonical topology")
 
     scope = _require_object(document.get("scope"), "scope", errors)
     scope_keys = {
@@ -448,7 +493,7 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
             if not isinstance(sources, list):
                 errors.append(f"{label}.sources must be an array")
                 continue
-            if not sources:
+            if not sources and score not in SOURCE_OPTIONAL_SCORES:
                 errors.append(f"{label}.sources must contain at least one citation")
                 continue
             for source_index, source in enumerate(sources):
@@ -468,6 +513,14 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
                     relation = source.get("relation")
                     if not isinstance(relation, str) or relation not in SOURCE_RELATIONS:
                         errors.append(f"{source_label}.relation is invalid")
+            if score in {"green", "yellow", "red"} and not any(
+                isinstance(source, dict)
+                and source.get("source_type") not in CONDITIONAL_SOURCE_TYPES
+                for source in sources
+            ):
+                errors.append(
+                    f"{label} requires an independently verifiable public source"
+                )
 
     return errors
 

@@ -42,7 +42,13 @@
         "status_sha256": { "$ref": "#/$defs/sha256" }
       }
     },
-    "payload": { "type": "object" },
+    "payload": {
+      "type": "object",
+      "required": ["topology_contract"],
+      "properties": {
+        "topology_contract": { "$ref": "#/$defs/topologyContract" }
+      }
+    },
     "integrity": {
       "type": "object",
       "additionalProperties": false,
@@ -62,6 +68,27 @@
   },
   "$defs": {
     "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
-    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "topologyContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "canonical_surface_slugs",
+        "canonical_surface_fingerprint",
+        "operator_approval_artifact_sha256"
+      ],
+      "properties": {
+        "mode": { "const": "preserve_canonical" },
+        "canonical_surface_slugs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/slug" }
+        },
+        "canonical_surface_fingerprint": { "$ref": "#/$defs/sha256" },
+        "operator_approval_artifact_sha256": { "type": "null" }
+      }
+    }
   }
 }
