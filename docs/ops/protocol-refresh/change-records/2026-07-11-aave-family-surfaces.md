@@ -70,9 +70,9 @@ The staging compose result is `v2=C/21.30`, `v3=B/16.29`, and `v4=C/21.39`.
 - Unrelated protocol verification: `188` protocol detail files with zero
   semantic changes; verification SHA-256
   `257d050c070035c7d08691537e09bf0917a2c095a1d3a9b1ce2e597268a0dc27`
-- Initial deployment workflow: [run 29149772942](https://github.com/0x-abdul/defirisk/actions/runs/29149772942),
-  `success`; its published state was subsequently corrected to the required
-  review-gated state below
+- Initial deployment workflow: run `29149772942`, `success`; the run log is no
+  longer retained. Its published state was subsequently corrected to the
+  required review-gated state below.
 
 Repository script tests, site tests, type checking, a production-style site
 build, and targeted browser checks passed against the post-cleanup temporary
@@ -88,9 +88,8 @@ output.
   `8f603b80a0f1d2b650af9b1028fe84c3219e9c6c545fc4d13eb689a4a6b71228`
 - Production correction verification SHA-256:
   `2465fbf78f1a3e9ca751ede784a94ca59024dbaa971c0a6ecbad01c262153ea6`
-- Correction deployment workflow:
-  [run 29151485584](https://github.com/0x-abdul/defirisk/actions/runs/29151485584),
-  `success`
+- Correction deployment workflow: run `29151485584`, `success`; the run log is
+  no longer retained
 - Live public index contains Aave: `no`
 - Canonical and legacy alias public API/page responses: `404`
 - Tokenized review API/page responses: `200`; review page is `noindex`
