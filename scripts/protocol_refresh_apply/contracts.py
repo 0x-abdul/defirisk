@@ -26,6 +26,7 @@ from dataclasses import dataclass
 from datetime import date, datetime, time, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 SCHEMA_VERSION = "1.0"
@@ -102,8 +103,12 @@ SOURCE_TYPES = {
     "governance_post",
     "docs",
     "partner_feed",
+    "curator_note",
     "commit_sha",
 }
+SOURCE_OPTIONAL_SCORES = {"not_assessed", "not_applicable"}
+CONDITIONAL_SOURCE_TYPES = {"curator_note", "partner_feed"}
+PUBLIC_HTTP_SOURCE_TYPES = SOURCE_TYPES - CONDITIONAL_SOURCE_TYPES
 SOURCE_RELATIONS = {"primary"}
 
 
@@ -134,6 +139,17 @@ def canonical_json_bytes(value: Any) -> bytes:
 def canonical_sha256(value: Any) -> str:
     """Return the canonical SHA-256 digest for a JSON-compatible value."""
     return hashlib.sha256(canonical_json_bytes(value)).hexdigest()
+
+
+def _has_public_http_locator(source: Mapping[str, Any]) -> bool:
+    for field in ("url", "reference"):
+        value = source.get(field)
+        if not isinstance(value, str):
+            continue
+        parsed = urlparse(value.strip())
+        if parsed.scheme in {"http", "https"} and parsed.hostname:
+            return True
+    return False
 
 
 def _object_pairs_no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -265,7 +281,8 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
         if not isinstance(sources, list):
             errors.append(f"payload.changes.factor_scores[{index}].sources must be an array")
             continue
-        if not sources:
+        score = entry.get("score")
+        if not sources and score not in SOURCE_OPTIONAL_SCORES:
             errors.append(
                 f"payload.changes.factor_scores[{index}].sources must be non-empty"
             )
@@ -286,6 +303,13 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
                     f"payload.changes.factor_scores[{index}].sources[{source_index}]."
                     f"source_type must be one of {sorted(SOURCE_TYPES)}"
                 )
+            if source.get("source_type") in PUBLIC_HTTP_SOURCE_TYPES and not _has_public_http_locator(
+                source
+            ):
+                errors.append(
+                    f"payload.changes.factor_scores[{index}].sources[{source_index}] "
+                    "requires a public HTTP(S) locator"
+                )
             reference = source.get("reference")
             if not isinstance(reference, str) or not reference.strip():
                 errors.append(
@@ -298,6 +322,16 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
                     f"payload.changes.factor_scores[{index}].sources[{source_index}]."
                     f"relation must be one of {sorted(SOURCE_RELATIONS)}"
                 )
+        if score in {"green", "yellow", "red"} and not any(
+            isinstance(source, dict)
+            and source.get("source_type") not in CONDITIONAL_SOURCE_TYPES
+            and _has_public_http_locator(source)
+            for source in sources
+        ):
+            errors.append(
+                f"payload.changes.factor_scores[{index}] requires an independently "
+                "verifiable public source"
+            )
 
     baseline = payload.get("baseline")
     if not isinstance(baseline, dict):
