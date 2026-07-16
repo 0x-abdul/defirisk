@@ -1,6 +1,7 @@
 -- Migration 0012: keep runtime application grants reproducible.
 --
--- Migration 0011 establishes active-rubric public factor-score reads.
+-- Migration 0011 remains reserved for the deferred review-token hardening
+-- work. Gaps in migration numbers are intentional and ordered lexically.
 
 DO $migration$
 BEGIN

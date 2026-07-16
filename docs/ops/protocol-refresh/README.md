@@ -20,6 +20,10 @@ Readiness is intentionally split into three gates:
   `0012_runtime_role_grants.sql`, and `0013_schema_migration_ledger.sql` are
   present with the required guards, and the non-mutating export, verification,
   documentation, and issue contracts are present.
+
+Migration files recorded in the production checksum ledger are immutable,
+including comments. Later explanatory corrections belong in documentation or a
+new migration; never edit a recorded migration file.
 - `apply_ready`: the foundation is ready and the separately owned production
   `scripts/apply-protocol-refresh.py` worker, receipt-gated migration manager,
   runtime grant policy verifier, dry-run/apply/backup/rollback support, and
