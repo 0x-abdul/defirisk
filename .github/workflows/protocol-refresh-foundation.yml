@@ -207,4 +207,4 @@ jobs:
           assert plan["pending_migrations"] == [], plan
           PY
           test "$(psql "$DSN" -Atc "SELECT applied_at = TIMESTAMPTZ '2026-07-11T00:00:00Z' AND applied_by = 'prior-operator' AND authorization_id = 'prior-window' FROM schema_migrations WHERE filename = '0009_protocol_last_refreshed.sql';")" = "t"
-          test "$(psql "$DSN" -Atc "SELECT count(*) FROM schema_migrations WHERE authorization_id = 'ci-refresh-migrations';")" = "3"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM schema_migrations WHERE authorization_id = 'ci-refresh-migrations';")" = "4"

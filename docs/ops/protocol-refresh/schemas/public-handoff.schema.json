@@ -270,13 +270,38 @@
         "factor_scores": { "type": "array", "items": { "$ref": "#/$defs/factorScoreChange" } }
       }
     },
+    "surfaceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline_grade", "risk_score", "cap_state"],
+      "properties": {
+        "headline_grade": { "enum": ["A", "B", "C", "D", "F"] },
+        "risk_score": { "type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$" },
+        "cap_state": { "enum": ["none", "cap"] }
+      }
+    },
+    "expectedResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headline_grade", "risk_score", "cap_state", "active_factor_count", "surface_results"],
+      "properties": {
+        "headline_grade": { "enum": ["A", "B", "C", "D", "F"] },
+        "risk_score": { "type": "string", "pattern": "^[0-9]+\\.[0-9]{2}$" },
+        "cap_state": { "enum": ["none", "cap"] },
+        "active_factor_count": { "type": "integer", "minimum": 0 },
+        "surface_results": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/surfaceResult" }
+        }
+      }
+    },
     "payload": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "schema_version", "batch_id", "refresh_id", "family_slug", "protocol_slug",
         "surface_slugs", "refresh_type", "rubric_version", "effective_refresh_date",
-        "topology_contract", "scope", "baseline", "changes"
+        "topology_contract", "scope", "baseline", "expected_result", "changes"
       ],
       "properties": {
         "schema_version": { "const": "1.0" },
@@ -291,6 +316,7 @@
         "topology_contract": { "$ref": "#/$defs/topologyContract" },
         "scope": { "$ref": "#/$defs/scope" },
         "baseline": { "$ref": "#/$defs/baseline" },
+        "expected_result": { "$ref": "#/$defs/expectedResult" },
         "changes": { "$ref": "#/$defs/changes" }
       }
     }

@@ -183,9 +183,24 @@ def _fetch_json_rows(conn: Any, query: str, params: tuple[Any, ...]) -> list[dic
     return sorted(rows, key=canonical_json_bytes)
 
 
-def raw_snapshot(conn: Any, family_slug: str, *, target: bool) -> dict[str, Any]:
+def _sole_active_rubric_version(conn: Any, *, expected: str | None = None) -> str:
+    with conn.cursor() as cur:
+        cur.execute("SELECT version FROM rubric_versions WHERE is_active = true ORDER BY version")
+        rows = cur.fetchall()
+    if len(rows) != 1:
+        raise ContractError("expected exactly one active rubric version")
+    version = str(rows[0][0])
+    if expected is not None and version != expected:
+        raise ContractError("active production rubric does not match the handoff")
+    return version
+
+
+def raw_snapshot(
+    conn: Any, family_slug: str, *, target: bool, rubric_version: str | None = None
+) -> dict[str, Any]:
     """Capture deterministic current rows using the producer's DB fingerprint shape."""
     operator = "=" if target else "<>"
+    rubric_version = _sole_active_rubric_version(conn, expected=rubric_version)
     protocols = _fetch_json_rows(
         conn,
         f"SELECT to_jsonb(p) FROM protocols p WHERE p.slug {operator} %s",
@@ -227,8 +242,9 @@ def raw_snapshot(conn: Any, family_slug: str, *, target: bool) -> dict[str, Any]
         )
         FROM factor_scores fs
         WHERE fs.protocol_slug {operator} %s AND fs.is_current = true
+          AND fs.rubric_version = %s
         """,
-        (family_slug,),
+        (family_slug, rubric_version),
     )
     return {
         "family_slug": family_slug,
@@ -405,6 +421,7 @@ def build_production_plan(
         "surface_slugs": list(apply_plan.surfaces),
         "factor_ids": list(apply_plan.factors),
         "effective_refresh_date": apply_plan.effective_refresh_date,
+        "expected_result": deepcopy(document["expected_result"]),
         "operation_counts": apply_plan.operation_counts,
         "pipeline_required": apply_plan.requires_pipeline,
         "production_before": {
@@ -868,6 +885,7 @@ def apply_transaction(
         document,
         _production_topology_rows(conn, plan.family_slug, lock=True),
     )
+    _sole_active_rubric_version(conn, expected=document["rubric_version"])
     current_factor_hashes = production_factor_hashes(
         normalized_snapshot(conn, plan.family_slug, target=True),
         document["changes"]["factor_scores"],
@@ -991,6 +1009,39 @@ def apply_transaction(
         tuple(created_source_ids),
         row_counts,
     )
+
+
+def verify_runtime_factor_score_receipt(
+    conn: Any, handoff: PublicHandoff, receipt: ApplyMutationReceipt
+) -> None:
+    """Prove source-transaction UUIDs are the authorized current active-rubric targets."""
+    document = handoff.payload
+    expected_ids = receipt.factor_score_ids
+    changes = document["changes"]["factor_scores"]
+    if len(expected_ids) != len(changes):
+        raise ContractError("runtime factor-score receipt count does not match the authorized targets")
+    if len(expected_ids) != len(set(expected_ids)):
+        raise ContractError("runtime factor-score receipt contains duplicate UUIDs")
+    if not expected_ids:
+        return
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT id::text, protocol_slug, factor_id, rubric_version, is_current "
+            "FROM factor_scores WHERE id::text = ANY(%s)",
+            (list(expected_ids),),
+        )
+        rows = cur.fetchall()
+    if len(rows) != len(expected_ids):
+        raise ContractError("runtime factor-score receipt includes a missing UUID")
+    expected_factors = {str(entry["factor_id"]) for entry in changes}
+    for row in rows:
+        if (
+            str(row[1]) != document["family_slug"]
+            or str(row[3]) != document["rubric_version"]
+            or row[4] is not True
+            or str(row[2]) not in expected_factors
+        ):
+            raise ContractError("runtime factor-score receipt includes a foreign or inactive target")
 
 
 def capture_recovery_snapshot(conn: Any, family_slug: str) -> dict[str, Any]:
@@ -1414,6 +1465,7 @@ def run_post_commit_pipeline(
     db_url: str,
     family_slug: str,
     before_dump_result: Any = None,
+    runtime_factor_score_ids: tuple[str, ...] = (),
     on_compose_success: Runner | None = None,
     verify_live_state: Runner | None = None,
 ) -> Any:
@@ -1433,6 +1485,7 @@ def run_post_commit_pipeline(
         family_slug=family_slug,
         before_dump_result=before_dump_result,
         dump_result=dump_result,
+        runtime_factor_score_ids=runtime_factor_score_ids,
     )
     _assert_runner_success("semantic verifier", verification)
     if verify_live_state is not None:
@@ -1518,6 +1571,7 @@ def _apply_refresh_locked(
             authorization_id=authorization["authorization_id"],
             backup_id=backup["backup_id"],
         )
+        verify_runtime_factor_score_receipt(conn, handoff, receipt)
         inside_other = canonical_sha256(
             normalized_snapshot(conn, plan.family_slug, target=False)
         )
@@ -1573,6 +1627,7 @@ def _apply_refresh_locked(
                 db_url=db_url,
                 family_slug=plan.family_slug,
                 before_dump_result=before_dump_result,
+                runtime_factor_score_ids=receipt.factor_score_ids,
                 on_compose_success=account_successful_compose,
                 verify_live_state=verify_live_state,
             )

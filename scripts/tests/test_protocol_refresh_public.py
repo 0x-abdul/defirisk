@@ -73,6 +73,14 @@ def accepted_changes(*, changed: bool = True) -> dict:
             "target_sha256": "1" * 64,
             "other_protocols_sha256": "2" * 64,
         },
+        "expected_result": {
+            "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
+            "active_factor_count": 1,
+            "surface_results": {
+                "v2": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+                "v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+            },
+        },
         "changes": {
             "protocol_fields": {},
             "family_fields": {},

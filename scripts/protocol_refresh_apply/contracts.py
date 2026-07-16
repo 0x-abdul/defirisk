@@ -188,6 +188,12 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
     changes = payload.get("changes")
     if not isinstance(scope, dict) or not isinstance(changes, dict):
         return ["handoff payload scope and changes must be objects"]
+    expected = payload.get("expected_result")
+    if not isinstance(expected, dict):
+        errors.append("payload.expected_result must be an object")
+    else:
+        public_errors = _public_contracts().validate_accepted_changes(payload)
+        errors.extend(error for error in public_errors if error.startswith("expected_result"))
 
     declared_and_supported = (
         ("protocol", "allowed_protocol_fields", PROTOCOL_FIELDS),

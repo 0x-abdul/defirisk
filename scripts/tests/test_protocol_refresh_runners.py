@@ -22,6 +22,8 @@ def write_protocol_output(
     *,
     last_refreshed: str,
     grade: str,
+    risk_score: float = 17.41,
+    cap_applied: str | None = None,
     token: str | None = None,
     family_slug: str = FAMILY_SLUG,
 ) -> None:
@@ -40,8 +42,16 @@ def write_protocol_output(
                             "slug": family_slug,
                             "last_refreshed": last_refreshed,
                             "headline_grade": grade,
+                            "risk_score": risk_score,
+                            "cap_applied": cap_applied,
                         },
-                        "surfaces": [{"surface_slug": SURFACE_SLUG}],
+                        "surfaces": [{
+                            "surface_slug": SURFACE_SLUG,
+                            "headline_grade": grade,
+                            "risk_score": risk_score,
+                            "cap_applied": cap_applied,
+                            "factor_scores": [],
+                        }],
                     }
                 }
             }
@@ -59,6 +69,11 @@ def verifier():
         rubric_version=RUBRIC_VERSION,
         expected_surfaces=(SURFACE_SLUG,),
         effective_refresh_date="2026-07-13",
+        expected_result={
+            "headline_grade": "A", "risk_score": "17.41", "cap_state": "none",
+            "active_factor_count": 0,
+            "surface_results": {SURFACE_SLUG: {"headline_grade": "A", "risk_score": "17.41", "cap_state": "none"}},
+        },
     )
 
 

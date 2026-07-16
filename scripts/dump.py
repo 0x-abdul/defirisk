@@ -137,17 +137,28 @@ def get_connection_url() -> str:
     return url
 
 
-def fetch_data_as_of(cur: Any) -> str:
+def _sole_active_rubric_version(cur: Any) -> str:
+    cur.execute("SELECT version FROM rubric_versions WHERE is_active = true ORDER BY version")
+    rows = cur.fetchall()
+    if len(rows) != 1:
+        raise RuntimeError("expected exactly one active rubric version")
+    return str(rows[0]["version"])
+
+
+def fetch_data_as_of(cur: Any, rubric_version: str) -> str:
     """Return ISO-8601 UTC timestamp of the latest exported DB refresh."""
     cur.execute(
         """
         SELECT GREATEST(
-            (SELECT MAX(collected_at) FROM factor_scores WHERE is_current = true),
+            (SELECT MAX(fs.collected_at)
+             FROM factor_scores fs
+             WHERE fs.is_current = true AND fs.rubric_version = %s),
             (SELECT MAX(updated_at) FROM protocols
              WHERE total_value_secured_usd IS NOT NULL),
             (SELECT MAX(updated_at) FROM deployments WHERE tvs_usd IS NOT NULL)
         ) AS max_ts
-        """
+        """,
+        (rubric_version,),
     )
     row = cur.fetchone()
     if row and row["max_ts"]:
@@ -242,7 +253,7 @@ def fetch_deployments_by_protocol(cur: Any) -> dict[str, list[dict]]:
     return result
 
 
-def fetch_factor_scores_by_protocol(cur: Any) -> dict[str, list[dict]]:
+def fetch_factor_scores_by_protocol(cur: Any, rubric_version: str) -> dict[str, list[dict]]:
     """
     Returns current factor scores with their sources, grouped by protocol_slug.
     Sources are embedded as a list under key 'sources'.
@@ -274,9 +285,10 @@ def fetch_factor_scores_by_protocol(cur: Any) -> dict[str, list[dict]]:
         FROM factor_scores fs
         LEFT JOIN factor_score_sources fss ON fss.factor_score_id = fs.id
         LEFT JOIN sources s ON s.id = fss.source_id
-        WHERE fs.is_current = true
+        WHERE fs.is_current = true AND fs.rubric_version = %s
         ORDER BY fs.protocol_slug, fs.factor_id, fs.id, s.id
-        """
+        """,
+        (rubric_version,),
     )
     rows = cur.fetchall()
 
@@ -407,16 +419,19 @@ def fetch_hack_factor_links(cur: Any) -> dict[str, list[dict]]:
     return result
 
 
-def fetch_active_rubric(cur: Any) -> dict | None:
+def fetch_active_rubric(cur: Any) -> dict:
     cur.execute(
         """
         SELECT version, frozen_at, changelog_url, notes
         FROM rubric_versions
         WHERE is_active = true
-        LIMIT 1
+        ORDER BY version
         """
     )
-    return cur.fetchone()
+    rows = cur.fetchall()
+    if len(rows) != 1:
+        raise RuntimeError("expected exactly one active rubric version")
+    return rows[0]
 
 
 def fetch_factors(cur: Any) -> list[dict]:
@@ -434,7 +449,7 @@ def fetch_factors(cur: Any) -> list[dict]:
     return cur.fetchall()
 
 
-def fetch_factor_scores_by_factor(cur: Any) -> dict[str, list[dict]]:
+def fetch_factor_scores_by_factor(cur: Any, rubric_version: str) -> dict[str, list[dict]]:
     """
     Returns current factor scores grouped by factor_id.
     Each entry includes the protocol slug + display_name so the global factor
@@ -444,6 +459,7 @@ def fetch_factor_scores_by_factor(cur: Any) -> dict[str, list[dict]]:
         """
         WITH candidate_scores AS (
             SELECT
+                fs.id,
                 fs.factor_id,
                 fs.protocol_slug,
                 p.display_name AS protocol_name,
@@ -468,19 +484,20 @@ def fetch_factor_scores_by_factor(cur: Any) -> dict[str, list[dict]]:
             FROM factor_scores fs
             JOIN protocols p ON p.slug = fs.protocol_slug
             JOIN protocol_families pf ON pf.family_slug = p.slug
-            WHERE fs.is_current = true
+            WHERE fs.is_current = true AND fs.rubric_version = %s
               AND p.is_published = true
         ),
         effective_scores AS (
             SELECT DISTINCT ON (protocol_slug, factor_id) *
             FROM candidate_scores
             WHERE precedence > 0
-            ORDER BY protocol_slug, factor_id, precedence DESC, collected_at DESC
+            ORDER BY protocol_slug, factor_id, precedence DESC, collected_at DESC, id DESC
         )
         SELECT *
         FROM effective_scores
         ORDER BY factor_id, protocol_name NULLS LAST
-        """
+        """,
+        (rubric_version,),
     )
     rows = cur.fetchall()
     result: dict[str, list[dict]] = {}
@@ -1200,19 +1217,20 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
         with conn.cursor() as cur:
             print("Fetching data…")
             generated_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-            data_as_of = fetch_data_as_of(cur)
+            active_rubric = fetch_active_rubric(cur)
+            rubric_version = str(active_rubric["version"])
+            data_as_of = fetch_data_as_of(cur, rubric_version)
 
             protocols = fetch_protocols(cur)
             families_by_slug = fetch_families_by_slug(cur)
             surfaces_by_slug = fetch_surfaces_by_family(cur)
             deployments_by_slug = fetch_deployments_by_protocol(cur)
-            factor_scores_by_slug = fetch_factor_scores_by_protocol(cur)
+            factor_scores_by_slug = fetch_factor_scores_by_protocol(cur, rubric_version)
             grade_history_by_slug = fetch_grade_history_by_protocol(cur)
             hacks = fetch_hacks(cur)
             hack_factor_links = fetch_hack_factor_links(cur)
-            active_rubric = fetch_active_rubric(cur)
             factors = fetch_factors(cur)
-            factor_scores_by_factor = fetch_factor_scores_by_factor(cur)
+            factor_scores_by_factor = fetch_factor_scores_by_factor(cur, rubric_version)
             hack_factor_links_by_factor = fetch_hack_factor_links_by_factor(cur)
             active_incidents = fetch_active_incidents(cur)
             pipeline_runs = fetch_pipeline_runs(cur)
