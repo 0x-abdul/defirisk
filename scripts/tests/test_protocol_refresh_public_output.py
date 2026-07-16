@@ -167,19 +167,54 @@ def test_target_pipeline_runs_and_nested_data_as_of_are_isolated(tmp_path) -> No
 
 
 def _status_run(identifier: str, family_slug: str | None = None) -> dict:
+    common = {
+        "id": identifier,
+        "cadence_bucket": "C",
+        "error_count": 0,
+        "run_at": f"2026-07-16T00:00:{identifier[-2:]}Z",
+        "success_count": 1,
+    }
     if family_slug is None:
         return {
-            "id": identifier,
+            **common,
             "script_name": "compose.py",
             "triggered_by": f"compose.py:{identifier}",
             "notes": json.dumps({"family_slug": identifier}),
         }
     return {
-        "id": identifier,
+        **common,
         "script_name": "apply-protocol-refresh.py",
         "triggered_by": f"protocol-refresh:{identifier}",
         "notes": json.dumps({"family_slug": family_slug}),
     }
+
+
+def _bucket_freshness(runs: list[dict]) -> dict:
+    result = {}
+    for bucket in ("C", "E", "S"):
+        bucket_runs = [run for run in runs if run.get("cadence_bucket") == bucket]
+        if not bucket_runs:
+            result[bucket] = {
+                "cadence_bucket": bucket,
+                "last_run_at": None,
+                "run_count_30": 0,
+                "total_errors": 0,
+                "total_successes": 0,
+                "success_rate_pct": None,
+            }
+            continue
+        successes = sum(run.get("success_count") or 0 for run in bucket_runs)
+        errors = sum(run.get("error_count") or 0 for run in bucket_runs)
+        total = successes + errors
+        result[bucket] = {
+            "cadence_bucket": bucket,
+            "last_run_at": bucket_runs[0].get("run_at"),
+            "run_count_30": len(bucket_runs),
+            "total_errors": errors,
+            "total_successes": successes,
+            "success_rate_pct": round((successes / total) * 100, 1) if total else None,
+        }
+    return result
 
 
 def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None:
@@ -187,27 +222,43 @@ def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None
     after = tmp_path / "after"
     api_fixture(before, target_grade="B", generated_at="same")
     api_fixture(after, target_grade="B", generated_at="same")
-    unrelated = [_status_run(f"other-{index}") for index in range(28)]
+    unrelated = [_status_run(f"other-{index:02}") for index in range(27)]
     before_runs = [
         _status_run("target-old-1", "fixture-family"),
         _status_run("target-old-2", "fixture-family"),
         *unrelated,
+        _status_run("target-old-tail", "fixture-family"),
     ]
     after_runs = [
         _status_run("target-new-1", "fixture-family"),
-        _status_run("target-new-2", "fixture-family"),
-        *before_runs[:2],
-        *unrelated[:26],
+        {
+            **_status_run("target-new-2", "fixture-family"),
+            "error_count": 1,
+            "success_count": 0,
+        },
+        *before_runs[:28],
     ]
     write_json(
         before,
         "status.json",
-        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+        {
+            "data": {
+                "bucket_freshness": _bucket_freshness(before_runs),
+                "meta": {"runs_window": 30},
+                "runs": before_runs,
+            }
+        },
     )
     write_json(
         after,
         "status.json",
-        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+        {
+            "data": {
+                "bucket_freshness": _bucket_freshness(after_runs),
+                "meta": {"runs_window": 30},
+                "runs": after_runs,
+            }
+        },
     )
 
     report = verify_output_isolation(before, after, "fixture-family")
@@ -215,6 +266,44 @@ def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None
     assert report["isolated"] is True
     assert report["unrelated_changed_files"] == []
     assert "status.json" in report["target_changed_files"]
+
+
+def test_status_window_rejects_non_derived_bucket_freshness(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run(f"other-{index:02}") for index in range(30)]
+    after_runs = [_status_run("target-new", "fixture-family"), *before_runs[:29]]
+    write_json(
+        before,
+        "status.json",
+        {
+            "data": {
+                "bucket_freshness": _bucket_freshness(before_runs),
+                "meta": {"runs_window": 30},
+                "runs": before_runs,
+            }
+        },
+    )
+    invalid_bucket = _bucket_freshness(after_runs)
+    invalid_bucket["C"]["total_successes"] += 1
+    write_json(
+        after,
+        "status.json",
+        {
+            "data": {
+                "bucket_freshness": invalid_bucket,
+                "meta": {"runs_window": 30},
+                "runs": after_runs,
+            }
+        },
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
 
 
 def test_status_window_rejects_tail_eviction_before_declared_window_is_full(
