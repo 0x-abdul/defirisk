@@ -180,6 +180,116 @@ def _without_target(value: Any, family_slug: str) -> Any:
     return value
 
 
+def _status_runs(value: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """Return the bounded status run list only when it has the expected shape."""
+    data = value.get("data")
+    if not isinstance(data, dict):
+        return None
+    runs = data.get("runs")
+    if not isinstance(runs, list) or not all(isinstance(run, dict) for run in runs):
+        return None
+    return runs
+
+
+def _without_status_runs(value: dict[str, Any]) -> dict[str, Any] | None:
+    """Drop the bounded run projection while retaining all other status semantics."""
+    data = value.get("data")
+    if not isinstance(data, dict) or "runs" not in data:
+        return None
+    result = dict(value)
+    result["data"] = {key: item for key, item in data.items() if key != "runs"}
+    return result
+
+
+def _status_runs_window(value: dict[str, Any]) -> int | None:
+    """Return the declared positive status run window when present."""
+    data = value.get("data")
+    if not isinstance(data, dict):
+        return None
+    meta = data.get("meta")
+    if not isinstance(meta, dict):
+        return None
+    window = meta.get("runs_window")
+    return window if isinstance(window, int) and not isinstance(window, bool) and window > 0 else None
+
+
+def _unique_run_ids(runs: list[dict[str, Any]]) -> set[str] | None:
+    """Return stable run IDs only when every row has one unique nonempty ID."""
+    identifiers: set[str] = set()
+    for run in runs:
+        identifier = run.get("id")
+        if not isinstance(identifier, str) or not identifier or identifier in identifiers:
+            return None
+        identifiers.add(identifier)
+    return identifiers
+
+
+def _target_run_addition_ids(
+    before_runs: list[dict[str, Any]],
+    after_runs: list[dict[str, Any]],
+    family_slug: str,
+) -> set[str] | None:
+    """Return genuinely new target run IDs, rejecting malformed identities."""
+    before_ids = _unique_run_ids(before_runs)
+    after_ids = _unique_run_ids(after_runs)
+    if before_ids is None or after_ids is None:
+        return None
+    return {
+        run["id"]
+        for run in after_runs
+        if _target_pipeline_run(run, family_slug) and run["id"] not in before_ids
+    }
+
+
+def _status_run_window_is_isolated(
+    before_value: dict[str, Any],
+    after_value: dict[str, Any],
+    family_slug: str,
+) -> bool:
+    """Allow only target-run insertions to evict unrelated tail rows.
+
+    ``status.json`` exposes a newest-first bounded projection. A target refresh
+    can legitimately insert target-owned audit rows and push older unrelated
+    rows beyond that window. The retained unrelated sequence must therefore be
+    an exact prefix of the prior sequence, and each omitted tail row must be
+    accounted for by a newly inserted target row. Eviction is permitted only
+    when the declared window is full and stable run identities prove the rows
+    are genuinely new target additions.
+    """
+    before_runs = _status_runs(before_value)
+    after_runs = _status_runs(after_value)
+    if before_runs is None or after_runs is None:
+        return False
+    before_unrelated = [
+        run for run in before_runs if not _target_pipeline_run(run, family_slug)
+    ]
+    after_unrelated = [
+        run for run in after_runs if not _target_pipeline_run(run, family_slug)
+    ]
+    if len(after_unrelated) > len(before_unrelated):
+        return False
+    retained = before_unrelated[: len(after_unrelated)]
+    if canonical_sha256(retained) != canonical_sha256(after_unrelated):
+        return False
+    evicted = len(before_unrelated) - len(after_unrelated)
+    if evicted == 0:
+        return True
+    before_window = _status_runs_window(before_value)
+    after_window = _status_runs_window(after_value)
+    if before_window is None or before_window != after_window:
+        return False
+    new_target_ids = _target_run_addition_ids(before_runs, after_runs, family_slug)
+    if new_target_ids is None:
+        return False
+    expected_after_count = min(before_window, len(before_runs) + len(new_target_ids))
+    return (
+        len(before_runs) <= before_window
+        and len(after_runs) == before_window
+        and len(after_runs) == expected_after_count
+        and evicted == len(new_target_ids)
+    )
+
+
 def verify_output_isolation(
     before_root: Path | str,
     after_root: Path | str,
@@ -235,8 +345,21 @@ def verify_output_isolation(
             target_changes.append(safe_relative)
         if target_owned:
             continue
-        before_unrelated = _without_target(before_value, family_slug)
-        after_unrelated = _without_target(after_value, family_slug)
+        if relative == "status.json" and _status_run_window_is_isolated(
+            before_value,
+            after_value,
+            family_slug,
+        ):
+            before_status = _without_status_runs(before_value)
+            after_status = _without_status_runs(after_value)
+            if before_status is None or after_status is None:
+                unrelated_changes.append(safe_relative)
+                continue
+            before_unrelated = _without_target(before_status, family_slug)
+            after_unrelated = _without_target(after_status, family_slug)
+        else:
+            before_unrelated = _without_target(before_value, family_slug)
+            after_unrelated = _without_target(after_value, family_slug)
         if canonical_sha256(before_unrelated) != canonical_sha256(after_unrelated):
             unrelated_changes.append(safe_relative)
 

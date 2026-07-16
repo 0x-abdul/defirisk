@@ -163,12 +163,15 @@ cannot publish, unpublish, or rotate its review token.
 
 The verifier ignores only export `generated_at` values and target-family rows.
 Only the target detail document and a history document whose payload names the
-same canonical family are target-owned files. It rejects every other added,
-removed, or changed JSON file and aggregate row that cannot be attributed to
-the target family. Unpublished paths are redacted in reports and failures so
-review tokens do not enter logs or receipts. A passing comparison does not
-replace factor, grade, alias, history, publication-state, or live-site
-verification.
+same canonical family are target-owned files. For the newest-first bounded
+`status.json` run projection, it permits new target-owned runs to evict
+unchanged unrelated tail rows only at the declared full window capacity. Every
+run must have a unique stable ID, and every eviction must be matched by a
+genuinely new target run ID. It rejects unrelated additions, mutations,
+reordering, middle-row removal, and every non-run aggregate change. Unpublished
+paths are redacted in reports and failures so review tokens do not enter logs or
+receipts. A passing comparison does not replace factor, grade, alias, history,
+publication-state, or live-site verification.
 
 ## Public Change Record
 
