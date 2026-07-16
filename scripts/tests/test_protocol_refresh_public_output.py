@@ -166,6 +166,230 @@ def test_target_pipeline_runs_and_nested_data_as_of_are_isolated(tmp_path) -> No
     assert "status.json" in report["target_changed_files"]
 
 
+def _status_run(identifier: str, family_slug: str | None = None) -> dict:
+    if family_slug is None:
+        return {
+            "id": identifier,
+            "script_name": "compose.py",
+            "triggered_by": f"compose.py:{identifier}",
+            "notes": json.dumps({"family_slug": identifier}),
+        }
+    return {
+        "id": identifier,
+        "script_name": "apply-protocol-refresh.py",
+        "triggered_by": f"protocol-refresh:{identifier}",
+        "notes": json.dumps({"family_slug": family_slug}),
+    }
+
+
+def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    unrelated = [_status_run(f"other-{index}") for index in range(28)]
+    before_runs = [
+        _status_run("target-old-1", "fixture-family"),
+        _status_run("target-old-2", "fixture-family"),
+        *unrelated,
+    ]
+    after_runs = [
+        _status_run("target-new-1", "fixture-family"),
+        _status_run("target-new-2", "fixture-family"),
+        *before_runs[:2],
+        *unrelated[:26],
+    ]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is True
+    assert report["unrelated_changed_files"] == []
+    assert "status.json" in report["target_changed_files"]
+
+
+def test_status_window_rejects_tail_eviction_before_declared_window_is_full(
+    tmp_path,
+) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run("other-1"), _status_run("other-2")]
+    after_runs = [_status_run("target-new", "fixture-family"), before_runs[0]]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_status_window_allows_target_insertion_to_fill_window_without_eviction(
+    tmp_path,
+) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run(f"other-{index}") for index in range(29)]
+    after_runs = [_status_run("target-new", "fixture-family"), *before_runs]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is True
+    assert "status.json" in report["target_changed_files"]
+
+
+def test_status_window_rejects_duplicate_run_id_with_tail_eviction(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    unrelated = [_status_run(f"other-{index}") for index in range(29)]
+    target = _status_run("target-existing", "fixture-family")
+    before_runs = [target, *unrelated]
+    after_runs = [target, target, *unrelated[:28]]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_status_window_rejects_mutated_existing_target_id_with_tail_eviction(
+    tmp_path,
+) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    unrelated = [_status_run(f"other-{index}") for index in range(29)]
+    before_runs = [_status_run("target-existing", "fixture-family"), *unrelated]
+    mutated_target = dict(before_runs[0])
+    mutated_target["triggered_by"] = "protocol-refresh:mutated"
+    after_runs = [mutated_target, *unrelated[:28]]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_status_window_rejects_middle_or_excess_unrelated_eviction(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    unrelated = [_status_run(f"other-{index}") for index in range(4)]
+    before_runs = [_status_run("target-old", "fixture-family"), *unrelated]
+    after_runs = [
+        _status_run("target-new", "fixture-family"),
+        before_runs[0],
+        unrelated[0],
+        unrelated[2],
+    ]
+    write_json(before, "status.json", {"data": {"runs": before_runs}})
+    write_json(after, "status.json", {"data": {"runs": after_runs}})
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_status_window_rejects_unrelated_run_insertion(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run("other-1"), _status_run("other-2")]
+    after_runs = [
+        _status_run("target-new", "fixture-family"),
+        _status_run("other-added"),
+        *before_runs,
+    ]
+    write_json(before, "status.json", {"data": {"runs": before_runs}})
+    write_json(after, "status.json", {"data": {"runs": after_runs}})
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_status_window_rejects_non_run_status_change(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run("other-1"), _status_run("other-2")]
+    after_runs = [_status_run("target-new", "fixture-family"), *before_runs]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"runs": before_runs, "bucket_freshness": {"C": {"count": 1}}}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"runs": after_runs, "bucket_freshness": {"C": {"count": 2}}}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
 def test_unrelated_pipeline_run_still_fails(tmp_path) -> None:
     before = tmp_path / "before"
     after = tmp_path / "after"
