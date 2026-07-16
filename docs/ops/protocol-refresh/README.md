@@ -166,10 +166,12 @@ Only the target detail document and a history document whose payload names the
 same canonical family are target-owned files. For the newest-first bounded
 `status.json` run projection, it permits new target-owned runs to evict
 unchanged unrelated tail rows only at the declared full window capacity. Every
-run must have a unique stable ID, and every eviction must be matched by a
-genuinely new target run ID. It rejects unrelated additions, mutations,
-reordering, middle-row removal, and every non-run aggregate change. Unpublished
-paths are redacted in reports and failures so review tokens do not enter logs or
+run must have a unique stable ID; retained prior rows must remain an exact
+prefix, and every new row must belong to the target family. The deterministic
+bucket-freshness aggregate may change only when it exactly derives from the
+verified run window. It rejects unrelated additions, mutations, reordering,
+middle-row removal, and every non-derived aggregate change. Unpublished paths
+are redacted in reports and failures so review tokens do not enter logs or
 receipts. A passing comparison does not replace factor, grade, alias, history,
 publication-state, or live-site verification.
 

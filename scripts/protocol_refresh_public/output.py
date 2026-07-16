@@ -191,13 +191,18 @@ def _status_runs(value: dict[str, Any]) -> list[dict[str, Any]] | None:
     return runs
 
 
-def _without_status_runs(value: dict[str, Any]) -> dict[str, Any] | None:
-    """Drop the bounded run projection while retaining all other status semantics."""
+def _without_status_runs(
+    value: dict[str, Any], *, drop_bucket_freshness: bool = False
+) -> dict[str, Any] | None:
+    """Drop verified derived status projections, retaining other semantics."""
     data = value.get("data")
     if not isinstance(data, dict) or "runs" not in data:
         return None
     result = dict(value)
-    result["data"] = {key: item for key, item in data.items() if key != "runs"}
+    excluded = {"runs"}
+    if drop_bucket_freshness:
+        excluded.add("bucket_freshness")
+    result["data"] = {key: item for key, item in data.items() if key not in excluded}
     return result
 
 
@@ -241,6 +246,63 @@ def _target_run_addition_ids(
     }
 
 
+def _expected_bucket_freshness(runs: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Rebuild the bounded-run aggregate emitted by ``dump.py``."""
+    result: dict[str, dict[str, Any]] = {}
+    for bucket_code in ("C", "E", "S"):
+        bucket_runs = [run for run in runs if run.get("cadence_bucket") == bucket_code]
+        if not bucket_runs:
+            result[bucket_code] = {
+                "cadence_bucket": bucket_code,
+                "last_run_at": None,
+                "run_count_30": 0,
+                "total_errors": 0,
+                "total_successes": 0,
+                "success_rate_pct": None,
+            }
+            continue
+        total_successes = sum(run.get("success_count") or 0 for run in bucket_runs)
+        total_errors = sum(run.get("error_count") or 0 for run in bucket_runs)
+        total_operations = total_successes + total_errors
+        result[bucket_code] = {
+            "cadence_bucket": bucket_code,
+            "last_run_at": bucket_runs[0].get("run_at"),
+            "run_count_30": len(bucket_runs),
+            "total_errors": total_errors,
+            "total_successes": total_successes,
+            "success_rate_pct": (
+                round((total_successes / total_operations) * 100, 1)
+                if total_operations
+                else None
+            ),
+        }
+    return result
+
+
+def _status_bucket_freshness_is_derived(
+    before_value: dict[str, Any], after_value: dict[str, Any]
+) -> bool:
+    """Accept bucket freshness only when both sides derive it from their runs."""
+    before_data = before_value.get("data")
+    after_data = after_value.get("data")
+    if not isinstance(before_data, dict) or not isinstance(after_data, dict):
+        return False
+    before_has_bucket = "bucket_freshness" in before_data
+    after_has_bucket = "bucket_freshness" in after_data
+    if before_has_bucket != after_has_bucket:
+        return False
+    if not before_has_bucket:
+        return True
+    before_runs = _status_runs(before_value)
+    after_runs = _status_runs(after_value)
+    return (
+        before_runs is not None
+        and after_runs is not None
+        and before_data["bucket_freshness"] == _expected_bucket_freshness(before_runs)
+        and after_data["bucket_freshness"] == _expected_bucket_freshness(after_runs)
+    )
+
+
 def _status_run_window_is_isolated(
     before_value: dict[str, Any],
     after_value: dict[str, Any],
@@ -250,30 +312,15 @@ def _status_run_window_is_isolated(
 
     ``status.json`` exposes a newest-first bounded projection. A target refresh
     can legitimately insert target-owned audit rows and push older unrelated
-    rows beyond that window. The retained unrelated sequence must therefore be
-    an exact prefix of the prior sequence, and each omitted tail row must be
-    accounted for by a newly inserted target row. Eviction is permitted only
-    when the declared window is full and stable run identities prove the rows
-    are genuinely new target additions.
+    rows beyond that window. Stable run IDs must prove that the retained prior
+    rows form an exact prefix and that every new row belongs to the target.
+    The full-window tail can contain prior target rows as well as unrelated
+    rows, so a target insertion need not evict an unrelated row one-for-one.
     """
     before_runs = _status_runs(before_value)
     after_runs = _status_runs(after_value)
     if before_runs is None or after_runs is None:
         return False
-    before_unrelated = [
-        run for run in before_runs if not _target_pipeline_run(run, family_slug)
-    ]
-    after_unrelated = [
-        run for run in after_runs if not _target_pipeline_run(run, family_slug)
-    ]
-    if len(after_unrelated) > len(before_unrelated):
-        return False
-    retained = before_unrelated[: len(after_unrelated)]
-    if canonical_sha256(retained) != canonical_sha256(after_unrelated):
-        return False
-    evicted = len(before_unrelated) - len(after_unrelated)
-    if evicted == 0:
-        return True
     before_window = _status_runs_window(before_value)
     after_window = _status_runs_window(after_value)
     if before_window is None or before_window != after_window:
@@ -281,12 +328,19 @@ def _status_run_window_is_isolated(
     new_target_ids = _target_run_addition_ids(before_runs, after_runs, family_slug)
     if new_target_ids is None:
         return False
+    before_ids = _unique_run_ids(before_runs)
+    if before_ids is None:
+        return False
+    new_runs = [run for run in after_runs if run["id"] not in before_ids]
+    if any(not _target_pipeline_run(run, family_slug) for run in new_runs):
+        return False
+    retained_runs = [run for run in after_runs if run["id"] in before_ids]
+    if canonical_sha256(retained_runs) != canonical_sha256(before_runs[: len(retained_runs)]):
+        return False
     expected_after_count = min(before_window, len(before_runs) + len(new_target_ids))
     return (
         len(before_runs) <= before_window
-        and len(after_runs) == before_window
         and len(after_runs) == expected_after_count
-        and evicted == len(new_target_ids)
     )
 
 
@@ -345,13 +399,17 @@ def verify_output_isolation(
             target_changes.append(safe_relative)
         if target_owned:
             continue
-        if relative == "status.json" and _status_run_window_is_isolated(
-            before_value,
-            after_value,
-            family_slug,
+        if (
+            relative == "status.json"
+            and _status_run_window_is_isolated(before_value, after_value, family_slug)
+            and _status_bucket_freshness_is_derived(before_value, after_value)
         ):
-            before_status = _without_status_runs(before_value)
-            after_status = _without_status_runs(after_value)
+            before_status = _without_status_runs(
+                before_value, drop_bucket_freshness=True
+            )
+            after_status = _without_status_runs(
+                after_value, drop_bucket_freshness=True
+            )
             if before_status is None or after_status is None:
                 unrelated_changes.append(safe_relative)
                 continue
