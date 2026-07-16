@@ -19,6 +19,7 @@ FOUNDATION_FILES = (
     ".github/ISSUE_TEMPLATE/protocol-data-refresh.md",
 )
 MIGRATIONS = (
+    ("db/migrations/0011_active_rubric_factor_score_reads.sql", ("CREATE POLICY public_read", "sole active rubric")),
     (
         "db/migrations/0008_protocol_surfaces.sql",
         ("CREATE TABLE IF NOT EXISTS protocol_families", "CREATE TABLE IF NOT EXISTS protocol_surfaces"),

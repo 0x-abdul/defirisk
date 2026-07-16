@@ -120,16 +120,20 @@ def _fetch_protocols(cur: psycopg.Cursor, slug: str | None) -> list[dict]:
     return cur.fetchall()
 
 
-def _fetch_factor_scores(cur: psycopg.Cursor, protocol_slug: str) -> list[dict]:
-    """Fetch all current factor_scores with category and is_critical metadata."""
+def _fetch_factor_scores(
+    cur: psycopg.Cursor, protocol_slug: str, rubric_version: str
+) -> list[dict]:
+    """Fetch current factor scores for the active grading rubric."""
     cur.execute(
         """SELECT fs.id, fs.factor_id, fs.score,
                   fs.scope_level, fs.family_slug, fs.surface_id, fs.deployment_id,
                   f.category_id, f.is_critical
            FROM factor_scores fs
            JOIN factors f ON f.id = fs.factor_id
-           WHERE fs.protocol_slug = %s AND fs.is_current = true""",
-        (protocol_slug,),
+           WHERE fs.protocol_slug = %s
+             AND fs.rubric_version = %s
+             AND fs.is_current = true""",
+        (protocol_slug, rubric_version),
     )
     return cur.fetchall()
 
@@ -588,12 +592,15 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
     with conn:
         with conn.cursor(row_factory=dict_row) as cur:
             # Verify active rubric version
-            cur.execute("SELECT version FROM rubric_versions WHERE is_active = true LIMIT 1")
-            rv_row = cur.fetchone()
-            if not rv_row:
-                print("ERROR: No active rubric version in DB.", file=sys.stderr)
+            cur.execute("SELECT version FROM rubric_versions WHERE is_active = true ORDER BY version")
+            active_rows = cur.fetchall()
+            if len(active_rows) != 1:
+                print(
+                    "ERROR: Expected exactly one active rubric version in DB.",
+                    file=sys.stderr,
+                )
                 return 1
-            db_rubric_version = rv_row["version"]
+            db_rubric_version = active_rows[0]["version"]
             if db_rubric_version != RUBRIC_VERSION:
                 print(
                     f"WARNING: DB rubric version '{db_rubric_version}' differs from "
@@ -623,7 +630,7 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
         for protocol in protocols:
             pslug = protocol["slug"]
             with conn.cursor(row_factory=dict_row) as cur:
-                factor_scores = _fetch_factor_scores(cur, pslug)
+                factor_scores = _fetch_factor_scores(cur, pslug, rubric_version)
                 surfaces = _fetch_surfaces(cur, pslug)
 
             if not factor_scores:

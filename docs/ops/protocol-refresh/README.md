@@ -16,6 +16,7 @@ Readiness is intentionally split into three gates:
 
 - `foundation_ready`: migrations `0008_protocol_surfaces.sql`,
   `0009_protocol_last_refreshed.sql`, `0010_protocol_refresh_idempotency.sql`,
+  `0011_active_rubric_factor_score_reads.sql`,
   `0012_runtime_role_grants.sql`, and `0013_schema_migration_ledger.sql` are
   present with the required guards, and the non-mutating export, verification,
   documentation, and issue contracts are present.

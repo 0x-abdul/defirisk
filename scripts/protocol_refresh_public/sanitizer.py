@@ -74,8 +74,13 @@ TOP_LEVEL_FIELDS = {
     "topology_contract",
     "scope",
     "baseline",
+    "expected_result",
     "changes",
 }
+EXPECTED_RESULT_FIELDS = {
+    "headline_grade", "risk_score", "cap_state", "active_factor_count", "surface_results",
+}
+SURFACE_RESULT_FIELDS = {"headline_grade", "risk_score", "cap_state"}
 TOPOLOGY_FIELDS = {
     "mode",
     "canonical_surface_slugs",
@@ -174,6 +179,25 @@ def sanitize_accepted_changes(document: dict[str, Any]) -> dict[str, Any]:
         public=BASELINE_FIELDS,
         required=BASELINE_FIELDS,
     )
+    expected_result = _exact_or_known_fields(
+        document.get("expected_result"),
+        label="$.expected_result",
+        public=EXPECTED_RESULT_FIELDS,
+        required=EXPECTED_RESULT_FIELDS,
+    )
+    surface_results = expected_result.get("surface_results")
+    if not isinstance(surface_results, dict):
+        raise ContractError("$.expected_result.surface_results must be an object")
+    expected_result["surface_results"] = {
+        slug: _exact_or_known_fields(
+            value,
+            label=f"$.expected_result.surface_results[{slug!r}]",
+            public=SURFACE_RESULT_FIELDS,
+            required=SURFACE_RESULT_FIELDS,
+        )
+        for slug, value in surface_results.items()
+    }
+    result["expected_result"] = expected_result
     changes = _exact_or_known_fields(
         document.get("changes"), label="$.changes", public=CHANGE_FIELDS, required=CHANGE_FIELDS
     )

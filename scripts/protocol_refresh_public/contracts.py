@@ -256,6 +256,7 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         "topology_contract",
         "scope",
         "baseline",
+        "expected_result",
         "changes",
     }
     missing = sorted(required - set(document))
@@ -266,6 +267,41 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         errors.append(f"accepted changes contains unsupported fields: {extra}")
     if document.get("schema_version") != "1.0":
         errors.append("accepted changes schema_version must be 1.0")
+    expected_result = document.get("expected_result")
+    if not isinstance(expected_result, dict):
+        errors.append("expected_result must be an object")
+    else:
+        expected_fields = {
+            "headline_grade", "risk_score", "cap_state", "active_factor_count", "surface_results"
+        }
+        if set(expected_result) != expected_fields:
+            errors.append("expected_result has an invalid field set")
+        if expected_result.get("headline_grade") not in {"A", "B", "C", "D", "F"}:
+            errors.append("expected_result.headline_grade is invalid")
+        risk_score = expected_result.get("risk_score")
+        if not isinstance(risk_score, str) or not re.fullmatch(r"[0-9]+\.[0-9]{2}", risk_score):
+            errors.append("expected_result.risk_score must be a two-decimal string")
+        if expected_result.get("cap_state") not in {"none", "cap"}:
+            errors.append("expected_result.cap_state is invalid")
+        count = expected_result.get("active_factor_count")
+        if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+            errors.append("expected_result.active_factor_count is invalid")
+        if not isinstance(expected_result.get("surface_results"), dict):
+            errors.append("expected_result.surface_results must be an object")
+        else:
+            surface_results = expected_result["surface_results"]
+            if set(surface_results) != set(document.get("surface_slugs", [])):
+                errors.append("expected_result.surface_results must exactly match surface_slugs")
+            for slug, result in surface_results.items():
+                if not isinstance(result, dict) or set(result) != {"headline_grade", "risk_score", "cap_state"}:
+                    errors.append(f"expected_result.surface_results[{slug!r}] is invalid")
+                    continue
+                if result.get("headline_grade") not in {"A", "B", "C", "D", "F"}:
+                    errors.append(f"expected_result.surface_results[{slug!r}].headline_grade is invalid")
+                if not isinstance(result.get("risk_score"), str) or not re.fullmatch(r"[0-9]+\.[0-9]{2}", result["risk_score"]):
+                    errors.append(f"expected_result.surface_results[{slug!r}].risk_score must be a two-decimal string")
+                if result.get("cap_state") not in {"none", "cap"}:
+                    errors.append(f"expected_result.surface_results[{slug!r}].cap_state is invalid")
     for name in ("batch_id", "refresh_id"):
         value = document.get(name)
         if not isinstance(value, str) or not ID_RE.fullmatch(value):

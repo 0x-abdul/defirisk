@@ -75,6 +75,11 @@ def accepted_changes(*, changed: bool = False) -> dict:
             "allowed_deployment_fields": [],
         },
         "baseline": {"target_sha256": SHA_A, "other_protocols_sha256": SHA_B},
+        "expected_result": {
+            "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
+            "active_factor_count": 0,
+            "surface_results": {"v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"}},
+        },
         "changes": changes,
     }
 
@@ -129,6 +134,7 @@ def factor_artifact(
             ],
         }
     ]
+    document["expected_result"]["active_factor_count"] = 1
     status = {
         "batch_id": document["batch_id"],
         "refresh_id": document["refresh_id"],

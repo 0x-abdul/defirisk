@@ -26,6 +26,7 @@ def states(*, applied: bool = False) -> tuple[MigrationState, ...]:
     return (
         MigrationState("0009_protocol_last_refreshed.sql", "a" * 64, applied, "column"),
         MigrationState("0010_protocol_refresh_idempotency.sql", "b" * 64, applied, "index"),
+        MigrationState("0011_active_rubric_factor_score_reads.sql", "e" * 64, applied, "policy"),
         MigrationState("0012_runtime_role_grants.sql", "c" * 64, applied, "grants"),
         MigrationState("0013_schema_migration_ledger.sql", "d" * 64, applied, "ledger"),
     )
@@ -53,6 +54,7 @@ def test_plan_is_stable_and_orders_only_refresh_owned_migrations() -> None:
     assert left["pending_migrations"] == [
         "0009_protocol_last_refreshed.sql",
         "0010_protocol_refresh_idempotency.sql",
+        "0011_active_rubric_factor_score_reads.sql",
         "0012_runtime_role_grants.sql",
         "0013_schema_migration_ledger.sql",
     ]
@@ -130,7 +132,9 @@ def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> 
             return None
 
         def execute(self, query: str, _params: object = None) -> InspectionCursor:
-            if "information_schema.columns" in query or "to_regclass(%s)" in query:
+            if "pg_policy" in query:
+                self.rows = [("is_current AND rubric_version IN (rubric_versions is_active)",)]
+            elif "information_schema.columns" in query or "to_regclass(%s)" in query:
                 self.rows = [(True,)]
             elif "pg_roles" in query or "has_schema_privilege" in query:
                 self.rows = [(True,)]

@@ -34,6 +34,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 MIGRATION_NAMES = (
     "0009_protocol_last_refreshed.sql",
     "0010_protocol_refresh_idempotency.sql",
+    "0011_active_rubric_factor_score_reads.sql",
     "0012_runtime_role_grants.sql",
     "0013_schema_migration_ledger.sql",
 )
@@ -106,11 +107,24 @@ def _runtime_grants_ready(cur: Any) -> tuple[bool, str]:
     return ready, f"schema usage: {schema_usage}; runtime grants: {printable}"
 
 
+def _active_rubric_policy_ready(cur: Any) -> tuple[bool, str]:
+    cur.execute(
+        "SELECT pg_get_expr(polqual, polrelid) FROM pg_policy "
+        "WHERE polname = 'public_read' AND polrelid = 'public.factor_scores'::regclass"
+    )
+    row = cur.fetchone()
+    definition = "" if row is None else str(row[0])
+    normalized = " ".join(definition.split()).lower()
+    ready = all(token in normalized for token in ("is_current", "rubric_version", "rubric_versions", "is_active", "group by", "having"))
+    return ready, "active-rubric factor_scores policy " + ("present" if ready else "missing or incomplete")
+
+
 def inspect_migrations(conn: Any, repo_root: Path = REPO_ROOT) -> tuple[MigrationState, ...]:
     specs = migration_specs(repo_root)
     with conn.cursor() as cur:
         last_refreshed = _has_column(cur, "protocols", "last_refreshed")
         idempotency = _has_index(cur, "pipeline_runs_protocol_refresh_trigger_unique")
+        active_policy_ready, active_policy_detail = _active_rubric_policy_ready(cur)
         grants_ready, grants_detail = _runtime_grants_ready(cur)
         ledger_exists = bool(
             cur.execute("SELECT to_regclass('public.schema_migrations') IS NOT NULL").fetchone()[0]
@@ -122,8 +136,9 @@ def inspect_migrations(conn: Any, repo_root: Path = REPO_ROOT) -> tuple[Migratio
     details = {
         MIGRATION_NAMES[0]: (last_refreshed, "protocols.last_refreshed exists"),
         MIGRATION_NAMES[1]: (idempotency, "refresh idempotency index exists"),
-        MIGRATION_NAMES[2]: (grants_ready, grants_detail),
-        MIGRATION_NAMES[3]: (ledger_exists, "schema migration ledger exists"),
+        MIGRATION_NAMES[2]: (active_policy_ready, active_policy_detail),
+        MIGRATION_NAMES[3]: (grants_ready, grants_detail),
+        MIGRATION_NAMES[4]: (ledger_exists, "schema migration ledger exists"),
     }
     states = []
     for name, _path, digest in specs:

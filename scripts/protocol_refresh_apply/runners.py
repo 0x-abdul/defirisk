@@ -84,6 +84,7 @@ def make_semantic_verifier(
     rubric_version: str,
     expected_surfaces: tuple[str, ...],
     effective_refresh_date: str,
+    expected_result: dict[str, Any],
 ) -> Callable[..., bool]:
     """Create a verifier for family identity, surface scope, and refresh date."""
 
@@ -93,6 +94,7 @@ def make_semantic_verifier(
         family_slug: str,
         before_dump_result: Any,
         dump_result: Any,
+        runtime_factor_score_ids: tuple[str, ...] = (),
     ) -> bool:
         del db_url
         before_output_path = getattr(before_dump_result, "output_path", None)
@@ -131,6 +133,15 @@ def make_semantic_verifier(
         protocol = protocol_data.get("protocol")
         if not isinstance(protocol, dict) or protocol.get("slug") != family_slug:
             raise ContractError("generated output does not describe the target canonical family")
+        if protocol.get("headline_grade") != expected_result["headline_grade"]:
+            raise ContractError("generated output headline grade does not match expected_result")
+        risk_score = protocol.get("risk_score")
+        if not isinstance(risk_score, (int, float)) or isinstance(risk_score, bool) or f"{risk_score:.2f}" != expected_result["risk_score"]:
+            raise ContractError("generated output risk score does not match expected_result")
+        cap = protocol.get("cap_applied")
+        normalized_cap = "none" if cap in {None, "none", False} else "cap"
+        if normalized_cap != expected_result["cap_state"]:
+            raise ContractError("generated output cap state does not match expected_result")
         if str(protocol.get("last_refreshed")) != effective_refresh_date:
             raise ContractError("generated output last_refreshed does not match the approved artifact")
         surfaces = protocol_data.get("surfaces")
@@ -141,6 +152,36 @@ def make_semantic_verifier(
             raise ContractError(
                 f"generated surface scope mismatch: expected {sorted(expected_surfaces)}, got {list(actual)}"
             )
+        expected_surface_results = expected_result["surface_results"]
+        if set(expected_surface_results) != set(expected_surfaces):
+            raise ContractError("expected_result surface scope does not match the handoff")
+        output_ids: list[str] = []
+        output_ids: list[str] = []
+        for surface in surfaces:
+            if not isinstance(surface, dict):
+                continue
+            expected_surface = expected_surface_results.get(str(surface.get("surface_slug")))
+            if not isinstance(expected_surface, dict):
+                raise ContractError("generated surface is absent from expected_result")
+            for key in ("headline_grade",):
+                if surface.get(key) != expected_surface.get(key):
+                    raise ContractError("generated surface grade does not match expected_result")
+            surface_risk = surface.get("risk_score")
+            if not isinstance(surface_risk, (int, float)) or isinstance(surface_risk, bool) or f"{surface_risk:.2f}" != expected_surface.get("risk_score"):
+                raise ContractError("generated surface risk score does not match expected_result")
+            surface_cap = surface.get("cap_applied")
+            if ("none" if surface_cap in {None, "none", False} else "cap") != expected_surface.get("cap_state"):
+                raise ContractError("generated surface cap state does not match expected_result")
+            factor_scores = surface.get("factor_scores", [])
+            if not isinstance(factor_scores, list):
+                raise ContractError("generated surface factor_scores must be an array")
+            output_ids.extend(str(item["score_id"]) for item in factor_scores if isinstance(item, dict) and item.get("score_id") is not None)
+        if len(set(output_ids)) != expected_result["active_factor_count"]:
+            raise ContractError("generated active factor count does not match expected_result")
+        if len(runtime_factor_score_ids) != len(set(runtime_factor_score_ids)):
+            raise ContractError("runtime factor-score receipt contains duplicate UUIDs")
+        if runtime_factor_score_ids and not set(runtime_factor_score_ids) <= set(output_ids):
+            raise ContractError("generated target output is missing a runtime-created factor-score UUID")
         try:
             report = verify_output_isolation(
                 before_api_root,

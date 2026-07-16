@@ -184,6 +184,7 @@ def main(argv: list[str] | None = None) -> int:
                 rubric_version=handoff.payload["rubric_version"],
                 expected_surfaces=plan.surfaces,
                 effective_refresh_date=plan.effective_refresh_date,
+                expected_result=handoff.payload["expected_result"],
             ),
         )
         _write_receipt(receipt_out, result)
