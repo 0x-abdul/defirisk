@@ -459,6 +459,7 @@ def fetch_factor_scores_by_factor(cur: Any, rubric_version: str) -> dict[str, li
         """
         WITH candidate_scores AS (
             SELECT
+                fs.id,
                 fs.factor_id,
                 fs.protocol_slug,
                 p.display_name AS protocol_name,
