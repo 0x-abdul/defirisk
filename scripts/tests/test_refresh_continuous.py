@@ -6,6 +6,7 @@ from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
+from types import SimpleNamespace
 
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "refresh-continuous.py"
@@ -296,3 +297,106 @@ def test_days_since_exploit_scoring() -> None:
     assert refresh._score_days_since_exploit(False, None) == "green"
     assert refresh._score_days_since_exploit(False, 90) == "yellow"
     assert refresh._score_days_since_exploit(False, 366) == "green"
+
+
+class FakeConnection:
+    def __init__(self) -> None:
+        self.rolled_back = False
+        self.closed = False
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, _exc, _tb):
+        self.rolled_back = exc_type is not None
+        return False
+
+    def close(self) -> None:
+        self.closed = True
+
+
+class BatchRepo:
+    def __init__(self, _conn) -> None:
+        pass
+
+    def require_nightly_contracts(self) -> None:
+        pass
+
+    def fetch_protocols(self, _slug):
+        return [{"slug": "fixture"}]
+
+    def create_pipeline_run(self, _triggered_by):
+        return "run-id"
+
+    def update_pipeline_run(self, _run_id, _results, _duration):
+        pass
+
+
+def test_mixed_failure_rolls_back_and_blocks_export(monkeypatch) -> None:
+    conn = FakeConnection()
+    exported = False
+
+    def post_refresh(**_kwargs):
+        nonlocal exported
+        exported = True
+        return 0
+
+    monkeypatch.setattr(refresh, "_connect", lambda _url: conn)
+    monkeypatch.setattr(refresh, "PostgresRepository", BatchRepo)
+    monkeypatch.setattr(
+        refresh,
+        "process_protocols",
+        lambda **_kwargs: [
+            refresh.ProtocolResult(slug="ok", status="updated", db_updates=1),
+            refresh.ProtocolResult(slug="bad", status="error", error="fetch failed"),
+        ],
+    )
+    monkeypatch.setattr(refresh, "_post_refresh_steps", post_refresh)
+
+    assert refresh.run(
+        conn_str="postgresql://fixture",
+        all_protocols=True,
+        protocol_slug=None,
+        dry_run=False,
+    ) == 1
+    assert conn.rolled_back is True
+    assert conn.closed is True
+    assert exported is False
+
+
+def test_compose_failure_rolls_back_and_blocks_export(monkeypatch) -> None:
+    conn = FakeConnection()
+    exported = False
+
+    def post_refresh(**_kwargs):
+        nonlocal exported
+        exported = True
+        return 0
+
+    monkeypatch.setattr(refresh, "_connect", lambda _url: conn)
+    monkeypatch.setattr(refresh, "PostgresRepository", BatchRepo)
+    monkeypatch.setattr(
+        refresh,
+        "process_protocols",
+        lambda **_kwargs: [
+            refresh.ProtocolResult(
+                slug="fixture", status="updated", db_updates=1, factor_updates=1
+            )
+        ],
+    )
+    monkeypatch.setattr(
+        refresh,
+        "_load_sibling_script",
+        lambda _name, _filename: SimpleNamespace(run=lambda *_args, **_kwargs: 1),
+    )
+    monkeypatch.setattr(refresh, "_post_refresh_steps", post_refresh)
+
+    assert refresh.run(
+        conn_str="postgresql://fixture",
+        all_protocols=False,
+        protocol_slug="fixture",
+        dry_run=False,
+    ) == 1
+    assert conn.rolled_back is True
+    assert conn.closed is True
+    assert exported is False

@@ -25,6 +25,7 @@ import argparse
 import json
 import os
 import sys
+from contextlib import nullcontext
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -284,24 +285,18 @@ def _upsert_factor_score_snapshots(
 
 
 def _create_compose_pipeline_run(cur: psycopg.Cursor, protocol_slug: str | None) -> str | None:
-    """Create a pipeline_runs row for this compose invocation; return its UUID string.
-
-    Returns None if the table doesn't exist yet (pre-migration graceful fallback).
-    """
-    try:
-        scope = protocol_slug if protocol_slug else "all"
-        cur.execute(
-            """INSERT INTO pipeline_runs
-                   (script_name, cadence_bucket, protocols_touched,
-                    fetchers_invoked, success_count, error_count,
-                    triggered_by)
-               VALUES ('compose.py', 'compose', 0, '[]'::jsonb, 0, 0, %s)
-               RETURNING id""",
-            (f"compose.py:{scope}",),
-        )
-        return str(cur.fetchone()["id"])
-    except Exception:
-        return None
+    """Create a pipeline_runs row and fail closed on schema or privilege drift."""
+    scope = protocol_slug if protocol_slug else "all"
+    cur.execute(
+        """INSERT INTO pipeline_runs
+               (script_name, cadence_bucket, protocols_touched,
+                fetchers_invoked, success_count, error_count,
+                triggered_by)
+           VALUES ('compose.py', 'compose', 0, '[]'::jsonb, 0, 0, %s)
+           RETURNING id""",
+        (f"compose.py:{scope}",),
+    )
+    return str(cur.fetchone()["id"])
 
 
 def _update_compose_pipeline_run(
@@ -311,18 +306,15 @@ def _update_compose_pipeline_run(
     skipped: int,
     duration_seconds: int,
 ) -> None:
-    try:
-        cur.execute(
-            """UPDATE pipeline_runs
-               SET protocols_touched = %s,
-                   success_count     = %s,
-                   error_count       = %s,
-                   duration_seconds  = %s
-               WHERE id = %s""",
-            (processed + skipped, processed, skipped, duration_seconds, run_id),
-        )
-    except Exception:
-        pass
+    cur.execute(
+        """UPDATE pipeline_runs
+           SET protocols_touched = %s,
+               success_count     = %s,
+               error_count       = %s,
+               duration_seconds  = %s
+           WHERE id = %s""",
+        (processed + skipped, processed, skipped, duration_seconds, run_id),
+    )
 
 
 def _update_protocol_grade(
@@ -366,45 +358,10 @@ def _update_protocol_grade(
 # for A grade were removed in v1.7.0).  Kept here for any external callers
 # (dump.py envelope assembly, detect-grade-changes.py, etc.).
 
-def _update_family_grade(
-    cur: psycopg.Cursor,
-    *,
-    family_slug: str,
-    letter: str,
-    rubric_version: str,
-    graded_at: datetime,
-    risk_score: float | None = None,
-    category_severities: dict | None = None,
-    cap_applied: str | None = None,
-    cap_reason: str | None = None,
-) -> None:
-    cur.execute(
-        """UPDATE protocol_families
-           SET headline_grade       = %s,
-               rubric_version       = %s,
-               graded_at            = %s,
-               risk_score           = %s,
-               category_severities  = %s::jsonb,
-               cap_applied          = %s,
-               cap_reason           = %s,
-               updated_at           = now()
-           WHERE family_slug = %s""",
-        (
-            letter,
-            rubric_version,
-            graded_at,
-            risk_score,
-            json.dumps(category_severities) if category_severities is not None else None,
-            cap_applied,
-            cap_reason,
-            family_slug,
-        ),
-    )
-
-
 def _update_surface_grade(
     cur: psycopg.Cursor,
     *,
+    family_slug: str,
     surface_id: str,
     letter: str,
     rubric_version: str,
@@ -415,17 +372,12 @@ def _update_surface_grade(
     cap_reason: str | None = None,
 ) -> None:
     cur.execute(
-        """UPDATE protocol_surfaces
-           SET headline_grade       = %s,
-               rubric_version       = %s,
-               graded_at            = %s,
-               risk_score           = %s,
-               category_severities  = %s::jsonb,
-               cap_applied          = %s,
-               cap_reason           = %s,
-               updated_at           = now()
-           WHERE surface_id = %s::uuid""",
+        """SELECT public.refresh_update_surface_grade(
+                 %s, %s::uuid, %s, %s, %s, %s, %s::jsonb, %s, %s
+               )""",
         (
+            family_slug,
+            surface_id,
             letter,
             rubric_version,
             graded_at,
@@ -433,7 +385,6 @@ def _update_surface_grade(
             json.dumps(category_severities) if category_severities is not None else None,
             cap_applied,
             cap_reason,
-            surface_id,
         ),
     )
 
@@ -578,18 +529,26 @@ def _has_surface_scores(factor_scores: list[dict], surface_id: str) -> bool:
     )
 
 
-def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = False) -> int:
+def run(
+    conn_str: str,
+    *,
+    slug: str | None,
+    dry_run: bool,
+    skip_history: bool = False,
+    connection: psycopg.Connection | None = None,
+) -> int:
+    owns_connection = connection is None
     try:
         # connect_timeout=10: subprocess of importer; if DB is paused we want
         # to surface that quickly to the orchestrator instead of hanging.
-        conn = psycopg.connect(conn_str, connect_timeout=10)
+        conn = connection or psycopg.connect(conn_str, connect_timeout=10)
     except psycopg.Error as exc:
         print(f"ERROR: Cannot connect to database: {exc}", file=sys.stderr)
         return 1
 
     start_time = datetime.now(tz=timezone.utc)
 
-    with conn:
+    with (conn if owns_connection else nullcontext()):
         with conn.cursor(row_factory=dict_row) as cur:
             # Verify active rubric version
             cur.execute("SELECT version FROM rubric_versions WHERE is_active = true ORDER BY version")
@@ -693,6 +652,7 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
                         )
                         _update_surface_grade(
                             cur,
+                            family_slug=pslug,
                             surface_id=surface["surface_id"],
                             letter=g["letter"],
                             rubric_version=rubric_version,
@@ -706,17 +666,6 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
                             _update_protocol_grade(
                                 cur,
                                 protocol_slug=pslug,
-                                letter=g["letter"],
-                                rubric_version=rubric_version,
-                                graded_at=graded_at,
-                                risk_score=g["risk_score"],
-                                category_severities=g["category_severities"],
-                                cap_applied=g["cap_applied"],
-                                cap_reason=g["cap_reason"],
-                            )
-                            _update_family_grade(
-                                cur,
-                                family_slug=pslug,
                                 letter=g["letter"],
                                 rubric_version=rubric_version,
                                 graded_at=graded_at,
@@ -759,7 +708,8 @@ def run(conn_str: str, *, slug: str | None, dry_run: bool, skip_history: bool = 
             with conn.cursor(row_factory=dict_row) as cur:
                 _update_compose_pipeline_run(cur, run_id, processed, skipped, duration_s)
 
-    conn.close()
+    if owns_connection:
+        conn.close()
 
     suffix = " (dry-run — nothing written)" if dry_run else ""
     print(f"\nDone: {processed} graded, {skipped} skipped{suffix}.")

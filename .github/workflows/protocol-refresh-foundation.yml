@@ -7,12 +7,16 @@ on:
       - 'db/migrations/0010_protocol_refresh_idempotency.sql'
       - 'db/migrations/0012_runtime_role_grants.sql'
       - 'db/migrations/0013_schema_migration_ledger.sql'
+      - 'db/migrations/0014_nightly_ingest_topology_functions.sql'
       - 'db/runtime-role-policy.json'
       - 'docs/ops/protocol-refresh/**'
       - 'scripts/protocol_refresh_apply/**'
       - 'scripts/protocol_refresh_public/**'
       - 'scripts/apply-protocol-refresh.py'
       - 'scripts/dump.py'
+      - 'scripts/compose.py'
+      - 'scripts/detect-grade-changes.py'
+      - 'scripts/refresh-continuous.py'
       - 'scripts/export-protocol-refresh.py'
       - 'scripts/manage-refresh-migrations.py'
       - 'scripts/protocol_refresh_migrations.py'
@@ -20,10 +24,12 @@ on:
       - 'scripts/verify-protocol-refresh-public.py'
       - 'scripts/verify-runtime-grant-policy.py'
       - 'scripts/tests/test_protocol_refresh_*.py'
+      - 'scripts/tests/test_nightly_ingest_postgres.py'
       - 'scripts/tests/test_dump_surfaces.py'
       - 'scripts/ci/check-public-export-boundary.mjs'
       - '.github/ISSUE_TEMPLATE/protocol-data-refresh.md'
       - '.github/workflows/protocol-refresh-foundation.yml'
+      - '.github/workflows/ingest.yml'
 
 permissions:
   contents: read
@@ -45,12 +51,15 @@ jobs:
           ruff check scripts/apply-protocol-refresh.py scripts/export-protocol-refresh.py
           ruff check scripts/manage-refresh-migrations.py scripts/protocol_refresh_migrations.py
           ruff check scripts/dump.py scripts/tests/test_dump_surfaces.py
+          ruff check scripts/compose.py scripts/detect-grade-changes.py scripts/refresh-continuous.py
           ruff check scripts/verify-protocol-output.py scripts/verify-protocol-refresh-public.py scripts/verify-runtime-grant-policy.py
           ruff check scripts/tests/test_protocol_refresh_*.py scripts/tests/test_runtime_grant_policy.py
+          ruff check scripts/tests/test_nightly_ingest_postgres.py
       - name: Run refresh tests
         run: |
           pytest scripts/tests -q -k 'protocol_refresh or runtime_grant'
           pytest scripts/tests/test_dump_surfaces.py -q
+          pytest scripts/tests/test_compose_surfaces.py scripts/tests/test_detect_grade_changes.py scripts/tests/test_refresh_continuous.py -q
       - name: Verify non-mutating foundation
         run: python scripts/verify-protocol-refresh-public.py --foundation-only
 
@@ -83,7 +92,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-client
       - name: Create disposable runtime role
-        run: psql "$DSN" -v ON_ERROR_STOP=1 -c "CREATE ROLE rdapp LOGIN;"
+        run: psql "$DSN" -v ON_ERROR_STOP=1 -c "CREATE ROLE rdapp LOGIN PASSWORD 'rdapp';"
       - name: Replay ordered migrations
         shell: bash
         run: |
@@ -93,6 +102,12 @@ jobs:
           IFS=$'\n' files=($(printf '%s\n' "${files[@]}" | sort))
           unset IFS
           for file in "${files[@]}"; do
+            if [ "$(basename "$file")" = "0014_nightly_ingest_topology_functions.sql" ]; then
+              python scripts/manage-refresh-migrations.py \
+                --plan --db-url "$DSN" --expected-database risk_dashboard \
+                > /tmp/pre-0014-plan.json
+              python -c "import json; assert '0014_nightly_ingest_topology_functions.sql' in json.load(open('/tmp/pre-0014-plan.json'))['pending_migrations']"
+            fi
             if [ "$(basename "$file")" = "0008_protocol_surfaces.sql" ]; then
               psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
                 -f scripts/ci/family-pre-0008-fixture.sql
@@ -115,6 +130,7 @@ jobs:
           test "$(psql "$DSN" -Atc "SELECT last_refreshed FROM protocols WHERE slug='fixture-family';")" = "2026-07-11"
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0010_protocol_refresh_idempotency.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0012_runtime_role_grants.sql
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"
           if psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"; then
             echo "duplicate refresh reservation unexpectedly succeeded"
@@ -136,10 +152,35 @@ jobs:
           IFS='|' read -r family_count surface_count <<< "$visible"
           test "$family_count" -gt 0
           test "$surface_count" -gt 0
-          if psql "$DSN" -q -v ON_ERROR_STOP=1 -c "SET ROLE rdapp; UPDATE protocol_surfaces SET updated_at = updated_at WHERE family_slug = 'fixture-family';"; then
-            echo "rdapp unexpectedly updated a protocol surface"
+          for table in protocol_families protocol_surfaces; do
+            if psql "$DSN" -q -v ON_ERROR_STOP=1 -c "SET ROLE rdapp; UPDATE ${table} SET updated_at = updated_at WHERE false;"; then
+              echo "rdapp unexpectedly updated ${table}"
+              exit 1
+            fi
+          done
+          psql "$DSN" -q -v ON_ERROR_STOP=1 -c "SET ROLE rdapp; SELECT refresh_sync_family_tvl('fixture-family', 123.45);"
+          test "$(psql "$DSN" -Atc "SELECT total_value_secured_usd FROM protocol_families WHERE family_slug='fixture-family';")" = "123.45"
+          test "$(psql "$DSN" -Atc "SELECT tvs_usd FROM protocol_surfaces WHERE family_slug='fixture-family' AND is_primary;")" = "123.45"
+          primary_surface="$(psql "$DSN" -Atc "SELECT primary_surface_id FROM protocol_families WHERE family_slug='fixture-family';")"
+          rubric_version="$(psql "$DSN" -Atc "SELECT version FROM rubric_versions WHERE is_active=true ORDER BY version LIMIT 1;")"
+          psql "$DSN" -q -v ON_ERROR_STOP=1 -c "SET ROLE rdapp; SELECT refresh_update_surface_grade('fixture-family', '${primary_surface}', 'B', '${rubric_version}', now(), 25.5, '{\"1\": 25.5}'::jsonb, NULL, NULL);"
+          test "$(psql "$DSN" -Atc "SELECT headline_grade FROM protocol_surfaces WHERE surface_id='${primary_surface}';")" = "B"
+          test "$(psql "$DSN" -Atc "SELECT headline_grade FROM protocol_families WHERE family_slug='fixture-family';")" = "B"
+          if psql "$DSN" -q -v ON_ERROR_STOP=1 -c "BEGIN; SET ROLE rdapp; SELECT refresh_sync_family_tvl('fixture-family', 999.00); SELECT refresh_update_surface_grade('fixture-family', '00000000-0000-0000-0000-000000000000', 'A', '${rubric_version}', now(), 1, '{}'::jsonb, NULL, NULL); COMMIT;"; then
+            echo "mismatched surface linkage unexpectedly succeeded"
             exit 1
           fi
+          test "$(psql "$DSN" -Atc "SELECT total_value_secured_usd FROM protocol_families WHERE family_slug='fixture-family';")" = "123.45"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc WHERE oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND prosecdef AND proconfig @> ARRAY['search_path=pg_catalog'] AND pg_get_userbyid(proowner) <> 'rdapp';")" = "2"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc p CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) acl WHERE p.oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND acl.grantee=0 AND acl.privilege_type='EXECUTE';")" = "0"
+      - name: Prove nightly rollback under the runtime role
+        env:
+          TEST_RUNTIME_DATABASE_URL: postgresql://rdapp:rdapp@localhost:5432/risk_dashboard
+        run: |
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO rdapp; GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO rdapp;"
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0012_runtime_role_grants.sql
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
+          pytest scripts/tests/test_nightly_ingest_postgres.py -q
       - name: Exercise receipt-gated migration runner
         shell: bash
         run: |
@@ -207,4 +248,4 @@ jobs:
           assert plan["pending_migrations"] == [], plan
           PY
           test "$(psql "$DSN" -Atc "SELECT applied_at = TIMESTAMPTZ '2026-07-11T00:00:00Z' AND applied_by = 'prior-operator' AND authorization_id = 'prior-window' FROM schema_migrations WHERE filename = '0009_protocol_last_refreshed.sql';")" = "t"
-          test "$(psql "$DSN" -Atc "SELECT count(*) FROM schema_migrations WHERE authorization_id = 'ci-refresh-migrations';")" = "4"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM schema_migrations WHERE authorization_id = 'ci-refresh-migrations';")" = "5"

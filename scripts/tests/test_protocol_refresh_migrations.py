@@ -13,6 +13,7 @@ from protocol_refresh_migrations import (
     ContractError,
     MigrationState,
     _record_pending_migrations,
+    _nightly_functions_ready,
     inspect_migrations,
     plan_document,
     validate_migration_authorization,
@@ -29,6 +30,7 @@ def states(*, applied: bool = False) -> tuple[MigrationState, ...]:
         MigrationState("0011_active_rubric_factor_score_reads.sql", "e" * 64, applied, "policy"),
         MigrationState("0012_runtime_role_grants.sql", "c" * 64, applied, "grants"),
         MigrationState("0013_schema_migration_ledger.sql", "d" * 64, applied, "ledger"),
+        MigrationState("0014_nightly_ingest_topology_functions.sql", "f" * 64, applied, "functions"),
     )
 
 
@@ -57,6 +59,7 @@ def test_plan_is_stable_and_orders_only_refresh_owned_migrations() -> None:
         "0011_active_rubric_factor_score_reads.sql",
         "0012_runtime_role_grants.sql",
         "0013_schema_migration_ledger.sql",
+        "0014_nightly_ingest_topology_functions.sql",
     ]
 
 
@@ -143,6 +146,27 @@ def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> 
                     ("protocol_families", "SELECT"),
                     ("protocol_surfaces", "SELECT"),
                 ]
+            elif "WITH required(signature)" in query:
+                self.rows = [
+                    (
+                        "refresh_sync_family_tvl(text,numeric)",
+                        True,
+                        True,
+                        ["search_path=pg_catalog"],
+                        "postgres",
+                        True,
+                        False,
+                    ),
+                    (
+                        "refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
+                        True,
+                        True,
+                        ["search_path=pg_catalog"],
+                        "postgres",
+                        True,
+                        False,
+                    ),
+                ]
             elif "to_regclass('public.schema_migrations')" in query:
                 self.rows = [(False,)]
             else:
@@ -162,3 +186,33 @@ def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> 
     inspected = inspect_migrations(InspectionConnection(), tmp_path)
     assert all(not state.applied for state in inspected)
     assert all("checksum ledger unavailable" in state.detail for state in inspected)
+
+
+def test_missing_nightly_functions_are_pending_instead_of_raising() -> None:
+    class MissingFunctionsCursor:
+        def __init__(self) -> None:
+            self.rows = []
+
+        def execute(self, query: str, _params: object = None) -> None:
+            if "FROM pg_roles" in query:
+                self.rows = [(True,)]
+            elif "WITH required(signature)" in query:
+                self.rows = [
+                    (signature, False, None, [], None, False, False)
+                    for signature in (
+                        "public.refresh_sync_family_tvl(text,numeric)",
+                        "public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
+                    )
+                ]
+            else:
+                raise AssertionError(f"unexpected query: {query}")
+
+        def fetchone(self):
+            return self.rows[0]
+
+        def fetchall(self):
+            return self.rows
+
+    ready, detail = _nightly_functions_ready(MissingFunctionsCursor())
+    assert ready is False
+    assert "False" in detail

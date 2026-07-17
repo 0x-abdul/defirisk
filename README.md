@@ -219,7 +219,9 @@ details at [defirisk.co/contributions](https://defirisk.co/contributions/).
 ## Continuous refresh operations
 
 `scripts/refresh-continuous.py` updates regularly changing metrics from durable
-programmatic sources, then runs the compose and dump steps when needed.
+programmatic sources. Refresh, grade composition, and grade-change writes share
+one database transaction; any protocol or composition failure rolls back the
+whole batch. The API export runs only after that transaction commits.
 
 ```bash
 DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all
@@ -235,6 +237,14 @@ refresh there and rebuilds the static dashboard so `/api/...` reflects the
 refreshed values. The VPS checkout is synchronized to `origin/main` before each
 run; generated `data/api` files remain uncommitted and are replaced on the next
 run rather than creating a second, divergent Git history on the server.
+
+The runtime role keeps direct `SELECT`-only access to family and surface tables.
+Migration `0014_nightly_ingest_topology_functions.sql` grants only two narrow
+function calls for synchronized TVL and derived-grade updates. Apply and verify
+that migration, run a dry-run and single-protocol canary, and complete one
+fleet-wide manual run before enabling the scheduled workflow. A failed export
+or static-site build does not roll back the already committed database batch;
+leave the prior public build in service and alert or retry publication.
 
 The refresh script does not overwrite existing values with null or zero when a
 fetch fails. It is intentionally narrower than a full reassessment. Metrics

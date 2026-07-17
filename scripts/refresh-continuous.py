@@ -10,6 +10,7 @@ source mapping is not machine-readable enough to overwrite.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import math
 import os
@@ -45,6 +46,21 @@ LENDING_MANUAL_OVERRIDE_MARKERS = (
     "incident",
     "bad debt",
 )
+
+
+class BatchRefreshError(RuntimeError):
+    """Raised to force the outer nightly transaction to roll back."""
+
+
+def _load_sibling_script(module_name: str, filename: str) -> Any:
+    path = Path(__file__).resolve().parent / filename
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise BatchRefreshError(f"cannot load required nightly step: {filename}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 @dataclass(frozen=True)
@@ -556,6 +572,24 @@ class PostgresRepository:
         self._family_schema = bool(row and row["present"])
         return self._family_schema
 
+    def require_nightly_contracts(self) -> None:
+        """Fail before writes when the least-privileged function contract is absent."""
+        signatures = (
+            "public.refresh_sync_family_tvl(text,numeric)",
+            "public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
+        )
+        with self.conn.cursor() as cur:
+            for signature in signatures:
+                cur.execute(
+                    """SELECT to_regprocedure(%s) IS NOT NULL
+                              AND has_function_privilege(current_user, %s, 'EXECUTE')""",
+                    (signature, signature),
+                )
+                if not bool(cur.fetchone()[0]):
+                    raise BatchRefreshError(
+                        f"nightly database contract is missing or not executable: {signature}"
+                    )
+
     def transaction(self) -> Any:
         return self.conn.transaction()
 
@@ -723,25 +757,14 @@ class PostgresRepository:
                 """,
                 (rounded, slug),
             )
-            if self.family_schema_present():
-                cur.execute(
-                    """
-                    UPDATE protocol_families
-                    SET total_value_secured_usd = %s, updated_at = now()
-                    WHERE family_slug = %s
-                    """,
-                    (rounded, slug),
+            if cur.rowcount != 1:
+                raise BatchRefreshError(
+                    f"expected one protocol TVL update for {slug}, got {cur.rowcount}"
                 )
-                cur.execute(
-                    """
-                    UPDATE protocol_surfaces ps
-                    SET tvs_usd = %s, updated_at = now()
-                    FROM protocol_families pf
-                    WHERE pf.family_slug = %s
-                      AND ps.surface_id = pf.primary_surface_id
-                    """,
-                    (rounded, slug),
-                )
+            cur.execute(
+                "SELECT public.refresh_sync_family_tvl(%s, %s)",
+                (slug, rounded),
+            )
 
     def update_deployment_tvl(self, deployment_id: Any, tvl_usd: Decimal, share: Decimal) -> None:
         with self.conn.cursor() as cur:
@@ -859,21 +882,18 @@ class PostgresRepository:
             )
 
     def create_pipeline_run(self, triggered_by: str) -> Any | None:
-        try:
-            with self.conn.cursor(row_factory=dict_row) as cur:
-                cur.execute(
-                    """
-                    INSERT INTO pipeline_runs
-                        (script_name, cadence_bucket, protocols_touched,
-                         fetchers_invoked, success_count, error_count, triggered_by)
-                    VALUES (%s, 'C', 0, '[]'::jsonb, 0, 0, %s)
-                    RETURNING id
-                    """,
-                    (SCRIPT_NAME, triggered_by),
-                )
-                return cur.fetchone()["id"]
-        except Exception:
-            return None
+        with self.conn.cursor(row_factory=dict_row) as cur:
+            cur.execute(
+                """
+                INSERT INTO pipeline_runs
+                    (script_name, cadence_bucket, protocols_touched,
+                     fetchers_invoked, success_count, error_count, triggered_by)
+                VALUES (%s, 'C', 0, '[]'::jsonb, 0, 0, %s)
+                RETURNING id
+                """,
+                (SCRIPT_NAME, triggered_by),
+            )
+            return cur.fetchone()["id"]
 
     def update_pipeline_run(
         self,
@@ -1093,20 +1113,9 @@ def _post_refresh_steps(
         return 0
 
     scripts_dir = Path(__file__).resolve().parent
-    if factor_updates > 0:
-        compose_args = [str(scripts_dir / "compose.py")]
-        if protocol_slug:
-            compose_args.extend(["--protocol", protocol_slug])
-        code = _run_subprocess(compose_args, dry_run=dry_run)
-        if code != 0:
-            return code
-
-        detector = scripts_dir / "detect-grade-changes.py"
-        if detector.exists():
-            code = _run_subprocess([str(detector)], dry_run=dry_run)
-            if code != 0:
-                return code
-
+    if dry_run and factor_updates > 0:
+        target = protocol_slug or "all protocols"
+        print(f"[dry-run] would compose and detect grade changes for {target} in one transaction")
     return _run_subprocess([str(scripts_dir / "dump.py")], dry_run=dry_run)
 
 
@@ -1154,41 +1163,71 @@ def run(*, conn_str: str, all_protocols: bool, protocol_slug: str | None, dry_ru
     conn = _connect(conn_str)
     results: list[ProtocolResult] = []
     run_id: Any | None = None
-    with conn:
-        repo = PostgresRepository(conn)
-        protocols = repo.fetch_protocols(None if all_protocols else protocol_slug)
-        if not protocols:
-            target = protocol_slug or "all protocols"
-            print(f"ERROR: no protocols found for {target}", file=sys.stderr)
-            return 1
-        if not dry_run:
-            run_id = repo.create_pipeline_run(
-                f"{SCRIPT_NAME}:{'all' if all_protocols else protocol_slug}"
+    db_updates = 0
+    factor_updates = 0
+    try:
+        with conn:
+            repo = PostgresRepository(conn)
+            repo.require_nightly_contracts()
+            protocols = repo.fetch_protocols(None if all_protocols else protocol_slug)
+            if not protocols:
+                target = protocol_slug or "all protocols"
+                raise BatchRefreshError(f"no protocols found for {target}")
+            if not dry_run:
+                run_id = repo.create_pipeline_run(
+                    f"{SCRIPT_NAME}:{'all' if all_protocols else protocol_slug}"
+                )
+
+            results = process_protocols(
+                repo=repo,
+                protocols=protocols,
+                dry_run=dry_run,
+                all_protocols=all_protocols,
             )
+            failures = [result for result in results if result.error is not None]
+            successes = [result for result in results if result.error is None]
+            db_updates = sum(result.db_updates for result in successes)
+            factor_updates = sum(result.factor_updates for result in successes)
 
-        results = process_protocols(
-            repo=repo,
-            protocols=protocols,
-            dry_run=dry_run,
-            all_protocols=all_protocols,
-        )
+            if run_id is not None:
+                duration = int(time.monotonic() - started)
+                repo.update_pipeline_run(run_id, results, duration)
+            if failures:
+                raise BatchRefreshError(
+                    f"{len(failures)} protocol refresh(es) failed; rolling back the nightly batch"
+                )
 
-        if run_id is not None:
-            duration = int(time.monotonic() - started)
-            repo.update_pipeline_run(run_id, results, duration)
+            if not dry_run and factor_updates > 0:
+                compose = _load_sibling_script("nightly_compose", "compose.py")
+                compose_code = compose.run(
+                    conn_str,
+                    slug=protocol_slug if not all_protocols else None,
+                    dry_run=False,
+                    connection=conn,
+                )
+                if compose_code != 0:
+                    raise BatchRefreshError("compose step failed")
+
+                detector = _load_sibling_script(
+                    "nightly_detect_grade_changes", "detect-grade-changes.py"
+                )
+                detector_code = detector.run(
+                    conn_str,
+                    dry_run=False,
+                    snapshot_date=None,
+                    backfill=False,
+                    connection=conn,
+                )
+                if detector_code != 0:
+                    raise BatchRefreshError("grade-change detection failed")
+    except Exception as exc:
+        conn.close()
+        print_summary(results)
+        print(f"ERROR: nightly refresh rolled back: {exc}", file=sys.stderr)
+        return 1
 
     conn.close()
     print_summary(results)
-
-    failures = [result for result in results if result.error is not None]
-    successes = [result for result in results if result.error is None]
-    if failures and not all_protocols:
-        return 1
-    if failures and not successes:
-        return 1
-
-    db_updates = sum(result.db_updates for result in successes)
-    factor_updates = sum(result.factor_updates for result in successes)
     return _post_refresh_steps(
         protocol_slug=protocol_slug if not all_protocols else None,
         factor_updates=factor_updates,
