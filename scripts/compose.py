@@ -377,7 +377,7 @@ def _update_surface_grade(
 ) -> None:
     cur.execute(
         """SELECT public.refresh_update_surface_grade(
-                 %s, %s::uuid, %s, %s, %s, %s, %s::jsonb, %s, %s
+                 %s, %s::uuid, %s, %s, %s, %s::numeric, %s::jsonb, %s, %s
                )""",
         (
             family_slug,

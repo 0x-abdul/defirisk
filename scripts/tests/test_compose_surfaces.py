@@ -85,6 +85,7 @@ def test_surface_grade_uses_least_privileged_function() -> None:
     )
 
     assert "refresh_update_surface_grade" in cur.query
+    assert "%s::numeric" in cur.query
     assert "UPDATE protocol_surfaces" not in cur.query
     assert cur.params[:2] == (
         "fixture-family",
