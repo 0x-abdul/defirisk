@@ -41,6 +41,10 @@ except ImportError:
 
 from rubric import CORE_FIVE, RUBRIC_VERSION, grade  # noqa: E402
 
+
+class ComposeIncompleteError(RuntimeError):
+    """Raised when a required nightly protocol cannot produce a primary grade."""
+
 # ── Constants ────────────────────────────────────────────────────────────────
 
 # CORE_FIVE is imported from rubric.py (single source of truth):
@@ -284,7 +288,7 @@ def _upsert_factor_score_snapshots(
     )
 
 
-def _create_compose_pipeline_run(cur: psycopg.Cursor, protocol_slug: str | None) -> str | None:
+def _create_compose_pipeline_run(cur: psycopg.Cursor, protocol_slug: str | None) -> str:
     """Create a pipeline_runs row and fail closed on schema or privilege drift."""
     scope = protocol_slug if protocol_slug else "all"
     cur.execute(
@@ -529,6 +533,13 @@ def _has_surface_scores(factor_scores: list[dict], surface_id: str) -> bool:
     )
 
 
+def _missing_required_protocols(
+    required_protocols: set[str] | None,
+    composed_primary_protocols: set[str],
+) -> list[str]:
+    return sorted((required_protocols or set()) - composed_primary_protocols)
+
+
 def run(
     conn_str: str,
     *,
@@ -536,6 +547,7 @@ def run(
     dry_run: bool,
     skip_history: bool = False,
     connection: psycopg.Connection | None = None,
+    required_protocols: set[str] | None = None,
 ) -> int:
     owns_connection = connection is None
     try:
@@ -571,8 +583,7 @@ def run(
             protocols = _fetch_protocols(cur, slug)
             categories = _fetch_all_categories(cur)
 
-            # Create a pipeline_runs row for this compose invocation (graceful
-            # if table doesn't exist yet — pre-migration fallback returns None).
+            # Create a pipeline_runs row and fail closed on schema or privilege drift.
             run_id: str | None = None
             if not dry_run:
                 run_id = _create_compose_pipeline_run(cur, slug)
@@ -585,6 +596,7 @@ def run(
         graded_at = datetime.now(tz=timezone.utc)
         processed = 0
         skipped = 0
+        composed_primary_protocols: set[str] = set()
 
         for protocol in protocols:
             pslug = protocol["slug"]
@@ -619,6 +631,8 @@ def run(
                     continue
 
                 g = compute_grade(_surface_context(protocol, surface), effective_scores, categories)
+                if surface.get("is_primary"):
+                    composed_primary_protocols.add(pslug)
 
                 print(
                     f"  {pslug}/{surface['surface_slug']}: {g['letter']} "
@@ -701,6 +715,16 @@ def run(
                             )
 
                 processed += 1
+
+        missing_required = _missing_required_protocols(
+            required_protocols,
+            composed_primary_protocols,
+        )
+        if missing_required:
+            raise ComposeIncompleteError(
+                "required nightly protocols did not produce a primary grade: "
+                + ", ".join(missing_required)
+            )
 
         # Update the pipeline_runs row with final counts.
         if run_id is not None:

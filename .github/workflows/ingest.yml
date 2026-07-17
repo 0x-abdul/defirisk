@@ -9,6 +9,7 @@
 # Prerequisites (repo Settings -> Secrets and variables -> Actions):
 #   VPS_HOST     - IPv4 address or hostname of the production VPS
 #   VPS_SSH_KEY  - Private key for the github-actions-deploy key
+#   ENABLE_NIGHTLY_INGEST - Set to true only after the documented rollout gates pass
 
 name: Nightly ingest (Bucket A - continuous cadence)
 
@@ -28,6 +29,7 @@ permissions:
 
 jobs:
   refresh-continuous:
+    if: ${{ vars.ENABLE_NIGHTLY_INGEST == 'true' }}
     name: Refresh continuous-cadence factors
     runs-on: ubuntu-latest
     timeout-minutes: 45

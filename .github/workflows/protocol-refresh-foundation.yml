@@ -25,6 +25,9 @@ on:
       - 'scripts/verify-runtime-grant-policy.py'
       - 'scripts/tests/test_protocol_refresh_*.py'
       - 'scripts/tests/test_nightly_ingest_postgres.py'
+      - 'scripts/tests/test_compose_surfaces.py'
+      - 'scripts/tests/test_detect_grade_changes.py'
+      - 'scripts/tests/test_refresh_continuous.py'
       - 'scripts/tests/test_dump_surfaces.py'
       - 'scripts/ci/check-public-export-boundary.mjs'
       - '.github/ISSUE_TEMPLATE/protocol-data-refresh.md'
@@ -171,11 +174,19 @@ jobs:
             exit 1
           fi
           test "$(psql "$DSN" -Atc "SELECT total_value_secured_usd FROM protocol_families WHERE family_slug='fixture-family';")" = "123.45"
-          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc WHERE oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND prosecdef AND proconfig @> ARRAY['search_path=pg_catalog'] AND pg_get_userbyid(proowner) <> 'rdapp';")" = "2"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc WHERE oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND prosecdef AND proconfig @> ARRAY['search_path=pg_catalog'] AND pg_get_userbyid(proowner) = 'rdapp_nightly_owner';")" = "2"
+          test "$(psql "$DSN" -Atc "SELECT NOT rolsuper AND NOT rolcreatedb AND NOT rolcreaterole AND NOT rolcanlogin AND NOT rolreplication AND NOT rolinherit AND NOT rolbypassrls FROM pg_roles WHERE rolname='rdapp_nightly_owner';")" = "t"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_auth_members m JOIN pg_roles r ON r.oid IN (m.roleid, m.member) WHERE r.rolname='rdapp_nightly_owner';")" = "0"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_stat_activity a JOIN pg_roles r ON r.oid=a.usesysid WHERE r.rolname='rdapp_nightly_owner';")" = "0"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_shdepend d JOIN pg_roles r ON r.oid=d.refobjid WHERE d.refclassid='pg_authid'::regclass AND r.rolname='rdapp_nightly_owner' AND d.deptype='o' AND NOT (d.dbid=(SELECT oid FROM pg_database WHERE datname=current_database()) AND d.classid='pg_proc'::regclass AND d.objid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure));")" = "0"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_policy p JOIN pg_class c ON c.oid=p.polrelid JOIN pg_namespace n ON n.oid=c.relnamespace JOIN pg_roles r ON r.rolname='rdapp_nightly_owner' WHERE n.nspname='public' AND c.relname IN ('protocol_families','protocol_surfaces') AND p.polname='nightly_owner_update' AND p.polcmd='w' AND p.polroles=ARRAY[r.oid] AND pg_get_expr(p.polqual,p.polrelid)='true' AND pg_get_expr(p.polwithcheck,p.polrelid)='true';")" = "2"
           test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc p CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) acl WHERE p.oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND acl.grantee=0 AND acl.privilege_type='EXECUTE';")" = "0"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc p CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) acl WHERE p.oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND acl.privilege_type='EXECUTE' AND acl.grantee NOT IN (p.proowner, (SELECT oid FROM pg_roles WHERE rolname='rdapp'));")" = "0"
+          test "$(psql "$DSN" -Atc "SELECT count(*) FROM pg_proc p CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner))) acl WHERE p.oid IN ('public.refresh_sync_family_tvl(text,numeric)'::regprocedure, 'public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)'::regprocedure) AND acl.privilege_type='EXECUTE' AND acl.grantee=(SELECT oid FROM pg_roles WHERE rolname='rdapp') AND acl.is_grantable;")" = "0"
       - name: Prove nightly rollback under the runtime role
         env:
           TEST_RUNTIME_DATABASE_URL: postgresql://rdapp:rdapp@localhost:5432/risk_dashboard
+          TEST_ADMIN_DATABASE_URL: ${{ env.DSN }}
         run: |
           psql "$DSN" -v ON_ERROR_STOP=1 -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO rdapp; GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO rdapp;"
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0012_runtime_role_grants.sql
@@ -249,3 +260,53 @@ jobs:
           PY
           test "$(psql "$DSN" -Atc "SELECT applied_at = TIMESTAMPTZ '2026-07-11T00:00:00Z' AND applied_by = 'prior-operator' AND authorization_id = 'prior-window' FROM schema_migrations WHERE filename = '0009_protocol_last_refreshed.sql';")" = "t"
           test "$(psql "$DSN" -Atc "SELECT count(*) FROM schema_migrations WHERE authorization_id = 'ci-refresh-migrations';")" = "5"
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "REVOKE EXECUTE ON FUNCTION public.refresh_sync_family_tvl(text, numeric) FROM rdapp;"
+          if python scripts/manage-refresh-migrations.py \
+            --plan --db-url "$DSN" --expected-database risk_dashboard \
+            > _local/refresh-migration-test/drift-plan.json \
+            2> _local/refresh-migration-test/drift-error.txt; then
+            echo "recorded migration contract drift unexpectedly planned as pending"
+            exit 1
+          fi
+          grep -q "recorded migration contract drift" _local/refresh-migration-test/drift-error.txt
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
+          python scripts/manage-refresh-migrations.py \
+            --plan --db-url "$DSN" --expected-database risk_dashboard \
+            > _local/refresh-migration-test/repaired-plan.json
+          python -c "import json; assert json.load(open('_local/refresh-migration-test/repaired-plan.json'))['pending_migrations'] == []"
+          psql "$DSN" -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE OR REPLACE FUNCTION public.refresh_sync_family_tvl(
+            p_family_slug text,
+            p_tvl_usd numeric
+          )
+          RETURNS void
+          LANGUAGE plpgsql
+          SECURITY DEFINER
+          SET search_path = pg_catalog
+          AS $function$
+          BEGIN
+            NULL;
+          END;
+          $function$;
+          SQL
+          if python scripts/manage-refresh-migrations.py \
+            --plan --db-url "$DSN" --expected-database risk_dashboard \
+            > _local/refresh-migration-test/body-drift-plan.json \
+            2> _local/refresh-migration-test/body-drift-error.txt; then
+            echo "recorded migration function-body drift unexpectedly planned as pending"
+            exit 1
+          fi
+          grep -q "recorded migration contract drift" _local/refresh-migration-test/body-drift-error.txt
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
+          python scripts/manage-refresh-migrations.py \
+            --plan --db-url "$DSN" --expected-database risk_dashboard \
+            > _local/refresh-migration-test/body-repaired-plan.json
+          python -c "import json; assert json.load(open('_local/refresh-migration-test/body-repaired-plan.json'))['pending_migrations'] == []"
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "ALTER ROLE rdapp_nightly_owner LOGIN;"
+          if psql "$DSN" -v ON_ERROR_STOP=1 \
+            -f db/migrations/0014_nightly_ingest_topology_functions.sql; then
+            echo "migration unexpectedly adopted a LOGIN function owner"
+            exit 1
+          fi
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "ALTER ROLE rdapp_nightly_owner NOLOGIN PASSWORD NULL;"
+          psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql

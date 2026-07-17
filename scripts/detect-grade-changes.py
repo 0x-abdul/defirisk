@@ -65,7 +65,7 @@ def is_upgrade(from_grade: str, to_grade: str) -> bool:
     return GRADE_ORDER.get(to_grade, 99) < GRADE_ORDER.get(from_grade, 99)
 
 
-def create_pipeline_run(cur: Any) -> Any | None:
+def create_pipeline_run(cur: Any) -> Any:
     cur.execute(
         """
         INSERT INTO pipeline_runs
@@ -81,13 +81,11 @@ def create_pipeline_run(cur: Any) -> Any | None:
 
 def update_pipeline_run(
     cur: Any,
-    run_id: Any | None,
+    run_id: Any,
     *,
     changes_inserted: int,
     duration_seconds: int,
 ) -> None:
-    if run_id is None:
-        return
     cur.execute(
         """
         UPDATE pipeline_runs

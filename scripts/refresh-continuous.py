@@ -19,7 +19,6 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
@@ -1204,6 +1203,9 @@ def run(*, conn_str: str, all_protocols: bool, protocol_slug: str | None, dry_ru
                     slug=protocol_slug if not all_protocols else None,
                     dry_run=False,
                     connection=conn,
+                    required_protocols={
+                        result.slug for result in successes if result.factor_updates > 0
+                    },
                 )
                 if compose_code != 0:
                     raise BatchRefreshError("compose step failed")
@@ -1256,14 +1258,12 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 1
-    # Keep tests free to pass fake repos while production always uses Postgres.
-    with nullcontext():
-        return run(
-            conn_str=conn_str,
-            all_protocols=args.all,
-            protocol_slug=args.protocol,
-            dry_run=args.dry_run,
-        )
+    return run(
+        conn_str=conn_str,
+        all_protocols=args.all,
+        protocol_slug=args.protocol,
+        dry_run=args.dry_run,
+    )
 
 
 if __name__ == "__main__":

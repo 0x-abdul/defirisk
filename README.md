@@ -243,8 +243,12 @@ Migration `0014_nightly_ingest_topology_functions.sql` grants only two narrow
 function calls for synchronized TVL and derived-grade updates. Apply and verify
 that migration, run a dry-run and single-protocol canary, and complete one
 fleet-wide manual run before enabling the scheduled workflow. A failed export
-or static-site build does not roll back the already committed database batch;
-leave the prior public build in service and alert or retry publication.
+or static-site build does not roll back the already committed database batch.
+Static publication is not atomic yet, so keep scheduling disabled until that
+path has a verified rollback or atomic promotion; alert and repair publication
+without replaying the committed database batch. The nightly job also remains
+fail-closed unless the repository variable `ENABLE_NIGHTLY_INGEST` is explicitly
+set to `true` after those rollout gates pass.
 
 The refresh script does not overwrite existing values with null or zero when a
 fetch fails. It is intentionally narrower than a full reassessment. Metrics

@@ -12,6 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from protocol_refresh_migrations import (
     ContractError,
     MigrationState,
+    _expected_nightly_owner_column_grants,
+    _nightly_function_body_sha256s,
+    _migration_state,
     _record_pending_migrations,
     _nightly_functions_ready,
     inspect_migrations,
@@ -121,8 +124,21 @@ def test_ledger_inserts_only_pending_rows_without_rewriting_prior_attribution() 
 def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> None:
     migrations = tmp_path / "db" / "migrations"
     migrations.mkdir(parents=True)
+    migration_source = (
+        Path(__file__).resolve().parents[2]
+        / "db"
+        / "migrations"
+        / "0014_nightly_ingest_topology_functions.sql"
+    ).read_text(encoding="utf-8-sig")
     for state in states():
-        (migrations / state.name).write_text(f"-- {state.name}\n", encoding="utf-8")
+        content = migration_source if state.name.startswith("0014_") else f"-- {state.name}\n"
+        (migrations / state.name).write_text(content, encoding="utf-8")
+    function_bodies = _nightly_function_body_sha256s(tmp_path)
+    body_parts = migration_source.split("AS $function$")[1:]
+    body_by_signature = {
+        signature: part.split("$function$;", 1)[0]
+        for signature, part in zip(function_bodies, body_parts, strict=True)
+    }
 
     class InspectionCursor:
         def __init__(self) -> None:
@@ -135,11 +151,53 @@ def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> 
             return None
 
         def execute(self, query: str, _params: object = None) -> InspectionCursor:
-            if "pg_policy" in query:
+            if "polname = 'public_read'" in query:
                 self.rows = [("is_current AND rubric_version IN (rubric_versions is_active)",)]
             elif "information_schema.columns" in query or "to_regclass(%s)" in query:
                 self.rows = [(True,)]
-            elif "pg_roles" in query or "has_schema_privilege" in query:
+            elif "SELECT EXISTS (SELECT 1 FROM pg_roles" in query:
+                self.rows = [(True,)]
+            elif "rolname IN ('rdapp', 'rdapp_nightly_owner')" in query:
+                self.rows = [
+                    (
+                        "rdapp",
+                        False,
+                        False,
+                        False,
+                        True,
+                        False,
+                        True,
+                        False,
+                        False,
+                        False,
+                        False,
+                    ),
+                    (
+                        "rdapp_nightly_owner",
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                    ),
+                ]
+            elif "p.polname = 'nightly_owner_update'" in query:
+                self.rows = [
+                    ("protocol_families", True),
+                    ("protocol_surfaces", True),
+                ]
+            elif "has_schema_privilege('rdapp_nightly_owner'" in query:
+                self.rows = [(True, False)]
+            elif "FROM pg_attribute a" in query and "acl.privilege_type" in query:
+                self.rows = list(_expected_nightly_owner_column_grants())
+            elif "aclexplode(c.relacl)" in query:
+                self.rows = []
+            elif "has_schema_privilege" in query:
                 self.rows = [(True,)]
             elif "role_table_grants" in query:
                 self.rows = [
@@ -149,21 +207,31 @@ def test_missing_ledger_keeps_replay_safe_migrations_pending(tmp_path: Path) -> 
             elif "WITH required(signature)" in query:
                 self.rows = [
                     (
-                        "refresh_sync_family_tvl(text,numeric)",
+                        "public.refresh_sync_family_tvl(text,numeric)",
                         True,
                         True,
                         ["search_path=pg_catalog"],
-                        "postgres",
+                        "rdapp_nightly_owner",
+                        body_by_signature[
+                            "public.refresh_sync_family_tvl(text,numeric)"
+                        ],
                         True,
+                        False,
+                        False,
                         False,
                     ),
                     (
-                        "refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
+                        "public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
                         True,
                         True,
                         ["search_path=pg_catalog"],
-                        "postgres",
+                        "rdapp_nightly_owner",
+                        body_by_signature[
+                            "public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)"
+                        ],
                         True,
+                        False,
+                        False,
                         False,
                     ),
                 ]
@@ -194,11 +262,49 @@ def test_missing_nightly_functions_are_pending_instead_of_raising() -> None:
             self.rows = []
 
         def execute(self, query: str, _params: object = None) -> None:
-            if "FROM pg_roles" in query:
-                self.rows = [(True,)]
+            if "rolname IN ('rdapp', 'rdapp_nightly_owner')" in query:
+                self.rows = [
+                    (
+                        "rdapp",
+                        False,
+                        False,
+                        False,
+                        True,
+                        False,
+                        True,
+                        False,
+                        False,
+                        False,
+                        False,
+                    ),
+                    (
+                        "rdapp_nightly_owner",
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                        False,
+                    ),
+                ]
+            elif "p.polname = 'nightly_owner_update'" in query:
+                self.rows = [
+                    ("protocol_families", True),
+                    ("protocol_surfaces", True),
+                ]
+            elif "has_schema_privilege('rdapp_nightly_owner'" in query:
+                self.rows = [(True, False)]
+            elif "FROM pg_attribute a" in query and "acl.privilege_type" in query:
+                self.rows = list(_expected_nightly_owner_column_grants())
+            elif "aclexplode(c.relacl)" in query:
+                self.rows = []
             elif "WITH required(signature)" in query:
                 self.rows = [
-                    (signature, False, None, [], None, False, False)
+                    (signature, False, None, [], None, None, False, False, False, False)
                     for signature in (
                         "public.refresh_sync_family_tvl(text,numeric)",
                         "public.refresh_update_surface_grade(text,uuid,text,text,timestamp with time zone,numeric,jsonb,text,text)",
@@ -216,3 +322,15 @@ def test_missing_nightly_functions_are_pending_instead_of_raising() -> None:
     ready, detail = _nightly_functions_ready(MissingFunctionsCursor())
     assert ready is False
     assert "False" in detail
+
+
+def test_recorded_contract_drift_requires_manual_remediation() -> None:
+    with pytest.raises(ContractError, match="recorded migration contract drift"):
+        _migration_state(
+            name="0014_nightly_ingest_topology_functions.sql",
+            digest="f" * 64,
+            effect_applied=False,
+            detail="nightly function owner is unsafe",
+            ledger_exists=True,
+            recorded="f" * 64,
+        )

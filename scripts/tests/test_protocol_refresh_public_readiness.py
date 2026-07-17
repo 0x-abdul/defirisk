@@ -105,6 +105,20 @@ def test_missing_last_refreshed_guard_blocks_foundation(tmp_path) -> None:
     assert any("WHERE last_refreshed IS NULL" in item for item in report["foundation_blockers"])
 
 
+def test_missing_nightly_function_guard_blocks_foundation(tmp_path) -> None:
+    make_foundation(tmp_path)
+    migration = tmp_path / "db/migrations/0014_nightly_ingest_topology_functions.sql"
+    migration.write_text(
+        migration.read_text(encoding="utf-8").replace("rdapp_nightly_owner", "unsafe_owner"),
+        encoding="utf-8",
+    )
+
+    report = evaluate_readiness(tmp_path)
+
+    assert report["foundation_ready"] is False
+    assert any("rdapp_nightly_owner" in item for item in report["foundation_blockers"])
+
+
 def test_readiness_cli_gates_only_the_selected_level(tmp_path, capsys) -> None:
     make_foundation(tmp_path)
 

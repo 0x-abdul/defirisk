@@ -90,3 +90,10 @@ def test_surface_grade_uses_least_privileged_function() -> None:
         "fixture-family",
         "00000000-0000-0000-0000-000000000001",
     )
+
+
+def test_required_nightly_protocols_must_produce_primary_grades() -> None:
+    assert compose._missing_required_protocols(
+        {"updated", "missing"},
+        {"updated"},
+    ) == ["missing"]
