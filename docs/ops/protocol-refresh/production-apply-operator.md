@@ -178,6 +178,15 @@ and a `history.json` payload naming that same family are target-owned; any other
 file beneath either directory is unrelated and fails isolation. Do not add
 tokenized paths to operator notes, receipts, issue text, or pull-request text.
 
+Treat receipt-bound migration-manager activity as a separate global event.
+Retain its plan, authorization, backup/restore, and ledger evidence separately,
+then capture the generated-output baseline only after the migration succeeds.
+The subsequent family semantic report must compare that post-migration baseline
+to the candidate output and must show that no global run occurred between the
+two dumps. If a global migration happens after the baseline, discard the
+baseline and repeat the comparison from a new post-migration baseline; do not
+amend a cross-migration comparison into a passing family-isolation result.
+
 ## Failure And Recovery
 
 Before commit, any error rolls back the source transaction. After source

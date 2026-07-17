@@ -217,6 +217,21 @@ def _bucket_freshness(runs: list[dict]) -> dict:
     return result
 
 
+def _migration_run(identifier: str = "migration-0011") -> dict:
+    return {
+        "id": identifier,
+        "script_name": "manage-refresh-migrations.py",
+        "triggered_by": "approval-migration-0011",
+        "notes": json.dumps({"plan_sha256": "a" * 64}),
+        "cadence_bucket": "manual",
+        "protocols_touched": 0,
+        "fetchers": [],
+        "error_count": 0,
+        "success_count": 1,
+        "run_at": "2026-07-16T00:00:00Z",
+    }
+
+
 def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None:
     before = tmp_path / "before"
     after = tmp_path / "after"
@@ -262,6 +277,59 @@ def test_target_runs_may_evict_only_unrelated_status_tail_rows(tmp_path) -> None
     )
 
     report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is True
+    assert report["unrelated_changed_files"] == []
+    assert "status.json" in report["target_changed_files"]
+
+
+def test_receipt_bound_global_migration_requires_post_migration_baseline(tmp_path) -> None:
+    before = tmp_path / "before"
+    after = tmp_path / "after"
+    api_fixture(before, target_grade="B", generated_at="same")
+    api_fixture(after, target_grade="B", generated_at="same")
+    before_runs = [_status_run("other-before")]
+    after_runs = [
+        _status_run("target-after", "fixture-family"),
+        _migration_run(),
+        *before_runs,
+    ]
+    write_json(
+        before,
+        "status.json",
+        {"data": {"bucket_freshness": _bucket_freshness(before_runs), "meta": {"runs_window": 30}, "runs": before_runs}},
+    )
+    write_json(
+        after,
+        "status.json",
+        {"data": {"bucket_freshness": _bucket_freshness(after_runs), "meta": {"runs_window": 30}, "runs": after_runs}},
+    )
+
+    report = verify_output_isolation(before, after, "fixture-family")
+
+    assert report["isolated"] is False
+    assert "status.json" in report["unrelated_changed_files"]
+
+
+def test_post_migration_baseline_allows_following_target_run(tmp_path) -> None:
+    baseline = tmp_path / "baseline"
+    candidate = tmp_path / "candidate"
+    api_fixture(baseline, target_grade="B", generated_at="same")
+    api_fixture(candidate, target_grade="B", generated_at="same")
+    baseline_runs = [_migration_run(), _status_run("other-before")]
+    candidate_runs = [_status_run("target-after", "fixture-family"), *baseline_runs]
+    write_json(
+        baseline,
+        "status.json",
+        {"data": {"bucket_freshness": _bucket_freshness(baseline_runs), "meta": {"runs_window": 30}, "runs": baseline_runs}},
+    )
+    write_json(
+        candidate,
+        "status.json",
+        {"data": {"bucket_freshness": _bucket_freshness(candidate_runs), "meta": {"runs_window": 30}, "runs": candidate_runs}},
+    )
+
+    report = verify_output_isolation(baseline, candidate, "fixture-family")
 
     assert report["isolated"] is True
     assert report["unrelated_changed_files"] == []
