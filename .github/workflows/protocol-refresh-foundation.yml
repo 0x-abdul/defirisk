@@ -91,7 +91,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install runtime verification dependencies
-        run: pip install 'psycopg[binary]>=3.1'
+        run: pip install pytest 'psycopg[binary]>=3.1'
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends postgresql-client
       - name: Create disposable runtime role
