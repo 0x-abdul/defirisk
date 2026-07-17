@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import time
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from typing import Any
 
@@ -64,53 +65,45 @@ def is_upgrade(from_grade: str, to_grade: str) -> bool:
     return GRADE_ORDER.get(to_grade, 99) < GRADE_ORDER.get(from_grade, 99)
 
 
-def create_pipeline_run(cur: Any) -> Any | None:
-    try:
-        cur.execute(
-            """
-            INSERT INTO pipeline_runs
-                (script_name, cadence_bucket, protocols_touched,
-                 fetchers_invoked, success_count, error_count, triggered_by)
-            VALUES (%s, 'C', 0, '[]'::jsonb, 0, 0, %s)
-            RETURNING id
-            """,
-            (SCRIPT_NAME, SCRIPT_NAME),
-        )
-        return cur.fetchone()["id"]
-    except Exception:
-        return None
+def create_pipeline_run(cur: Any) -> Any:
+    cur.execute(
+        """
+        INSERT INTO pipeline_runs
+            (script_name, cadence_bucket, protocols_touched,
+             fetchers_invoked, success_count, error_count, triggered_by)
+        VALUES (%s, 'C', 0, '[]'::jsonb, 0, 0, %s)
+        RETURNING id
+        """,
+        (SCRIPT_NAME, SCRIPT_NAME),
+    )
+    return cur.fetchone()["id"]
 
 
 def update_pipeline_run(
     cur: Any,
-    run_id: Any | None,
+    run_id: Any,
     *,
     changes_inserted: int,
     duration_seconds: int,
 ) -> None:
-    if run_id is None:
-        return
-    try:
-        cur.execute(
-            """
-            UPDATE pipeline_runs
-            SET protocols_touched = %s,
-                success_count = %s,
-                error_count = 0,
-                duration_seconds = %s,
-                notes = %s
-            WHERE id = %s
-            """,
-            (
-                changes_inserted,
-                changes_inserted,
-                duration_seconds,
-                json.dumps({"grade_changes_inserted": changes_inserted}),
-                run_id,
-            ),
-        )
-    except Exception:
-        pass
+    cur.execute(
+        """
+        UPDATE pipeline_runs
+        SET protocols_touched = %s,
+            success_count = %s,
+            error_count = 0,
+            duration_seconds = %s,
+            notes = %s
+        WHERE id = %s
+        """,
+        (
+            changes_inserted,
+            changes_inserted,
+            duration_seconds,
+            json.dumps({"grade_changes_inserted": changes_inserted}),
+            run_id,
+        ),
+    )
 
 
 def default_snapshot_date() -> str:
@@ -243,10 +236,12 @@ def run(
     dry_run: bool,
     snapshot_date: str | None,
     backfill: bool,
+    connection: Any | None = None,
 ) -> int:
     started = time.monotonic()
-    conn = connect(conn_str)
-    with conn:
+    owns_connection = connection is None
+    conn = connection or connect(conn_str)
+    with (conn if owns_connection else nullcontext()):
         with conn.cursor(row_factory=dict_row) as cur:
             run_id = None if dry_run else create_pipeline_run(cur)
             rows = find_grade_changes(
@@ -263,7 +258,8 @@ def run(
                     duration_seconds=int(time.monotonic() - started),
                 )
 
-    conn.close()
+    if owns_connection:
+        conn.close()
     suffix = " (dry-run)" if dry_run else ""
     print(f"Done: {inserted} grade change(s) detected{suffix}.")
     return 0

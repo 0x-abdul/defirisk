@@ -40,6 +40,22 @@ MIGRATIONS = (
         "db/migrations/0013_schema_migration_ledger.sql",
         ("CREATE TABLE IF NOT EXISTS schema_migrations", "authorization_id", "sha256"),
     ),
+    (
+        "db/migrations/0014_nightly_ingest_topology_functions.sql",
+        (
+            "refresh_sync_family_tvl",
+            "refresh_update_surface_grade",
+            "SECURITY DEFINER",
+            "SET search_path = pg_catalog",
+            "rdapp_nightly_owner",
+            "NOINHERIT",
+            "NOBYPASSRLS",
+            "PASSWORD NULL",
+            "pg_stat_activity",
+            "CREATE POLICY nightly_owner_update",
+            "REVOKE ALL ON FUNCTION",
+        ),
+    ),
 )
 APPLY_FILES = (
     "scripts/apply-protocol-refresh.py",

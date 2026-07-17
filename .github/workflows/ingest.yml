@@ -9,6 +9,7 @@
 # Prerequisites (repo Settings -> Secrets and variables -> Actions):
 #   VPS_HOST     - IPv4 address or hostname of the production VPS
 #   VPS_SSH_KEY  - Private key for the github-actions-deploy key
+#   ENABLE_NIGHTLY_INGEST - Set to true only after the documented rollout gates pass
 
 name: Nightly ingest (Bucket A - continuous cadence)
 
@@ -28,31 +29,27 @@ permissions:
 
 jobs:
   refresh-continuous:
+    if: ${{ vars.ENABLE_NIGHTLY_INGEST == 'true' }}
     name: Refresh continuous-cadence factors
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
     steps:
       - name: Check VPS prerequisites
-        id: prereq
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
         run: |
           if [ -z "$VPS_HOST" ] || [ -z "$VPS_SSH_KEY" ]; then
-            echo "SKIP: VPS_HOST or VPS_SSH_KEY is not configured."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "ERROR: VPS_HOST and VPS_SSH_KEY are required."
+            exit 1
           fi
 
       - uses: actions/checkout@v7
-        if: steps.prereq.outputs.skip != 'true'
         with:
           ref: main
 
       - name: Run refresh-continuous.py on VPS
-        if: steps.prereq.outputs.skip != 'true'
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
@@ -100,18 +97,16 @@ jobs:
 
             "$PYTHON" - << 'PY'
           import importlib.util
-          import subprocess
           import sys
 
           if importlib.util.find_spec("psycopg") is None:
-              subprocess.check_call([sys.executable, "-m", "pip", "install", "psycopg[binary]"])
+              raise SystemExit(
+                  "ERROR: psycopg is missing from the deployed Python environment; deploy dependencies before ingest"
+              )
           PY
 
             echo "==> Refreshing continuous metrics..."
             "$PYTHON" scripts/refresh-continuous.py --all
-
-            echo "==> Regenerating API export..."
-            "$PYTHON" scripts/dump.py
 
             echo "==> Rebuilding site..."
             . scripts/ci/use-node-22.sh
@@ -124,7 +119,6 @@ jobs:
           REMOTE
 
       - name: Smoke check
-        if: steps.prereq.outputs.skip != 'true'
         run: |
           sleep 5
           STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
@@ -134,7 +128,3 @@ jobs:
             exit 1
           fi
           echo "Smoke check passed: HTTP $STATUS"
-
-      - name: Skip notice
-        if: steps.prereq.outputs.skip == 'true'
-        run: echo "Nightly ingest skipped because VPS secrets are not configured."
