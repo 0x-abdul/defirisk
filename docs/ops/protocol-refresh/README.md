@@ -180,6 +180,17 @@ are redacted in reports and failures so review tokens do not enter logs or
 receipts. A passing comparison does not replace factor, grade, alias, history,
 publication-state, or live-site verification.
 
+A receipt-bound migration-manager run is a global audit event, not a
+family-owned refresh run. Do not compare a pre-migration dump directly with a
+post-refresh dump when such a run occurs between them. First complete and
+independently retain the migration plan, authorization, backup/restore, and
+ledger proof. Then capture a fresh post-migration baseline dump, run the
+family repair or refresh, and compare that baseline with its post-refresh dump.
+The verifier must continue to reject a global migration row in a family-scoped
+comparison; receipt text, a migration filename, or a broad allowlist must not
+make it target-owned. If a migration occurs after a baseline is captured,
+discard that baseline and create a new one after the migration.
+
 ## Public Change Record
 
 For a changed refresh, fill in
