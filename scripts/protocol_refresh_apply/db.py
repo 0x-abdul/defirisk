@@ -922,9 +922,15 @@ def apply_transaction(
     document = handoff.payload
     plan = build_apply_plan(document)
     row_counts = {key: 0 for key in plan.operation_counts}
+    # Topology is revalidated inside the family advisory lock and serializable
+    # transaction for every refresh. A row lock is needed only when this
+    # transaction is allowed to mutate a surface row; date-only and
+    # factor-only refreshes preserve topology and must not require UPDATE on
+    # protocol_surfaces merely to validate it.
+    topology_write_lock = bool(document["changes"]["surfaces"])
     verify_production_topology(
         document,
-        _production_topology_rows(conn, plan.family_slug, lock=True),
+        _production_topology_rows(conn, plan.family_slug, lock=topology_write_lock),
     )
     _sole_active_rubric_version(conn, expected=document["rubric_version"])
     current_factor_hashes = production_factor_hashes(
