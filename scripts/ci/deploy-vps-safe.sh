@@ -15,12 +15,11 @@ trap 'rollback' ERR
 bash scripts/ci/sync-vps-checkout.sh "$repo" "$remote" "$branch"
 set -a; . ./.env; set +a; : "${DATABASE_URL:=${LOCAL_DATABASE_URL:-}}"; test -n "$DATABASE_URL"; export DATABASE_URL
 py=python3; test -x venv/bin/python && py=venv/bin/python
-"$py" scripts/dump.py --out-root "$stage/data"
-"$py" - "$stage/data/api/v1.7.0/index.json" <<'PY'
-import json,sys
-rows=json.load(open(sys.argv[1])).get('data',{}).get('protocols',[])
-assert rows, 'empty API index'
-PY
+dump_log="$run/dump.log"
+"$py" scripts/dump.py --out-root "$stage/data" | tee "$dump_log"
+publication_policy="scripts/ci/deploy-publication-policy.json"
+"$py" scripts/ci/validate-staged-published-api.py --api-root "$stage/data/api/v1.7.0" --policy "$publication_policy"
+"$py" scripts/ci/verify-deployment-publication-state.py --policy "$publication_policy" --dump-log "$dump_log"
 . scripts/ci/use-node-22.sh; (cd site; export npm_config_cache="$repo/.npm-cache"; npm ci --prefer-offline; npm run build -- --outDir "$stage/site-dist")
 test -f "$stage/site-dist/index.html"; test -f "$stage/data/api/v1.7.0/index.json"
 mv data/api "$backup/api-live"; mv "$stage/data/api" data/api; mv site/dist "$backup/site-dist-live"; mv "$stage/site-dist" site/dist
