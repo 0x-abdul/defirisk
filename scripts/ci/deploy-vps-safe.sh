@@ -2,7 +2,7 @@
 set -euo pipefail
 repo="$1"; remote="$2"; branch="$3"; cd "$repo"
 old_head="$(git rev-parse HEAD)"; stamp="$(date -u +%Y%m%dT%H%M%SZ)"
-backup="$repo/.deploy-backups/$stamp"; stage="$(mktemp -d "$repo/.deploy-stage.XXXXXX")"
+backup="$HOME/.riskdashboard-deploy-backups/$stamp"; stage="$(mktemp -d "${TMPDIR:-/tmp}/riskdashboard-deploy.XXXXXX")"
 mkdir -p "$backup"; cp -a site/dist "$backup/site-dist"; cp -a data/api "$backup/api"
 restore() { git reset --hard "$old_head"; rm -rf site/dist data/api; mv "$backup/site-dist" site/dist; mv "$backup/api" data/api; }
 trap 'restore' ERR
