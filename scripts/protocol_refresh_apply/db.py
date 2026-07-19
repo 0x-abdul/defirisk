@@ -657,6 +657,47 @@ def already_applied(conn: Any, refresh_id: str) -> bool:
         return cur.fetchone() is not None
 
 
+def reconcile_failed_reservation(conn: Any, handoff: PublicHandoff, *, authorization: dict[str, Any], backup: dict[str, Any]) -> dict[str, Any]:
+    """Release only a proved-compensated failed reservation, retaining its audit row."""
+    family_slug = handoff.payload["family_slug"]
+    _acquire_family_session_lock(conn, family_slug)
+    try:
+        details = preflight(conn, handoff)
+        plan: ApplyPlan = details["plan"]
+        production_plan = details["production_plan"]
+        if authorization["operation"] != "reconcile_protocol_refresh":
+            raise ContractError("authorization does not permit refresh reconciliation")
+        if authorization["artifact_sha256"] != handoff.artifact_sha256 or authorization["plan_sha256"] != production_plan["plan_sha256"]:
+            raise ContractError("reconciliation authorization is not bound to this exact plan")
+        if authorization["database_identity"] != details["database_identity"]:
+            raise ContractError("reconciliation authorization database identity mismatch")
+        if backup.get("operation") != "apply_protocol_refresh" or backup.get("artifact_sha256") != handoff.artifact_sha256 or backup.get("plan_sha256") != production_plan["plan_sha256"]:
+            raise ContractError("backup receipt does not cover the refresh being reconciled")
+        expected = {factor_target_key(entry): entry.get("expected_current_sha256") for entry in handoff.payload["changes"]["factor_scores"]}
+        actual = production_factor_hashes(details["normalized_target"], handoff.payload["changes"]["factor_scores"])
+        if actual != expected:
+            raise ContractError("current factor hashes do not prove the compensated pre-apply state")
+        with conn.cursor() as cur:
+            cur.execute("SELECT id, success_count, error_count, error_summary FROM pipeline_runs WHERE script_name = %s AND triggered_by = %s FOR UPDATE", (SCRIPT_NAME, f"protocol-refresh:{plan.refresh_id}"))
+            row = cur.fetchone()
+            if row is None:
+                raise ContractError("no active failed reservation exists for this refresh")
+            run_id, success_count, error_count, error_summary = row
+            if success_count != 0 or error_count != 1 or "compensation proved" not in json.dumps(error_summary, sort_keys=True):
+                raise ContractError("reservation is not a proved-compensated failed refresh")
+            historical_key = f"protocol-refresh-failed:{plan.refresh_id}:{run_id}"
+            cur.execute("UPDATE pipeline_runs SET triggered_by = %s WHERE id = %s AND script_name = %s", (historical_key, run_id, SCRIPT_NAME))
+            if cur.rowcount != 1:
+                raise ContractError("failed reservation could not be preserved and released")
+            cur.execute("INSERT INTO change_log (changed_by, entity_type, entity_id, diff, reason) VALUES (%s, 'protocol_refresh_reconciliation', %s, %s::jsonb, %s)", (SCRIPT_NAME, family_slug, json.dumps({"refresh_id": plan.refresh_id, "run_id": str(run_id), "artifact_sha256": handoff.artifact_sha256, "plan_sha256": production_plan["plan_sha256"], "authorization_id": authorization["authorization_id"], "backup_id": backup["backup_id"], "historical_key": historical_key}, sort_keys=True), "released only a proved-compensated failed refresh reservation"))
+            if cur.rowcount != 1:
+                raise ContractError("reconciliation audit insert failed")
+        conn.commit()
+        return {"schema_version": "1.0", "receipt_type": "protocol_refresh_reconciliation_receipt", "status": "reconciled", "refresh_id": plan.refresh_id, "family_slug": family_slug, "artifact_sha256": handoff.artifact_sha256, "plan_sha256": production_plan["plan_sha256"], "released_run_id": str(run_id), "historical_key": historical_key, "database_identity": details["database_identity"]}
+    finally:
+        _release_family_session_lock(conn, family_slug)
+
+
 def _update_fields(
     cur: Any,
     table: str,

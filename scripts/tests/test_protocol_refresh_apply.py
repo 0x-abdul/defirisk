@@ -273,6 +273,24 @@ def test_protocol_authorization_is_separate_and_exactly_bound() -> None:
         validate_production_authorization_receipt(public_handoff().artifact)
 
 
+def test_reconciliation_authorization_is_exactly_bound_to_one_refresh() -> None:
+    receipt = authorization_receipt()
+    receipt["operation"] = "reconcile_protocol_refresh"
+    normalized = validate_production_authorization_receipt(
+        receipt,
+        expected_operation="reconcile_protocol_refresh",
+        artifact_sha256=SHA_A,
+        plan_sha256=SHA_B,
+        refresh_id="2026-07-11-batch-01",
+        family_slug="example",
+        database_identity="postgresql:risk:operator@db.example:5432",
+        now=datetime(2026, 7, 11, 1, tzinfo=timezone.utc),
+    )
+    assert normalized["operation"] == "reconcile_protocol_refresh"
+    with pytest.raises(ContractError, match="operation"):
+        validate_production_authorization_receipt(receipt)
+
+
 def test_migration_authorization_binds_exact_plan_and_allowlist() -> None:
     receipt = {
         "schema_version": "1.0",
