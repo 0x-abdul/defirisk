@@ -2,7 +2,13 @@ name: Deploy to VPS
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/deploy.yml', 'scripts/ci/deploy-vps-safe.sh', 'site/**', 'scripts/**', 'db/migrations/**']
+    paths:
+      - 'scripts/ci/sync-vps-checkout.sh'
+      - '.github/workflows/deploy.yml'
+      - 'scripts/ci/deploy-vps-safe.sh'
+      - 'site/**'
+      - 'scripts/**'
+      - 'db/migrations/**'
   workflow_dispatch:
     inputs:
       reason: {description: 'Reason for manual deploy', required: false, default: 'force rebuild'}
