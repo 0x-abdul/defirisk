@@ -181,7 +181,7 @@ def sanitize_accepted_changes(document: dict[str, Any]) -> dict[str, Any]:
         document.get("baseline"),
         label="$.baseline",
         public=BASELINE_FIELDS,
-        required=BASELINE_FIELDS,
+        required={"target_sha256", "other_protocols_sha256"},
     )
     expected_result = _exact_or_known_fields(
         document.get("expected_result"),

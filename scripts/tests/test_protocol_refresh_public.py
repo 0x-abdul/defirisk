@@ -156,6 +156,22 @@ def test_export_requires_exact_approved_checksum_and_scope() -> None:
         build_public_handoff(out_of_scope, approved_status(out_of_scope))
 
 
+def test_legacy_handoff_remains_verifiable_but_cannot_be_newly_built() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["payload"]["baseline"].pop("current_factor_scores_sha256")
+    handoff["integrity"]["payload_sha256"] = canonical_sha256(handoff["payload"])
+    unsigned = deepcopy(handoff)
+    unsigned["integrity"].pop("artifact_sha256")
+    handoff["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+
+    assert verify_public_handoff(handoff) == []
+    legacy = deepcopy(document)
+    legacy["baseline"].pop("current_factor_scores_sha256")
+    with pytest.raises(ContractError, match="complete current-factor baseline"):
+        build_public_handoff(legacy, approved_status(legacy))
+
+
 def test_legacy_record_export_derives_checked_expectation_without_rebinding_source(
     tmp_path: Path,
 ) -> None:
