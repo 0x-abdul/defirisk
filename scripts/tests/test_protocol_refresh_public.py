@@ -86,6 +86,7 @@ def accepted_changes(*, changed: bool = True) -> dict:
         "baseline": {
             "target_sha256": "1" * 64,
             "other_protocols_sha256": "2" * 64,
+            "current_factor_scores_sha256": "3" * 64,
         },
         "expected_result": {
             "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
@@ -228,6 +229,62 @@ def test_legacy_record_export_derives_checked_expectation_without_rebinding_sour
     )
     with pytest.raises(ContractError, match="identity does not match"):
         _load_exporter().export_handoff(accepted_path, status_path, output_path)
+
+
+def test_export_binds_complete_current_factor_baseline_from_sealed_snapshot(
+    tmp_path: Path,
+) -> None:
+    source = accepted_changes()
+    source["baseline"].pop("current_factor_scores_sha256")
+    before = {
+        "family_slug": "fixture-family",
+        "target": True,
+        "protocols": [],
+        "families": [],
+        "surfaces": [
+            {"surface_id": "surface-1", "family_slug": "fixture-family", "surface_slug": "v3"}
+        ],
+        "deployments": [],
+        "current_factor_scores": [
+            {
+                "id": "factor-row-1",
+                "factor_id": "RD-F-001",
+                "score": "yellow",
+                "rubric_version": "v1.7.0",
+                "is_current": True,
+                "scope_level": "surface",
+                "surface_id": "surface-1",
+                "deployment_id": None,
+                "sources": [],
+            }
+        ],
+    }
+    source["baseline"]["target_sha256"] = canonical_sha256(before)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    accepted_path.write_text(json.dumps(source), encoding="utf-8")
+    status_path.write_text(json.dumps(approved_status(source)), encoding="utf-8")
+    (tmp_path / "local-db-before.json").write_text(json.dumps(before), encoding="utf-8")
+
+    handoff = _load_exporter().export_handoff(
+        accepted_path, status_path, tmp_path / "handoff.json"
+    )
+
+    assert handoff["payload"]["baseline"]["current_factor_scores_sha256"] == canonical_sha256(
+        [
+            {
+                "factor_id": "RD-F-001",
+                "score": "yellow",
+                "rubric_version": "v1.7.0",
+                "is_current": True,
+                "scope_level": "surface",
+                "sources": [],
+                "surface_slug": "v3",
+                "deployment_chain": None,
+                "deployment_key": None,
+            }
+        ]
+    )
 
 
 def test_compensated_attempt_can_issue_one_fresh_handoff_without_source_drift(

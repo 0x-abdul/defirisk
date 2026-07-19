@@ -343,7 +343,14 @@ def _validate_apply_scope(payload: dict[str, Any]) -> list[str]:
     if not isinstance(baseline, dict):
         errors.append("payload.baseline must be an object")
     else:
-        for name in ("target_sha256", "other_protocols_sha256"):
+        required_baseline_fields = {
+            "target_sha256",
+            "other_protocols_sha256",
+            "current_factor_scores_sha256",
+        }
+        if set(baseline) != required_baseline_fields:
+            errors.append("payload.baseline must include the complete current-factor fingerprint")
+        for name in required_baseline_fields:
             value = baseline.get(name)
             if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
                 errors.append(f"payload.baseline.{name} must be a SHA-256 digest")

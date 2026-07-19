@@ -417,9 +417,17 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
     }
 
     baseline = _require_object(document.get("baseline"), "baseline", errors)
-    if set(baseline) != {"target_sha256", "other_protocols_sha256"}:
-        errors.append("baseline fields must exactly match target and other protocol hashes")
-    for name in ("target_sha256", "other_protocols_sha256"):
+    supported_baseline_fields = {
+        "target_sha256",
+        "other_protocols_sha256",
+        "current_factor_scores_sha256",
+    }
+    if set(baseline) not in (
+        {"target_sha256", "other_protocols_sha256"},
+        supported_baseline_fields,
+    ):
+        errors.append("baseline fields must match the supported baseline hash shape")
+    for name in set(baseline) & supported_baseline_fields:
         value = baseline.get(name)
         if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
             errors.append(f"baseline.{name} must be strict lowercase SHA-256")
@@ -647,6 +655,11 @@ def build_public_handoff(
     from .sanitizer import find_private_material, sanitize_accepted_changes
 
     _require_valid(validate_accepted_changes(document))
+    baseline = document.get("baseline")
+    if not isinstance(baseline, dict) or "current_factor_scores_sha256" not in baseline:
+        raise ContractError(
+            "public handoff requires a complete current-factor baseline fingerprint"
+        )
     source_document = document if source_document is None else source_document
     if source_document is not document:
         expected_source = deepcopy(document)
@@ -657,9 +670,16 @@ def build_public_handoff(
             expected_source["refresh_id"] = source_refresh_id
         legacy_expected_source = deepcopy(expected_source)
         legacy_expected_source.pop("expected_result")
+        legacy_expected_source["baseline"].pop("current_factor_scores_sha256", None)
+        legacy_source_with_factor_baseline = deepcopy(expected_source)
+        legacy_source_with_factor_baseline.pop("expected_result")
+        source_expected = deepcopy(expected_source)
+        source_expected["baseline"].pop("current_factor_scores_sha256", None)
         source_bytes = canonical_json_bytes(source_document)
         if source_bytes not in {
             canonical_json_bytes(expected_source),
+            canonical_json_bytes(source_expected),
+            canonical_json_bytes(legacy_source_with_factor_baseline),
             canonical_json_bytes(legacy_expected_source),
         }:
             # JSON bytes are used above only to compare nested dictionaries without

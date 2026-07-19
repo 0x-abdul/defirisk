@@ -12,10 +12,12 @@ from pathlib import Path
 from protocol_refresh_public.contracts import (
     ContractError,
     build_public_handoff,
+    canonical_sha256,
     load_json_strict,
     verify_public_handoff,
     write_json,
 )
+from protocol_refresh_apply.db import normalize_snapshot
 from protocol_refresh_public.compensation import verify_compensation_proof
 
 
@@ -87,9 +89,34 @@ def _expected_result_from_local_after(accepted: dict, snapshot: dict) -> dict:
     }
 
 
+def _enrich_current_factor_baseline(accepted: dict, accepted_path: Path) -> dict:
+    """Bind the retained factor state without exposing local research rows."""
+    baseline = accepted.get("baseline")
+    if not isinstance(baseline, dict):
+        raise ContractError("accepted changes baseline must be an object")
+    existing = baseline.get("current_factor_scores_sha256")
+    if existing is not None:
+        if not isinstance(existing, str) or len(existing) != 64:
+            raise ContractError("accepted changes current-factor baseline fingerprint is invalid")
+        return accepted
+    before = load_json_strict(accepted_path.parent / "local-db-before.json")
+    if before.get("family_slug") != accepted.get("family_slug") or before.get("target") is not True:
+        raise ContractError("local-before snapshot identity does not match accepted changes")
+    if canonical_sha256(before) != baseline.get("target_sha256"):
+        raise ContractError("local-before snapshot does not match the sealed accepted baseline")
+    normalized = normalize_snapshot(before)
+    factors = normalized.get("current_factor_scores")
+    if not isinstance(factors, list) or not factors:
+        raise ContractError("local-before snapshot has no current factor scores")
+    result = deepcopy(accepted)
+    result["baseline"]["current_factor_scores_sha256"] = canonical_sha256(factors)
+    return result
+
+
 def _enriched_accepted(accepted_path: Path) -> tuple[dict, dict]:
     accepted = load_json_strict(accepted_path)
     source_accepted = accepted
+    accepted = _enrich_current_factor_baseline(accepted, accepted_path)
     if "expected_result" not in accepted:
         local_after = load_json_strict(accepted_path.parent / "local-db-after.json")
         accepted = deepcopy(accepted)

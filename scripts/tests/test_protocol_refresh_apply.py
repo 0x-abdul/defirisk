@@ -29,6 +29,7 @@ from protocol_refresh_apply.db import (
     normalize_snapshot,
     run_post_commit_pipeline,
     verify_compensation,
+    verify_current_factor_baseline,
     verify_no_change_date_only,
 )
 from protocol_refresh_public.contracts import (
@@ -98,7 +99,11 @@ def accepted_changes(*, changed: bool = False) -> dict:
             "allowed_surface_fields": [],
             "allowed_deployment_fields": [],
         },
-        "baseline": {"target_sha256": SHA_A, "other_protocols_sha256": SHA_B},
+        "baseline": {
+            "target_sha256": SHA_A,
+            "other_protocols_sha256": SHA_B,
+            "current_factor_scores_sha256": "c" * 64,
+        },
         "expected_result": {
             "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
             "active_factor_count": 0,
@@ -407,6 +412,40 @@ def test_normalized_snapshot_ignores_environment_specific_ids() -> None:
         normalized_other={"family_slug": "example", "target": False},
     )
     assert first_plan["production_before"] == second_plan["production_before"]
+
+
+def test_current_factor_baseline_rejects_retained_score_drift() -> None:
+    snapshot = normalize_snapshot(
+        {
+            "family_slug": "example",
+            "target": True,
+            "protocols": [],
+            "families": [],
+            "surfaces": [
+                {"surface_id": "surface-1", "family_slug": "example", "surface_slug": "v3"}
+            ],
+            "deployments": [],
+            "current_factor_scores": [
+                {
+                    "id": "factor-1",
+                    "protocol_slug": "example",
+                    "factor_id": "RD-F-001",
+                    "score": "yellow",
+                    "scope_level": "surface",
+                    "surface_id": "surface-1",
+                    "deployment_id": None,
+                    "sources": [],
+                }
+            ],
+        }
+    )
+    expected = canonical_sha256(snapshot["current_factor_scores"])
+    assert verify_current_factor_baseline(snapshot, expected) == expected
+
+    drifted = deepcopy(snapshot)
+    drifted["current_factor_scores"][0]["score"] = "red"
+    with pytest.raises(ContractError, match="current factor baseline"):
+        verify_current_factor_baseline(drifted, expected)
 
 
 def test_surface_primary_alias_changes_are_rejected() -> None:
