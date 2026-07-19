@@ -45,6 +45,7 @@ def fixture_repo(tmp_path: Path) -> tuple[Path, dict[str, str]]:
     )
     write(repo / "scripts/ci/validate-staged-published-api.py", "")
     write(repo / "scripts/ci/verify-deployment-publication-state.py", "")
+    write(repo / "scripts/ci/smoke-staged-deploy.py", "")
     write(repo / ".env", "DATABASE_URL=fake\n")
     fake = tmp_path / "bin"
     fake.mkdir()
