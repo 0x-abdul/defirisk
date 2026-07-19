@@ -29,9 +29,9 @@ rolling_back=0
 backups_ready=0
 rollback() {
   code="${1:-1}"; if [ "$rolling_back" = 1 ]; then exit "$code"; fi; rolling_back=1; trap - ERR HUP INT TERM
-  if [ "$backups_ready" != 1 ]; then write_manifest rollback_failed || true; exit "$code"; fi
-  write_manifest promoting
   set +e
+  if [ "$backups_ready" != 1 ]; then write_manifest rollback_failed || true; exit "$code"; fi
+  write_manifest promoting || true
   git reset --hard "$old_head"
   rm -rf data/api site/dist
   mv "$backup/original-api" data/api
@@ -66,4 +66,7 @@ mv "$stage/data/api" data/api; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_api_prom
 mv site/dist "$backup/pre-promotion-site-dist"; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_dist_rename
 mv "$stage/site-dist" site/dist; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_dist_promote
 api_after="$(tree_digest data/api)"; dist_after="$(tree_digest site/dist)"; curl -fsS https://defirisk.co/ >/dev/null; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_smoke
-write_manifest succeeded; trap - ERR HUP INT TERM; echo "SAFE_DEPLOY_MANIFEST=$manifest"
+write_manifest succeeded
+rm -rf "$backup/original-api" "$backup/original-site-dist"
+find "$state_root" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} +
+trap - ERR HUP INT TERM; echo "SAFE_DEPLOY_MANIFEST=$manifest"
