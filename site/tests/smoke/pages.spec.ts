@@ -13,7 +13,10 @@ import { test, expect } from '@playwright/test';
 const API_VERSION = 'v1.7.0';
 
 function firstReviewEntry(): string | null {
-  const unpublishedRoot = path.resolve(process.cwd(), '..', 'data', 'api', API_VERSION, 'unpublished');
+  const apiRoot = process.env.DEFIRISK_API_ROOT
+    ? path.resolve(process.env.DEFIRISK_API_ROOT)
+    : path.resolve(process.cwd(), '..', 'data', 'api', API_VERSION);
+  const unpublishedRoot = path.join(apiRoot, 'unpublished');
 
   if (!fs.existsSync(unpublishedRoot)) return null;
 

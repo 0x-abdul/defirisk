@@ -48,20 +48,22 @@ function rememberOutput(child) {
   return () => lines.join('\n');
 }
 
-async function waitForPreview(url, child, getOutput) {
+async function waitForPreview(url, child) {
   for (let i = 0; i < 60; i++) {
     if (child.exitCode !== null) {
-      throw new Error(`Preview exited before becoming ready.\n${getOutput()}`);
+      throw new Error('Preview exited before becoming ready; output withheld.');
     }
     if (await isReady(url)) return;
     await delay(1000);
   }
-  throw new Error(`Preview did not become ready at ${url}.\n${getOutput()}`);
+  throw new Error('Preview did not become ready; output withheld.');
 }
 
 function run(command, args, options) {
   return new Promise((resolve) => {
     const child = spawn(command, args, options);
+    child.stdout?.resume();
+    child.stderr?.resume();
     child.on('exit', (code, signal) => {
       resolve(code ?? (signal ? 1 : 0));
     });
@@ -111,8 +113,8 @@ try {
         env: process.env,
       },
     );
-    const getOutput = rememberOutput(preview);
-    await waitForPreview(baseURL, preview, getOutput);
+    rememberOutput(preview);
+    await waitForPreview(baseURL, preview);
   }
 
   const code = await run(
@@ -125,7 +127,7 @@ try {
     ],
     {
       cwd: SITE_ROOT,
-      stdio: 'inherit',
+      stdio: ['ignore', 'pipe', 'pipe'],
       env: {
         ...process.env,
         BASE_URL: baseURL,

@@ -23,11 +23,16 @@ const __dirname = path.dirname(__filename);
 
 const SITE_ROOT = path.resolve(__dirname, '..');
 const REPO_ROOT = path.resolve(SITE_ROOT, '..');
-const DIST_OG   = path.join(SITE_ROOT, 'dist', 'og');
+const DIST_ROOT = process.env.DEFIRISK_DIST_ROOT
+  ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
+  : path.join(SITE_ROOT, 'dist');
+const DIST_OG = path.join(DIST_ROOT, 'og');
 
 // ── Rubric version (mirrors site/src/lib/rubric.ts) ─────────────────────────
 const RUBRIC_VERSION = 'v1.7.0';
-const DATA_ROOT = path.join(REPO_ROOT, 'data', 'api', RUBRIC_VERSION);
+const DATA_ROOT = process.env.DEFIRISK_API_ROOT
+  ? path.resolve(process.env.DEFIRISK_API_ROOT)
+  : path.join(REPO_ROOT, 'data', 'api', RUBRIC_VERSION);
 
 function readJson(relpath) {
   const p = path.join(DATA_ROOT, relpath);
@@ -301,7 +306,7 @@ function buildAnalytics(h, { protocolCount, factorCount, hackCount }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  if (!existsSync(path.join(SITE_ROOT, 'dist'))) {
+  if (!existsSync(DIST_ROOT)) {
     console.error('[build-og] ERROR: site/dist/ not found — run `astro build` first');
     process.exit(1);
   }

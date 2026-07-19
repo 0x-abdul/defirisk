@@ -320,6 +320,24 @@ def test_private_build_default_step_contract() -> None:
     ]
 
 
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_private_build_forwards_astro_output_root() -> None:
+    script_uri = SAFE_BUILD_SCRIPT.as_uri()
+    expression = (
+        f"import {{ defaultBuildSteps }} from {json.dumps(script_uri)};"
+        "process.stdout.write(JSON.stringify(defaultBuildSteps(['--outDir', '/staging/site-dist'])[0][2]));"
+    )
+    result = subprocess.run(
+        ["node", "--input-type=module", "--eval", expression],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    assert json.loads(result.stdout) == ["build", "--outDir", "/staging/site-dist"]
+
+
 def test_site_build_uses_private_safe_runner() -> None:
     package = json.loads(SITE_PACKAGE.read_text(encoding="utf-8"))
     command = package["scripts"]["build"]

@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
+import path from 'node:path';
 
 function gitSha() {
   if (process.env.GIT_SHA) return process.env.GIT_SHA.slice(0, 7);
@@ -34,6 +35,9 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   build: {
+    outDir: process.env.DEFIRISK_DIST_ROOT
+      ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
+      : undefined,
     // Force all CSS into external _astro/*.css chunks instead of inlining
     // small ones. The default 'auto' policy inlines chunks < ~4KB, which on
     // a 7,176-page build duplicates ~9KB of scoped component CSS into every
