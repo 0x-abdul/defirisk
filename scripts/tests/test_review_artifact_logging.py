@@ -13,6 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECK_SCRIPT = REPO_ROOT / "site" / "scripts" / "check-review-artifacts.mjs"
 SAFE_BUILD_SCRIPT = REPO_ROOT / "site" / "scripts" / "run-private-safe-build.mjs"
 SITE_PACKAGE = REPO_ROOT / "site" / "package.json"
+DATA_LOADERS = REPO_ROOT / "site" / "src" / "lib" / "data-loaders.ts"
 
 
 def run_review_check(api_root: Path, dist_root: Path) -> subprocess.CompletedProcess:
@@ -167,6 +168,37 @@ def test_review_artifact_exception_does_not_log_tokenized_path(tmp_path) -> None
     assert fake_token not in output
     assert str(api_root) not in output
     assert str(dist_root) not in output
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_staged_review_marker_check_accepts_all_98_complete_review_pages(tmp_path) -> None:
+    api_root = tmp_path / "api-root"
+    dist_root = tmp_path / "site-dist"
+
+    for index in range(98):
+        review = f"review-fixture-{index:03d}"
+        review_dir = api_root / "unpublished" / review
+        review_dir.mkdir(parents=True)
+        (review_dir / "index.json").write_text("{}", encoding="utf-8")
+        html_dir = dist_root / "unpublished" / review
+        html_dir.mkdir(parents=True)
+        (html_dir / "index.html").write_text(
+            "review-banner Pending review noindex,nofollow", encoding="utf-8"
+        )
+
+    result = run_review_check(api_root, dist_root)
+    output = result.stdout + result.stderr
+
+    assert result.returncode == 0
+    assert "verified 98 unpublished review page(s)" in output
+    assert str(api_root) not in output
+    assert str(dist_root) not in output
+
+
+def test_scoreless_unpublished_details_stay_renderable_for_private_review() -> None:
+    loaders = DATA_LOADERS.read_text(encoding="utf-8")
+
+    assert "return applyComputedGradeFields(detail) ?? detail;" in loaders
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
