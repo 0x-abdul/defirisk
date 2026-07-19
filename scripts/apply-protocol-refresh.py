@@ -24,7 +24,25 @@ from protocol_refresh_apply.runners import (
 )
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def resolve_repo_root() -> Path:
+    """Resolve the toolchain root for an isolated, reviewed runner.
+
+    A public handoff can be validated by a temporary reviewed script while the
+    compose/dump tools remain in the installed checkout.  The override is
+    explicit and fails before database work if it does not contain both tools.
+    """
+    configured = os.environ.get("PROTOCOL_REFRESH_REPO_ROOT")
+    root = Path(configured).resolve() if configured else DEFAULT_REPO_ROOT
+    required = (root / "scripts" / "compose.py", root / "scripts" / "dump.py")
+    missing = [str(path) for path in required if not path.is_file()]
+    if missing:
+        raise ContractError(
+            "protocol refresh toolchain root is incomplete: " + ", ".join(missing)
+        )
+    return root
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -128,6 +146,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     conn = None
     try:
+        repo_root = resolve_repo_root()
         handoff = load_public_handoff(args.handoff.resolve())
         db_url = _database_url(args.db_url)
         try:
@@ -177,9 +196,9 @@ def main(argv: list[str] | None = None) -> int:
             handoff,
             authorization=authorization,
             backup=backup,
-            baseline_dump_runner=make_dump_runner(REPO_ROOT, before_out_root),
-            compose_runner=make_compose_runner(REPO_ROOT),
-            dump_runner=make_dump_runner(REPO_ROOT, out_root),
+            baseline_dump_runner=make_dump_runner(repo_root, before_out_root),
+            compose_runner=make_compose_runner(repo_root),
+            dump_runner=make_dump_runner(repo_root, out_root),
             semantic_verifier=make_semantic_verifier(
                 rubric_version=handoff.payload["rubric_version"],
                 expected_surfaces=plan.surfaces,

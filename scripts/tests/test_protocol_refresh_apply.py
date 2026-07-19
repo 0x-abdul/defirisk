@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -38,6 +39,29 @@ from protocol_refresh_public.contracts import (
 
 SHA_A = "a" * 64
 SHA_B = "b" * 64
+
+
+def _load_apply_command():
+    script = Path(__file__).resolve().parents[1] / "apply-protocol-refresh.py"
+    spec = importlib.util.spec_from_file_location("protocol_refresh_apply_command", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_isolated_runner_requires_complete_explicit_toolchain_root(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    command = _load_apply_command()
+    monkeypatch.setenv("PROTOCOL_REFRESH_REPO_ROOT", str(tmp_path))
+    with pytest.raises(ContractError, match="toolchain root is incomplete"):
+        command.resolve_repo_root()
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "compose.py").write_text("# fixture\n", encoding="utf-8")
+    (scripts / "dump.py").write_text("# fixture\n", encoding="utf-8")
+    assert command.resolve_repo_root() == tmp_path.resolve()
 
 
 def accepted_changes(*, changed: bool = False) -> dict:
