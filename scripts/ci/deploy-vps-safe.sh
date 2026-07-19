@@ -18,7 +18,8 @@ py=python3; test -x venv/bin/python && py=venv/bin/python
 "$py" scripts/dump.py --out-root "$stage/data"
 "$py" - "$stage/data/api/v1.7.0/index.json" <<'PY'
 import json,sys
-rows=json.load(open(sys.argv[1])).get('data',{}).get('protocols',[])
+data=json.load(open(sys.argv[1])).get('data',[])
+rows=data.get('protocols',[]) if isinstance(data,dict) else data
 assert rows, 'empty API index'
 PY
 . scripts/ci/use-node-22.sh; (cd site; export npm_config_cache="$repo/.npm-cache"; npm ci --prefer-offline; npm run build -- --outDir "$stage/site-dist")
