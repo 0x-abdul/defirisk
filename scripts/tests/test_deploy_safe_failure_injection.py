@@ -53,7 +53,7 @@ def test_injected_promotion_failures_restore_fixture_and_seal_rollback(tmp_path:
     repo,env=fixture_repo(tmp_path); env["SAFE_DEPLOY_FAIL_AT"]=point
     result=subprocess.run([bash,"scripts/ci/deploy-vps-safe.sh",str(repo),"origin","main"],cwd=repo,env=env,capture_output=True,text=True)
     assert result.returncode != 0
-    assert (repo/".fake_head").read_text() == "old-head"
+    assert (repo/".fake_head").read_text().strip() == "old-head"
     assert (repo/"data/api/live.txt").read_text() == "old-api"
     assert (repo/"site/dist/live.txt").read_text() == "old-dist"
     manifests=list(tmp_path.rglob("manifest.json")); assert len(manifests)==1, result.stdout + result.stderr
