@@ -44,3 +44,12 @@ def test_staged_smoke_and_live_isolation_precede_any_live_rename() -> None:
     assert 'test "$(tree_digest data/api)" = "$api_before"' in SCRIPT
     assert 'test "$(tree_digest site/dist)" = "$dist_before"' in SCRIPT
     assert SCRIPT.index(smoke) < SCRIPT.index('mv data/api "$backup/pre-promotion-api"')
+
+
+def test_only_promoted_public_artifact_trees_are_normalized_for_caddy() -> None:
+    normalize = "normalize_public_artifact_permissions"
+    assert normalize in SCRIPT
+    assert 'for public_root in "$stage/site-dist" "$stage/data/api"' in SCRIPT
+    assert 'find "$public_root" -type d -exec chmod 0755 {} +' in SCRIPT
+    assert 'find "$public_root" -type f -exec chmod 0644 {} +' in SCRIPT
+    assert SCRIPT.index(normalize + "\n") < SCRIPT.index('test -f "$stage/site-dist/index.html"')

@@ -42,6 +42,12 @@ rollback() {
   exit "$code"
 }
 cleanup() { rm -rf "$stage"; }
+normalize_public_artifact_permissions() {
+  for public_root in "$stage/site-dist" "$stage/data/api"; do
+    find "$public_root" -type d -exec chmod 0755 {} +
+    find "$public_root" -type f -exec chmod 0644 {} +
+  done
+}
 prune_verified_successes() {
   "$py" - "$state_root" "$run" <<'PY'
 import json, pathlib, shutil, sys, time
@@ -74,6 +80,7 @@ policy="scripts/ci/deploy-publication-policy.json"
 "$py" scripts/ci/validate-staged-published-api.py --api-root "$stage/data/api/v1.7.0" --policy "$policy"
 "$py" scripts/ci/verify-deployment-publication-state.py --policy "$policy" --dump-log "$dump_log"
 . scripts/ci/use-node-22.sh; (cd site; export npm_config_cache="$repo/.npm-cache" DEFIRISK_API_ROOT="$stage/data/api/v1.7.0" DEFIRISK_DIST_ROOT="$stage/site-dist"; npm ci --prefer-offline; npm run build -- --outDir "$stage/site-dist")
+normalize_public_artifact_permissions
 test -f "$stage/site-dist/index.html"; test -f "$stage/site-dist/api/v1.7.0/index.json"
 "$py" scripts/ci/smoke-staged-deploy.py --dist-root "$stage/site-dist" --api-root "$stage/data/api/v1.7.0"
 test "$(tree_digest data/api)" = "$api_before"; test "$(tree_digest site/dist)" = "$dist_before"
