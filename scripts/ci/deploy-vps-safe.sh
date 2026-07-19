@@ -18,9 +18,25 @@ py=python3; test -x venv/bin/python && py=venv/bin/python
 "$py" scripts/dump.py --out-root "$stage/data"
 "$py" - "$stage/data/api/v1.7.0/index.json" <<'PY'
 import json,sys
-data=json.load(open(sys.argv[1])).get('data',[])
-rows=data.get('protocols',[]) if isinstance(data,dict) else data
-assert rows, 'empty API index'
+from pathlib import Path
+index=Path(sys.argv[1]); payload=json.loads(index.read_text())
+assert isinstance(payload,dict), 'index envelope must be an object'
+for key in ('rubric_version','data_as_of','generated_at'):
+    assert isinstance(payload.get(key),str) and payload[key], f'missing {key}'
+assert payload['rubric_version']=='v1.7.0', 'unexpected rubric version'
+assert isinstance(payload.get('data'),dict), 'index data must be an object'
+rows=payload['data'].get('protocols')
+assert isinstance(rows,list) and rows, 'index protocols must be a nonempty list'
+slugs=[]
+for row in rows:
+    assert isinstance(row,dict) and isinstance(row.get('slug'),str) and row['slug'], 'invalid protocol row'
+    slugs.append(row['slug'])
+assert len(slugs)==len(set(slugs)), 'duplicate protocol slug'
+for slug in slugs:
+    detail=index.parent/'protocols'/f'{slug}.json'
+    assert detail.is_file(), f'missing protocol detail {slug}'
+    detail_payload=json.loads(detail.read_text())
+    assert isinstance(detail_payload,dict) and isinstance(detail_payload.get('data'),dict), f'invalid protocol detail {slug}'
 PY
 . scripts/ci/use-node-22.sh; (cd site; export npm_config_cache="$repo/.npm-cache"; npm ci --prefer-offline; npm run build -- --outDir "$stage/site-dist")
 test -f "$stage/site-dist/index.html"; test -f "$stage/data/api/v1.7.0/index.json"
