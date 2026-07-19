@@ -18,6 +18,10 @@ from protocol_refresh_public.contracts import (
     load_json_strict,
     verify_public_handoff,
 )
+from protocol_refresh_public.compensation import (
+    build_compensation_proof,
+    verify_compensation_proof,
+)
 from protocol_refresh_public.publication import validate_publication_metadata
 from protocol_refresh_public.sanitizer import find_private_material
 
@@ -224,6 +228,81 @@ def test_legacy_record_export_derives_checked_expectation_without_rebinding_sour
     )
     with pytest.raises(ContractError, match="identity does not match"):
         _load_exporter().export_handoff(accepted_path, status_path, output_path)
+
+
+def test_compensated_attempt_can_issue_one_fresh_handoff_without_source_drift(
+    tmp_path: Path,
+) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    output_path = tmp_path / "reissue.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=document["refresh_id"],
+        family_slug=document["family_slug"],
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+
+    handoff = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        output_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=prior_path,
+        compensation_proof_path=proof_path,
+    )
+
+    assert handoff["schema_version"] == "1.2"
+    assert verify_public_handoff(handoff) == []
+    assert handoff["payload"] == {**document, "refresh_id": "refresh-2026-07-11.reissue-01"}
+    assert handoff["source_approval"]["reissue"] == {
+        "reason": "compensated_production_attempt",
+        "prior_refresh_id": document["refresh_id"],
+        "prior_artifact_sha256": prior["integrity"]["artifact_sha256"],
+        "compensation_proof_sha256": proof["integrity"]["proof_sha256"],
+    }
+
+
+def test_reissue_rejects_mismatched_or_unproved_compensation_evidence(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=document["refresh_id"],
+        family_slug="other-family",
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+    with pytest.raises(ContractError, match="family_slug"):
+        _load_exporter().export_handoff(
+            accepted_path,
+            status_path,
+            tmp_path / "reissue.json",
+            reissue_refresh_id="refresh-2026-07-11.reissue-01",
+            prior_handoff_path=prior_path,
+            compensation_proof_path=proof_path,
+        )
+
+    proof["outcome"] = "failed"
+    with pytest.raises(ContractError, match="outcome"):
+        verify_compensation_proof(proof)
 
 
 def test_export_strips_known_internal_actor_and_note_fields() -> None:
@@ -646,7 +725,7 @@ def test_published_schema_fully_constrains_payload_shape() -> None:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     payload = schema["$defs"]["payload"]
 
-    assert schema["properties"]["schema_version"] == {"const": "1.1"}
+    assert schema["properties"]["schema_version"] == {"enum": ["1.1", "1.2"]}
     assert payload["additionalProperties"] is False
     assert set(payload["required"]) == set(accepted_changes())
     assert set(payload["properties"]) == set(accepted_changes())

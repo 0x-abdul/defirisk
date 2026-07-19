@@ -13,8 +13,10 @@ from protocol_refresh_public.contracts import (
     ContractError,
     build_public_handoff,
     load_json_strict,
+    verify_public_handoff,
     write_json,
 )
+from protocol_refresh_public.compensation import verify_compensation_proof
 
 
 def _result_row(value: object, *, label: str) -> dict:
@@ -85,11 +87,8 @@ def _expected_result_from_local_after(accepted: dict, snapshot: dict) -> dict:
     }
 
 
-def export_handoff(accepted_path: Path, status_path: Path, output_path: Path) -> dict:
-    if output_path.suffix.casefold() != ".json":
-        raise ContractError("public handoff output must be a .json file")
+def _enriched_accepted(accepted_path: Path) -> tuple[dict, dict]:
     accepted = load_json_strict(accepted_path)
-    status = load_json_strict(status_path)
     source_accepted = accepted
     if "expected_result" not in accepted:
         local_after = load_json_strict(accepted_path.parent / "local-db-after.json")
@@ -97,9 +96,67 @@ def export_handoff(accepted_path: Path, status_path: Path, output_path: Path) ->
         accepted["expected_result"] = _expected_result_from_local_after(
             accepted, local_after
         )
-    handoff = build_public_handoff(
-        accepted, status, source_document=source_accepted
-    )
+    return accepted, source_accepted
+
+
+def export_handoff(
+    accepted_path: Path,
+    status_path: Path,
+    output_path: Path,
+    *,
+    reissue_refresh_id: str | None = None,
+    prior_handoff_path: Path | None = None,
+    compensation_proof_path: Path | None = None,
+) -> dict:
+    if output_path.suffix.casefold() != ".json":
+        raise ContractError("public handoff output must be a .json file")
+    status = load_json_strict(status_path)
+    accepted, source_accepted = _enriched_accepted(accepted_path)
+    reissue_values = (reissue_refresh_id, prior_handoff_path, compensation_proof_path)
+    if any(value is not None for value in reissue_values) and not all(
+        value is not None for value in reissue_values
+    ):
+        raise ContractError(
+            "reissue requires reissue_refresh_id, prior_handoff_path, and compensation_proof_path"
+        )
+    if reissue_refresh_id is not None and output_path.exists():
+        raise ContractError(f"refusing to overwrite reissue handoff: {output_path}")
+    if reissue_refresh_id is None:
+        handoff = build_public_handoff(
+            accepted, status, source_document=source_accepted
+        )
+    else:
+        prior = load_json_strict(prior_handoff_path)
+        prior_errors = verify_public_handoff(prior)
+        if prior_errors:
+            raise ContractError("prior handoff is invalid: " + "; ".join(prior_errors))
+        proof = verify_compensation_proof(load_json_strict(compensation_proof_path))
+        original = build_public_handoff(
+            accepted, status, source_document=source_accepted
+        )
+        if prior != original:
+            raise ContractError(
+                "prior handoff does not exactly match the currently approved source artifact"
+            )
+        if proof["prior_refresh_id"] != prior["refresh_id"]:
+            raise ContractError("compensation proof prior_refresh_id does not match prior handoff")
+        if proof["family_slug"] != prior["family_slug"]:
+            raise ContractError("compensation proof family_slug does not match prior handoff")
+        if proof["prior_artifact_sha256"] != prior["integrity"]["artifact_sha256"]:
+            raise ContractError("compensation proof artifact hash does not match prior handoff")
+        reissued = deepcopy(accepted)
+        reissued["refresh_id"] = reissue_refresh_id
+        handoff = build_public_handoff(
+            reissued,
+            status,
+            source_document=source_accepted,
+            reissue={
+                "reason": "compensated_production_attempt",
+                "prior_refresh_id": prior["refresh_id"],
+                "prior_artifact_sha256": prior["integrity"]["artifact_sha256"],
+                "compensation_proof_sha256": proof["integrity"]["proof_sha256"],
+            },
+        )
     write_json(output_path, handoff)
     return handoff
 
@@ -115,6 +172,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--accepted-changes", type=Path)
     parser.add_argument("--status", type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--reissue-refresh-id")
+    parser.add_argument("--prior-handoff", type=Path)
+    parser.add_argument("--compensation-proof", type=Path)
     return parser.parse_args(argv)
 
 
@@ -132,7 +192,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
     try:
-        handoff = export_handoff(accepted, status, args.output)
+        handoff = export_handoff(
+            accepted,
+            status,
+            args.output,
+            reissue_refresh_id=args.reissue_refresh_id,
+            prior_handoff_path=args.prior_handoff,
+            compensation_proof_path=args.compensation_proof,
+        )
     except ContractError as exc:
         print(json.dumps({"ok": False, "errors": [str(exc)]}), file=sys.stderr)
         return 1

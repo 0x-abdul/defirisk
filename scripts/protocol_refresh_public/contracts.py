@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 
 
 PUBLIC_SCHEMA_VERSION = "1.1"
+REISSUE_SCHEMA_VERSION = "1.2"
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 FACTOR_RE = re.compile(r"^RD-F-(?!169$)[0-9]{3}$")
@@ -640,6 +641,7 @@ def build_public_handoff(
     status: dict[str, Any],
     *,
     source_document: dict[str, Any] | None = None,
+    reissue: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Create a checksummed JSON handoff that cannot authorize production."""
     from .sanitizer import find_private_material, sanitize_accepted_changes
@@ -648,20 +650,48 @@ def build_public_handoff(
     source_document = document if source_document is None else source_document
     if source_document is not document:
         expected_source = deepcopy(document)
-        expected_source.pop("expected_result")
-        if source_document != expected_source:
+        if reissue is not None:
+            prior_refresh_id = reissue.get("prior_refresh_id")
+            if not isinstance(prior_refresh_id, str) or not ID_RE.fullmatch(prior_refresh_id):
+                raise ContractError("reissue prior_refresh_id is invalid")
+            if prior_refresh_id == document.get("refresh_id"):
+                raise ContractError("reissue refresh_id must differ from the prior refresh_id")
+            expected_source["refresh_id"] = prior_refresh_id
+        legacy_expected_source = deepcopy(expected_source)
+        legacy_expected_source.pop("expected_result")
+        source_bytes = canonical_json_bytes(source_document)
+        if source_bytes not in {
+            canonical_json_bytes(expected_source),
+            canonical_json_bytes(legacy_expected_source),
+        }:
+            # JSON bytes are used above only to compare nested dictionaries without
+            # relying on Python's permissive numeric equality (for example 1 == 1.0).
+            # The source document is still retained verbatim for its approval hash.
             raise ContractError(
-                "legacy source accepted changes must exactly equal the public payload "
-                "before expected_result enrichment"
+                "source accepted changes must exactly equal the public payload before "
+                "expected_result enrichment and an authorized reissue refresh_id"
             )
     _require_valid(verify_approved_status(source_document, status))
+    if reissue is not None:
+        expected_reissue = {
+            "reason": "compensated_production_attempt",
+            "prior_refresh_id": source_document["refresh_id"],
+            "prior_artifact_sha256": reissue.get("prior_artifact_sha256"),
+            "compensation_proof_sha256": reissue.get("compensation_proof_sha256"),
+        }
+        if reissue != expected_reissue:
+            raise ContractError("reissue binding has an invalid field set or reason")
+        for name in ("prior_artifact_sha256", "compensation_proof_sha256"):
+            value = reissue.get(name)
+            if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
+                raise ContractError(f"reissue {name} is invalid")
     sanitized = sanitize_accepted_changes(document)
     _require_valid(find_private_material(sanitized))
 
     accepted_hash = canonical_sha256(source_document)
     payload_hash = canonical_sha256(sanitized)
     core: dict[str, Any] = {
-        "schema_version": PUBLIC_SCHEMA_VERSION,
+        "schema_version": REISSUE_SCHEMA_VERSION if reissue is not None else PUBLIC_SCHEMA_VERSION,
         "artifact_type": "protocol_refresh_public_handoff",
         "refresh_id": document["refresh_id"],
         "family_slug": document["family_slug"],
@@ -674,6 +704,7 @@ def build_public_handoff(
             "approval_state": "approved",
             "accepted_changes_sha256": accepted_hash,
             "status_sha256": canonical_sha256(status),
+            **({"reissue": deepcopy(reissue)} if reissue is not None else {}),
         },
         "payload": sanitized,
         "integrity": {
@@ -705,8 +736,11 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
     }
     if set(handoff) != handoff_fields:
         errors.append(f"handoff fields must exactly equal {sorted(handoff_fields)}")
-    if handoff.get("schema_version") != PUBLIC_SCHEMA_VERSION:
-        errors.append(f"handoff schema_version must be {PUBLIC_SCHEMA_VERSION}")
+    schema_version = handoff.get("schema_version")
+    if schema_version not in {PUBLIC_SCHEMA_VERSION, REISSUE_SCHEMA_VERSION}:
+        errors.append(
+            f"handoff schema_version must be {PUBLIC_SCHEMA_VERSION} or {REISSUE_SCHEMA_VERSION}"
+        )
     if handoff.get("artifact_type") != "protocol_refresh_public_handoff":
         errors.append("handoff artifact_type is invalid")
     authorization = handoff.get("authorization")
@@ -753,6 +787,8 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
         errors.append("handoff source_approval must be an object")
     else:
         source_fields = {"approval_state", "accepted_changes_sha256", "status_sha256"}
+        if schema_version == REISSUE_SCHEMA_VERSION:
+            source_fields.add("reissue")
         if set(source_approval) != source_fields:
             errors.append(f"handoff source_approval fields must exactly equal {sorted(source_fields)}")
         if source_approval.get("approval_state") != "approved":
@@ -763,6 +799,28 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
         status_hash = source_approval.get("status_sha256")
         if not isinstance(status_hash, str) or not SHA256_RE.fullmatch(status_hash):
             errors.append("handoff status_sha256 is invalid")
+        if schema_version == REISSUE_SCHEMA_VERSION:
+            reissue = source_approval.get("reissue")
+            expected_fields = {
+                "reason",
+                "prior_refresh_id",
+                "prior_artifact_sha256",
+                "compensation_proof_sha256",
+            }
+            if not isinstance(reissue, dict) or set(reissue) != expected_fields:
+                errors.append("handoff reissue binding has an invalid field set")
+            else:
+                if reissue.get("reason") != "compensated_production_attempt":
+                    errors.append("handoff reissue reason is invalid")
+                prior_refresh_id = reissue.get("prior_refresh_id")
+                if not isinstance(prior_refresh_id, str) or not ID_RE.fullmatch(prior_refresh_id):
+                    errors.append("handoff reissue prior_refresh_id is invalid")
+                elif prior_refresh_id == handoff.get("refresh_id"):
+                    errors.append("handoff reissue refresh_id must differ from prior_refresh_id")
+                for name in ("prior_artifact_sha256", "compensation_proof_sha256"):
+                    value = reissue.get(name)
+                    if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
+                        errors.append(f"handoff reissue {name} is invalid")
 
     artifact_hash = integrity.get("artifact_sha256")
     unsigned = deepcopy(handoff)

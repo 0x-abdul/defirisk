@@ -16,7 +16,7 @@
     "integrity"
   ],
   "properties": {
-    "schema_version": { "const": "1.1" },
+    "schema_version": { "enum": ["1.1", "1.2"] },
     "artifact_type": { "const": "protocol_refresh_public_handoff" },
     "refresh_id": { "$ref": "#/$defs/id" },
     "family_slug": { "$ref": "#/$defs/slug" },
@@ -27,16 +27,7 @@
         "explicit_production_approval_required": true
       }
     },
-    "source_approval": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["approval_state", "accepted_changes_sha256", "status_sha256"],
-      "properties": {
-        "approval_state": { "const": "approved" },
-        "accepted_changes_sha256": { "$ref": "#/$defs/sha256" },
-        "status_sha256": { "$ref": "#/$defs/sha256" }
-      }
-    },
+    "source_approval": { "$ref": "#/$defs/sourceApproval" },
     "payload": { "$ref": "#/$defs/payload" },
     "integrity": {
       "type": "object",
@@ -60,6 +51,41 @@
     "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
     "factorId": { "type": "string", "pattern": "^RD-F-(?!169$)[0-9]{3}$" },
     "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sourceApproval": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approval_state", "accepted_changes_sha256", "status_sha256"],
+          "properties": {
+            "approval_state": { "const": "approved" },
+            "accepted_changes_sha256": { "$ref": "#/$defs/sha256" },
+            "status_sha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approval_state", "accepted_changes_sha256", "status_sha256", "reissue"],
+          "properties": {
+            "approval_state": { "const": "approved" },
+            "accepted_changes_sha256": { "$ref": "#/$defs/sha256" },
+            "status_sha256": { "$ref": "#/$defs/sha256" },
+            "reissue": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reason", "prior_refresh_id", "prior_artifact_sha256", "compensation_proof_sha256"],
+              "properties": {
+                "reason": { "const": "compensated_production_attempt" },
+                "prior_refresh_id": { "$ref": "#/$defs/id" },
+                "prior_artifact_sha256": { "$ref": "#/$defs/sha256" },
+                "compensation_proof_sha256": { "$ref": "#/$defs/sha256" }
+              }
+            }
+          }
+        }
+      ]
+    },
     "nullableSha256": {
       "oneOf": [
         { "$ref": "#/$defs/sha256" },
