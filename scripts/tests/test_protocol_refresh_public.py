@@ -378,6 +378,42 @@ def test_reissue_rejects_mismatched_or_unproved_compensation_evidence(tmp_path: 
         verify_compensation_proof(proof)
 
 
+def test_compensated_reissue_upgrades_only_the_legacy_baseline_shape(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior["payload"]["baseline"].pop("current_factor_scores_sha256")
+    prior["integrity"]["payload_sha256"] = canonical_sha256(prior["payload"])
+    unsigned = deepcopy(prior)
+    unsigned["integrity"].pop("artifact_sha256")
+    prior["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=prior["refresh_id"],
+        family_slug=prior["family_slug"],
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+
+    reissued = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        tmp_path / "reissue.json",
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=prior_path,
+        compensation_proof_path=proof_path,
+    )
+
+    assert reissued["payload"]["baseline"]["current_factor_scores_sha256"] == "3" * 64
+
+
 def test_compensated_reissue_can_chain_without_payload_drift(tmp_path: Path) -> None:
     document = accepted_changes()
     status = approved_status(document)

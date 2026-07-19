@@ -150,7 +150,12 @@ def _verify_prior_reissue_lineage(
             raise ContractError("prior handoff source approval does not match the approved source")
     expected_payload = deepcopy(original["payload"])
     expected_payload["refresh_id"] = prior["refresh_id"]
-    if prior.get("payload") != expected_payload:
+    legacy_expected_payload = deepcopy(expected_payload)
+    legacy_expected_payload["baseline"].pop("current_factor_scores_sha256", None)
+    if (
+        prior.get("payload") != expected_payload
+        and prior.get("payload") != legacy_expected_payload
+    ):
         raise ContractError("prior handoff payload drifted from the approved source")
 
 
