@@ -42,6 +42,23 @@ rollback() {
   exit "$code"
 }
 cleanup() { rm -rf "$stage"; }
+prune_verified_successes() {
+  "$py" - "$state_root" "$run" <<'PY'
+import json, pathlib, shutil, sys, time
+root, current = map(pathlib.Path, sys.argv[1:])
+cutoff = time.time() - 14 * 24 * 60 * 60
+for candidate in root.iterdir():
+    try:
+        if candidate == current or not candidate.is_dir() or candidate.stat().st_mtime >= cutoff:
+            continue
+        with (candidate / "manifest.json").open(encoding="utf-8") as manifest:
+            if json.load(manifest).get("state") != "succeeded":
+                continue
+        shutil.rmtree(candidate)
+    except Exception:
+        print("retention warning; preserved deployment state", file=sys.stderr)
+PY
+}
 trap cleanup EXIT
 trap 'rollback $?' ERR
 trap 'rollback 128' HUP INT TERM
@@ -67,6 +84,8 @@ mv site/dist "$backup/pre-promotion-site-dist"; test "${SAFE_DEPLOY_FAIL_AT:-}" 
 mv "$stage/site-dist" site/dist; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_dist_promote
 api_after="$(tree_digest data/api)"; dist_after="$(tree_digest site/dist)"; curl -fsS https://defirisk.co/ >/dev/null; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_smoke
 write_manifest succeeded
-rm -rf "$backup/original-api" "$backup/original-site-dist"
-find "$state_root" -mindepth 1 -maxdepth 1 -type d -mtime +14 -exec rm -rf {} +
-trap - ERR HUP INT TERM; echo "SAFE_DEPLOY_MANIFEST=$manifest"
+trap - ERR HUP INT TERM
+set +e
+rm -rf "$backup/original-api" "$backup/original-site-dist" || printf '%s\n' 'cleanup warning; retained successful deployment state' >&2
+prune_verified_successes || printf '%s\n' 'retention warning; retained successful deployment state' >&2
+echo "SAFE_DEPLOY_MANIFEST=$manifest"

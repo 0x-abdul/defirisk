@@ -16,6 +16,16 @@ def test_manifest_is_atomic_private_state_machine_with_digest_receipts() -> None
         assert field in SCRIPT
 
 
+def test_success_cleanup_cannot_trigger_rollback_or_prune_failure_receipts() -> None:
+    succeeded = SCRIPT.index("write_manifest succeeded")
+    disable_rollback = SCRIPT.index("trap - ERR HUP INT TERM", succeeded)
+    cleanup = SCRIPT.index('rm -rf "$backup/original-api"', succeeded)
+    assert disable_rollback < cleanup
+    assert "prune_verified_successes()" in SCRIPT
+    assert 'json.load(manifest).get("state") != "succeeded"' in SCRIPT
+    assert "shutil.rmtree(candidate)" in SCRIPT
+
+
 def test_failures_before_or_during_promotion_rollback_to_verified_backup() -> None:
     assert "backups_ready=0" in SCRIPT
     assert 'if [ "$backups_ready" != 1 ]; then write_manifest rollback_failed || true; exit "$code"; fi' in SCRIPT
