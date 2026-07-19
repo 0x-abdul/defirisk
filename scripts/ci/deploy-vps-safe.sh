@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repo="$1"; remote="$2"; branch="$3"; cd "$repo"
-state_root="${XDG_STATE_HOME:-/home/rdapp/.local/state}/riskdashboard/deploy"
+state_root="${XDG_STATE_HOME:-$repo/.local/state}/riskdashboard/deploy"
 old_head="$(git rev-parse HEAD)"; stamp="$(date -u +%Y%m%dT%H%M%SZ)"; run="$state_root/$stamp"
 mkdir -p -m 700 "$state_root"; test -O "$state_root"; test -w "$state_root" -a -x "$state_root"
 for path in "$state_root" "$repo/data" "$repo/site"; do test "$(stat -c %d "$path")" = "$(stat -c %d "$state_root")" || { echo "cross-device deploy state refused: $path"; exit 1; }; done
