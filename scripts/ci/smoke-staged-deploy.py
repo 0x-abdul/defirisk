@@ -32,9 +32,9 @@ def main() -> None:
         or not isinstance(payload["data"].get("protocols"), list)
     ):
         raise SystemExit("staged deploy smoke failed")
-    handler = lambda *handler_args: QuietHandler(
-        *handler_args, directory=str(args.dist_root)
-    )
+    def handler(*handler_args: object) -> QuietHandler:
+        return QuietHandler(*handler_args, directory=str(args.dist_root))
+
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
