@@ -10,17 +10,21 @@ const SITE_ROOT = path.resolve(path.dirname(__filename), '..');
 export function runStep(label, command, args) {
   return new Promise((resolve) => {
     let spawnFailed = false;
+    let childOutput = '';
     const child = spawn(command, args, {
       cwd: SITE_ROOT,
       env: process.env,
       stdio: ['inherit', 'pipe', 'pipe'],
     });
 
-    // Child output can contain unpublished route names. Drain it without
-    // replaying it into CI, including on failures where chunks may be split
-    // across streams or terminal control sequences.
-    child.stdout?.resume();
-    child.stderr?.resume();
+    // Child output can contain unpublished route names. Keep it in memory
+    // only long enough to extract the explicitly safe aggregate diagnostics
+    // below; never replay raw output into CI.
+    const collect = (chunk) => {
+      childOutput += chunk.toString();
+    };
+    child.stdout?.on('data', collect);
+    child.stderr?.on('data', collect);
     child.on('error', () => {
       spawnFailed = true;
     });
@@ -32,6 +36,19 @@ export function runStep(label, command, args) {
       }
 
       console.error(`[private-safe-build] ${label} failed; child output withheld`);
+      if (label === 'review artifact check') {
+        for (const line of childOutput.split(/\r?\n/)) {
+          const normalized = line.trim();
+          if (
+            normalized === '[review-artifacts] unpublished review artifact mismatch' ||
+            /^missing (?:JSON index files|HTML review pages|local asset references): \d+$/.test(normalized) ||
+            /^HTML review pages missing private-review markers: \d+$/.test(normalized) ||
+            normalized === '[review-artifacts] check failed before completion'
+          ) {
+            console.error(`[private-safe-build] ${normalized}`);
+          }
+        }
+      }
       resolve(false);
     });
   });

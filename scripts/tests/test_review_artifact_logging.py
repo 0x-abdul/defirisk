@@ -204,6 +204,37 @@ def test_private_build_child_output_is_always_withheld(
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_private_build_exposes_only_safe_review_artifact_aggregates() -> None:
+    fake_token = "deadbeef"
+    script_uri = SAFE_BUILD_SCRIPT.as_uri()
+    child = (
+        "process.stderr.write('[review-artifacts] unpublished review artifact mismatch\\n');"
+        "process.stderr.write('  missing HTML review pages: 7\\n');"
+        f"process.stderr.write('/unpublished/fixture-{fake_token}/index.html\\n');"
+        "process.exit(1);"
+    )
+    expression = (
+        f"import {{ runStep }} from {json.dumps(script_uri)};"
+        f"const ok = await runStep('review artifact check', process.execPath, "
+        f"['--eval', {json.dumps(child)}]);"
+        "console.log(`result=${ok}`);"
+    )
+    result = subprocess.run(
+        ["node", "--input-type=module", "--eval", expression],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    output = result.stdout + result.stderr
+
+    assert "unpublished review artifact mismatch" in output
+    assert "missing HTML review pages: 7" in output
+    assert fake_token not in output
+    assert "/unpublished/" not in output
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
 def test_private_build_spawn_error_is_path_safe() -> None:
     fake_token = "deadbeef"
     script_uri = SAFE_BUILD_SCRIPT.as_uri()
