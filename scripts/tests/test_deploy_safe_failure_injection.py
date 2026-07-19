@@ -14,6 +14,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 DEPLOY = ROOT / "scripts" / "ci" / "deploy-vps-safe.sh"
+pytestmark = pytest.mark.skipif(os.name == "nt", reason="POSIX integration harness runs in Linux CI")
 
 
 def write(path: Path, text: str, executable: bool = False) -> None:
@@ -40,30 +41,17 @@ def fixture_repo(tmp_path: Path) -> tuple[Path, dict[str, str]]:
     write(fake / "curl", "#!/usr/bin/env bash\ntest \"${SAFE_DEPLOY_CURL_FAIL:-}\" != 1\n", True)
     write(fake / "npm", "#!/usr/bin/env bash\nmkdir -p \"$DEFIRISK_DIST_ROOT/api/v1.7.0\"; echo ok > \"$DEFIRISK_DIST_ROOT/index.html\"; cp \"$DEFIRISK_API_ROOT/index.json\" \"$DEFIRISK_DIST_ROOT/api/v1.7.0/index.json\"\n", True)
     state = tmp_path / "state"
-    state_posix = "/" + state.drive[0].lower() + state.as_posix()[2:]
-    fake_posix = "/" + fake.drive[0].lower() + fake.as_posix()[2:]
-    env=os.environ | {"PATH":fake_posix+":/usr/bin:/bin","XDG_STATE_HOME":state_posix,"DATABASE_URL":"fake"}
+    env=os.environ | {"PATH":str(fake)+":"+os.environ["PATH"],"XDG_STATE_HOME":str(state),"DATABASE_URL":"fake"}
     return repo,env
 
-
-def bash_path(path: Path) -> str:
-    cygpath = shutil.which("cygpath")
-    if cygpath:
-        return subprocess.check_output([cygpath, "-u", str(path)], text=True).strip()
-    return str(path)
-
-
-def git_bash() -> str | None:
-    candidate = Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Git" / "bin" / "bash.exe"
-    return str(candidate) if candidate.exists() else shutil.which("bash")
 
 
 @pytest.mark.parametrize("point", ["after_api_rename","after_api_promote","after_dist_rename","after_dist_promote","after_smoke"])
 def test_injected_promotion_failures_restore_fixture_and_seal_rollback(tmp_path: Path, point: str) -> None:
-    bash=git_bash()
+    bash=shutil.which("bash")
     if not bash: pytest.skip("bash unavailable")
     repo,env=fixture_repo(tmp_path); env["SAFE_DEPLOY_FAIL_AT"]=point
-    result=subprocess.run([bash,"scripts/ci/deploy-vps-safe.sh",bash_path(repo),"origin","main"],cwd=repo,env=env,capture_output=True,text=True)
+    result=subprocess.run([bash,"scripts/ci/deploy-vps-safe.sh",str(repo),"origin","main"],cwd=repo,env=env,capture_output=True,text=True)
     assert result.returncode != 0
     assert (repo/".fake_head").read_text() == "old-head"
     assert (repo/"data/api/live.txt").read_text() == "old-api"
@@ -75,10 +63,10 @@ def test_injected_promotion_failures_restore_fixture_and_seal_rollback(tmp_path:
 
 
 def test_prebackup_failure_never_mutates_live_fixture(tmp_path: Path) -> None:
-    bash=git_bash()
+    bash=shutil.which("bash")
     if not bash: pytest.skip("bash unavailable")
     repo,env=fixture_repo(tmp_path); (repo/"site/dist").chmod(0o000)
-    result=subprocess.run([bash,"scripts/ci/deploy-vps-safe.sh",bash_path(repo),"origin","main"],cwd=repo,env=env,capture_output=True,text=True)
+    result=subprocess.run([bash,"scripts/ci/deploy-vps-safe.sh",str(repo),"origin","main"],cwd=repo,env=env,capture_output=True,text=True)
     (repo/"site/dist").chmod(0o700)
     assert result.returncode != 0
     assert (repo/"data/api/live.txt").read_text() == "old-api"
