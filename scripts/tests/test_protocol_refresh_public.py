@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 from copy import deepcopy
@@ -19,6 +20,15 @@ from protocol_refresh_public.contracts import (
 )
 from protocol_refresh_public.publication import validate_publication_metadata
 from protocol_refresh_public.sanitizer import find_private_material
+
+
+def _load_exporter():
+    script = Path(__file__).resolve().parents[1] / "export-protocol-refresh.py"
+    spec = importlib.util.spec_from_file_location("refresh_exporter", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def accepted_changes(*, changed: bool = True) -> dict:
@@ -139,6 +149,81 @@ def test_export_requires_exact_approved_checksum_and_scope() -> None:
     out_of_scope["changes"]["factor_scores"][0]["surface_slug"] = "v4"
     with pytest.raises(ContractError, match="out-of-scope"):
         build_public_handoff(out_of_scope, approved_status(out_of_scope))
+
+
+def test_legacy_record_export_derives_checked_expectation_without_rebinding_source(
+    tmp_path: Path,
+) -> None:
+    source = accepted_changes()
+    source.pop("expected_result")
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    output_path = tmp_path / "handoff.json"
+    accepted_path.write_text(json.dumps(source), encoding="utf-8")
+    status_path.write_text(json.dumps(approved_status(source)), encoding="utf-8")
+    (tmp_path / "local-db-after.json").write_text(
+        json.dumps(
+            {
+                "family_slug": "fixture-family",
+                "families": [
+                    {
+                        "family_slug": "fixture-family",
+                        "headline_grade": "B",
+                        "risk_score": 17.41,
+                        "cap_applied": "none",
+                    }
+                ],
+                "surfaces": [
+                    {
+                        "surface_slug": slug,
+                        "headline_grade": "B",
+                        "risk_score": 17.41,
+                        "cap_applied": "none",
+                    }
+                    for slug in ("v2", "v3")
+                ],
+                "current_factor_scores": [
+                    {
+                        "id": "factor-row-1",
+                        "rubric_version": "v1.7.0",
+                        "is_current": True,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    handoff = _load_exporter().export_handoff(accepted_path, status_path, output_path)
+
+    assert handoff["source_approval"]["accepted_changes_sha256"] == canonical_sha256(source)
+    assert handoff["payload"]["expected_result"] == {
+        "headline_grade": "B",
+        "risk_score": "17.41",
+        "cap_state": "none",
+        "active_factor_count": 1,
+        "surface_results": {
+            "v2": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+            "v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+        },
+    }
+    assert verify_public_handoff(handoff) == []
+
+    enriched = accepted_changes()
+    mismatched_source = deepcopy(source)
+    mismatched_source["family_slug"] = "other-family"
+    with pytest.raises(ContractError, match="exactly equal"):
+        build_public_handoff(
+            enriched,
+            approved_status(source),
+            source_document=mismatched_source,
+        )
+
+    (tmp_path / "local-db-after.json").write_text(
+        json.dumps({"family_slug": "other-family"}), encoding="utf-8"
+    )
+    with pytest.raises(ContractError, match="identity does not match"):
+        _load_exporter().export_handoff(accepted_path, status_path, output_path)
 
 
 def test_export_strips_known_internal_actor_and_note_fields() -> None:

@@ -57,6 +57,13 @@ curator records, protocol packets, or publication queues into this repository.
 The public handoff envelope is schema `1.1`; its enclosed accepted-changes
 payload remains schema `1.0`.
 
+For a sealed legacy record that predates `expected_result`, the exporter also
+reads that record's co-located verified `local-db-after.json` locally to derive
+the required public result assertion. The receipt is never copied into the
+handoff or repository. Missing, mismatched, or incomplete receipts fail closed;
+the approved source checksum remains bound to the unmodified legacy accepted
+changes document.
+
 The exporter fails unless:
 
 - the accepted artifact names exactly one canonical family;

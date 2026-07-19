@@ -636,17 +636,29 @@ def _require_valid(errors: list[str]) -> None:
 
 
 def build_public_handoff(
-    document: dict[str, Any], status: dict[str, Any]
+    document: dict[str, Any],
+    status: dict[str, Any],
+    *,
+    source_document: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Create a checksummed JSON handoff that cannot authorize production."""
     from .sanitizer import find_private_material, sanitize_accepted_changes
 
     _require_valid(validate_accepted_changes(document))
-    _require_valid(verify_approved_status(document, status))
+    source_document = document if source_document is None else source_document
+    if source_document is not document:
+        expected_source = deepcopy(document)
+        expected_source.pop("expected_result")
+        if source_document != expected_source:
+            raise ContractError(
+                "legacy source accepted changes must exactly equal the public payload "
+                "before expected_result enrichment"
+            )
+    _require_valid(verify_approved_status(source_document, status))
     sanitized = sanitize_accepted_changes(document)
     _require_valid(find_private_material(sanitized))
 
-    accepted_hash = canonical_sha256(document)
+    accepted_hash = canonical_sha256(source_document)
     payload_hash = canonical_sha256(sanitized)
     core: dict[str, Any] = {
         "schema_version": PUBLIC_SCHEMA_VERSION,
