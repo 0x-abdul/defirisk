@@ -651,12 +651,10 @@ def build_public_handoff(
     if source_document is not document:
         expected_source = deepcopy(document)
         if reissue is not None:
-            prior_refresh_id = reissue.get("prior_refresh_id")
-            if not isinstance(prior_refresh_id, str) or not ID_RE.fullmatch(prior_refresh_id):
-                raise ContractError("reissue prior_refresh_id is invalid")
-            if prior_refresh_id == document.get("refresh_id"):
-                raise ContractError("reissue refresh_id must differ from the prior refresh_id")
-            expected_source["refresh_id"] = prior_refresh_id
+            source_refresh_id = source_document.get("refresh_id")
+            if not isinstance(source_refresh_id, str) or not ID_RE.fullmatch(source_refresh_id):
+                raise ContractError("source accepted changes refresh_id is invalid")
+            expected_source["refresh_id"] = source_refresh_id
         legacy_expected_source = deepcopy(expected_source)
         legacy_expected_source.pop("expected_result")
         source_bytes = canonical_json_bytes(source_document)
@@ -673,14 +671,19 @@ def build_public_handoff(
             )
     _require_valid(verify_approved_status(source_document, status))
     if reissue is not None:
-        expected_reissue = {
-            "reason": "compensated_production_attempt",
-            "prior_refresh_id": source_document["refresh_id"],
-            "prior_artifact_sha256": reissue.get("prior_artifact_sha256"),
-            "compensation_proof_sha256": reissue.get("compensation_proof_sha256"),
+        expected_fields = {
+            "reason",
+            "prior_refresh_id",
+            "prior_artifact_sha256",
+            "compensation_proof_sha256",
         }
-        if reissue != expected_reissue:
+        if set(reissue) != expected_fields or reissue.get("reason") != "compensated_production_attempt":
             raise ContractError("reissue binding has an invalid field set or reason")
+        prior_refresh_id = reissue.get("prior_refresh_id")
+        if not isinstance(prior_refresh_id, str) or not ID_RE.fullmatch(prior_refresh_id):
+            raise ContractError("reissue prior_refresh_id is invalid")
+        if prior_refresh_id == document.get("refresh_id"):
+            raise ContractError("reissue refresh_id must differ from the prior refresh_id")
         for name in ("prior_artifact_sha256", "compensation_proof_sha256"):
             value = reissue.get(name)
             if not isinstance(value, str) or not SHA256_RE.fullmatch(value):

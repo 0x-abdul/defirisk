@@ -305,6 +305,56 @@ def test_reissue_rejects_mismatched_or_unproved_compensation_evidence(tmp_path: 
         verify_compensation_proof(proof)
 
 
+def test_compensated_reissue_can_chain_without_payload_drift(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    original_path = tmp_path / "original.json"
+    first_proof_path = tmp_path / "first-proof.json"
+    first_path = tmp_path / "first.json"
+    second_proof_path = tmp_path / "second-proof.json"
+    second_path = tmp_path / "second.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    original = build_public_handoff(document, status)
+    original_path.write_text(json.dumps(original), encoding="utf-8")
+    first_proof = build_compensation_proof(
+        prior_refresh_id=original["refresh_id"],
+        family_slug=original["family_slug"],
+        prior_artifact_sha256=original["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    first_proof_path.write_text(json.dumps(first_proof), encoding="utf-8")
+    first = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        first_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=original_path,
+        compensation_proof_path=first_proof_path,
+    )
+    second_proof = build_compensation_proof(
+        prior_refresh_id=first["refresh_id"],
+        family_slug=first["family_slug"],
+        prior_artifact_sha256=first["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    second_proof_path.write_text(json.dumps(second_proof), encoding="utf-8")
+    second = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        second_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-02",
+        prior_handoff_path=first_path,
+        compensation_proof_path=second_proof_path,
+    )
+
+    assert verify_public_handoff(second) == []
+    assert second["source_approval"]["reissue"]["prior_refresh_id"] == first["refresh_id"]
+    assert second["payload"] == {**document, "refresh_id": "refresh-2026-07-11.reissue-02"}
+
+
 def test_export_strips_known_internal_actor_and_note_fields() -> None:
     document = accepted_changes()
     factor = document["changes"]["factor_scores"][0]

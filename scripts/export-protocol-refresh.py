@@ -99,6 +99,34 @@ def _enriched_accepted(accepted_path: Path) -> tuple[dict, dict]:
     return accepted, source_accepted
 
 
+def _verify_prior_reissue_lineage(
+    *,
+    prior: dict,
+    original: dict,
+) -> None:
+    """Require an immediate prior handoff to retain the sealed source payload.
+
+    A failed post-commit attempt consumes its own idempotency key.  Chained
+    reissues are allowed only when every public payload field other than the
+    refresh identifier remains exactly equal to the immutable approved source.
+    """
+    if prior.get("family_slug") != original.get("family_slug"):
+        raise ContractError("prior handoff family_slug does not match the approved source")
+    if prior.get("surface_slugs") != original.get("surface_slugs"):
+        raise ContractError("prior handoff surface scope does not match the approved source")
+    prior_source = prior.get("source_approval")
+    original_source = original.get("source_approval")
+    if not isinstance(prior_source, dict) or not isinstance(original_source, dict):
+        raise ContractError("prior handoff source approval is invalid")
+    for name in ("approval_state", "accepted_changes_sha256", "status_sha256"):
+        if prior_source.get(name) != original_source.get(name):
+            raise ContractError("prior handoff source approval does not match the approved source")
+    expected_payload = deepcopy(original["payload"])
+    expected_payload["refresh_id"] = prior["refresh_id"]
+    if prior.get("payload") != expected_payload:
+        raise ContractError("prior handoff payload drifted from the approved source")
+
+
 def export_handoff(
     accepted_path: Path,
     status_path: Path,
@@ -134,10 +162,7 @@ def export_handoff(
         original = build_public_handoff(
             accepted, status, source_document=source_accepted
         )
-        if prior != original:
-            raise ContractError(
-                "prior handoff does not exactly match the currently approved source artifact"
-            )
+        _verify_prior_reissue_lineage(prior=prior, original=original)
         if proof["prior_refresh_id"] != prior["refresh_id"]:
             raise ContractError("compensation proof prior_refresh_id does not match prior handoff")
         if proof["family_slug"] != prior["family_slug"]:
