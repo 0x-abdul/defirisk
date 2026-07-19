@@ -464,6 +464,45 @@ def test_compensated_reissue_can_chain_without_payload_drift(tmp_path: Path) -> 
     assert second["payload"] == {**document, "refresh_id": "refresh-2026-07-11.reissue-02"}
 
 
+def test_factor_only_correction_is_bound_into_public_handoff_without_rewriting_base() -> None:
+    base = accepted_changes()
+    status = approved_status(base)
+    correction = accepted_changes()
+    correction["refresh_id"] = "refresh-2026-07-11-correction"
+    correction["refresh_type"] = "targeted_source_remediation"
+    correction["changes"]["factor_scores"][0]["score"] = "red"
+    correction["changes"]["factor_scores"][0]["expected_current_sha256"] = "4" * 64
+    correction_status = approved_status(correction)
+
+    handoff = build_public_handoff(
+        base,
+        status,
+        corrections=[(correction, correction_status)],
+    )
+
+    assert handoff["schema_version"] == "1.3"
+    assert handoff["payload"]["changes"]["factor_scores"][0]["score"] == "red"
+    assert handoff["payload"]["changes"]["factor_scores"][0]["expected_current_sha256"] is None
+    assert handoff["source_approval"]["accepted_changes_sha256"] == canonical_sha256(base)
+    assert handoff["source_approval"]["corrections"][0]["accepted_changes_sha256"] == canonical_sha256(correction)
+    assert verify_public_handoff(handoff) == []
+
+
+def test_factor_only_correction_rejects_topology_or_scope_expansion() -> None:
+    base = accepted_changes()
+    correction = accepted_changes()
+    correction["refresh_id"] = "refresh-2026-07-11-correction"
+    correction["refresh_type"] = "targeted_source_remediation"
+    correction["changes"]["protocol_fields"] = {"name": "out-of-scope"}
+
+    with pytest.raises(ContractError, match="factor-only"):
+        build_public_handoff(
+            base,
+            approved_status(base),
+            corrections=[(correction, approved_status(correction))],
+        )
+
+
 def test_export_strips_known_internal_actor_and_note_fields() -> None:
     document = accepted_changes()
     factor = document["changes"]["factor_scores"][0]
@@ -884,7 +923,7 @@ def test_published_schema_fully_constrains_payload_shape() -> None:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     payload = schema["$defs"]["payload"]
 
-    assert schema["properties"]["schema_version"] == {"enum": ["1.1", "1.2"]}
+    assert schema["properties"]["schema_version"] == {"enum": ["1.1", "1.2", "1.3"]}
     assert payload["additionalProperties"] is False
     assert set(payload["required"]) == set(accepted_changes())
     assert set(payload["properties"]) == set(accepted_changes())

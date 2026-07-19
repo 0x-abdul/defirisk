@@ -167,11 +167,24 @@ def export_handoff(
     reissue_refresh_id: str | None = None,
     prior_handoff_path: Path | None = None,
     compensation_proof_path: Path | None = None,
+    correction_record_paths: list[Path] | None = None,
 ) -> dict:
     if output_path.suffix.casefold() != ".json":
         raise ContractError("public handoff output must be a .json file")
     status = load_json_strict(status_path)
     accepted, source_accepted = _enriched_accepted(accepted_path)
+    corrections: list[tuple[dict, dict]] = []
+    for record_path in correction_record_paths or []:
+        correction_accepted_path = record_path / "accepted-changes.json"
+        correction_status_path = record_path / "status.json"
+        if not correction_accepted_path.is_file() or not correction_status_path.is_file():
+            raise ContractError("correction record must contain accepted-changes.json and status.json")
+        corrections.append(
+            (
+                load_json_strict(correction_accepted_path),
+                load_json_strict(correction_status_path),
+            )
+        )
     reissue_values = (reissue_refresh_id, prior_handoff_path, compensation_proof_path)
     if any(value is not None for value in reissue_values) and not all(
         value is not None for value in reissue_values
@@ -183,7 +196,7 @@ def export_handoff(
         raise ContractError(f"refusing to overwrite reissue handoff: {output_path}")
     if reissue_refresh_id is None:
         handoff = build_public_handoff(
-            accepted, status, source_document=source_accepted
+            accepted, status, source_document=source_accepted, corrections=corrections
         )
     else:
         prior = load_json_strict(prior_handoff_path)
@@ -192,7 +205,7 @@ def export_handoff(
             raise ContractError("prior handoff is invalid: " + "; ".join(prior_errors))
         proof = verify_compensation_proof(load_json_strict(compensation_proof_path))
         original = build_public_handoff(
-            accepted, status, source_document=source_accepted
+            accepted, status, source_document=source_accepted, corrections=corrections
         )
         _verify_prior_reissue_lineage(prior=prior, original=original)
         if proof["prior_refresh_id"] != prior["refresh_id"]:
@@ -213,6 +226,7 @@ def export_handoff(
                 "prior_artifact_sha256": prior["integrity"]["artifact_sha256"],
                 "compensation_proof_sha256": proof["integrity"]["proof_sha256"],
             },
+            corrections=corrections,
         )
     write_json(output_path, handoff)
     return handoff
@@ -232,6 +246,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--reissue-refresh-id")
     parser.add_argument("--prior-handoff", type=Path)
     parser.add_argument("--compensation-proof", type=Path)
+    parser.add_argument(
+        "--correction-record",
+        action="append",
+        type=Path,
+        default=[],
+        help="separately approved factor-only correction record to bind into the public handoff",
+    )
     return parser.parse_args(argv)
 
 
@@ -256,6 +277,7 @@ def main(argv: list[str] | None = None) -> int:
             reissue_refresh_id=args.reissue_refresh_id,
             prior_handoff_path=args.prior_handoff,
             compensation_proof_path=args.compensation_proof,
+            correction_record_paths=args.correction_record,
         )
     except ContractError as exc:
         print(json.dumps({"ok": False, "errors": [str(exc)]}), file=sys.stderr)

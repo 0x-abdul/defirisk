@@ -15,6 +15,7 @@ from urllib.parse import urlparse
 
 PUBLIC_SCHEMA_VERSION = "1.1"
 REISSUE_SCHEMA_VERSION = "1.2"
+CORRECTED_SCHEMA_VERSION = "1.3"
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 FACTOR_RE = re.compile(r"^RD-F-(?!169$)[0-9]{3}$")
@@ -644,12 +645,87 @@ def _require_valid(errors: list[str]) -> None:
         raise ContractError("; ".join(errors))
 
 
+def _factor_target_key(row: dict[str, Any]) -> tuple[Any, ...]:
+    """Return the immutable identity of one factor replacement target."""
+    return (
+        row.get("factor_id"),
+        row.get("scope_level"),
+        row.get("surface_slug"),
+        row.get("chain"),
+        row.get("deployment_key"),
+    )
+
+
+def _apply_factor_only_corrections(
+    document: dict[str, Any],
+    corrections: list[tuple[dict[str, Any], dict[str, Any]]],
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Bind independently approved factor-only corrections without rewriting history."""
+    effective = deepcopy(document)
+    base_changes = document.get("changes", {})
+    effective_changes = effective.get("changes", {})
+    base_rows = base_changes.get("factor_scores") if isinstance(base_changes, dict) else None
+    effective_rows = effective_changes.get("factor_scores") if isinstance(effective_changes, dict) else None
+    scope = document.get("scope")
+    allowed_factor_ids = scope.get("allowed_factor_ids") if isinstance(scope, dict) else None
+    if not isinstance(base_rows, list) or not isinstance(effective_rows, list) or not isinstance(allowed_factor_ids, list):
+        raise ContractError("base accepted changes has invalid factor correction scope")
+    base_by_target = {_factor_target_key(row): row for row in base_rows if isinstance(row, dict)}
+    effective_by_target = {_factor_target_key(row): row for row in effective_rows if isinstance(row, dict)}
+    if len(base_by_target) != len(base_rows) or len(effective_by_target) != len(effective_rows):
+        raise ContractError("base accepted changes has duplicate or invalid factor targets")
+
+    seen_targets: set[tuple[Any, ...]] = set()
+    bindings: list[dict[str, Any]] = []
+    identity_fields = ("family_slug", "protocol_slug", "surface_slugs", "rubric_version")
+    for correction, correction_status in corrections:
+        _require_valid(verify_approved_status(correction, correction_status))
+        if any(correction.get(field) != document.get(field) for field in identity_fields):
+            raise ContractError("factor correction identity does not match base accepted changes")
+        if correction.get("refresh_type") != "targeted_source_remediation":
+            raise ContractError("correction record must be targeted_source_remediation")
+        changes = correction.get("changes")
+        if not isinstance(changes, dict) or any(changes.get(name) for name in ("protocol_fields", "family_fields", "surfaces", "deployments")):
+            raise ContractError("correction record must be factor-only")
+        rows = changes.get("factor_scores")
+        if not isinstance(rows, list) or not rows:
+            raise ContractError("correction record must contain factor replacements")
+        targets = [_factor_target_key(row) for row in rows if isinstance(row, dict)]
+        if len(targets) != len(rows) or len(set(targets)) != len(targets) or set(targets) & seen_targets:
+            raise ContractError("correction factor targets are invalid or overlap")
+        if any(target[0] not in allowed_factor_ids for target in targets):
+            raise ContractError("correction factor target expands the base scope")
+        seen_targets.update(targets)
+        for row, target in zip(rows, targets, strict=True):
+            replacement = deepcopy(row)
+            if target in base_by_target:
+                replacement["expected_current_sha256"] = base_by_target[target].get("expected_current_sha256")
+                effective_by_target[target].clear()
+                effective_by_target[target].update(replacement)
+            else:
+                expected = replacement.get("expected_current_sha256")
+                if not isinstance(expected, str) or not SHA256_RE.fullmatch(expected):
+                    raise ContractError("correction requires a verified pre-base factor fingerprint")
+                effective_rows.append(replacement)
+                effective_by_target[target] = replacement
+        bindings.append(
+            {
+                "refresh_id": correction["refresh_id"],
+                "accepted_changes_sha256": canonical_sha256(correction),
+                "status_sha256": canonical_sha256(correction_status),
+                "target_keys": [list(target) for target in targets],
+            }
+        )
+    return effective, bindings
+
+
 def build_public_handoff(
     document: dict[str, Any],
     status: dict[str, Any],
     *,
     source_document: dict[str, Any] | None = None,
     reissue: dict[str, Any] | None = None,
+    corrections: list[tuple[dict[str, Any], dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     """Create a checksummed JSON handoff that cannot authorize production."""
     from .sanitizer import find_private_material, sanitize_accepted_changes
@@ -661,7 +737,10 @@ def build_public_handoff(
             "public handoff requires a complete current-factor baseline fingerprint"
         )
     source_document = document if source_document is None else source_document
-    if source_document is not document:
+    correction_bindings: list[dict[str, Any]] = []
+    if corrections:
+        document, correction_bindings = _apply_factor_only_corrections(document, corrections)
+    if source_document is not document and not corrections:
         expected_source = deepcopy(document)
         if reissue is not None:
             source_refresh_id = source_document.get("refresh_id")
@@ -713,8 +792,17 @@ def build_public_handoff(
 
     accepted_hash = canonical_sha256(source_document)
     payload_hash = canonical_sha256(sanitized)
+    source_approval: dict[str, Any] = {
+        "approval_state": "approved",
+        "accepted_changes_sha256": accepted_hash,
+        "status_sha256": canonical_sha256(status),
+    }
+    if reissue is not None:
+        source_approval["reissue"] = deepcopy(reissue)
+    if correction_bindings:
+        source_approval["corrections"] = correction_bindings
     core: dict[str, Any] = {
-        "schema_version": REISSUE_SCHEMA_VERSION if reissue is not None else PUBLIC_SCHEMA_VERSION,
+        "schema_version": CORRECTED_SCHEMA_VERSION if correction_bindings else (REISSUE_SCHEMA_VERSION if reissue is not None else PUBLIC_SCHEMA_VERSION),
         "artifact_type": "protocol_refresh_public_handoff",
         "refresh_id": document["refresh_id"],
         "family_slug": document["family_slug"],
@@ -723,12 +811,7 @@ def build_public_handoff(
             "production_authorized": False,
             "explicit_production_approval_required": True,
         },
-        "source_approval": {
-            "approval_state": "approved",
-            "accepted_changes_sha256": accepted_hash,
-            "status_sha256": canonical_sha256(status),
-            **({"reissue": deepcopy(reissue)} if reissue is not None else {}),
-        },
+        "source_approval": source_approval,
         "payload": sanitized,
         "integrity": {
             "algorithm": "sha256",
@@ -760,9 +843,9 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
     if set(handoff) != handoff_fields:
         errors.append(f"handoff fields must exactly equal {sorted(handoff_fields)}")
     schema_version = handoff.get("schema_version")
-    if schema_version not in {PUBLIC_SCHEMA_VERSION, REISSUE_SCHEMA_VERSION}:
+    if schema_version not in {PUBLIC_SCHEMA_VERSION, REISSUE_SCHEMA_VERSION, CORRECTED_SCHEMA_VERSION}:
         errors.append(
-            f"handoff schema_version must be {PUBLIC_SCHEMA_VERSION} or {REISSUE_SCHEMA_VERSION}"
+            f"handoff schema_version must be {PUBLIC_SCHEMA_VERSION}, {REISSUE_SCHEMA_VERSION}, or {CORRECTED_SCHEMA_VERSION}"
         )
     if handoff.get("artifact_type") != "protocol_refresh_public_handoff":
         errors.append("handoff artifact_type is invalid")
@@ -812,6 +895,10 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
         source_fields = {"approval_state", "accepted_changes_sha256", "status_sha256"}
         if schema_version == REISSUE_SCHEMA_VERSION:
             source_fields.add("reissue")
+        elif schema_version == CORRECTED_SCHEMA_VERSION:
+            source_fields.add("corrections")
+            if "reissue" in source_approval:
+                source_fields.add("reissue")
         if set(source_approval) != source_fields:
             errors.append(f"handoff source_approval fields must exactly equal {sorted(source_fields)}")
         if source_approval.get("approval_state") != "approved":
@@ -822,7 +909,7 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
         status_hash = source_approval.get("status_sha256")
         if not isinstance(status_hash, str) or not SHA256_RE.fullmatch(status_hash):
             errors.append("handoff status_sha256 is invalid")
-        if schema_version == REISSUE_SCHEMA_VERSION:
+        if schema_version in {REISSUE_SCHEMA_VERSION, CORRECTED_SCHEMA_VERSION} and "reissue" in source_approval:
             reissue = source_approval.get("reissue")
             expected_fields = {
                 "reason",
@@ -844,6 +931,44 @@ def verify_public_handoff(handoff: dict[str, Any]) -> list[str]:
                     value = reissue.get(name)
                     if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
                         errors.append(f"handoff reissue {name} is invalid")
+        if schema_version == CORRECTED_SCHEMA_VERSION:
+            corrections = source_approval.get("corrections")
+            if not isinstance(corrections, list) or not corrections:
+                errors.append("handoff corrections binding must be a non-empty list")
+            else:
+                seen_refreshes: set[str] = set()
+                seen_targets: set[tuple[Any, ...]] = set()
+                for index, correction in enumerate(corrections):
+                    expected_fields = {
+                        "refresh_id",
+                        "accepted_changes_sha256",
+                        "status_sha256",
+                        "target_keys",
+                    }
+                    if not isinstance(correction, dict) or set(correction) != expected_fields:
+                        errors.append(f"handoff correction {index} has an invalid field set")
+                        continue
+                    refresh_id = correction.get("refresh_id")
+                    if not isinstance(refresh_id, str) or not ID_RE.fullmatch(refresh_id) or refresh_id in seen_refreshes:
+                        errors.append(f"handoff correction {index} refresh_id is invalid")
+                    else:
+                        seen_refreshes.add(refresh_id)
+                    for name in ("accepted_changes_sha256", "status_sha256"):
+                        value = correction.get(name)
+                        if not isinstance(value, str) or not SHA256_RE.fullmatch(value):
+                            errors.append(f"handoff correction {index} {name} is invalid")
+                    targets = correction.get("target_keys")
+                    if not isinstance(targets, list) or not targets:
+                        errors.append(f"handoff correction {index} target_keys are invalid")
+                        continue
+                    for target in targets:
+                        if not isinstance(target, list) or len(target) != 5:
+                            errors.append(f"handoff correction {index} target key is invalid")
+                            continue
+                        key = tuple(target)
+                        if key in seen_targets:
+                            errors.append("handoff correction target keys overlap")
+                        seen_targets.add(key)
 
     artifact_hash = integrity.get("artifact_sha256")
     unsigned = deepcopy(handoff)
