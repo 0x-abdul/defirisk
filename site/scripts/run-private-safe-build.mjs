@@ -44,9 +44,9 @@ export async function runBuildSteps(steps) {
   return true;
 }
 
-export function defaultBuildSteps() {
+export function defaultBuildSteps(astroArgs = []) {
   return [
-    ['Astro build', path.join(SITE_ROOT, 'node_modules', 'astro', 'bin', 'astro.mjs'), ['build']],
+    ['Astro build', path.join(SITE_ROOT, 'node_modules', 'astro', 'bin', 'astro.mjs'), ['build', ...astroArgs]],
     ['API copy', path.join(SITE_ROOT, 'scripts', 'post-build-copy.mjs'), []],
     ['review artifact check', path.join(SITE_ROOT, 'scripts', 'check-review-artifacts.mjs'), []],
     ['Open Graph image build', path.join(SITE_ROOT, 'scripts', 'build-og-images.mjs'), []],
@@ -59,9 +59,9 @@ export async function main(steps = defaultBuildSteps()) {
   return succeeded;
 }
 
-export async function runCli(entrypoint = main) {
+export async function runCli(entrypoint = main, astroArgs = process.argv.slice(2)) {
   try {
-    return await entrypoint();
+    return await entrypoint(defaultBuildSteps(astroArgs));
   } catch {
     console.error('[private-safe-build] failed before completion');
     process.exitCode = 1;
