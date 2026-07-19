@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v7
         with: {ref: main}
       - name: Stage, validate, and atomically promote via SSH
+        # deploy-vps-safe.sh performs the shared sync-vps-checkout.sh contract before staging.
         env: {VPS_HOST: '${{ secrets.VPS_HOST }}', VPS_SSH_KEY: '${{ secrets.VPS_SSH_KEY }}'}
         run: |
           (umask 177; echo "$VPS_SSH_KEY" > /tmp/deploy_key)
