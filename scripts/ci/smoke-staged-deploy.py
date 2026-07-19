@@ -21,12 +21,20 @@ def main() -> None:
     args = parser.parse_args()
     index = args.api_root / "index.json"
     copied = args.dist_root / "api" / args.api_root.name / "index.json"
-    if not all(path.is_file() for path in (args.dist_root / "index.html", index, copied)):
+    if not all(
+        path.is_file() for path in (args.dist_root / "index.html", index, copied)
+    ):
         raise SystemExit("staged deploy smoke failed")
     payload = json.loads(index.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict) or not isinstance(payload.get("data"), dict) or not isinstance(payload["data"].get("protocols"), list):
+    if (
+        not isinstance(payload, dict)
+        or not isinstance(payload.get("data"), dict)
+        or not isinstance(payload["data"].get("protocols"), list)
+    ):
         raise SystemExit("staged deploy smoke failed")
-    handler = lambda *handler_args: QuietHandler(*handler_args, directory=str(args.dist_root))
+    handler = lambda *handler_args: QuietHandler(
+        *handler_args, directory=str(args.dist_root)
+    )
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
