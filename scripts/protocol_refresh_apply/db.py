@@ -264,6 +264,18 @@ def _without(row: dict[str, Any], *fields: str) -> dict[str, Any]:
     return result
 
 
+def _baseline_data_as_of(value: Any) -> Any:
+    """Retain an evidence date while excluding non-semantic apply clock noise."""
+    if not isinstance(value, str) or len(value) < 10:
+        return value
+    candidate = value[:10]
+    try:
+        date.fromisoformat(candidate)
+    except ValueError:
+        return value
+    return candidate
+
+
 def normalize_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Remove environment IDs and operation timestamps from a raw snapshot."""
     surfaces = snapshot.get("surfaces", [])
@@ -301,6 +313,8 @@ def normalize_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
     normalized_factors: list[dict[str, Any]] = []
     for row in snapshot.get("current_factor_scores", []):
         item = _without(row, "id", "superseded_by", "collected_at")
+        if "data_as_of" in item:
+            item["data_as_of"] = _baseline_data_as_of(item["data_as_of"])
         surface_id = item.pop("surface_id", None)
         deployment_id = item.pop("deployment_id", None)
         item["surface_slug"] = surface_keys.get(str(surface_id)) if surface_id else None

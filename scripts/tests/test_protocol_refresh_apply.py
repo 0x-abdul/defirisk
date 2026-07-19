@@ -393,6 +393,13 @@ def test_normalized_snapshot_ignores_environment_specific_ids() -> None:
     second["current_factor_scores"][0]["sources"][0]["id"] = "source-2"
     assert normalize_snapshot(first) == normalize_snapshot(second)
 
+    first["current_factor_scores"][0]["data_as_of"] = "2026-07-11T00:00:01Z"
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-11T23:59:59Z"
+    assert normalize_snapshot(first) == normalize_snapshot(second)
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-12T00:00:00Z"
+    assert normalize_snapshot(first) != normalize_snapshot(second)
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-11T00:00:01Z"
+
     first_handoff = public_handoff(changed=True)
     second_handoff = deepcopy(first_handoff)
     second_handoff.payload["baseline"] = {
