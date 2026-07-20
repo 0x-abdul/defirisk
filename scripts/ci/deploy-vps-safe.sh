@@ -10,6 +10,9 @@ mkdir -m 700 "$run"; stage="$run/staging"; backup="$run/backup"; mkdir -m 700 "$
 manifest="$run/manifest.json"; umask 077
 
 tree_digest() { (cd "$1" && find . -type f -print0 | sort -z | xargs -0 -r sha256sum) | sha256sum | awk '{print $1}'; }
+fail_invariant() { printf '%s\n' "SAFE_DEPLOY_INVARIANT_FAILED=$1" >&2; return 1; }
+require_staged_file() { test -f "$1" || fail_invariant "$2"; }
+verify_live_tree_unchanged() { test "$(tree_digest data/api)" = "$api_before" && test "$(tree_digest site/dist)" = "$dist_before" || fail_invariant live_tree_digest; }
 api_before="$(tree_digest data/api)"; dist_before="$(tree_digest site/dist)"
 write_manifest() {
   MANIFEST="$manifest" STATE="$1" OLD_HEAD="$old_head" TARGET_HEAD="${target_head:-}" API_BEFORE="$api_before" DIST_BEFORE="$dist_before" API_AFTER="${api_after:-}" DIST_AFTER="${dist_after:-}" BACKUP="$backup" STAGE="$stage" python3 - <<'PY'
@@ -81,9 +84,10 @@ policy="scripts/ci/deploy-publication-policy.json"
 "$py" scripts/ci/verify-deployment-publication-state.py --policy "$policy" --dump-log "$dump_log"
 . scripts/ci/use-node-22.sh; (cd site; export npm_config_cache="$repo/.npm-cache" DEFIRISK_API_ROOT="$stage/data/api/v1.7.0" DEFIRISK_DIST_ROOT="$stage/site-dist"; npm ci --prefer-offline; npm run build -- --outDir "$stage/site-dist")
 normalize_public_artifact_permissions
-test -f "$stage/site-dist/index.html"; test -f "$stage/site-dist/api/v1.7.0/index.json"
-"$py" scripts/ci/smoke-staged-deploy.py --dist-root "$stage/site-dist" --api-root "$stage/data/api/v1.7.0"
-test "$(tree_digest data/api)" = "$api_before"; test "$(tree_digest site/dist)" = "$dist_before"
+require_staged_file "$stage/site-dist/index.html" staged_site_index
+require_staged_file "$stage/site-dist/api/v1.7.0/index.json" staged_api_index
+"$py" scripts/ci/smoke-staged-deploy.py --dist-root "$stage/site-dist" --api-root "$stage/data/api/v1.7.0" || fail_invariant staged_smoke
+verify_live_tree_unchanged
 write_manifest promoting
 mv data/api "$backup/pre-promotion-api"; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_api_rename
 mv "$stage/data/api" data/api; test "${SAFE_DEPLOY_FAIL_AT:-}" != after_api_promote
