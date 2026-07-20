@@ -41,8 +41,7 @@ def test_failures_before_or_during_promotion_rollback_to_verified_backup() -> No
 def test_staged_smoke_and_live_isolation_precede_any_live_rename() -> None:
     smoke = 'scripts/ci/smoke-staged-deploy.py --dist-root "$stage/site-dist" --api-root "$stage/data/api/v1.7.0"'
     assert smoke in SCRIPT
-    assert 'test "$(tree_digest data/api)" = "$api_before"' in SCRIPT
-    assert 'test "$(tree_digest site/dist)" = "$dist_before"' in SCRIPT
+    assert "verify_live_tree_unchanged" in SCRIPT
     assert SCRIPT.index(smoke) < SCRIPT.index('mv data/api "$backup/pre-promotion-api"')
 
 
@@ -52,4 +51,10 @@ def test_only_promoted_public_artifact_trees_are_normalized_for_caddy() -> None:
     assert 'for public_root in "$stage/site-dist" "$stage/data/api"' in SCRIPT
     assert 'find "$public_root" -type d -exec chmod 0755 {} +' in SCRIPT
     assert 'find "$public_root" -type f -exec chmod 0644 {} +' in SCRIPT
-    assert SCRIPT.index(normalize + "\n") < SCRIPT.index('test -f "$stage/site-dist/index.html"')
+    assert SCRIPT.index(normalize + "\n") < SCRIPT.index('require_staged_file "$stage/site-dist/index.html"')
+
+
+def test_pre_promotion_checks_emit_safe_aggregate_invariant_categories() -> None:
+    for category in ("staged_site_index", "staged_api_index", "staged_smoke", "live_tree_digest"):
+        assert category in SCRIPT
+    assert "SAFE_DEPLOY_INVARIANT_FAILED" in SCRIPT
