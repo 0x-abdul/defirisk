@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import sys
 from copy import deepcopy
@@ -17,8 +18,21 @@ from protocol_refresh_public.contracts import (
     load_json_strict,
     verify_public_handoff,
 )
+from protocol_refresh_public.compensation import (
+    build_compensation_proof,
+    verify_compensation_proof,
+)
 from protocol_refresh_public.publication import validate_publication_metadata
 from protocol_refresh_public.sanitizer import find_private_material
+
+
+def _load_exporter():
+    script = Path(__file__).resolve().parents[1] / "export-protocol-refresh.py"
+    spec = importlib.util.spec_from_file_location("refresh_exporter", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def accepted_changes(*, changed: bool = True) -> dict:
@@ -72,6 +86,7 @@ def accepted_changes(*, changed: bool = True) -> dict:
         "baseline": {
             "target_sha256": "1" * 64,
             "other_protocols_sha256": "2" * 64,
+            "current_factor_scores_sha256": "3" * 64,
         },
         "expected_result": {
             "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
@@ -141,6 +156,351 @@ def test_export_requires_exact_approved_checksum_and_scope() -> None:
         build_public_handoff(out_of_scope, approved_status(out_of_scope))
 
 
+def test_legacy_handoff_remains_verifiable_but_cannot_be_newly_built() -> None:
+    document = accepted_changes()
+    handoff = build_public_handoff(document, approved_status(document))
+    handoff["payload"]["baseline"].pop("current_factor_scores_sha256")
+    handoff["integrity"]["payload_sha256"] = canonical_sha256(handoff["payload"])
+    unsigned = deepcopy(handoff)
+    unsigned["integrity"].pop("artifact_sha256")
+    handoff["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+
+    assert verify_public_handoff(handoff) == []
+    legacy = deepcopy(document)
+    legacy["baseline"].pop("current_factor_scores_sha256")
+    with pytest.raises(ContractError, match="complete current-factor baseline"):
+        build_public_handoff(legacy, approved_status(legacy))
+
+
+def test_legacy_record_export_derives_checked_expectation_without_rebinding_source(
+    tmp_path: Path,
+) -> None:
+    source = accepted_changes()
+    source.pop("expected_result")
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    output_path = tmp_path / "handoff.json"
+    accepted_path.write_text(json.dumps(source), encoding="utf-8")
+    status_path.write_text(json.dumps(approved_status(source)), encoding="utf-8")
+    (tmp_path / "local-db-after.json").write_text(
+        json.dumps(
+            {
+                "family_slug": "fixture-family",
+                "families": [
+                    {
+                        "family_slug": "fixture-family",
+                        "headline_grade": "B",
+                        "risk_score": 17.41,
+                        "cap_applied": "none",
+                    }
+                ],
+                "surfaces": [
+                    {
+                        "surface_slug": slug,
+                        "headline_grade": "B",
+                        "risk_score": 17.41,
+                        "cap_applied": "none",
+                    }
+                    for slug in ("v2", "v3")
+                ],
+                "current_factor_scores": [
+                    {
+                        "id": "factor-row-1",
+                        "rubric_version": "v1.7.0",
+                        "is_current": True,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    handoff = _load_exporter().export_handoff(accepted_path, status_path, output_path)
+
+    assert handoff["source_approval"]["accepted_changes_sha256"] == canonical_sha256(source)
+    assert handoff["payload"]["expected_result"] == {
+        "headline_grade": "B",
+        "risk_score": "17.41",
+        "cap_state": "none",
+        "active_factor_count": 1,
+        "surface_results": {
+            "v2": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+            "v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"},
+        },
+    }
+    assert verify_public_handoff(handoff) == []
+
+    enriched = accepted_changes()
+    mismatched_source = deepcopy(source)
+    mismatched_source["family_slug"] = "other-family"
+    with pytest.raises(ContractError, match="exactly equal"):
+        build_public_handoff(
+            enriched,
+            approved_status(source),
+            source_document=mismatched_source,
+        )
+
+    (tmp_path / "local-db-after.json").write_text(
+        json.dumps({"family_slug": "other-family"}), encoding="utf-8"
+    )
+    with pytest.raises(ContractError, match="identity does not match"):
+        _load_exporter().export_handoff(accepted_path, status_path, output_path)
+
+
+def test_export_binds_complete_current_factor_baseline_from_sealed_snapshot(
+    tmp_path: Path,
+) -> None:
+    source = accepted_changes()
+    source["baseline"].pop("current_factor_scores_sha256")
+    before = {
+        "family_slug": "fixture-family",
+        "target": True,
+        "protocols": [],
+        "families": [],
+        "surfaces": [
+            {"surface_id": "surface-1", "family_slug": "fixture-family", "surface_slug": "v3"}
+        ],
+        "deployments": [],
+        "current_factor_scores": [
+            {
+                "id": "factor-row-1",
+                "factor_id": "RD-F-001",
+                "score": "yellow",
+                "rubric_version": "v1.7.0",
+                "is_current": True,
+                "scope_level": "surface",
+                "surface_id": "surface-1",
+                "deployment_id": None,
+                "sources": [],
+            }
+        ],
+    }
+    source["baseline"]["target_sha256"] = canonical_sha256(before)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    accepted_path.write_text(json.dumps(source), encoding="utf-8")
+    status_path.write_text(json.dumps(approved_status(source)), encoding="utf-8")
+    (tmp_path / "local-db-before.json").write_text(json.dumps(before), encoding="utf-8")
+
+    handoff = _load_exporter().export_handoff(
+        accepted_path, status_path, tmp_path / "handoff.json"
+    )
+
+    assert handoff["payload"]["baseline"]["current_factor_scores_sha256"] == canonical_sha256(
+        [
+            {
+                "factor_id": "RD-F-001",
+                "score": "yellow",
+                "rubric_version": "v1.7.0",
+                "is_current": True,
+                "scope_level": "surface",
+                "sources": [],
+                "surface_slug": "v3",
+                "deployment_chain": None,
+                "deployment_key": None,
+            }
+        ]
+    )
+
+
+def test_compensated_attempt_can_issue_one_fresh_handoff_without_source_drift(
+    tmp_path: Path,
+) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    output_path = tmp_path / "reissue.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=document["refresh_id"],
+        family_slug=document["family_slug"],
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+
+    handoff = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        output_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=prior_path,
+        compensation_proof_path=proof_path,
+    )
+
+    assert handoff["schema_version"] == "1.2"
+    assert verify_public_handoff(handoff) == []
+    assert handoff["payload"] == {**document, "refresh_id": "refresh-2026-07-11.reissue-01"}
+    assert handoff["source_approval"]["reissue"] == {
+        "reason": "compensated_production_attempt",
+        "prior_refresh_id": document["refresh_id"],
+        "prior_artifact_sha256": prior["integrity"]["artifact_sha256"],
+        "compensation_proof_sha256": proof["integrity"]["proof_sha256"],
+    }
+
+
+def test_reissue_rejects_mismatched_or_unproved_compensation_evidence(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=document["refresh_id"],
+        family_slug="other-family",
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+    with pytest.raises(ContractError, match="family_slug"):
+        _load_exporter().export_handoff(
+            accepted_path,
+            status_path,
+            tmp_path / "reissue.json",
+            reissue_refresh_id="refresh-2026-07-11.reissue-01",
+            prior_handoff_path=prior_path,
+            compensation_proof_path=proof_path,
+        )
+
+    proof["outcome"] = "failed"
+    with pytest.raises(ContractError, match="outcome"):
+        verify_compensation_proof(proof)
+
+
+def test_compensated_reissue_upgrades_only_the_legacy_baseline_shape(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    prior_path = tmp_path / "prior.json"
+    proof_path = tmp_path / "compensation-proof.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    prior = build_public_handoff(document, status)
+    prior["payload"]["baseline"].pop("current_factor_scores_sha256")
+    prior["integrity"]["payload_sha256"] = canonical_sha256(prior["payload"])
+    unsigned = deepcopy(prior)
+    unsigned["integrity"].pop("artifact_sha256")
+    prior["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+    prior_path.write_text(json.dumps(prior), encoding="utf-8")
+    proof = build_compensation_proof(
+        prior_refresh_id=prior["refresh_id"],
+        family_slug=prior["family_slug"],
+        prior_artifact_sha256=prior["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    proof_path.write_text(json.dumps(proof), encoding="utf-8")
+
+    reissued = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        tmp_path / "reissue.json",
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=prior_path,
+        compensation_proof_path=proof_path,
+    )
+
+    assert reissued["payload"]["baseline"]["current_factor_scores_sha256"] == "3" * 64
+
+
+def test_compensated_reissue_can_chain_without_payload_drift(tmp_path: Path) -> None:
+    document = accepted_changes()
+    status = approved_status(document)
+    accepted_path = tmp_path / "accepted-changes.json"
+    status_path = tmp_path / "status.json"
+    original_path = tmp_path / "original.json"
+    first_proof_path = tmp_path / "first-proof.json"
+    first_path = tmp_path / "first.json"
+    second_proof_path = tmp_path / "second-proof.json"
+    second_path = tmp_path / "second.json"
+    accepted_path.write_text(json.dumps(document), encoding="utf-8")
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    original = build_public_handoff(document, status)
+    original_path.write_text(json.dumps(original), encoding="utf-8")
+    first_proof = build_compensation_proof(
+        prior_refresh_id=original["refresh_id"],
+        family_slug=original["family_slug"],
+        prior_artifact_sha256=original["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    first_proof_path.write_text(json.dumps(first_proof), encoding="utf-8")
+    first = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        first_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-01",
+        prior_handoff_path=original_path,
+        compensation_proof_path=first_proof_path,
+    )
+    second_proof = build_compensation_proof(
+        prior_refresh_id=first["refresh_id"],
+        family_slug=first["family_slug"],
+        prior_artifact_sha256=first["integrity"]["artifact_sha256"],
+        restored_target_sha256="3" * 64,
+    )
+    second_proof_path.write_text(json.dumps(second_proof), encoding="utf-8")
+    second = _load_exporter().export_handoff(
+        accepted_path,
+        status_path,
+        second_path,
+        reissue_refresh_id="refresh-2026-07-11.reissue-02",
+        prior_handoff_path=first_path,
+        compensation_proof_path=second_proof_path,
+    )
+
+    assert verify_public_handoff(second) == []
+    assert second["source_approval"]["reissue"]["prior_refresh_id"] == first["refresh_id"]
+    assert second["payload"] == {**document, "refresh_id": "refresh-2026-07-11.reissue-02"}
+
+
+def test_factor_only_correction_is_bound_into_public_handoff_without_rewriting_base() -> None:
+    base = accepted_changes()
+    status = approved_status(base)
+    correction = accepted_changes()
+    correction["refresh_id"] = "refresh-2026-07-11-correction"
+    correction["refresh_type"] = "targeted_source_remediation"
+    correction["changes"]["factor_scores"][0]["score"] = "red"
+    correction["changes"]["factor_scores"][0]["expected_current_sha256"] = "4" * 64
+    correction_status = approved_status(correction)
+
+    handoff = build_public_handoff(
+        base,
+        status,
+        corrections=[(correction, correction_status)],
+    )
+
+    assert handoff["schema_version"] == "1.3"
+    assert handoff["payload"]["changes"]["factor_scores"][0]["score"] == "red"
+    assert handoff["payload"]["changes"]["factor_scores"][0]["expected_current_sha256"] is None
+    assert handoff["source_approval"]["accepted_changes_sha256"] == canonical_sha256(base)
+    assert handoff["source_approval"]["corrections"][0]["accepted_changes_sha256"] == canonical_sha256(correction)
+    assert verify_public_handoff(handoff) == []
+
+
+def test_factor_only_correction_rejects_topology_or_scope_expansion() -> None:
+    base = accepted_changes()
+    correction = accepted_changes()
+    correction["refresh_id"] = "refresh-2026-07-11-correction"
+    correction["refresh_type"] = "targeted_source_remediation"
+    correction["changes"]["protocol_fields"] = {"name": "out-of-scope"}
+
+    with pytest.raises(ContractError, match="factor-only"):
+        build_public_handoff(
+            base,
+            approved_status(base),
+            corrections=[(correction, approved_status(correction))],
+        )
 def test_targeted_source_remediation_is_factor_only_and_exactly_scoped() -> None:
     document = accepted_changes()
     document["refresh_type"] = "targeted_source_remediation"
@@ -158,8 +518,6 @@ def test_targeted_source_remediation_is_factor_only_and_exactly_scoped() -> None
     missing["refresh_type"] = "targeted_source_remediation"
     with pytest.raises(ContractError, match="every and only allowed factor"):
         build_public_handoff(missing, approved_status(missing))
-
-
 def test_export_strips_known_internal_actor_and_note_fields() -> None:
     document = accepted_changes()
     factor = document["changes"]["factor_scores"][0]
@@ -580,7 +938,7 @@ def test_published_schema_fully_constrains_payload_shape() -> None:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     payload = schema["$defs"]["payload"]
 
-    assert schema["properties"]["schema_version"] == {"const": "1.1"}
+    assert schema["properties"]["schema_version"] == {"enum": ["1.1", "1.2", "1.3"]}
     assert payload["additionalProperties"] is False
     assert set(payload["required"]) == set(accepted_changes())
     assert set(payload["properties"]) == set(accepted_changes())

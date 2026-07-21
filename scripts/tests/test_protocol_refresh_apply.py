@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -29,6 +30,7 @@ from protocol_refresh_apply.db import (
     normalize_snapshot,
     run_post_commit_pipeline,
     verify_compensation,
+    verify_current_factor_baseline,
     verify_no_change_date_only,
 )
 from protocol_refresh_public.contracts import (
@@ -39,6 +41,29 @@ from protocol_refresh_public.contracts import (
 
 SHA_A = "a" * 64
 SHA_B = "b" * 64
+
+
+def _load_apply_command():
+    script = Path(__file__).resolve().parents[1] / "apply-protocol-refresh.py"
+    spec = importlib.util.spec_from_file_location("protocol_refresh_apply_command", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_isolated_runner_requires_complete_explicit_toolchain_root(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    command = _load_apply_command()
+    monkeypatch.setenv("PROTOCOL_REFRESH_REPO_ROOT", str(tmp_path))
+    with pytest.raises(ContractError, match="toolchain root is incomplete"):
+        command.resolve_repo_root()
+    scripts = tmp_path / "scripts"
+    scripts.mkdir()
+    (scripts / "compose.py").write_text("# fixture\n", encoding="utf-8")
+    (scripts / "dump.py").write_text("# fixture\n", encoding="utf-8")
+    assert command.resolve_repo_root() == tmp_path.resolve()
 
 
 def accepted_changes(*, changed: bool = False) -> dict:
@@ -75,7 +100,11 @@ def accepted_changes(*, changed: bool = False) -> dict:
             "allowed_surface_fields": [],
             "allowed_deployment_fields": [],
         },
-        "baseline": {"target_sha256": SHA_A, "other_protocols_sha256": SHA_B},
+        "baseline": {
+            "target_sha256": SHA_A,
+            "other_protocols_sha256": SHA_B,
+            "current_factor_scores_sha256": "c" * 64,
+        },
         "expected_result": {
             "headline_grade": "B", "risk_score": "17.41", "cap_state": "none",
             "active_factor_count": 0,
@@ -400,6 +429,13 @@ def test_normalized_snapshot_ignores_environment_specific_ids() -> None:
     second["current_factor_scores"][0]["sources"][0]["id"] = "source-2"
     assert normalize_snapshot(first) == normalize_snapshot(second)
 
+    first["current_factor_scores"][0]["data_as_of"] = "2026-07-11T00:00:01Z"
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-11T23:59:59Z"
+    assert normalize_snapshot(first) == normalize_snapshot(second)
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-12T00:00:00Z"
+    assert normalize_snapshot(first) != normalize_snapshot(second)
+    second["current_factor_scores"][0]["data_as_of"] = "2026-07-11T00:00:01Z"
+
     first_handoff = public_handoff(changed=True)
     second_handoff = deepcopy(first_handoff)
     second_handoff.payload["baseline"] = {
@@ -419,6 +455,40 @@ def test_normalized_snapshot_ignores_environment_specific_ids() -> None:
         normalized_other={"family_slug": "example", "target": False},
     )
     assert first_plan["production_before"] == second_plan["production_before"]
+
+
+def test_current_factor_baseline_rejects_retained_score_drift() -> None:
+    snapshot = normalize_snapshot(
+        {
+            "family_slug": "example",
+            "target": True,
+            "protocols": [],
+            "families": [],
+            "surfaces": [
+                {"surface_id": "surface-1", "family_slug": "example", "surface_slug": "v3"}
+            ],
+            "deployments": [],
+            "current_factor_scores": [
+                {
+                    "id": "factor-1",
+                    "protocol_slug": "example",
+                    "factor_id": "RD-F-001",
+                    "score": "yellow",
+                    "scope_level": "surface",
+                    "surface_id": "surface-1",
+                    "deployment_id": None,
+                    "sources": [],
+                }
+            ],
+        }
+    )
+    expected = canonical_sha256(snapshot["current_factor_scores"])
+    assert verify_current_factor_baseline(snapshot, expected) == expected
+
+    drifted = deepcopy(snapshot)
+    drifted["current_factor_scores"][0]["score"] = "red"
+    with pytest.raises(ContractError, match="current factor baseline"):
+        verify_current_factor_baseline(drifted, expected)
 
 
 def test_surface_primary_alias_changes_are_rejected() -> None:

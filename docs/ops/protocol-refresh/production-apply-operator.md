@@ -48,13 +48,17 @@ The plan core includes:
 - effective refresh date and exact operation counts;
 - normalized production target and unrelated-protocol hashes;
 - normalized current-row hashes for every changed factor target;
+- a checksum of the complete retained current-factor baseline; and
 - the sanitized normalized target before-state for human review;
-- local baseline/factor hashes as audit metadata only; and
+- local raw baseline hashes as audit metadata; and
 - `plan_sha256` over the complete plan core.
 
 Environment UUIDs and operation timestamps are removed before production
-hashing. Local `baseline` and `expected_current_sha256` values are never used
-to accept or reject production state.
+hashing. The complete current-factor baseline is a fail-closed production
+precondition: it must match before any factor mutation is planned. This catches
+retained, non-target factor drift that would otherwise change the recomposed
+result. Per-change `expected_current_sha256` values remain additional scoped
+guards; raw local baseline hashes remain audit metadata only.
 
 Review the plan and authorize that exact `plan_sha256`. Any production drift
 requires a new plan and new authorization.

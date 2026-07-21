@@ -264,6 +264,18 @@ def _without(row: dict[str, Any], *fields: str) -> dict[str, Any]:
     return result
 
 
+def _baseline_data_as_of(value: Any) -> Any:
+    """Retain an evidence date while excluding non-semantic apply clock noise."""
+    if not isinstance(value, str) or len(value) < 10:
+        return value
+    candidate = value[:10]
+    try:
+        date.fromisoformat(candidate)
+    except ValueError:
+        return value
+    return candidate
+
+
 def normalize_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Remove environment IDs and operation timestamps from a raw snapshot."""
     surfaces = snapshot.get("surfaces", [])
@@ -301,6 +313,8 @@ def normalize_snapshot(snapshot: dict[str, Any]) -> dict[str, Any]:
     normalized_factors: list[dict[str, Any]] = []
     for row in snapshot.get("current_factor_scores", []):
         item = _without(row, "id", "superseded_by", "collected_at")
+        if "data_as_of" in item:
+            item["data_as_of"] = _baseline_data_as_of(item["data_as_of"])
         surface_id = item.pop("surface_id", None)
         deployment_id = item.pop("deployment_id", None)
         item["surface_slug"] = surface_keys.get(str(surface_id)) if surface_id else None
@@ -397,6 +411,27 @@ def production_factor_hashes(
     return result
 
 
+def verify_current_factor_baseline(
+    normalized_target: dict[str, Any],
+    expected_sha256: str,
+) -> str:
+    """Fail closed when any retained current factor differs from the sealed baseline.
+
+    Per-change old-row fingerprints cannot detect stale non-target factors that
+    still affect the composed result. The public handoff therefore binds the
+    complete, ID-normalized current-factor set captured before local refresh.
+    """
+    factors = normalized_target.get("current_factor_scores")
+    if not isinstance(factors, list):
+        raise ContractError("normalized production snapshot has no current factor scores")
+    observed_sha256 = canonical_sha256(factors)
+    if observed_sha256 != expected_sha256:
+        raise ContractError(
+            "production current factor baseline does not match the approved local baseline"
+        )
+    return observed_sha256
+
+
 def build_production_plan(
     handoff: PublicHandoff,
     *,
@@ -428,6 +463,9 @@ def build_production_plan(
             "target_sha256": canonical_sha256(normalized_target),
             "unrelated_protocols_sha256": canonical_sha256(normalized_other),
             "factor_current_sha256": factor_hashes,
+            "current_factor_scores_sha256": canonical_sha256(
+                normalized_target["current_factor_scores"]
+            ),
             "target_snapshot": normalized_target,
         },
         "local_audit_metadata": {
@@ -632,6 +670,10 @@ def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
     )
 
     hashes = snapshot_hashes(conn, plan.family_slug)
+    verify_current_factor_baseline(
+        hashes["normalized_target"],
+        document["baseline"]["current_factor_scores_sha256"],
+    )
     identity = database_identity(conn)
     production_plan = build_production_plan(
         handoff,

@@ -95,7 +95,11 @@ SCOPE_FIELDS = {
     "allowed_surface_fields",
     "allowed_deployment_fields",
 }
-BASELINE_FIELDS = {"target_sha256", "other_protocols_sha256"}
+BASELINE_FIELDS = {
+    "target_sha256",
+    "other_protocols_sha256",
+    "current_factor_scores_sha256",
+}
 CHANGE_FIELDS = {"protocol_fields", "family_fields", "surfaces", "deployments", "factor_scores"}
 SURFACE_CHANGE_FIELDS = {"surface_slug", "fields"}
 DEPLOYMENT_CHANGE_FIELDS = {"surface_slug", "chain", "deployment_key", "fields"}
@@ -177,7 +181,7 @@ def sanitize_accepted_changes(document: dict[str, Any]) -> dict[str, Any]:
         document.get("baseline"),
         label="$.baseline",
         public=BASELINE_FIELDS,
-        required=BASELINE_FIELDS,
+        required={"target_sha256", "other_protocols_sha256"},
     )
     expected_result = _exact_or_known_fields(
         document.get("expected_result"),
