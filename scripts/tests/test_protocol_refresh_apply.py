@@ -297,6 +297,22 @@ def test_backup_loader_verifies_accessible_file_size_and_sha256(tmp_path: Path) 
         )
 
 
+def test_atomic_receipt_write_failure_never_leaves_a_success_receipt(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    cli = _load_apply_command()
+    receipt_path = tmp_path / "transaction-receipt.json"
+
+    def fail_replace(_temporary: Path, _target: Path) -> None:
+        raise OSError("simulated atomic replace failure")
+
+    monkeypatch.setattr(Path, "replace", fail_replace)
+    with pytest.raises(OSError, match="simulated atomic replace failure"):
+        cli._write_receipt(receipt_path, {"status": "succeeded"})
+    assert not receipt_path.exists()
+
+
 def test_protocol_authorization_is_separate_and_exactly_bound() -> None:
     normalized = validate_production_authorization_receipt(
         authorization_receipt(),
