@@ -141,6 +141,25 @@ def test_export_requires_exact_approved_checksum_and_scope() -> None:
         build_public_handoff(out_of_scope, approved_status(out_of_scope))
 
 
+def test_targeted_source_remediation_is_factor_only_and_exactly_scoped() -> None:
+    document = accepted_changes()
+    document["refresh_type"] = "targeted_source_remediation"
+
+    handoff = build_public_handoff(document, approved_status(document))
+    assert verify_public_handoff(handoff) == []
+
+    fields = deepcopy(document)
+    fields["scope"]["allowed_protocol_fields"] = ["description"]
+    fields["changes"]["protocol_fields"] = {"description": "unexpected"}
+    with pytest.raises(ContractError, match="factor evidence only"):
+        build_public_handoff(fields, approved_status(fields))
+
+    missing = accepted_changes(changed=False)
+    missing["refresh_type"] = "targeted_source_remediation"
+    with pytest.raises(ContractError, match="every and only allowed factor"):
+        build_public_handoff(missing, approved_status(missing))
+
+
 def test_export_strips_known_internal_actor_and_note_fields() -> None:
     document = accepted_changes()
     factor = document["changes"]["factor_scores"][0]
