@@ -16,6 +16,7 @@ from protocol_refresh_apply.contracts import (
     ContractError,
     canonical_sha256,
     load_backup_receipt,
+    load_public_handoff,
     validate_backup_receipt,
     normalize_data_as_of,
     validate_apply_payload,
@@ -151,6 +152,23 @@ def factor_artifact(
         "checksums": {"accepted_changes_sha256": canonical_sha256(document)},
     }
     return build_public_handoff(document, status)
+
+
+def test_apply_loader_accepts_factor_only_targeted_source_remediation(tmp_path: Path) -> None:
+    artifact = factor_artifact()
+    payload = artifact["payload"]
+    payload["refresh_type"] = "targeted_source_remediation"
+    payload["scope"]["allowed_protocol_fields"] = []
+    payload["changes"]["protocol_fields"] = {}
+    artifact["integrity"]["payload_sha256"] = canonical_sha256(payload)
+    unsigned = deepcopy(artifact)
+    unsigned["integrity"].pop("artifact_sha256")
+    artifact["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+    path = tmp_path / "targeted-source-remediation.json"
+    path.write_text(json.dumps(artifact), encoding="utf-8")
+
+    loaded = load_public_handoff(path)
+    assert loaded.payload["refresh_type"] == "targeted_source_remediation"
 
 
 def authorization_receipt(**overrides) -> dict:
