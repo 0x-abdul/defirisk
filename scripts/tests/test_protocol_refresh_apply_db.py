@@ -102,7 +102,11 @@ def handoff(*, changed: bool) -> PublicHandoff:
             "allowed_surface_fields": [],
             "allowed_deployment_fields": [],
         },
-        "baseline": {"target_sha256": "a" * 64, "other_protocols_sha256": "b" * 64},
+        "baseline": {
+            "target_sha256": "a" * 64,
+            "other_protocols_sha256": "b" * 64,
+            "current_factor_scores_sha256": canonical_sha256([]),
+        },
         "expected_result": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none", "active_factor_count": 0, "surface_results": {"v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"}}},
         "changes": {
             "protocol_fields": {"description": "updated"} if changed else {},
@@ -263,6 +267,51 @@ def test_preflight_rejects_backward_date_before_snapshot_or_plan() -> None:
         with pytest.raises(ContractError, match="predates current last_refreshed"):
             preflight(Connection(), handoff(changed=False))
     snapshots.assert_not_called()
+
+
+def test_preflight_rejects_handoff_from_a_different_target_baseline() -> None:
+    document = handoff(changed=False)
+    current = before_details(document)
+    current["raw_target_sha256"] = "d" * 64
+
+    class Cursor:
+        query = ""
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def execute(self, query, *_args) -> None:
+            self.query = query
+
+        def fetchall(self):
+            if "last_refreshed" in self.query:
+                return [(date(2026, 7, 11),)]
+            if "rubric_versions" in self.query:
+                return [("v1.7.0",)]
+            if "FROM factors" in self.query:
+                return [("RD-F-001",)]
+            raise AssertionError(f"unexpected fetchall query: {self.query}")
+
+        def fetchone(self):
+            return (1,)
+
+    class Connection:
+        def cursor(self):
+            return Cursor()
+
+    columns = {table: set(required) for table, required in refresh_db.REQUIRED_COLUMNS.items()}
+    with (
+        patch.object(refresh_db, "_table_columns", return_value=columns),
+        patch.object(refresh_db, "_production_topology_rows", return_value=[("v3", "active", True, True)]),
+        patch.object(refresh_db, "snapshot_hashes", return_value=current),
+        patch.object(refresh_db, "database_identity") as identity,
+        pytest.raises(ContractError, match="reissue from the current production baseline"),
+    ):
+        preflight(Connection(), document)
+    identity.assert_not_called()
 
 
 def test_production_topology_must_match_hash_bound_attestation() -> None:

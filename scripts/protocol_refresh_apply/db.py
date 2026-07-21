@@ -674,6 +674,13 @@ def preflight(conn: Any, handoff: PublicHandoff) -> dict[str, Any]:
         hashes["normalized_target"],
         document["baseline"]["current_factor_scores_sha256"],
     )
+    local_baseline = document.get("baseline", {})
+    local_target_sha256 = local_baseline.get("target_sha256")
+    if local_target_sha256 != hashes["raw_target_sha256"]:
+        raise ContractError(
+            "handoff target baseline does not match the production target; "
+            "reissue from the current production baseline"
+        )
     identity = database_identity(conn)
     production_plan = build_production_plan(
         handoff,
