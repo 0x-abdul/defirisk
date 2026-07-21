@@ -102,7 +102,11 @@ def handoff(*, changed: bool) -> PublicHandoff:
             "allowed_surface_fields": [],
             "allowed_deployment_fields": [],
         },
-        "baseline": {"target_sha256": "a" * 64, "other_protocols_sha256": "b" * 64},
+        "baseline": {
+            "target_sha256": "a" * 64,
+            "other_protocols_sha256": "b" * 64,
+            "current_factor_scores_sha256": canonical_sha256([]),
+        },
         "expected_result": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none", "active_factor_count": 0, "surface_results": {"v3": {"headline_grade": "B", "risk_score": "17.41", "cap_state": "none"}}},
         "changes": {
             "protocol_fields": {"description": "updated"} if changed else {},
