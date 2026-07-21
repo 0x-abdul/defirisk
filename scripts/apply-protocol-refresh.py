@@ -16,7 +16,7 @@ from protocol_refresh_apply.contracts import (
     load_production_authorization_receipt,
     load_public_handoff,
 )
-from protocol_refresh_apply.db import apply_refresh, build_apply_plan, preflight
+from protocol_refresh_apply.db import apply_refresh, build_apply_plan, preflight, reconcile_failed_reservation
 from protocol_refresh_apply.runners import (
     make_compose_runner,
     make_dump_runner,
@@ -51,6 +51,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--plan", action="store_true", help="Read-only database plan and drift check")
     mode.add_argument("--apply", action="store_true", help="Perform the separately authorized apply")
+    mode.add_argument("--reconcile-failed-reservation", action="store_true", help="Release only a proved-compensated failed reservation")
     parser.add_argument("--db-url", help="PostgreSQL URL; otherwise DATABASE_URL is used")
     parser.add_argument(
         "--plan-out",
@@ -79,7 +80,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Disposable dump root; defaults to a new temporary directory",
     )
     args = parser.parse_args(argv)
-    if args.apply:
+    if args.apply or args.reconcile_failed_reservation:
         if args.plan_out is not None:
             parser.error("--plan-out is valid only with --plan")
         missing = [
@@ -92,7 +93,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             if value is None
         ]
         if missing:
-            parser.error("--apply requires " + ", ".join(missing))
+            parser.error("--apply and --reconcile-failed-reservation require " + ", ".join(missing))
     return args
 
 
@@ -170,7 +171,7 @@ def main(argv: list[str] | None = None) -> int:
         db_identity = details["database_identity"]
         authorization = load_production_authorization_receipt(
             args.authorization_receipt,
-            expected_operation="apply_protocol_refresh",
+            expected_operation=("reconcile_protocol_refresh" if args.reconcile_failed_reservation else "apply_protocol_refresh"),
             artifact_sha256=handoff.artifact_sha256,
             plan_sha256=details["plan_sha256"],
             refresh_id=plan.refresh_id,
@@ -184,6 +185,11 @@ def main(argv: list[str] | None = None) -> int:
             artifact_sha256=handoff.artifact_sha256,
             database_identity=db_identity,
         )
+        if args.reconcile_failed_reservation:
+            result = reconcile_failed_reservation(conn, handoff, authorization=authorization, backup=backup)
+            _write_receipt(receipt_out, result)
+            _print(result)
+            return 0
         out_root = (
             args.dump_out_root.resolve()
             if args.dump_out_root is not None

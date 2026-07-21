@@ -197,7 +197,10 @@ export function getProtocolByReviewPath(review: string): ProtocolDetail | null {
   const detail = unwrapEnvelope<ProtocolDetail>(env, 'protocol_data');
   if (!detail) return null;
 
-  return applyComputedGradeFields(detail);
+  // A pre-publication record can legitimately be awaiting factor scoring.
+  // Keep its private review page renderable (and explicitly noindex) instead
+  // of returning a redirect page that omits the review markers.
+  return applyComputedGradeFields(detail) ?? detail;
 }
 
 /** All hacks in the historical ledger (lightweight rows; per-hack details via getHack). */

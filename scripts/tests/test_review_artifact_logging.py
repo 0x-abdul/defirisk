@@ -13,6 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECK_SCRIPT = REPO_ROOT / "site" / "scripts" / "check-review-artifacts.mjs"
 SAFE_BUILD_SCRIPT = REPO_ROOT / "site" / "scripts" / "run-private-safe-build.mjs"
 SITE_PACKAGE = REPO_ROOT / "site" / "package.json"
+DATA_LOADERS = REPO_ROOT / "site" / "src" / "lib" / "data-loaders.ts"
 
 
 def run_review_check(api_root: Path, dist_root: Path) -> subprocess.CompletedProcess:
@@ -170,6 +171,37 @@ def test_review_artifact_exception_does_not_log_tokenized_path(tmp_path) -> None
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_staged_review_marker_check_accepts_all_98_complete_review_pages(tmp_path) -> None:
+    api_root = tmp_path / "api-root"
+    dist_root = tmp_path / "site-dist"
+
+    for index in range(98):
+        review = f"review-fixture-{index:03d}"
+        review_dir = api_root / "unpublished" / review
+        review_dir.mkdir(parents=True)
+        (review_dir / "index.json").write_text("{}", encoding="utf-8")
+        html_dir = dist_root / "unpublished" / review
+        html_dir.mkdir(parents=True)
+        (html_dir / "index.html").write_text(
+            "review-banner Pending review noindex,nofollow", encoding="utf-8"
+        )
+
+    result = run_review_check(api_root, dist_root)
+    output = result.stdout + result.stderr
+
+    assert result.returncode == 0
+    assert "verified 98 unpublished review page(s)" in output
+    assert str(api_root) not in output
+    assert str(dist_root) not in output
+
+
+def test_scoreless_unpublished_details_stay_renderable_for_private_review() -> None:
+    loaders = DATA_LOADERS.read_text(encoding="utf-8")
+
+    assert "return applyComputedGradeFields(detail) ?? detail;" in loaders
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
 @pytest.mark.parametrize(("exit_code", "expected_result"), [(0, "true"), (1, "false")])
 def test_private_build_child_output_is_always_withheld(
     exit_code: int,
@@ -318,6 +350,24 @@ def test_private_build_default_step_contract() -> None:
         ["review artifact check", "check-review-artifacts.mjs", []],
         ["Open Graph image build", "build-og-images.mjs", []],
     ]
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="node is not installed")
+def test_private_build_forwards_astro_output_root() -> None:
+    script_uri = SAFE_BUILD_SCRIPT.as_uri()
+    expression = (
+        f"import {{ defaultBuildSteps }} from {json.dumps(script_uri)};"
+        "process.stdout.write(JSON.stringify(defaultBuildSteps(['--outDir', '/staging/site-dist'])[0][2]));"
+    )
+    result = subprocess.run(
+        ["node", "--input-type=module", "--eval", expression],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    assert json.loads(result.stdout) == ["build", "--outDir", "/staging/site-dist"]
 
 
 def test_site_build_uses_private_safe_runner() -> None:

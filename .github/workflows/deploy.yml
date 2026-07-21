@@ -1,150 +1,38 @@
-# SSH-based deploy to Hetzner VPS.
-#
-# Triggers on pushes to main that touch the site or deployment code. Changes
-# limited to data/api do not trigger this workflow; the nightly workflow
-# rebuilds the site on the VPS directly after refreshing and exporting data.
-#
-# Prerequisites — configure in repo Settings → Secrets → Actions:
-#   VPS_HOST       IPv4 address of the Hetzner CX32 VPS
-#   VPS_SSH_KEY    Private key for the github-actions-deploy key
-#                  (add the corresponding public key to rdapp@vps:~/.ssh/authorized_keys)
-#
-# Manual dispatch: Actions UI → Deploy to VPS → Run workflow
-# Force rebuild without a code change: use workflow_dispatch below.
-
 name: Deploy to VPS
-
 on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/deploy.yml'
-      - 'site/**'
       - 'scripts/ci/sync-vps-checkout.sh'
-      - 'scripts/compose.py'
-      - 'scripts/detect-grade-changes.py'
-      - 'scripts/dump.py'
-      - 'scripts/prune-history.py'
-      - 'scripts/refresh-continuous.py'
-      - 'scripts/rubric.py'
+      - '.github/workflows/deploy.yml'
+      - 'scripts/ci/deploy-vps-safe.sh'
+      - 'scripts/ci/deploy-publication-policy.json'
+      - 'scripts/ci/validate-staged-published-api.py'
+      - 'scripts/ci/verify-deployment-publication-state.py'
+      - 'site/**'
+      - 'scripts/**'
       - 'db/migrations/**'
   workflow_dispatch:
     inputs:
-      reason:
-        description: 'Reason for manual deploy'
-        required: false
-        default: 'force rebuild'
-
-# Serialize deploys. Two PRs merged seconds apart would otherwise run parallel
-# SSH deploys that both `npm ci` into the same VPS dir and clobber each other's
-# node_modules (build then fails with "astro: not found"). cancel-in-progress is
-# false so a queued deploy waits for the running one to finish rather than
-# cancelling it — every merged change still gets deployed, just one at a time.
-concurrency:
-  group: deploy-vps
-  cancel-in-progress: false
-
-permissions:
-  contents: read
-
+      reason: {description: 'Reason for manual deploy', required: false, default: 'force rebuild'}
+concurrency: {group: deploy-vps, cancel-in-progress: false}
+permissions: {contents: read}
 jobs:
   deploy:
-    name: SSH deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-        with:
-          ref: main
-
-      - name: Deploy via SSH
-        env:
-          VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        with: {ref: main}
+      - name: Stage, validate, and atomically promote via SSH
+        # deploy-vps-safe.sh performs the shared sync-vps-checkout.sh contract before staging.
+        env: {VPS_HOST: '${{ secrets.VPS_HOST }}', VPS_SSH_KEY: '${{ secrets.VPS_SSH_KEY }}'}
         run: |
           (umask 177; echo "$VPS_SSH_KEY" > /tmp/deploy_key)
           trap 'rm -f /tmp/deploy_key' EXIT
           mkdir -p ~/.ssh && chmod 700 ~/.ssh
           echo "$VPS_HOST ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpn9P0m/4sJCsgGPubzi78FvRs9Q82TtcI022O4lgwe" >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
-
-          ssh -i /tmp/deploy_key \
-              -o StrictHostKeyChecking=yes \
-              -o ConnectTimeout=30 \
-              rdapp@"$VPS_HOST" \
-              'bash -s -- /opt/riskdashboard origin main' \
-              < scripts/ci/sync-vps-checkout.sh
-
-          ssh -i /tmp/deploy_key \
-              -o StrictHostKeyChecking=yes \
-              -o ConnectTimeout=30 \
-          rdapp@"$VPS_HOST" << 'REMOTE'
-            set -euo pipefail
-            cd /opt/riskdashboard
-
-            echo "==> Regenerating API export..."
-            if [ -f .env ]; then
-              set -a
-              . ./.env
-              set +a
-            else
-              echo "Missing .env on VPS; cannot regenerate data/api"
-              exit 1
-            fi
-
-            if [ -z "${DATABASE_URL:-}" ] && [ -n "${LOCAL_DATABASE_URL:-}" ]; then
-              export DATABASE_URL="$LOCAL_DATABASE_URL"
-            fi
-
-            if [ -z "${DATABASE_URL:-}" ]; then
-              echo "DATABASE_URL/LOCAL_DATABASE_URL is required to regenerate data/api"
-              exit 1
-            fi
-
-            PYTHON="python3"
-            if [ -x venv/bin/python ]; then
-              PYTHON="venv/bin/python"
-            fi
-
-            "$PYTHON" - << 'PY'
-          import importlib.util
-          import subprocess
-          import sys
-
-          if importlib.util.find_spec("psycopg") is None:
-              subprocess.check_call([sys.executable, "-m", "pip", "install", "psycopg[binary]"])
-          PY
-
-            "$PYTHON" scripts/dump.py
-
-            echo "==> Rebuilding site..."
-            . scripts/ci/use-node-22.sh
-            cd site
-            # Keep each build step on its own line: under `set -e` a failing
-            # command in an `&&` list does NOT abort the script, so chaining
-            # `npm ci && npm run build` let a broken build report success and
-            # serve a stale site. Separate statements fail loudly.
-            #
-            # Redirect npm's cache to a repo-local dir rdapp owns: the default
-            # ~/.npm contains root-owned files from an earlier root install,
-            # which makes `npm ci` fail with EACCES.
-            export npm_config_cache="/opt/riskdashboard/.npm-cache"
-            npm ci --prefer-offline
-            npm run build
-            cd ..
-
-            echo "==> Deploy complete at $(date -u +%Y-%m-%dT%H:%MZ)"
-          REMOTE
-
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=yes -o ConnectTimeout=30 rdapp@"$VPS_HOST" 'bash -s -- /opt/riskdashboard origin main' < scripts/ci/deploy-vps-safe.sh
       - name: Smoke check
-        if: success()
-        run: |
-          sleep 5   # brief settle time after Nginx picks up new files
-          STATUS=$(curl -o /dev/null -s -w "%{http_code}" \
-            https://defirisk.co/)
-          if [ "$STATUS" != "200" ]; then
-            echo "Smoke check failed: HTTP $STATUS"
-            exit 1
-          fi
-          echo "Smoke check passed: HTTP $STATUS"
+        run: test "$(curl -o /dev/null -s -w '%{http_code}' https://defirisk.co/)" = 200

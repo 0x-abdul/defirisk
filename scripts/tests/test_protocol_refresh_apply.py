@@ -17,6 +17,7 @@ from protocol_refresh_apply.contracts import (
     ContractError,
     canonical_sha256,
     load_backup_receipt,
+    load_public_handoff,
     validate_backup_receipt,
     normalize_data_as_of,
     validate_apply_payload,
@@ -182,6 +183,23 @@ def factor_artifact(
     return build_public_handoff(document, status)
 
 
+def test_apply_loader_accepts_factor_only_targeted_source_remediation(tmp_path: Path) -> None:
+    artifact = factor_artifact()
+    payload = artifact["payload"]
+    payload["refresh_type"] = "targeted_source_remediation"
+    payload["scope"]["allowed_protocol_fields"] = []
+    payload["changes"]["protocol_fields"] = {}
+    artifact["integrity"]["payload_sha256"] = canonical_sha256(payload)
+    unsigned = deepcopy(artifact)
+    unsigned["integrity"].pop("artifact_sha256")
+    artifact["integrity"]["artifact_sha256"] = canonical_sha256(unsigned)
+    path = tmp_path / "targeted-source-remediation.json"
+    path.write_text(json.dumps(artifact), encoding="utf-8")
+
+    loaded = load_public_handoff(path)
+    assert loaded.payload["refresh_type"] == "targeted_source_remediation"
+
+
 def authorization_receipt(**overrides) -> dict:
     value = {
         "schema_version": "1.0",
@@ -300,6 +318,24 @@ def test_protocol_authorization_is_separate_and_exactly_bound() -> None:
         )
     with pytest.raises(ContractError, match="schema_version|receipt_type"):
         validate_production_authorization_receipt(public_handoff().artifact)
+
+
+def test_reconciliation_authorization_is_exactly_bound_to_one_refresh() -> None:
+    receipt = authorization_receipt()
+    receipt["operation"] = "reconcile_protocol_refresh"
+    normalized = validate_production_authorization_receipt(
+        receipt,
+        expected_operation="reconcile_protocol_refresh",
+        artifact_sha256=SHA_A,
+        plan_sha256=SHA_B,
+        refresh_id="2026-07-11-batch-01",
+        family_slug="example",
+        database_identity="postgresql:risk:operator@db.example:5432",
+        now=datetime(2026, 7, 11, 1, tzinfo=timezone.utc),
+    )
+    assert normalized["operation"] == "reconcile_protocol_refresh"
+    with pytest.raises(ContractError, match="operation"):
+        validate_production_authorization_receipt(receipt)
 
 
 def test_migration_authorization_binds_exact_plan_and_allowlist() -> None:

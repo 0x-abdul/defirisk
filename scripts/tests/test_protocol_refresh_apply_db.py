@@ -51,6 +51,30 @@ class FakeConnection:
         return self._Cursor()
 
 
+class TopologyConnection:
+    def __init__(self) -> None:
+        self.queries: list[str] = []
+
+    class _Cursor:
+        def __init__(self, parent: "TopologyConnection") -> None:
+            self.parent = parent
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def execute(self, query: str, _params: tuple[str, ...]) -> None:
+            self.parent.queries.append(query)
+
+        def fetchall(self):
+            return [("v3", "active", True, True)]
+
+    def cursor(self):
+        return self._Cursor(self)
+
+
 def handoff(*, changed: bool) -> PublicHandoff:
     payload = {
         "schema_version": "1.0",
@@ -251,6 +275,25 @@ def test_production_topology_must_match_hash_bound_attestation() -> None:
         verify_production_topology(document, drifted_rows)
 
 
+def test_date_only_topology_revalidation_uses_select_without_row_lock() -> None:
+    conn = TopologyConnection()
+
+    assert refresh_db._production_topology_rows(conn, "example", lock=False) == [
+        ("v3", "active", True, True)
+    ]
+    assert len(conn.queries) == 1
+    assert "FOR UPDATE OF ps" not in conn.queries[0]
+
+
+def test_surface_topology_revalidation_retains_update_lock() -> None:
+    conn = TopologyConnection()
+
+    refresh_db._production_topology_rows(conn, "example", lock=True)
+
+    assert len(conn.queries) == 1
+    assert "FOR UPDATE OF ps" in conn.queries[0]
+
+
 def test_surface_status_change_cannot_alter_attested_gradeable_topology() -> None:
     document = handoff(changed=False).payload
     document["scope"]["allowed_surface_fields"] = ["status"]
@@ -300,8 +343,36 @@ def test_family_lock_precedes_fresh_serializable_transaction() -> None:
     ]
 
 
-def test_apply_transaction_revalidates_and_locks_topology_before_hashing() -> None:
+def test_date_only_apply_revalidates_topology_without_update_lock_before_hashing() -> None:
     document = handoff(changed=False)
+    conn = FakeConnection()
+    with (
+        patch.object(
+            refresh_db,
+            "_production_topology_rows",
+            side_effect=ContractError("transaction topology drift"),
+        ) as topology,
+        patch.object(refresh_db, "normalized_snapshot") as snapshot,
+    ):
+        with pytest.raises(ContractError, match="transaction topology drift"):
+            refresh_db.apply_transaction(
+                conn,
+                document,
+                production_plan={"production_before": {}},
+                authorization_id="approval:123",
+                backup_id="backup:123",
+            )
+
+    topology.assert_called_once_with(conn, "example", lock=False)
+    snapshot.assert_not_called()
+
+
+def test_surface_change_revalidates_topology_with_update_lock_before_reservation() -> None:
+    document = handoff(changed=False)
+    document.payload["scope"]["allowed_surface_fields"] = ["status"]
+    document.payload["changes"]["surfaces"] = [
+        {"surface_slug": "v3", "fields": {"status": "active"}}
+    ]
     conn = FakeConnection()
     with (
         patch.object(

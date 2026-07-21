@@ -641,6 +641,7 @@ def validate_production_authorization_receipt(
     operation_aliases = {
         "apply_protocol_refresh": "apply_protocol_refresh",
         "protocol_refresh_apply": "apply_protocol_refresh",
+        "reconcile_protocol_refresh": "reconcile_protocol_refresh",
         "apply_refresh_migrations": "apply_refresh_migrations",
     }
     operation = operation_aliases.get(operation_value)
@@ -667,7 +668,7 @@ def validate_production_authorization_receipt(
     actual_artifact_sha: str | None = None
     actual_plan_sha: str | None = None
     actual_migrations: list[str] | None = None
-    if operation == "apply_protocol_refresh":
+    if operation in {"apply_protocol_refresh", "reconcile_protocol_refresh"}:
         actual_refresh_id = _require_text(
             receipt.get("refresh_id"), "authorization.refresh_id"
         )
@@ -707,7 +708,7 @@ def validate_production_authorization_receipt(
     authorized_at = _parse_timestamp(receipt.get("authorized_at"), "authorization.authorized_at")
 
     expected = {"database_identity": (db_identity, database_identity)}
-    if operation == "apply_protocol_refresh":
+    if operation in {"apply_protocol_refresh", "reconcile_protocol_refresh"}:
         expected.update(
             {
                 "refresh_id": (actual_refresh_id, refresh_id),

@@ -23,8 +23,11 @@ const REPO_ROOT = path.resolve(SITE_ROOT, '..'); // repo root
 const OVERRIDE_ROOT = process.env.DEFIRISK_API_ROOT
   ? path.resolve(process.env.DEFIRISK_API_ROOT)
   : null;
+const DIST_ROOT = process.env.DEFIRISK_DIST_ROOT
+  ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
+  : path.join(SITE_ROOT, 'dist');
 const SRC = OVERRIDE_ROOT ?? path.join(REPO_ROOT, 'data', 'api');
-const DST = path.join(SITE_ROOT, 'dist', 'api'); // site/dist/api
+const DST = path.join(DIST_ROOT, 'api');
 const COPY_TARGET = OVERRIDE_ROOT ? path.join(DST, path.basename(OVERRIDE_ROOT)) : DST;
 
 async function exists(p) {
@@ -55,7 +58,7 @@ async function main() {
   // Strip canonical-preview fixtures from dist/. They live in public/ so the
   // dev server can serve them for visual-rebuild verification, but they should
   // not ship to production — they're design-system internals, not user-facing.
-  const distRoot = path.resolve(SITE_ROOT, 'dist');
+  const distRoot = DIST_ROOT;
   const entries = await readdir(distRoot);
   for (const name of entries) {
     if (name.startsWith('_canonical_') && name.endsWith('.html')) {

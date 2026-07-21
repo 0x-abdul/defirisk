@@ -316,7 +316,12 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
     if protocol != family:
         errors.append("protocol_slug must exactly equal the one canonical family_slug")
     surfaces = _require_unique_slugs(document.get("surface_slugs"), "surface_slugs", errors)
-    if document.get("refresh_type") not in {"full_family_refresh", "targeted_surface_update"}:
+    refresh_type = document.get("refresh_type")
+    if refresh_type not in {
+        "full_family_refresh",
+        "targeted_surface_update",
+        "targeted_source_remediation",
+    }:
         errors.append("refresh_type is invalid")
     if not isinstance(document.get("rubric_version"), str) or not document["rubric_version"]:
         errors.append("rubric_version is required")
@@ -354,7 +359,7 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
         )
         if topology.get("canonical_surface_fingerprint") != expected_fingerprint:
             errors.append("topology_contract canonical surface fingerprint is invalid")
-    if document.get("refresh_type") == "full_family_refresh":
+    if refresh_type == "full_family_refresh":
         if canonical_surfaces != surfaces:
             errors.append("full family refresh must exactly match canonical topology")
     elif not surfaces <= canonical_surfaces:
@@ -416,6 +421,8 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
             errors,
         ),
     }
+    if refresh_type == "targeted_source_remediation" and any(declared_fields.values()):
+        errors.append("targeted_source_remediation may change factor evidence only")
 
     baseline = _require_object(document.get("baseline"), "baseline", errors)
     supported_baseline_fields = {
@@ -588,6 +595,24 @@ def validate_accepted_changes(document: dict[str, Any]) -> list[str]:
             ):
                 errors.append(
                     f"{label} requires an independently verifiable public source"
+                )
+
+    if refresh_type == "targeted_source_remediation":
+        if any(
+            changes.get(key)
+            for key in ("protocol_fields", "family_fields", "surfaces", "deployments")
+        ):
+            errors.append(
+                "targeted_source_remediation may not change protocol, family, "
+                "surface, or deployment fields"
+            )
+        if isinstance(factor_changes, list):
+            changed_factor_ids = {
+                item.get("factor_id") for item in factor_changes if isinstance(item, dict)
+            }
+            if changed_factor_ids != allowed_factors or len(factor_changes) != len(allowed_factors):
+                errors.append(
+                    "targeted_source_remediation must replace every and only allowed factor"
                 )
 
     return errors
