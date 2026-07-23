@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+from contextlib import nullcontext
 import json
 import os
 import shutil
@@ -1200,21 +1201,36 @@ def prune_generated_output(api_dir: Path) -> None:
 # Main dump logic
 # ---------------------------------------------------------------------------
 
-def run_dump(out_root: Path, dry_run: bool) -> None:
-    url = get_connection_url()
+def run_dump(
+    out_root: Path,
+    dry_run: bool,
+    *,
+    connection: Any | None = None,
+) -> None:
+    """Export dashboard JSON, optionally using a caller-owned connection.
 
-    print("Connecting to database…")
-    try:
-        # connect_timeout=10: matches the importer + compose.py guard. dump.py
-        # is the slowest of the three (full table scans), but a hung connect
-        # at start should still fail fast.
-        conn = psycopg.connect(url, row_factory=dict_row, connect_timeout=10)
-    except Exception as exc:
-        print(f"ERROR: Could not connect to database.\n  {exc}", file=sys.stderr)
-        sys.exit(1)
+    A supplied connection stays outside this function's transaction lifecycle,
+    so callers can export their own uncommitted writes without an implicit
+    commit or close.
+    """
+    owns_connection = connection is None
+    if owns_connection:
+        url = get_connection_url()
 
-    with conn:
-        with conn.cursor() as cur:
+        print("Connecting to database…")
+        try:
+            # connect_timeout=10: matches the importer + compose.py guard.
+            # dump.py is the slowest of the three (full table scans), but a
+            # hung connect at start should still fail fast.
+            conn = psycopg.connect(url, row_factory=dict_row, connect_timeout=10)
+        except Exception as exc:
+            print(f"ERROR: Could not connect to database.\n  {exc}", file=sys.stderr)
+            sys.exit(1)
+    else:
+        conn = connection
+
+    with (conn if owns_connection else nullcontext()):
+        with conn.cursor(row_factory=dict_row) as cur:
             print("Fetching data…")
             generated_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
             active_rubric = fetch_active_rubric(cur)
@@ -1238,7 +1254,8 @@ def run_dump(out_root: Path, dry_run: bool) -> None:
             grade_snapshots_by_surface = fetch_grade_snapshots_by_surface(cur)
             grade_changes = fetch_grade_changes(cur)
 
-    conn.close()
+    if owns_connection:
+        conn.close()
 
     # ------------------------------------------------------------------
     # Counts summary (always printed)

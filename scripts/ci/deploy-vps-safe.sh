@@ -3,6 +3,52 @@ set -euo pipefail
 
 repo="$1"; remote="$2"; branch="$3"; cd "$repo"
 state_root="${XDG_STATE_HOME:-$repo/.local/state}/riskdashboard/deploy"
+runtime_excludes=( ':(exclude)data/api/**' ':(exclude)site/dist/**' )
+fail_dirty_deploy_tree() { printf '%s\n' 'ERROR: deployment refused: live checkout has unresolved or code-relevant local state' >&2; exit 1; }
+is_runtime_only_untracked_path() {
+  local path="$1" state_rel=""
+  # Runtime output, operator recovery/state, and the exact retained
+  # non-participating operator remnants below are preserved. Builds and
+  # validation run only from a clean detached worktree at target_head; the
+  # control service executes its versioned copy under /usr/local/lib.
+  case "$path" in
+    data/api|data/api/*|site/dist|site/dist/*|site/dist.prev.*|site/dist.prev.*/*|\
+    .deploy-backups|.deploy-backups/*|backups|backups/*|db/backups|db/backups/*|\
+    .local/state|.local/state/*|.node|.node/*|.npm-cache|.npm-cache/*|\
+    risk-dashboard|risk-dashboard/*)
+      return 0
+      ;;
+    scripts/_test_control_service.py|scripts/backup-local.sh|scripts/backup-pipeline-r2.sh|\
+    scripts/control_service.py|scripts/nightly.sh|\
+    deploy/caddy-control-snippet.Caddyfile|deploy/riskdashboard-control.service|\
+    docs/ops/control-service.md|docs/ops/production-access.md|\
+    site/src/lib/freshness-data.ts|site/src/lib/freshness.test.ts|\
+    site/src/lib/freshness.ts|issue12_new)
+      return 0
+      ;;
+  esac
+  case "$state_root" in
+    "$repo"/*)
+      state_rel="${state_root#"$repo"/}"
+      case "$path" in "$state_rel"|"$state_rel"/*) return 0;; esac
+      ;;
+  esac
+  return 1
+}
+preflight_live_checkout() {
+  local git_dir path
+  git_dir="$(git -C "$repo" rev-parse --git-dir 2>/dev/null)" || fail_dirty_deploy_tree
+  test -z "$(git -C "$repo" ls-files -u 2>/dev/null)" || fail_dirty_deploy_tree
+  test ! -e "$git_dir/rebase-merge" && test ! -e "$git_dir/rebase-apply" || fail_dirty_deploy_tree
+  git -C "$repo" rev-parse -q --verify CHERRY_PICK_HEAD >/dev/null 2>&1 && fail_dirty_deploy_tree || true
+  git -C "$repo" rev-parse -q --verify REVERT_HEAD >/dev/null 2>&1 && fail_dirty_deploy_tree || true
+  git -C "$repo" diff --quiet -- . "${runtime_excludes[@]}" || fail_dirty_deploy_tree
+  git -C "$repo" diff --cached --quiet -- . "${runtime_excludes[@]}" || fail_dirty_deploy_tree
+  while IFS= read -r -d '' path; do
+    is_runtime_only_untracked_path "$path" || fail_dirty_deploy_tree
+  done < <(git -C "$repo" ls-files --others --exclude-standard -z)
+}
+preflight_live_checkout
 old_head="$(git rev-parse HEAD)"; stamp="$(date -u +%Y%m%dT%H%M%SZ)"; run="$state_root/$stamp"
 mkdir -p -m 700 "$state_root" >/dev/null 2>&1 || { printf '%s\n' 'ERROR: deployment state unavailable' >&2; exit 1; }
 test -O "$state_root"; test -w "$state_root" -a -x "$state_root"
@@ -11,7 +57,6 @@ mkdir -m 700 "$run" >/dev/null 2>&1 || { printf '%s\n' 'ERROR: deployment state 
 stage="$run/staging"; backup="$run/backup"; mkdir -m 700 "$stage" "$backup" >/dev/null 2>&1 || { printf '%s\n' 'ERROR: deployment state unavailable' >&2; exit 1; }
 manifest="$run/manifest.json"; umask 077
 stage_worktree="$stage/repo"; stage_worktree_ready=0
-runtime_excludes=( ':(exclude)data/api/**' ':(exclude)site/dist/**' )
 
 tree_digest() {
   test -d "$1" || { printf '%s\n' 'ERROR: deployment artifact digest unavailable' >&2; return 1; }

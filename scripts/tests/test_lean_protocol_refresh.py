@@ -1,0 +1,698 @@
+from __future__ import annotations
+
+import copy
+import importlib.util
+import sys
+from pathlib import Path
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from lean_protocol_refresh import (
+    ContractError,
+    OperatorContext,
+    RUBRIC_VERSION,
+    apply_batch,
+    build_plan,
+    render_plan,
+)
+from lean_protocol_refresh.contracts import validate_change_set
+from lean_protocol_refresh.execution import BatchState, ProtocolState
+
+
+SCRIPT_PATH = Path(__file__).resolve().parents[1] / "apply-lean-protocol-refresh.py"
+
+
+def _runner_module():
+    spec = importlib.util.spec_from_file_location("lean_refresh_runner", SCRIPT_PATH)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def operator_context() -> OperatorContext:
+    return OperatorContext(
+        operations_adapter="reviewed_adapter:create",
+        production_target="risk-production/postgres",
+        backup="s3://reviewed-backups/refresh-2026-07-23.dump",
+        transaction_command="apply one family transaction",
+        repository="owner/risk-dashboard",
+        base_branch="main",
+        deployment="deploy workflow production",
+        live_check="https://risk.example.org/protocols/falcon",
+        rollback="rollback failed family; restore batch backup if required",
+    )
+
+
+def factor_row(factor_id: str, score: str, url: str, summary: str) -> dict:
+    return {
+        "factor_id": factor_id,
+        "score": score,
+        "evidence_summary": summary,
+        "sources": [{"url": url, "title": "Public evidence"}],
+    }
+
+
+def change_set(*, second: bool = False) -> dict:
+    protocols = [
+        {
+            "family_slug": "falcon",
+            "surface_slugs": ["default"],
+            "topology": {
+                "mode": "preserve",
+                "family_slug": "falcon",
+                "surface_slugs": ["default"],
+                "deployment_targets": [],
+            },
+            "outcome": "changed",
+            "last_refreshed": "2026-07-23",
+            "resulting_grade": "B",
+            "rubric_version": RUBRIC_VERSION,
+            "changes": [
+                {
+                    "factor_id": "RD-F-001",
+                    "old_value": factor_row(
+                        "RD-F-001",
+                        "yellow",
+                        "https://old.example.org/falcon",
+                        "Previous public evidence.",
+                    ),
+                    "new_value": factor_row(
+                        "RD-F-001",
+                        "green",
+                        "https://docs.example.org/falcon",
+                        "Updated public evidence.",
+                    ),
+                    "evidence": [
+                        {"url": "https://docs.example.org/falcon", "title": "Docs"}
+                    ],
+                    "resulting_score": "green",
+                    "resulting_grade": "B",
+                }
+            ],
+        }
+    ]
+    if second:
+        protocols.append(
+            {
+                "family_slug": "maple",
+                "surface_slugs": ["default"],
+                "topology": {
+                    "mode": "preserve",
+                    "family_slug": "maple",
+                    "surface_slugs": ["default"],
+                    "deployment_targets": [],
+                },
+                "outcome": "no_change",
+                "last_refreshed": "2026-07-23",
+                "resulting_grade": "A",
+                "rubric_version": RUBRIC_VERSION,
+                "changes": [],
+            }
+        )
+    return {
+        "schema_version": "lean-protocol-refresh/v1",
+        "batch_id": "2026-07-23-pilot",
+        "refresh_date": "2026-07-23",
+        "rubric_version": RUBRIC_VERSION,
+        "protocols": protocols,
+    }
+
+
+class FakeOperations:
+    def __init__(self, states=None, fail_family=None, batch_state=None):
+        self.states = states or {}
+        self.fail_family = fail_family
+        self.batch_state = batch_state or BatchState(False, False)
+        self.calls = []
+
+    def verify_batch_backup(self, batch):
+        self.calls.append(("backup", batch.batch_id))
+
+    def read_protocol_state(self, family_slug):
+        self.calls.append(("read", family_slug))
+        return self.states.get(
+            family_slug,
+            ProtocolState(family_slug, ("default",), None),
+        )
+
+    def begin_protocol(self, protocol):
+        self.calls.append(("begin", protocol.family_slug))
+
+    def apply_protocol(self, protocol):
+        self.calls.append(("apply", protocol.family_slug))
+        if protocol.family_slug == self.fail_family:
+            raise RuntimeError("injected apply failure")
+
+    def compare_target_output(self, protocol):
+        self.calls.append(("compare", protocol.family_slug))
+
+    def commit_protocol(self, protocol):
+        self.calls.append(("commit", protocol.family_slug))
+
+    def rollback_protocol(self, protocol):
+        self.calls.append(("rollback", protocol.family_slug))
+
+    def ensure_protocol_pull_request(self, protocol):
+        self.calls.append(("pr", protocol.family_slug))
+
+    def select_publication_trigger(self, family_slug):
+        self.calls.append(("trigger", family_slug))
+
+    def merge_protocol_pull_request(self, protocol):
+        self.calls.append(("merge", protocol.family_slug))
+
+    def read_batch_state(self, batch, protocols):
+        self.calls.append(("batch-state", tuple(item.family_slug for item in protocols)))
+        return self.batch_state
+
+    def deploy_batch(self, batch, protocols):
+        self.calls.append(("deploy", tuple(item.family_slug for item in protocols)))
+
+    def verify_live(self, batch, protocols):
+        self.calls.append(("live", tuple(item.family_slug for item in protocols)))
+
+
+def test_plan_distinguishes_changed_and_no_change_protocols() -> None:
+    plan = build_plan(validate_change_set(change_set(second=True)), operator_context())
+    changed, no_change = plan.protocols
+    assert changed.pull_request == "one protocol PR"
+    assert changed.changed_factors == ("RD-F-001 (surface:default)",)
+    assert no_change.pull_request == "none"
+    assert no_change.production_write == "transaction: last_refreshed only"
+    assert plan.backup_count == plan.deployment_count == plan.confirmation_count == 1
+
+
+def test_rendered_plan_contains_exact_operator_scope_and_old_new_values() -> None:
+    batch = validate_change_set(change_set())
+    plan = build_plan(
+        batch,
+        operator_context(),
+    )
+    rendered = render_plan(plan)
+    assert "Production target: risk-production/postgres" in rendered
+    assert "rubric v1.7.0" in rendered
+    assert "rubric version: v1.7.0" in rendered
+    assert "Operations adapter: reviewed_adapter:create" in rendered
+    assert "Publication: owner/risk-dashboard (base main)" in rendered
+    assert "full-pass rows: 1" in rendered
+    assert "score changes: 1" in rendered
+    assert "row details: attached public-safe refresh.json change set" in rendered
+
+
+def test_private_source_is_rejected_before_operations() -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["evidence"][0]["url"] = (
+        "http://10.0.0.4/private-review"
+    )
+    with pytest.raises(ContractError, match="private or credentialed"):
+        validate_change_set(document)
+
+
+def test_local_source_reference_is_rejected_even_with_public_url() -> None:
+    document = change_set()
+    source = document["protocols"][0]["changes"][0]["evidence"][0]
+    source["reference"] = r"C:\private\review.md"
+    with pytest.raises(ContractError, match="local path"):
+        validate_change_set(document)
+
+
+def test_internal_reference_outside_source_is_rejected() -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["new_value"]["evidence_summary"] = (
+        r"See C:\private\review.md"
+    )
+    with pytest.raises(ContractError, match="internal reference or local path"):
+        validate_change_set(document)
+
+
+@pytest.mark.parametrize(
+    "reference",
+    [
+        r"See (C:\private\review.md)",
+        "See .research/protocols/falcon/notes.md",
+        "See docs/private-review.md",
+        "See db/private-review.json",
+        "See file:///tmp/private-review.md",
+        r"See \\private-server\share\private-review.md",
+        r"See ..\private\private-review.md",
+        "See ./private/private-review.md",
+        "See /etc/private-review.md",
+        "See /var/private-review.json",
+        "See /srv/private-review.txt",
+        "See /root/private-review.yaml",
+        "See /mnt/private-review.csv",
+        "See /workspace/private-review.md",
+        r"path=\\private-server\share\private-review.md",
+        r"path=..\private\private-review.md",
+        "path:../private/private-review.md",
+        "path=/etc/private-review.conf",
+        "https://example.org,local=/etc/private-review.conf",
+    ],
+)
+def test_punctuated_or_relative_local_reference_is_rejected(reference: str) -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["new_value"]["evidence_summary"] = reference
+    with pytest.raises(ContractError, match="internal reference or local path"):
+        validate_change_set(document)
+
+
+def test_resulting_score_must_match_complete_new_row() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    row["new_value"] = {
+        "factor_id": "RD-F-001",
+        "score": "red",
+        "evidence_summary": "Unsupported mismatch.",
+        "sources": [],
+    }
+    row["resulting_score"] = "not_assessed"
+    row["evidence"] = []
+    with pytest.raises(ContractError, match="differs from new.score"):
+        validate_change_set(document)
+
+
+def test_resume_skips_semantically_applied_protocol() -> None:
+    batch = validate_change_set(change_set(second=True))
+    applied_value = batch.protocols[0].changes[0].new_value
+    state = ProtocolState(
+        family_slug="falcon",
+        surface_slugs=("default",),
+        last_refreshed="2026-07-23",
+        applied_changes=(("surface|default|RD-F-001", applied_value),),
+        resulting_grade="B",
+        rubric_version=RUBRIC_VERSION,
+    )
+    operations = FakeOperations(states={"falcon": state})
+    report = apply_batch(batch, operations)
+    assert report.results[0].status == "skipped"
+    assert ("begin", "falcon") not in operations.calls
+    assert ("begin", "maple") in operations.calls
+    assert ("pr", "falcon") in operations.calls
+    assert ("pr", "maple") not in operations.calls
+    assert sum(call[0] == "deploy" for call in operations.calls) == 1
+    assert sum(call[0] == "live" for call in operations.calls) == 1
+
+
+def test_failure_rolls_back_only_failed_protocol_and_continues() -> None:
+    document = change_set(second=True)
+    document["protocols"].reverse()
+    batch = validate_change_set(document)
+    operations = FakeOperations(fail_family="falcon")
+    report = apply_batch(batch, operations)
+    assert [(item.family_slug, item.status) for item in report.results] == [
+        ("maple", "applied"),
+        ("falcon", "failed"),
+    ]
+    assert ("commit", "maple") in operations.calls
+    assert ("rollback", "maple") not in operations.calls
+    assert ("rollback", "falcon") in operations.calls
+    assert ("commit", "falcon") not in operations.calls
+    assert ("pr", "falcon") not in operations.calls
+    assert ("pr", "maple") not in operations.calls
+    assert report.deployment_completed
+    assert report.live_verified
+
+
+def test_publication_failure_withholds_shared_deployment() -> None:
+    class PublicationFailure(FakeOperations):
+        def merge_protocol_pull_request(self, protocol):
+            super().merge_protocol_pull_request(protocol)
+            raise RuntimeError("injected PR failure")
+
+    operations = PublicationFailure()
+    report = apply_batch(validate_change_set(change_set()), operations)
+    assert report.results[0].status == "publication_failed"
+    assert report.batch_error == (
+        "deployment withheld until every changed protocol PR is merged"
+    )
+    assert not any(call[0] in {"deploy", "live"} for call in operations.calls)
+
+
+def test_earlier_publication_failure_never_reaches_final_trigger_pr() -> None:
+    document = change_set()
+    final = copy.deepcopy(document["protocols"][0])
+    final["family_slug"] = "stargate"
+    final["topology"]["family_slug"] = "stargate"
+    for change in final["changes"]:
+        change["old_value"]["factor_id"] = change["factor_id"]
+        change["new_value"]["factor_id"] = change["factor_id"]
+        for side in ("old_value", "new_value"):
+            if "family_slug" in change[side]:
+                change[side]["family_slug"] = "stargate"
+    document["protocols"].append(final)
+
+    class FirstPublicationFails(FakeOperations):
+        def merge_protocol_pull_request(self, protocol):
+            super().merge_protocol_pull_request(protocol)
+            if protocol.family_slug == "falcon":
+                raise RuntimeError("first PR failed")
+
+    operations = FirstPublicationFails()
+    report = apply_batch(validate_change_set(document), operations)
+    assert report.results[0].status == "publication_failed"
+    assert ("pr", "stargate") not in operations.calls
+    assert ("merge", "stargate") not in operations.calls
+    assert not any(call[0] in {"deploy", "live"} for call in operations.calls)
+
+
+def test_final_database_failure_moves_framework_trigger_to_last_success() -> None:
+    document = change_set()
+    final = copy.deepcopy(document["protocols"][0])
+    final["family_slug"] = "stargate"
+    final["topology"]["family_slug"] = "stargate"
+    for change in final["changes"]:
+        for side in ("old_value", "new_value"):
+            if "family_slug" in change[side]:
+                change[side]["family_slug"] = "stargate"
+    document["protocols"].append(final)
+    operations = FakeOperations(fail_family="stargate")
+    report = apply_batch(validate_change_set(document), operations)
+    assert ("trigger", "falcon") in operations.calls
+    assert ("pr", "falcon") in operations.calls
+    assert ("pr", "stargate") not in operations.calls
+    assert ("deploy", ("falcon",)) in operations.calls
+    assert report.results[1].status == "failed"
+
+
+def test_single_protocol_export_aliases_are_accepted() -> None:
+    protocol = change_set()["protocols"][0]
+    protocol["schema_version"] = "lean-protocol-refresh/v1"
+    protocol["refresh_id"] = "falcon-refresh"
+    protocol["effective_refresh_date"] = protocol.pop("last_refreshed")
+    protocol["last_refreshed"] = "2026-07-23"
+    protocol["factor_changes"] = protocol.pop("changes")
+    row = protocol["factor_changes"][0]
+    row["before"] = row.pop("old_value")
+    row["after"] = row.pop("new_value")
+    row["public_sources"] = row.pop("evidence")
+    batch = validate_change_set(protocol)
+    assert batch.batch_id == "falcon-refresh"
+    assert batch.protocols[0].changes[0].new_value["score"] == "green"
+
+
+def test_batch_date_does_not_constrain_protocol_refresh_dates() -> None:
+    document = change_set(second=True)
+    document["refresh_date"] = "2026-07-23"
+    document["protocols"][0]["last_refreshed"] = "2026-07-22"
+    batch = validate_change_set(document)
+    assert batch.refresh_date == "2026-07-23"
+    assert [item.last_refreshed for item in batch.protocols] == [
+        "2026-07-22",
+        "2026-07-23",
+    ]
+    rendered = render_plan(build_plan(batch, operator_context()))
+    assert "protocol refresh date: 2026-07-22" in rendered
+    assert "protocol refresh date: 2026-07-23" in rendered
+
+
+def test_effective_refresh_date_must_match_its_protocol_date() -> None:
+    protocol = change_set()["protocols"][0]
+    protocol["effective_refresh_date"] = "2026-07-22"
+    with pytest.raises(ContractError, match="differs from last_refreshed"):
+        validate_change_set(protocol)
+
+
+@pytest.mark.parametrize("field", ["rubric_version"])
+def test_batch_requires_the_supported_rubric_version(field: str) -> None:
+    document = change_set()
+    document[field] = "v1.6.0"
+    with pytest.raises(ContractError, match="rubric_version must be v1.7.0"):
+        validate_change_set(document)
+
+
+def test_protocol_rubric_must_match_the_batch() -> None:
+    document = change_set()
+    document["protocols"][0]["rubric_version"] = "v1.6.0"
+    with pytest.raises(ContractError, match=r"protocols\[0\]\.rubric_version must be v1.7.0"):
+        validate_change_set(document)
+
+
+def test_missing_protocol_rubric_version_is_rejected() -> None:
+    document = change_set()
+    del document["protocols"][0]["rubric_version"]
+    with pytest.raises(ContractError, match=r"protocols\[0\] fields invalid"):
+        validate_change_set(document)
+
+
+def test_internal_nested_change_shape_and_null_batch_are_accepted() -> None:
+    document = change_set()
+    document["batch_id"] = None
+    row = document["protocols"][0]["changes"][0]
+    nested = {
+        "factor_id": row["factor_id"],
+        "scope_level": "surface",
+        "target": {"family_slug": "falcon", "surface_slug": "default"},
+        "old": {
+            "factor_id": "RD-F-001",
+            "score": "yellow",
+            "evidence_summary": "Previous public evidence.",
+            "sources": [
+                {"reference": "https://old.example.org", "source_type": "docs"}
+            ],
+        },
+        "new": {
+            "factor_id": "RD-F-001",
+            "score": "green",
+            "evidence_summary": "Updated public evidence.",
+            "collection_mode": "manual",
+            "gap_reason": None,
+            "notes": "Complete public row metadata.",
+            "sources": [
+                {"reference": "https://new.example.org", "source_type": "docs"}
+            ],
+        },
+        "resulting_score": "green",
+        "resulting_grade": "B",
+    }
+    document["protocols"][0]["changes"] = [nested]
+    batch = validate_change_set(document)
+    assert batch.batch_id == "refresh-2026-07-23"
+    change = batch.protocols[0].changes[0]
+    assert len(change.evidence) == 2
+    assert change.new_value["collection_mode"] == "manual"
+    assert change.new_value["notes"] == "Complete public row metadata."
+
+
+def test_same_factor_may_change_on_two_approved_surfaces() -> None:
+    document = change_set()
+    protocol = document["protocols"][0]
+    protocol["surface_slugs"] = ["default", "institutional"]
+    protocol["topology"]["surface_slugs"] = ["default", "institutional"]
+    first = protocol["changes"][0]
+    first["scope_level"] = "surface"
+    first["target"] = "default"
+    second = dict(first)
+    second["target"] = "institutional"
+    protocol["changes"] = [first, second]
+    batch = validate_change_set(document)
+    assert [
+        (change.scope_level, change.target, change.factor_id)
+        for change in batch.protocols[0].changes
+    ] == [
+        ("surface", "default", "RD-F-001"),
+        ("surface", "institutional", "RD-F-001"),
+    ]
+
+
+def test_deployment_change_requires_exact_approved_target() -> None:
+    document = change_set()
+    protocol = document["protocols"][0]
+    protocol["topology"]["deployment_targets"] = [
+        "default/ethereum/primary"
+    ]
+    row = protocol["changes"][0]
+    row["scope_level"] = "deployment"
+    row["target"] = "default/ethereum/invented"
+    with pytest.raises(ContractError, match="approved deployments"):
+        validate_change_set(document)
+
+
+def test_resume_after_deploy_skips_second_deployment() -> None:
+    batch = validate_change_set(change_set(second=True))
+    operations = FakeOperations(batch_state=BatchState(True, False))
+    report = apply_batch(batch, operations)
+    assert report.deployment_completed
+    assert report.live_verified
+    assert not any(call[0] == "deploy" for call in operations.calls)
+    assert sum(call[0] == "live" for call in operations.calls) == 1
+
+
+def test_scalar_factor_values_are_rejected() -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["old_value"] = "yellow"
+    with pytest.raises(ContractError, match="complete factor row"):
+        validate_change_set(document)
+
+
+def test_embedded_surface_identity_must_match_wrapper() -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["new_value"]["surface_slug"] = "invented"
+    with pytest.raises(ContractError, match="surface_slug differs from wrapper"):
+        validate_change_set(document)
+
+
+def test_unapproved_complete_row_fields_are_rejected_even_when_unchanged() -> None:
+    document = change_set()
+    for side in ("old_value", "new_value"):
+        document["protocols"][0]["changes"][0][side]["protocol_slug"] = (
+            "different-family"
+        )
+        document["protocols"][0]["changes"][0][side]["rubric_version"] = "v0"
+    with pytest.raises(ContractError, match="unsupported fields"):
+        validate_change_set(document)
+
+
+def test_complete_row_sources_must_be_public() -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["old_value"]["sources"][0]["url"] = (
+        "http://127.0.0.1/internal"
+    )
+    with pytest.raises(ContractError, match="private or credentialed"):
+        validate_change_set(document)
+
+
+def test_metadata_only_change_is_visible_in_exact_plan() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    row["new_value"]["score"] = "yellow"
+    row["resulting_score"] = "yellow"
+    row["old_value"]["gap_reason"] = "source_unavailable"
+    row["new_value"]["gap_reason"] = "protocol_opacity"
+    rendered = render_plan(build_plan(validate_change_set(document), operator_context()))
+    assert "score changes: 0" in rendered
+    assert "full-pass rows: 1" in rendered
+
+
+def test_resume_comparison_is_order_insensitive() -> None:
+    document = change_set()
+    protocol = document["protocols"][0]
+    protocol["surface_slugs"] = ["default", "institutional"]
+    protocol["topology"]["surface_slugs"] = ["default", "institutional"]
+    protocol["topology"]["deployment_targets"] = [
+        "default/ethereum/primary",
+        "institutional/base/primary",
+    ]
+    second = copy.deepcopy(protocol["changes"][0])
+    second["factor_id"] = "RD-F-002"
+    second["old_value"]["factor_id"] = "RD-F-002"
+    second["new_value"]["factor_id"] = "RD-F-002"
+    protocol["changes"].append(second)
+    batch = validate_change_set(document)
+    refresh = batch.protocols[0]
+    applied_changes = tuple(
+        reversed(
+            tuple(
+                (
+                    f"{change.scope_level}|{change.target}|{change.factor_id}",
+                    change.new_value,
+                )
+                for change in refresh.changes
+            )
+        )
+    )
+    state = ProtocolState(
+        family_slug="falcon",
+        surface_slugs=tuple(reversed(refresh.surface_slugs)),
+        deployment_targets=tuple(reversed(refresh.deployment_targets)),
+        last_refreshed=refresh.last_refreshed,
+        applied_changes=applied_changes,
+        resulting_grade=refresh.resulting_grade,
+        rubric_version=refresh.rubric_version,
+    )
+    operations = FakeOperations(states={"falcon": state})
+    report = apply_batch(batch, operations)
+    assert report.results[0].status == "skipped"
+    assert ("begin", "falcon") not in operations.calls
+
+
+@pytest.mark.parametrize(
+    ("state_grade", "state_rubric"),
+    [("A", RUBRIC_VERSION), ("B", "v1.6.0")],
+)
+def test_resume_requires_resulting_grade_and_rubric_version(
+    state_grade: str, state_rubric: str
+) -> None:
+    batch = validate_change_set(change_set())
+    refresh = batch.protocols[0]
+    state = ProtocolState(
+        family_slug=refresh.family_slug,
+        surface_slugs=refresh.surface_slugs,
+        deployment_targets=refresh.deployment_targets,
+        last_refreshed=refresh.last_refreshed,
+        applied_changes=tuple(
+            (f"{change.scope_level}|{change.target}|{change.factor_id}", change.new_value)
+            for change in refresh.changes
+        ),
+        resulting_grade=state_grade,
+        rubric_version=state_rubric,
+    )
+    operations = FakeOperations(states={refresh.family_slug: state})
+    report = apply_batch(batch, operations)
+    assert report.results[0].status == "applied"
+
+
+def test_runner_requires_exact_context_for_plan_and_apply() -> None:
+    runner = _runner_module()
+    with pytest.raises(SystemExit) as plan_error:
+        runner.parse_args(["changes.json", "--plan", "--operations", "adapter:create"])
+    assert plan_error.value.code == 2
+    with pytest.raises(SystemExit) as apply_error:
+        runner.parse_args(["changes.json", "--apply", "--operations", "adapter:create"])
+    assert apply_error.value.code == 2
+
+
+def test_runner_passes_same_context_to_apply_factory() -> None:
+    runner = _runner_module()
+    batch = validate_change_set(change_set())
+    context = operator_context()
+    received = []
+
+    def factory(received_batch, received_context):
+        received.extend([received_batch, received_context])
+        return FakeOperations()
+
+    runner._resolve_operations_factory = lambda spec: factory
+    operations = runner._load_operations(context.operations_adapter, batch, context)
+    assert isinstance(operations, FakeOperations)
+    assert received == [batch, context]
+
+
+def test_public_factory_constructs_from_real_operator_context(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from lean_protocol_refresh.production import ProductionOperations, create_operations
+
+    context = operator_context()
+    context = OperatorContext(
+        **{
+            **vars(context),
+            "repository": "owner/risk-dashboard",
+        }
+    )
+    monkeypatch.setenv("DATABASE_URL", "postgresql://example")
+    monkeypatch.setenv("RISKDASHBOARD_REPOSITORY_ROOT", str(tmp_path))
+    operations = create_operations(validate_change_set(change_set()), context)
+    assert isinstance(operations, ProductionOperations)
+    assert operations.repository == "owner/risk-dashboard"
+
+
+def test_plan_resolves_adapter_without_instantiating() -> None:
+    runner = _runner_module()
+    batch = validate_change_set(change_set())
+    calls = []
+
+    def factory(*args):
+        calls.append(args)
+        return FakeOperations()
+
+    runner._resolve_operations_factory = lambda spec: factory
+    runner.load_change_set = lambda path: batch
+    args = ["change-set.json", "--plan", "--operations", "adapter:create"]
+    for name, value in vars(operator_context()).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+    assert runner.main(args) == 0
+    assert calls == []
