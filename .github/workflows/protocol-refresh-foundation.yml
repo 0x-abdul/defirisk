@@ -135,8 +135,8 @@ jobs:
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0010_protocol_refresh_idempotency.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0012_runtime_role_grants.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
-          psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-lean-protocol-refresh.py', 'protocol-refresh:fixture');"
-          if psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-lean-protocol-refresh.py', 'protocol-refresh:fixture');"; then
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"
+          if psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"; then
             echo "duplicate refresh reservation unexpectedly succeeded"
             exit 1
           fi
