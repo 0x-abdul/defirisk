@@ -42,7 +42,7 @@ def run_review_check(api_root: Path, dist_root: Path) -> subprocess.CompletedPro
         ("missing_json", 1, "missing JSON index files: 1"),
         ("missing_html", 1, "missing HTML review pages: 1"),
         ("invalid_html", 1, "missing private-review markers: 1"),
-        ("missing_pending", 1, "missing private-review markers: 1"),
+        ("missing_unpublished_banner", 1, "missing private-review markers: 1"),
         ("missing_noindex", 1, "missing private-review markers: 1"),
         ("missing_asset", 1, "missing local asset references: 1"),
         ("missing_relative_asset", 1, "missing local asset references: 1"),
@@ -73,7 +73,7 @@ def test_review_artifact_logs_only_aggregate_results(
             (review_dir / "index.json").write_text("{}", encoding="utf-8")
         if case in {
             "invalid_html",
-            "missing_pending",
+            "missing_unpublished_banner",
             "missing_noindex",
             "missing_asset",
             "missing_relative_asset",
@@ -89,42 +89,42 @@ def test_review_artifact_logs_only_aggregate_results(
             html_dir.mkdir(parents=True)
             html_by_case = {
                 "invalid_html": "invalid",
-                "missing_pending": "review-banner noindex,nofollow",
-                "missing_noindex": "review-banner Pending review",
+                "missing_unpublished_banner": "review-banner noindex,nofollow",
+                "missing_noindex": "review-banner This assessment is unpublished",
                 "missing_asset": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="/chains/mono/missing.svg">'
                 ),
                 "missing_relative_asset": (
-                    "review-banner Pending review noindex,nofollow "
+                    "review-banner This assessment is unpublished noindex,nofollow "
                     "<img src=./assets/missing.svg>"
                 ),
                 "missing_asset_with_query": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="/chains/mono/missing.svg?v=1#icon">'
                 ),
                 "encoded_traversal_asset": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="/..%2Foutside.svg">'
                 ),
                 "directory_asset": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="/chains/mono/directory.svg">'
                 ),
                 "existing_asset": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="/chains/mono/existing.svg">'
                 ),
                 "existing_relative_asset": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="./assets/existing.svg?version=1">'
                 ),
                 "external_assets": (
-                    'review-banner Pending review noindex,nofollow '
+                    'review-banner This assessment is unpublished noindex,nofollow '
                     '<img src="//cdn.example/missing.svg">'
                     '<img src="data:image/svg+xml;base64,PHN2Zy8+">'
                 ),
-                "valid": "review-banner Pending review noindex,nofollow",
+                "valid": "review-banner This assessment is unpublished noindex,nofollow",
             }
             html = html_by_case[case]
             (html_dir / "index.html").write_text(html, encoding="utf-8")
@@ -183,7 +183,7 @@ def test_staged_review_marker_check_accepts_all_98_complete_review_pages(tmp_pat
         html_dir = dist_root / "unpublished" / review
         html_dir.mkdir(parents=True)
         (html_dir / "index.html").write_text(
-            "review-banner Pending review noindex,nofollow", encoding="utf-8"
+            "review-banner This assessment is unpublished noindex,nofollow", encoding="utf-8"
         )
 
     result = run_review_check(api_root, dist_root)

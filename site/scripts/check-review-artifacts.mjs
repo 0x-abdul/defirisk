@@ -110,7 +110,7 @@ function main() {
     const html = readFileSync(htmlPath, 'utf8');
     if (
       !html.includes('review-banner') ||
-      !html.includes('Pending review') ||
+      !html.includes('This assessment is unpublished') ||
       !html.includes('noindex,nofollow')
     ) {
       invalidHtml += 1;
