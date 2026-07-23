@@ -22,6 +22,7 @@ export const protocolListSchema = z.object({
   display_name: z.string(),
   protocol_type: z.string(),
   primary_chain: z.string(),
+  deployment_chains: z.array(z.string()).optional(),
   surface_count: z.number().int().positive().optional(),
   primary_surface_slug: z.string().nullable().optional(),
   legacy_caveat: z.string().nullable().optional(),

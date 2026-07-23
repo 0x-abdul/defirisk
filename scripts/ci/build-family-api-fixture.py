@@ -49,14 +49,22 @@ def build_fixture(source: Path, output: Path) -> str:
 
     primary_deployments = copy.deepcopy(source_detail["deployments"][:2])
     secondary_deployments = copy.deepcopy(source_detail["deployments"][2:4])
-    for deployment in primary_deployments:
+    for index, deployment in enumerate(primary_deployments):
         deployment["protocol_slug"] = FAMILY_SLUG
         deployment["surface_id"] = "00000000-0000-4000-8000-000000000001"
-        deployment["deployment_key"] = deployment.get("deployment_key") or "primary"
-    for deployment in secondary_deployments:
+        deployment["deployment_key"] = f"core-{index + 1}"
+        deployment["selector"] = {"surface": "core", "chain": deployment.get("chain"), "deployment_key": deployment["deployment_key"]}
+        deployment["factor_counts"] = {"rubric_total": 184, "assessed": 160, "severity_rated": 160, "pending": 12, "not_applicable": 6, "unscored": 6}
+    # Long labels and unavailable deployment TVS are deliberate UI regression
+    # states; consumers must not substitute a surface-wide value.
+    if len(primary_deployments) > 1:
+        primary_deployments[1]["display_name"] = "Long-label fixture deployment for responsive selector verification"
+        primary_deployments[1]["tvs_usd"] = None
+    for index, deployment in enumerate(secondary_deployments):
         deployment["protocol_slug"] = FAMILY_SLUG
         deployment["surface_id"] = "00000000-0000-4000-8000-000000000002"
-        deployment["deployment_key"] = deployment.get("deployment_key") or "primary"
+        deployment["deployment_key"] = f"v2-{index + 1}"
+        deployment["selector"] = {"surface": "v2", "chain": deployment.get("chain"), "deployment_key": deployment["deployment_key"]}
 
     primary_surface = {
         "surface_id": "00000000-0000-4000-8000-000000000001",
@@ -79,6 +87,8 @@ def build_fixture(source: Path, output: Path) -> str:
         "deployment_factor_scores": {},
         "deployment_category_severities": {},
         "grade_history": primary_history,
+        "deployment_count": len(primary_deployments),
+        "factor_counts": {"rubric_total": 184, "assessed": 160, "severity_rated": 160, "pending": 12, "not_applicable": 6, "unscored": 6},
     }
     secondary_scores = copy.deepcopy(scores)
     secondary_scores[0]["score"] = "yellow"
@@ -104,7 +114,15 @@ def build_fixture(source: Path, output: Path) -> str:
         "deployment_factor_scores": {},
         "deployment_category_severities": {},
         "grade_history": secondary_history,
+        "deployment_count": len(secondary_deployments),
+        "factor_counts": {"rubric_total": 184, "assessed": 140, "severity_rated": 140, "pending": 22, "not_applicable": 12, "unscored": 10},
     }
+    # Deterministic override exercises a selected deployment without exposing
+    # an internal UUID in its URL selector.
+    primary_override = copy.deepcopy(scores)
+    primary_override[0]["score"] = "red"
+    primary_override[0]["evidence_summary"] = "Synthetic deployment-scoped override."
+    primary_surface["deployment_factor_scores"] = {primary_deployments[0]["id"]: primary_override}
 
     protocol = copy.deepcopy(source_protocol)
     protocol.update(

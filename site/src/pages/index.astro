@@ -2,10 +2,7 @@
 import Base from '../layouts/Base.astro';
 import TopBar from '../components/TopBar.astro';
 import ProtocolListView from '../components/islands/ProtocolListView';
-import type {
-  ProtocolListItem,
-  CategoryLight,
-} from '../components/islands/ProtocolListView';
+import type { ProtocolListItem, CategoryLight } from '../components/islands/ProtocolListView';
 import { listProtocols, getProtocol } from '../lib/data-loaders';
 import { RUBRIC_VERSION } from '../lib/rubric';
 import type { Letter } from '../lib/rubric';
@@ -26,13 +23,15 @@ function toNumber(v: number | string | null | undefined): number {
 const items: ProtocolListItem[] = baseList.map((p) => {
   const detail = getProtocol(p.slug);
   const proto = (detail?.protocol ?? {}) as Record<string, unknown>;
-  const lights =
-    (proto.category_lights as Record<number, CategoryLight> | undefined) ?? {};
+  const lights = (proto.category_lights as Record<number, CategoryLight> | undefined) ?? {};
   return {
     slug: p.slug,
     display_name: p.display_name,
     protocol_type: p.protocol_type,
     primary_chain: p.primary_chain,
+    deployment_chains: Array.isArray((p as Record<string, unknown>).deployment_chains)
+      ? ((p as Record<string, unknown>).deployment_chains as string[])
+      : [p.primary_chain],
     headline_grade: (p.headline_grade ?? null) as Letter | null,
     total_value_secured_usd: toNumber(p.total_value_secured_usd),
     has_active_incident: p.has_active_incident,
@@ -43,10 +42,10 @@ const items: ProtocolListItem[] = baseList.map((p) => {
 // Stats panel values
 const totalTvl = items.reduce((s, p) => s + p.total_value_secured_usd, 0);
 const totalTvlBillions = totalTvl / 1e9;
-const chainCount = new Set(items.map((p) => p.primary_chain)).size;
+const chainCount = new Set(items.flatMap((p) => p.deployment_chains ?? [p.primary_chain])).size;
 const sectorCount = new Set(items.map((p) => p.protocol_type)).size;
 const gradeDist: Array<{ g: Letter; n: number }> = (['A', 'B', 'C', 'D', 'F'] as Letter[]).map(
-  (g) => ({ g, n: items.filter((p) => p.headline_grade === g).length }),
+  (g) => ({ g, n: items.filter((p) => p.headline_grade === g).length })
 );
 
 // When nothing is published yet, the homepage must not advertise a "Live"
@@ -78,109 +77,133 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
 
   <div class="hero">
     <div class="left">
-      {isPreLaunch && (
-        <div class="kicker">
-          <span class="prelaunch"><span class="dot"></span>Pre-launch review</span>
-        </div>
-      )}
+      {
+        isPreLaunch && (
+          <div class="kicker">
+            <span class="prelaunch">
+              <span class="dot" />
+              Pre-launch review
+            </span>
+          </div>
+        )
+      }
       <h1>{headlineCopy}</h1>
       <p class="lede">{ledeCopy}</p>
     </div>
 
-    {isPreLaunch ? (
-      <div class="prelaunchPanel">
-        <div class="sp-h">
-          <span>Status</span>
-          <span class="sp-h-r">Rubric {RUBRIC_VERSION}</span>
+    {
+      isPreLaunch ? (
+        <div class="prelaunchPanel">
+          <div class="sp-h">
+            <span>Status</span>
+            <span class="sp-h-r">Rubric {RUBRIC_VERSION}</span>
+          </div>
+          <p class="pl-body">
+            The dashboard is being shared privately with each protocol team for a factual-accuracy
+            review before grades go public. Coverage opens here as teams confirm their data.
+          </p>
+          <div class="pl-meta">
+            <span>
+              <>
+                <i>factors</i>
+                <b>{TOTAL_FACTOR_COUNT}</b>
+              </>
+            </span>
+            <span>
+              <>
+                <i>categories</i>
+                <b>{TOTAL_CATEGORY_COUNT}</b>
+              </>
+            </span>
+            <span>
+              <>
+                <i>status</i>
+                <b>in review</b>
+              </>
+            </span>
+          </div>
+          <a class="pl-cta" href="/methodology/">
+            How we grade →
+          </a>
         </div>
-        <p class="pl-body">
-          The dashboard is being shared privately with each protocol team for a
-          factual-accuracy review before grades go public. Coverage opens here as teams confirm
-          their data.
-        </p>
-        <div class="pl-meta">
-          <span><i>factors</i><b>{TOTAL_FACTOR_COUNT}</b></span>
-          <span><i>categories</i><b>{TOTAL_CATEGORY_COUNT}</b></span>
-          <span><i>status</i><b>in review</b></span>
+      ) : (
+        <div class="statsPanel">
+          <div class="sp-h">
+            <span>Coverage · at a glance</span>
+            <span class="sp-h-r">
+              Rubric {RUBRIC_VERSION} · n = {items.length}
+            </span>
+          </div>
+          <div class="sp-grid">
+            <div class="sp-cell">
+              <div class="sp-lbl">Protocols</div>
+              <div class="sp-num">{items.length}</div>
+              <div class="sp-sub">
+                {chainCount} chains · {sectorCount} sectors
+              </div>
+            </div>
+            <div class="sp-cell">
+              <div class="sp-lbl">Risk Factors</div>
+              <div class="sp-num">{TOTAL_FACTOR_COUNT}</div>
+              <div class="sp-sub">{TOTAL_CATEGORY_COUNT} categories</div>
+            </div>
+            <div class="sp-cell">
+              <div class="sp-lbl">TVL covered</div>
+              <div class="sp-num">
+                ${totalTvlBillions.toFixed(1)}
+                <span>B</span>
+              </div>
+              <div class="sp-sub">USD, latest snapshot</div>
+            </div>
+          </div>
+          <div class="sp-dist">
+            <span class="sp-dist-l">Grade distribution</span>
+            <div class="sp-bar">
+              {gradeDist
+                .filter((d) => d.n > 0)
+                .map((d) => (
+                  <span
+                    class:list={['sp-seg', d.g]}
+                    style={`flex: ${d.n}`}
+                    title={`${d.n} ${d.n === 1 ? 'protocol' : 'protocols'}`}
+                  >
+                    {d.g}
+                  </span>
+                ))}
+            </div>
+          </div>
         </div>
-        <a class="pl-cta" href="/methodology/">How we grade →</a>
-      </div>
-    ) : (
-    <div class="statsPanel">
-      <div class="sp-h">
-        <span>Coverage · at a glance</span>
-        <span class="sp-h-r">Rubric {RUBRIC_VERSION} · n = {items.length}</span>
-      </div>
-      <div class="sp-grid">
-        <div class="sp-cell">
-          <div class="sp-lbl">Protocols</div>
-          <div class="sp-num">{items.length}</div>
-          <div class="sp-sub">{chainCount} chains · {sectorCount} sectors</div>
-        </div>
-        <div class="sp-cell">
-          <div class="sp-lbl">Risk Factors</div>
-          <div class="sp-num">{TOTAL_FACTOR_COUNT}</div>
-          <div class="sp-sub">{TOTAL_CATEGORY_COUNT} categories</div>
-        </div>
-        <div class="sp-cell">
-          <div class="sp-lbl">TVL covered</div>
-          <div class="sp-num">${totalTvlBillions.toFixed(1)}<span>B</span></div>
-          <div class="sp-sub">USD, latest snapshot</div>
-        </div>
-      </div>
-      <div class="sp-dist">
-        <span class="sp-dist-l">Grade distribution</span>
-        <div class="sp-bar">
-          {
-            gradeDist
-              .filter((d) => d.n > 0)
-              .map((d) => (
-                <span
-                  class:list={['sp-seg', d.g]}
-                  style={`flex: ${d.n}`}
-                  title={`${d.n} ${d.n === 1 ? 'protocol' : 'protocols'}`}
-                >
-                  {d.g}
-                </span>
-              ))
-          }
-        </div>
-      </div>
-    </div>
-    )}
+      )
+    }
   </div>
 
-  {isPreLaunch ? (
-    <section class="sec">
-      <div class="emptyState">
-        <h2>Protocol grades are in private review</h2>
-        <p>
-          Every covered protocol has been graded and shared with its team for a
-          one-week factual-accuracy review before publication. Grades appear here
-          as teams confirm their data. In the meantime, explore the open rubric
-          and the full factor library.
-        </p>
-        <div class="emptyState-cta">
-          <a href="/methodology/">Read the methodology →</a>
-          <a href="/factors/">Browse all factors →</a>
-          <a href="/contributions/#corrections">Correction channels →</a>
+  {
+    isPreLaunch ? (
+      <section class="sec">
+        <div class="emptyState">
+          <h2>Protocol grades are in private review</h2>
+          <p>
+            Every covered protocol has been graded and shared with its team for a one-week
+            factual-accuracy review before publication. Grades appear here as teams confirm their
+            data. In the meantime, explore the open rubric and the full factor library.
+          </p>
+          <div class="emptyState-cta">
+            <a href="/methodology/">Read the methodology →</a>
+            <a href="/factors/">Browse all factors →</a>
+            <a href="/contributions/#corrections">Correction channels →</a>
+          </div>
         </div>
-      </div>
-    </section>
-  ) : (
-    <section class="sec">
-      {/* client:idle: page is static-rendered with the canonical list visible
+      </section>
+    ) : (
+      <section class="sec">
+        {/* client:idle: page is static-rendered with the canonical list visible
           immediately; Preact hydration runs after first paint via requestIdleCallback
           so initial TBT on slow mobile CPUs stays low. Filters become interactive
           within a frame of idle. */}
-      <ProtocolListView
-        client:idle
-        protocols={items}
-        categories={CATEGORIES}
-        chains={CHAINS}
-      />
-    </section>
-  )}
+        <ProtocolListView client:idle protocols={items} categories={CATEGORIES} chains={CHAINS} />
+      </section>
+    )
+  }
 
   <section class="sec foot-htr">
     <div class="sechead">
@@ -188,7 +211,9 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     </div>
     <div class="htr-body">
       <p>
-        Every protocol is graded against {TOTAL_FACTOR_COUNT} evidence factors across {TOTAL_CATEGORY_COUNT}
+        Every protocol is graded against {TOTAL_FACTOR_COUNT} evidence factors across {
+          TOTAL_CATEGORY_COUNT
+        }
         risk categories: audits, governance, oracle dependencies, economic design, operational history,
         and more. Each category receives a 0–100 severity score (weighted by red and yellow findings);
         the letter grade is bucketed from a core-five-weighted protocol risk score, with critical-factor
@@ -212,8 +237,8 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     <div class="ftr-cols">
       <div class="ftr-col ftr-about">
         <p>
-          <b>DeFi Risk</b> is an open-source risk transparency dashboard for defi protocols. Every
-          protocol graded, every factor cited, all in the open.
+          <b>DeFi Risk</b> is an open-source risk transparency dashboard for defi protocols. Every protocol
+          graded, every factor cited, all in the open.
         </p>
       </div>
       <div class="ftr-col">
