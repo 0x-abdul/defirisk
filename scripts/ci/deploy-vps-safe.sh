@@ -14,7 +14,7 @@ is_runtime_only_untracked_path() {
   case "$path" in
     data/api|data/api/*|site/dist|site/dist/*|site/dist.prev.*|site/dist.prev.*/*|\
     .deploy-backups|.deploy-backups/*|backups|backups/*|db/backups|db/backups/*|\
-    .local/state|.local/state/*|.node|.node/*|.npm-cache|.npm-cache/*|\
+    .env|.local/state|.local/state/*|.node|.node/*|.npm-cache|.npm-cache/*|\
     risk-dashboard|risk-dashboard/*)
       return 0
       ;;

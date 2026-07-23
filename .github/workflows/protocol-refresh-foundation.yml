@@ -10,19 +10,19 @@ on:
       - 'db/migrations/0014_nightly_ingest_topology_functions.sql'
       - 'db/runtime-role-policy.json'
       - 'docs/ops/protocol-refresh/**'
+      - 'scripts/lean_protocol_refresh/**'
       - 'scripts/protocol_refresh_apply/**'
       - 'scripts/protocol_refresh_public/**'
-      - 'scripts/apply-protocol-refresh.py'
+      - 'scripts/apply-lean-protocol-refresh.py'
       - 'scripts/dump.py'
       - 'scripts/compose.py'
       - 'scripts/detect-grade-changes.py'
       - 'scripts/refresh-continuous.py'
-      - 'scripts/export-protocol-refresh.py'
       - 'scripts/manage-refresh-migrations.py'
       - 'scripts/protocol_refresh_migrations.py'
       - 'scripts/verify-protocol-output.py'
-      - 'scripts/verify-protocol-refresh-public.py'
       - 'scripts/verify-runtime-grant-policy.py'
+      - 'scripts/tests/test_lean_*.py'
       - 'scripts/tests/test_protocol_refresh_*.py'
       - 'scripts/tests/test_nightly_ingest_postgres.py'
       - 'scripts/tests/test_compose_surfaces.py'
@@ -51,20 +51,21 @@ jobs:
       - name: Lint refresh tooling
         run: |
           ruff check scripts/protocol_refresh_apply scripts/protocol_refresh_public
-          ruff check scripts/apply-protocol-refresh.py scripts/export-protocol-refresh.py
+          ruff check scripts/lean_protocol_refresh scripts/apply-lean-protocol-refresh.py
           ruff check scripts/manage-refresh-migrations.py scripts/protocol_refresh_migrations.py
           ruff check scripts/dump.py scripts/tests/test_dump_surfaces.py
           ruff check scripts/compose.py scripts/detect-grade-changes.py scripts/refresh-continuous.py
-          ruff check scripts/verify-protocol-output.py scripts/verify-protocol-refresh-public.py scripts/verify-runtime-grant-policy.py
+          ruff check scripts/verify-protocol-output.py scripts/verify-runtime-grant-policy.py
+          ruff check scripts/tests/test_lean_*.py
           ruff check scripts/tests/test_protocol_refresh_*.py scripts/tests/test_runtime_grant_policy.py
           ruff check scripts/tests/test_nightly_ingest_postgres.py
       - name: Run refresh tests
         run: |
-          pytest scripts/tests -q -k 'protocol_refresh or runtime_grant'
+          pytest scripts/tests -q -k 'lean or protocol_refresh or runtime_grant'
           pytest scripts/tests/test_dump_surfaces.py -q
           pytest scripts/tests/test_compose_surfaces.py scripts/tests/test_detect_grade_changes.py scripts/tests/test_refresh_continuous.py -q
       - name: Verify non-mutating foundation
-        run: python scripts/verify-protocol-refresh-public.py --foundation-only
+        run: python scripts/apply-lean-protocol-refresh.py --help
 
   migrations:
     name: Refresh migration replay and grants
@@ -134,8 +135,8 @@ jobs:
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0010_protocol_refresh_idempotency.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0012_runtime_role_grants.sql
           psql "$DSN" -v ON_ERROR_STOP=1 -f db/migrations/0014_nightly_ingest_topology_functions.sql
-          psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"
-          if psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-protocol-refresh.py', 'protocol-refresh:fixture');"; then
+          psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-lean-protocol-refresh.py', 'protocol-refresh:fixture');"
+          if psql "$DSN" -v ON_ERROR_STOP=1 -c "INSERT INTO pipeline_runs (script_name, triggered_by) VALUES ('apply-lean-protocol-refresh.py', 'protocol-refresh:fixture');"; then
             echo "duplicate refresh reservation unexpectedly succeeded"
             exit 1
           fi

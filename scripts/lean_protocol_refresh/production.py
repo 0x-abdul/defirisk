@@ -338,13 +338,15 @@ pg_restore --list "$path" >/dev/null"""
         if change.scope_level == "surface":
             cur.execute("SELECT surface_id FROM protocol_surfaces WHERE family_slug=%s AND surface_slug=%s", (family, change.target))
             row = cur.fetchone()
-            if row is None: raise ContractError("approved surface is missing")
+            if row is None:
+                raise ContractError("approved surface is missing")
             return row[0], None
         surface, chain, key = change.target.split("/")
         cur.execute("""SELECT ps.surface_id, d.id FROM protocol_surfaces ps JOIN deployments d ON d.surface_id=ps.surface_id
             WHERE ps.family_slug=%s AND ps.surface_slug=%s AND d.chain=%s AND d.deployment_key=%s""", (family, surface, chain, key))
         row = cur.fetchone()
-        if row is None: raise ContractError("approved deployment is missing")
+        if row is None:
+            raise ContractError("approved deployment is missing")
         return row[0], row[1]
 
     def apply_protocol(self, protocol: ProtocolRefresh) -> None:
@@ -407,7 +409,10 @@ pg_restore --list "$path" >/dev/null"""
                         f"replacement factor row was not promoted: {change.factor_id}"
                     )
             cur.execute("UPDATE protocols SET last_refreshed=%s, updated_at=now() WHERE slug=%s", (protocol.last_refreshed, protocol.family_slug))
-            if cur.rowcount != 1: raise ContractError("last_refreshed update did not affect exactly one protocol")
+            if cur.rowcount != 1:
+                raise ContractError(
+                    "last_refreshed update did not affect exactly one protocol"
+                )
 
     @staticmethod
     def _get_or_create_source(
@@ -516,12 +521,12 @@ pg_restore --list "$path" >/dev/null"""
             "migration_preservation_note",
             "preservation_note",
         }
-        for field, expected_value in expected.items():
-            if field in annotation_fields or field == "sources":
+        for field_name, expected_value in expected.items():
+            if field_name in annotation_fields or field_name == "sources":
                 continue
-            if actual.get(field) != expected_value:
+            if actual.get(field_name) != expected_value:
                 raise ContractError(
-                    f"old-value baseline drifted for {change.factor_id}.{field}"
+                    f"old-value baseline drifted for {change.factor_id}.{field_name}"
                 )
         expected_sources = self._sorted_sources(expected.get("sources", []))
         actual_sources = self._sorted_sources(actual["sources"])
@@ -537,7 +542,8 @@ pg_restore --list "$path" >/dev/null"""
         *,
         exclude_family: str | None = None,
     ) -> dict[str, str]:
-        if not root.exists(): return {}
+        if not root.exists():
+            return {}
         result: dict[str, str] = {}
         for path in root.rglob("*.json"):
             try:
@@ -565,7 +571,8 @@ pg_restore --list "$path" >/dev/null"""
 
     @staticmethod
     def _scrub(value: Any) -> Any:
-        if isinstance(value, list): return [ProductionOperations._scrub(item) for item in value]
+        if isinstance(value, list):
+            return [ProductionOperations._scrub(item) for item in value]
         if isinstance(value, dict):
             return {key: ProductionOperations._scrub(item) for key, item in value.items()
                     if key not in {"generated_at", "data_as_of", "pipeline_runs", "status", "updated_at"}}
@@ -1296,12 +1303,19 @@ pg_restore --list "$path" >/dev/null"""
 
 def create_operations(batch: RefreshBatch, context: Mapping[str, Any] | Any) -> ProductionOperations:
     """Factory used by the lean runner; config comes only from context or env."""
+
     def value(name: str, env: str | None = None, default: Any = None) -> Any:
-        if isinstance(context, Mapping): item = context.get(name, default)
-        else: item = getattr(context, name, default)
+        if isinstance(context, Mapping):
+            item = context.get(name, default)
+        else:
+            item = getattr(context, name, default)
         return item if item not in (None, "") else os.environ.get(env or name.upper(), default)
+
     root = value("repository_root", "RISKDASHBOARD_REPOSITORY_ROOT")
-    if not root: raise ContractError("repository_root or RISKDASHBOARD_REPOSITORY_ROOT is required")
+    if not root:
+        raise ContractError(
+            "repository_root or RISKDASHBOARD_REPOSITORY_ROOT is required"
+        )
     return ProductionOperations(batch=batch, database_url=value("database_url", "DATABASE_URL"), repository_root=Path(root),
         repository=value("repository"), base_branch=value("base_branch"),
         backup_root=Path(value("backup_root", default=BACKUP_ROOT)),
