@@ -90,6 +90,24 @@ export type Hack = z.infer<typeof hackSchema>;
 export type HackDetail = z.infer<typeof hackDetailSchema>;
 export type Incident = z.infer<typeof incidentSchema>;
 
+function legacyDeploymentChains(detail: ProtocolDetail): string[] {
+  const rows = [
+    ...(detail.deployments ?? []),
+    ...(detail.surfaces ?? []).flatMap((surface) => {
+      const deployments = (surface as Record<string, unknown>).deployments;
+      return Array.isArray(deployments) ? deployments : [];
+    }),
+  ];
+  return [
+    ...new Set(
+      rows.flatMap((row) => {
+        const chain = (row as Record<string, unknown>).chain;
+        return typeof chain === 'string' && chain ? [chain] : [];
+      })
+    ),
+  ];
+}
+
 // ── Factor meta cache (used by grade computation) ────────────────────────────
 
 let _cachedFactorMeta: FactorMeta[] | null = null;
@@ -153,6 +171,12 @@ export function listProtocols(): Protocol[] {
     const computedDetail = applyComputedGradeFields(detail, obj);
     if (!computedDetail) continue;
     obj.headline_grade = (computedDetail.protocol as Record<string, unknown>).headline_grade;
+    // Older exports omit the additive index metadata. Derive the chain filter
+    // from authoritative deployment rows at build time instead of silently
+    // narrowing a family to its primary chain until the next exporter dump.
+    if (!Array.isArray(obj.deployment_chains) || obj.deployment_chains.length === 0) {
+      obj.deployment_chains = legacyDeploymentChains(detail);
+    }
     result.push({ ...obj, id: slug } as Protocol);
   }
 

@@ -26,7 +26,7 @@ const { items } = Astro.props;
               ) : it.href ? (
                 <a href={it.href}>{it.n}</a>
               ) : (
-                <a>{it.n}</a>
+                <span class="label">{it.n}</span>
               )}
             </li>
             {!last && (
@@ -70,6 +70,9 @@ const { items } = Astro.props;
   }
   .crumb a:hover {
     color: var(--fg);
+  }
+  .crumb .label {
+    color: var(--fg-3);
   }
   .crumb .sep {
     color: var(--fg-4);

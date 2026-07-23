@@ -353,7 +353,6 @@ export default function ProtocolListView({ protocols, categories, chains, status
 
       <div class={styles.filterbar}>
         <button
-          ref={filterTrigger}
           type="button"
           class={cn(styles.f, filters.grade === 'all' && styles.on)}
           onClick={() => updateFilters({ grade: 'all' })}
@@ -375,6 +374,7 @@ export default function ProtocolListView({ protocols, categories, chains, status
           />
         </label>
         <button
+          ref={filterTrigger}
           type="button"
           class={styles.filtersTrigger}
           aria-expanded={filtersOpen}
