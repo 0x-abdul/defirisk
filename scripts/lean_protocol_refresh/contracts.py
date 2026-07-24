@@ -11,7 +11,7 @@ import json
 import ipaddress
 import re
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Mapping
 from urllib.parse import urlparse
@@ -27,6 +27,30 @@ CANONICAL_FACTOR_IDS = frozenset(
 EXPECTED_FACTOR_COUNT = len(CANONICAL_FACTOR_IDS)
 OUTCOMES = {"changed", "no_change"}
 SCORES = {"green", "yellow", "red", "gray", "not_assessed", "not_applicable"}
+SOURCE_OPTIONAL_SCORES = {"not_assessed", "not_applicable"}
+SOURCE_TYPES = {
+    "url",
+    "github",
+    "etherscan",
+    "transaction",
+    "audit_report",
+    "governance_post",
+    "docs",
+    "partner_feed",
+    "curator_note",
+    "commit_sha",
+}
+URL_REQUIRED_SOURCE_TYPES = {
+    "url",
+    "github",
+    "etherscan",
+    "transaction",
+    "audit_report",
+    "governance_post",
+    "docs",
+    "partner_feed",
+}
+CONDITIONAL_SOURCE_TYPES = {"curator_note", "partner_feed"}
 COMPLETE_ROW_FIELDS = {
     "factor_id",
     "category",
@@ -165,6 +189,12 @@ def _public_url(value: Any, label: str) -> str:
         )
     ):
         raise ContractError(f"{label} points to a private or credentialed location")
+    if re.search(
+        r"(?:^|[?&])(?:access_?token|api_?key|password|review_?token|secret|token)=",
+        parsed.query,
+        flags=re.IGNORECASE,
+    ):
+        raise ContractError(f"{label} contains a credential or review token")
     return value.strip()
 
 
@@ -176,13 +206,21 @@ def _reject_unsafe_material(value: Any, label: str = "change set") -> None:
             "internal_reference",
             "private_url",
             "review_token",
+            "api_token",
+            "access_token",
+            "token",
+            "credentials",
             "collected_by",
             "retrieved_by",
         }
+        scoped_label = label
+        factor_id = value.get("factor_id")
+        if isinstance(factor_id, str) and FACTOR_RE.fullmatch(factor_id):
+            scoped_label = f"{label} ({factor_id})"
         for key, item in value.items():
             if str(key).lower() in forbidden_keys:
-                raise ContractError(f"{label}.{key} is internal-only")
-            _reject_unsafe_material(item, f"{label}.{key}")
+                raise ContractError(f"{scoped_label}.{key} is internal-only")
+            _reject_unsafe_material(item, f"{scoped_label}.{key}")
         return
     if isinstance(value, list):
         for index, item in enumerate(value):
@@ -192,6 +230,57 @@ def _reject_unsafe_material(value: Any, label: str = "change set") -> None:
         return
     text = value.strip()
     lowered = text.lower().replace("\\", "/")
+    if re.search(
+        r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+        r"|\b(?:gh[opsu]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,})\b"
+        r"|\bAKIA[0-9A-Z]{16}\b"
+        r"|\b(?:postgres(?:ql)?|mysql|redis)://[^\s:/]+:[^\s@]+@",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        raise ContractError(f"{label} contains a credential or secret-like value")
+    bearer_placeholders = {
+        "token",
+        "<token>",
+        "none",
+        "null",
+        "redacted",
+        "example",
+        "placeholder",
+    }
+    for bearer in re.finditer(
+        r"\bAuthorization\s*:\s*Bearer\s+(?P<value>[^\s,;]+)",
+        text,
+        flags=re.IGNORECASE,
+    ):
+        bearer_value = bearer.group("value").strip("'\".").lower()
+        if bearer_value not in bearer_placeholders:
+            raise ContractError(f"{label} contains a bearer credential")
+    credential_assignments = re.finditer(
+        r"\b(?:access_?token|api_?key|api_?token|password|review_?token|secret)"
+        r"\s*[:=]\s*(?P<value>[^\s,;]+)",
+        text,
+        flags=re.IGNORECASE,
+    )
+    harmless_values = {
+        "none",
+        "null",
+        "redacted",
+        "example",
+        "placeholder",
+        "not-set",
+        "unset",
+    }
+    for assignment in credential_assignments:
+        assigned_value = assignment.group("value").strip("'\".").lower()
+        if assigned_value not in harmless_values:
+            raise ContractError(f"{label} contains a credential or review token")
+    if (
+        "github.com/0x-abdul/defirisk-internal" in lowered
+        or "api.github.com/repos/0x-abdul/defirisk-internal" in lowered
+        or "raw.githubusercontent.com/0x-abdul/defirisk-internal" in lowered
+    ):
+        raise ContractError(f"{label} contains a private repository reference")
     parsed_text = urlparse(text)
     is_http_url = (
         parsed_text.scheme in {"http", "https"} and bool(parsed_text.hostname)
@@ -226,13 +315,40 @@ def _reject_unsafe_material(value: Any, label: str = "change set") -> None:
         or "local_reference" in lowered
         or "internal_reference" in lowered
         or "review_token" in lowered
+        or lowered.startswith("unpublished/")
+        or "/unpublished/" in lowered
+        or re.search(
+            r"\bunpublished\s+(?:analyst\s+)?(?:artifact|material|review|evidence)\b",
+            lowered,
+        )
+        or re.search(
+            r"\b(?:internal|private|data)[- ](?:cache|packet|baseline|"
+            r"working evidence|working material|process reference)\b",
+            lowered,
+        )
+        or re.search(
+            r"\b(?:internal cache|internal process|working evidence|"
+            r"curator working file|specialist handoff|reviewer handoff)\b",
+            lowered,
+        )
     ):
         raise ContractError(f"{label} contains an internal reference or local path")
     for match in re.findall(r"https?://[^\s)>\"']+", text, flags=re.IGNORECASE):
         _public_url(match.rstrip(".,;"), label)
 
 
-def _evidence(value: Any, label: str) -> Evidence:
+def _source_type(value: Mapping[str, Any], label: str) -> str:
+    source_type = value.get("source_type", "url")
+    if source_type == "local_reference":
+        raise ContractError(f"{label} has internal-only source_type 'local_reference'")
+    if not isinstance(source_type, str) or source_type not in SOURCE_TYPES:
+        raise ContractError(
+            f"{label}.source_type {source_type!r} is invalid or forbidden"
+        )
+    return source_type
+
+
+def _validate_source(value: Any, label: str) -> tuple[str, str | None, str | None]:
     if not isinstance(value, dict):
         raise ContractError(f"{label} must be an object")
     supported = {
@@ -249,26 +365,106 @@ def _evidence(value: Any, label: str) -> Evidence:
     extra = sorted(set(value) - supported)
     if extra:
         raise ContractError(f"{label} contains unsupported fields: {extra}")
-    if "url" not in value and "reference" not in value:
-        raise ContractError(f"{label} must contain a public URL locator")
+    source_type = _source_type(value, label)
+    _reject_unsafe_material(value, label)
+    for field in (
+        "title",
+        "reference",
+        "relation",
+        "retrieved_at",
+        "notes",
+        "score_id",
+    ):
+        field_value = value.get(field)
+        if field_value is not None and (
+            not isinstance(field_value, str) or not field_value.strip()
+        ):
+            raise ContractError(f"{label}.{field} must be null or non-empty text")
+    retrieved_at = value.get("retrieved_at")
+    if retrieved_at is not None:
+        try:
+            if re.fullmatch(r"\d{4}-\d{2}-\d{2}", retrieved_at):
+                date.fromisoformat(retrieved_at)
+            elif re.fullmatch(
+                r"\d{4}-\d{2}-\d{2}T.+",
+                retrieved_at,
+            ):
+                datetime.fromisoformat(retrieved_at.replace("Z", "+00:00"))
+            else:
+                raise ValueError
+        except ValueError as exc:
+            raise ContractError(
+                f"{label}.retrieved_at must be an ISO-8601 date or datetime"
+            ) from exc
     title = value.get("title")
-    if title is not None and (not isinstance(title, str) or not title.strip()):
-        raise ContractError(f"{label}.title must be null or non-empty text")
     archive_url = value.get("archive_url")
     if archive_url is not None:
         _public_url(archive_url, f"{label}.archive_url")
     reference = value.get("reference")
+    if source_type in {"curator_note", "commit_sha"} and reference is None:
+        raise ContractError(
+            f"{label}.reference must be non-empty text for {source_type}"
+        )
     if isinstance(reference, str) and (
         reference.lower().startswith("file:")
         or re.match(r"^[A-Za-z]:[\\/]", reference)
         or reference.startswith(("/home/", "/Users/"))
     ):
         raise ContractError(f"{label}.reference contains a local path")
-    locator_key = "url" if "url" in value else "reference"
-    return Evidence(
-        url=_public_url(value[locator_key], f"{label}.{locator_key}"),
-        title=title,
-    )
+    url = value.get("url")
+    if source_type in URL_REQUIRED_SOURCE_TYPES:
+        url = _public_url(url, f"{label}.url")
+    elif url is not None:
+        url = _public_url(url, f"{label}.url")
+    return source_type, url, title
+
+
+def source_public_errors(source: Any) -> list[str]:
+    """Return stable public-handoff errors for one source record."""
+    try:
+        _validate_source(source, "source")
+    except ContractError as exc:
+        return [str(exc)]
+    return []
+
+
+def source_has_genuine_public_http(source: Any) -> bool:
+    """Whether a source can substantiate a graded factor row."""
+    try:
+        source_type, url, _title = _validate_source(source, "source")
+    except ContractError:
+        return False
+    return bool(url) and source_type not in CONDITIONAL_SOURCE_TYPES
+
+
+def validate_factor_sources(row: Any, label: str) -> None:
+    """Validate all source records and the evidence floor for one factor row."""
+    if not isinstance(row, dict):
+        raise ContractError(f"{label} must be a complete factor row")
+    score = row.get("score")
+    if score not in SCORES:
+        raise ContractError(f"{label}.score is invalid")
+    sources = row.get("sources")
+    if not isinstance(sources, list):
+        raise ContractError(f"{label}.sources must be an array")
+    for index, source in enumerate(sources):
+        _validate_source(source, f"{label}.sources[{index}]")
+    if score not in SOURCE_OPTIONAL_SCORES and not any(
+        source_has_genuine_public_http(source) for source in sources
+    ):
+        factor_id = row.get("factor_id", "<missing-factor>")
+        raise ContractError(
+            f"{label} ({factor_id}, {score}) requires at least one genuine "
+            "public HTTP(S) evidence source; curator_note, partner_feed, and "
+            "URL-less auxiliary records cannot satisfy a graded row"
+        )
+
+
+def _evidence(value: Any, label: str) -> Evidence | None:
+    _source_type_value, url, title = _validate_source(value, label)
+    if url is None:
+        return None
+    return Evidence(url=url, title=title)
 
 
 def _change(
@@ -392,14 +588,7 @@ def _change(
             raise ContractError(f"{label}.{row_name}.factor_id differs from wrapper")
         if row["score"] not in SCORES:
             raise ContractError(f"{label}.{row_name}.score is invalid")
-        row_sources = row["sources"]
-        if not isinstance(row_sources, list):
-            raise ContractError(f"{label}.{row_name}.sources must be an array")
-        for source_index, source in enumerate(row_sources):
-            _evidence(
-                source,
-                f"{label}.{row_name}.sources[{source_index}]",
-            )
+        validate_factor_sources(row, f"{label}.{row_name}")
         row_scope = row.get("scope_level") or row.get("scope")
         if row_scope is not None and row_scope != scope_level:
             raise ContractError(f"{label}.{row_name}.scope_level differs from wrapper")
@@ -428,11 +617,6 @@ def _change(
     score = value["resulting_score"]
     if score not in SCORES:
         raise ContractError(f"{label}.resulting_score is invalid")
-    if (
-        score not in {"not_assessed", "not_applicable"}
-        and not value["new_value"]["sources"]
-    ):
-        raise ContractError(f"{label}.new_value.sources is required for graded rows")
     grade = value["resulting_grade"]
     if not isinstance(grade, str) or grade not in {"A", "B", "C", "D", "F"}:
         raise ContractError(f"{label}.resulting_grade is invalid")
@@ -440,11 +624,10 @@ def _change(
     if not isinstance(evidence_raw, list):
         raise ContractError(f"{label}.evidence must be an array")
     evidence = tuple(
-        _evidence(item, f"{label}.evidence[{index}]")
+        parsed
         for index, item in enumerate(evidence_raw)
+        if (parsed := _evidence(item, f"{label}.evidence[{index}]")) is not None
     )
-    if score not in {"not_assessed", "not_applicable"} and not evidence:
-        raise ContractError(f"{label}.evidence is required for graded rows")
     if isinstance(value["new_value"], dict):
         new_score = value["new_value"].get("score")
         if new_score != score:
@@ -587,6 +770,25 @@ def validate_change_set(value: Mapping[str, Any]) -> RefreshBatch:
     """Validate and normalize one complete, public-safe batch change set."""
     value = dict(value)
     _reject_unsafe_material(value)
+    has_rubric_migration = "rubric_migration" in value
+    rubric_migration = value.pop("rubric_migration", None)
+    if has_rubric_migration:
+        if not isinstance(rubric_migration, dict):
+            raise ContractError("rubric_migration must be an object")
+        _exact_fields(
+            rubric_migration,
+            {"migration", "source_rubric_version", "target_rubric_version"},
+            "rubric_migration",
+        )
+        if rubric_migration != {
+            "migration": True,
+            "source_rubric_version": "v1.5.0",
+            "target_rubric_version": RUBRIC_VERSION,
+        }:
+            raise ContractError(
+                "rubric_migration must declare the supported v1.5.0 to "
+                f"{RUBRIC_VERSION} route"
+            )
     # Task A may export one protocol directly. Normalize it to a one-item batch;
     # this remains intentionally independent rather than recreating campaigns.
     if "protocols" not in value and "family_slug" in value:

@@ -9,7 +9,12 @@ owner approvals.
 Task A must supply either one protocol change set or a simple batch wrapper. Each
 protocol must name its canonical family and surfaces, effective refresh date,
 exact approved deployment targets, `changed` or `no_change` outcome, and factor
-changes with complete public-safe before/after rows and public HTTP(S) sources.
+changes with complete public-safe before/after rows. Every graded old and new
+row, including gray, must contain at least one genuine public HTTP(S) evidence
+source. A URL-less `curator_note` or `commit_sha` may be retained only as
+auxiliary context; `curator_note` and `partner_feed` cannot independently
+support a graded claim. URL-dependent source types require an explicit valid
+public HTTP(S) `url`.
 The topology contract must say `preserve`; Task B cannot add, remove, rename,
 merge, or split families, surfaces, or deployments.
 
