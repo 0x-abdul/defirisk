@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 import sys
 from dataclasses import replace
 from pathlib import Path
@@ -20,6 +21,7 @@ from lean_protocol_refresh import (
 )
 from lean_protocol_refresh.contracts import (
     CANONICAL_FACTOR_IDS,
+    load_change_set,
     validate_change_set,
 )
 from lean_protocol_refresh.execution import (
@@ -336,7 +338,12 @@ def test_resulting_score_must_match_complete_new_row() -> None:
         "factor_id": "RD-F-001",
         "score": "red",
         "evidence_summary": "Unsupported mismatch.",
-        "sources": [],
+        "sources": [
+            {
+                "url": "https://docs.example.org/falcon",
+                "title": "Public evidence",
+            }
+        ],
     }
     row["resulting_score"] = "not_assessed"
     row["evidence"] = []
@@ -520,7 +527,7 @@ def test_internal_nested_change_shape_and_null_batch_are_accepted() -> None:
             "score": "yellow",
             "evidence_summary": "Previous public evidence.",
             "sources": [
-                {"reference": "https://old.example.org", "source_type": "docs"}
+                {"url": "https://old.example.org", "source_type": "docs"}
             ],
         },
         "new": {
@@ -531,7 +538,7 @@ def test_internal_nested_change_shape_and_null_batch_are_accepted() -> None:
             "gap_reason": None,
             "notes": "Complete public row metadata.",
             "sources": [
-                {"reference": "https://new.example.org", "source_type": "docs"}
+                {"url": "https://new.example.org", "source_type": "docs"}
             ],
         },
         "resulting_score": "green",
@@ -622,6 +629,286 @@ def test_complete_row_sources_must_be_public() -> None:
     )
     with pytest.raises(ContractError, match="private or credentialed"):
         validate_change_set(document)
+
+
+def test_public_http_source_with_url_less_curator_note_is_accepted() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    sources = [
+        {
+            "source_type": "docs",
+            "url": "https://docs.example.org/falcon",
+            "reference": "Falcon public documentation",
+        },
+        {
+            "source_type": "curator_note",
+            "reference": "Public-source review disposition recorded by the curator.",
+        },
+    ]
+    row["new_value"]["sources"] = copy.deepcopy(sources)
+    row["evidence"] = copy.deepcopy(sources)
+
+    change = validate_change_set(document).protocols[0].changes[0]
+
+    assert change.resulting_score == "green"
+    assert change.evidence[0].url == "https://docs.example.org/falcon"
+
+
+def test_supported_rubric_migration_marker_is_accepted() -> None:
+    document = change_set()
+    document["rubric_migration"] = {
+        "migration": True,
+        "source_rubric_version": "v1.5.0",
+        "target_rubric_version": RUBRIC_VERSION,
+    }
+
+    assert validate_change_set(document).protocols[0].family_slug == "falcon"
+
+
+@pytest.mark.parametrize(
+    "marker",
+    [
+        None,
+        {},
+        {
+            "migration": False,
+            "source_rubric_version": "v1.5.0",
+            "target_rubric_version": RUBRIC_VERSION,
+        },
+        {
+            "migration": True,
+            "source_rubric_version": "v1.4.0",
+            "target_rubric_version": RUBRIC_VERSION,
+        },
+    ],
+)
+def test_malformed_rubric_migration_marker_is_rejected(marker: object) -> None:
+    document = change_set()
+    document["rubric_migration"] = marker
+
+    with pytest.raises(ContractError, match="rubric_migration"):
+        validate_change_set(document)
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("reference", 123),
+        ("relation", {}),
+        ("retrieved_at", []),
+        ("retrieved_at", "not-a-date"),
+        ("retrieved_at", "2026-99-99"),
+        ("notes", 123),
+        ("score_id", {}),
+        ("title", ""),
+    ],
+)
+def test_source_metadata_must_be_non_empty_text(
+    field: str,
+    value: object,
+) -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["new_value"]["sources"][0][field] = value
+
+    with pytest.raises(ContractError, match=field):
+        validate_change_set(document)
+
+
+def test_url_less_auxiliary_source_requires_reference() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    row["new_value"]["sources"].append({"source_type": "curator_note"})
+
+    with pytest.raises(ContractError, match="reference"):
+        validate_change_set(document)
+
+
+@pytest.mark.parametrize(
+    "safe_material",
+    [
+        "Bearer authentication overview",
+        "Authorization: Bearer token",
+        "Authorization: Bearer <token>",
+        "Bearer OAuth2.0 authentication overview",
+        "The public example specifies password=none.",
+        "The protocol uses a local cache for performance.",
+    ],
+)
+def test_safe_neighbors_are_not_mistaken_for_private_material(
+    safe_material: str,
+) -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["new_value"]["notes"] = safe_material
+
+    assert validate_change_set(document).protocols[0].family_slug == "falcon"
+
+
+@pytest.mark.parametrize("score", ["green", "yellow", "red", "gray"])
+def test_curator_note_only_is_rejected_for_graded_and_gray_rows(score: str) -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    curator_note = {
+        "source_type": "curator_note",
+        "reference": "Curator interpretation without independently verifiable evidence.",
+    }
+    row["new_value"]["score"] = score
+    row["new_value"]["sources"] = [copy.deepcopy(curator_note)]
+    row["resulting_score"] = score
+    row["evidence"] = [copy.deepcopy(curator_note)]
+
+    with pytest.raises(ContractError, match="public|HTTP|verifiable"):
+        validate_change_set(document)
+
+
+@pytest.mark.parametrize(
+    "source_type",
+    [
+        "url",
+        "github",
+        "etherscan",
+        "transaction",
+        "audit_report",
+        "governance_post",
+        "docs",
+        "partner_feed",
+    ],
+)
+@pytest.mark.parametrize("url_value", ["missing", None])
+def test_url_dependent_source_types_require_non_null_url(
+    source_type: str,
+    url_value: str | None,
+) -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    source = {
+        "source_type": source_type,
+        "reference": "Source declared without a public URL.",
+    }
+    if url_value is None:
+        source["url"] = None
+    row["new_value"]["sources"] = [copy.deepcopy(source)]
+    row["evidence"] = [copy.deepcopy(source)]
+
+    with pytest.raises(ContractError, match="public|HTTP|URL|locator"):
+        validate_change_set(document)
+
+
+def test_url_less_commit_sha_is_allowed_only_as_auxiliary_evidence() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    commit = {
+        "source_type": "commit_sha",
+        "reference": "0123456789abcdef0123456789abcdef01234567",
+    }
+    public_source = {
+        "source_type": "github",
+        "url": "https://github.com/example/falcon/commit/0123456789abcdef",
+        "reference": "Public commit",
+    }
+    row["new_value"]["sources"] = [
+        copy.deepcopy(public_source),
+        copy.deepcopy(commit),
+    ]
+    row["evidence"] = [
+        copy.deepcopy(public_source),
+        copy.deepcopy(commit),
+    ]
+
+    change = validate_change_set(document).protocols[0].changes[0]
+    assert change.evidence[0].url == public_source["url"]
+
+    row["new_value"]["sources"] = [copy.deepcopy(commit)]
+    row["evidence"] = [copy.deepcopy(commit)]
+    with pytest.raises(ContractError, match="public|HTTP|verifiable"):
+        validate_change_set(document)
+
+
+@pytest.mark.parametrize("score", ["not_assessed", "not_applicable"])
+def test_source_free_non_scoring_rows_are_accepted(score: str) -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    row["new_value"]["score"] = score
+    row["new_value"]["sources"] = []
+    row["resulting_score"] = score
+    row["evidence"] = []
+
+    change = validate_change_set(document).protocols[0].changes[0]
+
+    assert change.resulting_score == score
+    assert change.evidence == ()
+
+
+@pytest.mark.parametrize(
+    "unsafe_material",
+    [
+        "Evidence copied from the internal cache.",
+        "Evidence copied from internal-cache/falcon.json.",
+        r"Evidence copied from C:\Users\analyst\falcon.json.",
+        "Evidence copied from scripts/private/falcon.json.",
+        "Evidence copied from ../research/falcon.md.",
+        "Private review URL: http://10.0.0.8/falcon.",
+        "Credentialed URL: https://analyst:secret@example.org/falcon.",
+        "Authorization: Bearer public-refresh-secret-token",
+        "api_token=public-refresh-secret-token",
+        "Based on unpublished analyst material.",
+        "local_reference: research/falcon.md",
+    ],
+)
+def test_unsafe_material_in_old_row_is_rejected(unsafe_material: str) -> None:
+    document = change_set()
+    document["protocols"][0]["changes"][0]["old_value"]["evidence_summary"] = (
+        unsafe_material
+    )
+
+    with pytest.raises(ContractError):
+        validate_change_set(document)
+
+
+def test_local_reference_source_field_is_rejected() -> None:
+    document = change_set()
+    source = document["protocols"][0]["changes"][0]["new_value"]["sources"][0]
+    source["local_reference"] = "research/falcon.md"
+
+    with pytest.raises(ContractError, match="internal-only|unsupported|local"):
+        validate_change_set(document)
+
+
+def test_load_change_set_enforces_source_boundary(
+    tmp_path: Path,
+) -> None:
+    accepted = change_set()
+    row = accepted["protocols"][0]["changes"][0]
+    row["new_value"]["sources"].append(
+        {
+            "source_type": "curator_note",
+            "reference": "Auxiliary public-safe curator disposition.",
+        }
+    )
+    row["evidence"].append(
+        {
+            "source_type": "curator_note",
+            "reference": "Auxiliary public-safe curator disposition.",
+        }
+    )
+    accepted_path = tmp_path / "accepted.json"
+    accepted_path.write_text(json.dumps(accepted), encoding="utf-8")
+
+    assert load_change_set(accepted_path).protocols[0].family_slug == "falcon"
+
+    unsafe = change_set()
+    unsafe["protocols"][0]["changes"][0]["old_value"]["notes"] = (
+        "Evidence copied from internal cache."
+    )
+    unsafe_path = tmp_path / "unsafe.json"
+    unsafe_path.write_text(json.dumps(unsafe), encoding="utf-8")
+
+    with pytest.raises(ContractError):
+        load_change_set(unsafe_path)
+
+
+def test_sparse_same_rubric_fixture_remains_accepted() -> None:
+    sparse = validate_change_set(change_set())
+    assert len(sparse.protocols[0].changes) == 1
 
 
 def test_metadata_only_change_is_visible_in_exact_plan() -> None:
