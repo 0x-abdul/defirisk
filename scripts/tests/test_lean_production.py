@@ -604,7 +604,20 @@ def test_no_change_live_document_requires_184_rows_and_freshness() -> None:
 
 def test_changed_live_document_preserves_every_unchanged_row() -> None:
     protocol = protocol_with_changes(1)
-    changed_row = dict(protocol.changes[0].new_value)
+    expected_change = protocol.changes[0].new_value
+    changed_row = {
+        "factor_id": expected_change["factor_id"],
+        "deployment_id": None,
+        "score": expected_change["score"],
+        "evidence_summary": expected_change.get("evidence_summary"),
+        "evidence_detail": expected_change.get("evidence_detail"),
+        "collection_mode": expected_change.get("collection_mode"),
+        "collected_at": "2026-07-24T00:00:00Z",
+        "data_as_of": "2026-07-23T00:00:00Z",
+        "collected_by": "lean-protocol-refresh",
+        "gap_reason": expected_change.get("gap_reason"),
+        "sources": expected_change["sources"],
+    }
     baseline_rows = {
         factor_id: {
             "factor_id": factor_id,
@@ -657,6 +670,22 @@ def test_changed_live_document_preserves_every_unchanged_row() -> None:
             unchanged_rows_before=baseline_snapshot,
         )
     unchanged["score"] = "yellow"
+    changed_row["data_as_of"] = "2026-07-22T00:00:00Z"
+    with pytest.raises(ContractError, match="freshness differs"):
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=baseline_snapshot,
+        )
+    changed_row["data_as_of"] = "2026-07-23T00:00:00Z"
+    changed_row["notes"] = "unexpected public field"
+    with pytest.raises(ContractError, match="fields differ"):
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=baseline_snapshot,
+        )
+    changed_row.pop("notes")
     payload["data"]["protocol_data"]["factor_scores"].pop()
     with pytest.raises(ContractError, match="complete factor pass"):
         ProductionOperations._verify_protocol_document(

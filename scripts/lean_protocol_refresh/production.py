@@ -18,6 +18,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -33,6 +34,19 @@ from .execution import BatchState, ProtocolState, is_already_applied
 RUBRIC_VERSION = "v1.7.0"
 MIGRATION_BASELINE_VERSION = "v1.5.0"
 BACKUP_ROOT = Path("/opt/riskdashboard/.backups/protocol-refresh")
+PUBLIC_FACTOR_ROW_FIELDS = {
+    "factor_id",
+    "deployment_id",
+    "score",
+    "evidence_summary",
+    "evidence_detail",
+    "collection_mode",
+    "collected_at",
+    "data_as_of",
+    "collected_by",
+    "gap_reason",
+    "sources",
+}
 CommandRunner = Callable[[Sequence[str], Path | None], Any]
 
 
@@ -784,10 +798,41 @@ pg_restore --list "$path" >/dev/null"""
             actual = actual_by_factor.get(change.factor_id)
             if actual is None:
                 raise ContractError(f"protocol output omitted {change.factor_id}")
+            if set(actual) != PUBLIC_FACTOR_ROW_FIELDS:
+                raise ContractError(
+                    f"protocol output fields differ for {change.factor_id}"
+                )
             expected = change.new_value
             if any(actual.get(field) != expected.get(field) for field in fields):
                 raise ContractError(
                     f"protocol output differs for {change.factor_id}"
+                )
+            try:
+                raw_freshness = actual["data_as_of"]
+                if not isinstance(raw_freshness, str):
+                    raise ValueError
+                if "T" in raw_freshness:
+                    normalized_freshness = (
+                        f"{raw_freshness[:-1]}+00:00"
+                        if raw_freshness.endswith("Z")
+                        else raw_freshness
+                    )
+                    freshness_date = datetime.fromisoformat(
+                        normalized_freshness
+                    ).date()
+                else:
+                    freshness_date = date.fromisoformat(raw_freshness)
+            except (KeyError, TypeError, ValueError) as exc:
+                raise ContractError(
+                    f"protocol output freshness is invalid for {change.factor_id}"
+                ) from exc
+            if freshness_date.isoformat() != protocol.last_refreshed:
+                raise ContractError(
+                    f"protocol output freshness differs for {change.factor_id}"
+                )
+            if actual.get("collected_by") != "lean-protocol-refresh":
+                raise ContractError(
+                    f"protocol output collector differs for {change.factor_id}"
                 )
             expected_sources = cls._sorted_sources(
                 [
@@ -856,11 +901,13 @@ pg_restore --list "$path" >/dev/null"""
 
     @classmethod
     def _semantic_factor_row(cls, row: Mapping[str, Any]) -> str:
-        value = cls._scrub(dict(row))
+        # Factor-row timestamps are semantic evidence freshness, unlike the
+        # envelope-level generated_at value ignored by fleet comparisons.
+        value = dict(row)
         sources = value.get("sources")
         if isinstance(sources, list):
             value["sources"] = sorted(
-                (cls._scrub(source) for source in sources),
+                (dict(source) if isinstance(source, Mapping) else source for source in sources),
                 key=_canonical,
             )
         return _canonical(value)
