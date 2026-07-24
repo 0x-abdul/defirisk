@@ -18,14 +18,35 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
-from .contracts import ContractError, ProtocolRefresh, RefreshBatch
+from .contracts import (
+    CANONICAL_FACTOR_IDS,
+    EXPECTED_FACTOR_COUNT,
+    ContractError,
+    ProtocolRefresh,
+    RefreshBatch,
+)
 from .execution import BatchState, ProtocolState, is_already_applied
 
 RUBRIC_VERSION = "v1.7.0"
+MIGRATION_BASELINE_VERSION = "v1.5.0"
 BACKUP_ROOT = Path("/opt/riskdashboard/.backups/protocol-refresh")
+PUBLIC_FACTOR_ROW_FIELDS = {
+    "factor_id",
+    "deployment_id",
+    "score",
+    "evidence_summary",
+    "evidence_detail",
+    "collection_mode",
+    "collected_at",
+    "data_as_of",
+    "collected_by",
+    "gap_reason",
+    "sources",
+}
 CommandRunner = Callable[[Sequence[str], Path | None], Any]
 
 
@@ -80,6 +101,11 @@ class ProductionOperations:
     _output_before: dict[str, str] = field(default_factory=dict, init=False, repr=False)
     _dump_workspace: tempfile.TemporaryDirectory[str] | None = field(default=None, init=False, repr=False)
     _protocol_open: bool = field(default=False, init=False, repr=False)
+    _protocol_baseline_family: str | None = field(default=None, init=False, repr=False)
+    _protocol_baseline_rubric: str | None = field(default=None, init=False, repr=False)
+    _target_rows_before: dict[str, str] = field(
+        default_factory=dict, init=False, repr=False
+    )
     _publication_trigger_slug: str | None = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
@@ -297,6 +323,9 @@ pg_restore --list "$path" >/dev/null"""
     def begin_protocol(self, protocol: ProtocolRefresh) -> None:
         conn = self._connection()
         conn.rollback()
+        self._protocol_baseline_family = None
+        self._protocol_baseline_rubric = None
+        self._target_rows_before = {}
         try:
             conn.execute("BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE")
             conn.execute(
@@ -305,6 +334,10 @@ pg_restore --list "$path" >/dev/null"""
             )
             self._protocol_open = True
             self._sole_rubric(conn)
+            self._protocol_baseline_family = protocol.family_slug
+            self._protocol_baseline_rubric = self._classify_protocol_baseline(
+                protocol
+            )
             self._verify_topology(protocol)
             self._dump_workspace = tempfile.TemporaryDirectory(
                 prefix="lean-refresh-"
@@ -320,11 +353,67 @@ pg_restore --list "$path" >/dev/null"""
                 Path(self._dump_workspace.name) / "before" / "api",
                 exclude_family=protocol.family_slug,
             )
+            if self._protocol_baseline_rubric == RUBRIC_VERSION:
+                self._target_rows_before = self._read_dumped_target_rows(
+                    protocol,
+                    Path(self._dump_workspace.name) / "before" / "api",
+                )
         except Exception:
             conn.rollback()
             self._protocol_open = False
+            self._protocol_baseline_family = None
+            self._protocol_baseline_rubric = None
+            self._target_rows_before = {}
             self._close_dump_workspace()
             raise
+
+    def _classify_protocol_baseline(self, protocol: ProtocolRefresh) -> str:
+        """Select the refresh path from the locked production factor baseline."""
+        with self._connection().cursor() as cur:
+            cur.execute(
+                """SELECT rubric_version, factor_id
+                   FROM factor_scores
+                   WHERE protocol_slug=%s AND is_current=true
+                   ORDER BY rubric_version, factor_id""",
+                (protocol.family_slug,),
+            )
+            rows = tuple(
+                (str(version), str(factor_id))
+                for version, factor_id in cur.fetchall()
+            )
+        versions = {version for version, _factor_id in rows}
+        factor_ids = [factor_id for _version, factor_id in rows]
+        complete_factor_set = (
+            len(rows) == EXPECTED_FACTOR_COUNT
+            and len(set(factor_ids)) == EXPECTED_FACTOR_COUNT
+            and set(factor_ids) == CANONICAL_FACTOR_IDS
+        )
+        if complete_factor_set and versions == {RUBRIC_VERSION}:
+            return RUBRIC_VERSION
+        if complete_factor_set and versions == {MIGRATION_BASELINE_VERSION}:
+            changed_factor_ids = {change.factor_id for change in protocol.changes}
+            if (
+                protocol.outcome != "changed"
+                or len(protocol.changes) != EXPECTED_FACTOR_COUNT
+                or changed_factor_ids != CANONICAL_FACTOR_IDS
+            ):
+                raise ContractError(
+                    "v1.5.0 migration baseline requires a changed outcome "
+                    "with exactly the 184 canonical approved factor rows"
+                )
+            return MIGRATION_BASELINE_VERSION
+        counts = {
+            version: sum(1 for row_version, _factor_id in rows if row_version == version)
+            for version in versions
+        }
+        summary = ", ".join(
+            f"{version}={counts[version]}" for version in sorted(counts)
+        ) or "none"
+        raise ContractError(
+            "production current-factor baseline must contain the exact 184 "
+            "v1.7.0 factor IDs from only v1.7.0 (standard refresh) or only v1.5.0 "
+            f"(migration); found {summary}"
+        )
 
     def _verify_topology(self, protocol: ProtocolRefresh) -> None:
         state = self.read_protocol_state(protocol.family_slug)
@@ -350,6 +439,14 @@ pg_restore --list "$path" >/dev/null"""
         return row[0], row[1]
 
     def apply_protocol(self, protocol: ProtocolRefresh) -> None:
+        if (
+            self._protocol_baseline_family != protocol.family_slug
+            or self._protocol_baseline_rubric is None
+        ):
+            raise ContractError(
+                "protocol production baseline was not classified in this transaction"
+            )
+        expected_baseline_rubric = self._protocol_baseline_rubric
         conn = self._connection()
         with conn.cursor() as cur:
             for change in protocol.changes:
@@ -365,9 +462,10 @@ pg_restore --list "$path" >/dev/null"""
                         f"expected exactly one current old factor row: {change.factor_id}"
                     )
                 old_id, old_rubric, old = rows[0]
-                if str(old_rubric) != "v1.5.0":
+                if str(old_rubric) != expected_baseline_rubric:
                     raise ContractError(
-                        f"expected current v1.5.0 baseline for {change.factor_id}"
+                        "expected current "
+                        f"{expected_baseline_rubric} baseline for {change.factor_id}"
                     )
                 self._verify_public_old_row(cur, protocol, change, old_id, old)
                 new = change.new_value
@@ -647,7 +745,11 @@ pg_restore --list "$path" >/dev/null"""
 
     @classmethod
     def _verify_protocol_document(
-        cls, protocol: ProtocolRefresh, payload: Any
+        cls,
+        protocol: ProtocolRefresh,
+        payload: Any,
+        *,
+        unchanged_rows_before: Mapping[str, str] | None = None,
     ) -> None:
         document = cls._protocol_document(payload)
         metadata = document.get("protocol")
@@ -672,7 +774,7 @@ pg_restore --list "$path" >/dev/null"""
         )
         if actual_chains != expected_chains:
             raise ContractError("protocol output deployment topology differs")
-        if len(rows) != 184:
+        if len(rows) != EXPECTED_FACTOR_COUNT:
             raise ContractError("protocol output does not contain the complete factor pass")
         actual_by_factor: dict[str, Mapping[str, Any]] = {}
         for row in rows:
@@ -681,6 +783,10 @@ pg_restore --list "$path" >/dev/null"""
             if row["factor_id"] in actual_by_factor:
                 raise ContractError("protocol output contains duplicate factor rows")
             actual_by_factor[row["factor_id"]] = row
+        if set(actual_by_factor) != CANONICAL_FACTOR_IDS:
+            raise ContractError(
+                "protocol output factor IDs differ from the v1.7.0 rubric"
+            )
         fields = (
             "score",
             "evidence_summary",
@@ -688,19 +794,45 @@ pg_restore --list "$path" >/dev/null"""
             "collection_mode",
             "gap_reason",
         )
-        # Changed refreshes carry the complete 184-row candidate. No-change
-        # refreshes retain those rows and prove freshness through the emitted
-        # protocol last_refreshed field.
-        if protocol.outcome == "changed" and len(protocol.changes) != 184:
-            raise ContractError("changed protocol does not contain 184 approved rows")
         for change in protocol.changes:
             actual = actual_by_factor.get(change.factor_id)
             if actual is None:
                 raise ContractError(f"protocol output omitted {change.factor_id}")
+            if set(actual) != PUBLIC_FACTOR_ROW_FIELDS:
+                raise ContractError(
+                    f"protocol output fields differ for {change.factor_id}"
+                )
             expected = change.new_value
             if any(actual.get(field) != expected.get(field) for field in fields):
                 raise ContractError(
                     f"protocol output differs for {change.factor_id}"
+                )
+            try:
+                raw_freshness = actual["data_as_of"]
+                if not isinstance(raw_freshness, str):
+                    raise ValueError
+                if "T" in raw_freshness:
+                    normalized_freshness = (
+                        f"{raw_freshness[:-1]}+00:00"
+                        if raw_freshness.endswith("Z")
+                        else raw_freshness
+                    )
+                    freshness_date = datetime.fromisoformat(
+                        normalized_freshness
+                    ).date()
+                else:
+                    freshness_date = date.fromisoformat(raw_freshness)
+            except (KeyError, TypeError, ValueError) as exc:
+                raise ContractError(
+                    f"protocol output freshness is invalid for {change.factor_id}"
+                ) from exc
+            if freshness_date.isoformat() != protocol.last_refreshed:
+                raise ContractError(
+                    f"protocol output freshness differs for {change.factor_id}"
+                )
+            if actual.get("collected_by") != "lean-protocol-refresh":
+                raise ContractError(
+                    f"protocol output collector differs for {change.factor_id}"
                 )
             expected_sources = cls._sorted_sources(
                 [
@@ -752,35 +884,107 @@ pg_restore --list "$path" >/dev/null"""
                 raise ContractError(
                     f"protocol output source identities differ for {change.factor_id}"
                 )
+        if unchanged_rows_before is not None:
+            if set(unchanged_rows_before) != CANONICAL_FACTOR_IDS:
+                raise ContractError(
+                    "pre-transaction target output has an invalid factor universe"
+                )
+            changed_factor_ids = {change.factor_id for change in protocol.changes}
+            for factor_id in CANONICAL_FACTOR_IDS - changed_factor_ids:
+                if (
+                    cls._semantic_factor_row(actual_by_factor[factor_id])
+                    != unchanged_rows_before[factor_id]
+                ):
+                    raise ContractError(
+                        f"protocol output changed unapproved row {factor_id}"
+                    )
 
-    def _verify_dumped_target(self, protocol: ProtocolRefresh, api_root: Path) -> None:
+    @classmethod
+    def _semantic_factor_row(cls, row: Mapping[str, Any]) -> str:
+        # Factor-row timestamps are semantic evidence freshness, unlike the
+        # envelope-level generated_at value ignored by fleet comparisons.
+        value = dict(row)
+        sources = value.get("sources")
+        if isinstance(sources, list):
+            value["sources"] = sorted(
+                (dict(source) if isinstance(source, Mapping) else source for source in sources),
+                key=_canonical,
+            )
+        return _canonical(value)
+
+    def _dumped_target_path(
+        self, protocol: ProtocolRefresh, api_root: Path
+    ) -> Path:
         is_published, review_token = self._publication_state(protocol.family_slug)
         if is_published:
-            path = (
+            return (
                 api_root
                 / RUBRIC_VERSION
                 / "protocols"
                 / f"{protocol.family_slug}.json"
             )
-        else:
-            if not review_token:
-                raise ContractError(
-                    "unpublished target protocol has no protected review route"
-                )
-            path = (
-                api_root
-                / RUBRIC_VERSION
-                / "unpublished"
-                / f"{protocol.family_slug}-{review_token}"
-                / "index.json"
+        if not review_token:
+            raise ContractError(
+                "unpublished target protocol has no protected review route"
             )
+        return (
+            api_root
+            / RUBRIC_VERSION
+            / "unpublished"
+            / f"{protocol.family_slug}-{review_token}"
+            / "index.json"
+        )
+
+    def _load_dumped_target(
+        self, protocol: ProtocolRefresh, api_root: Path
+    ) -> Any:
+        path = self._dumped_target_path(protocol, api_root)
         if not path.is_file():
             raise ContractError("temporary dump omitted the target protocol document")
         try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
+            return json.loads(path.read_text(encoding="utf-8"))
         except (OSError, UnicodeError, json.JSONDecodeError) as exc:
             raise ContractError("temporary target protocol document is unreadable") from exc
-        self._verify_protocol_document(protocol, payload)
+
+    def _read_dumped_target_rows(
+        self, protocol: ProtocolRefresh, api_root: Path
+    ) -> dict[str, str]:
+        payload = self._load_dumped_target(protocol, api_root)
+        document = self._protocol_document(payload)
+        rows = document.get("factor_scores")
+        if not isinstance(rows, list):
+            raise ContractError(
+                "pre-transaction target output is missing factor rows"
+            )
+        actual_by_factor = {
+            str(row.get("factor_id")): row
+            for row in rows
+            if isinstance(row, Mapping) and isinstance(row.get("factor_id"), str)
+        }
+        if (
+            len(rows) != EXPECTED_FACTOR_COUNT
+            or len(actual_by_factor) != EXPECTED_FACTOR_COUNT
+            or set(actual_by_factor) != CANONICAL_FACTOR_IDS
+        ):
+            raise ContractError(
+                "pre-transaction target output has an invalid factor universe"
+            )
+        return {
+            factor_id: self._semantic_factor_row(row)
+            for factor_id, row in actual_by_factor.items()
+        }
+
+    def _verify_dumped_target(self, protocol: ProtocolRefresh, api_root: Path) -> None:
+        payload = self._load_dumped_target(protocol, api_root)
+        self._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=(
+                self._target_rows_before
+                if self._protocol_baseline_rubric == RUBRIC_VERSION
+                else None
+            ),
+        )
 
     def _publication_state(self, family_slug: str) -> tuple[bool, str | None]:
         conn = self._connection()
@@ -812,12 +1016,18 @@ pg_restore --list "$path" >/dev/null"""
     def commit_protocol(self, protocol: ProtocolRefresh) -> None:
         self._connection().commit()
         self._protocol_open = False
+        self._protocol_baseline_family = None
+        self._protocol_baseline_rubric = None
+        self._target_rows_before = {}
         self._close_dump_workspace()
     def rollback_protocol(self, protocol: ProtocolRefresh) -> None:
         try:
             self._connection().rollback()
         finally:
             self._protocol_open = False
+            self._protocol_baseline_family = None
+            self._protocol_baseline_rubric = None
+            self._target_rows_before = {}
             self._close_dump_workspace()
 
     def _branch(self, protocol: ProtocolRefresh) -> str:

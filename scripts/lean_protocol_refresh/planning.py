@@ -173,12 +173,12 @@ def render_plan(plan: BatchPlan) -> str:
                 ),
                 f"  rubric version: {protocol.rubric_version}",
                 (
-                    "  rubric migration: v1.5.0 -> v1.7.0"
-                    if len(protocol.changes) == 184
-                    else "  rubric migration: none"
+                    "  rubric route: selected from the current production "
+                    "baseline at execution (v1.7.0 standard refresh; "
+                    "v1.5.0 -> v1.7.0 migration)"
                 ),
                 f"  write: {protocol.production_write}",
-                f"  full-pass rows: {len(protocol.changed_factors)}",
+                f"  approved changed rows: {len(protocol.changed_factors)}",
                 f"  score changes: {len(protocol.score_changed_factors)}",
                 f"  publication: {protocol.pull_request}",
                 "  verification: target-only semantic output comparison",

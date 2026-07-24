@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -17,8 +18,15 @@ from lean_protocol_refresh import (
     build_plan,
     render_plan,
 )
-from lean_protocol_refresh.contracts import validate_change_set
-from lean_protocol_refresh.execution import BatchState, ProtocolState
+from lean_protocol_refresh.contracts import (
+    CANONICAL_FACTOR_IDS,
+    validate_change_set,
+)
+from lean_protocol_refresh.execution import (
+    BatchState,
+    ProtocolState,
+    is_already_applied,
+)
 
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "apply-lean-protocol-refresh.py"
@@ -121,6 +129,34 @@ def change_set(*, second: bool = False) -> dict:
     }
 
 
+def complete_applied_rows(protocol) -> tuple[tuple[str, object], ...]:
+    rows = [
+        (
+            f"{change.scope_level}|{change.target}|{change.factor_id}",
+            change.new_value,
+        )
+        for change in protocol.changes
+    ]
+    used = {key for key, _value in rows}
+    for factor_id in sorted(CANONICAL_FACTOR_IDS):
+        key = f"surface|default|{factor_id}"
+        if key in used:
+            continue
+        used.add(key)
+        rows.append(
+            (
+                key,
+                {
+                    "factor_id": factor_id,
+                    "score": "yellow",
+                    "sources": [],
+                },
+            )
+        )
+    assert len(rows) == len(CANONICAL_FACTOR_IDS)
+    return tuple(rows)
+
+
 class FakeOperations:
     def __init__(self, states=None, fail_family=None, batch_state=None):
         self.states = states or {}
@@ -197,9 +233,33 @@ def test_rendered_plan_contains_exact_operator_scope_and_old_new_values() -> Non
     assert "rubric version: v1.7.0" in rendered
     assert "Operations adapter: reviewed_adapter:create" in rendered
     assert "Publication: owner/risk-dashboard (base main)" in rendered
-    assert "full-pass rows: 1" in rendered
+    assert "approved changed rows: 1" in rendered
     assert "score changes: 1" in rendered
     assert "row details: attached public-safe refresh.json change set" in rendered
+
+
+def test_plan_does_not_infer_migration_from_184_approved_changes() -> None:
+    document = change_set()
+    template = document["protocols"][0]["changes"][0]
+    changes = []
+    for factor_id in sorted(CANONICAL_FACTOR_IDS):
+        change = copy.deepcopy(template)
+        change["factor_id"] = factor_id
+        change["old_value"]["factor_id"] = factor_id
+        change["new_value"]["factor_id"] = factor_id
+        changes.append(change)
+    document["protocols"][0]["changes"] = changes
+
+    rendered = render_plan(
+        build_plan(validate_change_set(document), operator_context())
+    )
+
+    assert "approved changed rows: 184" in rendered
+    assert (
+        "rubric route: selected from the current production baseline at execution"
+        in rendered
+    )
+    assert "rubric route: v1.5.0" not in rendered
 
 
 def test_private_source_is_rejected_before_operations() -> None:
@@ -208,6 +268,16 @@ def test_private_source_is_rejected_before_operations() -> None:
         "http://10.0.0.4/private-review"
     )
     with pytest.raises(ContractError, match="private or credentialed"):
+        validate_change_set(document)
+
+
+def test_change_factor_must_exist_in_v17_rubric() -> None:
+    document = change_set()
+    row = document["protocols"][0]["changes"][0]
+    row["factor_id"] = "RD-F-169"
+    row["old_value"]["factor_id"] = "RD-F-169"
+    row["new_value"]["factor_id"] = "RD-F-169"
+    with pytest.raises(ContractError, match="factor_id is invalid"):
         validate_change_set(document)
 
 
@@ -276,12 +346,12 @@ def test_resulting_score_must_match_complete_new_row() -> None:
 
 def test_resume_skips_semantically_applied_protocol() -> None:
     batch = validate_change_set(change_set(second=True))
-    applied_value = batch.protocols[0].changes[0].new_value
+    refresh = batch.protocols[0]
     state = ProtocolState(
         family_slug="falcon",
         surface_slugs=("default",),
         last_refreshed="2026-07-23",
-        applied_changes=(("surface|default|RD-F-001", applied_value),),
+        applied_changes=complete_applied_rows(refresh),
         resulting_grade="B",
         rubric_version=RUBRIC_VERSION,
     )
@@ -563,7 +633,7 @@ def test_metadata_only_change_is_visible_in_exact_plan() -> None:
     row["new_value"]["gap_reason"] = "protocol_opacity"
     rendered = render_plan(build_plan(validate_change_set(document), operator_context()))
     assert "score changes: 0" in rendered
-    assert "full-pass rows: 1" in rendered
+    assert "approved changed rows: 1" in rendered
 
 
 def test_resume_comparison_is_order_insensitive() -> None:
@@ -582,17 +652,7 @@ def test_resume_comparison_is_order_insensitive() -> None:
     protocol["changes"].append(second)
     batch = validate_change_set(document)
     refresh = batch.protocols[0]
-    applied_changes = tuple(
-        reversed(
-            tuple(
-                (
-                    f"{change.scope_level}|{change.target}|{change.factor_id}",
-                    change.new_value,
-                )
-                for change in refresh.changes
-            )
-        )
-    )
+    applied_changes = tuple(reversed(complete_applied_rows(refresh)))
     state = ProtocolState(
         family_slug="falcon",
         surface_slugs=tuple(reversed(refresh.surface_slugs)),
@@ -606,6 +666,92 @@ def test_resume_comparison_is_order_insensitive() -> None:
     report = apply_batch(batch, operations)
     assert report.results[0].status == "skipped"
     assert ("begin", "falcon") not in operations.calls
+
+
+def test_sparse_expected_changes_resume_against_complete_184_row_state() -> None:
+    refresh = validate_change_set(change_set()).protocols[0]
+    expected_change = refresh.changes[0]
+    expected_key = (
+        f"{expected_change.scope_level}|{expected_change.target}|"
+        f"{expected_change.factor_id}"
+    )
+    actual_rows = list(complete_applied_rows(refresh))
+    complete_state = ProtocolState(
+        family_slug=refresh.family_slug,
+        surface_slugs=refresh.surface_slugs,
+        deployment_targets=refresh.deployment_targets,
+        last_refreshed=refresh.last_refreshed,
+        applied_changes=tuple(actual_rows),
+        resulting_grade=refresh.resulting_grade,
+        rubric_version=refresh.rubric_version,
+    )
+
+    assert is_already_applied(refresh, complete_state)
+    assert not is_already_applied(
+        refresh,
+        replace(complete_state, applied_changes=(actual_rows[0],)),
+    )
+    assert not is_already_applied(
+        refresh,
+        replace(complete_state, applied_changes=tuple(actual_rows[1:])),
+    )
+
+    mismatched = list(actual_rows)
+    mismatched[0] = (
+        expected_key,
+        {**expected_change.new_value, "score": "red"},
+    )
+    assert not is_already_applied(
+        refresh,
+        replace(complete_state, applied_changes=tuple(mismatched)),
+    )
+
+    duplicate_actual = tuple(actual_rows) + (actual_rows[0],)
+    assert not is_already_applied(
+        refresh,
+        replace(complete_state, applied_changes=duplicate_actual),
+    )
+
+    wrong_universe = list(actual_rows)
+    wrong_universe[-1] = (
+        "surface|default|RD-F-999",
+        {
+            "factor_id": "RD-F-999",
+            "score": "yellow",
+            "sources": [],
+        },
+    )
+    assert not is_already_applied(
+        refresh,
+        replace(complete_state, applied_changes=tuple(wrong_universe)),
+    )
+
+    duplicate_expected = replace(
+        refresh, changes=refresh.changes + refresh.changes
+    )
+    assert not is_already_applied(duplicate_expected, complete_state)
+
+
+def test_incomplete_active_state_never_skips_no_change_refresh() -> None:
+    refresh = validate_change_set(change_set(second=True)).protocols[1]
+    incomplete_state = ProtocolState(
+        family_slug=refresh.family_slug,
+        surface_slugs=refresh.surface_slugs,
+        deployment_targets=refresh.deployment_targets,
+        last_refreshed=refresh.last_refreshed,
+        applied_changes=(),
+        resulting_grade=refresh.resulting_grade,
+        rubric_version=refresh.rubric_version,
+    )
+
+    assert is_already_applied(
+        refresh,
+        replace(
+            incomplete_state,
+            applied_changes=complete_applied_rows(refresh),
+        ),
+    )
+    assert not is_already_applied(refresh, incomplete_state)
 
 
 @pytest.mark.parametrize(

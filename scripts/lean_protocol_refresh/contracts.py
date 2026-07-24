@@ -21,6 +21,10 @@ SCHEMA_VERSION = "lean-protocol-refresh/v1"
 RUBRIC_VERSION = "v1.7.0"
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 FACTOR_RE = re.compile(r"^RD-F-[0-9]{3}$")
+CANONICAL_FACTOR_IDS = frozenset(
+    f"RD-F-{index:03d}" for index in range(1, 186) if index != 169
+)
+EXPECTED_FACTOR_COUNT = len(CANONICAL_FACTOR_IDS)
 OUTCOMES = {"changed", "no_change"}
 SCORES = {"green", "yellow", "red", "gray", "not_assessed", "not_applicable"}
 COMPLETE_ROW_FIELDS = {
@@ -362,7 +366,11 @@ def _change(
         label,
     )
     factor_id = value["factor_id"]
-    if not isinstance(factor_id, str) or not FACTOR_RE.fullmatch(factor_id):
+    if (
+        not isinstance(factor_id, str)
+        or not FACTOR_RE.fullmatch(factor_id)
+        or factor_id not in CANONICAL_FACTOR_IDS
+    ):
         raise ContractError(f"{label}.factor_id is invalid")
     for row_name in ("old_value", "new_value"):
         row = value[row_name]

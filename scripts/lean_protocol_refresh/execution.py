@@ -6,7 +6,12 @@ import json
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
-from .contracts import ProtocolRefresh, RefreshBatch
+from .contracts import (
+    CANONICAL_FACTOR_IDS,
+    EXPECTED_FACTOR_COUNT,
+    ProtocolRefresh,
+    RefreshBatch,
+)
 
 
 @dataclass(frozen=True)
@@ -184,11 +189,17 @@ def is_already_applied(protocol: ProtocolRefresh, state: ProtocolState) -> bool:
         return False
     if state.rubric_version != protocol.rubric_version:
         return False
+    actual = _normalized_changes(state.applied_changes)
+    if actual is None or len(actual) != EXPECTED_FACTOR_COUNT:
+        return False
+    if {key.rsplit("|", 1)[-1] for key in actual} != CANONICAL_FACTOR_IDS:
+        return False
     if protocol.outcome == "no_change":
         return True
-    actual = _normalized_changes(state.applied_changes)
     expected = _normalized_changes(_expected_changes(protocol))
-    return actual is not None and actual == expected
+    if expected is None:
+        return False
+    return all(actual.get(key) == value for key, value in expected.items())
 
 
 def apply_batch(batch: RefreshBatch, operations: BatchOperations) -> ApplyReport:

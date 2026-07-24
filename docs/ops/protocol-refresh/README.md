@@ -13,6 +13,25 @@ changes with complete public-safe before/after rows and public HTTP(S) sources.
 The topology contract must say `preserve`; Task B cannot add, remove, rename,
 merge, or split families, surfaces, or deployments.
 
+## Version Routing
+
+The production adapter selects one of two paths from the complete semantic
+production baseline before that protocol's transaction writes:
+
+- A complete v1.7.0 baseline with a v1.7.0 result uses the standard
+  same-rubric refresh path. A `changed` protocol may supply only its changed
+  factors; a `no_change` protocol updates only `last_refreshed`.
+- A complete v1.5.0 baseline with a v1.7.0 result uses the preserved full
+  migration path. Its change set continues to contain all 184 factors.
+- A mixed-version or incomplete baseline, or any other version pair, is
+  unsupported and fails before that protocol's production write.
+
+The standard path verifies each supplied old row against the accepted
+production baseline, applies only the changed subset, and then composes and
+compares the complete 184-row protocol output. Route selection is
+deterministic and remains inside the existing Task B plan and single batch
+confirmation. It adds no confirmation, reviewer, receipt, or governance step.
+
 Validate and show the exact operator plan without side effects:
 
 ```powershell
@@ -56,9 +75,12 @@ confirmation. The lean runner then enforces this sequence:
    the resume mechanism; no attempt or receipt chain is needed.
 3. Process protocols serially in independent transactions. Preserve historical
    factor rows, supersede only changed current rows, and always update
-   `last_refreshed`.
+   `last_refreshed`. Standard v1.7.0-to-v1.7.0 refreshes may apply a sparse
+   changed-row subset; preserved v1.5.0-to-v1.7.0 migrations apply their full
+   migration document.
 4. Compose and dump to temporary output, then compare only the target protocol's
-   semantic output. Never hand-edit generated `data/api/` files.
+   complete 184-row semantic output. Never hand-edit generated `data/api/`
+   files.
 5. Commit the successful protocol. On failure, roll back only that protocol,
    record the failure in the run report, and continue with the next protocol.
 6. For each successfully applied or already-applied changed protocol, create or
