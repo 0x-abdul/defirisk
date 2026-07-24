@@ -8,6 +8,7 @@ from types import SimpleNamespace
 import pytest
 
 from lean_protocol_refresh.contracts import (
+    CANONICAL_FACTOR_IDS,
     ContractError,
     Evidence,
     FactorChange,
@@ -19,6 +20,301 @@ from lean_protocol_refresh.production import ProductionOperations, _run, create_
 
 def batch() -> RefreshBatch:
     return RefreshBatch("batch / unsafe", "2026-07-23", "v1.7.0", ())
+
+
+def factor_change(factor_id: str) -> FactorChange:
+    return FactorChange(
+        factor_id,
+        "surface",
+        "default",
+        {"factor_id": factor_id, "score": "yellow", "sources": []},
+        {
+            "factor_id": factor_id,
+            "score": "green",
+            "sources": [{"url": f"https://example.org/{factor_id}"}],
+        },
+        (Evidence(f"https://example.org/{factor_id}"),),
+        "green",
+        "B",
+    )
+
+
+def protocol_with_changes(count: int) -> ProtocolRefresh:
+    return ProtocolRefresh(
+        "falcon",
+        ("default",),
+        (),
+        "changed",
+        "2026-07-23",
+        "B",
+        "v1.7.0",
+        tuple(
+            factor_change(factor_id)
+            for factor_id in sorted(CANONICAL_FACTOR_IDS)[:count]
+        ),
+        "C",
+    )
+
+
+class BaselineCursor:
+    def __init__(self, rows: tuple[tuple[str, int], ...]) -> None:
+        self.rows = rows
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+    def execute(self, _sql, _params):
+        return None
+
+    def fetchall(self):
+        result = []
+        factor_ids = sorted(CANONICAL_FACTOR_IDS)
+        for version, count in self.rows:
+            result.extend((version, factor_id) for factor_id in factor_ids[:count])
+        return tuple(result)
+
+
+class BaselineConnection:
+    def __init__(self, rows: tuple[tuple[str, int], ...]) -> None:
+        self.rows = rows
+
+    def cursor(self):
+        return BaselineCursor(self.rows)
+
+
+def baseline_operations(
+    tmp_path: Path, rows: tuple[tuple[str, int], ...]
+) -> ProductionOperations:
+    return ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: BaselineConnection(rows),
+    )
+
+
+@pytest.mark.parametrize(
+    "protocol",
+    [
+        protocol_with_changes(1),
+        ProtocolRefresh(
+            "maple",
+            ("default",),
+            (),
+            "no_change",
+            "2026-07-23",
+            "A",
+            "v1.7.0",
+            (),
+            "A",
+        ),
+    ],
+)
+def test_v17_baseline_selects_standard_refresh_for_sparse_and_no_change(
+    tmp_path: Path, protocol: ProtocolRefresh
+) -> None:
+    ops = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    assert ops._classify_protocol_baseline(protocol) == "v1.7.0"
+
+
+def test_v15_baseline_preserves_full_migration_route(tmp_path: Path) -> None:
+    ops = baseline_operations(tmp_path, (("v1.5.0", 184),))
+    assert ops._classify_protocol_baseline(protocol_with_changes(184)) == "v1.5.0"
+
+
+@pytest.mark.parametrize(
+    "protocol",
+    [
+        protocol_with_changes(1),
+        ProtocolRefresh(
+            "maple",
+            ("default",),
+            (),
+            "no_change",
+            "2026-07-23",
+            "A",
+            "v1.7.0",
+            (),
+            "A",
+        ),
+    ],
+)
+def test_v15_baseline_requires_changed_outcome_with_all_184_rows(
+    tmp_path: Path, protocol: ProtocolRefresh
+) -> None:
+    ops = baseline_operations(tmp_path, (("v1.5.0", 184),))
+    with pytest.raises(ContractError, match="changed outcome.*exactly 184"):
+        ops._classify_protocol_baseline(protocol)
+
+
+@pytest.mark.parametrize(
+    "rows",
+    [
+        (("v1.7.0", 183),),
+        (("v1.5.0", 92), ("v1.7.0", 92)),
+        (("v1.6.0", 184),),
+        (),
+    ],
+)
+def test_mixed_incomplete_and_unsupported_baselines_are_rejected(
+    tmp_path: Path, rows: tuple[tuple[str, int], ...]
+) -> None:
+    ops = baseline_operations(tmp_path, rows)
+    with pytest.raises(
+        ContractError,
+        match="must contain the exact 184 v1.7.0 factor IDs.*or only v1.5.0",
+    ):
+        ops._classify_protocol_baseline(protocol_with_changes(1))
+
+
+def test_baseline_rejects_wrong_184_factor_universe(tmp_path: Path) -> None:
+    class WrongFactorCursor(BaselineCursor):
+        def fetchall(self):
+            factor_ids = sorted(CANONICAL_FACTOR_IDS)
+            factor_ids[-1] = "RD-F-999"
+            return tuple(("v1.7.0", factor_id) for factor_id in factor_ids)
+
+    class WrongFactorConnection(BaselineConnection):
+        def cursor(self):
+            return WrongFactorCursor(())
+
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: WrongFactorConnection(()),
+    )
+    with pytest.raises(ContractError, match="exact 184 v1.7.0 factor IDs"):
+        ops._classify_protocol_baseline(protocol_with_changes(1))
+
+
+@pytest.mark.parametrize("baseline_rubric", ["v1.7.0", "v1.5.0"])
+def test_apply_supersedes_selected_baseline_and_preserves_history(
+    tmp_path: Path, baseline_rubric: str
+) -> None:
+    class ApplyCursor:
+        def __init__(self) -> None:
+            self.calls = []
+            self.result = None
+            self.rowcount = 1
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def execute(self, sql, params):
+            self.calls.append((sql, params))
+            if "SELECT surface_id FROM protocol_surfaces" in sql:
+                self.result = ("surface-id",)
+            elif "SELECT id, rubric_version" in sql:
+                self.result = [("old-id", baseline_rubric, {})]
+            elif "INSERT INTO factor_scores" in sql:
+                self.result = ("new-id",)
+            else:
+                self.result = None
+            self.rowcount = 1
+
+        def fetchone(self):
+            return self.result
+
+        def fetchall(self):
+            return self.result
+
+    class ApplyConnection:
+        def __init__(self) -> None:
+            self.apply_cursor = ApplyCursor()
+
+        def cursor(self):
+            return self.apply_cursor
+
+    connection = ApplyConnection()
+    protocol = protocol_with_changes(1)
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: connection,
+    )
+    ops._protocol_baseline_family = protocol.family_slug
+    ops._protocol_baseline_rubric = baseline_rubric
+    ops._verify_public_old_row = lambda *_args: None
+    ops._get_or_create_source = lambda *_args: "source-id"
+
+    ops.apply_protocol(protocol)
+
+    statements = [sql for sql, _params in connection.apply_cursor.calls]
+    assert any("INSERT INTO factor_scores" in sql for sql in statements)
+    assert any(
+        "SET is_current=false, superseded_by=%s" in sql for sql in statements
+    )
+    assert any(
+        "UPDATE factor_scores SET is_current=true" in sql for sql in statements
+    )
+    assert any("UPDATE protocols SET last_refreshed" in sql for sql in statements)
+    assert not any("DELETE FROM factor_scores" in sql for sql in statements)
+
+
+def test_no_change_apply_updates_only_last_refreshed(tmp_path: Path) -> None:
+    class Cursor:
+        rowcount = 1
+
+        def __init__(self) -> None:
+            self.calls = []
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def execute(self, sql, params):
+            self.calls.append((sql, params))
+
+    class Connection:
+        def __init__(self) -> None:
+            self.apply_cursor = Cursor()
+
+        def cursor(self):
+            return self.apply_cursor
+
+    protocol = ProtocolRefresh(
+        "maple",
+        ("default",),
+        (),
+        "no_change",
+        "2026-07-23",
+        "A",
+        "v1.7.0",
+        (),
+        "A",
+    )
+    connection = Connection()
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: connection,
+    )
+    ops._protocol_baseline_family = protocol.family_slug
+    ops._protocol_baseline_rubric = "v1.7.0"
+
+    ops.apply_protocol(protocol)
+
+    assert len(connection.apply_cursor.calls) == 1
+    assert "UPDATE protocols SET last_refreshed" in connection.apply_cursor.calls[0][0]
 
 
 def test_process_runner_decodes_public_records_as_utf8(tmp_path: Path) -> None:
@@ -276,6 +572,70 @@ def test_no_change_live_document_requires_184_rows_and_freshness() -> None:
         ProductionOperations._verify_protocol_document(protocol, payload)
 
 
+def test_changed_live_document_accepts_sparse_expectations_but_requires_184_rows() -> None:
+    protocol = protocol_with_changes(1)
+    changed_row = dict(protocol.changes[0].new_value)
+    payload = {
+        "data": {
+            "protocol_data": {
+                "protocol": {
+                    "slug": "falcon",
+                    "rubric_version": "v1.7.0",
+                    "headline_grade": "B",
+                    "last_refreshed": "2026-07-23",
+                },
+                "deployments": [],
+                "factor_scores": [
+                    (
+                        changed_row
+                        if factor_id == protocol.changes[0].factor_id
+                        else {"factor_id": factor_id}
+                    )
+                    for factor_id in sorted(CANONICAL_FACTOR_IDS)
+                ],
+            }
+        }
+    }
+    ProductionOperations._verify_protocol_document(protocol, payload)
+    payload["data"]["protocol_data"]["factor_scores"].pop()
+    with pytest.raises(ContractError, match="complete factor pass"):
+        ProductionOperations._verify_protocol_document(protocol, payload)
+
+
+def test_protocol_document_rejects_wrong_184_factor_universe() -> None:
+    protocol = ProtocolRefresh(
+        "maple",
+        ("default",),
+        (),
+        "no_change",
+        "2026-07-23",
+        "A",
+        "v1.7.0",
+        (),
+        "A",
+    )
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+    factor_ids[-1] = "RD-F-999"
+    payload = {
+        "data": {
+            "protocol_data": {
+                "protocol": {
+                    "slug": "maple",
+                    "rubric_version": "v1.7.0",
+                    "headline_grade": "A",
+                    "last_refreshed": "2026-07-23",
+                },
+                "deployments": [],
+                "factor_scores": [
+                    {"factor_id": factor_id} for factor_id in factor_ids
+                ],
+            }
+        }
+    }
+    with pytest.raises(ContractError, match="factor IDs differ"):
+        ProductionOperations._verify_protocol_document(protocol, payload)
+
+
 def test_unpublished_target_uses_protected_route_without_exposing_token(
     tmp_path: Path,
 ) -> None:
@@ -301,8 +661,8 @@ def test_unpublished_target_uses_protected_route_without_exposing_token(
                 },
                 "deployments": [],
                 "factor_scores": [
-                    {"factor_id": f"RD-F-{index:03d}"}
-                    for index in range(1, 185)
+                    {"factor_id": factor_id}
+                    for factor_id in sorted(CANONICAL_FACTOR_IDS)
                 ],
             }
         }
