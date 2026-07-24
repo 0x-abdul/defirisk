@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install test dependencies
-        run: pip install pytest ruff 'psycopg[binary]>=3.1'
+        run: pip install pytest 'ruff==0.15.10' 'psycopg[binary]>=3.1'
       - name: Lint refresh tooling
         run: |
           ruff check scripts/protocol_refresh_apply scripts/protocol_refresh_public
