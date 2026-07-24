@@ -148,7 +148,37 @@ def test_v15_baseline_requires_changed_outcome_with_all_184_rows(
     tmp_path: Path, protocol: ProtocolRefresh
 ) -> None:
     ops = baseline_operations(tmp_path, (("v1.5.0", 184),))
-    with pytest.raises(ContractError, match="changed outcome.*exactly 184"):
+    with pytest.raises(ContractError, match="changed outcome.*exactly the 184"):
+        ops._classify_protocol_baseline(protocol)
+
+
+def test_v15_baseline_requires_exact_canonical_change_coverage(
+    tmp_path: Path,
+) -> None:
+    complete = protocol_with_changes(184)
+    duplicate = FactorChange(
+        complete.changes[0].factor_id,
+        "family",
+        complete.family_slug,
+        complete.changes[-1].old_value,
+        complete.changes[-1].new_value,
+        complete.changes[-1].evidence,
+        complete.changes[-1].resulting_score,
+        complete.changes[-1].resulting_grade,
+    )
+    protocol = ProtocolRefresh(
+        complete.family_slug,
+        complete.surface_slugs,
+        complete.deployment_targets,
+        complete.outcome,
+        complete.last_refreshed,
+        complete.resulting_grade,
+        complete.rubric_version,
+        (*complete.changes[:-1], duplicate),
+        complete.previous_grade,
+    )
+    ops = baseline_operations(tmp_path, (("v1.5.0", 184),))
+    with pytest.raises(ContractError, match="canonical approved factor rows"):
         ops._classify_protocol_baseline(protocol)
 
 
@@ -572,9 +602,22 @@ def test_no_change_live_document_requires_184_rows_and_freshness() -> None:
         ProductionOperations._verify_protocol_document(protocol, payload)
 
 
-def test_changed_live_document_accepts_sparse_expectations_but_requires_184_rows() -> None:
+def test_changed_live_document_preserves_every_unchanged_row() -> None:
     protocol = protocol_with_changes(1)
     changed_row = dict(protocol.changes[0].new_value)
+    baseline_rows = {
+        factor_id: {
+            "factor_id": factor_id,
+            "score": "yellow",
+            "evidence_summary": f"baseline {factor_id}",
+            "sources": [{"url": f"https://example.org/baseline/{factor_id}"}],
+        }
+        for factor_id in CANONICAL_FACTOR_IDS
+    }
+    baseline_snapshot = {
+        factor_id: ProductionOperations._semantic_factor_row(row)
+        for factor_id, row in baseline_rows.items()
+    }
     payload = {
         "data": {
             "protocol_data": {
@@ -589,17 +632,38 @@ def test_changed_live_document_accepts_sparse_expectations_but_requires_184_rows
                     (
                         changed_row
                         if factor_id == protocol.changes[0].factor_id
-                        else {"factor_id": factor_id}
+                        else baseline_rows[factor_id]
                     )
                     for factor_id in sorted(CANONICAL_FACTOR_IDS)
                 ],
             }
         }
     }
-    ProductionOperations._verify_protocol_document(protocol, payload)
+    ProductionOperations._verify_protocol_document(
+        protocol,
+        payload,
+        unchanged_rows_before=baseline_snapshot,
+    )
+    unchanged = next(
+        row
+        for row in payload["data"]["protocol_data"]["factor_scores"]
+        if row["factor_id"] != protocol.changes[0].factor_id
+    )
+    unchanged["score"] = "red"
+    with pytest.raises(ContractError, match="changed unapproved row"):
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=baseline_snapshot,
+        )
+    unchanged["score"] = "yellow"
     payload["data"]["protocol_data"]["factor_scores"].pop()
     with pytest.raises(ContractError, match="complete factor pass"):
-        ProductionOperations._verify_protocol_document(protocol, payload)
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=baseline_snapshot,
+        )
 
 
 def test_protocol_document_rejects_wrong_184_factor_universe() -> None:
