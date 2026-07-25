@@ -245,7 +245,7 @@ class BaselineGuardCursor:
         return self.rows
 
 
-def test_v17_import_allows_only_empty_or_complete_v17_baseline() -> None:
+def test_v17_import_allows_empty_or_exact_v17_baseline() -> None:
     expected = {
         ("surface", "default", f"RD-F-{index:03d}")
         for index in range(1, 185)
@@ -258,6 +258,25 @@ def test_v17_import_allows_only_empty_or_complete_v17_baseline() -> None:
             [
                 ("v1.7.0", scope, target, factor_id)
                 for scope, target, factor_id in sorted(expected)
+            ]
+        ),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+
+
+def test_v17_import_allows_exact_existing_subset_of_incoming_assessment() -> None:
+    expected = {
+        ("surface", "default", "RD-F-001"),
+        ("surface", "default", "RD-F-002"),
+        ("surface", "default", "RD-F-003"),
+    }
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor(
+            [
+                ("v1.7.0", "surface", "default", "RD-F-001"),
+                ("v1.7.0", "surface", "default", "RD-F-002"),
             ]
         ),
         "fixture-family",
@@ -329,3 +348,34 @@ def test_protocol_scope_uses_protocol_slug_as_target() -> None:
         "fixture-family",
         "default",
     ) == {("protocol", "fixture-family", "RD-F-001")}
+
+
+def test_v17_import_postcondition_requires_exact_incoming_scoped_keys() -> None:
+    expected = {
+        ("surface", "default", "RD-F-001"),
+        ("surface", "default", "RD-F-002"),
+    }
+    importer.verify_v17_import_postcondition(
+        BaselineGuardCursor(
+            [
+                ("v1.7.0", "surface", "default", "RD-F-001"),
+                ("v1.7.0", "surface", "default", "RD-F-002"),
+            ]
+        ),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+    try:
+        importer.verify_v17_import_postcondition(
+            BaselineGuardCursor(
+                [("v1.7.0", "surface", "default", "RD-F-001")]
+            ),
+            "fixture-family",
+            "v1.7.0",
+            expected,
+        )
+    except ValueError as exc:
+        assert "exact incoming scoped-key set" in str(exc)
+    else:
+        raise AssertionError("expected exact post-import scoped-key guard")

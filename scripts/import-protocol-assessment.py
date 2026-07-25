@@ -864,15 +864,9 @@ def assessment_scoped_keys(
     return keys
 
 
-def ensure_v17_import_baseline_safe(
-    cur,
-    slug: str,
-    rubric_version: str,
-    expected_scoped_keys: set[tuple[str, str, str]],
-) -> None:
-    """Prevent generic imports from creating or extending mixed current baselines."""
-    if rubric_version != "v1.7.0":
-        return
+def current_factor_scoped_rows(
+    cur, slug: str
+) -> tuple[tuple[str, str, str, str], ...]:
     cur.execute(
         """
         SELECT fs.rubric_version, fs.scope_level,
@@ -896,10 +890,22 @@ def ensure_v17_import_baseline_safe(
         """,
         (slug,),
     )
-    rows = tuple(
+    return tuple(
         (str(version), str(scope), str(target), str(factor_id))
         for version, scope, target, factor_id in cur.fetchall()
     )
+
+
+def ensure_v17_import_baseline_safe(
+    cur,
+    slug: str,
+    rubric_version: str,
+    expected_scoped_keys: set[tuple[str, str, str]],
+) -> None:
+    """Prevent generic imports from creating or extending mixed current baselines."""
+    if rubric_version != "v1.7.0":
+        return
+    rows = current_factor_scoped_rows(cur, slug)
     if not rows:
         return
     versions = {row[0] for row in rows}
@@ -909,8 +915,8 @@ def ensure_v17_import_baseline_safe(
     }
     if (
         versions == {"v1.7.0"}
-        and len(rows) == len(observed_scoped_keys) == 184
-        and observed_scoped_keys == expected_scoped_keys
+        and len(rows) == len(observed_scoped_keys)
+        and observed_scoped_keys <= expected_scoped_keys
     ):
         return
     summary = ", ".join(
@@ -918,11 +924,36 @@ def ensure_v17_import_baseline_safe(
         for version in sorted(versions)
     )
     raise ValueError(
-        "generic v1.7.0 import requires an existing exact 184-key current "
-        "v1.7.0 scoped baseline matching the incoming assessment; mixed, "
-        "legacy, incomplete, or scope-mismatched baselines must use "
+        "generic v1.7.0 import requires any existing current rows to be a "
+        "unique sole-v1.7.0 scoped subset of the incoming assessment; mixed, "
+        "legacy, or scope-mismatched baselines must use "
         f"Lean Refresh Task B mixed_recovery (found {summary})"
     )
+
+
+def verify_v17_import_postcondition(
+    cur,
+    slug: str,
+    rubric_version: str,
+    expected_scoped_keys: set[tuple[str, str, str]],
+) -> None:
+    if rubric_version != "v1.7.0":
+        return
+    rows = current_factor_scoped_rows(cur, slug)
+    observed_scoped_keys = {
+        (scope, target, factor_id)
+        for version, scope, target, factor_id in rows
+        if version == "v1.7.0"
+    }
+    if (
+        {row[0] for row in rows} != {"v1.7.0"}
+        or len(rows) != len(observed_scoped_keys)
+        or observed_scoped_keys != expected_scoped_keys
+    ):
+        raise ValueError(
+            "generic v1.7.0 import postcondition requires the exact incoming "
+            "scoped-key set and no other current rubric rows"
+        )
 
 
 def insert_factor_score(
@@ -1179,6 +1210,11 @@ def main(argv: list[str] | None = None) -> int:
             )
             n_fs = 0
             n_src_links = 0
+            expected_scoped_keys = assessment_scoped_keys(
+                grading["factor_scores"],
+                family["family_slug"],
+                default_surface,
+            )
             for fs in grading["factor_scores"]:
                 insert_factor_score(
                     cur,
@@ -1193,6 +1229,12 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 n_fs += 1
                 n_src_links += len(fs.get("sources", []))
+            verify_v17_import_postcondition(
+                cur,
+                args.slug,
+                args.rubric_version,
+                expected_scoped_keys,
+            )
             print("  protocol UPSERTed")
             print(f"  family {family['family_slug']} UPSERTed")
             print(f"  {len(surface_ids)} surfaces UPSERTed")
