@@ -13,11 +13,13 @@ from lean_protocol_refresh.contracts import (
     ContractError,
     Evidence,
     FactorChange,
+    MixedRecovery,
     ProtocolRefresh,
     RefreshBatch,
     validate_change_set,
 )
 from lean_protocol_refresh.production import ProductionOperations, _run, create_operations
+from lean_protocol_refresh.planning import BaselineClassification
 
 
 def batch() -> RefreshBatch:
@@ -58,6 +60,81 @@ def protocol_with_changes(count: int) -> ProtocolRefresh:
     )
 
 
+def protocol_with_mixed_recovery(*, changed: bool = True) -> ProtocolRefresh:
+    target_rows = tuple(
+        FactorChange(
+            factor_id,
+            "surface",
+            "default",
+            {
+                "factor_id": factor_id,
+                "score": "green",
+                "evidence_summary": f"Evidence for {factor_id}",
+                "collection_mode": "manual",
+                "sources": [
+                    {
+                        "source_type": "url",
+                        "url": f"https://example.org/{factor_id}",
+                        "reference": f"https://example.org/{factor_id}",
+                    }
+                ],
+            },
+            {
+                "factor_id": factor_id,
+                "score": "green",
+                "evidence_summary": f"Evidence for {factor_id}",
+                "collection_mode": "manual",
+                "sources": [
+                    {
+                        "source_type": "url",
+                        "url": f"https://example.org/{factor_id}",
+                        "reference": f"https://example.org/{factor_id}",
+                    }
+                ],
+            },
+            (Evidence(f"https://example.org/{factor_id}"),),
+            "green",
+            "B",
+        )
+        for factor_id in sorted(CANONICAL_FACTOR_IDS)
+    )
+    changes = (factor_change("RD-F-001"),) if changed else ()
+    if changed:
+        target_rows = (
+            FactorChange(
+                target_rows[0].factor_id,
+                target_rows[0].scope_level,
+                target_rows[0].target,
+                changes[0].new_value,
+                changes[0].new_value,
+                changes[0].evidence,
+                changes[0].resulting_score,
+                changes[0].resulting_grade,
+            ),
+            *target_rows[1:],
+        )
+    return ProtocolRefresh(
+        "falcon",
+        ("default",),
+        (),
+        "changed" if changed else "no_change",
+        "2026-07-23",
+        "B",
+        "v1.7.0",
+        changes,
+        "C",
+        MixedRecovery(
+            "lean-protocol-refresh/mixed-recovery/v1",
+            "v1.5.0",
+            "v1.7.0",
+            "prefer_target_then_source",
+            target_rows,
+            "1" * 64,
+            "2" * 64,
+        ),
+    )
+
+
 class BaselineCursor:
     def __init__(self, rows: tuple[tuple[str, int], ...]) -> None:
         self.rows = rows
@@ -75,7 +152,10 @@ class BaselineCursor:
         result = []
         factor_ids = sorted(CANONICAL_FACTOR_IDS)
         for version, count in self.rows:
-            result.extend((version, factor_id) for factor_id in factor_ids[:count])
+            result.extend(
+                (version, factor_id, "surface", "default")
+                for factor_id in factor_ids[:count]
+            )
         return tuple(result)
 
 
@@ -97,6 +177,35 @@ def baseline_operations(
         "o/r",
         "main",
         connect=lambda _url: BaselineConnection(rows),
+    )
+
+
+class ExactBaselineCursor(BaselineCursor):
+    def __init__(self, rows):
+        self.exact_rows = rows
+        super().__init__(())
+
+    def fetchall(self):
+        return self.exact_rows
+
+
+class ExactBaselineConnection(BaselineConnection):
+    def __init__(self, rows):
+        self.exact_rows = rows
+        super().__init__(())
+
+    def cursor(self):
+        return ExactBaselineCursor(self.exact_rows)
+
+
+def exact_baseline_operations(tmp_path: Path, rows) -> ProductionOperations:
+    return ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: ExactBaselineConnection(rows),
     )
 
 
@@ -301,6 +410,25 @@ def test_v15_baseline_preserves_full_migration_route(tmp_path: Path) -> None:
     assert ops._classify_protocol_baseline(protocol_with_changes(184)) == "v1.5.0"
 
 
+def test_completed_full_migration_requires_exact_184_row_history_binding(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_changes(184)
+    ops = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    ops._legacy_history_binding = lambda *_args, **_kwargs: (184, "a" * 64)
+    classification = ops._baseline_classification(
+        protocol, include_history_binding=True
+    )
+    assert classification.rubric_route == "full_v15_migration_complete"
+    assert classification.legacy_history_sha256 == "a" * 64
+
+    ops._legacy_history_binding = lambda *_args, **_kwargs: (183, "b" * 64)
+    with pytest.raises(ContractError, match="history binding is incomplete"):
+        ops._baseline_classification(
+            protocol, include_history_binding=True
+        )
+
+
 @pytest.mark.parametrize(
     "protocol",
     [
@@ -381,7 +509,10 @@ def test_baseline_rejects_wrong_184_factor_universe(tmp_path: Path) -> None:
         def fetchall(self):
             factor_ids = sorted(CANONICAL_FACTOR_IDS)
             factor_ids[-1] = "RD-F-999"
-            return tuple(("v1.7.0", factor_id) for factor_id in factor_ids)
+            return tuple(
+                ("v1.7.0", factor_id, "surface", "default")
+                for factor_id in factor_ids
+            )
 
     class WrongFactorConnection(BaselineConnection):
         def cursor(self):
@@ -397,6 +528,326 @@ def test_baseline_rejects_wrong_184_factor_universe(tmp_path: Path) -> None:
     )
     with pytest.raises(ContractError, match="exact 184 v1.7.0 factor IDs"):
         ops._classify_protocol_baseline(protocol_with_changes(1))
+
+
+def test_standard_baseline_rejects_scoped_target_outside_approved_topology(
+    tmp_path: Path,
+) -> None:
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+    rows = [
+        ("v1.7.0", factor_id, "surface", "default")
+        for factor_id in factor_ids
+    ]
+    rows[-1] = ("v1.7.0", rows[-1][1], "surface", "wrong-surface")
+    ops = exact_baseline_operations(tmp_path, tuple(rows))
+
+    with pytest.raises(ContractError, match="exact 184 v1.7.0 factor IDs"):
+        ops._classify_protocol_baseline(protocol_with_changes(1))
+
+
+def test_mixed_baseline_requires_bound_recovery_and_exact_union(
+    tmp_path: Path,
+) -> None:
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+    rows = tuple(
+        [("v1.5.0", factor_id, "surface", "default") for factor_id in factor_ids[:180]]
+        + [("v1.7.0", factor_id, "surface", "default") for factor_id in factor_ids[180:]]
+    )
+    ops = exact_baseline_operations(tmp_path, rows)
+
+    assert (
+        ops._classify_protocol_baseline(protocol_with_mixed_recovery())
+        == "mixed_recovery"
+    )
+    classification = ops._baseline_classification(
+        protocol_with_mixed_recovery()
+    )
+    assert (
+        classification.current_v15_rows,
+        classification.current_v17_rows,
+        classification.overlap_rows,
+        classification.semantic_change_rows,
+        classification.migration_only_rows,
+        classification.v17_insert_or_replace_rows,
+        classification.v15_retirement_rows,
+    ) == (180, 4, 0, 1, 179, 180, 180)
+    with pytest.raises(ContractError, match="exact 184 v1.7.0 factor IDs"):
+        ops._classify_protocol_baseline(protocol_with_changes(1))
+
+
+def test_mixed_baseline_accepts_overlap_with_v17_preference(
+    tmp_path: Path,
+) -> None:
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+    rows = tuple(
+        [("v1.5.0", factor_id, "surface", "default") for factor_id in factor_ids]
+        + [("v1.7.0", factor_id, "surface", "default") for factor_id in factor_ids[:4]]
+    )
+    ops = exact_baseline_operations(tmp_path, rows)
+
+    assert (
+        ops._classify_protocol_baseline(protocol_with_mixed_recovery())
+        == "mixed_recovery"
+    )
+
+
+class ResumeIntegrityCursor:
+    def __init__(self, rows) -> None:
+        self.rows = rows
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+    def execute(self, _sql, _params):
+        return None
+
+    def fetchall(self):
+        return self.rows
+
+
+class ResumeIntegrityConnection:
+    def __init__(self, rows) -> None:
+        self.rows = rows
+
+    def cursor(self):
+        return ResumeIntegrityCursor(self.rows)
+
+
+def test_legacy_history_binding_preserves_source_join_identities_and_empty_sets(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    connection = ResumeIntegrityConnection(
+        (("legacy-1", ("source-1", "source-2")), ("legacy-2", ()))
+    )
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: connection,
+    )
+    count, history_hash = ops._legacy_history_binding(
+        protocol, current_rows=False
+    )
+
+    assert count == 2
+    assert history_hash is not None
+    ops._conn = ResumeIntegrityConnection((("legacy-1", ("source-1",)),))
+    assert ops._legacy_history_binding(
+        protocol, current_rows=False
+    ) != (count, history_hash)
+
+
+def test_mixed_resume_requires_exact_approved_legacy_history_hash(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+    )
+    approved_hash = "a" * 64
+    ops.bind_approved_plan(
+        {
+            "protocols": [
+                {
+                    "family_slug": protocol.family_slug,
+                    "rubric_route": "mixed_recovery",
+                    "v15_retirement_rows": 180,
+                    "legacy_history_sha256": approved_hash,
+                }
+            ]
+        }
+    )
+    ops._baseline_classification = lambda *_args, **_kwargs: BaselineClassification(
+        protocol.family_slug,
+        "mixed_recovery_complete",
+        0,
+        184,
+        0,
+        len(protocol.changes),
+        0,
+        0,
+        0,
+        protocol.mixed_recovery.full_target_projection_semantic_sha256,
+        approved_hash,
+    )
+    ops._conn = SimpleNamespace(rollback=lambda: None)
+
+    ops.validate_protocol_resume(protocol, SimpleNamespace())
+    ops._baseline_classification = lambda *_args, **_kwargs: replace(
+        BaselineClassification(
+            protocol.family_slug,
+            "mixed_recovery_complete",
+            0,
+            184,
+            0,
+            len(protocol.changes),
+            0,
+            0,
+            0,
+            protocol.mixed_recovery.full_target_projection_semantic_sha256,
+            approved_hash,
+        ),
+        legacy_history_sha256="b" * 64,
+    )
+    with pytest.raises(ContractError, match="retained v1.5.0 history"):
+        ops.validate_protocol_resume(protocol, SimpleNamespace())
+
+
+def test_precommit_rejects_missing_legacy_row_or_source_join(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    approved_hash = "a" * 64
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+    )
+    ops._planned_classifications[protocol.family_slug] = BaselineClassification(
+        protocol.family_slug,
+        "mixed_recovery",
+        180,
+        4,
+        0,
+        len(protocol.changes),
+        179,
+        180,
+        180,
+        protocol.mixed_recovery.full_target_projection_semantic_sha256,
+        approved_hash,
+    )
+    ops._legacy_history_binding = lambda *_args, **_kwargs: (
+        180,
+        approved_hash,
+    )
+    ops._verify_legacy_history_postcondition(protocol)
+
+    ops._legacy_history_binding = lambda *_args, **_kwargs: (
+        179,
+        "b" * 64,
+    )
+    with pytest.raises(ContractError, match="source-join identities"):
+        ops._verify_legacy_history_postcondition(protocol)
+
+
+def test_mixed_baseline_rejects_union_gap(tmp_path: Path) -> None:
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+    rows = tuple(
+        ("v1.5.0", factor_id, "surface", "default")
+        for factor_id in factor_ids[:-1]
+    )
+    rows += (("v1.7.0", factor_ids[0], "surface", "default"),)
+    ops = exact_baseline_operations(tmp_path, rows)
+
+    with pytest.raises(ContractError, match="exact approved 184-key"):
+        ops._classify_protocol_baseline(protocol_with_mixed_recovery())
+
+
+class MixedApplyCursor:
+    def __init__(self, protocol: ProtocolRefresh) -> None:
+        assert protocol.mixed_recovery is not None
+        self.targets = {
+            row.factor_id: row
+            for row in protocol.mixed_recovery.full_target_projection
+        }
+        self.overlap = set(sorted(CANONICAL_FACTOR_IDS)[:4])
+        self.sql = ""
+        self.params = ()
+        self.rowcount = 0
+        self.statements: list[str] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return None
+
+    def execute(self, sql, params=None):
+        self.sql = " ".join(str(sql).split())
+        self.params = params or ()
+        self.statements.append(self.sql)
+        self.rowcount = 1
+
+    def fetchone(self):
+        if "SELECT surface_id FROM protocol_surfaces" in self.sql:
+            return ("surface-id",)
+        if "SELECT category_id FROM factors" in self.sql:
+            return (1,)
+        if "SELECT id FROM sources" in self.sql:
+            return ("source-id",)
+        if "INSERT INTO factor_scores" in self.sql:
+            return (f"new-{self.params[2]}",)
+        raise AssertionError(self.sql)
+
+    def fetchall(self):
+        if "SELECT id, rubric_version, to_jsonb(factor_scores)" in self.sql:
+            factor_id = self.params[1]
+            target = self.targets[factor_id]
+            row = {
+                "factor_id": factor_id,
+                "score": target.new_value["score"],
+                "evidence_summary": target.new_value["evidence_summary"],
+                "evidence_detail": target.new_value.get("evidence_detail"),
+                "collection_mode": target.new_value["collection_mode"],
+                "gap_reason": target.new_value.get("gap_reason"),
+                "notes": target.new_value.get("notes"),
+                "scope_level": "surface",
+            }
+            rows = [(f"old15-{factor_id}", "v1.5.0", row)]
+            if factor_id in self.overlap:
+                rows.append((f"old17-{factor_id}", "v1.7.0", row))
+            return rows
+        if "FROM factor_score_sources" in self.sql:
+            factor_id = "RD-F-" + str(self.params[0]).rsplit("RD-F-", 1)[-1]
+            url = f"https://example.org/{factor_id}"
+            return [("url", url, url, None, None, None)]
+        if "count(DISTINCT factor_id)" in self.sql:
+            return [("v1.7.0", 184, 184)]
+        raise AssertionError(self.sql)
+
+
+class MixedApplyConnection:
+    def __init__(self, protocol: ProtocolRefresh) -> None:
+        self.cursor_value = MixedApplyCursor(protocol)
+
+    def cursor(self):
+        return self.cursor_value
+
+
+def test_mixed_no_change_backfills_target_and_retires_legacy_without_delete(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery(changed=False)
+    connection = MixedApplyConnection(protocol)
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+        connect=lambda _url: connection,
+    )
+    ops._protocol_baseline_family = protocol.family_slug
+    ops._protocol_baseline_rubric = "mixed_recovery"
+
+    ops.apply_protocol(protocol)
+
+    statements = connection.cursor_value.statements
+    assert sum("INSERT INTO factor_scores" in sql for sql in statements) == 180
+    assert all("DELETE FROM factor_scores" not in sql for sql in statements)
+    assert any("count(DISTINCT factor_id)" in sql for sql in statements)
 
 
 @pytest.mark.parametrize("baseline_rubric", ["v1.7.0", "v1.5.0"])
@@ -866,6 +1317,65 @@ def test_changed_live_document_preserves_every_unchanged_row() -> None:
             protocol,
             payload,
             unchanged_rows_before=baseline_snapshot,
+        )
+
+
+def test_mixed_output_allows_verified_reused_v17_row_metadata() -> None:
+    protocol = protocol_with_mixed_recovery(changed=False)
+    assert protocol.mixed_recovery is not None
+    reused = set(sorted(CANONICAL_FACTOR_IDS)[:4])
+    rows = []
+    for target in protocol.mixed_recovery.full_target_projection:
+        expected = target.new_value
+        rows.append(
+            {
+                "factor_id": target.factor_id,
+                "deployment_id": None,
+                "score": expected["score"],
+                "evidence_summary": expected.get("evidence_summary"),
+                "evidence_detail": expected.get("evidence_detail"),
+                "collection_mode": expected.get("collection_mode"),
+                "collected_at": "2026-06-01T00:00:00Z",
+                "data_as_of": (
+                    "2026-06-01T00:00:00Z"
+                    if target.factor_id in reused
+                    else "2026-07-23T00:00:00Z"
+                ),
+                "collected_by": (
+                    "factual-correction"
+                    if target.factor_id in reused
+                    else "lean-protocol-refresh"
+                ),
+                "gap_reason": expected.get("gap_reason"),
+                "sources": expected["sources"],
+            }
+        )
+    payload = {
+        "data": {
+            "protocol_data": {
+                "protocol": {
+                    "slug": "falcon",
+                    "rubric_version": "v1.7.0",
+                    "headline_grade": "B",
+                    "last_refreshed": "2026-07-23",
+                },
+                "deployments": [],
+                "factor_scores": rows,
+            }
+        }
+    }
+    ProductionOperations._verify_protocol_document(
+        protocol,
+        payload,
+        written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
+    )
+    written = next(row for row in rows if row["factor_id"] not in reused)
+    written["collected_by"] = "unexpected"
+    with pytest.raises(ContractError, match="collector differs"):
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
         )
 
 

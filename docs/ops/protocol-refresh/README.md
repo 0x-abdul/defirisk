@@ -32,29 +32,65 @@ retained score, or factor history.
 The topology contract must say `preserve`; Task B cannot add, remove, rename,
 merge, or split families, surfaces, or deployments.
 
-## Version Routing
+## Production Baseline Classification
 
-The production adapter selects one of two paths from the complete semantic
-production baseline before that protocol's transaction writes:
+The production adapter classifies current rows before confirmation and repeats
+that classification inside the locked per-protocol transaction:
 
-- A complete v1.7.0 baseline with a v1.7.0 result uses the standard
-  same-rubric refresh path. A `changed` protocol may supply only its changed
-  factors; a `no_change` protocol updates only `last_refreshed`.
-- A complete v1.5.0 baseline with a v1.7.0 result uses the preserved full
-  migration path. Its change set continues to contain all 184 factors.
-- A mixed-version or incomplete baseline, or any other version pair, is
-  unsupported and fails before that protocol's production write.
+- `standard_v17` means only v1.7.0 rows are current and they exactly cover the
+  canonical 184-factor universe on the approved topology, with no duplicate
+  scoped key. Every supplied changed key must match its selected current row.
+  A `changed` handoff may be sparse and a `no_change` handoff normally updates
+  only `last_refreshed`.
+- `full_v15_migration` means only v1.5.0 rows are current, they exactly cover
+  the canonical 184-factor universe on the approved topology, and the
+  `changed` handoff contains all 184 scoped rows.
+- `mixed_recovery` means both v1.5.0 and v1.7.0 rows are current, each rubric is
+  unique by scoped key, their union exactly covers the approved roster, and at
+  least one row exists in each rubric. v1.7.0 wins on overlap. This route
+  requires the exact per-protocol
+  `lean-protocol-refresh/mixed-recovery/v1` payload described below.
+- Any other rubric, missing or unexpected scoped key, duplicate current row,
+  incomplete union, or route/payload mismatch is `unsupported` and fails
+  before that protocol's production write.
 
-The standard path verifies each supplied old row against the accepted
-production baseline, applies only the changed subset, and then composes and
-compares the complete 184-row protocol output. Route selection is
-deterministic and remains inside the existing Task B plan and single batch
-confirmation. It adds no confirmation, reviewer, receipt, or governance step.
+`mixed_recovery` requires:
+
+- `source_rubric_version: v1.5.0`;
+- `target_rubric_version: v1.7.0`;
+- `selection_policy: prefer_target_then_source`;
+- a canonically sorted `full_target_projection` containing exactly 184 complete
+  public-safe `{factor_id, scope_level, target, value}` rows;
+- `full_target_projection_semantic_sha256`; and
+- `protocol_change_semantic_sha256`, calculated over the ordinary protocol
+  change object before its `mixed_recovery` field is added.
+
+The portable parser recomputes both hashes, requires the projection to match
+the approved topology and scoped roster, validates every projected row through
+the public-source boundary, and requires every `change.new` value to equal its
+projected target value. The payload is per-protocol so mixed and ordinary
+routes may coexist safely in one batch. A legacy top-level `rubric_migration`
+declaration may remain parser-compatible, but it does not authorize
+`mixed_recovery`.
+
+The read-only plan must report for every protocol its classification; current
+v1.5.0, current v1.7.0, and overlap counts; semantic changed-row and
+migration-only counts; deduplicated total v1.7.0 insert/replacement count;
+current v1.5.0 retirement count; full-target-projection hash; opaque semantic
+hash of the v1.5.0 row/source-join identities for route-changing work; and
+resulting grade. A generic statement that the route will be selected later at
+execution is not an exact confirmation envelope.
+
+For `standard_v17`, the runner verifies every supplied old row, applies only
+the changed subset, and composes and compares the complete 184-row output. The
+preserved `full_v15_migration` route applies its complete migration document.
+Route selection is deterministic and remains inside the single exact Task B
+batch confirmation; it adds no reviewer, receipt, or governance step.
 
 Validate and show the exact operator plan without side effects:
 
 ```powershell
-python scripts/apply-lean-protocol-refresh.py <public-change-set.json> --plan `
+python scripts/apply-lean-protocol-refresh.py <public-change-set.json> --plan --json `
   --operations <reviewed-module>:<factory> `
   --production-target <database/system> `
   --backup <backup-path-or-class> `
@@ -66,11 +102,38 @@ python scripts/apply-lean-protocol-refresh.py <public-change-set.json> --plan `
   --rollback <recovery-command-class>
 ```
 
+Save that exact UTF-8 JSON output as the approved plan presented for the
+single confirmation. Apply must receive the unchanged file through
+`--approved-plan`; it recomputes the read-only classification, legacy-history
+binding, and operator context before the backup and rejects any difference. A
+resume accepts each protocol only in its exact approved pre-state or its
+route-specific exact completed state. The production adapter
+also compares the classification again inside the serializable, advisory-locked
+transaction, closing the preflight-to-write drift window.
+The completed state is valid only as a resume transition from the original
+approved pre-mutation plan; the runner refuses to create a fresh approval plan
+that would bless a post-mutation `mixed_recovery_complete` or
+`full_v15_migration_complete` state.
+
 All context flags are required so the output is an exact single-confirmation
-envelope, not a generic readiness report. Before confirming, the operator checks
-the protocols and old/new values, production target, backup location/class,
-transaction command class, PR targets, deployment workflow, live verification,
-and rollback path. Confirmation authorizes only that listed batch.
+envelope, not a generic readiness report. Planning instantiates the reviewed
+adapter and may call only its read-only baseline-classification operation; it
+must not create a
+backup, begin a write transaction, publish, deploy, invoke rollback, or create
+another external side effect. Before confirming, the operator checks the
+protocols and old/new values, route and baseline/write/retirement counts,
+projection hash, production target, backup location/class, transaction command
+class, PR targets, deployment workflow, live verification, and rollback path.
+Confirmation authorizes only that listed batch.
+
+If an earlier plan did not include mixed-recovery counts, retirements, and
+projection hashes, publish the separate framework support, create compliant
+exports, present one revised exact batch plan, and obtain one new confirmation.
+That single confirmation authorizes recovery and refresh together. Do not
+create a standalone reconciliation transaction or request repeated
+per-protocol recovery approvals. Any protocol roster, projection, route,
+production count, repository, production target, deployment, or other
+operator-context drift requires a new plan and confirmation.
 
 ## Apply and Resume
 
@@ -78,7 +141,8 @@ Real effects are supplied by an explicitly selected operator adapter:
 
 ```powershell
 python scripts/apply-lean-protocol-refresh.py <public-change-set.json> `
-  --apply --operations <reviewed-module>:<factory>
+  --apply --approved-plan <confirmed-plan.json> `
+  --operations <reviewed-module>:<factory>
 ```
 
 The adapter must implement the narrow `BatchOperations` interface in
@@ -90,18 +154,37 @@ confirmation. The lean runner then enforces this sequence:
 1. Create or locate one production database backup for the entire batch. Prove
    it is non-empty and listable by the restore tooling before any write.
 2. Read each protocol's semantic production state. Skip a protocol whose
-   topology, `last_refreshed`, and changed factor values already match. This is
-   the resume mechanism; no attempt or receipt chain is needed.
+   route-specific final state already matches. A mixed-recovery protocol is
+   already applied only when production has the exact projected 184 current
+   v1.7.0 rows, zero current v1.5.0 rows, the expected topology, grade, and
+   `last_refreshed`, and the retained v1.5.0 history/source joins. This is the
+   resume mechanism; no attempt or receipt chain is needed.
 3. Process protocols serially in independent transactions. Preserve historical
    factor rows, supersede only changed current rows, and always update
    `last_refreshed`. Standard v1.7.0-to-v1.7.0 refreshes may apply a sparse
    changed-row subset; preserved v1.5.0-to-v1.7.0 migrations apply their full
-   migration document.
+   migration document. For `mixed_recovery`, reclassify under the serializable,
+   advisory-locked transaction and require the route, scoped keys, counts, and
+   projection hash to match the approved plan. Prefer v1.7.0 on overlap, insert
+   missing and replacement v1.7.0 rows only from the bound full target
+   projection, retain every v1.5.0 row and source join as history, retire every
+   current v1.5.0 row with `is_current=false`, and link `superseded_by` to its
+   final matched current v1.7.0 row. Recovery and refresh are one atomic
+   transaction.
 4. Compose and dump to temporary output, then compare only the target protocol's
    complete 184-row semantic output. Never hand-edit generated `data/api/`
-   files.
+   files. Before a mixed-recovery commit, require exactly 184 current v1.7.0
+   rows, zero current v1.5.0 rows, exact projection/grade/topology equality,
+   an exact recomputation of the approved v1.5.0 row/source-join identity hash
+   and retirement count, and unchanged unrelated output.
 5. Commit the successful protocol. On failure, roll back only that protocol,
    record the failure in the run report, and continue with the next protocol.
+   Missing recovery payload, missing/extra/duplicate scoped keys, unsupported
+   rubric, selected-old/change.old mismatch, change.new/projection mismatch,
+   projection/hash/topology/source-safety mismatch, target-v1.7.0 semantic
+   drift, or locked classification drift fails before commit. Never reinterpret
+   an unsupported mixed baseline as another route or clone an unbound
+   production row.
 6. For each successfully applied or already-applied changed protocol, create or
    continue exactly one PR and merge it. No-change protocols skip GitHub.
 7. Inspect semantic batch deployment/live state. Deploy only if the exact batch
@@ -116,15 +199,20 @@ protocol.
 ## Publication
 
 - Create one PR for each `changed` protocol.
-- Create no PR or issue for `no_change`; its production transaction updates only
-  `last_refreshed`.
+- Create no PR or issue for `no_change`. A `standard_v17` no-change transaction
+  updates only `last_refreshed`; a `mixed_recovery` no-change transaction may
+  also perform its exact confirmed migration-only writes and v1.5.0
+  retirements. Those rows do not manufacture assessment changes or a PR.
 - Do not create a GitHub issue unless a separate genuine factual correction
   needs public discussion.
 - Merge successful changed-protocol PRs, deploy once after the batch, and run one
   final live check covering every changed and no-change protocol.
 - If publication or deployment is interrupted, inspect semantic production and
-  GitHub state, continue existing PRs, and skip already-applied protocols. Never
-  repeat Task A research because Task B failed.
+  GitHub state, continue existing PRs, and skip only protocols whose
+  route-specific final-state checks pass. A partially recovered mixed baseline
+  fails closed until a revised plan is confirmed. Never repeat Task A research
+  merely because Task B failed; create a new bound export only when the handoff
+  contract itself must change.
 
 Public releases must use the repository's explicit publication/export path.
 Never push internal research, local paths, private review material, secrets, or

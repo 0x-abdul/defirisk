@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
+from typing import Any, Mapping
 
 from .contracts import (
     CANONICAL_FACTOR_IDS,
@@ -12,6 +13,7 @@ from .contracts import (
     ProtocolRefresh,
     RefreshBatch,
 )
+from .planning import BaselineClassification
 
 
 @dataclass(frozen=True)
@@ -59,8 +61,21 @@ class BatchOperations(Protocol):
     def verify_batch_backup(self, batch: RefreshBatch) -> None:
         """Create/locate one backup and prove it is non-empty and listable."""
 
+    def read_baseline_classifications(
+        self, batch: RefreshBatch
+    ) -> tuple[BaselineClassification, ...]:
+        """Read exact production baseline routes and counts without mutation."""
+
+    def bind_approved_plan(self, plan: Mapping[str, Any]) -> None:
+        """Bind the unchanged confirmed plan for resume and locked checks."""
+
     def read_protocol_state(self, family_slug: str) -> ProtocolState:
         """Read current semantic state without mutation."""
+
+    def validate_protocol_resume(
+        self, protocol: ProtocolRefresh, state: ProtocolState
+    ) -> None:
+        """Validate route-specific state before treating a protocol as complete."""
 
     def begin_protocol(self, protocol: ProtocolRefresh) -> None:
         """Begin the target protocol's transaction."""
@@ -101,7 +116,12 @@ class BatchOperations(Protocol):
 
 def _expected_changes(protocol: ProtocolRefresh) -> tuple[tuple[str, object], ...]:
     expected: list[tuple[str, object]] = []
-    for change in protocol.changes:
+    approved_rows = (
+        protocol.mixed_recovery.full_target_projection
+        if protocol.mixed_recovery is not None
+        else protocol.changes
+    )
+    for change in approved_rows:
         value = change.new_value
         if isinstance(value, dict):
             value = dict(value)
@@ -194,7 +214,7 @@ def is_already_applied(protocol: ProtocolRefresh, state: ProtocolState) -> bool:
         return False
     if {key.rsplit("|", 1)[-1] for key in actual} != CANONICAL_FACTOR_IDS:
         return False
-    if protocol.outcome == "no_change":
+    if protocol.outcome == "no_change" and protocol.mixed_recovery is None:
         return True
     expected = _normalized_changes(_expected_changes(protocol))
     if expected is None:
@@ -227,6 +247,13 @@ def apply_batch(batch: RefreshBatch, operations: BatchOperations) -> ApplyReport
             )
             continue
         if is_already_applied(protocol, state):
+            try:
+                operations.validate_protocol_resume(protocol, state)
+            except Exception as exc:
+                results.append(
+                    ProtocolResult(protocol.family_slug, "failed", str(exc))
+                )
+                continue
             results.append(
                 ProtocolResult(protocol.family_slug, "skipped", "already applied")
             )

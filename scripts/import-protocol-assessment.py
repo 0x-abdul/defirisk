@@ -838,6 +838,93 @@ def supersede_prior_factor_scores(
     return cur.rowcount
 
 
+def assessment_scoped_keys(
+    factor_scores: list[dict],
+    family_slug: str,
+    default_surface_slug: str,
+) -> set[tuple[str, str, str]]:
+    keys = set()
+    for fs in factor_scores:
+        scope = fs.get("scope_level") or fs.get("scope") or "surface"
+        if scope in {"protocol", "family"}:
+            target = fs.get("family_slug") or family_slug
+        elif scope == "deployment":
+            surface = fs.get("surface_slug") or default_surface_slug
+            chain = fs.get("chain")
+            deployment_key = (
+                fs.get("deployment_key")
+                or fs.get("deployment_slug")
+                or chain
+                or "primary"
+            )
+            target = f"{surface}/{chain or '?'}/{deployment_key}"
+        else:
+            target = fs.get("surface_slug") or default_surface_slug
+        keys.add((scope, target, fs["factor_id"]))
+    return keys
+
+
+def ensure_v17_import_baseline_safe(
+    cur,
+    slug: str,
+    rubric_version: str,
+    expected_scoped_keys: set[tuple[str, str, str]],
+) -> None:
+    """Prevent generic imports from creating or extending mixed current baselines."""
+    if rubric_version != "v1.7.0":
+        return
+    cur.execute(
+        """
+        SELECT fs.rubric_version, fs.scope_level,
+               CASE
+                 WHEN fs.scope_level IN ('protocol', 'family')
+                   THEN fs.protocol_slug
+                 WHEN fs.scope_level = 'surface'
+                   THEN surface_direct.surface_slug
+                 ELSE CONCAT_WS('/',
+                   surface_dep.surface_slug, d.chain, d.deployment_key)
+               END AS target,
+               fs.factor_id
+        FROM factor_scores fs
+        LEFT JOIN protocol_surfaces surface_direct
+          ON surface_direct.surface_id=fs.surface_id
+        LEFT JOIN deployments d ON d.id=fs.deployment_id
+        LEFT JOIN protocol_surfaces surface_dep
+          ON surface_dep.surface_id=d.surface_id
+        WHERE fs.protocol_slug = %s AND fs.is_current = true
+        ORDER BY 1,2,3,4
+        """,
+        (slug,),
+    )
+    rows = tuple(
+        (str(version), str(scope), str(target), str(factor_id))
+        for version, scope, target, factor_id in cur.fetchall()
+    )
+    if not rows:
+        return
+    versions = {row[0] for row in rows}
+    observed_scoped_keys = {
+        (scope, target, factor_id)
+        for _version, scope, target, factor_id in rows
+    }
+    if (
+        versions == {"v1.7.0"}
+        and len(rows) == len(observed_scoped_keys) == 184
+        and observed_scoped_keys == expected_scoped_keys
+    ):
+        return
+    summary = ", ".join(
+        f"{version}={sum(row[0] == version for row in rows)}"
+        for version in sorted(versions)
+    )
+    raise ValueError(
+        "generic v1.7.0 import requires an existing exact 184-key current "
+        "v1.7.0 scoped baseline matching the incoming assessment; mixed, "
+        "legacy, incomplete, or scope-mismatched baselines must use "
+        f"Lean Refresh Task B mixed_recovery (found {summary})"
+    )
+
+
 def insert_factor_score(
     cur,
     slug: str,
@@ -1062,6 +1149,16 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 f"\nWriting to database {target['database']} on "
                 f"{target['host']}:{target['port'] or 'default'}..."
+            )
+            ensure_v17_import_baseline_safe(
+                cur,
+                args.slug,
+                args.rubric_version,
+                assessment_scoped_keys(
+                    grading["factor_scores"],
+                    family["family_slug"],
+                    default_surface,
+                ),
             )
             ensure_surface_set_safe(
                 cur,
