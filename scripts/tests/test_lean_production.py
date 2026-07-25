@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 import json
 import subprocess
@@ -14,6 +15,7 @@ from lean_protocol_refresh.contracts import (
     FactorChange,
     ProtocolRefresh,
     RefreshBatch,
+    validate_change_set,
 )
 from lean_protocol_refresh.production import ProductionOperations, _run, create_operations
 
@@ -96,6 +98,178 @@ def baseline_operations(
         "main",
         connect=lambda _url: BaselineConnection(rows),
     )
+
+
+class HistoricalOldCursor:
+    def __init__(self, sources=()) -> None:
+        self.query = 0
+        self.sources = sources
+
+    def execute(self, _sql, _params):
+        self.query += 1
+
+    def fetchone(self):
+        assert self.query == 1
+        return (1,)
+
+    def fetchall(self):
+        assert self.query == 2
+        return self.sources
+
+
+def test_historical_old_projection_preserves_production_baseline_check(
+    tmp_path: Path,
+) -> None:
+    remediation = {
+        "schema_version": "lean-protocol-refresh/historical-old-remediation/v1",
+        "mode": "historical_evidence_unavailable",
+        "specialist": "code-security-analyst",
+        "baseline_fragment_semantic_sha256": "1" * 64,
+        "baseline_row_semantic_sha256": "2" * 64,
+        "explanation": (
+            "The retained score is immutable historical state and is not "
+            "presented as a publicly substantiated claim."
+        ),
+        "evidence_summary": (
+            "No public-safe evidence can substantiate the retained historical "
+            "score; it is shown only as immutable baseline state."
+        ),
+        "evidence_detail": None,
+        "notes": None,
+        "sources": [],
+    }
+    change = FactorChange(
+        "RD-F-001",
+        "surface",
+        "default",
+        {
+            "factor_id": "RD-F-001",
+            "scope_level": "surface",
+            "surface_slug": "default",
+            "score": "yellow",
+            "collection_mode": "manual",
+            "gap_reason": None,
+            "sources": [],
+        },
+        {
+            "factor_id": "RD-F-001",
+            "score": "green",
+            "sources": [{"url": "https://example.org/current"}],
+        },
+        (Evidence("https://example.org/current"),),
+        "green",
+        "B",
+        remediation,
+    )
+    protocol = protocol_with_changes(1)
+    operations = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    operations._verify_public_old_row(
+        HistoricalOldCursor(),
+        protocol,
+        change,
+        "old-score-id",
+        {
+            "factor_id": "RD-F-001",
+            "scope_level": "surface",
+            "score": "yellow",
+            "collection_mode": "manual",
+            "evidence_summary": "Retained private historical text",
+            "evidence_detail": None,
+            "gap_reason": None,
+            "notes": None,
+        },
+    )
+    operations.batch = RefreshBatch(
+        "batch-1",
+        "2026-07-23",
+        "v1.7.0",
+        (replace(protocol, changes=(change,)),),
+    )
+    public_record = operations._public_record(
+        replace(protocol, changes=(change,))
+    )
+    reparsed = validate_change_set(public_record)
+    assert (
+        reparsed.protocols[0].changes[0].historical_old_remediation
+        == remediation
+    )
+
+
+def test_historical_old_projection_rejects_unnecessary_remediation(
+    tmp_path: Path,
+) -> None:
+    remediation = {
+        "schema_version": "lean-protocol-refresh/historical-old-remediation/v1",
+        "mode": "historical_evidence_unavailable",
+        "specialist": "code-security-analyst",
+        "baseline_fragment_semantic_sha256": "1" * 64,
+        "baseline_row_semantic_sha256": "2" * 64,
+        "explanation": (
+            "The retained score is immutable historical state and is not "
+            "presented as a publicly substantiated claim."
+        ),
+        "evidence_summary": (
+            "No public-safe evidence can substantiate the retained historical "
+            "score; it is shown only as immutable baseline state."
+        ),
+        "evidence_detail": None,
+        "notes": None,
+        "sources": [],
+    }
+    change = FactorChange(
+        "RD-F-001",
+        "surface",
+        "default",
+        {
+            "factor_id": "RD-F-001",
+            "scope_level": "surface",
+            "surface_slug": "default",
+            "score": "yellow",
+            "collection_mode": "manual",
+            "gap_reason": None,
+            "sources": [],
+        },
+        {
+            "factor_id": "RD-F-001",
+            "score": "green",
+            "sources": [{"url": "https://example.org/current"}],
+        },
+        (Evidence("https://example.org/current"),),
+        "green",
+        "B",
+        remediation,
+    )
+    protocol = protocol_with_changes(1)
+    operations = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    cursor = HistoricalOldCursor(
+        (
+            (
+                "docs",
+                "https://example.org/historical",
+                "Published historical evidence",
+                "Historical evidence",
+                "2026-07-24",
+                None,
+            ),
+        )
+    )
+    with pytest.raises(ContractError, match="already public-safe"):
+        operations._verify_public_old_row(
+            cursor,
+            protocol,
+            change,
+            "old-score-id",
+            {
+                "factor_id": "RD-F-001",
+                "scope_level": "surface",
+                "score": "yellow",
+                "collection_mode": "manual",
+                "evidence_summary": "Published historical assessment.",
+                "evidence_detail": None,
+                "gap_reason": None,
+                "notes": None,
+            },
+        )
 
 
 @pytest.mark.parametrize(
