@@ -234,15 +234,23 @@ def test_incident_state_is_inherited_from_legacy_surface() -> None:
 
 
 class BaselineGuardCursor:
-    def __init__(self, rows):
+    def __init__(self, rows, *, factor_count=184):
         self.rows = rows
+        self.factor_count = factor_count
+        self.count_query = False
 
     def execute(self, sql, params):
         self.sql = sql
         self.params = params
+        self.count_query = "SELECT COUNT(*)" in sql
 
     def fetchall(self):
         return self.rows
+
+    def fetchone(self):
+        if self.count_query:
+            return (self.factor_count,)
+        raise AssertionError("unexpected fetchone")
 
 
 def test_v17_import_allows_empty_or_exact_v17_baseline() -> None:
@@ -379,3 +387,20 @@ def test_v17_import_postcondition_requires_exact_incoming_scoped_keys() -> None:
         assert "exact incoming scoped-key set" in str(exc)
     else:
         raise AssertionError("expected exact post-import scoped-key guard")
+
+
+def test_noncanonical_fixture_skips_v17_production_baseline_guards() -> None:
+    expected = {("family", "fixture-family", "RD-F-001")}
+    rows = [("v1.7.0", "surface", "core", "RD-F-001")]
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor(rows, factor_count=2),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+    importer.verify_v17_import_postcondition(
+        BaselineGuardCursor(rows, factor_count=2),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )

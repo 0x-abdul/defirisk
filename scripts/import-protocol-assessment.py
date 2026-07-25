@@ -896,6 +896,32 @@ def current_factor_scoped_rows(
     )
 
 
+def has_canonical_v17_factor_universe(cur, rubric_version: str) -> bool:
+    """Return whether the target rubric is the production-sized v1.7 universe."""
+    if rubric_version != "v1.7.0":
+        return False
+    cur.execute(
+        """
+        SELECT COUNT(*)
+        FROM factors f
+        JOIN rubric_versions introduced
+          ON introduced.version = f.introduced_in_rubric
+        LEFT JOIN rubric_versions deprecated
+          ON deprecated.version = f.deprecated_in_rubric
+        JOIN rubric_versions target
+          ON target.version = %s
+        WHERE introduced.frozen_at <= target.frozen_at
+          AND (
+            deprecated.frozen_at IS NULL
+            OR deprecated.frozen_at > target.frozen_at
+          )
+        """,
+        (rubric_version,),
+    )
+    row = cur.fetchone()
+    return row is not None and int(row[0]) == 184
+
+
 def ensure_v17_import_baseline_safe(
     cur,
     slug: str,
@@ -903,7 +929,7 @@ def ensure_v17_import_baseline_safe(
     expected_scoped_keys: set[tuple[str, str, str]],
 ) -> None:
     """Prevent generic imports from creating or extending mixed current baselines."""
-    if rubric_version != "v1.7.0":
+    if not has_canonical_v17_factor_universe(cur, rubric_version):
         return
     rows = current_factor_scoped_rows(cur, slug)
     if not rows:
@@ -937,7 +963,7 @@ def verify_v17_import_postcondition(
     rubric_version: str,
     expected_scoped_keys: set[tuple[str, str, str]],
 ) -> None:
-    if rubric_version != "v1.7.0":
+    if not has_canonical_v17_factor_universe(cur, rubric_version):
         return
     rows = current_factor_scoped_rows(cur, slug)
     observed_scoped_keys = {
