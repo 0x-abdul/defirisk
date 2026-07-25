@@ -15,11 +15,19 @@ from .execution import (
     ProtocolState,
     apply_batch,
 )
-from .planning import BatchPlan, OperatorContext, ProtocolPlan, build_plan, render_plan
+from .planning import (
+    BaselineClassification,
+    BatchPlan,
+    OperatorContext,
+    ProtocolPlan,
+    build_plan,
+    render_plan,
+)
 
 __all__ = [
     "ApplyReport",
     "BatchOperations",
+    "BaselineClassification",
     "BatchState",
     "BatchPlan",
     "ContractError",

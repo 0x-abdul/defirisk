@@ -231,3 +231,176 @@ def test_incident_state_is_inherited_from_legacy_surface() -> None:
     assert protocol["has_active_incident"] is True
     assert cur.params == (["fixture-family", "legacy-v2"], ["fixture-family", "legacy-v2"])
     assert "active_incidents" in cur.sql
+
+
+class BaselineGuardCursor:
+    def __init__(self, rows, *, factor_count=184):
+        self.rows = rows
+        self.factor_count = factor_count
+        self.count_query = False
+
+    def execute(self, sql, params):
+        self.sql = sql
+        self.params = params
+        self.count_query = "SELECT COUNT(*)" in sql
+
+    def fetchall(self):
+        return self.rows
+
+    def fetchone(self):
+        if self.count_query:
+            return (self.factor_count,)
+        raise AssertionError("unexpected fetchone")
+
+
+def test_v17_import_allows_empty_or_exact_v17_baseline() -> None:
+    expected = {
+        ("surface", "default", f"RD-F-{index:03d}")
+        for index in range(1, 185)
+    }
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor([]), "fixture-family", "v1.7.0", expected
+    )
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor(
+            [
+                ("v1.7.0", scope, target, factor_id)
+                for scope, target, factor_id in sorted(expected)
+            ]
+        ),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+
+
+def test_v17_import_allows_exact_existing_subset_of_incoming_assessment() -> None:
+    expected = {
+        ("surface", "default", "RD-F-001"),
+        ("surface", "default", "RD-F-002"),
+        ("surface", "default", "RD-F-003"),
+    }
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor(
+            [
+                ("v1.7.0", "surface", "default", "RD-F-001"),
+                ("v1.7.0", "surface", "default", "RD-F-002"),
+            ]
+        ),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+
+
+def test_v17_import_rejects_mixed_or_incomplete_baseline() -> None:
+    cur = BaselineGuardCursor(
+        [
+            ("v1.5.0", "surface", "default", f"RD-F-{index:03d}")
+            for index in range(1, 181)
+        ]
+        + [
+            ("v1.7.0", "surface", "default", f"RD-F-{index:03d}")
+            for index in range(181, 185)
+        ]
+    )
+    expected = {
+        ("surface", "default", f"RD-F-{index:03d}")
+        for index in range(1, 185)
+    }
+
+    try:
+        importer.ensure_v17_import_baseline_safe(
+            cur, "fixture-family", "v1.7.0", expected
+        )
+    except ValueError as exc:
+        assert "mixed_recovery" in str(exc)
+        assert "v1.5.0=180" in str(exc)
+    else:
+        raise AssertionError("expected mixed baseline import guard")
+
+
+def test_v17_import_rejects_wrong_scoped_key() -> None:
+    expected = {
+        ("surface", "default", f"RD-F-{index:03d}")
+        for index in range(1, 185)
+    }
+    observed = sorted(expected)
+    observed[-1] = ("surface", "wrong-surface", observed[-1][2])
+    try:
+        importer.ensure_v17_import_baseline_safe(
+            BaselineGuardCursor(
+                [
+                    ("v1.7.0", scope, target, factor_id)
+                    for scope, target, factor_id in observed
+                ]
+            ),
+            "fixture-family",
+            "v1.7.0",
+            expected,
+        )
+    except ValueError as exc:
+        assert "scope-mismatched" in str(exc)
+    else:
+        raise AssertionError("expected scoped baseline import guard")
+
+
+def test_protocol_scope_uses_protocol_slug_as_target() -> None:
+    assert importer.assessment_scoped_keys(
+        [
+            {
+                "factor_id": "RD-F-001",
+                "scope_level": "protocol",
+            }
+        ],
+        "fixture-family",
+        "default",
+    ) == {("protocol", "fixture-family", "RD-F-001")}
+
+
+def test_v17_import_postcondition_requires_exact_incoming_scoped_keys() -> None:
+    expected = {
+        ("surface", "default", "RD-F-001"),
+        ("surface", "default", "RD-F-002"),
+    }
+    importer.verify_v17_import_postcondition(
+        BaselineGuardCursor(
+            [
+                ("v1.7.0", "surface", "default", "RD-F-001"),
+                ("v1.7.0", "surface", "default", "RD-F-002"),
+            ]
+        ),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+    try:
+        importer.verify_v17_import_postcondition(
+            BaselineGuardCursor(
+                [("v1.7.0", "surface", "default", "RD-F-001")]
+            ),
+            "fixture-family",
+            "v1.7.0",
+            expected,
+        )
+    except ValueError as exc:
+        assert "exact incoming scoped-key set" in str(exc)
+    else:
+        raise AssertionError("expected exact post-import scoped-key guard")
+
+
+def test_noncanonical_fixture_skips_v17_production_baseline_guards() -> None:
+    expected = {("family", "fixture-family", "RD-F-001")}
+    rows = [("v1.7.0", "surface", "core", "RD-F-001")]
+    importer.ensure_v17_import_baseline_safe(
+        BaselineGuardCursor(rows, factor_count=2),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )
+    importer.verify_v17_import_postcondition(
+        BaselineGuardCursor(rows, factor_count=2),
+        "fixture-family",
+        "v1.7.0",
+        expected,
+    )

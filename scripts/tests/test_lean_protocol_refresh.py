@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
 import sys
@@ -12,6 +13,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from lean_protocol_refresh import (
+    BaselineClassification,
     ContractError,
     OperatorContext,
     RUBRIC_VERSION,
@@ -53,6 +55,28 @@ def operator_context() -> OperatorContext:
         deployment="deploy workflow production",
         live_check="https://risk.example.org/protocols/falcon",
         rollback="rollback failed family; restore batch backup if required",
+    )
+
+
+def classifications(batch, route: str = "standard_v17"):
+    return tuple(
+        BaselineClassification(
+            protocol.family_slug,
+            "mixed_recovery" if protocol.mixed_recovery is not None else route,
+            180 if protocol.mixed_recovery is not None else 0,
+            4 if protocol.mixed_recovery is not None else 184,
+            0,
+            len(protocol.changes),
+            179 if protocol.mixed_recovery is not None else 0,
+            180 if protocol.mixed_recovery is not None else len(protocol.changes),
+            180 if protocol.mixed_recovery is not None else 0,
+            (
+                protocol.mixed_recovery.full_target_projection_semantic_sha256
+                if protocol.mixed_recovery is not None
+                else None
+            ),
+        )
+        for protocol in batch.protocols
     )
 
 
@@ -131,13 +155,62 @@ def change_set(*, second: bool = False) -> dict:
     }
 
 
+def mixed_recovery_change_set() -> dict:
+    document = change_set()
+    protocol = document["protocols"][0]
+    projection = []
+    changed_new = protocol["changes"][0]["new_value"]
+    for factor_id in sorted(CANONICAL_FACTOR_IDS):
+        value = (
+            copy.deepcopy(changed_new)
+            if factor_id == "RD-F-001"
+            else factor_row(
+                factor_id,
+                "green",
+                f"https://docs.example.org/falcon/{factor_id}",
+                f"Approved target evidence for {factor_id}.",
+            )
+        )
+        value["factor_id"] = factor_id
+        projection.append(
+            {
+                "factor_id": factor_id,
+                "scope_level": "surface",
+                "target": "default",
+                "value": value,
+            }
+        )
+    def canonical(value):
+        return json.dumps(
+            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf-8")
+    protocol_hash = hashlib.sha256(canonical(protocol)).hexdigest()
+    protocol["mixed_recovery"] = {
+        "schema_version": "lean-protocol-refresh/mixed-recovery/v1",
+        "source_rubric_version": "v1.5.0",
+        "target_rubric_version": RUBRIC_VERSION,
+        "selection_policy": "prefer_target_then_source",
+        "full_target_projection": projection,
+        "full_target_projection_semantic_sha256": hashlib.sha256(
+            canonical(projection)
+        ).hexdigest(),
+        "protocol_change_semantic_sha256": protocol_hash,
+    }
+    return document
+
+
 def complete_applied_rows(protocol) -> tuple[tuple[str, object], ...]:
+    approved_rows = (
+        protocol.mixed_recovery.full_target_projection
+        if protocol.mixed_recovery is not None
+        else protocol.changes
+    )
     rows = [
         (
             f"{change.scope_level}|{change.target}|{change.factor_id}",
             change.new_value,
         )
-        for change in protocol.changes
+        for change in approved_rows
     ]
     used = {key for key, _value in rows}
     for factor_id in sorted(CANONICAL_FACTOR_IDS):
@@ -169,12 +242,22 @@ class FakeOperations:
     def verify_batch_backup(self, batch):
         self.calls.append(("backup", batch.batch_id))
 
+    def bind_approved_plan(self, plan):
+        self.calls.append(("bind-plan", plan.get("batch_id")))
+
+    def read_baseline_classifications(self, batch):
+        self.calls.append(("classify", batch.batch_id))
+        return classifications(batch)
+
     def read_protocol_state(self, family_slug):
         self.calls.append(("read", family_slug))
         return self.states.get(
             family_slug,
             ProtocolState(family_slug, ("default",), None),
         )
+
+    def validate_protocol_resume(self, protocol, state):
+        self.calls.append(("resume", protocol.family_slug))
 
     def begin_protocol(self, protocol):
         self.calls.append(("begin", protocol.family_slug))
@@ -214,7 +297,8 @@ class FakeOperations:
 
 
 def test_plan_distinguishes_changed_and_no_change_protocols() -> None:
-    plan = build_plan(validate_change_set(change_set(second=True)), operator_context())
+    batch = validate_change_set(change_set(second=True))
+    plan = build_plan(batch, operator_context(), classifications(batch))
     changed, no_change = plan.protocols
     assert changed.pull_request == "one protocol PR"
     assert changed.changed_factors == ("RD-F-001 (surface:default)",)
@@ -228,6 +312,7 @@ def test_rendered_plan_contains_exact_operator_scope_and_old_new_values() -> Non
     plan = build_plan(
         batch,
         operator_context(),
+        classifications(batch),
     )
     rendered = render_plan(plan)
     assert "Production target: risk-production/postgres" in rendered
@@ -235,7 +320,7 @@ def test_rendered_plan_contains_exact_operator_scope_and_old_new_values() -> Non
     assert "rubric version: v1.7.0" in rendered
     assert "Operations adapter: reviewed_adapter:create" in rendered
     assert "Publication: owner/risk-dashboard (base main)" in rendered
-    assert "approved changed rows: 1" in rendered
+    assert "semantic changed rows: 1" in rendered
     assert "score changes: 1" in rendered
     assert "row details: attached public-safe refresh.json change set" in rendered
 
@@ -253,14 +338,15 @@ def test_plan_does_not_infer_migration_from_184_approved_changes() -> None:
     document["protocols"][0]["changes"] = changes
 
     rendered = render_plan(
-        build_plan(validate_change_set(document), operator_context())
+        build_plan(
+            validate_change_set(document),
+            operator_context(),
+            classifications(validate_change_set(document)),
+        )
     )
 
-    assert "approved changed rows: 184" in rendered
-    assert (
-        "rubric route: selected from the current production baseline at execution"
-        in rendered
-    )
+    assert "semantic changed rows: 184" in rendered
+    assert "rubric route: standard_v17" in rendered
     assert "rubric route: v1.5.0" not in rendered
 
 
@@ -373,6 +459,55 @@ def test_resume_skips_semantically_applied_protocol() -> None:
     assert sum(call[0] == "live" for call in operations.calls) == 1
 
 
+def test_mixed_no_change_resume_requires_full_target_projection() -> None:
+    parsed = validate_change_set(mixed_recovery_change_set()).protocols[0]
+    protocol = replace(parsed, outcome="no_change", changes=())
+    applied = complete_applied_rows(protocol)
+    state = ProtocolState(
+        family_slug=protocol.family_slug,
+        surface_slugs=protocol.surface_slugs,
+        last_refreshed=protocol.last_refreshed,
+        deployment_targets=protocol.deployment_targets,
+        applied_changes=applied,
+        resulting_grade=protocol.resulting_grade,
+        rubric_version=protocol.rubric_version,
+    )
+
+    assert is_already_applied(protocol, state)
+    changed = list(applied)
+    key, value = changed[0]
+    changed[0] = (key, {**value, "score": "red"})
+    assert not is_already_applied(
+        protocol,
+        replace(state, applied_changes=tuple(changed)),
+    )
+
+
+def test_mixed_resume_validation_prevents_legacy_state_bypass() -> None:
+    batch = validate_change_set(mixed_recovery_change_set())
+    protocol = batch.protocols[0]
+    state = ProtocolState(
+        family_slug=protocol.family_slug,
+        surface_slugs=protocol.surface_slugs,
+        last_refreshed=protocol.last_refreshed,
+        deployment_targets=protocol.deployment_targets,
+        applied_changes=complete_applied_rows(protocol),
+        resulting_grade=protocol.resulting_grade,
+        rubric_version=protocol.rubric_version,
+    )
+
+    class UnsafeResumeOperations(FakeOperations):
+        def validate_protocol_resume(self, protocol, state):
+            raise ContractError("current v1.5.0 rows remain")
+
+    operations = UnsafeResumeOperations(states={protocol.family_slug: state})
+    report = apply_batch(batch, operations)
+
+    assert report.results[0].status == "failed"
+    assert "current v1.5.0 rows remain" in report.results[0].detail
+    assert ("begin", protocol.family_slug) not in operations.calls
+
+
 def test_failure_rolls_back_only_failed_protocol_and_continues() -> None:
     document = change_set(second=True)
     document["protocols"].reverse()
@@ -391,6 +526,24 @@ def test_failure_rolls_back_only_failed_protocol_and_continues() -> None:
     assert ("pr", "maple") not in operations.calls
     assert report.deployment_completed
     assert report.live_verified
+
+
+def test_precommit_history_failure_rolls_back_protocol() -> None:
+    batch = validate_change_set(mixed_recovery_change_set())
+
+    class HistoryFailureOperations(FakeOperations):
+        def compare_target_output(self, protocol):
+            self.calls.append(("compare", protocol.family_slug))
+            raise ContractError(
+                "post-migration source-join identities differ"
+            )
+
+    operations = HistoryFailureOperations()
+    report = apply_batch(batch, operations)
+
+    assert report.results[0].status == "failed"
+    assert ("rollback", batch.protocols[0].family_slug) in operations.calls
+    assert ("commit", batch.protocols[0].family_slug) not in operations.calls
 
 
 def test_publication_failure_withholds_shared_deployment() -> None:
@@ -480,7 +633,9 @@ def test_batch_date_does_not_constrain_protocol_refresh_dates() -> None:
         "2026-07-22",
         "2026-07-23",
     ]
-    rendered = render_plan(build_plan(batch, operator_context()))
+    rendered = render_plan(
+        build_plan(batch, operator_context(), classifications(batch))
+    )
     assert "protocol refresh date: 2026-07-22" in rendered
     assert "protocol refresh date: 2026-07-23" in rendered
 
@@ -663,6 +818,76 @@ def test_supported_rubric_migration_marker_is_accepted() -> None:
     }
 
     assert validate_change_set(document).protocols[0].family_slug == "falcon"
+
+
+def test_hash_bound_mixed_recovery_projection_is_retained() -> None:
+    refresh = validate_change_set(mixed_recovery_change_set()).protocols[0]
+
+    assert refresh.mixed_recovery is not None
+    assert refresh.mixed_recovery.selection_policy == "prefer_target_then_source"
+    assert len(refresh.mixed_recovery.full_target_projection) == 184
+    assert {
+        row.factor_id for row in refresh.mixed_recovery.full_target_projection
+    } == CANONICAL_FACTOR_IDS
+
+
+@pytest.mark.parametrize(
+    "mutation,match",
+    [
+        (
+            lambda recovery: recovery.update(
+                full_target_projection_semantic_sha256="0" * 64
+            ),
+            "full_target_projection_semantic_sha256",
+        ),
+        (
+            lambda recovery: recovery.update(
+                protocol_change_semantic_sha256="0" * 64
+            ),
+            "protocol_change_semantic_sha256",
+        ),
+        (
+            lambda recovery: recovery["full_target_projection"].pop(),
+            "exact 184 canonical scoped rows",
+        ),
+    ],
+)
+def test_mixed_recovery_rejects_tampered_binding(mutation, match: str) -> None:
+    document = mixed_recovery_change_set()
+    recovery = document["protocols"][0]["mixed_recovery"]
+    mutation(recovery)
+    if "full_target_projection" in recovery:
+        projection = recovery["full_target_projection"]
+        recovery["full_target_projection_semantic_sha256"] = hashlib.sha256(
+            json.dumps(
+                projection,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ).encode("utf-8")
+        ).hexdigest()
+        if match == "full_target_projection_semantic_sha256":
+            recovery["full_target_projection_semantic_sha256"] = "0" * 64
+
+    with pytest.raises(ContractError, match=match):
+        validate_change_set(document)
+
+
+def test_mixed_recovery_requires_change_new_to_match_projection() -> None:
+    document = mixed_recovery_change_set()
+    recovery = document["protocols"][0]["mixed_recovery"]
+    recovery["full_target_projection"][0]["value"]["score"] = "red"
+    recovery["full_target_projection_semantic_sha256"] = hashlib.sha256(
+        json.dumps(
+            recovery["full_target_projection"],
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+    ).hexdigest()
+
+    with pytest.raises(ContractError, match="differs from approved change"):
+        validate_change_set(document)
 
 
 @pytest.mark.parametrize(
@@ -968,9 +1193,12 @@ def test_metadata_only_change_is_visible_in_exact_plan() -> None:
     row["resulting_score"] = "yellow"
     row["old_value"]["gap_reason"] = "source_unavailable"
     row["new_value"]["gap_reason"] = "protocol_opacity"
-    rendered = render_plan(build_plan(validate_change_set(document), operator_context()))
+    batch = validate_change_set(document)
+    rendered = render_plan(
+        build_plan(batch, operator_context(), classifications(batch))
+    )
     assert "score changes: 0" in rendered
-    assert "approved changed rows: 1" in rendered
+    assert "semantic changed rows: 1" in rendered
 
 
 def test_resume_comparison_is_order_insensitive() -> None:
@@ -1127,6 +1355,17 @@ def test_runner_requires_exact_context_for_plan_and_apply() -> None:
     assert apply_error.value.code == 2
 
 
+def test_runner_requires_approved_plan_for_apply() -> None:
+    runner = _runner_module()
+    args = ["changes.json", "--apply", "--operations", "adapter:create"]
+    for name, value in vars(operator_context()).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+    with pytest.raises(SystemExit) as error:
+        runner.parse_args(args)
+    assert error.value.code == 2
+
+
 def test_runner_passes_same_context_to_apply_factory() -> None:
     runner = _runner_module()
     batch = validate_change_set(change_set())
@@ -1162,7 +1401,7 @@ def test_public_factory_constructs_from_real_operator_context(
     assert operations.repository == "owner/risk-dashboard"
 
 
-def test_plan_resolves_adapter_without_instantiating() -> None:
+def test_plan_uses_only_read_only_adapter_classification() -> None:
     runner = _runner_module()
     batch = validate_change_set(change_set())
     calls = []
@@ -1178,4 +1417,313 @@ def test_plan_resolves_adapter_without_instantiating() -> None:
         if name != "operations_adapter":
             args.extend([f"--{name.replace('_', '-')}", value])
     assert runner.main(args) == 0
-    assert calls == []
+    assert len(calls) == 1
+    assert calls[0][0] == batch
+    assert calls[0][1].operations_adapter == "adapter:create"
+
+
+def test_apply_rejects_drift_from_approved_plan_before_backup(
+    tmp_path: Path,
+) -> None:
+    runner = _runner_module()
+    batch = validate_change_set(change_set())
+    operations = FakeOperations()
+    approved_plan = tmp_path / "approved-plan.json"
+    approved_plan.write_text("{}", encoding="utf-8")
+    runner._resolve_operations_factory = lambda spec: (
+        lambda received_batch, received_context: operations
+    )
+    runner.load_change_set = lambda path: batch
+    args = [
+        "change-set.json",
+        "--apply",
+        "--approved-plan",
+        str(approved_plan),
+        "--operations",
+        "adapter:create",
+    ]
+    for name, value in vars(operator_context()).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+
+    assert runner.main(args) == 2
+    assert ("classify", batch.batch_id) in operations.calls
+    assert ("backup", batch.batch_id) not in operations.calls
+
+
+def test_valid_json_plan_round_trip_applies(
+    tmp_path: Path,
+) -> None:
+    runner = _runner_module()
+    batch = validate_change_set(change_set())
+    context = replace(operator_context(), operations_adapter="adapter:create")
+    approved_plan = tmp_path / "approved-plan.json"
+    approved_plan.write_text(
+        json.dumps(
+            runner._json_plan(
+                build_plan(batch, context, classifications(batch))
+            )
+        ),
+        encoding="utf-8",
+    )
+    operations = FakeOperations()
+    runner._resolve_operations_factory = lambda spec: (
+        lambda received_batch, received_context: operations
+    )
+    runner.load_change_set = lambda path: batch
+    args = [
+        "change-set.json",
+        "--apply",
+        "--approved-plan",
+        str(approved_plan),
+        "--operations",
+        "adapter:create",
+    ]
+    for name, value in vars(context).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+
+    assert runner.main(args) == 0
+    assert ("backup", batch.batch_id) in operations.calls
+
+
+def test_partial_batch_resume_accepts_completed_mixed_route(
+    tmp_path: Path,
+) -> None:
+    runner = _runner_module()
+    document = mixed_recovery_change_set()
+    document["protocols"].append(change_set(second=True)["protocols"][1])
+    batch = validate_change_set(document)
+    context = replace(operator_context(), operations_adapter="adapter:create")
+    legacy_hash = "a" * 64
+    approved_classifications = (
+        replace(
+            classifications(batch)[0],
+            legacy_history_sha256=legacy_hash,
+        ),
+        classifications(batch)[1],
+    )
+    approved_plan = tmp_path / "approved-plan.json"
+    approved_plan.write_text(
+        json.dumps(
+            runner._json_plan(
+                build_plan(batch, context, approved_classifications)
+            )
+        ),
+        encoding="utf-8",
+    )
+    mixed = batch.protocols[0]
+    mixed_state = ProtocolState(
+        family_slug=mixed.family_slug,
+        surface_slugs=mixed.surface_slugs,
+        last_refreshed=mixed.last_refreshed,
+        deployment_targets=mixed.deployment_targets,
+        applied_changes=complete_applied_rows(mixed),
+        resulting_grade=mixed.resulting_grade,
+        rubric_version=mixed.rubric_version,
+    )
+
+    class PartialOperations(FakeOperations):
+        def read_baseline_classifications(self, received_batch):
+            self.calls.append(("classify", received_batch.batch_id))
+            return (
+                BaselineClassification(
+                    mixed.family_slug,
+                    "mixed_recovery_complete",
+                    0,
+                    184,
+                    0,
+                    len(mixed.changes),
+                    0,
+                    0,
+                    0,
+                    mixed.mixed_recovery.full_target_projection_semantic_sha256,
+                    legacy_hash,
+                ),
+                classifications(received_batch)[1],
+            )
+
+    operations = PartialOperations(states={mixed.family_slug: mixed_state})
+    runner._resolve_operations_factory = lambda spec: (
+        lambda received_batch, received_context: operations
+    )
+    runner.load_change_set = lambda path: batch
+    args = [
+        "change-set.json",
+        "--apply",
+        "--approved-plan",
+        str(approved_plan),
+        "--operations",
+        "adapter:create",
+    ]
+    for name, value in vars(context).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+
+    assert runner.main(args) == 0
+    assert ("begin", mixed.family_slug) not in operations.calls
+    assert ("begin", "maple") in operations.calls
+
+
+def test_resume_accepts_completed_full_v15_migration(
+    tmp_path: Path,
+) -> None:
+    runner = _runner_module()
+    document = change_set()
+    template = document["protocols"][0]["changes"][0]
+    document["protocols"][0]["changes"] = []
+    for factor_id in sorted(CANONICAL_FACTOR_IDS):
+        change = copy.deepcopy(template)
+        change["factor_id"] = factor_id
+        change["old_value"]["factor_id"] = factor_id
+        change["new_value"]["factor_id"] = factor_id
+        document["protocols"][0]["changes"].append(change)
+    batch = validate_change_set(document)
+    protocol = batch.protocols[0]
+    context = replace(operator_context(), operations_adapter="adapter:create")
+    legacy_hash = "b" * 64
+    approved_classification = BaselineClassification(
+        protocol.family_slug,
+        "full_v15_migration",
+        184,
+        0,
+        0,
+        184,
+        0,
+        184,
+        184,
+        None,
+        legacy_hash,
+    )
+    approved_plan = tmp_path / "approved-plan.json"
+    approved_plan.write_text(
+        json.dumps(
+            runner._json_plan(
+                build_plan(batch, context, (approved_classification,))
+            )
+        ),
+        encoding="utf-8",
+    )
+    state = ProtocolState(
+        family_slug=protocol.family_slug,
+        surface_slugs=protocol.surface_slugs,
+        last_refreshed=protocol.last_refreshed,
+        deployment_targets=protocol.deployment_targets,
+        applied_changes=complete_applied_rows(protocol),
+        resulting_grade=protocol.resulting_grade,
+        rubric_version=protocol.rubric_version,
+    )
+
+    class CompletedMigrationOperations(FakeOperations):
+        def read_baseline_classifications(self, received_batch):
+            self.calls.append(("classify", received_batch.batch_id))
+            return (
+                BaselineClassification(
+                    protocol.family_slug,
+                    "full_v15_migration_complete",
+                    0,
+                    184,
+                    0,
+                    184,
+                    0,
+                    184,
+                    0,
+                    None,
+                    legacy_hash,
+                ),
+            )
+
+    operations = CompletedMigrationOperations(
+        states={protocol.family_slug: state}
+    )
+    runner._resolve_operations_factory = lambda spec: (
+        lambda received_batch, received_context: operations
+    )
+    runner.load_change_set = lambda path: batch
+    args = [
+        "change-set.json",
+        "--apply",
+        "--approved-plan",
+        str(approved_plan),
+        "--operations",
+        "adapter:create",
+    ]
+    for name, value in vars(context).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+
+    assert runner.main(args) == 0
+    assert ("begin", protocol.family_slug) not in operations.calls
+
+
+def test_new_plan_cannot_bless_completed_route_state() -> None:
+    batch = validate_change_set(mixed_recovery_change_set())
+    completed = replace(
+        classifications(batch)[0],
+        rubric_route="mixed_recovery_complete",
+        current_v15_rows=0,
+        current_v17_rows=184,
+        migration_only_rows=0,
+        v17_insert_or_replace_rows=0,
+        v15_retirement_rows=0,
+        legacy_history_sha256="c" * 64,
+    )
+    with pytest.raises(ContractError, match="original approved pre-mutation"):
+        build_plan(batch, operator_context(), (completed,))
+
+
+def test_apply_rejects_approved_completed_route_even_when_current_matches(
+    tmp_path: Path,
+) -> None:
+    runner = _runner_module()
+    batch = validate_change_set(mixed_recovery_change_set())
+    context = replace(operator_context(), operations_adapter="adapter:create")
+    completed = replace(
+        classifications(batch)[0],
+        rubric_route="mixed_recovery_complete",
+        current_v15_rows=0,
+        current_v17_rows=184,
+        migration_only_rows=0,
+        v17_insert_or_replace_rows=0,
+        v15_retirement_rows=0,
+        legacy_history_sha256="d" * 64,
+    )
+    approved_plan = tmp_path / "approved-plan.json"
+    approved_plan.write_text(
+        json.dumps(
+            runner._json_plan(
+                build_plan(
+                    batch,
+                    context,
+                    (completed,),
+                    allow_completed_routes=True,
+                )
+            )
+        ),
+        encoding="utf-8",
+    )
+
+    class CompletedOperations(FakeOperations):
+        def read_baseline_classifications(self, received_batch):
+            self.calls.append(("classify", received_batch.batch_id))
+            return (completed,)
+
+    operations = CompletedOperations()
+    runner._resolve_operations_factory = lambda spec: (
+        lambda received_batch, received_context: operations
+    )
+    runner.load_change_set = lambda path: batch
+    args = [
+        "change-set.json",
+        "--apply",
+        "--approved-plan",
+        str(approved_plan),
+        "--operations",
+        "adapter:create",
+    ]
+    for name, value in vars(context).items():
+        if name != "operations_adapter":
+            args.extend([f"--{name.replace('_', '-')}", value])
+
+    assert runner.main(args) == 2
+    assert ("backup", batch.batch_id) not in operations.calls

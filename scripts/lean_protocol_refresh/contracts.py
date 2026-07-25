@@ -7,6 +7,7 @@ single confirmation of the human-readable batch plan.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import ipaddress
 import re
@@ -21,6 +22,7 @@ SCHEMA_VERSION = "lean-protocol-refresh/v1"
 HISTORICAL_OLD_REMEDIATION_SCHEMA = (
     "lean-protocol-refresh/historical-old-remediation/v1"
 )
+MIXED_RECOVERY_SCHEMA = "lean-protocol-refresh/mixed-recovery/v1"
 HISTORICAL_UNAVAILABLE_SUMMARY = (
     "No public-safe evidence can substantiate the retained historical score; "
     "it is shown only as immutable baseline state."
@@ -107,6 +109,17 @@ class FactorChange:
 
 
 @dataclass(frozen=True)
+class MixedRecovery:
+    schema_version: str
+    source_rubric_version: str
+    target_rubric_version: str
+    selection_policy: str
+    full_target_projection: tuple[FactorChange, ...]
+    full_target_projection_semantic_sha256: str
+    protocol_change_semantic_sha256: str
+
+
+@dataclass(frozen=True)
 class ProtocolRefresh:
     family_slug: str
     surface_slugs: tuple[str, ...]
@@ -117,6 +130,7 @@ class ProtocolRefresh:
     rubric_version: str
     changes: tuple[FactorChange, ...]
     previous_grade: str | None = None
+    mixed_recovery: MixedRecovery | None = None
 
 
 @dataclass(frozen=True)
@@ -134,6 +148,16 @@ def _strict_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
             raise ContractError(f"duplicate JSON key: {key}")
         value[key] = item
     return value
+
+
+def _semantic_sha256(value: Any) -> str:
+    payload = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -782,10 +806,128 @@ def _change(
     )
 
 
+def _mixed_recovery(
+    value: Any,
+    label: str,
+    *,
+    family_slug: str,
+    surface_slugs: tuple[str, ...],
+    deployment_targets: tuple[str, ...],
+    resulting_grade: str,
+    changes: tuple[FactorChange, ...],
+    protocol_change_semantic_sha256: str,
+) -> MixedRecovery:
+    if not isinstance(value, dict):
+        raise ContractError(f"{label} must be an object")
+    _exact_fields(
+        value,
+        {
+            "schema_version",
+            "source_rubric_version",
+            "target_rubric_version",
+            "selection_policy",
+            "full_target_projection",
+            "full_target_projection_semantic_sha256",
+            "protocol_change_semantic_sha256",
+        },
+        label,
+    )
+    if value["schema_version"] != MIXED_RECOVERY_SCHEMA:
+        raise ContractError(f"{label}.schema_version is invalid")
+    if (
+        value["source_rubric_version"] != "v1.5.0"
+        or value["target_rubric_version"] != RUBRIC_VERSION
+    ):
+        raise ContractError(
+            f"{label} must declare the supported v1.5.0 to {RUBRIC_VERSION} route"
+        )
+    if value["selection_policy"] != "prefer_target_then_source":
+        raise ContractError(f"{label}.selection_policy is invalid")
+
+    projection = value["full_target_projection"]
+    if not isinstance(projection, list):
+        raise ContractError(f"{label}.full_target_projection must be an array")
+    expected_projection_hash = value["full_target_projection_semantic_sha256"]
+    if (
+        not isinstance(expected_projection_hash, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", expected_projection_hash)
+        or _semantic_sha256(projection) != expected_projection_hash
+    ):
+        raise ContractError(
+            f"{label}.full_target_projection_semantic_sha256 is invalid"
+        )
+    expected_protocol_hash = value["protocol_change_semantic_sha256"]
+    if (
+        not isinstance(expected_protocol_hash, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", expected_protocol_hash)
+        or expected_protocol_hash != protocol_change_semantic_sha256
+    ):
+        raise ContractError(f"{label}.protocol_change_semantic_sha256 is invalid")
+
+    parsed_rows: list[FactorChange] = []
+    sort_keys: list[tuple[str, str, str]] = []
+    for index, item in enumerate(projection):
+        row_label = f"{label}.full_target_projection[{index}]"
+        if not isinstance(item, dict):
+            raise ContractError(f"{row_label} must be an object")
+        _exact_fields(item, {"factor_id", "scope_level", "target", "value"}, row_label)
+        target_value = item["value"]
+        if not isinstance(target_value, dict):
+            raise ContractError(f"{row_label}.value must be a complete factor row")
+        parsed = _change(
+            {
+                "factor_id": item["factor_id"],
+                "scope_level": item["scope_level"],
+                "target": item["target"],
+                "old": target_value,
+                "new": target_value,
+                "resulting_score": target_value.get("score"),
+                "resulting_grade": resulting_grade,
+            },
+            row_label,
+            family_slug=family_slug,
+            surface_slugs=surface_slugs,
+            deployment_targets=deployment_targets,
+        )
+        parsed_rows.append(parsed)
+        sort_keys.append((parsed.scope_level, parsed.target, parsed.factor_id))
+    if sort_keys != sorted(sort_keys):
+        raise ContractError(f"{label}.full_target_projection must be canonically sorted")
+    if (
+        len(parsed_rows) != EXPECTED_FACTOR_COUNT
+        or {row.factor_id for row in parsed_rows} != CANONICAL_FACTOR_IDS
+        or len(set(sort_keys)) != EXPECTED_FACTOR_COUNT
+    ):
+        raise ContractError(
+            f"{label}.full_target_projection must contain the exact 184 canonical scoped rows"
+        )
+    projected = {
+        (row.scope_level, row.target, row.factor_id): row.new_value
+        for row in parsed_rows
+    }
+    for change in changes:
+        key = (change.scope_level, change.target, change.factor_id)
+        if projected.get(key) != change.new_value:
+            raise ContractError(
+                f"{label} target projection differs from approved change {change.factor_id}"
+            )
+    return MixedRecovery(
+        schema_version=value["schema_version"],
+        source_rubric_version=value["source_rubric_version"],
+        target_rubric_version=value["target_rubric_version"],
+        selection_policy=value["selection_policy"],
+        full_target_projection=tuple(parsed_rows),
+        full_target_projection_semantic_sha256=expected_projection_hash,
+        protocol_change_semantic_sha256=expected_protocol_hash,
+    )
+
+
 def _protocol(value: Any, label: str, rubric_version: str) -> ProtocolRefresh:
     if not isinstance(value, dict):
         raise ContractError(f"{label} must be an object")
     value = dict(value)
+    mixed_recovery_raw = value.pop("mixed_recovery", None)
+    protocol_change_semantic_sha256 = _semantic_sha256(value)
     previous_grade = value.pop("previous_grade", None)
     if previous_grade is not None and previous_grade not in {"A", "B", "C", "D", "F"}:
         raise ContractError(f"{label}.previous_grade is invalid")
@@ -891,6 +1033,20 @@ def _protocol(value: Any, label: str, rubric_version: str) -> ProtocolRefresh:
         raise ContractError(
             f"{label}.changes resulting_grade differs from protocol resulting_grade"
         )
+    mixed_recovery = (
+        _mixed_recovery(
+            mixed_recovery_raw,
+            f"{label}.mixed_recovery",
+            family_slug=family_slug,
+            surface_slugs=surface_slugs,
+            deployment_targets=deployment_targets,
+            resulting_grade=resulting_grade,
+            changes=changes,
+            protocol_change_semantic_sha256=protocol_change_semantic_sha256,
+        )
+        if mixed_recovery_raw is not None
+        else None
+    )
     return ProtocolRefresh(
         family_slug=family_slug,
         surface_slugs=surface_slugs,
@@ -901,6 +1057,7 @@ def _protocol(value: Any, label: str, rubric_version: str) -> ProtocolRefresh:
         rubric_version=protocol_rubric_version,
         changes=changes,
         previous_grade=previous_grade,
+        mixed_recovery=mixed_recovery,
     )
 
 

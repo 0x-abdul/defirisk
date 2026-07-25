@@ -8,6 +8,7 @@ side effects.
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 import shlex
@@ -32,9 +33,11 @@ from .contracts import (
     validate_public_material,
 )
 from .execution import BatchState, ProtocolState, is_already_applied
+from .planning import BaselineClassification
 
 RUBRIC_VERSION = "v1.7.0"
 MIGRATION_BASELINE_VERSION = "v1.5.0"
+MIXED_RECOVERY_ROUTE = "mixed_recovery"
 BACKUP_ROOT = Path("/opt/riskdashboard/.backups/protocol-refresh")
 PUBLIC_FACTOR_ROW_FIELDS = {
     "factor_id",
@@ -108,7 +111,16 @@ class ProductionOperations:
     _target_rows_before: dict[str, str] = field(
         default_factory=dict, init=False, repr=False
     )
+    _protocol_written_factor_ids: set[str] = field(
+        default_factory=set, init=False, repr=False
+    )
     _publication_trigger_slug: str | None = field(default=None, init=False, repr=False)
+    _planned_classifications: dict[str, BaselineClassification] = field(
+        default_factory=dict, init=False, repr=False
+    )
+    _approved_plan_protocols: dict[str, Mapping[str, Any]] = field(
+        default_factory=dict, init=False, repr=False
+    )
 
     def __post_init__(self) -> None:
         if not self.database_url:
@@ -237,6 +249,84 @@ pg_restore --list "$path" >/dev/null"""
         if [str(row[0]) for row in rows] != [RUBRIC_VERSION]:
             raise ContractError("production must have v1.7.0 as its sole active rubric")
 
+    def read_baseline_classifications(
+        self, batch: RefreshBatch
+    ) -> tuple[BaselineClassification, ...]:
+        """Return the exact read-only confirmation inputs for every protocol."""
+        if batch != self.batch:
+            raise ContractError("baseline classification batch differs from adapter batch")
+        conn = self._connection()
+        try:
+            self._sole_rubric(conn)
+            classifications = tuple(
+                self._baseline_classification(
+                    protocol,
+                    allow_completed_mixed=True,
+                    include_history_binding=True,
+                )
+                for protocol in batch.protocols
+            )
+            self._planned_classifications = {
+                item.family_slug: item for item in classifications
+            }
+            return classifications
+        finally:
+            conn.rollback()
+
+    def bind_approved_plan(self, plan: Mapping[str, Any]) -> None:
+        protocols = plan.get("protocols")
+        if not isinstance(protocols, list):
+            raise ContractError("approved plan protocols must be an array")
+        self._approved_plan_protocols = {
+            str(item["family_slug"]): item for item in protocols
+        }
+
+    def validate_protocol_resume(
+        self, protocol: ProtocolRefresh, state: ProtocolState
+    ) -> None:
+        """Fail closed before a route-changing protocol is skipped."""
+        approved = self._approved_plan_protocols.get(protocol.family_slug)
+        if approved is None:
+            if protocol.mixed_recovery is not None:
+                raise ContractError(
+                    "mixed_recovery resume lacks the approved plan binding"
+                )
+            return
+        approved_route = approved.get("rubric_route")
+        if approved_route not in {"mixed_recovery", "full_v15_migration"}:
+            return
+        classification = self._baseline_classification(
+            protocol,
+            allow_completed_mixed=True,
+            include_history_binding=True,
+        )
+        expected_completed_route = (
+            "mixed_recovery_complete"
+            if approved_route == "mixed_recovery"
+            else "full_v15_migration_complete"
+        )
+        if classification.rubric_route != expected_completed_route:
+            if not self._protocol_open:
+                self._connection().rollback()
+            raise ContractError(
+                "route-changing resume requires zero current v1.5.0 rows and "
+                "the exact approved current v1.7.0 final state"
+            )
+        if (
+            classification.legacy_history_sha256
+            != approved.get("legacy_history_sha256")
+            or classification.current_v15_rows != 0
+            or approved.get("v15_retirement_rows") in {None, 0}
+        ):
+            if not self._protocol_open:
+                self._connection().rollback()
+            raise ContractError(
+                "route-changing resume cannot verify retained v1.5.0 history, "
+                "superseded_by links, and source joins"
+            )
+        if not self._protocol_open:
+            self._connection().rollback()
+
     def read_protocol_state(self, family_slug: str) -> ProtocolState:
         conn = self._connection()
         self._sole_rubric(conn)
@@ -328,6 +418,7 @@ pg_restore --list "$path" >/dev/null"""
         self._protocol_baseline_family = None
         self._protocol_baseline_rubric = None
         self._target_rows_before = {}
+        self._protocol_written_factor_ids = set()
         try:
             conn.execute("BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE")
             conn.execute(
@@ -337,9 +428,29 @@ pg_restore --list "$path" >/dev/null"""
             self._protocol_open = True
             self._sole_rubric(conn)
             self._protocol_baseline_family = protocol.family_slug
-            self._protocol_baseline_rubric = self._classify_protocol_baseline(
-                protocol
+            planned_classification = self._planned_classifications.get(
+                protocol.family_slug
             )
+            locked_classification = self._baseline_classification(
+                protocol,
+                include_history_binding=(
+                    planned_classification is not None
+                    and planned_classification.legacy_history_sha256 is not None
+                ),
+            )
+            if (
+                planned_classification is not None
+                and locked_classification != planned_classification
+            ):
+                raise ContractError(
+                    "locked production baseline differs from the exact "
+                    "approved plan; rollback and obtain a revised confirmation"
+                )
+            route = locked_classification.rubric_route
+            self._protocol_baseline_rubric = {
+                "standard_v17": RUBRIC_VERSION,
+                "full_v15_migration": MIGRATION_BASELINE_VERSION,
+            }.get(route, route)
             self._verify_topology(protocol)
             self._dump_workspace = tempfile.TemporaryDirectory(
                 prefix="lean-refresh-"
@@ -366,32 +477,187 @@ pg_restore --list "$path" >/dev/null"""
             self._protocol_baseline_family = None
             self._protocol_baseline_rubric = None
             self._target_rows_before = {}
+            self._protocol_written_factor_ids = set()
             self._close_dump_workspace()
             raise
 
-    def _classify_protocol_baseline(self, protocol: ProtocolRefresh) -> str:
-        """Select the refresh path from the locked production factor baseline."""
+    def _read_protocol_baseline_rows(
+        self, protocol: ProtocolRefresh
+    ) -> tuple[tuple[str, str, str, str], ...]:
         with self._connection().cursor() as cur:
             cur.execute(
-                """SELECT rubric_version, factor_id
-                   FROM factor_scores
-                   WHERE protocol_slug=%s AND is_current=true
-                   ORDER BY rubric_version, factor_id""",
+                """SELECT fs.rubric_version, fs.factor_id, fs.scope_level,
+                          CASE
+                            WHEN fs.scope_level IN ('protocol', 'family')
+                              THEN fs.protocol_slug
+                            WHEN fs.scope_level = 'surface'
+                              THEN surface_direct.surface_slug
+                            ELSE CONCAT_WS('/',
+                              surface_dep.surface_slug, d.chain, d.deployment_key)
+                          END AS target
+                   FROM factor_scores fs
+                   LEFT JOIN protocol_surfaces surface_direct
+                     ON surface_direct.surface_id=fs.surface_id
+                   LEFT JOIN deployments d ON d.id=fs.deployment_id
+                   LEFT JOIN protocol_surfaces surface_dep
+                     ON surface_dep.surface_id=d.surface_id
+                   WHERE fs.protocol_slug=%s AND fs.is_current=true
+                   ORDER BY fs.rubric_version, fs.scope_level, target, fs.factor_id""",
                 (protocol.family_slug,),
             )
             rows = tuple(
-                (str(version), str(factor_id))
-                for version, factor_id in cur.fetchall()
+                (str(version), str(scope), str(target), str(factor_id))
+                for version, factor_id, scope, target in cur.fetchall()
             )
-        versions = {version for version, _factor_id in rows}
-        factor_ids = [factor_id for _version, factor_id in rows]
+        return rows
+
+    def _baseline_classification(
+        self,
+        protocol: ProtocolRefresh,
+        *,
+        allow_completed_mixed: bool = False,
+        include_history_binding: bool = False,
+    ) -> BaselineClassification:
+        """Select a route and compute the exact read-only write envelope."""
+        rows = self._read_protocol_baseline_rows(protocol)
+        versions = {version for version, _scope, _target, _factor_id in rows}
+        factor_ids = [factor_id for _version, _scope, _target, factor_id in rows]
+        scoped_keys = [
+            (scope, target, factor_id)
+            for _version, scope, target, factor_id in rows
+        ]
+        allowed_targets = {
+            ("family", protocol.family_slug),
+            ("protocol", protocol.family_slug),
+            *((("surface", target) for target in protocol.surface_slugs)),
+            *((("deployment", target) for target in protocol.deployment_targets)),
+        }
+        approved_topology = all(
+            (scope, target) in allowed_targets
+            for scope, target, _factor_id in scoped_keys
+        )
         complete_factor_set = (
             len(rows) == EXPECTED_FACTOR_COUNT
             and len(set(factor_ids)) == EXPECTED_FACTOR_COUNT
             and set(factor_ids) == CANONICAL_FACTOR_IDS
+            and len(set(scoped_keys)) == EXPECTED_FACTOR_COUNT
+            and approved_topology
         )
+        keys_by_version: dict[str, list[tuple[str, str, str]]] = {}
+        for version, scope, target, factor_id in rows:
+            keys_by_version.setdefault(version, []).append(
+                (scope, target, factor_id)
+            )
+        v15_keys = set(keys_by_version.get(MIGRATION_BASELINE_VERSION, ()))
+        v17_keys = set(keys_by_version.get(RUBRIC_VERSION, ()))
+        overlap = len(v15_keys & v17_keys)
+        if protocol.mixed_recovery is not None:
+            recovery = protocol.mixed_recovery
+            approved_keys = {
+                (row.scope_level, row.target, row.factor_id)
+                for row in recovery.full_target_projection
+            }
+            duplicate_version_keys = any(
+                len(keys) != len(set(keys)) for keys in keys_by_version.values()
+            )
+            observed_union = {
+                key for keys in keys_by_version.values() for key in keys
+            }
+            if (
+                versions == {MIGRATION_BASELINE_VERSION, RUBRIC_VERSION}
+                and all(keys_by_version.get(version) for version in versions)
+                and not duplicate_version_keys
+                and observed_union == approved_keys
+            ):
+                changed_keys = {
+                    (change.scope_level, change.target, change.factor_id)
+                    for change in protocol.changes
+                }
+                missing_v17 = approved_keys - v17_keys
+                return BaselineClassification(
+                    protocol.family_slug,
+                    MIXED_RECOVERY_ROUTE,
+                    len(v15_keys),
+                    len(v17_keys),
+                    overlap,
+                    len(protocol.changes),
+                    len(missing_v17 - changed_keys),
+                    len(missing_v17 | changed_keys),
+                    len(v15_keys),
+                    recovery.full_target_projection_semantic_sha256,
+                    (
+                        self._legacy_history_binding(
+                            protocol, current_rows=True
+                        )[1]
+                        if include_history_binding
+                        else None
+                    ),
+                )
+            if (
+                allow_completed_mixed
+                and versions == {RUBRIC_VERSION}
+                and not duplicate_version_keys
+                and v17_keys == approved_keys
+            ):
+                return BaselineClassification(
+                    protocol.family_slug,
+                    "mixed_recovery_complete",
+                    0,
+                    len(v17_keys),
+                    0,
+                    len(protocol.changes),
+                    0,
+                    0,
+                    0,
+                    recovery.full_target_projection_semantic_sha256,
+                    (
+                        self._legacy_history_binding(
+                            protocol, current_rows=False
+                        )[1]
+                        if include_history_binding
+                        else None
+                    ),
+                )
+            counts = {
+                version: len(keys_by_version[version])
+                for version in sorted(keys_by_version)
+            }
+            raise ContractError(
+                "mixed_recovery production baseline differs from the exact "
+                f"approved 184-key v1.5.0/v1.7.0 union: {counts or 'none'}"
+            )
         if complete_factor_set and versions == {RUBRIC_VERSION}:
-            return RUBRIC_VERSION
+            completed_legacy_count = 0
+            completed_legacy_hash = None
+            if include_history_binding and len(protocol.changes) == EXPECTED_FACTOR_COUNT:
+                (
+                    completed_legacy_count,
+                    completed_legacy_hash,
+                ) = self._legacy_history_binding(
+                    protocol, current_rows=False
+                )
+                if completed_legacy_count not in {0, EXPECTED_FACTOR_COUNT}:
+                    raise ContractError(
+                        "completed full_v15_migration history binding is "
+                        "incomplete; the original approved plan is required"
+                    )
+            return BaselineClassification(
+                protocol.family_slug,
+                (
+                    "full_v15_migration_complete"
+                    if completed_legacy_count == EXPECTED_FACTOR_COUNT
+                    else "standard_v17"
+                ),
+                0,
+                len(v17_keys),
+                0,
+                len(protocol.changes),
+                0,
+                len(protocol.changes),
+                0,
+                None,
+                completed_legacy_hash,
+            )
         if complete_factor_set and versions == {MIGRATION_BASELINE_VERSION}:
             changed_factor_ids = {change.factor_id for change in protocol.changes}
             if (
@@ -403,9 +669,31 @@ pg_restore --list "$path" >/dev/null"""
                     "v1.5.0 migration baseline requires a changed outcome "
                     "with exactly the 184 canonical approved factor rows"
                 )
-            return MIGRATION_BASELINE_VERSION
+            return BaselineClassification(
+                protocol.family_slug,
+                "full_v15_migration",
+                len(v15_keys),
+                0,
+                0,
+                len(protocol.changes),
+                0,
+                len(protocol.changes),
+                len(v15_keys),
+                None,
+                (
+                    self._legacy_history_binding(
+                        protocol, current_rows=True
+                    )[1]
+                    if include_history_binding
+                    else None
+                ),
+            )
         counts = {
-            version: sum(1 for row_version, _factor_id in rows if row_version == version)
+            version: sum(
+                1
+                for row_version, _scope, _target, _factor_id in rows
+                if row_version == version
+            )
             for version in versions
         }
         summary = ", ".join(
@@ -416,6 +704,69 @@ pg_restore --list "$path" >/dev/null"""
             "v1.7.0 factor IDs from only v1.7.0 (standard refresh) or only v1.5.0 "
             f"(migration); found {summary}"
         )
+
+    def _legacy_history_binding(
+        self, protocol: ProtocolRefresh, *, current_rows: bool
+    ) -> tuple[int, str | None]:
+        """Hash v1.5 row/source identities before or after route migration."""
+        current_clause = "legacy.is_current=true"
+        join_clause = ""
+        params: tuple[Any, ...] = (
+            protocol.family_slug,
+            MIGRATION_BASELINE_VERSION,
+        )
+        if not current_rows:
+            current_clause = "legacy.is_current=false"
+            join_clause = """JOIN factor_scores target
+              ON target.id=legacy.superseded_by
+             AND target.protocol_slug=legacy.protocol_slug
+             AND target.rubric_version=%s
+             AND target.is_current=true
+             AND target.factor_id=legacy.factor_id
+             AND target.scope_level=legacy.scope_level
+             AND COALESCE(target.family_slug, '')=COALESCE(legacy.family_slug, '')
+             AND COALESCE(target.surface_id::text, '')=COALESCE(legacy.surface_id::text, '')
+             AND COALESCE(target.deployment_id::text, '')=COALESCE(legacy.deployment_id::text, '')"""
+            params = (
+                RUBRIC_VERSION,
+                protocol.family_slug,
+                MIGRATION_BASELINE_VERSION,
+            )
+        with self._connection().cursor() as cur:
+            cur.execute(
+                f"""SELECT legacy.id::text,
+                           COALESCE(array_agg(fss.source_id::text ORDER BY fss.source_id)
+                             FILTER (WHERE fss.source_id IS NOT NULL),
+                             ARRAY[]::text[])
+                    FROM factor_scores legacy
+                    {join_clause}
+                    LEFT JOIN factor_score_sources fss
+                      ON fss.factor_score_id=legacy.id
+                    WHERE legacy.protocol_slug=%s
+                      AND legacy.rubric_version=%s
+                      AND {current_clause}
+                    GROUP BY legacy.id
+                    ORDER BY legacy.id""",
+                params,
+            )
+            rows = tuple(
+                (str(row_id), tuple(str(source_id) for source_id in source_ids))
+                for row_id, source_ids in cur.fetchall()
+            )
+        if not rows:
+            return 0, None
+        return len(rows), hashlib.sha256(
+            _canonical(rows).encode("utf-8")
+        ).hexdigest()
+
+    def _classify_protocol_baseline(self, protocol: ProtocolRefresh) -> str:
+        """Select the refresh path from the locked production factor baseline."""
+        route = self._baseline_classification(protocol).rubric_route
+        if route == "standard_v17":
+            return RUBRIC_VERSION
+        if route == "full_v15_migration":
+            return MIGRATION_BASELINE_VERSION
+        return route
 
     def _verify_topology(self, protocol: ProtocolRefresh) -> None:
         state = self.read_protocol_state(protocol.family_slug)
@@ -440,6 +791,170 @@ pg_restore --list "$path" >/dev/null"""
             raise ContractError("approved deployment is missing")
         return row[0], row[1]
 
+    @staticmethod
+    def _factor_key(change: Any) -> tuple[str, str, str]:
+        return (change.scope_level, change.target, change.factor_id)
+
+    def _insert_target_row(
+        self,
+        cur: Any,
+        protocol: ProtocolRefresh,
+        target_row: Any,
+        surface_id: Any,
+        deployment_id: Any,
+    ) -> Any:
+        new = target_row.new_value
+        cur.execute(
+            """INSERT INTO factor_scores (protocol_slug, deployment_id, factor_id, rubric_version, score,
+                evidence_summary, evidence_detail, collection_mode, gap_reason, collected_at, collected_by, data_as_of,
+                is_current, notes, scope_level, family_slug, surface_id)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),'lean-protocol-refresh',%s,false,%s,%s,%s,%s) RETURNING id""",
+            (
+                protocol.family_slug,
+                deployment_id,
+                target_row.factor_id,
+                RUBRIC_VERSION,
+                new.get("score"),
+                new.get("evidence_summary"),
+                new.get("evidence_detail"),
+                new.get("collection_mode"),
+                new.get("gap_reason"),
+                protocol.last_refreshed,
+                new.get("notes"),
+                target_row.scope_level,
+                protocol.family_slug if target_row.scope_level == "family" else None,
+                surface_id,
+            ),
+        )
+        new_id = cur.fetchone()[0]
+        for source in new.get("sources", []):
+            source_id = self._get_or_create_source(
+                cur, source, protocol.last_refreshed
+            )
+            cur.execute(
+                """INSERT INTO factor_score_sources
+                   (factor_score_id,source_id,relation)
+                   VALUES (%s,%s,%s) ON CONFLICT DO NOTHING""",
+                (new_id, source_id, source.get("relation", "primary")),
+            )
+        return new_id
+
+    def _apply_mixed_recovery(self, cur: Any, protocol: ProtocolRefresh) -> None:
+        recovery = protocol.mixed_recovery
+        if recovery is None:
+            raise ContractError("mixed_recovery route has no approved target projection")
+        changed = {self._factor_key(row): row for row in protocol.changes}
+        for target_row in recovery.full_target_projection:
+            key = self._factor_key(target_row)
+            surface_id, deployment_id = self._target_parts(
+                target_row, cur, protocol.family_slug
+            )
+            cur.execute(
+                """SELECT id, rubric_version, to_jsonb(factor_scores)
+                   FROM factor_scores
+                   WHERE protocol_slug=%s AND factor_id=%s
+                     AND scope_level=%s
+                     AND family_slug IS NOT DISTINCT FROM %s
+                     AND surface_id IS NOT DISTINCT FROM %s
+                     AND deployment_id IS NOT DISTINCT FROM %s
+                     AND is_current=true
+                   ORDER BY rubric_version""",
+                (
+                    protocol.family_slug,
+                    target_row.factor_id,
+                    target_row.scope_level,
+                    (
+                        protocol.family_slug
+                        if target_row.scope_level == "family"
+                        else None
+                    ),
+                    surface_id,
+                    deployment_id,
+                ),
+            )
+            rows = cur.fetchall()
+            by_version = {str(row[1]): row for row in rows}
+            if (
+                len(by_version) != len(rows)
+                or not rows
+                or set(by_version) - {MIGRATION_BASELINE_VERSION, RUBRIC_VERSION}
+            ):
+                raise ContractError(
+                    f"mixed_recovery current rows drifted for {target_row.factor_id}"
+                )
+            selected = by_version.get(RUBRIC_VERSION) or by_version.get(
+                MIGRATION_BASELINE_VERSION
+            )
+            if selected is None:
+                raise ContractError(
+                    f"mixed_recovery selected row is missing for {target_row.factor_id}"
+                )
+            selected_old = changed.get(key, target_row)
+            self._verify_public_old_row(
+                cur, protocol, selected_old, selected[0], selected[2]
+            )
+
+            existing_target = by_version.get(RUBRIC_VERSION)
+            if key in changed or existing_target is None:
+                final_id = self._insert_target_row(
+                    cur,
+                    protocol,
+                    target_row,
+                    surface_id,
+                    deployment_id,
+                )
+                self._protocol_written_factor_ids.add(target_row.factor_id)
+                old_ids = [row[0] for row in rows]
+                cur.execute(
+                    """UPDATE factor_scores
+                       SET is_current=false, superseded_by=%s
+                       WHERE id=ANY(%s) AND is_current=true""",
+                    (final_id, old_ids),
+                )
+                if cur.rowcount != len(old_ids):
+                    raise ContractError(
+                        f"mixed_recovery could not retire every old row for {target_row.factor_id}"
+                    )
+                cur.execute(
+                    "UPDATE factor_scores SET is_current=true WHERE id=%s",
+                    (final_id,),
+                )
+                if cur.rowcount != 1:
+                    raise ContractError(
+                        f"mixed_recovery replacement was not promoted for {target_row.factor_id}"
+                    )
+            else:
+                final_id = existing_target[0]
+                legacy = by_version.get(MIGRATION_BASELINE_VERSION)
+                if legacy is not None:
+                    cur.execute(
+                        """UPDATE factor_scores
+                           SET is_current=false, superseded_by=%s
+                           WHERE id=%s AND is_current=true""",
+                        (final_id, legacy[0]),
+                    )
+                    if cur.rowcount != 1:
+                        raise ContractError(
+                            f"mixed_recovery legacy row was not retired for {target_row.factor_id}"
+                        )
+
+        cur.execute(
+            """SELECT rubric_version, count(*), count(DISTINCT factor_id)
+               FROM factor_scores
+               WHERE protocol_slug=%s AND is_current=true
+               GROUP BY rubric_version ORDER BY rubric_version""",
+            (protocol.family_slug,),
+        )
+        final_counts = tuple(
+            (str(version), int(count), int(distinct_count))
+            for version, count, distinct_count in cur.fetchall()
+        )
+        if final_counts != ((RUBRIC_VERSION, EXPECTED_FACTOR_COUNT, EXPECTED_FACTOR_COUNT),):
+            raise ContractError(
+                "mixed_recovery postcondition requires exactly 184 unique "
+                "current v1.7.0 rows and zero legacy current rows"
+            )
+
     def apply_protocol(self, protocol: ProtocolRefresh) -> None:
         if (
             self._protocol_baseline_family != protocol.family_slug
@@ -451,6 +966,17 @@ pg_restore --list "$path" >/dev/null"""
         expected_baseline_rubric = self._protocol_baseline_rubric
         conn = self._connection()
         with conn.cursor() as cur:
+            if expected_baseline_rubric == MIXED_RECOVERY_ROUTE:
+                self._apply_mixed_recovery(cur, protocol)
+                cur.execute(
+                    "UPDATE protocols SET last_refreshed=%s, updated_at=now() WHERE slug=%s",
+                    (protocol.last_refreshed, protocol.family_slug),
+                )
+                if cur.rowcount != 1:
+                    raise ContractError(
+                        "last_refreshed update did not affect exactly one protocol"
+                    )
+                return
             for change in protocol.changes:
                 surface_id, deployment_id = self._target_parts(change, cur, protocol.family_slug)
                 cur.execute("""SELECT id, rubric_version, to_jsonb(factor_scores) FROM factor_scores WHERE protocol_slug=%s AND factor_id=%s
@@ -470,26 +996,10 @@ pg_restore --list "$path" >/dev/null"""
                         f"{expected_baseline_rubric} baseline for {change.factor_id}"
                     )
                 self._verify_public_old_row(cur, protocol, change, old_id, old)
-                new = change.new_value
-                cur.execute("""INSERT INTO factor_scores (protocol_slug, deployment_id, factor_id, rubric_version, score,
-                    evidence_summary, evidence_detail, collection_mode, gap_reason, collected_at, collected_by, data_as_of,
-                    is_current, notes, scope_level, family_slug, surface_id)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),'lean-protocol-refresh',%s,false,%s,%s,%s,%s) RETURNING id""",
-                    (protocol.family_slug, deployment_id, change.factor_id, RUBRIC_VERSION, new.get("score"),
-                     new.get("evidence_summary"), new.get("evidence_detail"), new.get("collection_mode"), new.get("gap_reason"),
-                     protocol.last_refreshed, new.get("notes"), change.scope_level,
-                     protocol.family_slug if change.scope_level == "family" else None, surface_id))
-                new_id = cur.fetchone()[0]
-                for source in new.get("sources", []):
-                    source_id = self._get_or_create_source(
-                        cur, source, protocol.last_refreshed
-                    )
-                    cur.execute(
-                        """INSERT INTO factor_score_sources
-                           (factor_score_id,source_id,relation)
-                           VALUES (%s,%s,%s) ON CONFLICT DO NOTHING""",
-                        (new_id, source_id, source.get("relation", "primary")),
-                    )
+                new_id = self._insert_target_row(
+                    cur, protocol, change, surface_id, deployment_id
+                )
+                self._protocol_written_factor_ids.add(change.factor_id)
                 cur.execute(
                     """UPDATE factor_scores
                        SET is_current=false, superseded_by=%s
@@ -745,6 +1255,7 @@ pg_restore --list "$path" >/dev/null"""
         import dump
         if self._dump_workspace is None:
             raise ContractError("protocol output baseline was not captured")
+        self._verify_legacy_history_postcondition(protocol)
         root = Path(self._dump_workspace.name) / "after"
         if compose.run(self.database_url, slug=protocol.family_slug, dry_run=False,
                        connection=self._connection(), required_protocols={protocol.family_slug}) != 0:
@@ -758,6 +1269,27 @@ pg_restore --list "$path" >/dev/null"""
         for name in set(self._output_before) | set(after):
             if self._output_before.get(name) != after.get(name):
                 raise ContractError("pipeline changed unrelated semantic output")
+
+    def _verify_legacy_history_postcondition(
+        self, protocol: ProtocolRefresh
+    ) -> None:
+        planned = self._planned_classifications.get(protocol.family_slug)
+        if planned is None or planned.rubric_route not in {
+            MIXED_RECOVERY_ROUTE,
+            "full_v15_migration",
+        }:
+            return
+        retired_count, history_hash = self._legacy_history_binding(
+            protocol, current_rows=False
+        )
+        if (
+            retired_count != planned.v15_retirement_rows
+            or history_hash != planned.legacy_history_sha256
+        ):
+            raise ContractError(
+                "post-migration v1.5.0 history, superseded_by links, or "
+                "source-join identities differ from the exact approved plan"
+            )
 
     @staticmethod
     def _protocol_document(payload: Any) -> Mapping[str, Any]:
@@ -776,6 +1308,7 @@ pg_restore --list "$path" >/dev/null"""
         payload: Any,
         *,
         unchanged_rows_before: Mapping[str, str] | None = None,
+        written_factor_ids: set[str] | None = None,
     ) -> None:
         document = cls._protocol_document(payload)
         metadata = document.get("protocol")
@@ -820,7 +1353,14 @@ pg_restore --list "$path" >/dev/null"""
             "collection_mode",
             "gap_reason",
         )
-        for change in protocol.changes:
+        approved_rows = (
+            protocol.mixed_recovery.full_target_projection
+            if protocol.mixed_recovery is not None
+            else protocol.changes
+        )
+        if written_factor_ids is None:
+            written_factor_ids = {change.factor_id for change in protocol.changes}
+        for change in approved_rows:
             actual = actual_by_factor.get(change.factor_id)
             if actual is None:
                 raise ContractError(f"protocol output omitted {change.factor_id}")
@@ -833,33 +1373,34 @@ pg_restore --list "$path" >/dev/null"""
                 raise ContractError(
                     f"protocol output differs for {change.factor_id}"
                 )
-            try:
-                raw_freshness = actual["data_as_of"]
-                if not isinstance(raw_freshness, str):
-                    raise ValueError
-                if "T" in raw_freshness:
-                    normalized_freshness = (
-                        f"{raw_freshness[:-1]}+00:00"
-                        if raw_freshness.endswith("Z")
-                        else raw_freshness
+            if change.factor_id in written_factor_ids:
+                try:
+                    raw_freshness = actual["data_as_of"]
+                    if not isinstance(raw_freshness, str):
+                        raise ValueError
+                    if "T" in raw_freshness:
+                        normalized_freshness = (
+                            f"{raw_freshness[:-1]}+00:00"
+                            if raw_freshness.endswith("Z")
+                            else raw_freshness
+                        )
+                        freshness_date = datetime.fromisoformat(
+                            normalized_freshness
+                        ).date()
+                    else:
+                        freshness_date = date.fromisoformat(raw_freshness)
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ContractError(
+                        f"protocol output freshness is invalid for {change.factor_id}"
+                    ) from exc
+                if freshness_date.isoformat() != protocol.last_refreshed:
+                    raise ContractError(
+                        f"protocol output freshness differs for {change.factor_id}"
                     )
-                    freshness_date = datetime.fromisoformat(
-                        normalized_freshness
-                    ).date()
-                else:
-                    freshness_date = date.fromisoformat(raw_freshness)
-            except (KeyError, TypeError, ValueError) as exc:
-                raise ContractError(
-                    f"protocol output freshness is invalid for {change.factor_id}"
-                ) from exc
-            if freshness_date.isoformat() != protocol.last_refreshed:
-                raise ContractError(
-                    f"protocol output freshness differs for {change.factor_id}"
-                )
-            if actual.get("collected_by") != "lean-protocol-refresh":
-                raise ContractError(
-                    f"protocol output collector differs for {change.factor_id}"
-                )
+                if actual.get("collected_by") != "lean-protocol-refresh":
+                    raise ContractError(
+                        f"protocol output collector differs for {change.factor_id}"
+                    )
             expected_sources = cls._sorted_sources(
                 [
                     {
@@ -1010,6 +1551,7 @@ pg_restore --list "$path" >/dev/null"""
                 if self._protocol_baseline_rubric == RUBRIC_VERSION
                 else None
             ),
+            written_factor_ids=set(self._protocol_written_factor_ids),
         )
 
     def _publication_state(self, family_slug: str) -> tuple[bool, str | None]:
@@ -1045,6 +1587,7 @@ pg_restore --list "$path" >/dev/null"""
         self._protocol_baseline_family = None
         self._protocol_baseline_rubric = None
         self._target_rows_before = {}
+        self._protocol_written_factor_ids = set()
         self._close_dump_workspace()
     def rollback_protocol(self, protocol: ProtocolRefresh) -> None:
         try:
@@ -1054,6 +1597,7 @@ pg_restore --list "$path" >/dev/null"""
             self._protocol_baseline_family = None
             self._protocol_baseline_rubric = None
             self._target_rows_before = {}
+            self._protocol_written_factor_ids = set()
             self._close_dump_workspace()
 
     def _branch(self, protocol: ProtocolRefresh) -> str:

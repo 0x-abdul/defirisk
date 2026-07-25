@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
-from .contracts import ProtocolRefresh, RefreshBatch
+from .contracts import ContractError, ProtocolRefresh, RefreshBatch
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,21 @@ class ChangePlan:
 
 
 @dataclass(frozen=True)
+class BaselineClassification:
+    family_slug: str
+    rubric_route: str
+    current_v15_rows: int
+    current_v17_rows: int
+    overlap_rows: int
+    semantic_change_rows: int
+    migration_only_rows: int
+    v17_insert_or_replace_rows: int
+    v15_retirement_rows: int
+    recovery_projection_sha256: str | None
+    legacy_history_sha256: str | None = None
+
+
+@dataclass(frozen=True)
 class ProtocolPlan:
     family_slug: str
     surface_slugs: tuple[str, ...]
@@ -32,6 +47,17 @@ class ProtocolPlan:
     changed_factors: tuple[str, ...]
     score_changed_factors: tuple[str, ...]
     changes: tuple[ChangePlan, ...]
+    rubric_route: str
+    current_v15_rows: int
+    current_v17_rows: int
+    overlap_rows: int
+    semantic_change_rows: int
+    migration_only_rows: int
+    v17_insert_or_replace_rows: int
+    v15_retirement_rows: int
+    recovery_target_rows: int
+    recovery_projection_sha256: str | None
+    legacy_history_sha256: str | None
     production_write: str
     pull_request: str
 
@@ -85,7 +111,9 @@ def _field_changes(old_value: Any, new_value: Any) -> tuple[str, ...]:
     return tuple(changed)
 
 
-def _protocol_plan(protocol: ProtocolRefresh) -> ProtocolPlan:
+def _protocol_plan(
+    protocol: ProtocolRefresh, classification: BaselineClassification
+) -> ProtocolPlan:
     changed = tuple(
         f"{change.factor_id} ({change.scope_level}:{change.target})"
         for change in protocol.changes
@@ -116,21 +144,65 @@ def _protocol_plan(protocol: ProtocolRefresh) -> ProtocolPlan:
             )
             for change in protocol.changes
         ),
+        rubric_route=classification.rubric_route,
+        current_v15_rows=classification.current_v15_rows,
+        current_v17_rows=classification.current_v17_rows,
+        overlap_rows=classification.overlap_rows,
+        semantic_change_rows=classification.semantic_change_rows,
+        migration_only_rows=classification.migration_only_rows,
+        v17_insert_or_replace_rows=classification.v17_insert_or_replace_rows,
+        v15_retirement_rows=classification.v15_retirement_rows,
+        recovery_target_rows=(
+            len(protocol.mixed_recovery.full_target_projection)
+            if protocol.mixed_recovery is not None
+            else 0
+        ),
+        recovery_projection_sha256=(
+            protocol.mixed_recovery.full_target_projection_semantic_sha256
+            if protocol.mixed_recovery is not None
+            else None
+        ),
+        legacy_history_sha256=classification.legacy_history_sha256,
         production_write=(
             "transaction: factor history + last_refreshed"
-            if protocol.outcome == "changed"
+            if protocol.outcome == "changed" or protocol.mixed_recovery is not None
             else "transaction: last_refreshed only"
         ),
         pull_request="one protocol PR" if protocol.outcome == "changed" else "none",
     )
 
 
-def build_plan(batch: RefreshBatch, operator: OperatorContext) -> BatchPlan:
+def build_plan(
+    batch: RefreshBatch,
+    operator: OperatorContext,
+    classifications: tuple[BaselineClassification, ...],
+    *,
+    allow_completed_routes: bool = False,
+) -> BatchPlan:
+    by_family = {item.family_slug: item for item in classifications}
+    expected_families = {item.family_slug for item in batch.protocols}
+    if len(by_family) != len(classifications) or set(by_family) != expected_families:
+        raise ContractError(
+            "baseline classifications must contain exactly one entry per protocol"
+        )
+    completed_routes = {
+        item.rubric_route
+        for item in classifications
+        if item.rubric_route.endswith("_complete")
+    }
+    if completed_routes and not allow_completed_routes:
+        raise ContractError(
+            "completed route state cannot create a new approval plan; resume "
+            "requires the original approved pre-mutation JSON plan"
+        )
     return BatchPlan(
         batch_id=batch.batch_id,
         refresh_date=batch.refresh_date,
         rubric_version=batch.rubric_version,
-        protocols=tuple(_protocol_plan(item) for item in batch.protocols),
+        protocols=tuple(
+            _protocol_plan(item, by_family[item.family_slug])
+            for item in batch.protocols
+        ),
         operator=operator,
     )
 
@@ -172,18 +244,41 @@ def render_plan(plan: BatchPlan) -> str:
                     else f"  resulting grade: {protocol.resulting_grade}"
                 ),
                 f"  rubric version: {protocol.rubric_version}",
-                (
-                    "  rubric route: selected from the current production "
-                    "baseline at execution (v1.7.0 standard refresh; "
-                    "v1.5.0 -> v1.7.0 migration)"
-                ),
+                f"  rubric route: {protocol.rubric_route}",
                 f"  write: {protocol.production_write}",
-                f"  approved changed rows: {len(protocol.changed_factors)}",
+                f"  current v1.5.0 rows: {protocol.current_v15_rows}",
+                f"  current v1.7.0 rows: {protocol.current_v17_rows}",
+                f"  overlapping scoped rows: {protocol.overlap_rows}",
+                f"  semantic changed rows: {protocol.semantic_change_rows}",
+                f"  migration-only rows: {protocol.migration_only_rows}",
+                (
+                    "  v1.7.0 insert/replacement rows: "
+                    f"{protocol.v17_insert_or_replace_rows}"
+                ),
+                f"  v1.5.0 retirement rows: {protocol.v15_retirement_rows}",
                 f"  score changes: {len(protocol.score_changed_factors)}",
                 f"  publication: {protocol.pull_request}",
                 "  verification: target-only semantic output comparison",
             ]
         )
+        if protocol.recovery_projection_sha256 is not None:
+            lines.extend(
+                [
+                    (
+                        "  recovery target rows: "
+                        f"{protocol.recovery_target_rows}"
+                    ),
+                    (
+                        "  recovery projection sha256: "
+                        f"{protocol.recovery_projection_sha256}"
+                    ),
+                ]
+            )
+        if protocol.legacy_history_sha256 is not None:
+            lines.append(
+                "  legacy history sha256: "
+                f"{protocol.legacy_history_sha256}"
+            )
         if protocol.score_changed_factors:
             lines.append(
                 "  row details: attached public-safe refresh.json change set"
