@@ -28,6 +28,8 @@ from .contracts import (
     ContractError,
     ProtocolRefresh,
     RefreshBatch,
+    validate_factor_sources,
+    validate_public_material,
 )
 from .execution import BatchState, ProtocolState, is_already_applied
 
@@ -569,19 +571,26 @@ pg_restore --list "$path" >/dev/null"""
         if category_row is None:
             raise ContractError(f"factor metadata is missing: {change.factor_id}")
         cur.execute(
-            """SELECT s.source_type::text, s.url, s.reference,
+            """SELECT s.source_type::text, s.url, s.reference, s.title,
                       s.retrieved_at::date::text, s.notes
                FROM factor_score_sources fss
                JOIN sources s ON s.id=fss.source_id
                WHERE fss.factor_score_id=%s
-               ORDER BY 1,2,3,4,5""",
+               ORDER BY 1,2,3,4,5,6""",
             (old_id,),
         )
         sources = [
             {
                 key_name: value
                 for key_name, value in zip(
-                    ("source_type", "url", "reference", "retrieved_at", "notes"),
+                    (
+                        "source_type",
+                        "url",
+                        "reference",
+                        "title",
+                        "retrieved_at",
+                        "notes",
+                    ),
                     source,
                     strict=True,
                 )
@@ -613,6 +622,23 @@ pg_restore --list "$path" >/dev/null"""
                     "deployment_key": deployment_key,
                 }
             )
+        if change.historical_old_remediation is not None:
+            try:
+                validate_factor_sources(
+                    actual,
+                    f"production old row for {change.factor_id}",
+                )
+                validate_public_material(
+                    actual,
+                    f"production old row for {change.factor_id}",
+                )
+            except ContractError:
+                pass
+            else:
+                raise ContractError(
+                    "historical old remediation is unnecessary because the "
+                    f"production old row is already public-safe: {change.factor_id}"
+                )
         expected = change.old_value
         annotation_fields = {
             "migration_change_reason",
@@ -1079,6 +1105,28 @@ pg_restore --list "$path" >/dev/null"""
         self._publication_trigger_slug = family_slug
 
     def _public_record(self, protocol: ProtocolRefresh) -> dict[str, Any]:
+        def public_change(change: Any) -> dict[str, Any]:
+            record = {
+                "factor_id": change.factor_id,
+                "scope_level": change.scope_level,
+                "target": change.target,
+                "old_value": change.old_value,
+                "new_value": change.new_value,
+                "evidence": [
+                    {"url": evidence.url, "title": evidence.title}
+                    if evidence.title
+                    else {"url": evidence.url}
+                    for evidence in change.evidence
+                ],
+                "resulting_score": change.resulting_score,
+                "resulting_grade": change.resulting_grade,
+            }
+            if change.historical_old_remediation is not None:
+                record["historical_old_remediation"] = dict(
+                    change.historical_old_remediation
+                )
+            return record
+
         return {
             "schema_version": "lean-protocol-refresh/v1",
             "batch_id": self.batch.batch_id,
@@ -1099,24 +1147,7 @@ pg_restore --list "$path" >/dev/null"""
                     "previous_grade": protocol.previous_grade,
                     "last_refreshed": protocol.last_refreshed,
                     "resulting_grade": protocol.resulting_grade,
-                    "changes": [
-                        {
-                            "factor_id": change.factor_id,
-                            "scope_level": change.scope_level,
-                            "target": change.target,
-                            "old_value": change.old_value,
-                            "new_value": change.new_value,
-                            "evidence": [
-                                {"url": evidence.url, "title": evidence.title}
-                                if evidence.title
-                                else {"url": evidence.url}
-                                for evidence in change.evidence
-                            ],
-                            "resulting_score": change.resulting_score,
-                            "resulting_grade": change.resulting_grade,
-                        }
-                        for change in protocol.changes
-                    ],
+                    "changes": [public_change(change) for change in protocol.changes],
                 }
             ],
         }

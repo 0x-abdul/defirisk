@@ -18,6 +18,17 @@ from urllib.parse import urlparse
 
 
 SCHEMA_VERSION = "lean-protocol-refresh/v1"
+HISTORICAL_OLD_REMEDIATION_SCHEMA = (
+    "lean-protocol-refresh/historical-old-remediation/v1"
+)
+HISTORICAL_UNAVAILABLE_SUMMARY = (
+    "No public-safe evidence can substantiate the retained historical score; "
+    "it is shown only as immutable baseline state."
+)
+HISTORICAL_UNAVAILABLE_EXPLANATION = (
+    "The retained score is immutable historical state and is not presented "
+    "as a publicly substantiated claim."
+)
 RUBRIC_VERSION = "v1.7.0"
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 FACTOR_RE = re.compile(r"^RD-F-[0-9]{3}$")
@@ -92,6 +103,7 @@ class FactorChange:
     evidence: tuple[Evidence, ...]
     resulting_score: str
     resulting_grade: str
+    historical_old_remediation: Mapping[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -163,10 +175,14 @@ def _slug(value: Any, label: str) -> str:
 def _public_url(value: Any, label: str) -> str:
     if not isinstance(value, str):
         raise ContractError(f"{label} must be a public HTTP(S) URL")
-    parsed = urlparse(value.strip())
-    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+    try:
+        parsed = urlparse(value.strip())
+        hostname_value = parsed.hostname
+    except ValueError as exc:
+        raise ContractError(f"{label} must be a public HTTP(S) URL") from exc
+    if parsed.scheme not in {"http", "https"} or not hostname_value:
         raise ContractError(f"{label} must be a public HTTP(S) URL")
-    hostname = parsed.hostname.lower()
+    hostname = hostname_value.lower()
     try:
         address = ipaddress.ip_address(hostname)
     except ValueError:
@@ -281,9 +297,13 @@ def _reject_unsafe_material(value: Any, label: str = "change set") -> None:
         or "raw.githubusercontent.com/0x-abdul/defirisk-internal" in lowered
     ):
         raise ContractError(f"{label} contains a private repository reference")
-    parsed_text = urlparse(text)
+    try:
+        parsed_text = urlparse(text)
+        parsed_hostname = parsed_text.hostname
+    except ValueError as exc:
+        raise ContractError(f"{label} contains a malformed URL") from exc
     is_http_url = (
-        parsed_text.scheme in {"http", "https"} and bool(parsed_text.hostname)
+        parsed_text.scheme in {"http", "https"} and bool(parsed_hostname)
     )
     without_public_urls = re.sub(
         r"https?://[^\s)>\"',;]+", "", lowered, flags=re.IGNORECASE
@@ -335,6 +355,11 @@ def _reject_unsafe_material(value: Any, label: str = "change set") -> None:
         raise ContractError(f"{label} contains an internal reference or local path")
     for match in re.findall(r"https?://[^\s)>\"']+", text, flags=re.IGNORECASE):
         _public_url(match.rstrip(".,;"), label)
+
+
+def validate_public_material(value: Any, label: str = "public material") -> None:
+    """Apply the portable handoff's recursive public-safety boundary."""
+    _reject_unsafe_material(value, label)
 
 
 def _source_type(value: Mapping[str, Any], label: str) -> str:
@@ -524,6 +549,8 @@ def _change(
         if target not in deployment_targets:
             raise ContractError(f"{label}.target is outside the approved deployments")
 
+    historical_old_remediation = value.pop("historical_old_remediation", None)
+
     # The internal exporter retains complete public-safe old/new factor rows.
     # Their sources are validated here and the semantic values remain intact.
     if "old" in value or "new" in value:
@@ -541,6 +568,13 @@ def _change(
             if not isinstance(row_sources, list):
                 raise ContractError(f"{label}.{row_name}.sources must be an array")
             sources.extend(row_sources)
+        if isinstance(historical_old_remediation, dict):
+            remediation_sources = historical_old_remediation.get("sources", [])
+            if not isinstance(remediation_sources, list):
+                raise ContractError(
+                    f"{label}.historical_old_remediation.sources must be an array"
+                )
+            sources.extend(remediation_sources)
         if (
             value.get("resulting_score") not in {"not_assessed", "not_applicable"}
             and not new_row.get("sources")
@@ -568,6 +602,91 @@ def _change(
         or factor_id not in CANONICAL_FACTOR_IDS
     ):
         raise ContractError(f"{label}.factor_id is invalid")
+    unavailable_historical_evidence = False
+    if historical_old_remediation is not None:
+        remediation_label = f"{label}.historical_old_remediation"
+        if not isinstance(historical_old_remediation, dict):
+            raise ContractError(f"{remediation_label} must be an object")
+        _exact_fields(
+            historical_old_remediation,
+            {
+                "schema_version",
+                "mode",
+                "specialist",
+                "baseline_fragment_semantic_sha256",
+                "baseline_row_semantic_sha256",
+                "explanation",
+                "evidence_summary",
+                "evidence_detail",
+                "notes",
+                "sources",
+            },
+            remediation_label,
+        )
+        if (
+            historical_old_remediation["schema_version"]
+            != HISTORICAL_OLD_REMEDIATION_SCHEMA
+        ):
+            raise ContractError(f"{remediation_label}.schema_version is invalid")
+        mode = historical_old_remediation["mode"]
+        if mode not in {"public_evidence", "historical_evidence_unavailable"}:
+            raise ContractError(f"{remediation_label}.mode is invalid")
+        specialist = historical_old_remediation["specialist"]
+        if (
+            not isinstance(specialist, str)
+            or not re.fullmatch(r"[a-z0-9][a-z0-9-]*", specialist)
+        ):
+            raise ContractError(f"{remediation_label}.specialist is invalid")
+        for field in (
+            "baseline_fragment_semantic_sha256",
+            "baseline_row_semantic_sha256",
+        ):
+            if not isinstance(historical_old_remediation[field], str) or not re.fullmatch(
+                r"[0-9a-f]{64}", historical_old_remediation[field]
+            ):
+                raise ContractError(f"{remediation_label}.{field} is invalid")
+        explanation = historical_old_remediation["explanation"]
+        if not isinstance(explanation, str) or not explanation.strip():
+            raise ContractError(f"{remediation_label}.explanation is required")
+        _reject_unsafe_material(explanation, f"{remediation_label}.explanation")
+        unavailable_historical_evidence = mode == "historical_evidence_unavailable"
+        evidence_summary = historical_old_remediation["evidence_summary"]
+        evidence_detail = historical_old_remediation["evidence_detail"]
+        notes = historical_old_remediation["notes"]
+        remediation_sources = historical_old_remediation["sources"]
+        if not isinstance(evidence_summary, str) or not evidence_summary.strip():
+            raise ContractError(f"{remediation_label}.evidence_summary is required")
+        for field, field_value in (
+            ("evidence_detail", evidence_detail),
+            ("notes", notes),
+        ):
+            if field_value is not None and (
+                not isinstance(field_value, str) or not field_value.strip()
+            ):
+                raise ContractError(
+                    f"{remediation_label}.{field} must be null or non-empty text"
+                )
+        old_value_for_remediation = value.get("old_value")
+        if not isinstance(old_value_for_remediation, dict):
+            raise ContractError(
+                f"{label}.old_value must be a complete factor row"
+            )
+        remediation_row = {
+            "factor_id": factor_id,
+            "score": old_value_for_remediation.get("score"),
+            "sources": remediation_sources,
+        }
+        if mode == "public_evidence":
+            validate_factor_sources(remediation_row, remediation_label)
+            if not any(
+                source_has_genuine_public_http(source)
+                for source in remediation_sources
+            ):
+                raise ContractError(
+                    f"{remediation_label}.sources must include genuine public "
+                    "HTTP(S) evidence for public_evidence mode"
+                )
+
     for row_name in ("old_value", "new_value"):
         row = value[row_name]
         if not isinstance(row, dict):
@@ -588,7 +707,25 @@ def _change(
             raise ContractError(f"{label}.{row_name}.factor_id differs from wrapper")
         if row["score"] not in SCORES:
             raise ContractError(f"{label}.{row_name}.score is invalid")
-        validate_factor_sources(row, f"{label}.{row_name}")
+        if row_name == "old_value" and historical_old_remediation is not None:
+            if row.get("sources") != []:
+                raise ContractError(
+                    f"{label}.old_value.sources must be empty for an honest "
+                    "historical evidence unavailable disposition"
+                )
+            if unavailable_historical_evidence and (
+                evidence_summary != HISTORICAL_UNAVAILABLE_SUMMARY
+                or evidence_detail is not None
+                or notes is not None
+                or explanation != HISTORICAL_UNAVAILABLE_EXPLANATION
+                or remediation_sources != []
+            ):
+                raise ContractError(
+                    f"{label}.historical_old_remediation must use the canonical "
+                    "no-claim historical disposition text"
+                )
+        else:
+            validate_factor_sources(row, f"{label}.{row_name}")
         row_scope = row.get("scope_level") or row.get("scope")
         if row_scope is not None and row_scope != scope_level:
             raise ContractError(f"{label}.{row_name}.scope_level differs from wrapper")
@@ -641,6 +778,7 @@ def _change(
         evidence=evidence,
         resulting_score=score,
         resulting_grade=grade,
+        historical_old_remediation=historical_old_remediation,
     )
 
 

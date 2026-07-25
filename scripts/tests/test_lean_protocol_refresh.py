@@ -906,6 +906,56 @@ def test_load_change_set_enforces_source_boundary(
         load_change_set(unsafe_path)
 
 
+@pytest.mark.parametrize("historical_score", ["yellow", "not_assessed", "not_applicable"])
+def test_load_change_set_accepts_hash_bound_historical_disposition(
+    tmp_path: Path,
+    historical_score: str,
+) -> None:
+    document = change_set()
+    change = document["protocols"][0]["changes"][0]
+    change["old_value"] = {
+        "factor_id": "RD-F-001",
+        "scope_level": "surface",
+        "surface_slug": "default",
+        "score": historical_score,
+        "collection_mode": "manual",
+        "gap_reason": None,
+        "sources": [],
+    }
+    change["historical_old_remediation"] = {
+        "schema_version": "lean-protocol-refresh/historical-old-remediation/v1",
+        "mode": "historical_evidence_unavailable",
+        "specialist": "code-security-analyst",
+        "baseline_fragment_semantic_sha256": "1" * 64,
+        "baseline_row_semantic_sha256": "2" * 64,
+        "explanation": (
+            "The retained score is immutable historical state and is not "
+            "presented as a publicly substantiated claim."
+        ),
+        "evidence_summary": (
+            "No public-safe evidence can substantiate the retained historical "
+            "score; it is shown only as immutable baseline state."
+        ),
+        "evidence_detail": None,
+        "notes": None,
+        "sources": [],
+    }
+    path = tmp_path / "remediated.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    parsed = load_change_set(path)
+    assert (
+        parsed.protocols[0].changes[0].historical_old_remediation["mode"]
+        == "historical_evidence_unavailable"
+    )
+    if historical_score in {"not_assessed", "not_applicable"}:
+        remediation = change["historical_old_remediation"]
+        remediation["mode"] = "public_evidence"
+        remediation["explanation"] = "The historical row was reviewed."
+        remediation["evidence_summary"] = "Public evidence was reviewed."
+        with pytest.raises(ContractError, match="public_evidence mode"):
+            validate_change_set(document)
+
+
 def test_sparse_same_rubric_fixture_remains_accepted() -> None:
     sparse = validate_change_set(change_set())
     assert len(sparse.protocols[0].changes) == 1

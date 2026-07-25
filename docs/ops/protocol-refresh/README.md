@@ -15,6 +15,20 @@ source. A URL-less `curator_note` or `commit_sha` may be retained only as
 auxiliary context; `curator_note` and `partner_feed` cannot independently
 support a graded claim. URL-dependent source types require an explicit valid
 public HTTP(S) `url`.
+
+An immutable old row may instead carry the exact
+`lean-protocol-refresh/historical-old-remediation/v1` metadata emitted by Task
+A. Task A is the authority that binds the specialist and baseline hashes to the
+immutable prepared row. The portable parser validates the metadata shape,
+reviewed public evidence, or canonical `historical_evidence_unavailable`
+no-claim disposition. Before a production write, Task B reconstructs the
+retained database row and rejects the remediation as unnecessary when that row
+is already public-safe. The disposition permits an empty source list only for
+the projected old baseline row; it does not excuse a current or new graded row
+from the public-evidence requirement. Task B preserves the metadata in the
+public change record without changing the production baseline comparison,
+retained score, or factor history.
+
 The topology contract must say `preserve`; Task B cannot add, remove, rename,
 merge, or split families, surfaces, or deployments.
 
