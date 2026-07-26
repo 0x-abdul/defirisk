@@ -104,11 +104,14 @@ transaction before any write.
 For route-changing work, the transaction verifies the exact current v1.5.0
 row/source ledger bound by the approved legacy-history hash. It records that
 same ledger atomically in `change_log` as opaque per-row hashes when the rows
-are retired. Raw row and source identifiers are not exposed by the audit
-entry. This narrow binding lets a later publication-only resume distinguish
-the approved retirements from older retained v1.5.0 history that may already
-point to a current v1.7.0 successor. It is not a new approval input or
-executable receipt, and it never replaces the unchanged approved plan.
+are retired. For mixed recovery, the same audit entry binds the exact written
+factor IDs and opaque semantic hashes of pre-existing v1.7.0 rows preserved by
+`prefer_target_then_source`. Raw row and source identifiers are not exposed by
+the audit entry. This narrow binding lets a later publication-only resume
+distinguish the approved retirements from older retained v1.5.0 history and
+prove that untouched target-rubric rows did not drift. It is not a new approval
+input or executable receipt, and it never replaces the unchanged approved
+plan.
 
 For `standard_v17`, the runner verifies every selected, plan-bound old row,
 applies only the changed subset, and composes and compares the complete 184-row
@@ -205,8 +208,9 @@ confirmation. The lean runner then enforces this sequence:
    advisory-locked transaction and require the route, scoped keys, counts, and
    projection hash to match the approved plan. Prefer v1.7.0 on overlap, insert
    missing and replacement v1.7.0 rows only from the bound full target
-   projection, retain every v1.5.0 row and source join as history, retire every
-   current v1.5.0 row with `is_current=false`, and link `superseded_by` to its
+   projection, preserve every non-written pre-existing v1.7.0 row byte-for-byte,
+   retain every v1.5.0 row and source join as history, retire every current
+   v1.5.0 row with `is_current=false`, and link `superseded_by` to its
    final matched current v1.7.0 row. Recovery and refresh are one atomic
    transaction.
 4. Compose and dump to temporary output, then compare only the target protocol's

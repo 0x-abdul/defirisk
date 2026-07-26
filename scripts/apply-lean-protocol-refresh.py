@@ -18,7 +18,10 @@ from lean_protocol_refresh import (
     load_change_set,
     render_plan,
 )
-from lean_protocol_refresh.execution import is_already_applied
+from lean_protocol_refresh.execution import (
+    is_already_applied,
+    is_completed_mixed_candidate,
+)
 
 
 OPERATIONS_SPEC_RE = re.compile(
@@ -217,7 +220,10 @@ def _validate_approved_plan_state(
                 "the exact approved plan; rerun --plan and obtain confirmation"
             )
         state = operations.read_protocol_state(protocol.family_slug)
-        if not is_already_applied(protocol, state):
+        if (
+            not is_already_applied(protocol, state)
+            and not is_completed_mixed_candidate(protocol, state)
+        ):
             raise ContractError(
                 f"{protocol.family_slug} route changed but its exact approved "
                 "final semantic state is not complete"
