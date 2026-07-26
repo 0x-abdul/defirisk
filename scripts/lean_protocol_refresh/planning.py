@@ -18,6 +18,7 @@ class ChangePlan:
     new_score: str
     resulting_grade: str
     field_changes: tuple[str, ...]
+    selected_production_old_value: Any
 
 
 @dataclass(frozen=True)
@@ -33,6 +34,10 @@ class BaselineClassification:
     v15_retirement_rows: int
     recovery_projection_sha256: str | None
     legacy_history_sha256: str | None = None
+    selected_production_baseline_sha256: str | None = None
+    selected_change_old_values: tuple[
+        tuple[str, str, str, Any], ...
+    ] = ()
 
 
 @dataclass(frozen=True)
@@ -58,6 +63,7 @@ class ProtocolPlan:
     recovery_target_rows: int
     recovery_projection_sha256: str | None
     legacy_history_sha256: str | None
+    selected_production_baseline_sha256: str
     production_write: str
     pull_request: str
 
@@ -114,6 +120,16 @@ def _field_changes(old_value: Any, new_value: Any) -> tuple[str, ...]:
 def _protocol_plan(
     protocol: ProtocolRefresh, classification: BaselineClassification
 ) -> ProtocolPlan:
+    selected_old_values = {
+        (scope_level, target, factor_id): value
+        for scope_level, target, factor_id, value
+        in classification.selected_change_old_values
+    }
+    if classification.selected_production_baseline_sha256 is None:
+        raise ContractError(
+            f"{protocol.family_slug} classification is missing the selected "
+            "production baseline binding"
+        )
     changed = tuple(
         f"{change.factor_id} ({change.scope_level}:{change.target})"
         for change in protocol.changes
@@ -137,10 +153,22 @@ def _protocol_plan(
                 factor_id=change.factor_id,
                 scope_level=change.scope_level,
                 target=change.target,
-                old_score=_score(change.old_value),
+                old_score=_score(
+                    selected_old_values[
+                        (change.scope_level, change.target, change.factor_id)
+                    ]
+                ),
                 new_score=_score(change.new_value),
                 resulting_grade=change.resulting_grade,
-                field_changes=_field_changes(change.old_value, change.new_value),
+                field_changes=_field_changes(
+                    selected_old_values[
+                        (change.scope_level, change.target, change.factor_id)
+                    ],
+                    change.new_value,
+                ),
+                selected_production_old_value=selected_old_values[
+                    (change.scope_level, change.target, change.factor_id)
+                ],
             )
             for change in protocol.changes
         ),
@@ -163,6 +191,9 @@ def _protocol_plan(
             else None
         ),
         legacy_history_sha256=classification.legacy_history_sha256,
+        selected_production_baseline_sha256=(
+            classification.selected_production_baseline_sha256
+        ),
         production_write=(
             "transaction: factor history + last_refreshed"
             if protocol.outcome == "changed" or protocol.mixed_recovery is not None
@@ -256,6 +287,10 @@ def render_plan(plan: BatchPlan) -> str:
                     f"{protocol.v17_insert_or_replace_rows}"
                 ),
                 f"  v1.5.0 retirement rows: {protocol.v15_retirement_rows}",
+                (
+                    "  selected production baseline sha256: "
+                    f"{protocol.selected_production_baseline_sha256}"
+                ),
                 f"  score changes: {len(protocol.score_changed_factors)}",
                 f"  publication: {protocol.pull_request}",
                 "  verification: target-only semantic output comparison",

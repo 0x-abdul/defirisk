@@ -52,6 +52,7 @@ class ApplyReport:
     deployment_completed: bool
     live_verified: bool
     batch_error: str | None = None
+    publication_pending: bool = False
 
 
 @runtime_checkable
@@ -222,7 +223,12 @@ def is_already_applied(protocol: ProtocolRefresh, state: ProtocolState) -> bool:
     return all(actual.get(key) == value for key, value in expected.items())
 
 
-def apply_batch(batch: RefreshBatch, operations: BatchOperations) -> ApplyReport:
+def apply_batch(
+    batch: RefreshBatch,
+    operations: BatchOperations,
+    *,
+    stop_before_publication: bool = False,
+) -> ApplyReport:
     """Apply independent protocol transactions after one batch backup check.
 
     A protocol failure is reported and isolated. Remaining protocols still run.
@@ -281,6 +287,17 @@ def apply_batch(batch: RefreshBatch, operations: BatchOperations) -> ApplyReport
             results.append(ProtocolResult(protocol.family_slug, "failed", str(exc)))
             continue
         results.append(ProtocolResult(protocol.family_slug, "applied", "verified"))
+
+    if stop_before_publication:
+        return ApplyReport(
+            batch.batch_id,
+            True,
+            tuple(results),
+            False,
+            False,
+            None,
+            any(item.status in {"applied", "skipped"} for item in results),
+        )
 
     # Publication resumes independently from database application. A changed
     # protocol that was already applied still continues its existing PR.

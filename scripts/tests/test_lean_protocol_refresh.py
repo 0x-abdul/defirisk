@@ -75,6 +75,17 @@ def classifications(batch, route: str = "standard_v17"):
                 if protocol.mixed_recovery is not None
                 else None
             ),
+            None,
+            hashlib.sha256(protocol.family_slug.encode("utf-8")).hexdigest(),
+            tuple(
+                (
+                    change.scope_level,
+                    change.target,
+                    change.factor_id,
+                    change.old_value,
+                )
+                for change in protocol.changes
+            ),
         )
         for protocol in batch.protocols
     )
@@ -750,6 +761,24 @@ def test_resume_after_deploy_skips_second_deployment() -> None:
     assert report.live_verified
     assert not any(call[0] == "deploy" for call in operations.calls)
     assert sum(call[0] == "live" for call in operations.calls) == 1
+
+
+def test_apply_can_stop_after_database_before_any_publication() -> None:
+    batch = validate_change_set(change_set(second=True))
+    operations = FakeOperations()
+
+    report = apply_batch(
+        batch,
+        operations,
+        stop_before_publication=True,
+    )
+
+    assert report.publication_pending
+    assert all(item.status == "applied" for item in report.results)
+    assert not any(
+        call[0] in {"trigger", "pr", "merge", "batch-state", "deploy", "live"}
+        for call in operations.calls
+    )
 
 
 def test_scalar_factor_values_are_rejected() -> None:
@@ -1487,6 +1516,50 @@ def test_valid_json_plan_round_trip_applies(
     assert ("backup", batch.batch_id) in operations.calls
 
 
+def test_standard_route_resume_accepts_exact_completed_state_with_new_hash() -> None:
+    runner = _runner_module()
+    batch = validate_change_set(change_set())
+    context = operator_context()
+    approved = runner._json_plan(
+        build_plan(batch, context, classifications(batch))
+    )
+    completed_classification = replace(
+        classifications(batch)[0],
+        selected_production_baseline_sha256="f" * 64,
+    )
+    current = runner._json_plan(
+        build_plan(
+            batch,
+            context,
+            (completed_classification,),
+            allow_completed_routes=True,
+        )
+    )
+    protocol = batch.protocols[0]
+    operations = FakeOperations(
+        states={
+            protocol.family_slug: ProtocolState(
+                family_slug=protocol.family_slug,
+                surface_slugs=protocol.surface_slugs,
+                last_refreshed=protocol.last_refreshed,
+                deployment_targets=protocol.deployment_targets,
+                applied_changes=complete_applied_rows(protocol),
+                resulting_grade=protocol.resulting_grade,
+                rubric_version=protocol.rubric_version,
+            )
+        }
+    )
+
+    runner._validate_approved_plan_state(
+        batch,
+        operations,
+        approved,
+        current,
+    )
+
+    assert ("resume", protocol.family_slug) in operations.calls
+
+
 def test_partial_batch_resume_accepts_completed_mixed_route(
     tmp_path: Path,
 ) -> None:
@@ -1539,6 +1612,8 @@ def test_partial_batch_resume_accepts_completed_mixed_route(
                     0,
                     mixed.mixed_recovery.full_target_projection_semantic_sha256,
                     legacy_hash,
+                    "f" * 64,
+                    classifications(received_batch)[0].selected_change_old_values,
                 ),
                 classifications(received_batch)[1],
             )
@@ -1594,6 +1669,16 @@ def test_resume_accepts_completed_full_v15_migration(
         184,
         None,
         legacy_hash,
+        "a" * 64,
+        tuple(
+            (
+                change.scope_level,
+                change.target,
+                change.factor_id,
+                change.old_value,
+            )
+            for change in protocol.changes
+        ),
     )
     approved_plan = tmp_path / "approved-plan.json"
     approved_plan.write_text(
@@ -1630,6 +1715,8 @@ def test_resume_accepts_completed_full_v15_migration(
                     0,
                     None,
                     legacy_hash,
+                    "c" * 64,
+                    approved_classification.selected_change_old_values,
                 ),
             )
 

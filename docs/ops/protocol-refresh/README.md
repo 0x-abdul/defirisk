@@ -21,13 +21,15 @@ An immutable old row may instead carry the exact
 A. Task A is the authority that binds the specialist and baseline hashes to the
 immutable prepared row. The portable parser validates the metadata shape,
 reviewed public evidence, or canonical `historical_evidence_unavailable`
-no-claim disposition. Before a production write, Task B reconstructs the
-retained database row and rejects the remediation as unnecessary when that row
-is already public-safe. The disposition permits an empty source list only for
-the projected old baseline row; it does not excuse a current or new graded row
-from the public-evidence requirement. Task B preserves the metadata in the
-public change record without changing the production baseline comparison,
-retained score, or factor history.
+no-claim disposition. Before a production write, Task B reconstructs and
+semantically binds the retained database row. A conservative, hash-bound
+disposition remains valid when stored legacy text happens to pass current
+syntactic checks; it must not be discarded merely because that text or its
+locator is structurally public-safe. The disposition permits an empty source
+list only for the projected old baseline row; it does not excuse a current or
+new graded row from the public-evidence requirement. Task B preserves the
+metadata in the public change record without changing the retained score or
+factor history.
 
 The topology contract must say `preserve`; Task B cannot add, remove, rename,
 merge, or split families, surfaces, or deployments.
@@ -81,9 +83,28 @@ hash of the v1.5.0 row/source-join identities for route-changing work; and
 resulting grade. A generic statement that the route will be selected later at
 execution is not an exact confirmation envelope.
 
-For `standard_v17`, the runner verifies every supplied old row, applies only
-the changed subset, and composes and compares the complete 184-row output. The
-preserved `full_v15_migration` route applies its complete migration document.
+Every route also binds the complete selected production baseline with
+`selected_production_baseline_sha256`. For mixed recovery, selection follows
+`prefer_target_then_source`; ordinary routes select their sole supported
+rubric. The hash covers all 184 scoped current rows and their stored semantic
+source identities. Each changed row in the plan carries the public-safe
+selected production old value that will be used in the public change record.
+When a stored selected row itself cannot cross the public-source boundary, Task
+B may retain the already accepted Task A public old-row evidence for that exact
+factor and scope while rebinding the production identity and retained score.
+This does not change the Task A new-row adjudication or manufacture evidence.
+Rows with historical remediation retain the exact Task A disposition metadata.
+Their selected old-value projection is rebuilt from production with only
+factor, scope, target, category, retained score, and an empty source list; the
+opaque full-baseline hash still binds all stored production semantics. Task B
+does not re-expose or require equality with omitted legacy claim text or source
+locators. It recomputes this binding inside the serializable, advisory-locked
+transaction before any write.
+
+For `standard_v17`, the runner verifies every selected, plan-bound old row,
+applies only the changed subset, and composes and compares the complete 184-row
+output. The preserved `full_v15_migration` route applies its complete migration
+document.
 Route selection is deterministic and remains inside the single exact Task B
 batch confirmation; it adds no reviewer, receipt, or governance step.
 
@@ -144,6 +165,13 @@ python scripts/apply-lean-protocol-refresh.py <public-change-set.json> `
   --apply --approved-plan <confirmed-plan.json> `
   --operations <reviewed-module>:<factory>
 ```
+
+To enforce a separate publication gate, add `--stop-before-publication`.
+The runner then completes only the backup and serial, verified production
+database transactions and returns with `publication_pending: true` before any
+protocol branch, push, pull request, merge, deployment, or live verification.
+Resuming later with the same approved plan recognizes exact completed protocol
+state and continues publication without replaying a completed database write.
 
 The adapter must implement the narrow `BatchOperations` interface in
 `scripts/lean_protocol_refresh/execution.py`, including semantic protocol,
