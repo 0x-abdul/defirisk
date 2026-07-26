@@ -519,6 +519,41 @@ def test_mixed_resume_validation_prevents_legacy_state_bypass() -> None:
     assert ("begin", protocol.family_slug) not in operations.calls
 
 
+def test_mixed_resume_delegates_preserved_target_state_to_adapter() -> None:
+    batch = validate_change_set(mixed_recovery_change_set())
+    protocol = batch.protocols[0]
+    applied = list(complete_applied_rows(protocol))
+    key, value = applied[0]
+    applied[0] = (
+        key,
+        {
+            **value,
+            "evidence_summary": "Newer selected production v1.7 evidence.",
+        },
+    )
+    state = ProtocolState(
+        family_slug=protocol.family_slug,
+        surface_slugs=protocol.surface_slugs,
+        last_refreshed=protocol.last_refreshed,
+        deployment_targets=protocol.deployment_targets,
+        applied_changes=tuple(applied),
+        resulting_grade=protocol.resulting_grade,
+        rubric_version=protocol.rubric_version,
+    )
+    assert not is_already_applied(protocol, state)
+    operations = FakeOperations(states={protocol.family_slug: state})
+
+    report = apply_batch(
+        batch,
+        operations,
+        stop_before_publication=True,
+    )
+
+    assert report.results[0].status == "skipped"
+    assert ("resume", protocol.family_slug) in operations.calls
+    assert ("begin", protocol.family_slug) not in operations.calls
+
+
 def test_failure_rolls_back_only_failed_protocol_and_continues() -> None:
     document = change_set(second=True)
     document["protocols"].reverse()
@@ -1586,12 +1621,22 @@ def test_partial_batch_resume_accepts_completed_mixed_route(
         encoding="utf-8",
     )
     mixed = batch.protocols[0]
+    mixed_applied = list(complete_applied_rows(mixed))
+    preserved_key, preserved_value = mixed_applied[0]
+    mixed_applied[0] = (
+        preserved_key,
+        {
+            **preserved_value,
+            "evidence_summary":
+                "Newer selected production v1.7 evidence.",
+        },
+    )
     mixed_state = ProtocolState(
         family_slug=mixed.family_slug,
         surface_slugs=mixed.surface_slugs,
         last_refreshed=mixed.last_refreshed,
         deployment_targets=mixed.deployment_targets,
-        applied_changes=complete_applied_rows(mixed),
+        applied_changes=tuple(mixed_applied),
         resulting_grade=mixed.resulting_grade,
         rubric_version=mixed.rubric_version,
     )
@@ -1636,6 +1681,8 @@ def test_partial_batch_resume_accepts_completed_mixed_route(
             args.extend([f"--{name.replace('_', '-')}", value])
 
     assert runner.main(args) == 0
+    assert not is_already_applied(mixed, mixed_state)
+    assert ("resume", mixed.family_slug) in operations.calls
     assert ("begin", mixed.family_slug) not in operations.calls
     assert ("begin", "maple") in operations.calls
 

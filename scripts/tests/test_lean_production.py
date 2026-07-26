@@ -842,6 +842,7 @@ def test_legacy_history_binding_preserves_source_join_identities_and_empty_sets(
 
 def test_mixed_resume_requires_exact_approved_legacy_history_hash(
     tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     protocol = protocol_with_mixed_recovery()
     ops = ProductionOperations(
@@ -887,6 +888,10 @@ def test_mixed_resume_requires_exact_approved_legacy_history_hash(
         approved_hash,
     )
     ops._conn = SimpleNamespace(rollback=lambda: None)
+    monkeypatch.setattr(
+        "lean_protocol_refresh.production.is_already_applied",
+        lambda *_args, **_kwargs: True,
+    )
 
     ops.validate_protocol_resume(protocol, SimpleNamespace())
     ops._baseline_classification = lambda *_args, **_kwargs: replace(
@@ -990,18 +995,13 @@ def test_precommit_verifies_only_the_selected_legacy_preimage(
         "b" * 64,
     )
     verified = []
-    prepared = []
     ops._verify_exact_legacy_rows = (
         lambda *args, **kwargs: verified.append((args, kwargs))
-    )
-    ops._record_legacy_history_binding = (
-        lambda *args, **kwargs: prepared.append((args, kwargs))
     )
 
     ops._verify_legacy_history_postcondition(protocol)
 
     assert verified and verified[0][0][1] == rows
-    assert prepared and prepared[0][0][1] == rows
 
 
 def test_legacy_history_audit_is_hash_bound_and_batch_scoped(
@@ -1023,7 +1023,13 @@ def test_legacy_history_audit_is_hash_bound_and_batch_scoped(
         rows,
         expected_count=1,
         expected_hash=approved_hash,
+        written_factor_ids={protocol.changes[0].factor_id},
+        preserved_target_rows={},
     )
+    encoded = json.dumps(payload, sort_keys=True)
+    assert payload["schema_version"] == "lean-task-b-legacy-history/v2"
+    assert "legacy-1" not in encoded
+    assert "source-1" not in encoded
     ops._conn = ResumeIntegrityConnection(((payload,),))
     checked = []
     ops._legacy_history_rows = lambda *_args, **_kwargs: rows
@@ -1679,12 +1685,48 @@ def test_mixed_output_allows_verified_reused_v17_row_metadata() -> None:
         payload,
         written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
     )
+    preserved = next(
+        row for row in rows if row["factor_id"] in reused
+    )
+    preserved["evidence_summary"] = (
+        "Newer selected production v1.7 evidence."
+    )
+    preserved["sources"] = [
+        {
+            "source_type": "url",
+            "url": "https://example.org/newer-target",
+            "reference": "Newer target evidence",
+        }
+    ]
+    baseline_snapshot = {
+        row["factor_id"]: ProductionOperations._semantic_factor_row(row)
+        for row in rows
+        if row["factor_id"] in reused
+    }
+    ProductionOperations._verify_protocol_document(
+        protocol,
+        payload,
+        unchanged_rows_before=baseline_snapshot,
+        written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
+    )
+    preserved["evidence_summary"] = "Drift after the locked snapshot."
+    with pytest.raises(ContractError, match="changed unapproved row"):
+        ProductionOperations._verify_protocol_document(
+            protocol,
+            payload,
+            unchanged_rows_before=baseline_snapshot,
+            written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
+        )
+    preserved["evidence_summary"] = (
+        "Newer selected production v1.7 evidence."
+    )
     written = next(row for row in rows if row["factor_id"] not in reused)
     written["collected_by"] = "unexpected"
     with pytest.raises(ContractError, match="collector differs"):
         ProductionOperations._verify_protocol_document(
             protocol,
             payload,
+            unchanged_rows_before=baseline_snapshot,
             written_factor_ids=set(CANONICAL_FACTOR_IDS) - reused,
         )
 
@@ -1852,6 +1894,37 @@ def test_source_identity_collision_reuses_one_row_without_global_metadata_write(
     statements = [sql for sql, _params in cursor.calls]
     assert sum("INSERT INTO sources" in sql for sql in statements) == 1
     assert sum("UPDATE sources" in sql for sql in statements) == 0
+
+
+def test_curator_note_source_preserves_null_url() -> None:
+    class Cursor:
+        def __init__(self) -> None:
+            self.calls = []
+            self.rows = [None, ("source-id",)]
+
+        def execute(self, sql, params):
+            self.calls.append((sql, params))
+
+        def fetchone(self):
+            return self.rows.pop(0)
+
+    cursor = Cursor()
+    source = {
+        "source_type": "curator_note",
+        "reference": "No public evidence available for this metric.",
+    }
+
+    assert (
+        ProductionOperations._get_or_create_source(
+            cursor, source, "2026-07-23"
+        )
+        == "source-id"
+    )
+    select_params = cursor.calls[0][1]
+    insert_params = cursor.calls[1][1]
+    assert select_params[1] is None
+    assert insert_params[1] is None
+    assert insert_params[2] == source["reference"]
 
 
 def test_remote_branch_without_pr_resumes_by_creating_pr(tmp_path: Path) -> None:

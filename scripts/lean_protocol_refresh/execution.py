@@ -223,6 +223,29 @@ def is_already_applied(protocol: ProtocolRefresh, state: ProtocolState) -> bool:
     return all(actual.get(key) == value for key, value in expected.items())
 
 
+def is_completed_mixed_candidate(
+    protocol: ProtocolRefresh, state: ProtocolState
+) -> bool:
+    """Recognize only the structural final state delegated to v2 audit checks."""
+    normalized_state = _normalized_changes(state.applied_changes)
+    return (
+        protocol.mixed_recovery is not None
+        and state.family_slug == protocol.family_slug
+        and sorted(state.surface_slugs) == sorted(protocol.surface_slugs)
+        and sorted(state.deployment_targets)
+        == sorted(protocol.deployment_targets)
+        and state.last_refreshed == protocol.last_refreshed
+        and state.resulting_grade == protocol.resulting_grade
+        and state.rubric_version == protocol.rubric_version
+        and normalized_state is not None
+        and len(normalized_state) == EXPECTED_FACTOR_COUNT
+        and {
+            key.rsplit("|", 1)[-1] for key in normalized_state
+        }
+        == CANONICAL_FACTOR_IDS
+    )
+
+
 def apply_batch(
     batch: RefreshBatch,
     operations: BatchOperations,
@@ -252,7 +275,12 @@ def apply_batch(
                 )
             )
             continue
-        if is_already_applied(protocol, state):
+        already_applied = is_already_applied(protocol, state)
+        mixed_completed_candidate = (
+            not already_applied
+            and is_completed_mixed_candidate(protocol, state)
+        )
+        if already_applied or mixed_completed_candidate:
             try:
                 operations.validate_protocol_resume(protocol, state)
             except Exception as exc:

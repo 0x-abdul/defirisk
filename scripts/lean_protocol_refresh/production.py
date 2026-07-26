@@ -375,6 +375,14 @@ pg_restore --list "$path" >/dev/null"""
                 "route-changing resume cannot verify retained v1.5.0 history, "
                 "superseded_by links, and source joins"
             )
+        if (
+            approved_route == MIXED_RECOVERY_ROUTE
+            and not is_already_applied(protocol, state)
+        ):
+            self._verify_completed_mixed_target(
+                protocol,
+                approved,
+            )
         if not self._protocol_open:
             self._connection().rollback()
 
@@ -535,10 +543,17 @@ pg_restore --list "$path" >/dev/null"""
                 Path(self._dump_workspace.name) / "before" / "api",
                 exclude_family=protocol.family_slug,
             )
-            if self._protocol_baseline_rubric == RUBRIC_VERSION:
+            if self._protocol_baseline_rubric in {
+                RUBRIC_VERSION,
+                MIXED_RECOVERY_ROUTE,
+            }:
                 self._target_rows_before = self._read_dumped_target_rows(
                     protocol,
                     Path(self._dump_workspace.name) / "before" / "api",
+                    allow_partial=(
+                        self._protocol_baseline_rubric
+                        == MIXED_RECOVERY_ROUTE
+                    ),
                 )
         except Exception:
             conn.rollback()
@@ -961,9 +976,11 @@ pg_restore --list "$path" >/dev/null"""
         *,
         expected_count: int,
         expected_hash: str,
+        written_factor_ids: set[str],
+        preserved_target_rows: Mapping[str, str],
     ) -> dict[str, Any]:
         return {
-            "schema_version": "lean-task-b-legacy-history/v1",
+            "schema_version": "lean-task-b-legacy-history/v2",
             "batch_id": self.batch.batch_id,
             "family_slug": protocol.family_slug,
             "legacy_history_sha256": expected_hash,
@@ -972,6 +989,15 @@ pg_restore --list "$path" >/dev/null"""
                 self._legacy_row_binding_hash(row)
                 for row in sorted(rows)
             ],
+            "written_factor_ids": sorted(written_factor_ids),
+            "preserved_target_row_semantic_sha256": {
+                factor_id: hashlib.sha256(
+                    semantic_row.encode("utf-8")
+                ).hexdigest()
+                for factor_id, semantic_row
+                in sorted(preserved_target_rows.items())
+                if factor_id not in written_factor_ids
+            },
         }
 
     def _record_legacy_history_binding(
@@ -981,12 +1007,16 @@ pg_restore --list "$path" >/dev/null"""
         *,
         expected_count: int,
         expected_hash: str,
+        written_factor_ids: set[str],
+        preserved_target_rows: Mapping[str, str],
     ) -> None:
         payload = self._legacy_history_audit_payload(
             protocol,
             rows,
             expected_count=expected_count,
             expected_hash=expected_hash,
+            written_factor_ids=written_factor_ids,
+            preserved_target_rows=preserved_target_rows,
         )
         entity_id = f"{self.batch.batch_id}:{protocol.family_slug}"
         with self._connection().cursor() as cur:
@@ -1017,13 +1047,9 @@ pg_restore --list "$path" >/dev/null"""
                     (entity_id, _canonical(payload)),
                 )
 
-    def _verify_recorded_legacy_history_binding(
-        self,
-        protocol: ProtocolRefresh,
-        *,
-        expected_count: int,
-        expected_hash: str,
-    ) -> bool:
+    def _read_legacy_history_audit(
+        self, protocol: ProtocolRefresh
+    ) -> Mapping[str, Any] | None:
         entity_id = f"{self.batch.batch_id}:{protocol.family_slug}"
         with self._connection().cursor() as cur:
             cur.execute(
@@ -1036,7 +1062,7 @@ pg_restore --list "$path" >/dev/null"""
             )
             records = [item[0] for item in cur.fetchall()]
         if not records:
-            return False
+            return None
         if any(item != records[0] for item in records[1:]):
             raise ContractError(
                 "legacy-history audit contains conflicting batch bindings"
@@ -1046,9 +1072,25 @@ pg_restore --list "$path" >/dev/null"""
             raise ContractError(
                 "legacy-history audit contains an invalid binding"
             )
+        return entry
+
+    def _verify_recorded_legacy_history_binding(
+        self,
+        protocol: ProtocolRefresh,
+        *,
+        expected_count: int,
+        expected_hash: str,
+    ) -> bool:
+        entry = self._read_legacy_history_audit(protocol)
+        if entry is None:
+            return False
         row_bindings = entry.get("row_binding_sha256")
         if (
-            entry.get("schema_version") != "lean-task-b-legacy-history/v1"
+            entry.get("schema_version")
+            not in {
+                "lean-task-b-legacy-history/v1",
+                "lean-task-b-legacy-history/v2",
+            }
             or entry.get("batch_id") != self.batch.batch_id
             or entry.get("family_slug") != protocol.family_slug
             or entry.get("legacy_history_sha256") != expected_hash
@@ -1089,6 +1131,113 @@ pg_restore --list "$path" >/dev/null"""
             expected_hash=expected_hash,
         )
         return True
+
+    def _verify_completed_mixed_target(
+        self,
+        protocol: ProtocolRefresh,
+        approved: Mapping[str, Any],
+    ) -> None:
+        audit = self._read_legacy_history_audit(protocol)
+        if (
+            audit is None
+            or audit.get("schema_version")
+            != "lean-task-b-legacy-history/v2"
+        ):
+            raise ContractError(
+                "mixed-recovery resume with preserved target rows requires "
+                "the atomic v2 target-preservation audit"
+            )
+        written = audit.get("written_factor_ids")
+        preserved_hashes = audit.get(
+            "preserved_target_row_semantic_sha256"
+        )
+        if (
+            not isinstance(written, list)
+            or len(written) != len(set(written))
+            or not all(
+                isinstance(factor_id, str)
+                and factor_id in CANONICAL_FACTOR_IDS
+                for factor_id in written
+            )
+            or len(written)
+            != approved.get("v17_insert_or_replace_rows")
+            or not isinstance(preserved_hashes, Mapping)
+            or not all(
+                isinstance(factor_id, str)
+                and factor_id in CANONICAL_FACTOR_IDS
+                and isinstance(value, str)
+                and re.fullmatch(r"[0-9a-f]{64}", value)
+                for factor_id, value in preserved_hashes.items()
+            )
+            or set(written) & set(preserved_hashes)
+            or set(written) | set(preserved_hashes)
+            != CANONICAL_FACTOR_IDS
+            or not {
+                change.factor_id for change in protocol.changes
+            }
+            <= set(written)
+        ):
+            raise ContractError(
+                "mixed-recovery target-preservation audit differs from "
+                "the exact approved write route"
+            )
+        import dump
+
+        with tempfile.TemporaryDirectory(
+            prefix="lean-refresh-resume-"
+        ) as workspace:
+            root = Path(workspace)
+            dump.run_dump(
+                out_root=root,
+                dry_run=False,
+                connection=self._connection(),
+            )
+            payload = self._load_dumped_target(
+                protocol, root / "api"
+            )
+            document = self._protocol_document(payload)
+            rows = document.get("factor_scores")
+            if not isinstance(rows, list):
+                raise ContractError(
+                    "completed mixed-recovery output is missing factor rows"
+                )
+            actual_by_factor = {
+                str(row.get("factor_id")): row
+                for row in rows
+                if isinstance(row, Mapping)
+                and isinstance(row.get("factor_id"), str)
+            }
+            if (
+                len(rows) != EXPECTED_FACTOR_COUNT
+                or len(actual_by_factor) != EXPECTED_FACTOR_COUNT
+                or set(actual_by_factor) != CANONICAL_FACTOR_IDS
+            ):
+                raise ContractError(
+                    "completed mixed-recovery output has an invalid "
+                    "factor universe"
+                )
+            preserved_rows: dict[str, str] = {}
+            for factor_id, expected_hash in preserved_hashes.items():
+                semantic = self._semantic_factor_row(
+                    actual_by_factor[factor_id]
+                )
+                if (
+                    hashlib.sha256(
+                        semantic.encode("utf-8")
+                    ).hexdigest()
+                    != expected_hash
+                ):
+                    raise ContractError(
+                        "completed mixed-recovery preserved target row "
+                        f"drifted: {factor_id}"
+                    )
+                preserved_rows[factor_id] = semantic
+            self._verify_protocol_document(
+                protocol,
+                payload,
+                unchanged_rows_before=preserved_rows,
+                written_factor_ids=set(written),
+            )
 
     def _selected_production_binding(
         self, protocol: ProtocolRefresh
@@ -1590,7 +1739,7 @@ pg_restore --list "$path" >/dev/null"""
     def _get_or_create_source(
         cur: Any, source: Mapping[str, Any], fallback_date: str
     ) -> Any:
-        url = source.get("url") or source.get("reference")
+        url = source.get("url")
         reference = source.get("reference") or url
         if not reference:
             raise ContractError("replacement source has no public locator")
@@ -1922,6 +2071,21 @@ pg_restore --list "$path" >/dev/null"""
         for name in set(self._output_before) | set(after):
             if self._output_before.get(name) != after.get(name):
                 raise ContractError("pipeline changed unrelated semantic output")
+        planned = self._planned_classifications.get(protocol.family_slug)
+        if (
+            planned is not None
+            and planned.rubric_route
+            in {MIXED_RECOVERY_ROUTE, "full_v15_migration"}
+            and self._protocol_legacy_preimage
+        ):
+            self._record_legacy_history_binding(
+                protocol,
+                self._protocol_legacy_preimage,
+                expected_count=planned.v15_retirement_rows,
+                expected_hash=str(planned.legacy_history_sha256),
+                written_factor_ids=set(self._protocol_written_factor_ids),
+                preserved_target_rows=self._target_rows_before,
+            )
 
     def _verify_legacy_history_postcondition(
         self, protocol: ProtocolRefresh
@@ -1934,12 +2098,6 @@ pg_restore --list "$path" >/dev/null"""
             return
         if self._protocol_legacy_preimage:
             self._verify_exact_legacy_rows(
-                protocol,
-                self._protocol_legacy_preimage,
-                expected_count=planned.v15_retirement_rows,
-                expected_hash=str(planned.legacy_history_sha256),
-            )
-            self._record_legacy_history_binding(
                 protocol,
                 self._protocol_legacy_preimage,
                 expected_count=planned.v15_retirement_rows,
@@ -2036,7 +2194,17 @@ pg_restore --list "$path" >/dev/null"""
                     f"protocol output fields differ for {change.factor_id}"
                 )
             expected = change.new_value
-            if any(actual.get(field) != expected.get(field) for field in fields):
+            compare_projection = (
+                unchanged_rows_before is None
+                or change.factor_id in written_factor_ids
+            )
+            if (
+                compare_projection
+                and any(
+                    actual.get(field) != expected.get(field)
+                    for field in fields
+                )
+            ):
                 raise ContractError(
                     f"protocol output differs for {change.factor_id}"
                 )
@@ -2114,17 +2282,27 @@ pg_restore --list "$path" >/dev/null"""
                     ]
                 )
 
-            if identities(actual_sources) != identities(expected_sources):
+            if (
+                compare_projection
+                and identities(actual_sources) != identities(expected_sources)
+            ):
                 raise ContractError(
                     f"protocol output source identities differ for {change.factor_id}"
                 )
         if unchanged_rows_before is not None:
-            if set(unchanged_rows_before) != CANONICAL_FACTOR_IDS:
+            if (
+                not set(unchanged_rows_before) <= CANONICAL_FACTOR_IDS
+                or (
+                    set(unchanged_rows_before) | written_factor_ids
+                    != CANONICAL_FACTOR_IDS
+                )
+            ):
                 raise ContractError(
                     "pre-transaction target output has an invalid factor universe"
                 )
-            changed_factor_ids = {change.factor_id for change in protocol.changes}
-            for factor_id in CANONICAL_FACTOR_IDS - changed_factor_ids:
+            for factor_id in (
+                set(unchanged_rows_before) - written_factor_ids
+            ):
                 if (
                     cls._semantic_factor_row(actual_by_factor[factor_id])
                     != unchanged_rows_before[factor_id]
@@ -2181,7 +2359,11 @@ pg_restore --list "$path" >/dev/null"""
             raise ContractError("temporary target protocol document is unreadable") from exc
 
     def _read_dumped_target_rows(
-        self, protocol: ProtocolRefresh, api_root: Path
+        self,
+        protocol: ProtocolRefresh,
+        api_root: Path,
+        *,
+        allow_partial: bool = False,
     ) -> dict[str, str]:
         payload = self._load_dumped_target(protocol, api_root)
         document = self._protocol_document(payload)
@@ -2195,11 +2377,18 @@ pg_restore --list "$path" >/dev/null"""
             for row in rows
             if isinstance(row, Mapping) and isinstance(row.get("factor_id"), str)
         }
-        if (
-            len(rows) != EXPECTED_FACTOR_COUNT
-            or len(actual_by_factor) != EXPECTED_FACTOR_COUNT
-            or set(actual_by_factor) != CANONICAL_FACTOR_IDS
-        ):
+        valid_partial = (
+            allow_partial
+            and len(rows) == len(actual_by_factor)
+            and bool(actual_by_factor)
+            and set(actual_by_factor) <= CANONICAL_FACTOR_IDS
+        )
+        valid_complete = (
+            len(rows) == EXPECTED_FACTOR_COUNT
+            and len(actual_by_factor) == EXPECTED_FACTOR_COUNT
+            and set(actual_by_factor) == CANONICAL_FACTOR_IDS
+        )
+        if not valid_partial and not valid_complete:
             raise ContractError(
                 "pre-transaction target output has an invalid factor universe"
             )
@@ -2215,7 +2404,8 @@ pg_restore --list "$path" >/dev/null"""
             payload,
             unchanged_rows_before=(
                 self._target_rows_before
-                if self._protocol_baseline_rubric == RUBRIC_VERSION
+                if self._protocol_baseline_rubric
+                in {RUBRIC_VERSION, MIXED_RECOVERY_ROUTE}
                 else None
             ),
             written_factor_ids=set(self._protocol_written_factor_ids),
@@ -2237,6 +2427,11 @@ pg_restore --list "$path" >/dev/null"""
         return bool(row[0]), token
 
     def _verify_target_semantics(self, protocol: ProtocolRefresh) -> None:
+        if self._protocol_baseline_rubric == MIXED_RECOVERY_ROUTE:
+            # The complete mixed target is verified from the composed dump
+            # below.  Direct ProtocolState comparison cannot represent the
+            # approved target-first preservation of pre-existing v1.7 rows.
+            return
         state = self.read_protocol_state(protocol.family_slug)
         if not is_already_applied(protocol, state):
             raise ContractError(
