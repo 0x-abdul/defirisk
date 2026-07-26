@@ -101,6 +101,15 @@ does not re-expose or require equality with omitted legacy claim text or source
 locators. It recomputes this binding inside the serializable, advisory-locked
 transaction before any write.
 
+For route-changing work, the transaction verifies the exact current v1.5.0
+row/source ledger bound by the approved legacy-history hash. It records that
+same ledger atomically in `change_log` as opaque per-row hashes when the rows
+are retired. Raw row and source identifiers are not exposed by the audit
+entry. This narrow binding lets a later publication-only resume distinguish
+the approved retirements from older retained v1.5.0 history that may already
+point to a current v1.7.0 successor. It is not a new approval input or
+executable receipt, and it never replaces the unchanged approved plan.
+
 For `standard_v17`, the runner verifies every selected, plan-bound old row,
 applies only the changed subset, and composes and compares the complete 184-row
 output. The preserved `full_v15_migration` route applies its complete migration
@@ -186,7 +195,8 @@ confirmation. The lean runner then enforces this sequence:
    already applied only when production has the exact projected 184 current
    v1.7.0 rows, zero current v1.5.0 rows, the expected topology, grade, and
    `last_refreshed`, and the retained v1.5.0 history/source joins. This is the
-   resume mechanism; no attempt or receipt chain is needed.
+   resume mechanism; the approved plan plus its atomic hash-bound `change_log`
+   audit entry are authoritative, and no attempt or receipt chain is needed.
 3. Process protocols serially in independent transactions. Preserve historical
    factor rows, supersede only changed current rows, and always update
    `last_refreshed`. Standard v1.7.0-to-v1.7.0 refreshes may apply a sparse
