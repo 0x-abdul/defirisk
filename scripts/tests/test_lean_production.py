@@ -905,6 +905,13 @@ def test_mixed_resume_requires_exact_approved_legacy_history_hash(
         ),
         legacy_history_sha256="b" * 64,
     )
+    ops._verify_recorded_legacy_history_binding = (
+        lambda *_args, **_kwargs: True
+    )
+    ops.validate_protocol_resume(protocol, SimpleNamespace())
+    ops._verify_recorded_legacy_history_binding = (
+        lambda *_args, **_kwargs: False
+    )
     with pytest.raises(ContractError, match="retained v1.5.0 history"):
         ops.validate_protocol_resume(protocol, SimpleNamespace())
 
@@ -946,6 +953,99 @@ def test_precommit_rejects_missing_legacy_row_or_source_join(
     )
     with pytest.raises(ContractError, match="source-join identities"):
         ops._verify_legacy_history_postcondition(protocol)
+
+
+def test_precommit_verifies_only_the_selected_legacy_preimage(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    rows = (("legacy-selected", ("source-selected",)),)
+    approved_hash = ProductionOperations._legacy_rows_hash(rows)
+    assert approved_hash is not None
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+    )
+    ops._planned_classifications[protocol.family_slug] = BaselineClassification(
+        protocol.family_slug,
+        "mixed_recovery",
+        1,
+        183,
+        0,
+        len(protocol.changes),
+        0,
+        1,
+        1,
+        protocol.mixed_recovery.full_target_projection_semantic_sha256,
+        approved_hash,
+    )
+    ops._protocol_legacy_preimage = rows
+    # Older retired rows may also point at current v1.7 successors. They are
+    # outside the selected production ledger and must not enter this check.
+    ops._legacy_history_binding = lambda *_args, **_kwargs: (
+        2,
+        "b" * 64,
+    )
+    verified = []
+    prepared = []
+    ops._verify_exact_legacy_rows = (
+        lambda *args, **kwargs: verified.append((args, kwargs))
+    )
+    ops._record_legacy_history_binding = (
+        lambda *args, **kwargs: prepared.append((args, kwargs))
+    )
+
+    ops._verify_legacy_history_postcondition(protocol)
+
+    assert verified and verified[0][0][1] == rows
+    assert prepared and prepared[0][0][1] == rows
+
+
+def test_legacy_history_audit_is_hash_bound_and_batch_scoped(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    rows = (("legacy-1", ("source-1", "source-2")),)
+    approved_hash = ProductionOperations._legacy_rows_hash(rows)
+    assert approved_hash is not None
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+    )
+    payload = ops._legacy_history_audit_payload(
+        protocol,
+        rows,
+        expected_count=1,
+        expected_hash=approved_hash,
+    )
+    ops._conn = ResumeIntegrityConnection(((payload,),))
+    checked = []
+    ops._legacy_history_rows = lambda *_args, **_kwargs: rows
+    ops._verify_exact_legacy_rows = (
+        lambda *args, **kwargs: checked.append((args, kwargs))
+    )
+
+    assert ops._verify_recorded_legacy_history_binding(
+        protocol,
+        expected_count=1,
+        expected_hash=approved_hash,
+    )
+    assert checked and tuple(checked[0][0][1]) == rows
+
+    payload["batch_id"] = "other-batch"
+    ops._conn = ResumeIntegrityConnection(((payload,),))
+    with pytest.raises(ContractError, match="exact approved plan"):
+        ops._verify_recorded_legacy_history_binding(
+            protocol,
+            expected_count=1,
+            expected_hash=approved_hash,
+        )
 
 
 def test_mixed_baseline_rejects_union_gap(tmp_path: Path) -> None:

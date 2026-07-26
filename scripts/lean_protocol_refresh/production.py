@@ -124,6 +124,9 @@ class ProductionOperations:
     _selected_change_old_values: dict[
         str, dict[tuple[str, str, str], Mapping[str, Any]]
     ] = field(default_factory=dict, init=False, repr=False)
+    _protocol_legacy_preimage: tuple[
+        tuple[str, tuple[str, ...]], ...
+    ] = field(default_factory=tuple, init=False, repr=False)
 
     def __post_init__(self) -> None:
         if not self.database_url:
@@ -347,10 +350,24 @@ pg_restore --list "$path" >/dev/null"""
                 "the exact approved current v1.7.0 final state"
             )
         if (
-            classification.legacy_history_sha256
-            != approved.get("legacy_history_sha256")
-            or classification.current_v15_rows != 0
+            classification.current_v15_rows != 0
             or approved.get("v15_retirement_rows") in {None, 0}
+        ):
+            if not self._protocol_open:
+                self._connection().rollback()
+            raise ContractError(
+                "route-changing resume cannot verify retained v1.5.0 history, "
+                "superseded_by links, and source joins"
+            )
+        approved_hash = approved.get("legacy_history_sha256")
+        approved_count = approved.get("v15_retirement_rows")
+        if (
+            classification.legacy_history_sha256 != approved_hash
+            and not self._verify_recorded_legacy_history_binding(
+                protocol,
+                expected_count=int(approved_count),
+                expected_hash=str(approved_hash),
+            )
         ):
             if not self._protocol_open:
                 self._connection().rollback()
@@ -453,6 +470,7 @@ pg_restore --list "$path" >/dev/null"""
         self._protocol_baseline_rubric = None
         self._target_rows_before = {}
         self._protocol_written_factor_ids = set()
+        self._protocol_legacy_preimage = ()
         try:
             conn.execute("BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE")
             conn.execute(
@@ -486,6 +504,22 @@ pg_restore --list "$path" >/dev/null"""
                 "standard_v17": RUBRIC_VERSION,
                 "full_v15_migration": MIGRATION_BASELINE_VERSION,
             }.get(route, route)
+            if route in {MIXED_RECOVERY_ROUTE, "full_v15_migration"}:
+                self._protocol_legacy_preimage = self._legacy_history_rows(
+                    protocol, current_rows=True
+                )
+                if (
+                    len(self._protocol_legacy_preimage)
+                    != locked_classification.v15_retirement_rows
+                    or self._legacy_rows_hash(
+                        self._protocol_legacy_preimage
+                    )
+                    != locked_classification.legacy_history_sha256
+                ):
+                    raise ContractError(
+                        "locked legacy row/source ledger differs from the "
+                        "exact approved plan"
+                    )
             self._verify_topology(protocol)
             self._dump_workspace = tempfile.TemporaryDirectory(
                 prefix="lean-refresh-"
@@ -757,10 +791,10 @@ pg_restore --list "$path" >/dev/null"""
             f"(migration); found {summary}"
         )
 
-    def _legacy_history_binding(
+    def _legacy_history_rows(
         self, protocol: ProtocolRefresh, *, current_rows: bool
-    ) -> tuple[int, str | None]:
-        """Hash v1.5 row/source identities before or after route migration."""
+    ) -> tuple[tuple[str, tuple[str, ...]], ...]:
+        """Return the selected v1.5 row/source identities."""
         current_clause = "legacy.is_current=true"
         join_clause = ""
         params: tuple[Any, ...] = (
@@ -801,15 +835,260 @@ pg_restore --list "$path" >/dev/null"""
                     ORDER BY legacy.id""",
                 params,
             )
-            rows = tuple(
+            return tuple(
                 (str(row_id), tuple(str(source_id) for source_id in source_ids))
                 for row_id, source_ids in cur.fetchall()
             )
+
+    def _legacy_history_binding(
+        self, protocol: ProtocolRefresh, *, current_rows: bool
+    ) -> tuple[int, str | None]:
+        """Hash v1.5 row/source identities before or after route migration."""
+        rows = self._legacy_history_rows(protocol, current_rows=current_rows)
         if not rows:
             return 0, None
         return len(rows), hashlib.sha256(
             _canonical(rows).encode("utf-8")
         ).hexdigest()
+
+    @staticmethod
+    def _legacy_rows_hash(
+        rows: Sequence[tuple[str, Sequence[str]]],
+    ) -> str | None:
+        normalized = tuple(
+            sorted(
+                (
+                    str(row_id),
+                    tuple(str(source_id) for source_id in source_ids),
+                )
+                for row_id, source_ids in rows
+            )
+        )
+        if not normalized:
+            return None
+        return hashlib.sha256(_canonical(normalized).encode("utf-8")).hexdigest()
+
+    @staticmethod
+    def _legacy_row_binding_hash(
+        row: tuple[str, Sequence[str]],
+    ) -> str:
+        normalized = (
+            str(row[0]),
+            tuple(str(source_id) for source_id in row[1]),
+        )
+        return hashlib.sha256(
+            _canonical(normalized).encode("utf-8")
+        ).hexdigest()
+
+    def _verify_exact_legacy_rows(
+        self,
+        protocol: ProtocolRefresh,
+        rows: Sequence[tuple[str, Sequence[str]]],
+        *,
+        expected_count: int,
+        expected_hash: str,
+    ) -> None:
+        normalized = tuple(
+            sorted(
+                (
+                    str(row_id),
+                    tuple(str(source_id) for source_id in source_ids),
+                )
+                for row_id, source_ids in rows
+            )
+        )
+        if (
+            len(normalized) != expected_count
+            or self._legacy_rows_hash(normalized) != expected_hash
+        ):
+            raise ContractError(
+                "legacy-history receipt differs from the exact approved plan"
+            )
+        row_ids = [row_id for row_id, _source_ids in normalized]
+        with self._connection().cursor() as cur:
+            cur.execute(
+                """SELECT legacy.id::text,
+                          COALESCE(array_agg(fss.source_id::text
+                            ORDER BY fss.source_id)
+                            FILTER (WHERE fss.source_id IS NOT NULL),
+                            ARRAY[]::text[])
+                   FROM factor_scores legacy
+                   JOIN factor_scores target
+                     ON target.id=legacy.superseded_by
+                    AND target.protocol_slug=legacy.protocol_slug
+                    AND target.rubric_version=%s
+                    AND target.is_current=true
+                    AND target.factor_id=legacy.factor_id
+                    AND target.scope_level=legacy.scope_level
+                    AND COALESCE(target.family_slug, '')=
+                        COALESCE(legacy.family_slug, '')
+                    AND COALESCE(target.surface_id::text, '')=
+                        COALESCE(legacy.surface_id::text, '')
+                    AND COALESCE(target.deployment_id::text, '')=
+                        COALESCE(legacy.deployment_id::text, '')
+                   LEFT JOIN factor_score_sources fss
+                     ON fss.factor_score_id=legacy.id
+                   WHERE legacy.protocol_slug=%s
+                     AND legacy.rubric_version=%s
+                     AND legacy.is_current=false
+                     AND legacy.id::text=ANY(%s)
+                   GROUP BY legacy.id
+                   ORDER BY legacy.id""",
+                (
+                    RUBRIC_VERSION,
+                    protocol.family_slug,
+                    MIGRATION_BASELINE_VERSION,
+                    row_ids,
+                ),
+            )
+            actual = tuple(
+                (
+                    str(row_id),
+                    tuple(str(source_id) for source_id in source_ids),
+                )
+                for row_id, source_ids in cur.fetchall()
+            )
+        if actual != normalized:
+            raise ContractError(
+                "retained v1.5.0 rows, successor links, or source joins "
+                "differ from the exact approved legacy ledger"
+            )
+
+    def _legacy_history_audit_payload(
+        self,
+        protocol: ProtocolRefresh,
+        rows: Sequence[tuple[str, Sequence[str]]],
+        *,
+        expected_count: int,
+        expected_hash: str,
+    ) -> dict[str, Any]:
+        return {
+            "schema_version": "lean-task-b-legacy-history/v1",
+            "batch_id": self.batch.batch_id,
+            "family_slug": protocol.family_slug,
+            "legacy_history_sha256": expected_hash,
+            "v15_retirement_rows": expected_count,
+            "row_binding_sha256": [
+                self._legacy_row_binding_hash(row)
+                for row in sorted(rows)
+            ],
+        }
+
+    def _record_legacy_history_binding(
+        self,
+        protocol: ProtocolRefresh,
+        rows: Sequence[tuple[str, Sequence[str]]],
+        *,
+        expected_count: int,
+        expected_hash: str,
+    ) -> None:
+        payload = self._legacy_history_audit_payload(
+            protocol,
+            rows,
+            expected_count=expected_count,
+            expected_hash=expected_hash,
+        )
+        entity_id = f"{self.batch.batch_id}:{protocol.family_slug}"
+        with self._connection().cursor() as cur:
+            cur.execute(
+                """SELECT diff
+                   FROM change_log
+                   WHERE entity_type='lean_task_b_legacy_history'
+                     AND entity_id=%s
+                   ORDER BY changed_at, id
+                   FOR UPDATE""",
+                (entity_id,),
+            )
+            existing = [item[0] for item in cur.fetchall()]
+            if any(item != payload for item in existing):
+                raise ContractError(
+                    "legacy-history audit contains a conflicting batch binding"
+                )
+            if not existing:
+                cur.execute(
+                    """INSERT INTO change_log
+                       (changed_by, entity_type, entity_id, diff, reason)
+                       VALUES (
+                         'lean-protocol-refresh',
+                         'lean_task_b_legacy_history',
+                         %s, %s::jsonb,
+                         'Bind exact retired v1.5.0 row/source ledger for route-changing Task B resume verification'
+                       )""",
+                    (entity_id, _canonical(payload)),
+                )
+
+    def _verify_recorded_legacy_history_binding(
+        self,
+        protocol: ProtocolRefresh,
+        *,
+        expected_count: int,
+        expected_hash: str,
+    ) -> bool:
+        entity_id = f"{self.batch.batch_id}:{protocol.family_slug}"
+        with self._connection().cursor() as cur:
+            cur.execute(
+                """SELECT diff
+                   FROM change_log
+                   WHERE entity_type='lean_task_b_legacy_history'
+                     AND entity_id=%s
+                   ORDER BY changed_at, id""",
+                (entity_id,),
+            )
+            records = [item[0] for item in cur.fetchall()]
+        if not records:
+            return False
+        if any(item != records[0] for item in records[1:]):
+            raise ContractError(
+                "legacy-history audit contains conflicting batch bindings"
+            )
+        entry = records[0]
+        if not isinstance(entry, Mapping):
+            raise ContractError(
+                "legacy-history audit contains an invalid binding"
+            )
+        row_bindings = entry.get("row_binding_sha256")
+        if (
+            entry.get("schema_version") != "lean-task-b-legacy-history/v1"
+            or entry.get("batch_id") != self.batch.batch_id
+            or entry.get("family_slug") != protocol.family_slug
+            or entry.get("legacy_history_sha256") != expected_hash
+            or entry.get("v15_retirement_rows") != expected_count
+            or not isinstance(row_bindings, list)
+            or len(row_bindings) != expected_count
+            or len(set(row_bindings)) != expected_count
+            or not all(
+                isinstance(item, str)
+                and re.fullmatch(r"[0-9a-f]{64}", item)
+                for item in row_bindings
+            )
+        ):
+            raise ContractError(
+                "legacy-history audit differs from the exact approved plan"
+            )
+        candidates = self._legacy_history_rows(
+            protocol, current_rows=False
+        )
+        by_binding: dict[str, tuple[str, tuple[str, ...]]] = {}
+        for row in candidates:
+            binding = self._legacy_row_binding_hash(row)
+            if binding in by_binding:
+                raise ContractError(
+                    "retained legacy row bindings are ambiguous"
+                )
+            by_binding[binding] = row
+        try:
+            rows = [by_binding[binding] for binding in row_bindings]
+        except KeyError as exc:
+            raise ContractError(
+                "legacy-history audit row binding is absent from production"
+            ) from exc
+        self._verify_exact_legacy_rows(
+            protocol,
+            rows,
+            expected_count=expected_count,
+            expected_hash=expected_hash,
+        )
+        return True
 
     def _selected_production_binding(
         self, protocol: ProtocolRefresh
@@ -1653,17 +1932,31 @@ pg_restore --list "$path" >/dev/null"""
             "full_v15_migration",
         }:
             return
-        retired_count, history_hash = self._legacy_history_binding(
-            protocol, current_rows=False
-        )
-        if (
-            retired_count != planned.v15_retirement_rows
-            or history_hash != planned.legacy_history_sha256
-        ):
-            raise ContractError(
-                "post-migration v1.5.0 history, superseded_by links, or "
-                "source-join identities differ from the exact approved plan"
+        if self._protocol_legacy_preimage:
+            self._verify_exact_legacy_rows(
+                protocol,
+                self._protocol_legacy_preimage,
+                expected_count=planned.v15_retirement_rows,
+                expected_hash=str(planned.legacy_history_sha256),
             )
+            self._record_legacy_history_binding(
+                protocol,
+                self._protocol_legacy_preimage,
+                expected_count=planned.v15_retirement_rows,
+                expected_hash=str(planned.legacy_history_sha256),
+            )
+        else:
+            retired_count, history_hash = self._legacy_history_binding(
+                protocol, current_rows=False
+            )
+            if (
+                retired_count != planned.v15_retirement_rows
+                or history_hash != planned.legacy_history_sha256
+            ):
+                raise ContractError(
+                    "post-migration v1.5.0 history, superseded_by links, or "
+                    "source-join identities differ from the exact approved plan"
+                )
 
     @staticmethod
     def _protocol_document(payload: Any) -> Mapping[str, Any]:
@@ -1962,6 +2255,7 @@ pg_restore --list "$path" >/dev/null"""
         self._protocol_baseline_rubric = None
         self._target_rows_before = {}
         self._protocol_written_factor_ids = set()
+        self._protocol_legacy_preimage = ()
         self._close_dump_workspace()
     def rollback_protocol(self, protocol: ProtocolRefresh) -> None:
         try:
@@ -1972,6 +2266,7 @@ pg_restore --list "$path" >/dev/null"""
             self._protocol_baseline_rubric = None
             self._target_rows_before = {}
             self._protocol_written_factor_ids = set()
+            self._protocol_legacy_preimage = ()
             self._close_dump_workspace()
 
     def _branch(self, protocol: ProtocolRefresh) -> str:
