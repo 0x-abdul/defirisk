@@ -209,6 +209,100 @@ def exact_baseline_operations(tmp_path: Path, rows) -> ProductionOperations:
     )
 
 
+def test_selected_production_binding_prefers_v17_and_hashes_all_rows(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_changes(1)
+    factor_ids = sorted(CANONICAL_FACTOR_IDS)
+
+    def rows(v17_score: str):
+        result = [
+            (
+                f"v15-{factor_id}",
+                "v1.5.0",
+                factor_id,
+                "surface",
+                "default",
+                {"score": "yellow"},
+            )
+            for factor_id in factor_ids
+        ]
+        result.append(
+            (
+                "v17-RD-F-001",
+                "v1.7.0",
+                "RD-F-001",
+                "surface",
+                "default",
+                {"score": v17_score},
+            )
+        )
+        return tuple(result)
+
+    class SelectedCursor:
+        def __init__(self, selected_rows):
+            self.selected_rows = selected_rows
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def execute(self, _sql, _params):
+            return None
+
+        def fetchall(self):
+            return self.selected_rows
+
+    class SelectedConnection:
+        def __init__(self, selected_rows):
+            self.selected_rows = selected_rows
+
+        def cursor(self):
+            return SelectedCursor(self.selected_rows)
+
+    def operations(selected_rows):
+        ops = ProductionOperations(
+            batch(),
+            "postgresql://x",
+            tmp_path,
+            "o/r",
+            "main",
+            connect=lambda _url: SelectedConnection(selected_rows),
+        )
+        ops._actual_old_value = lambda _cur, _protocol, **kwargs: {
+            "factor_id": kwargs["factor_id"],
+            "category": 1,
+            "family_slug": protocol.family_slug,
+            "scope_level": kwargs["scope_level"],
+            "surface_slug": kwargs["target"],
+            "score": kwargs["old"]["score"],
+            "evidence_summary": "Public production evidence.",
+            "evidence_detail": None,
+            "collection_mode": "manual",
+            "gap_reason": None,
+            "notes": None,
+            "sources": [
+                {
+                    "source_type": "docs",
+                    "url": "https://example.org/production",
+                    "reference": "Production evidence",
+                    "relation": "primary",
+                }
+            ],
+        }
+        return ops
+
+    first_hash, changed_old_values = operations(rows("yellow"))._selected_production_binding(
+        protocol
+    )
+    second_hash, _ = operations(rows("red"))._selected_production_binding(protocol)
+
+    assert changed_old_values[0][3]["score"] == "yellow"
+    assert first_hash != second_hash
+
+
 class HistoricalOldCursor:
     def __init__(self, sources=()) -> None:
         self.query = 0
@@ -223,7 +317,10 @@ class HistoricalOldCursor:
 
     def fetchall(self):
         assert self.query == 2
-        return self.sources
+        return tuple(
+            source if len(source) == 7 else (*source, "primary")
+            for source in self.sources
+        )
 
 
 def test_historical_old_projection_preserves_production_baseline_check(
@@ -294,6 +391,9 @@ def test_historical_old_projection_preserves_production_baseline_check(
         "v1.7.0",
         (replace(protocol, changes=(change,)),),
     )
+    operations._selected_change_old_values[protocol.family_slug] = {
+        operations._factor_key(change): change.old_value
+    }
     public_record = operations._public_record(
         replace(protocol, changes=(change,))
     )
@@ -304,7 +404,7 @@ def test_historical_old_projection_preserves_production_baseline_check(
     )
 
 
-def test_historical_old_projection_rejects_unnecessary_remediation(
+def test_historical_old_projection_accepts_conservative_remediation(
     tmp_path: Path,
 ) -> None:
     remediation = {
@@ -362,22 +462,107 @@ def test_historical_old_projection_rejects_unnecessary_remediation(
             ),
         )
     )
-    with pytest.raises(ContractError, match="already public-safe"):
+    operations._verify_public_old_row(
+        cursor,
+        protocol,
+        change,
+        "old-score-id",
+        {
+            "factor_id": "RD-F-001",
+            "scope_level": "surface",
+            "score": "yellow",
+            "collection_mode": "manual",
+            "evidence_summary": "Published historical assessment.",
+            "evidence_detail": None,
+            "gap_reason": None,
+            "notes": None,
+        },
+    )
+
+
+def test_public_old_source_binding_uses_stable_source_identity(
+    tmp_path: Path,
+) -> None:
+    source_identity = {
+        "source_type": "docs",
+        "url": "https://example.org/historical",
+        "reference": "Published historical evidence",
+    }
+    change = FactorChange(
+        "RD-F-001",
+        "surface",
+        "default",
+        {
+            "factor_id": "RD-F-001",
+            "scope_level": "surface",
+            "surface_slug": "default",
+            "score": "yellow",
+            "collection_mode": "manual",
+            "evidence_summary": "Published historical assessment.",
+            "evidence_detail": None,
+            "gap_reason": None,
+            "notes": None,
+            "sources": [source_identity],
+        },
+        {
+            "factor_id": "RD-F-001",
+            "score": "green",
+            "sources": [{"url": "https://example.org/current"}],
+        },
+        (Evidence("https://example.org/current"),),
+        "green",
+        "B",
+    )
+    protocol = protocol_with_changes(1)
+    operations = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    production_source = (
+        (
+            source_identity["source_type"],
+            source_identity["url"],
+            source_identity["reference"],
+            "Additional shared source title",
+            "2026-07-24",
+            "Additional shared source notes",
+        ),
+    )
+    old_row = {
+        "factor_id": "RD-F-001",
+        "scope_level": "surface",
+        "score": "yellow",
+        "collection_mode": "manual",
+        "evidence_summary": "Published historical assessment.",
+        "evidence_detail": None,
+        "gap_reason": None,
+        "notes": None,
+    }
+
+    operations._verify_public_old_row(
+        HistoricalOldCursor(production_source),
+        protocol,
+        change,
+        "old-score-id",
+        old_row,
+    )
+
+    drifted_change = replace(
+        change,
+        old_value={
+            **change.old_value,
+            "sources": [
+                {
+                    **source_identity,
+                    "reference": "Different source identity",
+                }
+            ],
+        },
+    )
+    with pytest.raises(ContractError, match="public old-source baseline drifted"):
         operations._verify_public_old_row(
-            cursor,
+            HistoricalOldCursor(production_source),
             protocol,
-            change,
+            drifted_change,
             "old-score-id",
-            {
-                "factor_id": "RD-F-001",
-                "scope_level": "surface",
-                "score": "yellow",
-                "collection_mode": "manual",
-                "evidence_summary": "Published historical assessment.",
-                "evidence_detail": None,
-                "gap_reason": None,
-                "notes": None,
-            },
+            old_row,
         )
 
 
@@ -416,6 +601,18 @@ def test_completed_full_migration_requires_exact_184_row_history_binding(
     protocol = protocol_with_changes(184)
     ops = baseline_operations(tmp_path, (("v1.7.0", 184),))
     ops._legacy_history_binding = lambda *_args, **_kwargs: (184, "a" * 64)
+    ops._selected_production_binding = lambda *_args, **_kwargs: (
+        "c" * 64,
+        tuple(
+            (
+                change.scope_level,
+                change.target,
+                change.factor_id,
+                change.old_value,
+            )
+            for change in protocol.changes
+        ),
+    )
     classification = ops._baseline_classification(
         protocol, include_history_binding=True
     )
@@ -663,6 +860,15 @@ def test_mixed_resume_requires_exact_approved_legacy_history_hash(
                     "rubric_route": "mixed_recovery",
                     "v15_retirement_rows": 180,
                     "legacy_history_sha256": approved_hash,
+                    "changes": [
+                        {
+                            "factor_id": change.factor_id,
+                            "scope_level": change.scope_level,
+                            "target": change.target,
+                            "selected_production_old_value": change.old_value,
+                        }
+                        for change in protocol.changes
+                    ],
                 }
             ]
         }
@@ -903,8 +1109,12 @@ def test_apply_supersedes_selected_baseline_and_preserves_history(
     )
     ops._protocol_baseline_family = protocol.family_slug
     ops._protocol_baseline_rubric = baseline_rubric
-    ops._verify_public_old_row = lambda *_args: None
+    ops._verify_bound_old_row = lambda *_args: None
     ops._get_or_create_source = lambda *_args: "source-id"
+    ops._selected_change_old_values[protocol.family_slug] = {
+        ops._factor_key(change): change.old_value
+        for change in protocol.changes
+    }
 
     ops.apply_protocol(protocol)
 
@@ -1610,6 +1820,9 @@ def test_remote_branch_without_pr_resumes_by_creating_pr(tmp_path: Path) -> None
         command_runner=runner,
     )
     holder["ops"] = ops
+    ops._selected_change_old_values[protocol.family_slug] = {
+        ops._factor_key(change): change.old_value
+    }
     ops.ensure_protocol_pull_request(protocol)
     create = next(command for command in calls if command[:3] == ("gh", "pr", "create"))
     assert "--body" in create

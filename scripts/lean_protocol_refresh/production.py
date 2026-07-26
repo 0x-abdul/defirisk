@@ -18,7 +18,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
@@ -121,6 +121,9 @@ class ProductionOperations:
     _approved_plan_protocols: dict[str, Mapping[str, Any]] = field(
         default_factory=dict, init=False, repr=False
     )
+    _selected_change_old_values: dict[
+        str, dict[tuple[str, str, str], Mapping[str, Any]]
+    ] = field(default_factory=dict, init=False, repr=False)
 
     def __post_init__(self) -> None:
         if not self.database_url:
@@ -280,6 +283,37 @@ pg_restore --list "$path" >/dev/null"""
         self._approved_plan_protocols = {
             str(item["family_slug"]): item for item in protocols
         }
+        self._selected_change_old_values = {}
+        for item in protocols:
+            family_slug = str(item["family_slug"])
+            changes = item.get("changes")
+            if not isinstance(changes, list):
+                raise ContractError(
+                    f"approved plan changes must be an array: {family_slug}"
+                )
+            selected: dict[tuple[str, str, str], Mapping[str, Any]] = {}
+            for change in changes:
+                if not isinstance(change, Mapping):
+                    raise ContractError(
+                        f"approved plan change must be an object: {family_slug}"
+                    )
+                old_value = change.get("selected_production_old_value")
+                if not isinstance(old_value, Mapping):
+                    raise ContractError(
+                        "approved plan is missing a selected production old "
+                        f"value: {family_slug}"
+                    )
+                key = (
+                    str(change.get("scope_level")),
+                    str(change.get("target")),
+                    str(change.get("factor_id")),
+                )
+                if key in selected:
+                    raise ContractError(
+                        f"approved plan has duplicate selected old value: {family_slug}"
+                    )
+                selected[key] = dict(old_value)
+            self._selected_change_old_values[family_slug] = selected
 
     def validate_protocol_resume(
         self, protocol: ProtocolRefresh, state: ProtocolState
@@ -435,7 +469,8 @@ pg_restore --list "$path" >/dev/null"""
                 protocol,
                 include_history_binding=(
                     planned_classification is not None
-                    and planned_classification.legacy_history_sha256 is not None
+                    and planned_classification.selected_production_baseline_sha256
+                    is not None
                 ),
             )
             if (
@@ -520,6 +555,15 @@ pg_restore --list "$path" >/dev/null"""
     ) -> BaselineClassification:
         """Select a route and compute the exact read-only write envelope."""
         rows = self._read_protocol_baseline_rows(protocol)
+        selected_baseline_sha256: str | None = None
+        selected_change_old_values: tuple[
+            tuple[str, str, str, Any], ...
+        ] = ()
+        if include_history_binding:
+            (
+                selected_baseline_sha256,
+                selected_change_old_values,
+            ) = self._selected_production_binding(protocol)
         versions = {version for version, _scope, _target, _factor_id in rows}
         factor_ids = [factor_id for _version, _scope, _target, factor_id in rows]
         scoped_keys = [
@@ -592,6 +636,8 @@ pg_restore --list "$path" >/dev/null"""
                         if include_history_binding
                         else None
                     ),
+                    selected_baseline_sha256,
+                    selected_change_old_values,
                 )
             if (
                 allow_completed_mixed
@@ -617,6 +663,8 @@ pg_restore --list "$path" >/dev/null"""
                         if include_history_binding
                         else None
                     ),
+                    selected_baseline_sha256,
+                    selected_change_old_values,
                 )
             counts = {
                 version: len(keys_by_version[version])
@@ -657,6 +705,8 @@ pg_restore --list "$path" >/dev/null"""
                 0,
                 None,
                 completed_legacy_hash,
+                selected_baseline_sha256,
+                selected_change_old_values,
             )
         if complete_factor_set and versions == {MIGRATION_BASELINE_VERSION}:
             changed_factor_ids = {change.factor_id for change in protocol.changes}
@@ -687,6 +737,8 @@ pg_restore --list "$path" >/dev/null"""
                     if include_history_binding
                     else None
                 ),
+                selected_baseline_sha256,
+                selected_change_old_values,
             )
         counts = {
             version: sum(
@@ -759,6 +811,210 @@ pg_restore --list "$path" >/dev/null"""
             _canonical(rows).encode("utf-8")
         ).hexdigest()
 
+    def _selected_production_binding(
+        self, protocol: ProtocolRefresh
+    ) -> tuple[str, tuple[tuple[str, str, str, Any], ...]]:
+        """Bind the complete selected current baseline and public changed olds.
+
+        Mixed baselines use the same target-first selection rule as execution.
+        The opaque hash covers all 184 selected rows, including private stored
+        semantics, while only public-safe changed old values enter the plan.
+        """
+        with self._connection().cursor() as cur:
+            cur.execute(
+                """SELECT fs.id, fs.rubric_version, fs.factor_id, fs.scope_level,
+                          CASE
+                            WHEN fs.scope_level IN ('protocol', 'family')
+                              THEN fs.protocol_slug
+                            WHEN fs.scope_level = 'surface'
+                              THEN surface_direct.surface_slug
+                            ELSE CONCAT_WS('/',
+                              surface_dep.surface_slug, d.chain, d.deployment_key)
+                          END AS target,
+                          to_jsonb(fs)
+                   FROM factor_scores fs
+                   LEFT JOIN protocol_surfaces surface_direct
+                     ON surface_direct.surface_id=fs.surface_id
+                   LEFT JOIN deployments d ON d.id=fs.deployment_id
+                   LEFT JOIN protocol_surfaces surface_dep
+                     ON surface_dep.surface_id=d.surface_id
+                   WHERE fs.protocol_slug=%s AND fs.is_current=true
+                   ORDER BY fs.scope_level, target, fs.factor_id,
+                            fs.rubric_version""",
+                (protocol.family_slug,),
+            )
+            grouped: dict[
+                tuple[str, str, str], list[tuple[Any, str, Mapping[str, Any]]]
+            ] = {}
+            for row_id, version, factor_id, scope_level, target, row in cur.fetchall():
+                key = (str(scope_level), str(target), str(factor_id))
+                grouped.setdefault(key, []).append(
+                    (row_id, str(version), row)
+                )
+
+            selected_rows: list[dict[str, Any]] = []
+            public_changed: list[tuple[str, str, str, Any]] = []
+            changed = {
+                self._factor_key(change): change for change in protocol.changes
+            }
+            for key in sorted(grouped):
+                candidates = grouped[key]
+                by_version = {version: (row_id, row) for row_id, version, row in candidates}
+                if len(by_version) != len(candidates):
+                    raise ContractError(
+                        "selected production baseline contains duplicate current "
+                        f"rubric rows: {protocol.family_slug} {key}"
+                    )
+                selected_version = (
+                    RUBRIC_VERSION
+                    if RUBRIC_VERSION in by_version
+                    else MIGRATION_BASELINE_VERSION
+                    if MIGRATION_BASELINE_VERSION in by_version
+                    else None
+                )
+                if selected_version is None:
+                    raise ContractError(
+                        "selected production baseline contains an unsupported "
+                        f"rubric: {protocol.family_slug} {key}"
+                    )
+                row_id, row = by_version[selected_version]
+                scope_level, target, factor_id = key
+                actual = self._actual_old_value(
+                    cur,
+                    protocol,
+                    factor_id=factor_id,
+                    scope_level=scope_level,
+                    target=target,
+                    old_id=row_id,
+                    old=row,
+                )
+                selected_rows.append(
+                    {
+                        "scope_level": scope_level,
+                        "target": target,
+                        "factor_id": factor_id,
+                        "rubric_version": selected_version,
+                        "value": actual,
+                    }
+                )
+                change = changed.get(key)
+                if change is None:
+                    continue
+                approved_old = self._selected_change_old_values.get(
+                    protocol.family_slug, {}
+                ).get(key)
+                if approved_old is not None:
+                    public_old = approved_old
+                elif change.historical_old_remediation is not None:
+                    public_old = self._remediated_public_old_value(actual)
+                else:
+                    public_old = self._stable_public_old_value(actual)
+                    try:
+                        validate_factor_sources(
+                            public_old,
+                            f"selected production old row for {factor_id}",
+                        )
+                        validate_public_material(
+                            public_old,
+                            f"selected production old row for {factor_id}",
+                        )
+                    except ContractError:
+                        public_old = self._rebound_public_old_value(
+                            change.old_value, actual
+                        )
+                        validate_factor_sources(
+                            public_old,
+                            f"rebound production old row for {factor_id}",
+                        )
+                        validate_public_material(
+                            public_old,
+                            f"rebound production old row for {factor_id}",
+                        )
+                public_changed.append(
+                    (scope_level, target, factor_id, public_old)
+                )
+
+        if len(selected_rows) != EXPECTED_FACTOR_COUNT:
+            raise ContractError(
+                "selected production baseline must contain exactly 184 scoped rows"
+            )
+        return (
+            hashlib.sha256(_canonical(selected_rows).encode("utf-8")).hexdigest(),
+            tuple(public_changed),
+        )
+
+    @staticmethod
+    def _remediated_public_old_value(
+        actual: Mapping[str, Any],
+    ) -> dict[str, Any]:
+        """Project a stored old row to honest, claim-free public baseline state."""
+        identity_fields = (
+            "factor_id",
+            "category",
+            "family_slug",
+            "scope_level",
+            "surface_slug",
+            "chain",
+            "deployment_key",
+            "score",
+        )
+        return {
+            **{
+                field_name: actual[field_name]
+                for field_name in identity_fields
+                if actual.get(field_name) is not None
+            },
+            "sources": [],
+        }
+
+    @classmethod
+    def _stable_public_old_value(
+        cls, actual: Mapping[str, Any]
+    ) -> dict[str, Any]:
+        """Remove mutable shared-source annotations, preserving evidence identity."""
+        value = dict(actual)
+        value["sources"] = cls._sorted_sources(
+            [
+                {
+                    field_name: source.get(field_name)
+                    for field_name in (
+                        "source_type",
+                        "url",
+                        "reference",
+                        "relation",
+                    )
+                    if source.get(field_name) is not None
+                }
+                for source in actual.get("sources", [])
+                if isinstance(source, Mapping)
+            ]
+        )
+        return value
+
+    @staticmethod
+    def _rebound_public_old_value(
+        reviewed_old: Mapping[str, Any],
+        actual: Mapping[str, Any],
+    ) -> dict[str, Any]:
+        """Bind reviewed public evidence to the matching production old score."""
+        identity_fields = (
+            "factor_id",
+            "category",
+            "family_slug",
+            "scope_level",
+            "surface_slug",
+            "chain",
+            "deployment_key",
+            "score",
+        )
+        rebound = dict(reviewed_old)
+        for field_name in identity_fields:
+            if actual.get(field_name) is None:
+                rebound.pop(field_name, None)
+            else:
+                rebound[field_name] = actual[field_name]
+        return rebound
+
     def _classify_protocol_baseline(self, protocol: ProtocolRefresh) -> str:
         """Select the refresh path from the locked production factor baseline."""
         route = self._baseline_classification(protocol).rubric_route
@@ -794,6 +1050,22 @@ pg_restore --list "$path" >/dev/null"""
     @staticmethod
     def _factor_key(change: Any) -> tuple[str, str, str]:
         return (change.scope_level, change.target, change.factor_id)
+
+    def _bound_change(self, protocol: ProtocolRefresh, change: Any) -> Any:
+        selected = self._selected_change_old_values.get(protocol.family_slug)
+        if selected is None:
+            raise ContractError(
+                "selected production old values are not bound from the "
+                f"approved plan: {protocol.family_slug}"
+            )
+        key = self._factor_key(change)
+        old_value = selected.get(key)
+        if old_value is None:
+            raise ContractError(
+                "selected production old value is missing from the approved "
+                f"plan: {protocol.family_slug} {change.factor_id}"
+            )
+        return replace(change, old_value=dict(old_value))
 
     def _insert_target_row(
         self,
@@ -889,10 +1161,15 @@ pg_restore --list "$path" >/dev/null"""
                 raise ContractError(
                     f"mixed_recovery selected row is missing for {target_row.factor_id}"
                 )
-            selected_old = changed.get(key, target_row)
-            self._verify_public_old_row(
-                cur, protocol, selected_old, selected[0], selected[2]
-            )
+            selected_old = changed.get(key)
+            if selected_old is not None:
+                self._verify_bound_old_row(
+                    cur,
+                    protocol,
+                    self._bound_change(protocol, selected_old),
+                    selected[0],
+                    selected[2],
+                )
 
             existing_target = by_version.get(RUBRIC_VERSION)
             if key in changed or existing_target is None:
@@ -995,7 +1272,13 @@ pg_restore --list "$path" >/dev/null"""
                         "expected current "
                         f"{expected_baseline_rubric} baseline for {change.factor_id}"
                     )
-                self._verify_public_old_row(cur, protocol, change, old_id, old)
+                self._verify_bound_old_row(
+                    cur,
+                    protocol,
+                    self._bound_change(protocol, change),
+                    old_id,
+                    old,
+                )
                 new_id = self._insert_target_row(
                     cur, protocol, change, surface_id, deployment_id
                 )
@@ -1068,25 +1351,28 @@ pg_restore --list "$path" >/dev/null"""
         ]
         return sorted(normalized, key=_canonical)
 
-    def _verify_public_old_row(
+    def _actual_old_value(
         self,
         cur: Any,
         protocol: ProtocolRefresh,
-        change: Any,
+        *,
+        factor_id: str,
+        scope_level: str,
+        target: str,
         old_id: Any,
         old: Mapping[str, Any],
-    ) -> None:
-        cur.execute("SELECT category_id FROM factors WHERE id=%s", (change.factor_id,))
+    ) -> dict[str, Any]:
+        cur.execute("SELECT category_id FROM factors WHERE id=%s", (factor_id,))
         category_row = cur.fetchone()
         if category_row is None:
-            raise ContractError(f"factor metadata is missing: {change.factor_id}")
+            raise ContractError(f"factor metadata is missing: {factor_id}")
         cur.execute(
             """SELECT s.source_type::text, s.url, s.reference, s.title,
-                      s.retrieved_at::date::text, s.notes
+                      s.retrieved_at::date::text, s.notes, fss.relation
                FROM factor_score_sources fss
                JOIN sources s ON s.id=fss.source_id
                WHERE fss.factor_score_id=%s
-               ORDER BY 1,2,3,4,5,6""",
+               ORDER BY 1,2,3,4,5,6,7""",
             (old_id,),
         )
         sources = [
@@ -1100,6 +1386,7 @@ pg_restore --list "$path" >/dev/null"""
                         "title",
                         "retrieved_at",
                         "notes",
+                        "relation",
                     ),
                     source,
                     strict=True,
@@ -1121,10 +1408,10 @@ pg_restore --list "$path" >/dev/null"""
             "score": str(old["score"]),
             "sources": sources,
         }
-        if change.scope_level == "surface":
-            actual["surface_slug"] = change.target
-        elif change.scope_level == "deployment":
-            surface, chain, deployment_key = change.target.split("/")
+        if scope_level == "surface":
+            actual["surface_slug"] = target
+        elif scope_level == "deployment":
+            surface, chain, deployment_key = target.split("/")
             actual.update(
                 {
                     "surface_slug": surface,
@@ -1132,24 +1419,38 @@ pg_restore --list "$path" >/dev/null"""
                     "deployment_key": deployment_key,
                 }
             )
-        if change.historical_old_remediation is not None:
-            try:
-                validate_factor_sources(
-                    actual,
-                    f"production old row for {change.factor_id}",
-                )
-                validate_public_material(
-                    actual,
-                    f"production old row for {change.factor_id}",
-                )
-            except ContractError:
-                pass
-            else:
-                raise ContractError(
-                    "historical old remediation is unnecessary because the "
-                    f"production old row is already public-safe: {change.factor_id}"
-                )
+        return actual
+
+    @classmethod
+    def _compare_public_old_value(
+        cls, change: Any, actual: Mapping[str, Any]
+    ) -> None:
+        # A hash-bound historical_evidence_unavailable disposition is
+        # deliberately conservative.  It may cover an immutable old row whose
+        # stored fields pass the current syntactic public checks but whose
+        # retained claim still lacks genuine public HTTP evidence.  The public
+        # handoff contract validates the fixed no-claim disposition; the
+        # comparisons below continue to bind the production row's identity,
+        # score, scope, and any disclosed source identities.
         expected = change.old_value
+        if change.historical_old_remediation is not None:
+            identity_fields = {
+                "factor_id",
+                "category",
+                "family_slug",
+                "scope_level",
+                "surface_slug",
+                "chain",
+                "deployment_key",
+                "score",
+            }
+            for field_name in identity_fields & set(expected):
+                if actual.get(field_name) != expected[field_name]:
+                    raise ContractError(
+                        "historical-remediation production identity drifted for "
+                        f"{change.factor_id}.{field_name}"
+                    )
+            return
         annotation_fields = {
             "migration_change_reason",
             "migration_preservation_note",
@@ -1162,12 +1463,85 @@ pg_restore --list "$path" >/dev/null"""
                 raise ContractError(
                     f"old-value baseline drifted for {change.factor_id}.{field_name}"
                 )
-        expected_sources = self._sorted_sources(expected.get("sources", []))
-        actual_sources = self._sorted_sources(actual["sources"])
+        source_identity_fields = ("source_type", "url", "reference")
+        expected_sources = cls._sorted_sources(
+            [
+                {
+                    field_name: source.get(field_name)
+                    for field_name in source_identity_fields
+                    if source.get(field_name) is not None
+                }
+                for source in expected.get("sources", [])
+                if isinstance(source, Mapping)
+            ]
+        )
+        actual_sources = cls._sorted_sources(
+            [
+                {
+                    field_name: source.get(field_name)
+                    for field_name in source_identity_fields
+                    if source.get(field_name) is not None
+                }
+                for source in actual["sources"]
+            ]
+        )
         for source in expected_sources:
             if source not in actual_sources:
                 raise ContractError(
                     f"public old-source baseline drifted for {change.factor_id}"
+                )
+
+    def _verify_public_old_row(
+        self,
+        cur: Any,
+        protocol: ProtocolRefresh,
+        change: Any,
+        old_id: Any,
+        old: Mapping[str, Any],
+    ) -> None:
+        actual = self._actual_old_value(
+            cur,
+            protocol,
+            factor_id=change.factor_id,
+            scope_level=change.scope_level,
+            target=change.target,
+            old_id=old_id,
+            old=old,
+        )
+        self._compare_public_old_value(change, actual)
+
+    def _verify_bound_old_row(
+        self,
+        cur: Any,
+        protocol: ProtocolRefresh,
+        change: Any,
+        old_id: Any,
+        old: Mapping[str, Any],
+    ) -> None:
+        actual = self._actual_old_value(
+            cur,
+            protocol,
+            factor_id=change.factor_id,
+            scope_level=change.scope_level,
+            target=change.target,
+            old_id=old_id,
+            old=old,
+        )
+        identity_fields = {
+            "factor_id",
+            "category",
+            "family_slug",
+            "scope_level",
+            "surface_slug",
+            "chain",
+            "deployment_key",
+            "score",
+        }
+        for field_name in identity_fields & set(change.old_value):
+            if actual.get(field_name) != change.old_value[field_name]:
+                raise ContractError(
+                    "selected production old identity drifted for "
+                    f"{change.factor_id}.{field_name}"
                 )
 
     @staticmethod
@@ -1650,11 +2024,12 @@ pg_restore --list "$path" >/dev/null"""
 
     def _public_record(self, protocol: ProtocolRefresh) -> dict[str, Any]:
         def public_change(change: Any) -> dict[str, Any]:
+            bound_change = self._bound_change(protocol, change)
             record = {
                 "factor_id": change.factor_id,
                 "scope_level": change.scope_level,
                 "target": change.target,
-                "old_value": change.old_value,
+                "old_value": bound_change.old_value,
                 "new_value": change.new_value,
                 "evidence": [
                     {"url": evidence.url, "title": evidence.title}

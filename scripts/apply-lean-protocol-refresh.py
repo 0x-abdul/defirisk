@@ -76,6 +76,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Exact JSON plan previously shown and confirmed (required for --apply)",
     )
     parser.add_argument(
+        "--stop-before-publication",
+        action="store_true",
+        help=(
+            "Apply and verify production database transactions, then stop "
+            "before creating or pushing protocol branches or pull requests"
+        ),
+    )
+    parser.add_argument(
         "--operations",
         help="Reviewed module:factory providing production operations (required for both modes)",
     )
@@ -109,6 +117,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--apply requires --approved-plan")
     if args.plan and args.approved_plan is not None:
         parser.error("--approved-plan is valid only with --apply")
+    if args.plan and args.stop_before_publication:
+        parser.error("--stop-before-publication is valid only with --apply")
     return args
 
 
@@ -124,6 +134,8 @@ _ROUTE_STATE_FIELDS = {
     "migration_only_rows",
     "v17_insert_or_replace_rows",
     "v15_retirement_rows",
+    "selected_production_baseline_sha256",
+    "changes",
 }
 
 
@@ -173,6 +185,7 @@ def _validate_approved_plan_state(
             "the exact approved plan; rerun --plan and obtain confirmation"
         )
     allowed_transitions = {
+        ("standard_v17", "standard_v17"),
         ("mixed_recovery", "mixed_recovery_complete"),
         ("full_v15_migration", "full_v15_migration_complete"),
     }
@@ -247,7 +260,11 @@ def main(argv: list[str] | None = None) -> int:
         _validate_approved_plan_state(
             batch, operations, approved_plan, current_plan
         )
-        report = apply_batch(batch, operations)
+        report = apply_batch(
+            batch,
+            operations,
+            stop_before_publication=args.stop_before_publication,
+        )
         print(json.dumps(asdict(report), indent=2))
         return (
             1
