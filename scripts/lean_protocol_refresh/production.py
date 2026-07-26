@@ -706,9 +706,7 @@ pg_restore --list "$path" >/dev/null"""
                     0,
                     recovery.full_target_projection_semantic_sha256,
                     (
-                        self._legacy_history_binding(
-                            protocol, current_rows=False
-                        )[1]
+                        self._completed_legacy_history_binding(protocol)[1]
                         if include_history_binding
                         else None
                     ),
@@ -730,9 +728,7 @@ pg_restore --list "$path" >/dev/null"""
                 (
                     completed_legacy_count,
                     completed_legacy_hash,
-                ) = self._legacy_history_binding(
-                    protocol, current_rows=False
-                )
+                ) = self._completed_legacy_history_binding(protocol)
                 if completed_legacy_count not in {0, EXPECTED_FACTOR_COUNT}:
                     raise ContractError(
                         "completed full_v15_migration history binding is "
@@ -1073,6 +1069,35 @@ pg_restore --list "$path" >/dev/null"""
                 "legacy-history audit contains an invalid binding"
             )
         return entry
+
+    def _completed_legacy_history_binding(
+        self, protocol: ProtocolRefresh
+    ) -> tuple[int, str | None]:
+        """Return the immutable pre-mutation binding for a completed route."""
+        current_count, current_hash = self._legacy_history_binding(
+            protocol, current_rows=False
+        )
+        entry = self._read_legacy_history_audit(protocol)
+        if entry is None:
+            return current_count, current_hash
+        expected_count = entry.get("v15_retirement_rows")
+        expected_hash = entry.get("legacy_history_sha256")
+        if (
+            not isinstance(expected_count, int)
+            or isinstance(expected_count, bool)
+            or expected_count <= 0
+            or not isinstance(expected_hash, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", expected_hash)
+            or not self._verify_recorded_legacy_history_binding(
+                protocol,
+                expected_count=expected_count,
+                expected_hash=expected_hash,
+            )
+        ):
+            raise ContractError(
+                "completed route lacks a valid immutable legacy-history audit"
+            )
+        return expected_count, expected_hash
 
     def _verify_recorded_legacy_history_binding(
         self,

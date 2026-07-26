@@ -601,6 +601,7 @@ def test_completed_full_migration_requires_exact_184_row_history_binding(
     protocol = protocol_with_changes(184)
     ops = baseline_operations(tmp_path, (("v1.7.0", 184),))
     ops._legacy_history_binding = lambda *_args, **_kwargs: (184, "a" * 64)
+    ops._read_legacy_history_audit = lambda *_args, **_kwargs: None
     ops._selected_production_binding = lambda *_args, **_kwargs: (
         "c" * 64,
         tuple(
@@ -624,6 +625,73 @@ def test_completed_full_migration_requires_exact_184_row_history_binding(
         ops._baseline_classification(
             protocol, include_history_binding=True
         )
+
+
+def test_completed_mixed_route_surfaces_verified_audit_bound_history(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    ops = baseline_operations(tmp_path, (("v1.7.0", 184),))
+    approved_hash = "a" * 64
+    ops._selected_production_binding = lambda *_args, **_kwargs: (
+        "c" * 64,
+        tuple(
+            (
+                change.scope_level,
+                change.target,
+                change.factor_id,
+                change.old_value,
+            )
+            for change in protocol.changes
+        ),
+    )
+    ops._completed_legacy_history_binding = (
+        lambda *_args, **_kwargs: (180, approved_hash)
+    )
+
+    classification = ops._baseline_classification(
+        protocol,
+        allow_completed_mixed=True,
+        include_history_binding=True,
+    )
+
+    assert classification.rubric_route == "mixed_recovery_complete"
+    assert classification.legacy_history_sha256 == approved_hash
+
+
+def test_completed_history_binding_prefers_only_verified_audit(
+    tmp_path: Path,
+) -> None:
+    protocol = protocol_with_mixed_recovery()
+    ops = ProductionOperations(
+        batch(),
+        "postgresql://x",
+        tmp_path,
+        "o/r",
+        "main",
+    )
+    approved_hash = "a" * 64
+    ops._legacy_history_binding = (
+        lambda *_args, **_kwargs: (180, "b" * 64)
+    )
+    ops._read_legacy_history_audit = lambda *_args, **_kwargs: {
+        "v15_retirement_rows": 180,
+        "legacy_history_sha256": approved_hash,
+    }
+    ops._verify_recorded_legacy_history_binding = (
+        lambda *_args, **_kwargs: True
+    )
+
+    assert ops._completed_legacy_history_binding(protocol) == (
+        180,
+        approved_hash,
+    )
+
+    ops._verify_recorded_legacy_history_binding = (
+        lambda *_args, **_kwargs: False
+    )
+    with pytest.raises(ContractError, match="immutable legacy-history audit"):
+        ops._completed_legacy_history_binding(protocol)
 
 
 @pytest.mark.parametrize(
@@ -1004,8 +1072,16 @@ def test_precommit_verifies_only_the_selected_legacy_preimage(
     assert verified and verified[0][0][1] == rows
 
 
+@pytest.mark.parametrize(
+    "schema_version",
+    (
+        "lean-task-b-legacy-history/v1",
+        "lean-task-b-legacy-history/v2",
+    ),
+)
 def test_legacy_history_audit_is_hash_bound_and_batch_scoped(
     tmp_path: Path,
+    schema_version: str,
 ) -> None:
     protocol = protocol_with_mixed_recovery()
     rows = (("legacy-1", ("source-1", "source-2")),)
@@ -1026,8 +1102,9 @@ def test_legacy_history_audit_is_hash_bound_and_batch_scoped(
         written_factor_ids={protocol.changes[0].factor_id},
         preserved_target_rows={},
     )
-    encoded = json.dumps(payload, sort_keys=True)
     assert payload["schema_version"] == "lean-task-b-legacy-history/v2"
+    payload["schema_version"] = schema_version
+    encoded = json.dumps(payload, sort_keys=True)
     assert "legacy-1" not in encoded
     assert "source-1" not in encoded
     ops._conn = ResumeIntegrityConnection(((payload,),))
