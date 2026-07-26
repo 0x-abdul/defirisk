@@ -111,7 +111,9 @@ the audit entry. This narrow binding lets a later publication-only resume
 distinguish the approved retirements from older retained v1.5.0 history and
 prove that untouched target-rubric rows did not drift. It is not a new approval
 input or executable receipt, and it never replaces the unchanged approved
-plan.
+plan. When a completed route is resumed, read-only classification surfaces
+the original legacy-history hash from that verified audit entry, rather than
+re-deriving an approval identity from later source-presentation rules.
 
 For `standard_v17`, the runner verifies every selected, plan-bound old row,
 applies only the changed subset, and composes and compares the complete 184-row
