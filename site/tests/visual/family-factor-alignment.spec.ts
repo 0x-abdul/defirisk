@@ -40,7 +40,10 @@ test.describe('Family factor design alignment', () => {
     test(`complete category strip at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 812 });
       await requireFixture(page, FAMILY);
-      const categoryStrip = page.getByRole('link', { name: /category:/ }).first().locator('..');
+      const categoryStrip = page
+        .getByRole('link', { name: /category:/ })
+        .first()
+        .locator('..');
       await expect(categoryStrip).toHaveScreenshot(`family-category-strip-${width}.png`);
     });
   }

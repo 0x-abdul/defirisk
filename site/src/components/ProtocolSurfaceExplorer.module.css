@@ -58,10 +58,6 @@
 .tab:focus-visible,
 .deploymentTrigger:focus-visible,
 .linkButton:focus-visible,
-.evidenceActions button:focus-visible,
-.categoryPill:focus-visible,
-.factorHeader:focus-visible,
-.factorRow:focus-visible,
 .sheet header button:focus-visible,
 .sheetOptions button:focus-visible {
   outline: 2px solid var(--fg);
@@ -235,8 +231,7 @@
     700 14px 'Geist Mono',
     monospace;
 }
-.linkButton,
-.evidenceActions button {
+.linkButton {
   min-height: 44px;
   border: 0;
   padding: 0;
@@ -252,125 +247,6 @@
   background: var(--surface-2);
   color: var(--fg-2);
   font-size: 13px;
-}
-.categoryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
-  gap: 6px;
-}
-.categoryPill {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 42px;
-  padding: 7px 9px;
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--tone);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--fg);
-  font: inherit;
-  font-size: 11px;
-  text-align: left;
-  cursor: pointer;
-}
-.categoryPill span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.red {
-  --tone: var(--gF);
-}
-.yellow {
-  --tone: var(--gD);
-}
-.green {
-  --tone: var(--gA);
-}
-.gray,
-.not_assessed,
-.not_applicable {
-  --tone: var(--fg-4);
-}
-.evidenceActions {
-  display: flex;
-  gap: 12px;
-  font-size: 12px;
-}
-.factorGroups {
-  display: grid;
-  gap: 10px;
-}
-.factorGroup {
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  overflow: hidden;
-}
-.factorHeader {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border: 0;
-  background: var(--surface-2);
-  color: var(--fg);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.factorHeader small {
-  display: block;
-  margin-top: 3px;
-  color: var(--fg-3);
-  font-size: 11px;
-}
-.factorRows {
-  display: grid;
-}
-.factorRow {
-  display: grid;
-  grid-template-columns: 10px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
-  min-height: 54px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  color: inherit;
-  text-decoration: none;
-}
-.factorRow:hover {
-  background: var(--surface-2);
-}
-.scoreDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--tone);
-}
-.factorMain {
-  display: grid;
-  gap: 3px;
-  min-width: 0;
-}
-.factorMain b {
-  color: var(--fg);
-  font-size: 13px;
-}
-.factorMain small {
-  overflow: hidden;
-  color: var(--fg-3);
-  font-size: 12px;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.factorScore {
-  color: var(--fg-3);
-  font-size: 10px;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 .sheetBackdrop {
   position: fixed;
@@ -450,12 +326,8 @@
     display: grid;
     grid-template-columns: auto 1fr;
   }
-  .sectionHead > span:last-child,
-  .evidenceActions {
+  .sectionHead > span:last-child {
     grid-column: 2;
-  }
-  .categoryPill {
-    min-height: 44px;
   }
   .compare {
     font-size: 12px;
@@ -465,12 +337,6 @@
     padding: 8px;
     overflow-wrap: normal;
     word-break: normal;
-  }
-  .factorRow {
-    grid-template-columns: 10px minmax(0, 1fr);
-  }
-  .factorScore {
-    grid-column: 2;
   }
   .surfaceLabel {
     margin-top: 4px;
