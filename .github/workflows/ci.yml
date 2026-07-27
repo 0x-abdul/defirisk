@@ -641,7 +641,8 @@ jobs:
           DATABASE_URL="$DSN" python scripts/compose.py --protocol fixture-family
           DATABASE_URL="$DSN" python scripts/dump.py --out-root _local/family-db-dump
           python scripts/ci/assert-family-build.py \
-            --api-root _local/family-db-dump/api/v1.7.0
+            --api-root _local/family-db-dump/api/v1.7.0 \
+            --skip-header-family
           python scripts/cleanup-multiversion-runtime-artifacts.py \
             --dry-run --manifest scripts/ci/family-cleanup-fixture.json \
             --db-url "$DSN" --expected-database risk_dashboard \

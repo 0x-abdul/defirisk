@@ -26,16 +26,19 @@ def history_signature(rows: list[dict[str, Any]]) -> list[tuple[Any, Any]]:
     return [(row.get("letter"), row.get("graded_at")) for row in rows]
 
 
-def assert_build(api_root: Path, dist_root: Path | None) -> None:
+def assert_build(
+    api_root: Path, dist_root: Path | None, *, expect_header_family: bool = True
+) -> None:
     canonical_path = api_root / "protocols" / "fixture-family.json"
     header_path = api_root / "protocols" / "fixture-header-family.json"
     alias_path = api_root / "protocols" / "fixture-v2.json"
     alias_history_path = api_root / "protocols" / "fixture-v2" / "history.json"
-    for path in (canonical_path, header_path, alias_path, alias_history_path):
+    for path in (canonical_path, alias_path, alias_history_path):
         require_file(path)
+    if expect_header_family:
+        require_file(header_path)
 
     canonical = read_json(canonical_path)["data"]["protocol_data"]
-    header = read_json(header_path)["data"]["protocol_data"]
     alias = read_json(alias_path)["data"]["protocol_data"]
     surfaces = {surface["surface_slug"]: surface for surface in canonical["surfaces"]}
 
@@ -91,20 +94,35 @@ def assert_build(api_root: Path, dist_root: Path | None) -> None:
         surfaces["v2"]["grade_history"]
     )
 
-    header_surfaces = {surface["surface_slug"]: surface for surface in header["surfaces"]}
-    assert set(header_surfaces) == {"legacy", "secure"}
-    assert header_surfaces["secure"]["tvs_usd"] > header_surfaces["legacy"]["tvs_usd"]
-    assert header_surfaces["secure"]["headline_grade"] == "C"
-    assert header_surfaces["secure"]["risk_score"] == 42.7
-    assert header_surfaces["secure"]["cap_applied"] == "D"
-    assert header_surfaces["secure"]["graded_at"] == "2026-06-15T00:00:00Z"
-    assert header["protocol"]["headline_grade"] == "A"
-    header_overrides = header_surfaces["secure"]["deployment_overrides"]
-    assert len(header_overrides) == 1
-    assert len(next(iter(header_overrides.values()))) < len(header_surfaces["secure"]["factor_scores"])
-    assert len(next(iter(header_surfaces["secure"]["deployment_factor_scores"].values()))) == len(
-        header_surfaces["secure"]["factor_scores"]
-    )
+    if expect_header_family:
+        header = read_json(header_path)["data"]["protocol_data"]
+        header_surfaces = {
+            surface["surface_slug"]: surface for surface in header["surfaces"]
+        }
+        assert set(header_surfaces) == {"legacy", "secure"}
+        assert (
+            header_surfaces["secure"]["tvs_usd"]
+            > header_surfaces["legacy"]["tvs_usd"]
+        )
+        assert header_surfaces["secure"]["headline_grade"] == "C"
+        assert header_surfaces["secure"]["risk_score"] == 42.7
+        assert header_surfaces["secure"]["cap_applied"] == "D"
+        assert header_surfaces["secure"]["graded_at"] == "2026-06-15T00:00:00Z"
+        assert header["protocol"]["headline_grade"] == "A"
+        header_overrides = header_surfaces["secure"]["deployment_overrides"]
+        assert len(header_overrides) == 1
+        assert len(next(iter(header_overrides.values()))) < len(
+            header_surfaces["secure"]["factor_scores"]
+        )
+        assert len(
+            next(
+                iter(
+                    header_surfaces["secure"][
+                        "deployment_factor_scores"
+                    ].values()
+                )
+            )
+        ) == len(header_surfaces["secure"]["factor_scores"])
 
     if dist_root is None:
         return
@@ -165,9 +183,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--api-root", type=Path, required=True)
     parser.add_argument("--dist-root", type=Path)
+    parser.add_argument(
+        "--skip-header-family",
+        action="store_true",
+        help="Skip the separate header-family payload for database-only fixture checks.",
+    )
     args = parser.parse_args()
     dist_root = args.dist_root.resolve() if args.dist_root else None
-    assert_build(args.api_root.resolve(), dist_root)
+    if args.skip_header_family and dist_root is not None:
+        parser.error("--skip-header-family cannot be combined with --dist-root")
+    assert_build(
+        args.api_root.resolve(),
+        dist_root,
+        expect_header_family=not args.skip_header_family,
+    )
     print("family build assertions passed")
 
 
