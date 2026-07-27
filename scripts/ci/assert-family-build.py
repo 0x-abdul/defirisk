@@ -27,7 +27,7 @@ def history_signature(rows: list[dict[str, Any]]) -> list[tuple[Any, Any]]:
 
 
 def assert_build(
-    api_root: Path, dist_root: Path | None, *, expect_header_family: bool = True
+    api_root: Path, dist_root: Path | None, *, expect_extended_fixture: bool = True
 ) -> None:
     canonical_path = api_root / "protocols" / "fixture-family.json"
     header_path = api_root / "protocols" / "fixture-header-family.json"
@@ -35,7 +35,7 @@ def assert_build(
     alias_history_path = api_root / "protocols" / "fixture-v2" / "history.json"
     for path in (canonical_path, alias_path, alias_history_path):
         require_file(path)
-    if expect_header_family:
+    if expect_extended_fixture:
         require_file(header_path)
 
     canonical = read_json(canonical_path)["data"]["protocol_data"]
@@ -44,32 +44,33 @@ def assert_build(
 
     assert canonical["protocol"]["slug"] == "fixture-family"
     assert set(surfaces) == {"core", "v2"}
-    assert canonical["surfaces"][0]["surface_slug"] == "core"
-    assert surfaces["core"]["is_primary"] is True
-    assert surfaces["v2"]["is_primary"] is False
-    assert surfaces["v2"]["tvs_usd"] > surfaces["core"]["tvs_usd"]
-    assert surfaces["v2"]["headline_grade"] is None
-    assert surfaces["v2"]["risk_score"] is None
-    assert surfaces["v2"]["cap_applied"] == "none"
-    assert surfaces["core"]["headline_grade"] == "D"
-    assert surfaces["core"]["cap_applied"] == "D"
-    assert canonical["protocol"]["headline_grade"] == "A"
-    secondary_overrides = surfaces["v2"]["deployment_overrides"]
-    assert len(secondary_overrides) == 1
-    partial_override = next(iter(secondary_overrides.values()))
-    assert 0 < len(partial_override) < len(surfaces["v2"]["factor_scores"])
-    assert partial_override[0]["evidence_summary"] == (
-        "Synthetic partial deployment-scoped override."
-    )
-    effective_scores = next(
-        iter(surfaces["v2"]["deployment_factor_scores"].values())
-    )
-    assert len(effective_scores) == len(surfaces["v2"]["factor_scores"])
-    effective_severities = next(
-        iter(surfaces["v2"]["deployment_category_severities"].values())
-    )
-    assert effective_severities["1"] == 88
-    assert "13" not in effective_severities
+    if expect_extended_fixture:
+        assert canonical["surfaces"][0]["surface_slug"] == "core"
+        assert surfaces["core"]["is_primary"] is True
+        assert surfaces["v2"]["is_primary"] is False
+        assert surfaces["v2"]["tvs_usd"] > surfaces["core"]["tvs_usd"]
+        assert surfaces["v2"]["headline_grade"] is None
+        assert surfaces["v2"]["risk_score"] is None
+        assert surfaces["v2"]["cap_applied"] == "none"
+        assert surfaces["core"]["headline_grade"] == "D"
+        assert surfaces["core"]["cap_applied"] == "D"
+        assert canonical["protocol"]["headline_grade"] == "A"
+        secondary_overrides = surfaces["v2"]["deployment_overrides"]
+        assert len(secondary_overrides) == 1
+        partial_override = next(iter(secondary_overrides.values()))
+        assert 0 < len(partial_override) < len(surfaces["v2"]["factor_scores"])
+        assert partial_override[0]["evidence_summary"] == (
+            "Synthetic partial deployment-scoped override."
+        )
+        effective_scores = next(
+            iter(surfaces["v2"]["deployment_factor_scores"].values())
+        )
+        assert len(effective_scores) == len(surfaces["v2"]["factor_scores"])
+        effective_severities = next(
+            iter(surfaces["v2"]["deployment_category_severities"].values())
+        )
+        assert effective_severities["1"] == 88
+        assert "13" not in effective_severities
     assert all(
         dep["surface_id"] == surfaces["core"]["surface_id"]
         for dep in canonical["deployments"]
@@ -94,7 +95,7 @@ def assert_build(
         surfaces["v2"]["grade_history"]
     )
 
-    if expect_header_family:
+    if expect_extended_fixture:
         header = read_json(header_path)["data"]["protocol_data"]
         header_surfaces = {
             surface["surface_slug"]: surface for surface in header["surfaces"]
@@ -184,18 +185,21 @@ def main() -> None:
     parser.add_argument("--api-root", type=Path, required=True)
     parser.add_argument("--dist-root", type=Path)
     parser.add_argument(
-        "--skip-header-family",
+        "--legacy-db-fixture",
         action="store_true",
-        help="Skip the separate header-family payload for database-only fixture checks.",
+        help=(
+            "Run only the compatibility assertions shared with the legacy "
+            "database-backed fixture."
+        ),
     )
     args = parser.parse_args()
     dist_root = args.dist_root.resolve() if args.dist_root else None
-    if args.skip_header_family and dist_root is not None:
-        parser.error("--skip-header-family cannot be combined with --dist-root")
+    if args.legacy_db_fixture and dist_root is not None:
+        parser.error("--legacy-db-fixture cannot be combined with --dist-root")
     assert_build(
         args.api_root.resolve(),
         dist_root,
-        expect_header_family=not args.skip_header_family,
+        expect_extended_fixture=not args.legacy_db_fixture,
     )
     print("family build assertions passed")
 
