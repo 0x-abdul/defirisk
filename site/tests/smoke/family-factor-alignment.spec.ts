@@ -97,22 +97,40 @@ test.describe('Family factor alignment fixture', () => {
   test('tabs retain unrelated query and hash, support keyboard, and restore history', async ({
     page,
   }) => {
-    await requireFixture(page, `${FAMILY}?campaign=qa#assessment`);
+    await requireFixture(page, `${FAMILY}?surface=core&campaign=qa#assessment`);
     const core = page.getByRole('tab', { name: 'Core markets' });
     const v2 = page.getByRole('tab', { name: 'Version 2' });
     await expect(core).toHaveAttribute('href', /campaign=qa/);
     await expect(core).toHaveAttribute('href', /#assessment$/);
+    await expect(core).toHaveAttribute('aria-selected', 'true');
+
+    const initialHistoryLength = await page.evaluate(() => window.history.length);
+    await core.click();
+    await core.click();
+    expect(await page.evaluate(() => window.history.length)).toBe(initialHistoryLength);
 
     await core.focus();
     await page.keyboard.press('ArrowRight');
     await expect(v2).toBeFocused();
-    await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/campaign=qa.*#assessment$/);
+    await expect(v2).toHaveAttribute('aria-selected', 'true');
+    await expect(page).toHaveURL(
+      `${new URL(FAMILY, 'http://localhost').pathname}?surface=v2&campaign=qa#assessment`
+    );
+    expect(await page.evaluate(() => window.history.length)).toBe(initialHistoryLength + 1);
 
-    await core.click();
-    await expect(page).toHaveURL(/surface=core/);
+    await page.keyboard.press('Enter');
+    expect(await page.evaluate(() => window.history.length)).toBe(initialHistoryLength + 1);
+
     await page.goBack();
-    await expect(page).toHaveURL(/campaign=qa.*#assessment$/);
+    await expect(page).toHaveURL(
+      `${new URL(FAMILY, 'http://localhost').pathname}?surface=core&campaign=qa#assessment`
+    );
+    await expect(core).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByText('Surface grade', { exact: false })).toContainText('Core markets');
+
+    await page.goForward();
+    await expect(v2).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByText('Surface grade', { exact: false })).toContainText('Version 2');
   });
 
   test('surface hrefs follow native category hash changes', async ({ page }) => {

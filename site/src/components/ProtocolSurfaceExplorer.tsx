@@ -424,7 +424,9 @@ export default function ProtocolSurfaceExplorer({
       nextMode,
       window.location.hash
     );
-    window.history.pushState({}, '', href);
+    if (new URL(href, window.location.href).href !== window.location.href) {
+      window.history.pushState({}, '', href);
+    }
     setLocationParts({
       pathname: window.location.pathname,
       search: window.location.search,
