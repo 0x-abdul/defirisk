@@ -352,10 +352,14 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         id: site_build
         run: npm run build
         working-directory: site
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         if: steps.site_build.outcome == 'success'
         run: npx playwright install --with-deps chromium
@@ -428,11 +432,14 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         id: site_build
         run: npm run build
         working-directory: site
-        continue-on-error: true
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         if: steps.site_build.outcome == 'success'
         run: npx playwright install --with-deps chromium
@@ -442,6 +449,10 @@ jobs:
         run: npm run test:smoke
         working-directory: site
         continue-on-error: true  # informational: pre-existing failures, tracked separately
+      - name: Run family factor alignment smoke gate
+        if: steps.site_build.outcome == 'success'
+        run: npm run test:smoke -- tests/smoke/family-factor-alignment.spec.ts
+        working-directory: site
 
   # ── 12. Visual regression (E-16, informational until Linux baselines land) ──
   # Existing baselines are -win32 only (captured locally on Windows). To
@@ -466,9 +477,13 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         run: npm run build
         working-directory: site
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
         working-directory: site

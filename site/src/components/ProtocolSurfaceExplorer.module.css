@@ -33,7 +33,9 @@
   scrollbar-width: none;
 }
 .tab {
-  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   padding: 0 12px;
   border: 0;
   border-bottom: 2px solid transparent;
@@ -42,11 +44,24 @@
   font: 600 13px inherit;
   white-space: nowrap;
   cursor: pointer;
+  text-decoration: none;
 }
 .tab:hover,
 .tab.active {
   color: var(--fg);
   border-bottom-color: var(--fg);
+}
+.tab:focus-visible,
+.deploymentTrigger:focus-visible,
+.linkButton:focus-visible,
+.evidenceActions button:focus-visible,
+.categoryPill:focus-visible,
+.factorHeader:focus-visible,
+.factorRow:focus-visible,
+.sheet header button:focus-visible,
+.sheetOptions button:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
 }
 .section {
   border-top: 1px solid var(--border);
@@ -124,7 +139,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -168,6 +183,7 @@
   border-spacing: 0;
   font-size: 13px;
   overflow: hidden;
+  table-layout: fixed;
 }
 .compare th,
 .compare td {
@@ -203,6 +219,7 @@
 }
 .linkButton,
 .evidenceActions button {
+  min-height: 44px;
   border: 0;
   padding: 0;
   background: transparent;
@@ -382,7 +399,7 @@
   text-align: left;
   cursor: pointer;
 }
-.sheetOptions button[aria-selected='true'] {
+.sheetOptions button[aria-pressed='true'] {
   border-color: var(--fg);
   background: var(--surface-2);
 }
@@ -416,36 +433,13 @@
   .categoryPill {
     min-height: 44px;
   }
-  .compare,
-  .compare tbody,
-  .compare tr,
+  .compare {
+    font-size: 12px;
+  }
+  .compare th,
   .compare td {
-    display: block;
-  }
-  .compare thead {
-    display: none;
-  }
-  .compare tr {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .compare td {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 5px 0;
-    border: 0;
-  }
-  .compare td::before {
-    content: attr(data-label);
-    color: var(--fg-3);
-    font:
-      10px 'Geist Mono',
-      monospace;
-  }
-  .compare td:last-child {
-    justify-content: flex-start;
-    margin-top: 4px;
+    padding: 8px;
+    overflow-wrap: anywhere;
   }
   .factorRow {
     grid-template-columns: 10px minmax(0, 1fr);
@@ -461,7 +455,27 @@
   .deploymentControl {
     max-width: 360px;
   }
-  .sheetBackdrop {
-    display: none;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

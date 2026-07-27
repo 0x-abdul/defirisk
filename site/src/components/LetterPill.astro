@@ -9,10 +9,12 @@ export interface Props {
   meaning?: string;
   /** Numeric risk score rendered as a string (e.g. "14.3"), displayed in hero size only. */
   score?: string;
+  /** Reserve a hidden score node so a hydrated family view can populate it. */
+  reserveScore?: boolean;
   ariaLabel?: string;
 }
 
-const { letter, size = 'medium', meaning, score, ariaLabel } = Astro.props;
+const { letter, size = 'medium', meaning, score, reserveScore = false, ariaLabel } = Astro.props;
 
 const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
 ---
@@ -36,7 +38,13 @@ const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
     <div class:list={['gradebig', letter]} role="img" aria-label={ariaLabelResolved}>
       {meaning && <span class="m">{meaning}</span>}
       <span class="l">{letter}</span>
-      {score && <span class="n">{score}</span>}
+      {reserveScore ? (
+        <span class="n" hidden={score === undefined}>
+          {score ?? ''}
+        </span>
+      ) : (
+        score && <span class="n">{score}</span>
+      )}
     </div>
   )
 }
@@ -145,6 +153,9 @@ const ariaLabelResolved = ariaLabel ?? `Grade ${letter}`;
     font-feature-settings: 'tnum';
     letter-spacing: -0.01em;
     opacity: 1;
+  }
+  .gradebig .n[hidden] {
+    display: none;
   }
   .gradebig .m {
     position: absolute;
