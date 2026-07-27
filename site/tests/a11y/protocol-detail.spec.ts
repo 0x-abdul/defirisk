@@ -116,5 +116,14 @@ test.describe('Family factor alignment fixture', () => {
       () => document.documentElement.scrollWidth > window.innerWidth
     );
     expect(hasHorizontalScroll).toBe(false);
+
+    const results = await new AxeBuilder({ page }).withTags([...A11Y_TAGS]).analyze();
+    const violations = results.violations.filter(
+      (violation) => violation.impact === 'serious' || violation.impact === 'critical'
+    );
+    expect(
+      violations,
+      violations.map((violation) => `${violation.id}: ${violation.description}`).join('\n')
+    ).toEqual([]);
   });
 });

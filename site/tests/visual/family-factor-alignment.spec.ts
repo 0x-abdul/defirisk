@@ -8,7 +8,7 @@ async function requireFixture(page: import('@playwright/test').Page, path: strin
   if (!response || response.status() === 404) {
     test.skip(true, 'Synthetic family fixture is not installed for this build');
   }
-  await page.getByText('Risk profile at a glance').waitFor();
+  await page.locator('#family-surface-panel').waitFor();
 }
 
 test.describe('Family factor design alignment', () => {
@@ -28,5 +28,29 @@ test.describe('Family factor design alignment', () => {
       await requireFixture(page, FAMILY);
       await expect(page.locator('#cat-1 summary')).toHaveScreenshot(`family-category-${width}.png`);
     });
+
+    test(`Overview comparison at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 812 });
+      await requireFixture(page, `${FAMILY}?view=overview`);
+      await expect(page.locator('#family-surface-panel')).toHaveScreenshot(
+        `family-overview-${width}.png`
+      );
+    });
+
+    test(`complete category strip at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 812 });
+      await requireFixture(page, FAMILY);
+      const categoryStrip = page.getByRole('link', { name: /category:/ }).first().locator('..');
+      await expect(categoryStrip).toHaveScreenshot(`family-category-strip-${width}.png`);
+    });
   }
+
+  test('deployment picker at 320px', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 812 });
+    await requireFixture(page, FAMILY);
+    await page.getByRole('button', { name: /All deployments/ }).click();
+    await expect(page.getByRole('dialog', { name: 'Select deployment' })).toHaveScreenshot(
+      'family-deployment-picker-320.png'
+    );
+  });
 });

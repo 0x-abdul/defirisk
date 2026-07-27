@@ -66,12 +66,12 @@ test.describe('Family factor alignment fixture', () => {
       'true'
     );
     await expect(page.locator('[data-family-grade-scored] .n')).toHaveText('42.7');
-    await expect(page.getByText('Synthetic default-surface cap.')).toBeVisible();
-    await expect(page.getByText('2026-06-15', { exact: false })).toBeVisible();
+    await expect(page.getByText('Synthetic default-surface cap.', { exact: true })).toBeVisible();
+    await expect(page.locator('[data-family-field="provenance-date"]')).toContainText('2026-06-15');
 
     await page.getByRole('tab', { name: 'Legacy markets' }).click();
     await expect(page).toHaveURL(/\?surface=legacy$/);
-    await expect(page.getByText('Synthetic default-surface cap.')).toHaveCount(0);
+    await expect(page.locator('[data-family-cap]')).toBeHidden();
   });
 
   test('deployment selection applies full effective evidence and labels partial overrides', async ({
@@ -165,5 +165,54 @@ test.describe('Family factor alignment fixture', () => {
       }));
       expect(overflows).toEqual({ document: false, body: false });
     });
+
+    test(`mobile Overview is readable and locally scrollable at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 812 });
+      await requireFixture(page, `${FAMILY}?view=overview`);
+      const comparison = page.getByRole('region', { name: 'Surface comparison' });
+      await expect(comparison).toBeVisible();
+      expect(await page.getByRole('columnheader').count()).toBe(7);
+      expect(await page.getByRole('row').count()).toBe(3);
+
+      const measurements = await comparison.evaluate((element) => ({
+        scrollWidth: element.scrollWidth,
+        clientWidth: element.clientWidth,
+        documentOverflow: document.documentElement.scrollWidth > window.innerWidth,
+        bodyOverflow: document.body.scrollWidth > window.innerWidth,
+      }));
+      expect(measurements.scrollWidth).toBeGreaterThan(measurements.clientWidth);
+      expect(measurements.documentOverflow).toBe(false);
+      expect(measurements.bodyOverflow).toBe(false);
+
+      await comparison.focus();
+      await page.keyboard.press('ArrowRight');
+      await expect
+        .poll(() => comparison.evaluate((element) => element.scrollLeft))
+        .toBeGreaterThan(0);
+    });
   }
+
+  test('mobile family controls meet the 44px touch-target minimum', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 812 });
+    await requireFixture(page, FAMILY);
+    const categoryTargets = await page
+      .getByRole('link', { name: /category:/ })
+      .evaluateAll((links) =>
+        links.map((link) => {
+          const box = link.getBoundingClientRect();
+          return { width: box.width, height: box.height };
+        })
+      );
+    expect(categoryTargets).toHaveLength(13);
+    expect(categoryTargets.every(({ width, height }) => width >= 44 && height >= 44)).toBe(true);
+
+    await page.getByRole('button', { name: /All deployments/ }).click();
+    const close = page.getByRole('button', { name: 'Close' });
+    const closeBox = await close.evaluate((button) => {
+      const box = button.getBoundingClientRect();
+      return { width: box.width, height: box.height };
+    });
+    expect(closeBox.width).toBeGreaterThanOrEqual(44);
+    expect(closeBox.height).toBeGreaterThanOrEqual(44);
+  });
 });

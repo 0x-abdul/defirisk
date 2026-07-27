@@ -1,6 +1,10 @@
 .shell {
   display: grid;
+  min-width: 0;
   gap: 22px;
+}
+.shell > [role='tabpanel'] {
+  min-width: 0;
 }
 .surfaceLabel,
 .owner,
@@ -64,6 +68,7 @@
   outline-offset: 2px;
 }
 .section {
+  min-width: 0;
   border-top: 1px solid var(--border);
   padding-top: 20px;
 }
@@ -176,8 +181,21 @@
     monospace;
   font-style: normal;
 }
+.compareViewport {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 7px;
+  overscroll-behavior-inline: contain;
+}
+.compareViewport:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
 .compare {
   width: 100%;
+  min-width: 640px;
   border: 1px solid var(--border);
   border-radius: 7px;
   border-spacing: 0;
@@ -377,6 +395,9 @@
   margin-bottom: 12px;
 }
 .sheet header button {
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 8px;
   border: 0;
   background: transparent;
   color: var(--fg);
@@ -410,6 +431,9 @@
   font-size: 11px;
 }
 @media (max-width: 768px) {
+  .shell {
+    --factor-category-key-height: 44px;
+  }
   .tabScroller::after {
     opacity: 1;
   }
@@ -439,7 +463,8 @@
   .compare th,
   .compare td {
     padding: 8px;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: normal;
   }
   .factorRow {
     grid-template-columns: 10px minmax(0, 1fr);

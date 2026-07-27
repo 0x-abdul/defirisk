@@ -548,49 +548,56 @@ export default function ProtocolSurfaceExplorer({
               </span>
             </div>
             {legacyCaveat && <p class={styles.caveat}>{legacyCaveat}</p>}
-            <table class={styles.compare}>
-              <thead>
-                <tr>
-                  <th>Surface</th>
-                  <th>Status</th>
-                  <th>TVS</th>
-                  <th>Grade</th>
-                  <th>Score</th>
-                  <th>Reviewed</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {surfaces.map((surface) => (
-                  <tr key={surface.surface_slug}>
-                    <td data-label="Surface">
-                      <b>{surface.display_name ?? surface.surface_slug}</b>
-                      {surface.is_primary && <small class={styles.primary}>Primary</small>}
-                    </td>
-                    <td data-label="Lifecycle">
-                      <span class={styles.status}>{lifecycleLabel(surface.status)}</span>
-                    </td>
-                    <td data-label="TVS">{usd(surface.tvs_usd)}</td>
-                    <td data-label="Grade">
-                      <span class={styles.grade}>{surface.headline_grade ?? 'Pending'}</span>
-                    </td>
-                    <td data-label="Risk">
-                      {finiteNumber(surface.risk_score)?.toFixed(1) ?? 'Pending publication'}
-                    </td>
-                    <td data-label="Reviewed">{formatAssessmentDateUtc(surface.graded_at)}</td>
-                    <td>
-                      <a
-                        class={styles.linkButton}
-                        href={hrefFor('surface', surface, null)}
-                        onClick={(event) => activateAnchor(event, 'surface', surface)}
-                      >
-                        View surface
-                      </a>
-                    </td>
+            <div
+              class={styles.compareViewport}
+              role="region"
+              aria-label="Surface comparison"
+              tabIndex={0}
+            >
+              <table class={styles.compare}>
+                <thead>
+                  <tr>
+                    <th>Surface</th>
+                    <th>Status</th>
+                    <th>TVS</th>
+                    <th>Grade</th>
+                    <th>Score</th>
+                    <th>Reviewed</th>
+                    <th />
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {surfaces.map((surface) => (
+                    <tr key={surface.surface_slug}>
+                      <td data-label="Surface">
+                        <b>{surface.display_name ?? surface.surface_slug}</b>
+                        {surface.is_primary && <small class={styles.primary}>Primary</small>}
+                      </td>
+                      <td data-label="Lifecycle">
+                        <span class={styles.status}>{lifecycleLabel(surface.status)}</span>
+                      </td>
+                      <td data-label="TVS">{usd(surface.tvs_usd)}</td>
+                      <td data-label="Grade">
+                        <span class={styles.grade}>{surface.headline_grade ?? 'Pending'}</span>
+                      </td>
+                      <td data-label="Risk">
+                        {finiteNumber(surface.risk_score)?.toFixed(1) ?? 'Pending publication'}
+                      </td>
+                      <td data-label="Reviewed">{formatAssessmentDateUtc(surface.graded_at)}</td>
+                      <td>
+                        <a
+                          class={styles.linkButton}
+                          href={hrefFor('surface', surface, null)}
+                          onClick={(event) => activateAnchor(event, 'surface', surface)}
+                        >
+                          View surface
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         ) : (
           <>
