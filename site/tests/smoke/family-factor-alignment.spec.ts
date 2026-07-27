@@ -71,7 +71,20 @@ test.describe('Family factor alignment fixture', () => {
 
     await page.getByRole('tab', { name: 'Legacy markets' }).click();
     await expect(page).toHaveURL(/\?surface=legacy$/);
+    await expect(page.getByRole('tab', { name: 'Legacy markets' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    await expect(page.locator('[data-family-grade-empty]')).toBeVisible();
+    await expect(page.locator('[data-family-field="risk-row"]')).toBeHidden();
+    await expect(page.locator('[data-family-field="body-risk-row"]')).toBeHidden();
+    await expect(page.locator('[data-family-field="reviewed"]')).toHaveText('Unavailable');
+    await expect(page.locator('[data-family-field="body-reviewed"]')).toHaveText('Unavailable');
     await expect(page.locator('[data-family-cap]')).toBeHidden();
+
+    await page.getByRole('tab', { name: 'Secure markets' }).click();
+    await expect(page.locator('[data-family-grade-scored] .n')).toHaveText('42.7');
+    await expect(page.locator('[data-family-cap]')).toBeVisible();
   });
 
   test('deployment selection applies full effective evidence and labels partial overrides', async ({
@@ -141,6 +154,80 @@ test.describe('Family factor alignment fixture', () => {
       'href',
       /#cat-1$/
     );
+  });
+
+  test('invalid selectors canonicalize without losing unrelated query or hash', async ({
+    page,
+  }) => {
+    await requireFixture(page, `${FAMILY}?surface=missing&campaign=qa#cat-1`);
+    await expect(page).toHaveURL(`${FAMILY}?campaign=qa#cat-1`);
+    await expect(page.getByRole('tab', { name: 'Version 2' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+
+    await page.goto(`${FAMILY}?surface=core&deployment=missing&chain=ethereum&campaign=qa#cat-2`, {
+      waitUntil: 'networkidle',
+    });
+    await expect(page).toHaveURL(`${FAMILY}?surface=core&campaign=qa#cat-2`);
+    await expect(page.getByRole('tab', { name: 'Core markets' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    await expect(page.getByRole('button', { name: /All deployments/ })).toBeVisible();
+  });
+
+  test('Overview wins conflicting selectors and surface changes clear deployment state', async ({
+    page,
+  }) => {
+    await requireFixture(
+      page,
+      `${FAMILY}?view=overview&surface=core&deployment=missing&chain=base&campaign=qa#assessment`
+    );
+    await expect(page).toHaveURL(`${FAMILY}?view=overview&campaign=qa#assessment`);
+    await expect(page.getByRole('tab', { name: 'Overview' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+
+    await page.getByRole('tab', { name: 'Version 2' }).click();
+    await page.getByRole('button', { name: /All deployments/ }).click();
+    const dialog = page.getByRole('dialog', { name: 'Select deployment' });
+    await dialog.getByRole('button').nth(2).click();
+    await expect(page).toHaveURL(/deployment=v2-1&chain=/);
+
+    await page.getByRole('tab', { name: 'Core markets' }).click();
+    const url = new URL(page.url());
+    expect(url.searchParams.get('surface')).toBe('core');
+    expect(url.searchParams.has('deployment')).toBe(false);
+    expect(url.searchParams.has('chain')).toBe(false);
+    expect(url.searchParams.get('campaign')).toBe('qa');
+    expect(url.hash).toBe('#assessment');
+    await expect(page.getByRole('button', { name: /All deployments/ })).toBeVisible();
+  });
+
+  test('tabs support Home, End, ArrowLeft, and wraparound activation', async ({ page }) => {
+    await requireFixture(page, `${FAMILY}?surface=core`);
+    const overview = page.getByRole('tab', { name: 'Overview' });
+    const core = page.getByRole('tab', { name: 'Core markets' });
+    const v2 = page.getByRole('tab', { name: 'Version 2' });
+
+    await core.focus();
+    await page.keyboard.press('End');
+    await expect(v2).toBeFocused();
+    await expect(v2).toHaveAttribute('aria-selected', 'true');
+
+    await page.keyboard.press('Home');
+    await expect(overview).toBeFocused();
+    await expect(overview).toHaveAttribute('aria-selected', 'true');
+
+    await page.keyboard.press('ArrowLeft');
+    await expect(v2).toBeFocused();
+    await expect(v2).toHaveAttribute('aria-selected', 'true');
+
+    await page.keyboard.press('ArrowRight');
+    await expect(overview).toBeFocused();
+    await expect(overview).toHaveAttribute('aria-selected', 'true');
   });
 
   test('family and non-family share normalized factor-card output for the same model', async ({
