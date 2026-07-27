@@ -1,6 +1,10 @@
 .shell {
   display: grid;
+  min-width: 0;
   gap: 22px;
+}
+.shell > [role='tabpanel'] {
+  min-width: 0;
 }
 .surfaceLabel,
 .owner,
@@ -33,7 +37,9 @@
   scrollbar-width: none;
 }
 .tab {
-  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   padding: 0 12px;
   border: 0;
   border-bottom: 2px solid transparent;
@@ -42,13 +48,23 @@
   font: 600 13px inherit;
   white-space: nowrap;
   cursor: pointer;
+  text-decoration: none;
 }
 .tab:hover,
 .tab.active {
   color: var(--fg);
   border-bottom-color: var(--fg);
 }
+.tab:focus-visible,
+.deploymentTrigger:focus-visible,
+.linkButton:focus-visible,
+.sheet header button:focus-visible,
+.sheetOptions button:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
 .section {
+  min-width: 0;
   border-top: 1px solid var(--border);
   padding-top: 20px;
 }
@@ -124,7 +140,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -161,13 +177,27 @@
     monospace;
   font-style: normal;
 }
+.compareViewport {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 7px;
+  overscroll-behavior-inline: contain;
+}
+.compareViewport:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
 .compare {
   width: 100%;
+  min-width: 640px;
   border: 1px solid var(--border);
   border-radius: 7px;
   border-spacing: 0;
   font-size: 13px;
   overflow: hidden;
+  table-layout: fixed;
 }
 .compare th,
 .compare td {
@@ -201,8 +231,8 @@
     700 14px 'Geist Mono',
     monospace;
 }
-.linkButton,
-.evidenceActions button {
+.linkButton {
+  min-height: 44px;
   border: 0;
   padding: 0;
   background: transparent;
@@ -217,125 +247,6 @@
   background: var(--surface-2);
   color: var(--fg-2);
   font-size: 13px;
-}
-.categoryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
-  gap: 6px;
-}
-.categoryPill {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 42px;
-  padding: 7px 9px;
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--tone);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--fg);
-  font: inherit;
-  font-size: 11px;
-  text-align: left;
-  cursor: pointer;
-}
-.categoryPill span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.red {
-  --tone: var(--gF);
-}
-.yellow {
-  --tone: var(--gD);
-}
-.green {
-  --tone: var(--gA);
-}
-.gray,
-.not_assessed,
-.not_applicable {
-  --tone: var(--fg-4);
-}
-.evidenceActions {
-  display: flex;
-  gap: 12px;
-  font-size: 12px;
-}
-.factorGroups {
-  display: grid;
-  gap: 10px;
-}
-.factorGroup {
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  overflow: hidden;
-}
-.factorHeader {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border: 0;
-  background: var(--surface-2);
-  color: var(--fg);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.factorHeader small {
-  display: block;
-  margin-top: 3px;
-  color: var(--fg-3);
-  font-size: 11px;
-}
-.factorRows {
-  display: grid;
-}
-.factorRow {
-  display: grid;
-  grid-template-columns: 10px minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: center;
-  min-height: 54px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  color: inherit;
-  text-decoration: none;
-}
-.factorRow:hover {
-  background: var(--surface-2);
-}
-.scoreDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--tone);
-}
-.factorMain {
-  display: grid;
-  gap: 3px;
-  min-width: 0;
-}
-.factorMain b {
-  color: var(--fg);
-  font-size: 13px;
-}
-.factorMain small {
-  overflow: hidden;
-  color: var(--fg-3);
-  font-size: 12px;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.factorScore {
-  color: var(--fg-3);
-  font-size: 10px;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 .sheetBackdrop {
   position: fixed;
@@ -360,6 +271,9 @@
   margin-bottom: 12px;
 }
 .sheet header button {
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 8px;
   border: 0;
   background: transparent;
   color: var(--fg);
@@ -382,7 +296,7 @@
   text-align: left;
   cursor: pointer;
 }
-.sheetOptions button[aria-selected='true'] {
+.sheetOptions button[aria-pressed='true'] {
   border-color: var(--fg);
   background: var(--surface-2);
 }
@@ -393,6 +307,9 @@
   font-size: 11px;
 }
 @media (max-width: 768px) {
+  .shell {
+    --factor-category-key-height: 44px;
+  }
   .tabScroller::after {
     opacity: 1;
   }
@@ -409,49 +326,17 @@
     display: grid;
     grid-template-columns: auto 1fr;
   }
-  .sectionHead > span:last-child,
-  .evidenceActions {
+  .sectionHead > span:last-child {
     grid-column: 2;
   }
-  .categoryPill {
-    min-height: 44px;
+  .compare {
+    font-size: 12px;
   }
-  .compare,
-  .compare tbody,
-  .compare tr,
+  .compare th,
   .compare td {
-    display: block;
-  }
-  .compare thead {
-    display: none;
-  }
-  .compare tr {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .compare td {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 5px 0;
-    border: 0;
-  }
-  .compare td::before {
-    content: attr(data-label);
-    color: var(--fg-3);
-    font:
-      10px 'Geist Mono',
-      monospace;
-  }
-  .compare td:last-child {
-    justify-content: flex-start;
-    margin-top: 4px;
-  }
-  .factorRow {
-    grid-template-columns: 10px minmax(0, 1fr);
-  }
-  .factorScore {
-    grid-column: 2;
+    padding: 8px;
+    overflow-wrap: normal;
+    word-break: normal;
   }
   .surfaceLabel {
     margin-top: 4px;
@@ -461,7 +346,27 @@
   .deploymentControl {
     max-width: 360px;
   }
-  .sheetBackdrop {
-    display: none;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

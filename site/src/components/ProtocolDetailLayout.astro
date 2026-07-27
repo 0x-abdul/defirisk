@@ -20,20 +20,26 @@ import TopBar from '../components/TopBar.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import BigGradeCard from '../components/BigGradeCard.astro';
 import VerdictBlock from '../components/VerdictBlock.astro';
-import CategoryCard from '../components/CategoryCard.astro';
 import GovernanceSignalRow from '../components/GovernanceSignalRow.astro';
 import IncidentBanner from '../components/IncidentBanner.astro';
-import FactorTable from '../components/FactorTable.astro';
+import FactorAssessment from '../components/FactorAssessment';
 import DeploymentTabs from '../components/DeploymentTabs';
 import ProtocolSurfaceExplorer from '../components/ProtocolSurfaceExplorer';
 import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loaders';
+import { buildFactorAssessmentModel } from '../lib/factor-assessment-model';
+import {
+  buildAssessmentHeaderModel,
+  finiteNumber,
+  formatAssessmentDateUtc,
+  GRADE_MEANING,
+} from '../lib/assessment-header-model';
+import { selectDefaultSurface } from '../lib/family-view-url';
 import { loadCuratorSidecar } from '../lib/curator-sidecar';
 import { RUBRIC_VERSION } from '../lib/rubric';
 import { REPO_URL, ISSUE_NEW_URL } from '../lib/seo-defaults';
 import type { Letter } from '../lib/rubric';
 import { TOTAL_FACTOR_COUNT } from '../lib/rubric-constants';
 import { CATEGORIES, chainMeta } from '../data/categories';
-import type { FactorRow, FactorLight, GapReason } from '../components/FactorTable.astro';
 
 export interface Props {
   detail: ProtocolDetail;
@@ -45,22 +51,18 @@ export interface Props {
 
 const { detail, reviewMode = false, canonical } = Astro.props;
 
-const MEANING: Record<Letter, string> = {
-  A: 'Resilient',
-  B: 'Sound',
-  C: 'Watch',
-  D: 'Compromised',
-  F: 'Failing',
-};
-
 const proto = detail.protocol as Record<string, unknown>;
+const surfaces = (detail.surfaces as Array<Record<string, unknown>> | undefined) ?? [];
+const multiSurface = surfaces.length > 1;
+const defaultSurface = multiSurface ? selectDefaultSurface(surfaces) : null;
+const assessment = defaultSurface ?? proto;
 const slug = (proto.slug as string) ?? '';
-const headlineGrade = (proto.headline_grade ?? null) as Letter | null;
+const headlineGrade = (assessment.headline_grade ?? null) as Letter | null;
 const displayName = (proto.display_name as string) ?? slug;
 const protocolType = (proto.protocol_type as string) ?? 'N/A';
 const primaryChain = (proto.primary_chain as string) ?? 'N/A';
 const description = (proto.description as string) ?? '';
-const gradedAt = (proto.graded_at as string | null) ?? null;
+const gradedAt = (assessment.graded_at as string | null) ?? null;
 const tvlUsd = ((): number => {
   const v = proto.total_value_secured_usd;
   if (typeof v === 'number') return v;
@@ -68,22 +70,14 @@ const tvlUsd = ((): number => {
   return 0;
 })();
 const categoryLights =
-  (proto.category_lights as Record<number, 'red' | 'yellow' | 'green' | 'gray'>) ?? {};
+  (assessment.category_lights as Record<number, 'red' | 'yellow' | 'green' | 'gray'>) ?? {};
 
 // M1 v4 fields
-const riskScore = ((): number | null => {
-  const v = proto.risk_score;
-  if (typeof v === 'number' && Number.isFinite(v)) return v;
-  if (typeof v === 'string') {
-    const n = parseFloat(v);
-    return Number.isFinite(n) ? n : null;
-  }
-  return null;
-})();
+const riskScore = finiteNumber(assessment.risk_score);
 const categorySeverities =
-  (proto.category_severities as Record<string, number> | null | undefined) ?? null;
-const capApplied = (proto.cap_applied as 'none' | 'D' | 'F' | null | undefined) ?? 'none';
-const capReason = (proto.cap_reason as string | null | undefined) ?? null;
+  (assessment.category_severities as Record<string, number> | null | undefined) ?? null;
+const capApplied = (assessment.cap_applied as 'none' | 'D' | 'F' | null | undefined) ?? 'none';
+const capReason = (assessment.cap_reason as string | null | undefined) ?? null;
 
 // Deployments
 const deploymentsRaw = (detail.deployments as Array<Record<string, unknown>>) ?? [];
@@ -106,74 +100,53 @@ const deployments = deploymentsRaw.map((d) => {
 
 // Factor scores → group by category_id
 const factors = listFactors();
-const factorById = new Map(factors.map((f) => [f.id, f]));
-
-const factorScoresRaw = (detail.factor_scores as Array<Record<string, unknown>>) ?? [];
-
-type ScoreRecord = {
-  factor_id: string;
-  score: FactorLight;
-  evidence_summary: string;
-  category_id: number;
-  factor_name: string;
-  /** PD-039 (2026-05-11): null on graded scores; populated on gray/not_assessed. */
-  gap_reason: GapReason | null;
-};
-
-const scoreRecords: ScoreRecord[] = factorScoresRaw.flatMap((fs) => {
-  const factorId = (fs.factor_id as string) ?? '';
-  const factor = factorById.get(factorId);
-  if (!factor) return [];
-  const score = (fs.score as FactorLight) ?? 'gray';
-  return [
-    {
-      factor_id: factorId,
-      score,
-      evidence_summary: (fs.evidence_summary as string) ?? '',
-      category_id: factor.category_id,
-      factor_name: factor.name,
-      gap_reason: (fs.gap_reason as GapReason | null | undefined) ?? null,
-    },
-  ];
-});
-
-// Counts for severity bars + meta values
-const totals = scoreRecords.reduce(
-  (acc, s) => {
-    if (s.score === 'red') acc.r++;
-    else if (s.score === 'yellow') acc.y++;
-    else if (s.score === 'green') acc.g++;
-    return acc;
+const factorMeta = factors.map((factor) => ({
+  id: factor.id,
+  name: factor.name,
+  category_id: factor.category_id,
+  is_critical: factor.is_critical,
+}));
+const factorScoresRaw =
+  ((multiSurface ? assessment.factor_scores : detail.factor_scores) as Array<{
+    factor_id?: string;
+    score?: 'red' | 'yellow' | 'green' | 'gray' | 'not_assessed' | 'not_applicable';
+    evidence_summary?: string;
+    gap_reason?: string | null;
+  }>) ?? [];
+const factorAssessment = buildFactorAssessmentModel({
+  context: {
+    protocolSlug: slug,
+    surfaceSlug: multiSurface
+      ? ((defaultSurface?.surface_slug as string | undefined) ?? null)
+      : null,
   },
-  { r: 0, y: 0, g: 0 }
+  categories: CATEGORIES,
+  factors: factorMeta,
+  scores: factorScoresRaw,
+  categoryLights,
+  categorySeverities,
+  reviewMode,
+});
+const totals = {
+  r: factorAssessment.totals.red,
+  y: factorAssessment.totals.yellow,
+  g: factorAssessment.totals.green,
+};
+const criticalRed = factorAssessment.criticalRed;
+const initialHeader = buildAssessmentHeaderModel({
+  mode: 'default',
+  headlineGrade,
+  riskScore,
+  gradedAt,
+  status: (assessment.status as string | null | undefined) ?? null,
+  scopeNote: (assessment.scope_note as string | null | undefined) ?? null,
+  capApplied,
+  capReason,
+  factorAssessment,
+});
+const CRITICAL_IDS = new Set(
+  factors.filter((factor) => factor.is_critical).map((factor) => factor.id)
 );
-
-// Critical factor count: load factors marked is_critical
-const CRITICAL_IDS = new Set(factors.filter((f) => f.is_critical).map((f) => f.id));
-const criticalRed = scoreRecords.filter(
-  (s) => CRITICAL_IDS.has(s.factor_id) && s.score === 'red'
-).length;
-
-const categoryRollup: Record<
-  number,
-  { records: ScoreRecord[]; r: number; y: number; g: number; total: number }
-> = {};
-for (const c of CATEGORIES) {
-  categoryRollup[c.id] = { records: [], r: 0, y: 0, g: 0, total: 0 };
-}
-for (const s of scoreRecords) {
-  const r = categoryRollup[s.category_id];
-  if (!r) continue;
-  r.records.push(s);
-  r.total++;
-  if (s.score === 'red') r.r++;
-  else if (s.score === 'yellow') r.y++;
-  else if (s.score === 'green') r.g++;
-}
-
-// Per-category factor counts in the full taxonomy
-const taxonomyCounts: Record<number, number> = {};
-for (const f of factors) taxonomyCounts[f.category_id] = (taxonomyCounts[f.category_id] ?? 0) + 1;
 
 // Active incidents only render on the published view; unpublished review
 // pages are pre-launch and should not surface incident banners from the
@@ -195,54 +168,11 @@ function fmtTvl(usd: number): string {
   return `$${usd.toFixed(0)}`;
 }
 
-const lastAssessedDisplay = gradedAt
-  ? new Date(gradedAt).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })
-  : 'N/A';
-
-// Severity-bar pattern for catcards. Take up to 18 bars per category.
-function makeBars(rec: { r: number; y: number; g: number }): Array<'r' | 'y' | 'g'> {
-  const bars: Array<'r' | 'y' | 'g'> = [];
-  for (let i = 0; i < rec.r; i++) bars.push('r');
-  for (let i = 0; i < rec.y; i++) bars.push('y');
-  for (let i = 0; i < rec.g; i++) bars.push('g');
-  return bars.slice(0, 18);
-}
-
-const categoryCards = CATEGORIES.map((category) => {
-  const counts = categoryRollup[category.id];
-  const total = taxonomyCounts[category.id] ?? 0;
-  const light = categoryLights[category.id] ?? 'gray';
-  const order: Record<string, number> = {
-    red: 0,
-    yellow: 1,
-    gray: 2,
-    not_assessed: 2,
-    not_applicable: 2,
-    green: 3,
-  };
-  const rows: FactorRow[] = counts.records
-    .sort((a, b) => (order[a.score] ?? 4) - (order[b.score] ?? 4))
-    .map((score) => ({
-      factor_id: score.factor_id,
-      light: score.score,
-      headline: score.factor_name,
-      evidence: score.evidence_summary,
-      gap_reason: score.gap_reason,
-      href:
-        score.score !== 'green' && !reviewMode
-          ? `/protocols/${slug}/factors/${score.factor_id}/`
-          : undefined,
-    }));
-  const severity = categorySeverities
-    ? (categorySeverities[String(category.id)] ?? undefined)
-    : undefined;
-
-  return { category, counts, total, light, rows, severity };
-});
+const lastAssessedDisplay = multiSurface
+  ? initialHeader.reviewed
+  : gradedAt
+    ? formatAssessmentDateUtc(gradedAt)
+    : 'N/A';
 
 // JSON-envelope link target. For published pages the file lives at
 // /api/<rubric>/protocols/<slug>.json. For review pages the JSON sits
@@ -258,19 +188,11 @@ const envelopeHref = reviewMode ? null : `/api/${RUBRIC_VERSION}/protocols/${slu
 const correctionHref = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 const disputeHref = `${ISSUE_NEW_URL}?template=grade-dispute.md`;
 const protocolIssuesHref = `${REPO_URL}/issues?q=${encodeURIComponent(`is:issue ${slug}`)}`;
-const surfaces = (detail.surfaces as Array<Record<string, unknown>> | undefined) ?? [];
-const multiSurface = surfaces.length > 1;
 const legacyCaveat =
   ((detail.family as Record<string, unknown> | undefined)?.legacy_caveat as
     string | null | undefined) ??
   (proto.legacy_caveat as string | null | undefined) ??
   null;
-const factorMeta = factors.map((factor) => ({
-  id: factor.id,
-  name: factor.name,
-  category_id: factor.category_id,
-  is_critical: factor.is_critical,
-}));
 ---
 
 <Base
@@ -331,15 +253,32 @@ const factorMeta = factors.map((factor) => ({
   />
 
   {
-    capApplied !== 'none' && capReason && (
-      <div class:list={['cap-banner', capApplied === 'F' ? 'cap-f' : 'cap-d']}>
+    multiSurface ? (
+      <div
+        data-family-cap
+        class:list={['cap-banner', initialHeader.capApplied === 'F' ? 'cap-f' : 'cap-d']}
+        hidden={initialHeader.capApplied === 'none' || !initialHeader.capReason}
+      >
         <span class="cap-icon" aria-hidden="true">
-          {capApplied === 'F' ? '⚠' : '▲'}
+          {initialHeader.capApplied === 'F' ? '⚠' : '▲'}
         </span>
         <span class="cap-text">
-          <b>Grade capped to {capApplied}</b>: {capReason}
+          <b data-family-cap-title>Grade capped to {initialHeader.capApplied}</b>:
+          <span data-family-cap-reason> {initialHeader.capReason}</span>
         </span>
       </div>
+    ) : (
+      capApplied !== 'none' &&
+      capReason && (
+        <div class:list={['cap-banner', capApplied === 'F' ? 'cap-f' : 'cap-d']}>
+          <span class="cap-icon" aria-hidden="true">
+            {capApplied === 'F' ? '⚠' : '▲'}
+          </span>
+          <span class="cap-text">
+            <b>Grade capped to {capApplied}</b>: {capReason}
+          </span>
+        </div>
+      )
     )
   }
 
@@ -347,10 +286,30 @@ const factorMeta = factors.map((factor) => ({
     <aside class="rail">
       <div class="gradeblock">
         {
-          headlineGrade ? (
+          multiSurface ? (
+            <>
+              <div data-family-grade-scored hidden={!initialHeader.grade}>
+                <BigGradeCard
+                  letter={initialHeader.grade ?? 'A'}
+                  meaning={GRADE_MEANING[initialHeader.grade ?? 'A']}
+                  score={initialHeader.riskScore ?? undefined}
+                  reserveScore
+                />
+              </div>
+              <div
+                data-family-grade-empty
+                class="gradebig-unscored"
+                aria-label="Not yet scored"
+                hidden={Boolean(initialHeader.grade)}
+              >
+                <span class="l">N/A</span>
+                <span class="m">Pending</span>
+              </div>
+            </>
+          ) : headlineGrade ? (
             <BigGradeCard
               letter={headlineGrade}
-              meaning={MEANING[headlineGrade]}
+              meaning={GRADE_MEANING[headlineGrade]}
               score={riskScore ?? undefined}
             />
           ) : (
@@ -361,8 +320,14 @@ const factorMeta = factors.map((factor) => ({
           )
         }
         {
-          headlineGrade && (
-            <VerdictBlock letter={headlineGrade} body={curator?.verdict_body ?? undefined} />
+          multiSurface ? (
+            <div data-family-verdict hidden={!initialHeader.grade}>
+              <VerdictBlock letter={initialHeader.grade ?? 'A'} />
+            </div>
+          ) : (
+            headlineGrade && (
+              <VerdictBlock letter={headlineGrade} body={curator?.verdict_body ?? undefined} />
+            )
           )
         }
       </div>
@@ -374,7 +339,7 @@ const factorMeta = factors.map((factor) => ({
 
       <div class="meta">
         <div class="mi">
-          <span>TVL</span>
+          <span>{multiSurface ? 'Family TVL' : 'TVL'}</span>
           <b>{fmtTvl(tvlUsd)}</b>
         </div>
         <div class="mi">
@@ -383,20 +348,29 @@ const factorMeta = factors.map((factor) => ({
         </div>
         <div class="mi">
           <span>Last assessed</span>
-          <b>{lastAssessedDisplay}</b>
+          <b data-family-field={multiSurface ? 'reviewed' : undefined}>{lastAssessedDisplay}</b>
         </div>
         <div class="mi">
           <span>Critical findings</span>
-          <b style={criticalRed > 0 ? 'color: var(--gF)' : ''}>
+          <b
+            data-family-field={multiSurface ? 'critical' : undefined}
+            style={criticalRed > 0 ? 'color: var(--gF)' : ''}
+          >
             {criticalRed} of {CRITICAL_IDS.size}
           </b>
         </div>
         {
-          riskScore !== null && (
-            <div class="mi">
+          (riskScore !== null || multiSurface) && (
+            <div
+              class="mi"
+              data-family-field={multiSurface ? 'risk-row' : undefined}
+              hidden={multiSurface && riskScore === null}
+            >
               <span>Risk score</span>
               <b class="mono">
-                {riskScore.toFixed(1)}
+                <span data-family-field={multiSurface ? 'risk' : undefined}>
+                  {riskScore?.toFixed(1)}
+                </span>
                 <span class="mi-unit"> / 100</span>
               </b>
             </div>
@@ -404,7 +378,9 @@ const factorMeta = factors.map((factor) => ({
         }
         <div class="mi">
           <span>Severity (R / Y / G)</span>
-          <b class="mono">{totals.r} · {totals.y} · {totals.g}</b>
+          <b class="mono" data-family-field={multiSurface ? 'severity' : undefined}>
+            {totals.r} · {totals.y} · {totals.g}
+          </b>
         </div>
         <GovernanceSignalRow
           label="Multisig"
@@ -427,8 +403,10 @@ const factorMeta = factors.map((factor) => ({
             <nav class="toc" aria-label="Category jump links">
               {CATEGORIES.map((c) => {
                 const cl = categoryLights[c.id] ?? 'gray';
-                const counts = categoryRollup[c.id];
-                const issues = counts.r + counts.y;
+                const category = factorAssessment.categories.find((entry) => entry.id === c.id);
+                const issues =
+                  category?.rows.filter((row) => row.light === 'red' || row.light === 'yellow')
+                    .length ?? 0;
                 return (
                   <a href={`#cat-${c.id}`}>
                     <span class="lbl">
@@ -472,12 +450,14 @@ const factorMeta = factors.map((factor) => ({
             <b>{protocolType}</b>
           </div>
           <div class="mi">
-            <span>TVL</span>
+            <span>{multiSurface ? 'Family TVL' : 'TVL'}</span>
             <b>{fmtTvl(tvlUsd)}</b>
           </div>
           <div class="mi">
             <span>Reviewed</span>
-            <b>{lastAssessedDisplay}</b>
+            <b data-family-field={multiSurface ? 'body-reviewed' : undefined}>
+              {lastAssessedDisplay}
+            </b>
           </div>
           <div class="mi">
             <span>Factors</span>
@@ -488,10 +468,16 @@ const factorMeta = factors.map((factor) => ({
             <b>{CATEGORIES.length}</b>
           </div>
           {
-            riskScore !== null && (
-              <div class="mi">
+            (riskScore !== null || multiSurface) && (
+              <div
+                class="mi"
+                data-family-field={multiSurface ? 'body-risk-row' : undefined}
+                hidden={multiSurface && riskScore === null}
+              >
                 <span>Risk score</span>
-                <b>{riskScore.toFixed(1)}</b>
+                <b data-family-field={multiSurface ? 'body-risk' : undefined}>
+                  {riskScore?.toFixed(1)}
+                </b>
               </div>
             )
           }
@@ -513,66 +499,27 @@ const factorMeta = factors.map((factor) => ({
           <>
             {deployments.length > 0 && <DeploymentTabs client:visible deployments={deployments} />}
 
-            <section class="sec">
-              <div class="head">
-                <span class="num">01</span>
-                <h2>Risk profile at a glance</h2>
-                <span class="right">
-                  {Object.values(categoryLights).filter((l) => l === 'red').length} red ·{' '}
-                  {Object.values(categoryLights).filter((l) => l === 'yellow').length} yellow ·{' '}
-                  {Object.values(categoryLights).filter((l) => l === 'green').length} green
-                </span>
-              </div>
-              <div class="catstrip">
-                {CATEGORIES.map((c) => {
-                  const l = categoryLights[c.id] ?? 'gray';
-                  const ct = taxonomyCounts[c.id] ?? 0;
-                  return (
-                    <a
-                      href={`#cat-${c.id}`}
-                      class:list={['ck', l]}
-                      title={`${c.name} · ${l}`}
-                      aria-label={`${c.name} category: ${l}, ${ct} factors`}
-                    >
-                      {ct}
-                    </a>
-                  );
-                })}
-              </div>
-            </section>
-
-            <section class="sec">
-              <div class="head">
-                <span class="num">02</span>
-                <h2>Categories &amp; evidence</h2>
-                <span class="right">
-                  {TOTAL_FACTOR_COUNT} factors · {CATEGORIES.length} categories
-                </span>
-              </div>
-
-              {categoryCards.map(({ category, counts, total, light, rows, severity }) => {
-                return (
-                  <CategoryCard
-                    id={String(category.id)}
-                    name={category.name}
-                    light={light}
-                    bars={makeBars(counts)}
-                    count={`${counts.records.length} of ${total}`}
-                    severity={severity}
-                    open
-                  >
-                    <FactorTable factors={rows} />
-                  </CategoryCard>
-                );
-              })}
-            </section>
+            <FactorAssessment model={factorAssessment} />
           </>
         )
       }
 
       <div class="envelope">
         <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
-        <span><b>graded_at</b> {gradedAt?.slice(0, 19).replace('T', ' ') ?? 'N/A'}</span>
+        {
+          multiSurface ? (
+            <span>
+              <b>graded_at</b>{' '}
+              <span data-family-field="provenance-date">
+                {gradedAt?.slice(0, 19).replace('T', ' ') ?? 'N/A'}
+              </span>
+            </span>
+          ) : (
+            <span>
+              <b>graded_at</b> {gradedAt?.slice(0, 19).replace('T', ' ') ?? 'N/A'}
+            </span>
+          )
+        }
         <span><b>factors</b> {TOTAL_FACTOR_COUNT}</span>
         <span><b>protocol</b> {slug}</span>
       </div>
@@ -713,6 +660,17 @@ const factorMeta = factors.map((factor) => ({
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+  [data-family-grade-scored],
+  [data-family-verdict] {
+    width: 100%;
+  }
+  [data-family-grade-scored][hidden],
+  [data-family-grade-empty][hidden],
+  [data-family-verdict][hidden],
+  [data-family-cap][hidden],
+  [data-family-field][hidden] {
+    display: none !important;
   }
   .gradebig-unscored {
     width: 100%;
@@ -924,83 +882,6 @@ const factorMeta = factors.map((factor) => ({
     margin-top: 1px;
   }
 
-  /* ─── Section ─── */
-  .sec {
-    margin-top: 38px;
-    scroll-margin-top: 64px;
-  }
-  .sec:first-of-type {
-    margin-top: 32px;
-  }
-  .sec .head {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 14px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sec .head .num {
-    font-family: 'Geist Mono', monospace;
-    font-size: 11px;
-    color: var(--fg-3);
-    background: var(--surface-2);
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-  }
-  .sec .head h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    flex: 1;
-  }
-  .sec .head .right {
-    font-size: 11.5px;
-    color: var(--fg-3);
-    font-family: 'Geist Mono', monospace;
-  }
-
-  /* ─── Catstrip ─── */
-  .catstrip {
-    display: grid;
-    grid-template-columns: repeat(13, 1fr);
-    gap: 3px;
-    margin-bottom: 18px;
-  }
-  .catstrip .ck {
-    height: 36px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Geist Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    color: #fff;
-    cursor: pointer;
-    letter-spacing: 0;
-    transition: transform 0.12s;
-    text-decoration: none;
-  }
-  .catstrip .ck:hover {
-    transform: scale(1.06);
-    z-index: 2;
-  }
-  .catstrip .ck.red {
-    background: var(--gF);
-  }
-  .catstrip .ck.yellow {
-    background: var(--gC);
-  }
-  .catstrip .ck.green {
-    background: var(--gA);
-  }
-  .catstrip .ck.gray {
-    background: var(--fg-4);
-  }
-
   /* ─── Provenance envelope (data stamps; test-stable selector) ─── */
   .envelope {
     margin-top: 36px;
@@ -1074,17 +955,6 @@ const factorMeta = factors.map((factor) => ({
     .body .masthead h1 {
       font-size: 28px;
     }
-    .catstrip {
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-    .sec .head {
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .sec .head .right {
-      width: 100%;
-    }
   }
   @media (max-width: 640px) {
     .gradeblock {
@@ -1095,9 +965,6 @@ const factorMeta = factors.map((factor) => ({
       padding-right: 12px;
       margin-right: 12px;
     }
-    .catstrip {
-      grid-template-columns: repeat(5, 1fr);
-    }
     .body .body-meta {
       flex-direction: column;
       gap: 6px;
@@ -1106,11 +973,6 @@ const factorMeta = factors.map((factor) => ({
       border-right: none;
       padding-right: 0;
       margin-right: 0;
-    }
-  }
-  @media (max-width: 420px) {
-    .catstrip {
-      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

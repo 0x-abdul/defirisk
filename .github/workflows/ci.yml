@@ -46,7 +46,6 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
-
   # ── 0d. File availability probe ─────────────────────────────────────────────
   # Probes which optional directories/files exist in this repo subset.
   # Jobs that need internal files use needs.check-files.outputs.* to skip
@@ -352,10 +351,14 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         id: site_build
         run: npm run build
         working-directory: site
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         if: steps.site_build.outcome == 'success'
         run: npx playwright install --with-deps chromium
@@ -390,7 +393,7 @@ jobs:
       # Requires @lhci/cli — install via: npm i -D @lhci/cli (in site/ devDependencies).
       # NOTE: @lhci/cli is not yet in site/package.json; add it before M5 launch.
       - name: Lighthouse audit (informational)
-        continue-on-error: true  # warning, not blocker per E-26 acceptance criteria
+        continue-on-error: true # warning, not blocker per E-26 acceptance criteria
         run: |
           # Start preview server in background, wait for it to be ready
           npm run preview -- --port 4321 &
@@ -428,11 +431,14 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         id: site_build
         run: npm run build
         working-directory: site
-        continue-on-error: true
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         if: steps.site_build.outcome == 'success'
         run: npx playwright install --with-deps chromium
@@ -441,7 +447,11 @@ jobs:
         if: steps.site_build.outcome == 'success'
         run: npm run test:smoke
         working-directory: site
-        continue-on-error: true  # informational: pre-existing failures, tracked separately
+        continue-on-error: true # informational: pre-existing failures, tracked separately
+      - name: Run family factor alignment smoke gate
+        if: steps.site_build.outcome == 'success'
+        run: npm run test:smoke -- tests/smoke/family-factor-alignment.spec.ts
+        working-directory: site
 
   # ── 12. Visual regression (E-16, informational until Linux baselines land) ──
   # Existing baselines are -win32 only (captured locally on Windows). To
@@ -455,7 +465,7 @@ jobs:
     needs: [check-files]
     if: needs.check-files.outputs.has-visual-baselines == 'true'
     runs-on: ubuntu-latest
-    continue-on-error: true  # informational until Linux baselines committed
+    continue-on-error: true # informational until Linux baselines committed
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -466,9 +476,13 @@ jobs:
       - name: Install site deps
         run: npm ci
         working-directory: site
+      - name: Build synthetic family API fixture
+        run: python scripts/ci/build-family-api-fixture.py
       - name: Build site
         run: npm run build
         working-directory: site
+        env:
+          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
         working-directory: site
@@ -626,7 +640,8 @@ jobs:
           DATABASE_URL="$DSN" python scripts/compose.py --protocol fixture-family
           DATABASE_URL="$DSN" python scripts/dump.py --out-root _local/family-db-dump
           python scripts/ci/assert-family-build.py \
-            --api-root _local/family-db-dump/api/v1.7.0
+            --api-root _local/family-db-dump/api/v1.7.0 \
+            --legacy-db-fixture
           python scripts/cleanup-multiversion-runtime-artifacts.py \
             --dry-run --manifest scripts/ci/family-cleanup-fixture.json \
             --db-url "$DSN" --expected-database risk_dashboard \
