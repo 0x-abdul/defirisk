@@ -29,6 +29,7 @@ import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loa
 import { buildFactorAssessmentModel } from '../lib/factor-assessment-model';
 import {
   buildAssessmentHeaderModel,
+  finiteNumber,
   formatAssessmentDateUtc,
   GRADE_MEANING,
 } from '../lib/assessment-header-model';
@@ -72,15 +73,7 @@ const categoryLights =
   (assessment.category_lights as Record<number, 'red' | 'yellow' | 'green' | 'gray'>) ?? {};
 
 // M1 v4 fields
-const riskScore = ((): number | null => {
-  const v = assessment.risk_score;
-  if (typeof v === 'number' && Number.isFinite(v)) return v;
-  if (typeof v === 'string') {
-    const n = parseFloat(v);
-    return Number.isFinite(n) ? n : null;
-  }
-  return null;
-})();
+const riskScore = finiteNumber(assessment.risk_score);
 const categorySeverities =
   (assessment.category_severities as Record<string, number> | null | undefined) ?? null;
 const capApplied = (assessment.cap_applied as 'none' | 'D' | 'F' | null | undefined) ?? 'none';

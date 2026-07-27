@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { buildFactorAssessmentModel } from './factor-assessment-model';
-import { buildAssessmentHeaderModel, formatAssessmentDateUtc } from './assessment-header-model';
+import {
+  buildAssessmentHeaderModel,
+  finiteNumber,
+  formatAssessmentDateUtc,
+} from './assessment-header-model';
 
 const factorAssessment = buildFactorAssessmentModel({
   context: { protocolSlug: 'family', surfaceSlug: 'largest' },
@@ -75,4 +79,20 @@ describe('assessment header model', () => {
     expect(formatAssessmentDateUtc(null)).toBe('Unavailable');
     expect(formatAssessmentDateUtc('not-a-date')).toBe('Unavailable');
   });
+
+  it.each([
+    [0, 0],
+    ['0', 0],
+    [-4.5, -4.5],
+    [' 42.7 ', 42.7],
+  ])('normalizes finite risk value %j', (input, expected) => {
+    expect(finiteNumber(input)).toBe(expected);
+  });
+
+  it.each([null, undefined, '', '   ', '12abc', Number.NaN, Infinity, -Infinity, {}])(
+    'rejects malformed or non-finite risk value %j',
+    (input) => {
+      expect(finiteNumber(input)).toBeNull();
+    }
+  );
 });
