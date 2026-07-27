@@ -17,9 +17,9 @@ export interface AssessmentFactorMeta {
 }
 
 export interface AssessmentScore {
-  /** API input is intentionally untrusted; the model validates malformed IDs. */
+  /** API input is intentionally untrusted; the model validates IDs and statuses. */
   factor_id?: unknown;
-  score?: FactorLight;
+  score?: unknown;
   evidence_summary?: string;
   gap_reason?: GapReason | string | null;
 }
@@ -35,8 +35,8 @@ export interface BuildFactorAssessmentInput {
   categories: AssessmentCategoryMeta[];
   factors: AssessmentFactorMeta[];
   scores: AssessmentScore[];
-  categoryLights?: Record<string | number, CategoryLight> | null;
-  categorySeverities?: Record<string | number, number> | null;
+  categoryLights?: Record<string | number, unknown> | null;
+  categorySeverities?: Record<string | number, unknown> | null;
   reviewMode?: boolean;
   factorHref?: (factorId: string, light: FactorLight) => string | undefined;
 }

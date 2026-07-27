@@ -16,6 +16,17 @@ const SCORE_ORDER: Record<FactorLight, number> = {
   green: 3,
 };
 
+const FACTOR_LIGHTS = new Set<FactorLight>([
+  'red',
+  'yellow',
+  'green',
+  'gray',
+  'not_assessed',
+  'not_applicable',
+]);
+
+const CATEGORY_LIGHTS = new Set<CategoryLight>(['red', 'yellow', 'green', 'gray']);
+
 const GAP_REASONS = new Set<GapReason>([
   'protocol_opacity',
   'pipeline_unimplemented',
@@ -28,19 +39,26 @@ function normalizeGapReason(value: string | null | undefined): GapReason | null 
   return value && GAP_REASONS.has(value as GapReason) ? (value as GapReason) : null;
 }
 
-function suppliedNumber(
-  values: Record<string | number, number> | null | undefined,
+function suppliedValue(
+  values: Record<string | number, unknown> | null | undefined,
   id: number
-): number | undefined {
-  const value = values?.[id] ?? values?.[String(id)];
-  return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+): { present: boolean; value: unknown } {
+  if (!values || !Object.prototype.hasOwnProperty.call(values, String(id))) {
+    return { present: false, value: undefined };
+  }
+  return { present: true, value: values[String(id)] };
 }
 
-function suppliedLight(
-  values: Record<string | number, CategoryLight> | null | undefined,
-  id: number
-): CategoryLight | undefined {
-  return values?.[id] ?? values?.[String(id)];
+function valueLabel(value: unknown): string {
+  if (typeof value === 'string') return `"${value}"`;
+  if (typeof value === 'number' && Number.isNaN(value)) return 'NaN';
+  if (value === Infinity) return 'Infinity';
+  if (value === -Infinity) return '-Infinity';
+  try {
+    return JSON.stringify(value) ?? String(value);
+  } catch {
+    return String(value);
+  }
 }
 
 function severityFor(red: number, yellow: number, green: number): number | undefined {
@@ -68,6 +86,54 @@ function contextLabel(input: BuildFactorAssessmentInput): string {
   if (input.context.surfaceSlug) parts.push(`surface=${input.context.surfaceSlug}`);
   if (input.context.deploymentId) parts.push(`deployment=${input.context.deploymentId}`);
   return parts.join(', ');
+}
+
+function validatedFactorLight(
+  value: unknown,
+  input: BuildFactorAssessmentInput,
+  factorId: string,
+  entryIndex: number
+): FactorLight {
+  if (value === undefined || value === null) return 'gray';
+  if (typeof value === 'string' && FACTOR_LIGHTS.has(value as FactorLight)) {
+    return value as FactorLight;
+  }
+  throw new Error(
+    `Invalid factor status ${valueLabel(value)} (${contextLabel(input)}, factor=${factorId}, entry_index=${entryIndex})`
+  );
+}
+
+function suppliedSeverity(
+  input: BuildFactorAssessmentInput,
+  categoryId: number
+): number | undefined {
+  const supplied = suppliedValue(input.categorySeverities, categoryId);
+  if (!supplied.present || supplied.value === null) return undefined;
+  if (
+    typeof supplied.value !== 'number' ||
+    !Number.isFinite(supplied.value) ||
+    supplied.value < 0 ||
+    supplied.value > 100
+  ) {
+    throw new Error(
+      `Invalid category severity ${valueLabel(supplied.value)} (${contextLabel(input)}, category_id=${categoryId})`
+    );
+  }
+  return supplied.value;
+}
+
+function suppliedCategoryLight(
+  input: BuildFactorAssessmentInput,
+  categoryId: number
+): CategoryLight | undefined {
+  const supplied = suppliedValue(input.categoryLights, categoryId);
+  if (!supplied.present || supplied.value === null) return undefined;
+  if (typeof supplied.value === 'string' && CATEGORY_LIGHTS.has(supplied.value as CategoryLight)) {
+    return supplied.value as CategoryLight;
+  }
+  throw new Error(
+    `Invalid category light ${valueLabel(supplied.value)} (${contextLabel(input)}, category_id=${categoryId})`
+  );
 }
 
 function factorIdLabel(value: unknown): string {
@@ -136,7 +202,7 @@ export function buildFactorAssessmentModel(
       );
     }
 
-    const light = entry.score ?? 'gray';
+    const light = validatedFactorLight(entry.score, input, factor.id, index);
     statusTotals[light]++;
     if (light === 'red') {
       red++;
@@ -175,8 +241,8 @@ export function buildFactorAssessmentModel(
     const categoryYellow = rows.filter((row) => row.light === 'yellow').length;
     const categoryGreen = rows.filter((row) => row.light === 'green').length;
     const derivedSeverity = severityFor(categoryRed, categoryYellow, categoryGreen);
-    const severity = suppliedNumber(input.categorySeverities, category.id) ?? derivedSeverity;
-    const light = suppliedLight(input.categoryLights, category.id) ?? lightForSeverity(severity);
+    const severity = suppliedSeverity(input, category.id) ?? derivedSeverity;
+    const light = suppliedCategoryLight(input, category.id) ?? lightForSeverity(severity);
     const taxonomyTotal = taxonomyTotals.get(category.id) ?? 0;
     const categoryStatusTotals = emptyStatusTotals();
     for (const row of rows) categoryStatusTotals[row.light]++;

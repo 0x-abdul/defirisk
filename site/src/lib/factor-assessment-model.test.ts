@@ -221,4 +221,116 @@ describe('buildFactorAssessmentModel', () => {
     expect(model.assessedTotal).toBe(2);
     expect(model.unassessedTotal).toBe(2);
   });
+
+  it.each(['red', 'yellow', 'green', 'gray', 'not_assessed', 'not_applicable'])(
+    'accepts the supported factor status %s',
+    (score) => {
+      const model = buildFactorAssessmentModel({
+        context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+        categories,
+        factors,
+        scores: [{ factor_id: 'RD-F-001', score }],
+      });
+
+      expect(model.categories[0]?.rows[0]?.light).toBe(score);
+    }
+  );
+
+  it.each(['amber', '', ' red ', 42, {}])(
+    'rejects an invalid factor status with full context',
+    (score) => {
+      expect(() =>
+        buildFactorAssessmentModel({
+          context: {
+            protocolSlug: 'family',
+            surfaceSlug: 'v2',
+            deploymentId: 'base',
+          },
+          categories,
+          factors,
+          scores: [{ factor_id: 'RD-F-001', score }],
+        })
+      ).toThrow(
+        /Invalid factor status .+ \(protocol=family, surface=v2, deployment=base, factor=RD-F-001, entry_index=0\)/
+      );
+    }
+  );
+
+  it('maps missing and null factor statuses to gray', () => {
+    for (const score of [undefined, null]) {
+      const model = buildFactorAssessmentModel({
+        context: { protocolSlug: 'family' },
+        categories,
+        factors,
+        scores: [{ factor_id: 'RD-F-001', score }],
+      });
+      expect(model.categories[0]?.rows[0]?.light).toBe('gray');
+    }
+  });
+
+  it.each([0, -0, 50, 100])('accepts category severity boundary %s', (severity) => {
+    const model = buildFactorAssessmentModel({
+      context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+      categories,
+      factors,
+      categorySeverities: { 1: severity },
+      scores: [{ factor_id: 'RD-F-001', score: 'green' }],
+    });
+    expect(model.categories[0]?.severity).toBe(severity);
+  });
+
+  it.each([-0.1, 100.1, Number.NaN, Infinity, -Infinity, '50', ''])(
+    'rejects invalid category severity %s',
+    (severity) => {
+      expect(() =>
+        buildFactorAssessmentModel({
+          context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+          categories,
+          factors,
+          categorySeverities: { 1: severity },
+          scores: [{ factor_id: 'RD-F-001', score: 'green' }],
+        })
+      ).toThrow(/Invalid category severity .+ \(protocol=family, surface=v2, category_id=1\)/);
+    }
+  );
+
+  it.each(['red', 'yellow', 'green', 'gray'])(
+    'accepts the supported category light %s',
+    (light) => {
+      const model = buildFactorAssessmentModel({
+        context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+        categories,
+        factors,
+        categoryLights: { 1: light },
+        scores: [{ factor_id: 'RD-F-001', score: 'green' }],
+      });
+      expect(model.categories[0]?.light).toBe(light);
+    }
+  );
+
+  it.each(['amber', 'RED', '', 1])('rejects invalid category light %s', (light) => {
+    expect(() =>
+      buildFactorAssessmentModel({
+        context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+        categories,
+        factors,
+        categoryLights: { 1: light },
+        scores: [{ factor_id: 'RD-F-001', score: 'green' }],
+      })
+    ).toThrow(/Invalid category light .+ \(protocol=family, surface=v2, category_id=1\)/);
+  });
+
+  it('derives category values when supplied rollups are missing or null', () => {
+    for (const supplied of [undefined, { 1: null }]) {
+      const model = buildFactorAssessmentModel({
+        context: { protocolSlug: 'family', surfaceSlug: 'v2' },
+        categories,
+        factors,
+        categoryLights: supplied,
+        categorySeverities: supplied,
+        scores: [{ factor_id: 'RD-F-001', score: 'red' }],
+      });
+      expect(model.categories[0]).toMatchObject({ light: 'red', severity: 100 });
+    }
+  });
 });
