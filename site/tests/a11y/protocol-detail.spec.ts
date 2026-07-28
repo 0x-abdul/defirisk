@@ -19,7 +19,7 @@ test.describe(`Protocol detail (/protocols/${PROTOCOL_SLUG}/)`, () => {
     await page.addInitScript(() => {
       try {
         localStorage.setItem('rd-prefer-contrast', '1');
-      } catch (e) {
+      } catch {
         /* ignore */
       }
     });

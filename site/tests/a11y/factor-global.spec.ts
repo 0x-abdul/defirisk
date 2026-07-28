@@ -18,7 +18,7 @@ test.describe(`Factor detail global (/factors/${FACTOR_ID}/)`, () => {
     await page.addInitScript(() => {
       try {
         localStorage.setItem('rd-prefer-contrast', '1');
-      } catch (e) {
+      } catch {
         /* ignore */
       }
     });
