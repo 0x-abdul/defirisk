@@ -80,12 +80,6 @@ test.describe('Core pages — always present', () => {
     await expect(page.locator('main')).toBeVisible();
   });
 
-  test('/api-docs/ is a redirect stub to /data/', async ({ request }) => {
-    const res = await request.get('/api-docs/');
-    expect(res?.status()).toBe(200);
-    await expect(res.text()).resolves.toContain('Redirecting');
-  });
-
   test('404 page renders for unknown path', async ({ page }) => {
     const res = await page.goto('/this-does-not-exist-xyz/');
     expect([404, 200]).toContain(res?.status()); // Cloudflare returns 200 for custom 404

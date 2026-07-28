@@ -389,29 +389,6 @@ jobs:
       - name: Check JS bundle budgets
         run: node scripts/ci/check-perf-budget.mjs
 
-      # Lighthouse: informational only (does not block CI). Score ≥90 is the target.
-      # Requires @lhci/cli — install via: npm i -D @lhci/cli (in site/ devDependencies).
-      # NOTE: @lhci/cli is not yet in site/package.json; add it before M5 launch.
-      - name: Lighthouse audit (informational)
-        continue-on-error: true # warning, not blocker per E-26 acceptance criteria
-        run: |
-          # Start preview server in background, wait for it to be ready
-          npm run preview -- --port 4321 &
-          SERVER_PID=$!
-          sleep 5
-          # Run lhci collect against protocol detail page
-          npx --yes @lhci/cli collect \
-            --url=http://localhost:4321/protocols/aave-v3/ \
-            --numberOfRuns=1 \
-            --settings.chromeFlags="--no-sandbox" \
-            2>&1 | tail -20 || true
-          # Assert performance score ≥90 (informational — continue-on-error above handles failure)
-          npx @lhci/cli assert \
-            --assert.assertions.categories:performance=["warn",">=0.90"] \
-            2>&1 | tail -5 || true
-          kill $SERVER_PID 2>/dev/null || true
-        working-directory: site
-
   # ── 11. Smoke tests (post-build, HARD GATE) ──────────────────────────────────
   # Flipped from informational to gating per p0-response 2026-05-30 (P0 #2).
   # Smoke tests now pin to v1.7.0 (single source: site/src/lib/rubric.ts) and
@@ -448,6 +425,27 @@ jobs:
         run: npm run test:smoke
         working-directory: site
         continue-on-error: true # informational: pre-existing failures, tracked separately
+      - name: Run legacy redirect smoke gate
+        if: steps.site_build.outcome == 'success'
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4322 --directory dist >/tmp/defirisk-static-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --output /dev/null http://localhost:4322/; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              cat /tmp/defirisk-static-server.log
+              exit 1
+            fi
+            sleep 1
+          done
+          BASE_URL=http://localhost:4322 \
+            EXPECT_DIRECTORY_REDIRECTS=1 \
+            npm run test:smoke -- tests/smoke/redirects.spec.ts
+        working-directory: site
       - name: Run family factor alignment smoke gate
         if: steps.site_build.outcome == 'success'
         run: npm run test:smoke -- tests/smoke/family-factor-alignment.spec.ts

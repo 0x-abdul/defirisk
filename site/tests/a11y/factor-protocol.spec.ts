@@ -20,7 +20,7 @@ test.describe(`Factor detail protocol-contextual (/protocols/${PROTOCOL_SLUG}/fa
     await page.addInitScript(() => {
       try {
         localStorage.setItem('rd-prefer-contrast', '1');
-      } catch (e) {
+      } catch {
         /* ignore */
       }
     });

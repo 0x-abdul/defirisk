@@ -1,6 +1,7 @@
 ---
 import ProtocolDetailLayout from '../../../components/ProtocolDetailLayout.astro';
 import { listPublishedProtocolSlugs, getProtocol } from '../../../lib/data-loaders';
+import { buildProtocolFamilyRedirect } from '../../../lib/protocol-redirect';
 
 export async function getStaticPaths() {
   // Published protocols only - unpublished ones render at /unpublished/<slug>-<token>/.
@@ -18,12 +19,17 @@ const proto = detail.protocol as Record<string, unknown>;
 const canonicalFamily = proto.canonical_family_slug as string | undefined;
 if (canonicalFamily && canonicalFamily !== slug) {
   const selectedSurface = proto.selected_surface_slug as string | undefined;
-  const params = new URLSearchParams(Astro.url.search);
-  if (selectedSurface) params.set('surface', selectedSurface);
-  // Preserve legacy chain/deployment links for the client-side family selector
-  // to normalize. It will discard ambiguous or stale selections safely.
-  const query = params.toString();
-  return Astro.redirect(`/protocols/${canonicalFamily}/${query ? `?${query}` : ''}`);
+  // Static builds emit selectedSurface; passing Astro.url.search also keeps the
+  // redirect builder correct if this route is rendered in a request context.
+  const redirectTarget = buildProtocolFamilyRedirect(
+    canonicalFamily,
+    Astro.url.search,
+    selectedSurface,
+  );
+  if (!redirectTarget.startsWith('/protocols/')) {
+    throw new Error(`Invalid protocol redirect target: ${redirectTarget}`);
+  }
+  return Astro.redirect(redirectTarget);
 }
 ---
 
