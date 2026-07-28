@@ -47,9 +47,7 @@ export default defineConfig({
     inlineStylesheets: 'never',
   },
   redirects: {
-    '/api-docs': '/data',
     '/api-docs/': '/data/',
-    '/how-to-use': '/methodology',
     '/how-to-use/': '/methodology/',
   },
   integrations: [
