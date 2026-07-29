@@ -1,20 +1,5 @@
 ---
-/**
- * ProtocolDetailLayout shared body for the protocol detail page.
- *
- * Rendered by two routes:
- *   - /protocols/<slug>/                    (published; canonical public URL)
- *   - /unpublished/<slug>-<token>/          (pre-publication review; noindex)
- *
- * The two routes diverge only in:
- *   - the JSON loader they use (getProtocol vs getProtocolByReviewPath)
- *   - whether `reviewMode` is true (adds the "Pending review" banner; the
- *     /unpublished/ route also passes noindex to <Base>)
- *
- * Everything below this comment is identical for both; keeping the body
- * in a single component prevents drift between published and review
- * renders of the same protocol.
- */
+/** Published protocol detail page. Unpublished review UI is private-only. */
 import Base from '../layouts/Base.astro';
 import TopBar from '../components/TopBar.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
@@ -43,13 +28,9 @@ import { CATEGORIES, chainMeta } from '../data/categories';
 
 export interface Props {
   detail: ProtocolDetail;
-  reviewMode?: boolean;
-  /** Optional explicit canonical override (used by the /unpublished/ route
-   *  to keep the review URL out of canonical link metadata). */
-  canonical?: string;
 }
 
-const { detail, reviewMode = false, canonical } = Astro.props;
+const { detail } = Astro.props;
 
 const proto = detail.protocol as Record<string, unknown>;
 const surfaces = (detail.surfaces as Array<Record<string, unknown>> | undefined) ?? [];
@@ -125,7 +106,7 @@ const factorAssessment = buildFactorAssessmentModel({
   scores: factorScoresRaw,
   categoryLights,
   categorySeverities,
-  reviewMode,
+  reviewMode: false,
 });
 const totals = {
   r: factorAssessment.totals.red,
@@ -148,10 +129,7 @@ const CRITICAL_IDS = new Set(
   factors.filter((factor) => factor.is_critical).map((factor) => factor.id)
 );
 
-// Active incidents only render on the published view; unpublished review
-// pages are pre-launch and should not surface incident banners from the
-// public ledger (the protocol isn't on the public dashboard yet).
-const incidents = reviewMode ? [] : listIncidents();
+const incidents = listIncidents();
 const activeIncident = incidents.find((i) => i.protocol_slug === slug && i.status === 'open');
 
 // Curator sidecar: verdict body + multisig/timelock cells when upstream pipeline
@@ -174,13 +152,7 @@ const lastAssessedDisplay = multiSurface
     ? formatAssessmentDateUtc(gradedAt)
     : 'N/A';
 
-// JSON-envelope link target. For published pages the file lives at
-// /api/<rubric>/protocols/<slug>.json. For review pages the JSON sits
-// under /api/<rubric>/unpublished/<slug>-<token>/index.json, but we
-// derive the path off the route slug because the layout doesn't know the
-// review token, so on the review page we hide the JSON link instead
-// of pointing it at a stale published path.
-const envelopeHref = reviewMode ? null : `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
+const envelopeHref = `/api/${RUBRIC_VERSION}/protocols/${slug}.json`;
 
 // Corrections & disputes links (see /corrections). The factual-correction and
 // grade-dispute templates are the two channels a protocol team uses; the
@@ -198,41 +170,9 @@ const legacyCaveat =
 <Base
   title={displayName}
   description={description || `Risk assessment for ${displayName}`}
-  noindex={reviewMode}
-  canonical={canonical}
 >
   <TopBar slot="topbar" />
   <Fragment slot="banner">
-    {
-      reviewMode && (
-        <div class="review-banner" role="status">
-          <span class="review-icon" aria-hidden="true">
-            🔍
-          </span>
-          <div class="review-text">
-            <p class="review-lead">
-              <b>This assessment is unpublished</b> — you are viewing a private review link.
-            </p>
-            <ul class="review-actions">
-              <li>
-                A number, link, or config is <b>wrong</b>?
-                <a href={correctionHref}>File a factual correction</a> with a source.
-              </li>
-              <li>
-                The facts are right but you think the <b>rubric was misapplied</b>?
-                <a href={disputeHref}>File a grade dispute</a>.
-              </li>
-            </ul>
-            <p class="review-note">
-              We correct the underlying <b>factor</b>, never the letter directly. The grade
-              recomputes from the corrected evidence. You can also reply on the channel this link
-              came from. Full process:
-              <a href="/contributions/#corrections">Corrections &amp; disputes</a>.
-            </p>
-          </div>
-        </div>
-      )
-    }
     {
       activeIncident && (
         <IncidentBanner
@@ -430,13 +370,9 @@ const legacyCaveat =
             </a>
           )
         }
-        {
-          !reviewMode && (
-            <a href={`/factors/?protocol=${slug}`}>
-              All factors <span class="arr">→</span>
-            </a>
-          )
-        }
+        <a href={`/factors/?protocol=${slug}`}>
+          All factors <span class="arr">→</span>
+        </a>
       </div>
     </aside>
 
@@ -492,7 +428,7 @@ const legacyCaveat =
             surfaces={surfaces}
             categories={CATEGORIES}
             factors={factorMeta}
-            reviewMode={reviewMode}
+            reviewMode={false}
             legacyCaveat={legacyCaveat}
           />
         ) : (
@@ -524,74 +460,16 @@ const legacyCaveat =
         <span><b>protocol</b> {slug}</span>
       </div>
 
-      {
-        !reviewMode && (
-          <p class="corrections-line">
-            Spot an error? <a href={correctionHref}>Correct a fact</a> or
-            <a href={disputeHref}> dispute the grade</a>. Every change is public.
-            <a href={protocolIssuesHref}> Corrections &amp; disputes for {displayName} →</a>
-          </p>
-        )
-      }
+      <p class="corrections-line">
+        Spot an error? <a href={correctionHref}>Correct a fact</a> or
+        <a href={disputeHref}> dispute the grade</a>. Every change is public.
+        <a href={protocolIssuesHref}> Corrections &amp; disputes for {displayName} →</a>
+      </p>
     </div>
   </div>
 </Base>
 
 <style>
-  /* ─── Review banner (unpublished protocol preview) ─── */
-  .review-banner {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 18px;
-    font-size: 12.5px;
-    line-height: 1.45;
-    border-bottom: 1px solid var(--border);
-    background: color-mix(in srgb, #a78bfa 8%, var(--bg));
-    border-top: 2px solid #a78bfa;
-  }
-  .review-banner .review-icon {
-    flex-shrink: 0;
-    font-size: 14px;
-    line-height: 1.45;
-  }
-  .review-banner .review-text {
-    color: var(--fg-2);
-  }
-  .review-banner .review-text b {
-    color: var(--fg);
-    font-weight: 600;
-  }
-  .review-banner .review-text p {
-    margin: 0;
-  }
-  .review-banner .review-lead {
-    max-width: 78ch;
-  }
-  .review-banner .review-actions {
-    margin: 7px 0 0;
-    padding-left: 18px;
-    max-width: 78ch;
-  }
-  .review-banner .review-actions li {
-    margin: 2px 0;
-  }
-  .review-banner .review-note {
-    margin-top: 7px;
-    color: var(--fg-3);
-    max-width: 78ch;
-  }
-  .review-banner .review-text a {
-    color: var(--fg);
-    text-decoration: underline;
-    text-decoration-color: var(--border-2);
-    text-underline-offset: 2px;
-    font-weight: 500;
-  }
-  .review-banner .review-text a:hover {
-    text-decoration-color: var(--fg);
-  }
-
   /* ─── Cap banner (M1 v4 single-category override) ─── */
   .cap-banner {
     display: flex;

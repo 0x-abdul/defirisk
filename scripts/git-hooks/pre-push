@@ -1,66 +1,44 @@
 #!/usr/bin/env bash
-#
-# pre-push guard — refuse to push internal-only content to the PUBLIC GitHub origin.
-#
-# The public repo (origin) is a deliberately curated subset: only site/, scripts/,
-# data/, db/, docs/ and top-level governance files belong there. The full internal
-# monorepo (the app source, research, strategy docs, agent logs) lives on the local
-# `master` branch and must never reach the public remote. On 2026-06-16 a branch
-# (`repo-organization-pass`) carrying that internal content was found published on
-# public GitHub; this hook exists so that cannot recur.
-#
-# It inspects every ref being pushed and aborts if any newly-pushed file matches the
-# internal denylist below. Override for a genuinely intentional push:
-#     ALLOW_INTERNAL_PUSH=1 git push ...
-#
+# Validate the exact Git objects selected for a push to the public repository.
+# There is intentionally no environment-variable bypass.
 set -euo pipefail
 
 remote_name="${1:-}"
 remote_url="${2:-}"
 zero="0000000000000000000000000000000000000000"
 
-# Only guard the public GitHub origin for this project. Other remotes pass through.
 case "$remote_url" in
-  *github.com[:/]*defirisk*) : ;;
+  *github.com[:/]*0x-abdul/defirisk*) ;;
   *) exit 0 ;;
 esac
 
-if [ "${ALLOW_INTERNAL_PUSH:-}" = "1" ]; then
-  echo "pre-push: ALLOW_INTERNAL_PUSH=1 set — internal-path guard bypassed." >&2
-  exit 0
-fi
+temporary_roots=()
+cleanup() {
+  local path
+  for path in "${temporary_roots[@]:-}"; do
+    [ -n "$path" ] && rm -rf -- "$path"
+  done
+}
+trap cleanup EXIT HUP INT TERM
 
-# Paths that must never appear on the public remote.
-denylist='^(risk-dashboard/|\.research/|logs/|products/|vision\.md|positioning-ideas\.md|LAUNCH\.md|START_HERE\.md|AGENTS\.md|datacollectionguide\.md|dataqualityguide\.md)'
-
-violation=0
 while read -r local_ref local_sha remote_ref remote_sha; do
-  # Skip branch deletions (local side is all-zero).
   [ "$local_sha" = "$zero" ] && continue
 
-  # Invariant for the public remote: the pushed tree must not CONTAIN any internal
-  # path. We inspect the full tree of the tip rather than a diff — diffs need a
-  # merge base (which a rewritten/unrelated history may not share) and would miss
-  # internal files that were never "changed" in the pushed range. A public branch
-  # simply must not carry these paths at all.
-  files="$(git ls-tree -r --name-only "$local_sha" 2>/dev/null || true)"
+  temporary_root="$(mktemp -d)"
+  temporary_roots+=("$temporary_root")
+  git archive "$local_sha" | tar -x -C "$temporary_root"
 
-  bad="$(printf '%s\n' "$files" | grep -E "$denylist" || true)"
-  if [ -n "$bad" ]; then
-    echo "" >&2
-    echo "BLOCKED: push to public remote '$remote_name' ($remote_url)" >&2
-    echo "         $local_ref carries internal-only paths that must not be public:" >&2
-    printf '%s\n' "$bad" | sort -u | awk 'NR<=20{print "           - " $0}' >&2
-    violation=1
+  validator="$temporary_root/scripts/ci/verify-public-boundary.py"
+  if [ ! -f "$validator" ]; then
+    echo "BLOCKED: pushed tree does not contain the public boundary validator." >&2
+    exit 1
+  fi
+
+  if ! python "$validator" --root "$temporary_root"; then
+    echo "BLOCKED: $local_ref failed private-safe public boundary validation." >&2
+    echo "No branch or Git object should be sent to GitHub until regenerated and revalidated." >&2
+    exit 1
   fi
 done
-
-if [ "$violation" = "1" ]; then
-  echo "" >&2
-  echo "Refusing to push internal content to public GitHub (matches your 'public-vs-local split' rule)." >&2
-  echo "If this is genuinely intended, re-run with:  ALLOW_INTERNAL_PUSH=1 git push ..." >&2
-  echo "" >&2
-  exit 1
-fi
 
 exit 0

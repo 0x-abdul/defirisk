@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "versioned_assessment_status": {
+    "classification": "git-versioned-assessment-snapshot",
+    "leaf_json_pointers": [
+      "/rubric_version",
+      "/data_as_of",
+      "/generated_at",
+      "/data/assessment_snapshot/rubric_version",
+      "/data/assessment_snapshot/published_protocol_count",
+      "/data/assessment_snapshot/data_as_of",
+      "/data/assessment_snapshot/projection_timestamp"
+    ],
+    "update_rule": "reviewed-public-pull-request-only"
+  },
+  "versioned_assessment_field_families": {
+    "classification": "git-versioned-assessment-snapshot",
+    "json_field_names": [
+      "rubric_version",
+      "data_as_of",
+      "generated_at",
+      "graded_at",
+      "retrieved_at",
+      "collected_at",
+      "assessment_timestamp",
+      "projection_timestamp",
+      "history_timestamp",
+      "effective_at",
+      "recorded_at",
+      "changed_at",
+      "added_at",
+      "status",
+      "incident_state",
+      "has_active_incident"
+    ],
+    "raw_database_fields_prohibited": [
+      "created_at",
+      "updated_at"
+    ],
+    "update_rule": "reviewed-public-pull-request-only"
+  },
+  "live_operational_telemetry": {
+    "classification": "separate-live-operational-telemetry",
+    "endpoint": "/api/telemetry/v1/status",
+    "never_committed_under": "data/api/**",
+    "json_field_names": [
+      "pipeline_runs",
+      "runs",
+      "days_stale",
+      "fleet_freshness",
+      "bucket_freshness",
+      "error_count",
+      "error_summary",
+      "success_count",
+      "duration_seconds",
+      "deployment_health",
+      "availability_health",
+      "live_incident_banner",
+      "monitoring_state"
+    ],
+    "field_families": [
+      "pipeline-runs",
+      "live-freshness-calculations",
+      "run-counts-and-errors",
+      "duration-and-health",
+      "deployment-and-availability",
+      "live-incident-banners",
+      "monitoring-state"
+    ]
+  }
+}

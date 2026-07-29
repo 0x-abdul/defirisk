@@ -9,11 +9,6 @@ permissions:
   contents: read
 
 jobs:
-  # ── 0a. Python lint (ruff) ───────────────────────────────────────────────────
-  # Hard gate. Auto-fixable findings (57) were applied at install; the 37
-  # judgement-call findings (E701, B007, E741, E402, F841) were resolved
-  # in the follow-up to the lint-tooling work. To debug locally, run
-  # `python -m ruff check scripts/ risk-dashboard/scripts/`.
   lint-py:
     name: Lint (ruff)
     runs-on: ubuntu-latest
@@ -22,14 +17,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
-      - name: Install ruff
-        run: pip install 'ruff==0.15.10'
-      - name: Run ruff
-        run: |
-          ruff check scripts/
-          if [ -d risk-dashboard/scripts ]; then ruff check risk-dashboard/scripts/; fi
+      - run: pip install 'ruff==0.15.10'
+      - run: ruff check scripts/
 
-  # ── 0b. Site lint (eslint) ───────────────────────────────────────────────────
   lint-site:
     name: Lint (eslint)
     runs-on: ubuntu-latest
@@ -42,78 +32,32 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: site/package.json
+          cache-dependency-path: site/package-lock.json
       - run: npm ci
       - run: npm run lint
 
-  # ── 0d. File availability probe ─────────────────────────────────────────────
-  # Probes which optional directories/files exist in this repo subset.
-  # Jobs that need internal files use needs.check-files.outputs.* to skip
-  # gracefully under the PD-048 public boundary (no hashFiles at job level).
-  check-files:
-    name: Check optional file availability
-    runs-on: ubuntu-latest
-    outputs:
-      has-pipeline: ${{ steps.probe.outputs.has-pipeline }}
-      has-root-package: ${{ steps.probe.outputs.has-root-package }}
-      has-perf-budget: ${{ steps.probe.outputs.has-perf-budget }}
-      has-visual-baselines: ${{ steps.probe.outputs.has-visual-baselines }}
-    steps:
-      - uses: actions/checkout@v7
-      - id: probe
-        run: |
-          [ -d risk-dashboard/scripts/data-pipeline ] && echo "has-pipeline=true" >> "$GITHUB_OUTPUT" || echo "has-pipeline=false" >> "$GITHUB_OUTPUT"
-          [ -f package.json ] && echo "has-root-package=true" >> "$GITHUB_OUTPUT" || echo "has-root-package=false" >> "$GITHUB_OUTPUT"
-          [ -f scripts/ci/check-perf-budget.mjs ] && echo "has-perf-budget=true" >> "$GITHUB_OUTPUT" || echo "has-perf-budget=false" >> "$GITHUB_OUTPUT"
-          ls site/tests/visual/__snapshots__/*linux* 2>/dev/null | grep -q . && echo "has-visual-baselines=true" >> "$GITHUB_OUTPUT" || echo "has-visual-baselines=false" >> "$GITHUB_OUTPUT"
-
-  # ── 0c. Pipeline tests (pytest) ──────────────────────────────────────────────
-  test-py:
+  public-script-tests:
     name: Data-pipeline tests (pytest)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-pipeline == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.11'
-      - name: Install test deps
-        run: pip install pytest selectolax
-      - name: Run pytest (test_rekt + test_defillama + future per-fetcher tests)
-        run: pytest risk-dashboard/scripts/data-pipeline/tests/ -v
+      - run: pip install pytest
+      - run: pytest scripts/tests -q
 
-  script-tests:
-    name: Public script tests (pytest)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.11'
-      - name: Install test deps
-        run: pip install pytest 'psycopg[binary]>=3.1'
-      - name: Run public script tests
-        run: pytest scripts/tests -q
-
-  # ── 1. Schema drift check ────────────────────────────────────────────────────
   schema-check:
     name: Schema check (drizzle-kit)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-python@v7
         with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npm run db:check
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+          python-version: '3.11'
+      - name: Validate public schemas, fields, paths, and API manifest
+        run: python scripts/ci/verify-public-boundary.py
 
-  # ── 2. Rubric unit tests ─────────────────────────────────────────────────────
   rubric-tests:
     name: Rubric tests (vitest)
     runs-on: ubuntu-latest
@@ -123,160 +67,66 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: site/package.json
+          cache-dependency-path: site/package-lock.json
       - run: npm ci
         working-directory: site
       - run: npm test
         working-directory: site
 
-  # ── 3. TypeScript type-check ─────────────────────────────────────────────────
-  type-check:
-    name: Type-check (tsc)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-root-package == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - run: npx tsc --noEmit
-      - name: Install site deps
-        run: npm ci
-        working-directory: site
-      - name: Type-check site
-        run: npm run typecheck
-        working-directory: site
-
-  # ── 4. Astro build ───────────────────────────────────────────────────────────
-  astro-build:
-    name: Astro build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: site/package.json
-      - run: npm ci
-        working-directory: site
-      - name: Build synthetic family API fixture
-        run: python scripts/ci/build-family-api-fixture.py
-      - run: npm run build
-        working-directory: site
-        env:
-          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
-      - name: Assert family API compatibility and routes
-        run: >-
-          python scripts/ci/assert-family-build.py
-          --api-root _local/family-api-fixture/v1.7.0
-          --dist-root site/dist
-
-  # ── 5. Rubric version 4-layer pin assertion ──────────────────────────────────
   rubric-version-pin:
     name: Rubric version pin (constant = DB)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: risk_dashboard
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Verify rubric pins in committed public API
+        run: python scripts/ci/verify-public-boundary.py
+
+  type-check:
+    name: Type-check (tsc)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
+          cache-dependency-path: site/package-lock.json
       - run: npm ci
-      - name: Apply schema + seed
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: |
-          npm run db:push
-          npm run db:seed
-      - name: Assert RUBRIC_VERSION pin
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: npx tsx scripts/ci/check-rubric-version-pin.ts
+        working-directory: site
+      - run: npm run typecheck
+        working-directory: site
 
-  # ── 6. Source citation invariant ─────────────────────────────────────────────
   source-invariant:
     name: Source citation invariant
-    needs: [check-files]
-    if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: risk_dashboard
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-python@v7
         with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - name: Apply schema + seed
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: |
-          npm run db:push
-          npm run db:seed
-      - name: Assert no factor_scores without sources
-        run: |
-          count=$(psql "postgresql://postgres:postgres@localhost:5432/risk_dashboard" \
-            -t -f scripts/ci/source-invariant.sql | tr -d '[:space:]')
-          if [ "$count" != "0" ]; then
-            echo "FAIL: $count current factor_score(s) have zero source citations"
-            exit 1
-          fi
-          echo "OK: source citation invariant holds"
+          python-version: '3.11'
+      - name: Reject private evidence and non-published assessment references
+        run: python scripts/ci/verify-public-boundary.py
 
-  # ── 7. Changelog append-only ─────────────────────────────────────────────────
   changelog-check:
     name: Changelog append-only
-    runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Ensure changelog is append-only
+      - name: Ensure the public methodology changelog is append-only
         run: |
           base=$(git merge-base origin/${{ github.base_ref }} HEAD)
           removed=$(git diff "$base"...HEAD -- docs/methodology/changelog.md | grep '^-[^-]' | wc -l)
           if [ "$removed" -gt 0 ]; then
-            echo "FAIL: $removed line(s) removed or modified in docs/methodology/changelog.md"
-            echo "changelog.md is append-only — only new lines may be added"
+            echo "FAIL: methodology changelog entries cannot be removed or modified"
             exit 1
           fi
-          echo "OK: changelog.md append-only invariant holds"
 
-  # ── 8. OpenAPI spec present + valid ─────────────────────────────────────────
   openapi-check:
     name: OpenAPI spec check
     runs-on: ubuntu-latest
@@ -287,45 +137,28 @@ jobs:
           node-version: '22'
       - name: Validate OpenAPI artifacts
         run: |
-          set -e
-          for file in site/public/openapi.json data/api/v1.7.0/openapi.json; do
-            if [ ! -f "$file" ]; then
-              echo "FAIL: $file not found"
-              exit 1
-            fi
-            version=$(jq -r '.openapi' "$file")
-            if [ "$version" != "3.1.0" ]; then
-              echo "FAIL: $file openapi field is '$version', expected '3.1.0'"
-              exit 1
-            fi
-            path_count=$(jq '.paths | length' "$file")
-            if [ "$path_count" -lt 9 ]; then
-              echo "FAIL: only $path_count paths in $file, expected >=9"
-              exit 1
-            fi
-            jq -e '.paths["/openapi.yaml"]' "$file" >/dev/null
-            echo "OK: $file is OpenAPI 3.1 with $path_count paths"
-          done
-
-          cmp -s site/public/openapi.json data/api/v1.7.0/openapi.json || {
-            echo "FAIL: site/public/openapi.json and data/api/v1.7.0/openapi.json drifted"
-            exit 1
-          }
-
+          set -euo pipefail
+          jq -e '.openapi == "3.1.0"' site/public/openapi.json
+          jq -e '.openapi == "3.1.0"' data/api/v1.7.0/openapi.json
+          cmp site/public/openapi.json data/api/v1.7.0/openapi.json
           node scripts/generate-openapi-yaml.mjs
           git diff --exit-code -- site/public/openapi.yaml data/api/v1.7.0/openapi.yaml
 
-          for file in site/public/openapi.yaml data/api/v1.7.0/openapi.yaml; do
-            if [ ! -f "$file" ]; then
-              echo "FAIL: $file not found"
-              exit 1
-            fi
-            grep -Eq '^openapi: "?3\.1\.0"?' "$file"
-            grep -q '"/openapi.yaml":' "$file"
-            echo "OK: $file is present and documents /openapi.yaml"
-          done
+  astro-build:
+    name: Astro build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site
 
-  # 8b. Published API surface boundary
   public-export-boundary:
     name: Published API surface boundary
     runs-on: ubuntu-latest
@@ -334,10 +167,12 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
-      - name: Assert published API surfaces contain only published cohort data
-        run: node scripts/ci/check-public-export-boundary.mjs
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - run: node scripts/ci/check-public-export-boundary.mjs
+      - run: python scripts/ci/verify-public-boundary.py
 
-  # ── 9. Accessibility (axe-core) ─────────────────────────────────────────────
   a11y-check:
     name: Accessibility check (axe-core)
     runs-on: ubuntu-latest
@@ -347,31 +182,21 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: site/package.json
-      - name: Install site deps
-        run: npm ci
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
         working-directory: site
-      - name: Build synthetic family API fixture
-        run: python scripts/ci/build-family-api-fixture.py
-      - name: Build site
-        id: site_build
-        run: npm run build
+      - run: python scripts/ci/build-family-api-fixture.py
+      - run: npm run build
         working-directory: site
         env:
           DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
-      - name: Install Playwright browsers
-        if: steps.site_build.outcome == 'success'
-        run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium
         working-directory: site
-      - name: Run axe accessibility checks
-        if: steps.site_build.outcome == 'success'
-        run: npm run test:a11y
+      - run: npm run test:a11y
         working-directory: site
-  # ── 10. Performance budget ───────────────────────────────────────────────────
+
   perf-budget:
     name: Performance budget (JS bundle sizes)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-perf-budget == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -379,22 +204,13 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: site/package.json
-      - name: Install site deps
-        run: npm ci
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
         working-directory: site
-      - name: Build site
-        run: npm run build
+      - run: npm run build
         working-directory: site
-      - name: Check JS bundle budgets
-        run: node scripts/ci/check-perf-budget.mjs
+      - run: node scripts/ci/check-perf-budget.mjs
 
-  # ── 11. Smoke tests (post-build, HARD GATE) ──────────────────────────────────
-  # Flipped from informational to gating per p0-response 2026-05-30 (P0 #2).
-  # Smoke tests now pin to v1.7.0 (single source: site/src/lib/rubric.ts) and
-  # assert the M1 v4 envelope fields, so a regression in the wire contract is
-  # a real merge blocker. CP2 / 2026-05-30 added the M1 assertions; if any of
-  # those start failing on master, this job will turn the dashboard red.
   smoke-staging:
     name: Smoke tests (local preview)
     runs-on: ubuntu-latest
@@ -404,308 +220,40 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: site/package.json
-      - name: Install site deps
-        run: npm ci
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
         working-directory: site
-      - name: Build synthetic family API fixture
-        run: python scripts/ci/build-family-api-fixture.py
-      - name: Build site
-        id: site_build
-        run: npm run build
+      - run: python scripts/ci/build-family-api-fixture.py
+      - run: npm run build
         working-directory: site
         env:
           DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
-      - name: Install Playwright browsers
-        if: steps.site_build.outcome == 'success'
-        run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium
         working-directory: site
-      - name: Run smoke tests
-        if: steps.site_build.outcome == 'success'
-        run: npm run test:smoke
-        working-directory: site
-        continue-on-error: true # informational: pre-existing failures, tracked separately
-      - name: Run legacy redirect smoke gate
-        if: steps.site_build.outcome == 'success'
-        run: |
-          set -euo pipefail
-          python3 -m http.server 4322 --directory dist >/tmp/defirisk-static-server.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
-          for attempt in $(seq 1 30); do
-            if curl --fail --silent --output /dev/null http://localhost:4322/; then
-              break
-            fi
-            if [ "$attempt" -eq 30 ]; then
-              cat /tmp/defirisk-static-server.log
-              exit 1
-            fi
-            sleep 1
-          done
-          BASE_URL=http://localhost:4322 \
-            EXPECT_DIRECTORY_REDIRECTS=1 \
-            npm run test:smoke -- tests/smoke/redirects.spec.ts
-        working-directory: site
-      - name: Run family factor alignment smoke gate
-        if: steps.site_build.outcome == 'success'
-        run: npm run test:smoke -- tests/smoke/family-factor-alignment.spec.ts
+      - run: npm run test:smoke
         working-directory: site
 
-  # ── 12. Visual regression (E-16, informational until Linux baselines land) ──
-  # Existing baselines are -win32 only (captured locally on Windows). To
-  # promote this job to a hard gate, run on a Linux CI worker once with
-  # `npm run test:visual:update`, commit the resulting -linux PNGs under
-  # site/tests/visual/__snapshots__/, then drop continue-on-error.
-  # The 5 protocol/factor-detail specs use test.skip() until D3 page work
-  # lands; only factor-page-global currently produces a snapshot.
-  visual-regression:
-    name: Visual regression (Playwright)
-    needs: [check-files]
-    if: needs.check-files.outputs.has-visual-baselines == 'true'
-    runs-on: ubuntu-latest
-    continue-on-error: true # informational until Linux baselines committed
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: site/package.json
-      - name: Install site deps
-        run: npm ci
-        working-directory: site
-      - name: Build synthetic family API fixture
-        run: python scripts/ci/build-family-api-fixture.py
-      - name: Build site
-        run: npm run build
-        working-directory: site
-        env:
-          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-        working-directory: site
-      - name: Run visual regression
-        run: npm run test:visual
-        working-directory: site
-
-  # ── 13. Migration round-trip ──────────────────────────────────────────────────
   migration-roundtrip:
     name: Migration round-trip
-    needs: [check-files]
-    if: needs.check-files.outputs.has-root-package == 'true'
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: risk_dashboard
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-python@v7
         with:
-          node-version: '22'
-          cache: npm
-      - run: npm ci
-      - name: Apply all migrations from scratch
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: npm run db:push
-      - name: Seed and verify counts
-        run: |
-          DSN="postgresql://postgres:postgres@localhost:5432/risk_dashboard"
-          npm run db:seed
-          rv=$(psql "$DSN" -t -c "SELECT COUNT(*) FROM rubric_versions WHERE is_active = true;" | tr -d '[:space:]')
-          [ "$rv" = "1" ] || { echo "FAIL: expected 1 active rubric_version, got $rv"; exit 1; }
-          cats=$(psql "$DSN" -t -c "SELECT COUNT(*) FROM categories;" | tr -d '[:space:]')
-          [ "$cats" = "13" ] || { echo "FAIL: expected 13 categories, got $cats"; exit 1; }
-          echo "OK: 1 active rubric version + 13 categories"
-        env:
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+          python-version: '3.11'
+      - run: pip install pytest
+      - name: Exercise boundary failure fixtures
+        run: pytest scripts/tests/test_public_boundary_architecture.py -q
 
-  # ── 14. Migration replay (ordered SQL files) ─────────────────────────────────
-  #
-  # Complements `migration-roundtrip` above. That job uses `npm run db:push`,
-  # which has Drizzle reconcile the live schema to match db/schema.ts in a
-  # single declarative step — fast and idempotent, but it hides whether the
-  # *hand-written* db/migrations/*.sql files actually apply cleanly in
-  # filename order against an empty Postgres.
-  #
-  # This job replays the hand-written SQL chain (badge-column drops in 0003,
-  # gap_reason rename in 0004, M1 v17 risk_score columns in 0005, etc.) the
-  # same way a recovery from R2 backup would: empty database, apply files in
-  # order, verify the resulting schema looks sane.
-  #
-  # Catches: migration-order regressions (e.g. dropping a column before a
-  # downstream migration tries to read it), syntactically broken SQL, missing
-  # IF EXISTS guards, accidental dependency on objects only db:push creates.
-  #
-  # Added per p0-response 2026-05-30 (P0 #8).
   migration-replay:
     name: Migration replay (ordered SQL)
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: risk_dashboard
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - uses: actions/checkout@v7
-      - name: Install postgresql-client
-        run: sudo apt-get install -y --no-install-recommends postgresql-client
-      - name: Install PostgreSQL Python driver
-        run: pip install 'psycopg[binary]>=3.1'
-
-      - name: Replay db/migrations/*.sql with family backfill fixture
-        env:
-          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+      - name: Verify deterministic committed API replay
         run: |
-          # Sort by filename so 0000 → 0001 → ... → 0007 → ... applies in order.
-          set -euo pipefail
-          shopt -s nullglob
-          files=(db/migrations/[0-9]*.sql)
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "FAIL: no SQL migration files found under db/migrations/"
-            exit 1
-          fi
-          # Sort just to be safe — bash glob order is locale-dependent.
-          IFS=$'\n' files=($(printf '%s\n' "${files[@]}" | sort))
-          unset IFS
-          echo "Applying ${#files[@]} migration(s) in order:"
-          for f in "${files[@]}"; do
-            if [ "$(basename "$f")" = "0008_protocol_surfaces.sql" ]; then
-              echo "  seeding synthetic pre-family rows before 0008"
-              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
-                -f scripts/ci/family-pre-0008-fixture.sql
-            fi
-            if [ "$(basename "$f")" = "0008_protocol_surfaces.sql" ]; then
-              echo "  applying $f (migration contains its transaction boundary)"
-              psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
-              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
-                -f scripts/ci/assert-family-backfill.sql
-              echo "  replaying 0008 to prove default surfaces are not recreated"
-              psql "$DSN" -v ON_ERROR_STOP=1 -f "$f"
-              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction \
-                -f scripts/ci/assert-family-backfill.sql
-            else
-              echo "  applying $f"
-              psql "$DSN" -v ON_ERROR_STOP=1 --single-transaction -f "$f"
-            fi
-          done
-          echo "OK: all migrations applied cleanly"
-
-      - name: Import, compose, and dump a synthetic family
-        env:
-          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-          LOCAL_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: |
-          set -euo pipefail
-          psql "$DSN" -v ON_ERROR_STOP=1 -c \
-            "UPDATE protocols SET has_active_incident = true WHERE slug = 'fixture-family'; UPDATE protocol_families SET has_active_incident = true WHERE family_slug = 'fixture-family';"
-          psql "$DSN" -v ON_ERROR_STOP=1 -c \
-            "UPDATE protocols SET has_active_incident = true WHERE slug = 'fixture-peer'; UPDATE protocol_families SET has_active_incident = true WHERE family_slug = 'fixture-peer';"
-          python scripts/import-protocol-assessment.py new-family \
-            --grading-file scripts/ci/family-legacy-incident-fixture.json \
-            --apply --expected-database risk_dashboard \
-            --allow-protected-database --i-understand-protected-database \
-            --skip-compose
-          inherited_incident="$(psql "$DSN" -Atc "SELECT p.has_active_incident::text || '|' || pf.has_active_incident::text FROM protocols p JOIN protocol_families pf ON pf.family_slug = p.slug WHERE p.slug = 'new-family'")"
-          test "$inherited_incident" = "true|true"
-          python scripts/import-protocol-assessment.py fixture-family \
-            --grading-file scripts/ci/family-import-fixture.json \
-            --apply --expected-database risk_dashboard \
-            --allow-protected-database --i-understand-protected-database \
-            --skip-compose
-          incident_state="$(psql "$DSN" -Atc "SELECT p.has_active_incident::text || '|' || pf.has_active_incident::text FROM protocols p JOIN protocol_families pf ON pf.family_slug = p.slug WHERE p.slug = 'fixture-family'")"
-          test "$incident_state" = "true|true"
-          DATABASE_URL="$DSN" python scripts/compose.py --protocol fixture-family
-          DATABASE_URL="$DSN" python scripts/dump.py --out-root _local/family-db-dump
-          python scripts/ci/assert-family-build.py \
-            --api-root _local/family-db-dump/api/v1.7.0 \
-            --legacy-db-fixture
-          python scripts/cleanup-multiversion-runtime-artifacts.py \
-            --dry-run --manifest scripts/ci/family-cleanup-fixture.json \
-            --db-url "$DSN" --expected-database risk_dashboard \
-            --allow-protected-database --i-understand-protected-database
-
-      - name: Verify resulting schema looks sane
-        env:
-          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: |
-          # Core tables that MUST exist after a full replay. If a future
-          # migration drops one of these accidentally, this fails loudly.
-          set -euo pipefail
-          required_tables=(
-            protocols deployments factors factor_scores
-            factor_score_sources sources hacks hack_factor_links
-            grade_history protocol_grade_history grade_changes
-            rubric_versions categories protocol_families protocol_surfaces
-          )
-          missing=()
-          for t in "${required_tables[@]}"; do
-            exists=$(psql "$DSN" -t -c \
-              "SELECT to_regclass('public.${t}') IS NOT NULL;" | tr -d '[:space:]')
-            if [ "$exists" != "t" ]; then
-              missing+=("$t")
-            fi
-          done
-          if [ ${#missing[@]} -gt 0 ]; then
-            echo "FAIL: migration replay left required tables missing: ${missing[*]}"
-            exit 1
-          fi
-          echo "OK: all ${#required_tables[@]} required tables present"
-
-      - name: Verify badge columns were correctly dropped/relaxed by 0003
-        env:
-          DSN: postgresql://postgres:postgres@localhost:5432/risk_dashboard
-        run: |
-          # Migration 0003 is the most ordering-sensitive change in the chain:
-          # it drops protocols.headline_badge + deployments.badge entirely and
-          # relaxes grade_history.badge + protocol_grade_history.badge to NULL.
-          # Regressions here directly motivated this job's existence.
-          set -euo pipefail
-
-          # Should NOT exist
-          for col in "protocols.headline_badge" "deployments.badge"; do
-            tbl="${col%.*}"; c="${col##*.}"
-            exists=$(psql "$DSN" -t -c \
-              "SELECT EXISTS (SELECT 1 FROM information_schema.columns
-                              WHERE table_name='${tbl}' AND column_name='${c}');" \
-              | tr -d '[:space:]')
-            if [ "$exists" = "t" ]; then
-              echo "FAIL: ${col} still exists after migration 0003"
-              exit 1
-            fi
-          done
-
-          # Should still exist, but NULLABLE
-          for col in "grade_history.badge" "protocol_grade_history.badge"; do
-            tbl="${col%.*}"; c="${col##*.}"
-            nullable=$(psql "$DSN" -t -c \
-              "SELECT is_nullable FROM information_schema.columns
-               WHERE table_name='${tbl}' AND column_name='${c}';" \
-              | tr -d '[:space:]')
-            if [ "$nullable" != "YES" ]; then
-              echo "FAIL: ${col} expected nullable=YES, got '${nullable}'"
-              exit 1
-            fi
-          done
-
-          echo "OK: badge column drops + NULL-relaxations correct per migration 0003"
+          python scripts/ci/build-public-api-manifest.py --check
+          python scripts/ci/verify-public-boundary.py

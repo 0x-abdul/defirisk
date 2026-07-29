@@ -3,7 +3,7 @@
  * that flow from `data/api/<RUBRIC_VERSION>/` through the build.
  *
  * The actual file reading lives in `site/src/lib/data-loaders.ts` (Node
- * `fs` against the dump.py output). The zod schemas defined here are
+ * `fs` against the committed public projection). The zod schemas defined here are
  * imported by data-loaders.ts and used to derive TypeScript types via
  * `z.infer<>`; pages import the types via `Protocol`, `Factor`, etc.
  *

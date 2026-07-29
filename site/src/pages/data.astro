@@ -158,8 +158,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
       against. Grades are only meaningful against a specific rubric version.
     </li>
     <li>
-      <strong><code>data_as_of</code></strong>: the snapshot timestamp of the underlying data
-      (when the upstream pipeline last refreshed).
+      <strong><code>data_as_of</code></strong>: the immutable assessment snapshot timestamp.
     </li>
     <li>
       <strong><code>generated_at</code></strong>: when this particular file was produced.
@@ -177,7 +176,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
   </p>
   <ul>
     <li>
-      <strong><code>risk_score</code></strong>: numeric 0–100 (2 decimal places, per dump.py <code>round(_, 2)</code>). A
+      <strong><code>risk_score</code></strong>: numeric 0–100, rounded to 2 decimal places. A
       core-five-weighted average of per-category severity scores plus a critical-red penalty
       (5 pts per critical red, capped at 15). Lower is safer. This is the primary input to
       the letter-grade bands.

@@ -13,10 +13,9 @@ export const COVERAGE_TARGET_FACTORS = 184;
 export const COVERAGE_TARGET_CATEGORIES = 13;
 
 /**
- * Cadence buckets per E-30 ticket §Background. Counts derived from the
- * cadence column of risk-dashboard/.research/methodology/template.md
- * (verified 2026-04-26: 9 C, 37 E, 115 S, 24 RT; 185 pre-PD-032; 184
- * post-PD-032 with F169 deleted).
+ * Public assessment cadence buckets. Counts were verified 2026-04-26:
+ * 9 C, 37 E, 115 S, and 24 RT; 185 before PD-032 and 184 after F169 was
+ * removed.
  */
 export const CADENCE_BUCKETS = [
   {

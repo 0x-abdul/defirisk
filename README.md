@@ -1,53 +1,40 @@
 # defirisk.co
 
-defirisk.co is an open-source risk transparency dashboard for defi protocols.
-It grades protocol deployments against a public, versioned rubric and publishes
-the evidence trail behind each assessment.
+defirisk.co is an open-source risk-transparency dashboard for DeFi protocols.
+It grades published protocol deployments against a public, versioned rubric and
+shows the public evidence behind each assessment.
 
-- **Live site:** [defirisk.co](https://defirisk.co)
-- **Rubric version:** `v1.7.0`
-- **Code license:** MIT
-- **Data and methodology license:** CC BY 4.0
+- Live site: [defirisk.co](https://defirisk.co)
+- Rubric version: `v1.7.0`
+- Code license: MIT
+- Data and methodology license: CC BY 4.0
 
-## What this project does
+## Public repository scope
 
-defirisk.co grades structural protocol risk. It does not predict exploits, rank
-token quality, score marketing, or measure community sentiment.
-
-Each assessment is built from cited evidence: audit reports, on-chain state,
-governance forums, public incident records, source repositories, and operator
-disclosures. The rubric is deterministic, which means the same evidence should
-produce the same letter grade under the same rubric version.
-
-Every published assessment is intended to answer three questions:
-
-- What structural risks are visible from public evidence?
-- Which rubric factors drove the result?
-- What sources support the finding?
-
-The public product context lives on the
-[About](https://defirisk.co/about/) page. The full grading process is documented
-in the [Methodology](https://defirisk.co/methodology/).
-
-## Repository layout
+This repository is the reproducible public product:
 
 | Path | Purpose |
-|------|---------|
-| `site/` | Astro static site for defirisk.co |
-| `data/api/v1.7.0/` | Generated JSON exports, schemas, rubric data, factor data, protocol data, history, and status files |
-| `db/migrations/` | Postgres schema migrations for the grading pipeline |
-| `scripts/compose.py` | Computes rubric grades from database factor scores |
-| `scripts/dump.py` | Exports versioned static JSON under `data/api/` |
-| `scripts/import-protocol-assessment.py` | Validates and imports family/surface assessment bundles |
-| `scripts/cleanup-multiversion-runtime-artifacts.py` | Audits and removes explicitly manifested legacy runtime artifacts |
-| `scripts/rubric.py` | Rubric constants, score formula, thresholds, and grade logic |
-| `scripts/refresh-continuous.py` | Refreshes selected programmatic metrics, then recomposes and exports |
-| `.github/` | CI, deploy workflow, issue templates, and contribution templates |
+|---|---|
+| `site/` | Astro static application |
+| `data/api/` | Complete reviewed public assessment projection and deterministic manifest |
+| `docs/methodology/` | Public methodology and changelog |
+| `docs/public-data-boundary.md` | Public/private ownership and publication contract |
+| `scripts/rubric.py` | Public scoring rules |
+| `scripts/ci/` | Public schema, build, and confidentiality boundary checks |
+
+Unpublished research, review material, operator runbooks, database tooling,
+approval receipts, deployments, backups, and live telemetry are not maintained
+here.
+
+At the 2026-07-29 boundary cutover, the production database and publication
+policy agreed that all 98 covered protocols were unpublished. The verified
+published baseline is therefore empty. Protocol assessments appear here only
+after private approval and review through a public publication pull request.
 
 ## Local development
 
-The site can run from the checked-in JSON data. A database is not required for
-normal frontend development.
+The site builds exclusively from the committed public API tree. It requires no
+database credentials or runtime export.
 
 ```bash
 cd site
@@ -55,80 +42,29 @@ npm install
 npm run dev
 ```
 
-Useful site commands:
+Useful checks:
 
 ```bash
-npm run build
+python scripts/ci/verify-public-boundary.py
+python scripts/ci/build-public-api-manifest.py --check
+python -m pytest scripts/tests -q
+
+cd site
 npm test
-npm run typecheck
 npm run lint
-npm run test:smoke
-npm run test:a11y
+npm run typecheck
+npm run build
 ```
-
-To run the grading pipeline locally, point `DATABASE_URL` or
-`LOCAL_DATABASE_URL` at Postgres, apply the migrations, then run:
-
-```bash
-python scripts/compose.py
-python scripts/dump.py
-```
-
-`compose.py` recomputes grades from current factor scores. `dump.py` regenerates
-the static API tree consumed by the site.
-
-### Protocol families and surfaces
-
-A canonical protocol slug represents a family. A family may contain one or
-more independently scored surfaces, such as protocol versions or product
-lines. Existing protocols migrate to one primary `default` surface, so their
-current database rows, JSON endpoints, and dashboard URLs remain compatible.
-Optional legacy surface slugs export redirect-compatible JSON and history
-aliases while canonical family files expose the full `surfaces` array.
-
-Apply `db/migrations/0008_protocol_surfaces.sql` only after creating a database
-backup and restoring it into staging. The migration must be run atomically:
-
-```bash
-psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 \
-  -f db/migrations/0008_protocol_surfaces.sql
-psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 \
-  -f scripts/ci/assert-family-staging.sql
-```
-
-For a production-clone rehearsal, dump the static API before and after the
-migration, then prove that every legacy JSON file remains a recursive subset
-of the family-aware export (the only ignored value is `generated_at`):
-
-```bash
-python scripts/ci/compare-single-surface-api.py \
-  /tmp/before/api/v1.7.0 /tmp/after/api/v1.7.0
-```
-
-Assessment imports default to validation-only behavior and intentionally ignore
-`DATABASE_URL`. Use `LOCAL_DATABASE_URL`, name the expected database, and pass
-the explicit apply flag only after reviewing the dry-run output:
-
-```bash
-python scripts/import-protocol-assessment.py family-slug \
-  --grading-file path/to/grading.json --dry-run
-python scripts/import-protocol-assessment.py family-slug \
-  --grading-file path/to/grading.json --apply \
-  --expected-database risk_dashboard_family_staging
-```
-
-Protected or non-local databases require additional acknowledgement flags. Run
-each tool with `--help` for the complete guarded workflow.
 
 ## Public API
 
-The public API is static JSON under a versioned base path:
+The API is static, versioned JSON:
 
 ```text
 https://defirisk.co/api/v1.7.0/
 ```
 
-Main endpoints:
+Important endpoints include:
 
 ```text
 GET /api/v1.7.0/index.json
@@ -138,126 +74,58 @@ GET /api/v1.7.0/factors/{id}.json
 GET /api/v1.7.0/hacks.json
 GET /api/v1.7.0/rubric.json
 GET /api/v1.7.0/changes.json
+GET /api/v1.7.0/status.json
 ```
 
-Successful responses are wrapped in a stable envelope with:
+Only approved published protocols may appear in the protocol index, details,
+factor score tables, assessment history, change feed, or incident feed.
 
-- `rubric_version`: the rubric used to compute the response.
-- `data_as_of`: the data snapshot timestamp.
-- `generated_at`: the file generation timestamp.
-- `data`: the requested resource payload.
+`status.json` contains only Git-versioned assessment snapshot metadata. Live
+pipeline health, deployment status, monitoring, and calculated freshness belong
+to the separate telemetry surface and are not reproducible Git data.
 
-Protocol detail responses also include M1 v4 rubric fields at the envelope
-level: `risk_score`, `category_severities`, `cap_applied`, and `cap_reason`.
+Every committed API file is covered by `data/api/MANIFEST.sha256`. Production
+releases must use these exact committed files or deterministic artifacts derived
+exclusively from them. Deployment-time database export and runtime API overlays
+are prohibited.
 
-When citing downstream data, include both `rubric_version` and `data_as_of`.
-A grade is only meaningful against the rubric version that produced it.
+## Publication model
 
-The live API reference is at [defirisk.co/data](https://defirisk.co/data/).
+Adding a protocol to the production database is private and creates no public
+issue or pull request. Research and approval also remain private.
+
+After approval, exactly one protocol-specific publication pull request adds the
+sanitized assessment. It records that the public data was reviewed for
+publication; it does not contain private review routes, identities, receipts, or
+deployment details. The later database publication flag change and release
+promotion create no second issue or pull request.
+
+Existing legacy protocols are not replaced by 98 individual pull requests.
+Verified publication candidates use consolidated legacy-publication batches.
+
+See [the public data boundary](docs/public-data-boundary.md) for the complete
+repository contract.
 
 ## Scoring model
 
-Rubric v1.7.0 produces a protocol letter grade from cited factor evidence.
-The pipeline has three main steps.
+Each applicable factor is scored green, yellow, or red. Gray means not
+applicable or not assessed and is excluded from the denominator.
 
-1. Per-category severity
+```text
+severity = (red * 3 + yellow) / (assessed * 3) * 100
+```
 
-   Each assessed factor is scored green, yellow, red, or gray. Gray means not
-   applicable or not assessed and is excluded from the denominator.
-
-   ```text
-   severity = (red * 3 + yellow * 1) / (assessed * 3) * 100
-   ```
-
-2. Protocol risk score
-
-   Category severities are aggregated into a 0 to 100 risk score. Core-five
-   categories are weighted at 1.5x and all other categories at 1.0x. A
-   critical-red penalty adds 5 points per critical red, capped at 15.
-
-   The core-five categories are code and audits, governance and admin controls,
-   oracle and external dependencies, operational history, and fork or dependency
-   lineage.
-
-3. Letter band and caps
-
-   The risk score and critical-red count produce the natural letter grade. A
-   weak core-five category can cap the result at D or force F.
-
-| Grade | Meaning | First matching rule |
-|-------|---------|---------------------|
-| A | Resilient | Risk score <= 12 and no critical flags |
-| B | Sound | Risk score <= 20 with no critical flags, or exactly one critical flag with risk score <= 20 |
-| C | Watch | Risk score > 20 and <= 35, with no more than one critical flag |
-| D | Compromised | Risk score > 35 and <= 55, at least two critical flags, or a core-five category severity >= 60 |
-| F | Failing | Risk score > 55, at least three critical flags, or a core-five category severity >= 90 |
-
-The full factor definitions and rubric metadata are published in
-`data/api/v1.7.0/factors.json` and `data/api/v1.7.0/rubric.json`. You can also
-browse them on the live
-[factor library](https://defirisk.co/factors/).
+Category severities are combined into a 0–100 risk score. Core categories have
+additional weight, critical-red findings add a capped penalty, and rubric caps
+can limit the final letter grade. Factor definitions and the frozen rubric are
+published under `data/api/v1.7.0/`.
 
 ## Contributing
 
-Pull requests are welcome for code, documentation, accessibility,
-performance, schemas, migrations, and scoring pipeline improvements.
+Pull requests are welcome for the public application, accessibility,
+performance, public schemas, methodology, rubric logic, and tests.
 
-Direct edits to generated data are not accepted. Do not open a PR that edits
-per-protocol factor scores, letter grades, or files under
-`data/api/v1.7.0/protocols/`. Those files are pipeline output.
-
-Use the public issue channels instead:
-
-- **Coverage Request:** ask for a protocol to be assessed.
-- **Factual Correction:** report a wrong data point with a verifiable source.
-- **Grade Dispute:** challenge how the rubric was applied to established facts.
-- **Rubric Proposal:** propose a change to the rubric itself.
-
-The canonical guide is [CONTRIBUTING.md](CONTRIBUTING.md), with public process
-details at [defirisk.co/contributions](https://defirisk.co/contributions/).
-
-## Continuous refresh operations
-
-`scripts/refresh-continuous.py` updates regularly changing metrics from durable
-programmatic sources. Refresh, grade composition, and grade-change writes share
-one database transaction; any protocol or composition failure rolls back the
-whole batch. The API export runs only after that transaction commits.
-
-```bash
-DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all
-DATABASE_URL=postgres://... python scripts/refresh-continuous.py --protocol aave-v3
-DATABASE_URL=postgres://... python scripts/refresh-continuous.py --all --dry-run
-```
-
-In production, `.github/workflows/ingest.yml` runs this daily at 03:00 UTC by
-SSHing into the VPS with `VPS_HOST` and `VPS_SSH_KEY`, sourcing
-`/opt/riskdashboard/.env`, and using `DATABASE_URL` or `LOCAL_DATABASE_URL`.
-The production Postgres instance is local to the VPS, so the workflow runs the
-refresh there and rebuilds the static dashboard so `/api/...` reflects the
-refreshed values. The VPS checkout is synchronized to `origin/main` before each
-run; generated `data/api` files remain uncommitted and are replaced on the next
-run rather than creating a second, divergent Git history on the server.
-
-The runtime role keeps direct `SELECT`-only access to family and surface tables.
-Migration `0014_nightly_ingest_topology_functions.sql` grants only two narrow
-function calls for synchronized TVL and derived-grade updates. Apply and verify
-that migration, run a dry-run and single-protocol canary, and complete one
-fleet-wide manual run before enabling the scheduled workflow. A failed export
-or static-site build does not roll back the already committed database batch.
-Static publication is not atomic yet, so keep scheduling disabled until that
-path has a verified rollback or atomic promotion; alert and repair publication
-without replaying the committed database batch. The nightly job also remains
-fail-closed unless the repository variable `ENABLE_NIGHTLY_INGEST` is explicitly
-set to `true` after those rollout gates pass.
-
-The refresh script does not overwrite existing values with null or zero when a
-fetch fails. It is intentionally narrower than a full reassessment. Metrics
-that need judgment, source mapping, or episodic context remain manual until the
-pipeline can update them without false precision.
-
-## License and attribution
-
-Code in `site/`, `db/`, `scripts/`, and `.github/` is MIT licensed. Data,
-evidence factors, citation lists, and methodology are CC BY 4.0.
-
-For data reuse, attribution to `defirisk.co, rubric v1.7.0` is sufficient.
+Do not directly edit protocol grades or generated assessment files. Use the
+public issue templates for coverage requests, factual corrections, grade
+disputes, rubric proposals, and security reports. See
+[CONTRIBUTING.md](CONTRIBUTING.md).

@@ -34,10 +34,8 @@ const {
 } = Astro.props;
 
 const fullTitle = title === SITE_NAME ? title : `${title} · ${SITE_NAME}`;
-// Noindex pages must NOT emit <link rel="canonical"> or og:url pointing at
-// themselves because that contradicts the noindex signal and, in the case of
-// /unpublished/<slug>-<token>/, would leak the secret review URL into
-// canonical metadata. See p0-response 2026-05-30 (P0 #4).
+// Noindex pages do not emit canonical or OpenGraph URLs that contradict the
+// indexing directive.
 const canonicalUrl = noindex
   ? null
   : (canonical ?? new URL(Astro.url.pathname, SITE_URL).toString());
