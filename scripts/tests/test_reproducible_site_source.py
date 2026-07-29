@@ -56,3 +56,17 @@ def test_reproducible_ci_builds_under_distinct_timezones() -> None:
     assert "TZ: Pacific/Honolulu" in workflow
     assert "TZ: Asia/Tokyo" in workflow
     assert "Compare complete output trees" in workflow
+
+
+def test_public_build_canonicalizes_path_derived_astro_island_uids() -> None:
+    runner = (ROOT / "site/scripts/run-public-build.mjs").read_text(encoding="utf-8")
+    canonicalizer = (
+        ROOT / "site/scripts/canonicalize-astro-islands.mjs"
+    ).read_text(encoding="utf-8")
+
+    assert runner.index("Astro build") < runner.index("Astro island canonicalization")
+    assert runner.index("Astro island canonicalization") < runner.index(
+        "committed API copy"
+    )
+    assert "createHash('sha256')" in canonicalizer
+    assert "component-url" in canonicalizer
