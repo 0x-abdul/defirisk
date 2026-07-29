@@ -4,7 +4,7 @@ import { listPublishedProtocolSlugs, getProtocol } from '../../../lib/data-loade
 import { buildProtocolFamilyRedirect } from '../../../lib/protocol-redirect';
 
 export async function getStaticPaths() {
-  // Published protocols only - unpublished ones render at /unpublished/<slug>-<token>/.
+  // Only reviewed protocols present in the committed public projection render here.
   return listPublishedProtocolSlugs().map((slug) => ({ params: { slug } }));
 }
 

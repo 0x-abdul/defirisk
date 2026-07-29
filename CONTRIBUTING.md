@@ -1,119 +1,53 @@
 # Contributing
 
-defirisk.co is an open-source risk transparency dashboard for defi protocols.
-Contributions improve the site, docs, schemas, scoring pipeline, rubric, and
-coverage process without allowing direct external writes to protocol verdicts.
+defirisk.co welcomes contributions to its public application, methodology,
+rubric, schemas, accessibility, performance, and boundary tests.
 
-The canonical public guide lives at
-<https://defirisk.co/contributions/>. This file adds repo-specific development
-and pull-request expectations.
+## Choose the right channel
 
-## Quick paths
-
-Use the path that matches what you want to change:
-
-| You want to | Use |
-|-------------|-----|
-| Improve code, docs, schemas, migrations, or scoring scripts | Pull request |
-| Request coverage for a protocol | [Coverage Request](.github/ISSUE_TEMPLATE/coverage-request.md) |
-| Fix a wrong data point | [Factual Correction](.github/ISSUE_TEMPLATE/factual-correction.md) |
-| Challenge how the rubric was applied | [Grade Dispute](.github/ISSUE_TEMPLATE/grade-dispute.md) |
+| Goal | Channel |
+|---|---|
+| Improve public code, UX, docs, schemas, or tests | Pull request |
+| Request protocol coverage | [Coverage Request](.github/ISSUE_TEMPLATE/coverage-request.md) |
+| Correct a published fact | [Factual Correction](.github/ISSUE_TEMPLATE/factual-correction.md) |
+| Dispute rubric application | [Grade Dispute](.github/ISSUE_TEMPLATE/grade-dispute.md) |
 | Propose a rubric change | [Rubric Proposal](.github/ISSUE_TEMPLATE/rubric-proposal.md) |
-| Report a security issue | [SECURITY.md](SECURITY.md) |
+| Report a vulnerability | [Security policy](SECURITY.md) |
 
-If you file in the wrong place, maintainers can route it to the correct
-channel and say so on the thread.
+## Repository boundary
 
-## What we accept via PR
+Public pull requests must not contain:
 
-Pull requests are welcome for:
+- unpublished assessments or review routes;
+- review tokens, private URLs, identities, notes, or working evidence;
+- approval receipts, signatures, database identifiers, or transaction details;
+- internal repository paths or metadata;
+- deployment, backup, rollback, monitoring, or credential material; or
+- live telemetry under `data/api/**`.
 
-- **Site improvements.** The Astro site lives in `site/`. Accessibility fixes,
-  especially WCAG 2.2 AA issues, and performance improvements are welcome.
-- **Scoring pipeline improvements.** `scripts/compose.py`,
-  `scripts/dump.py`, `scripts/rubric.py`, and `db/migrations/` are open to
-  focused changes.
-- **Documentation, examples, and translations.**
-- **Schemas and developer ergonomics.** Keep changes compatible with the
-  published API envelope unless the PR is explicitly for a versioned breaking
-  change.
-- **Rubric proposals.** Open a public issue first when the change would alter
-  factor meaning, thresholds, critical status, or grade outcomes.
+Operational files under `docs/ops/` are deliberately ignored and are rejected
+by the public boundary validator even if force-added.
 
-Keep one topic per PR. Include tests for new code paths and a short
-description of what changed and why.
+Protocol grades and factor scores are generated from approved immutable
+snapshots. Do not directly edit them to implement a correction or dispute.
 
-## What we never accept via PR
+## Publication pull requests
 
-Pull requests cannot write to per-protocol factor scores or letter grades.
-They also cannot change generated files under `data/api/` as a way to alter
-an assessment. The generated data tree is rebuilt from the pipeline.
+A protocol's insertion, research, and review happen outside this public
+repository and create no public issue or pull request. After approval,
+maintainers open exactly one publication pull request containing the sanitized
+public projection. The later publication flag change and release promotion do
+not create a second pull request.
 
-To change what a protocol page says, use the correction and dispute channels
-below. A successful challenge targets the underlying factor or rubric rule.
-The letter grade recomputes from there.
-
-## Request coverage
-
-To request a new protocol, open a
-[Coverage Request](.github/ISSUE_TEMPLATE/coverage-request.md) with:
-
-- protocol name and official links
-- chain or chains
-- approximate TVL
-- known audits
-- conflict-of-interest disclosure
-
-The baseline scope bar from the live site is: live for more than 12 months,
-TVL over $50M, and on an EVM or otherwise supported chain. Requests are logged
-and prioritized against the published criteria.
-
-## Corrections and disputes
-
-Everything defirisk.co publishes about a protocol is open to challenge, and
-every challenge resolves in public.
-
-There are three channels:
-
-- **[Factual Correction](.github/ISSUE_TEMPLATE/factual-correction.md):**
-  a specific data point is wrong and you can cite a verifiable source, such as
-  a URL, contract address, audit PDF page, or on-chain transaction. Maintainers
-  re-evidence the factor and the letter recomputes.
-- **[Grade Dispute](.github/ISSUE_TEMPLATE/grade-dispute.md):** the facts are
-  right, but the rubric was applied incorrectly. This is resolved through the
-  [appeals process](https://defirisk.co/methodology/#appeals) by
-  re-adjudicating the disputed factor.
-- **[Rubric Proposal](.github/ISSUE_TEMPLATE/rubric-proposal.md):** the rule
-  itself is miscalibrated. Proposals are reviewed publicly and either accepted
-  into a future rubric version, deferred, or declined with a public note.
-
-Do not open a PR against generated data for any of these. The public issue is
-the audit trail.
-
-## Timelines and audit trail
-
-Every submission is acknowledged and triaged within five business days.
-
-- A straightforward Factual Correction with a clean source is applied at the
-  next pipeline run after the evidence is verified.
-- A Grade Dispute reaches a published decision within 14 days of filing, with
-  full reasoning recorded on the thread.
-- A Rubric Proposal has no fixed clock. It is debated in public and resolved
-  when a rubric version is cut.
-
-For already-published protocols, an open challenge does not pause the grade or
-redact the page. If a challenge succeeds, the historical record shows both the
-before and after grade with the date of change.
-
-Every correction and dispute remains a public issue on the source repository.
-There is no private channel for changing a grade.
+Every projection is validated privately before its branch is pushed. Required
+public CI repeats the same confidentiality and schema checks before merge.
+External contributors should use coverage, correction, or dispute issues rather
+than constructing assessment payloads.
 
 ## Local development
 
-Prerequisites: Node 22, Python 3.11+, Postgres 16, and git.
-
-The site can run from the checked-in JSON data. A database is not required for
-normal frontend development.
+Prerequisites are Node 22, Python 3.11+, and Git. A database is neither required
+nor used to build the public site.
 
 ```bash
 cd site
@@ -121,58 +55,40 @@ npm install
 npm run dev
 ```
 
-Useful site commands:
+Before opening a pull request:
 
 ```bash
-npm run build
+python scripts/ci/verify-public-boundary.py
+python scripts/ci/build-public-api-manifest.py --check
+python -m pytest scripts/tests -q
+
+cd site
 npm test
-npm run typecheck
 npm run lint
-npm run test:smoke
-npm run test:a11y
+npm run typecheck
+npm run build
 ```
-
-To run the scoring pipeline locally against Postgres:
-
-```bash
-export LOCAL_DATABASE_URL=postgresql://user:pass@localhost:5432/risk_dashboard
-
-psql $LOCAL_DATABASE_URL < db/migrations/0000_initial.sql
-# Apply the remaining migrations in order.
-
-python scripts/compose.py
-python scripts/dump.py
-```
-
-`compose.py` recomputes grades from current factor scores. `dump.py`
-regenerates the static JSON tree under `data/api/`.
 
 ## Pull-request expectations
 
-- One topic per PR.
-- Tests for new code paths. Use Vitest for site logic, Playwright for new
-  pages or interactive components, and Python tests for new pipeline behavior
-  where practical.
-- A short PR description that says what changed and why.
-- CI should pass before review.
-- Signed commits are welcome but not required.
+- Keep one topic per pull request.
+- Add focused tests for behavior changes.
+- Explain what changed and why.
+- Preserve the public API envelope unless the change deliberately introduces a
+  versioned contract.
+- Keep the methodology changelog append-only.
+- Ensure every required check passes.
 
-## Code style
+## Style
 
-- TypeScript strict mode. Avoid `any` unless the surrounding code already
-  requires it or the PR includes a clear reason.
-- Astro components use `.astro` for static components and `.tsx` for
-  interactive islands.
-- Python should follow the style of the surrounding file.
-- Markdown should be hard-wrapped around 80 columns where practical.
-- Comments should explain non-obvious constraints, not restate the code.
+- Use strict TypeScript.
+- Prefer `.astro` for static components and `.tsx` for interactive islands.
+- Follow the surrounding Python style.
+- Wrap Markdown around 80 columns when practical.
+- Explain non-obvious constraints rather than restating code.
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the
-same terms as the directory you modify:
-
-| Path | License |
-|------|---------|
-| `site/`, `db/`, `scripts/`, `.github/` | MIT |
-| `data/`, methodology, evidence factors, and citation lists | CC BY 4.0 |
+Code is MIT licensed. Public data, methodology, factor definitions, and
+citations are CC BY 4.0. Contributions use the license applicable to the
+directory they modify.

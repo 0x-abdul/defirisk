@@ -129,10 +129,9 @@ test.describe('API — per-protocol JSON (skip when M3a not imported)', () => {
     // rubric_version must match the single source of truth in site/src/lib/rubric.ts
     expect(body.rubric_version).toBe(RUBRIC);
 
-    // M1 v4 fields are CANONICAL at envelope top-level (per p0-contract-audit
-    // 2026-05-30 §2 and dump.py make_envelope()). Inner copy under
-    // data.protocol_data.protocol.* is back-compat and asserted separately
-    // below.
+    // M1 v4 fields are canonical at envelope top-level. The inner copy under
+    // data.protocol_data.protocol.* is retained for compatibility and asserted
+    // separately below.
     //
     // ── Envelope-level (canonical) ──────────────────────────────────────────
     expect(typeof body.risk_score).toBe('number');
@@ -151,8 +150,7 @@ test.describe('API — per-protocol JSON (skip when M3a not imported)', () => {
 
     expect(['none', 'D', 'F']).toContain(body.cap_applied);
     // cap_reason: always present on protocol envelopes, paired with cap_applied;
-    // null when cap_applied='none', string otherwise. dump.py emits both fields
-    // together (CP10-post / 2026-05-30 cap_reason consistency fix).
+    // null when cap_applied='none', string otherwise.
     expect(body.cap_reason === null || typeof body.cap_reason === 'string').toBe(true);
 
     // ── Inner protocol object (back-compat copy) ────────────────────────────
@@ -194,26 +192,12 @@ test.describe('API — per-factor JSON', () => {
   });
 });
 
-test.describe('API — unpublished JSON cache headers (P0 #3)', () => {
-  // /api/<rubric>/unpublished/<slug>-<token>/index.json matches /api/* and would
-  // inherit `public, max-age=300` without the more-specific rule in _headers.
-  // Cloudflare Pages headers are not exercised by local Playwright runs (file://
-  // or astro dev), but staging/production runs MUST see no-store here.
+test.describe('API — private review routes are absent', () => {
   const BOGUS = 'test-protocol-deadbeef';
   const URL = `${API}/unpublished/${BOGUS}/index.json`;
 
-  test(`HEAD ${URL} — Cache-Control: private, no-store (when served by CF Pages)`, async ({ request }, testInfo) => {
+  test(`GET ${URL} cannot return private review data`, async ({ request }) => {
     const res = await request.get(URL);
-    // Local dev/serve will return 404 with default headers — skip the assertion.
-    // Staging/prod (Cloudflare Pages) is where this rule matters.
-    const baseURL = testInfo.project.use.baseURL ?? '';
-    if (!baseURL.includes('pages.dev') && !baseURL.includes('riskdashboard') && !baseURL.includes('defirisk')) {
-      test.skip(true, `Header test only meaningful against Cloudflare Pages baseURL (got: ${baseURL || 'none'})`);
-      return;
-    }
-    const cc = res.headers()['cache-control'] ?? '';
-    expect(cc).toMatch(/no-store/);
-    const robots = res.headers()['x-robots-tag'] ?? '';
-    expect(robots).toMatch(/noindex/);
+    expect(res.status()).toBe(404);
   });
 });

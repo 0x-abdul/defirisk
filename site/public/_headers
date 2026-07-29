@@ -25,15 +25,6 @@
 /*.html
   Cache-Control: public, max-age=60, stale-while-revalidate=600
 
-# ── Pre-publication review JSON (must come before /api/*) ──────────────────
-# Pre-pub review JSON lives at /api/<rubric>/unpublished/<slug>-<token>/index.json,
-# which matches /api/* and would otherwise inherit the public cache below.
-# This more-specific rule keeps unpublished JSON out of edge caches and out of
-# crawler indexes — mirrors the /unpublished/* HTML rule below.
-/api/*/unpublished/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: private, no-store
-
 # ── Versioned JSON API responses ────────────────────────────────────────────
 # Per eng-review §1E: every response under /api/<rubric>/ is byte-stable per
 # git SHA. The version segment in the URL is what changes; the file content
@@ -45,23 +36,6 @@
 # Astro emits fingerprinted filenames under _astro/. Cache forever.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
-
-# ── Pre-publication review pages (PD-049, 2026-05-27) ──────────────────────
-# Belt-and-braces: <meta name="robots" noindex> is also emitted by Base.astro
-# (via the reviewMode prop on ProtocolDetailLayout). X-Robots-Tag covers
-# HEAD-only crawls and any path-scan that doesn't parse HTML, e.g. archive.org.
-# robots.txt also disallows /unpublished/ for well-behaved crawlers.
-/unpublished/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: private, no-store
-
-# ── Owner-only control index (Nginx Basic Auth gated; see docs/deploy-vps.md) ──
-# The real access gate is Nginx Basic Auth on /control/. These directives keep
-# the page out of crawler indexes and edge caches as defense-in-depth, mirroring
-# the /unpublished/* rule above.
-/control/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: private, no-store
 
 # ── Sitemap, robots, favicon ────────────────────────────────────────────────
 /sitemap-*.xml

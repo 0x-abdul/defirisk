@@ -4,7 +4,7 @@
  * Run after `astro build` (or standalone: `node scripts/build-og-images.mjs`).
  * Outputs PNG files to site/dist/og/. Existing files are overwritten.
  *
- * Skips gracefully when data/api/<rubric>/ does not exist (pre-dump.py runs).
+ * Skips gracefully when the committed data/api/<rubric>/ tree is absent.
  *
  * Card types generated:
  *   default.png              — site-wide fallback

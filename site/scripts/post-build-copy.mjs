@@ -1,7 +1,7 @@
 /**
  * post-build-copy.mjs — copy the canonical API data dumps into site/dist/.
  *
- * The `dump.py` output lives at <repo>/data/api/<rubric>/ (committed JSON).
+ * The reviewed public projection lives at <repo>/data/api/ (committed JSON).
  * Astro builds to <repo>/site/dist/. The public API surface defined in
  * eng-review-2026-04-23.md §1E is at /api/<rubric>/, which means the files
  * need to be served from <repo>/site/dist/api/<rubric>/.
@@ -42,7 +42,7 @@ async function exists(p) {
 async function main() {
   if (!(await exists(SRC))) {
     console.error(`[post-build-copy] ERROR: source not found: ${SRC}`);
-    console.error(`[post-build-copy]   Run scripts/dump.py first to generate the API JSON dumps.`);
+    console.error(`[post-build-copy]   Restore the reviewed committed API projection.`);
     process.exit(1);
   }
   if (!(await exists(path.dirname(DST)))) {

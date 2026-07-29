@@ -4,8 +4,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const API_ROOT = path.join(ROOT, 'data', 'api', 'v1.7.0');
+const BASELINE = JSON.parse(
+  readFileSync(path.join(ROOT, 'data', 'api', 'publication-baseline.json'), 'utf8'),
+);
 const EXPECTED_PROTOCOL_COUNT = Number.parseInt(
-  process.env.EXPECTED_PUBLIC_PROTOCOL_COUNT ?? '80',
+  process.env.EXPECTED_PUBLIC_PROTOCOL_COUNT ??
+    String(BASELINE?.published_protocols?.count),
   10,
 );
 
@@ -42,7 +46,6 @@ function listJsonFiles(dir) {
 function directProtocolFiles() {
   const dir = path.join(API_ROOT, 'protocols');
   if (!existsSync(dir)) {
-    fail('data/api/v1.7.0/protocols is missing');
     return [];
   }
   return readdirSync(dir, { withFileTypes: true })
@@ -157,10 +160,6 @@ if (Array.isArray(freshnessRows)) {
 
 for (const file of listJsonFiles(API_ROOT)) {
   const rel = path.relative(API_ROOT, file).replaceAll(path.sep, '/');
-  // Unpublished review exports are intentional share-link artifacts. The
-  // published cohort checks above must not treat that separate subtree as a
-  // published API surface.
-  if (rel.startsWith('unpublished/')) continue;
   const content = readFileSync(file, 'utf8');
   if (content.includes('"review_token"')) {
     fail(`${rel} exposes review_token`);
