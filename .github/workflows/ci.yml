@@ -185,11 +185,8 @@ jobs:
           cache-dependency-path: site/package-lock.json
       - run: npm ci
         working-directory: site
-      - run: python scripts/ci/build-family-api-fixture.py
       - run: npm run build
         working-directory: site
-        env:
-          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - run: npx playwright install --with-deps chromium
         working-directory: site
       - run: npm run test:a11y
@@ -223,11 +220,8 @@ jobs:
           cache-dependency-path: site/package-lock.json
       - run: npm ci
         working-directory: site
-      - run: python scripts/ci/build-family-api-fixture.py
       - run: npm run build
         working-directory: site
-        env:
-          DEFIRISK_API_ROOT: ${{ github.workspace }}/_local/family-api-fixture/v1.7.0
       - run: npx playwright install --with-deps chromium
         working-directory: site
       - run: npm run test:smoke
