@@ -6,11 +6,10 @@ export interface Props {
 }
 
 const { title, lang, code } = Astro.props;
-const id = `cb-${Math.random().toString(36).slice(2, 10)}`;
 const hasBar = Boolean(title || lang);
 ---
 
-<div class="codeblock" data-codeblock-id={id}>
+<div class="codeblock">
   {
     hasBar && (
       <div class="cbar">
@@ -19,21 +18,21 @@ const hasBar = Boolean(title || lang);
           {title && <span>{title}</span>}
           {lang && <span class="lang">{lang}</span>}
         </div>
-        <button type="button" class="copy" data-target={id}>
+        <button type="button" class="copy">
           Copy
         </button>
       </div>
     )
   }
-  <pre data-code-source={id}>{code}</pre>
+  <pre>{code}</pre>
 </div>
 
 <script is:inline>
   (function () {
-    document.querySelectorAll('button.copy[data-target]').forEach(function (btn) {
+    document.querySelectorAll('.codeblock button.copy').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var id = btn.getAttribute('data-target');
-        var pre = document.querySelector('pre[data-code-source="' + id + '"]');
+        var block = btn.closest('.codeblock');
+        var pre = block && block.querySelector('pre');
         if (!pre) return;
         try {
           navigator.clipboard.writeText(pre.textContent || '');

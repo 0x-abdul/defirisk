@@ -159,6 +159,38 @@ jobs:
       - run: npm run build
         working-directory: site
 
+  reproducible-build:
+    name: Reproducible build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: first
+      - uses: actions/checkout@v7
+        with:
+          path: second
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+      - run: npm ci
+        working-directory: first/site
+      - run: npm ci
+        working-directory: second/site
+      - run: npm run build
+        working-directory: first/site
+        env:
+          TZ: Pacific/Honolulu
+          LANG: C
+          LC_ALL: C
+      - run: npm run build
+        working-directory: second/site
+        env:
+          TZ: Asia/Tokyo
+          LANG: C.UTF-8
+          LC_ALL: C.UTF-8
+      - name: Compare complete output trees
+        run: python first/scripts/ci/compare-build-trees.py first/site/dist second/site/dist
+
   public-export-boundary:
     name: Published API surface boundary
     runs-on: ubuntu-latest

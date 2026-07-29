@@ -47,6 +47,85 @@ def test_raw_database_timestamps_cannot_enter_public_projection() -> None:
     assert any("raw database timestamp" in failure for failure in failures)
 
 
+def test_assessed_factor_requires_public_safe_citation() -> None:
+    detail = {
+        "data": {
+            "protocol_data": {
+                "factor_scores": [
+                    {
+                        "factor_id": "RD-F-001",
+                        "score": "red",
+                        "evidence_summary": "Public evidence summary.",
+                        "sources": [],
+                    }
+                ]
+            }
+        }
+    }
+    failures = BOUNDARY.validate_protocol_citations(detail, "fixture.json")
+    assert any("requires a public citation" in failure for failure in failures)
+    detail["data"]["protocol_data"]["factor_scores"][0]["sources"] = [
+        {
+            "source_type": "official_documentation",
+            "url": "https://example.org/security",
+        }
+    ]
+    assert BOUNDARY.validate_protocol_citations(detail, "fixture.json") == []
+
+
+def test_private_or_tokenized_citation_url_is_rejected() -> None:
+    for url in (
+        "http://example.org/report",
+        "https://localhost/report",
+        "https://10.0.0.1/report",
+        "https://example.org/report?token=secret",
+    ):
+        assert not BOUNDARY.public_source_url_is_safe(url)
+
+
+def test_reference_cannot_bypass_public_citation_boundary() -> None:
+    detail = {
+        "data": {
+            "protocol_data": {
+                "factor_scores": [
+                    {
+                        "factor_id": "RD-F-001",
+                        "score": "red",
+                        "evidence_summary": "Public evidence summary.",
+                        "sources": [
+                            {
+                                "source_type": "official_documentation",
+                                "reference": "RiskProduct/private-review/token=secret",
+                            }
+                        ],
+                    }
+                ]
+            }
+        }
+    }
+    failures = BOUNDARY.validate_protocol_citations(detail, "fixture.json")
+    assert any("citation shape" in failure for failure in failures)
+    for reference in (
+        "C:/Users/operator/private.txt",
+        "/Users/operator/private.txt",
+        "../private/evidence.json",
+        "api_key: secret",
+    ):
+        detail["data"]["protocol_data"]["factor_scores"][0]["sources"][0].update(
+            {
+                "url": "https://example.org/public-report",
+                "reference": reference,
+            }
+        )
+        failures = BOUNDARY.validate_protocol_citations(detail, "fixture.json")
+        assert any("citation shape" in failure for failure in failures)
+    detail["data"]["protocol_data"]["factor_scores"][0]["sources"][0].update(
+        {"notes": "See docs/ops/protocol-addition/README.md"}
+    )
+    failures = BOUNDARY.validate_protocol_citations(detail, "fixture.json")
+    assert any("citation shape" in failure for failure in failures)
+
+
 def test_runtime_export_and_overlay_controllers_are_absent() -> None:
     for relative in BOUNDARY.PROHIBITED_EXACT_PATHS:
         assert not (ROOT / relative).exists(), relative

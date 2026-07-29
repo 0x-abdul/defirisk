@@ -2,8 +2,7 @@
 import Page from '../components/Page.astro';
 import Callout from '../components/Callout.astro';
 import { REPO_URL, ISSUE_NEW_URL } from '../lib/seo-defaults';
-
-const today = new Date().toISOString().slice(0, 10);
+import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
 const FACTUAL_CORRECTION_URL = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 const GRADE_DISPUTE_URL = `${ISSUE_NEW_URL}?template=grade-dispute.md`;
@@ -48,7 +47,7 @@ const toc = [
     h1: 'Contributions',
     lede: 'defirisk.co is an open-source risk transparency dashboard for defi protocols. You can improve the project, request coverage, or correct and challenge an assessment, all in public.',
     meta: [
-      { label: 'Last updated', value: today },
+      { label: 'Last updated', value: CONTENT_LAST_UPDATED.contributions },
       { label: 'Code', value: 'MIT' },
       { label: 'Data', value: 'CC BY 4.0' },
     ],

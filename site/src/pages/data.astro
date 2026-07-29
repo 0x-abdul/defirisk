@@ -3,8 +3,7 @@ import Page from '../components/Page.astro';
 import Callout from '../components/Callout.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 import { RUBRIC_VERSION } from '../lib/rubric';
-
-const today = new Date().toISOString().slice(0, 10);
+import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
 const toc = [
   { id: 'base', n: 'Versioned base URL' },
@@ -80,7 +79,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
       { label: 'Base URL', value: `defirisk.co/api/${RUBRIC_VERSION}` },
       { label: 'Schema', value: RUBRIC_VERSION },
       { label: 'License', value: 'CC-BY 4.0 · MIT' },
-      { label: 'Last updated', value: today },
+      { label: 'Last updated', value: CONTENT_LAST_UPDATED.data },
     ],
   }}
 >

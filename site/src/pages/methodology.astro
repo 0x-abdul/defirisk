@@ -7,8 +7,7 @@ import {
   TOTAL_CATEGORY_COUNT,
   CRITICAL_FACTOR_COUNT,
 } from '../lib/rubric-constants';
-
-const today = new Date().toISOString().slice(0, 10);
+import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
 const toc = [
   {
@@ -40,7 +39,7 @@ const toc = [
     h1: 'Methodology',
     lede: "How a protocol's letter grade is computed. The rubric is open and deterministic.",
     meta: [
-      { label: 'Last updated', value: today },
+      { label: 'Last updated', value: CONTENT_LAST_UPDATED.methodology },
       { label: 'Version', value: RUBRIC_VERSION },
       { label: 'License', value: 'CC-BY 4.0' },
     ],
