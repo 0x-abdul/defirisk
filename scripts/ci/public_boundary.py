@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import hashlib
+import ipaddress
 import json
 import re
 from pathlib import Path
 from typing import Any, Iterable
+from urllib.parse import parse_qsl, urlsplit
 
 
 CURRENT_VERSION = "v1.7.0"
@@ -74,6 +76,22 @@ OPERATIONAL_STATUS_KEYS = {
 }
 RAW_DATABASE_TIMESTAMP_KEYS = {"created_at", "updated_at"}
 PRIVATE_ROUTE = re.compile(r"/(?:api/[^/]+/)?unpublished(?:/|$)", re.IGNORECASE)
+PUBLIC_SOURCE_FIELDS = {
+    "source_type",
+    "url",
+    "retrieved_at",
+}
+PROHIBITED_URL_QUERY_KEYS = {
+    "access_token",
+    "api_key",
+    "auth",
+    "key",
+    "review_token",
+    "signature",
+    "token",
+}
+PROHIBITED_SOURCE_TYPES = {"curator_note", "internal", "partner_feed", "private"}
+PUBLIC_SOURCE_TYPE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
 
 
 class BoundaryError(ValueError):
@@ -125,6 +143,93 @@ def scan_api_value(value: Any, source: str, pointer: str = "") -> list[str]:
             failures.extend(scan_api_value(child, source, f"{pointer}/{index}"))
     elif isinstance(value, str) and PRIVATE_ROUTE.search(value):
         failures.append(f"{source}{pointer}: private review route is prohibited")
+    return failures
+
+
+def public_source_url_is_safe(value: str) -> bool:
+    try:
+        parsed = urlsplit(value)
+        host = parsed.hostname or ""
+        if (
+            parsed.scheme != "https"
+            or not host
+            or parsed.username
+            or parsed.password
+            or host.casefold() in {"localhost", "localhost.localdomain"}
+            or host.casefold().endswith((".internal", ".local", ".localhost"))
+        ):
+            return False
+        try:
+            address = ipaddress.ip_address(host)
+        except ValueError:
+            pass
+        else:
+            if not address.is_global:
+                return False
+        query_keys = {key.casefold() for key, _value in parse_qsl(parsed.query)}
+        return not (query_keys & PROHIBITED_URL_QUERY_KEYS)
+    except ValueError:
+        return False
+
+
+def validate_protocol_citations(detail: dict[str, Any], source: str) -> list[str]:
+    failures: list[str] = []
+    factors = detail.get("data", {}).get("protocol_data", {}).get("factor_scores")
+    if not isinstance(factors, list):
+        return [f"{source}: data.protocol_data.factor_scores must be an array"]
+    seen: set[str] = set()
+    for index, factor in enumerate(factors):
+        pointer = f"{source}/data/protocol_data/factor_scores/{index}"
+        if not isinstance(factor, dict):
+            failures.append(f"{pointer}: factor score must be an object")
+            continue
+        factor_id = factor.get("factor_id")
+        if not isinstance(factor_id, str) or not factor_id or factor_id in seen:
+            failures.append(f"{pointer}: factor_id must be non-empty and unique")
+        else:
+            seen.add(factor_id)
+        if not isinstance(factor.get("evidence_summary"), str) or not factor[
+            "evidence_summary"
+        ].strip():
+            failures.append(f"{pointer}: evidence_summary is required")
+        sources = factor.get("sources")
+        if not isinstance(sources, list):
+            failures.append(f"{pointer}: sources must be an array")
+            continue
+        if factor.get("score") != "not_assessed" and not sources:
+            failures.append(f"{pointer}: assessed factor requires a public citation")
+        for source_index, citation in enumerate(sources):
+            citation_pointer = f"{pointer}/sources/{source_index}"
+            if (
+                not isinstance(citation, dict)
+                or not set(citation).issubset(PUBLIC_SOURCE_FIELDS)
+                or not isinstance(citation.get("source_type"), str)
+                or not citation["source_type"].strip()
+                or not PUBLIC_SOURCE_TYPE.fullmatch(citation["source_type"])
+                or citation["source_type"].casefold() in PROHIBITED_SOURCE_TYPES
+            ):
+                failures.append(
+                    f"{citation_pointer}: citation shape is not public-safe"
+                )
+                continue
+            url = citation.get("url")
+            if not isinstance(url, str) or not url.strip():
+                failures.append(
+                    f"{citation_pointer}: citation needs a public HTTPS URL"
+                )
+            elif not public_source_url_is_safe(url):
+                failures.append(f"{citation_pointer}: citation URL is not public-safe")
+            retrieved_at = citation.get("retrieved_at")
+            if retrieved_at is not None and (
+                not isinstance(retrieved_at, str)
+                or not re.fullmatch(
+                    r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}Z)?",
+                    retrieved_at,
+                )
+            ):
+                failures.append(
+                    f"{citation_pointer}: citation retrieved_at is invalid"
+                )
     return failures
 
 
@@ -230,6 +335,13 @@ def validate_api_version(root: Path, version_root: Path) -> list[str]:
     )
     if detail_paths != expected_paths or nested_paths:
         failures.append(f"{relative_root}/protocols: detail files must match the published index exactly")
+    for detail_path in sorted(expected_paths):
+        if detail_path.is_file():
+            failures.extend(
+                validate_protocol_citations(
+                    load_json(detail_path), detail_path.relative_to(root).as_posix()
+                )
+            )
 
     published = set(slugs)
     for factor_path in sorted((version_root / "factors").glob("*.json")):

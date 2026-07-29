@@ -17,7 +17,7 @@ const toc =
   months.length > 0
     ? months.map((m) => ({
         id: `m-${m}`,
-        n: new Date(`${m}-01`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+        n: new Date(`${m}-01T00:00:00Z`).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }),
       }))
     : [{ id: 'empty', n: 'No changes yet' }];
 
@@ -75,7 +75,7 @@ function gradeColor(g: string): string {
     months.map((month) => (
       <section>
         <h2 id={`m-${month}`}>
-          {new Date(`${month}-01`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+          {new Date(`${month}-01T00:00:00Z`).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}
           <a class="alink" href={`#m-${month}`}>#</a>
         </h2>
         <ul class="change-list">

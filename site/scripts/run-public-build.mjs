@@ -33,6 +33,11 @@ export function defaultBuildSteps(astroArgs = []) {
       path.join(SITE_ROOT, 'node_modules', 'astro', 'bin', 'astro.mjs'),
       ['build', ...astroArgs],
     ],
+    [
+      'Astro island canonicalization',
+      path.join(SITE_ROOT, 'scripts', 'canonicalize-astro-islands.mjs'),
+      [],
+    ],
     ['committed API copy', path.join(SITE_ROOT, 'scripts', 'post-build-copy.mjs'), []],
     ['Open Graph image build', path.join(SITE_ROOT, 'scripts', 'build-og-images.mjs'), []],
   ];

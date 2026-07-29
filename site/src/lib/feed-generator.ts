@@ -2,6 +2,7 @@
  * feed-generator.ts: RSS 2.0 + JSON Feed 1.1 builder for the grade-change feed (E-34).
  */
 import { SITE_NAME, SITE_URL } from './seo-defaults';
+import { PUBLIC_SNAPSHOT_RFC_822 } from './build-metadata';
 
 export interface GradeChange {
   id: string;
@@ -44,7 +45,7 @@ function changeUrl(ch: GradeChange): string {
 export function buildRssFeed(changes: GradeChange[]): string {
   const lastBuildDate = changes.length > 0
     ? new Date(changes[0].detected_at).toUTCString()
-    : new Date().toUTCString();
+    : PUBLIC_SNAPSHOT_RFC_822;
 
   const items = changes.map((ch) => `
     <item>

@@ -1,7 +1,6 @@
 ---
 import Page from '../components/Page.astro';
-
-const today = new Date().toISOString().slice(0, 10);
+import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
 const toc = [
   { id: 'mission', n: 'Mission' },
@@ -22,7 +21,7 @@ const toc = [
     h1: 'About',
     lede: 'Who maintains defirisk.co, why it exists, and how to challenge a grade.',
     meta: [
-      { label: 'Last updated', value: today },
+      { label: 'Last updated', value: CONTENT_LAST_UPDATED.about },
       { label: 'Maintainer', value: '0x_Abdul' },
       { label: 'Independence', value: 'No paid grades' },
     ],
