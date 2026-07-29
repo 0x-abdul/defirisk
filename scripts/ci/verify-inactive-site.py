@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+API_LANDING_ARTIFACT = "index.html"
 
 
 def hash_tree(root: Path) -> dict[str, str]:
@@ -23,6 +24,17 @@ def hash_tree(root: Path) -> dict[str, str]:
                 path.read_bytes()
             ).hexdigest()
     return result
+
+
+def verify_deployed_api(committed_root: Path, deployed_root: Path) -> int:
+    committed = hash_tree(committed_root)
+    deployed = hash_tree(deployed_root)
+    landing_hash = deployed.pop(API_LANDING_ARTIFACT, None)
+    if landing_hash is None:
+        raise ValueError("inactive release lacks deterministic API landing artifact")
+    if committed != deployed:
+        raise ValueError("inactive release API data differs from committed data/api")
+    return len(committed)
 
 
 def main() -> int:
@@ -60,12 +72,14 @@ def main() -> int:
             "inactive release lacks protocol routes: "
             f"{missing_protocol_routes}"
         )
-    committed = hash_tree(ROOT / "data/api")
-    deployed = hash_tree(dist / "api")
-    if committed != deployed:
-        raise SystemExit("inactive release API tree differs from committed data/api")
+    try:
+        api_file_count = verify_deployed_api(ROOT / "data/api", dist / "api")
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
     print(
-        f"OK: inactive route smoke passed and {len(committed)} API files match Git"
+        "OK: inactive route smoke passed, "
+        f"{api_file_count} API data files match Git, and the deterministic "
+        "API landing artifact is present"
     )
     return 0
 
