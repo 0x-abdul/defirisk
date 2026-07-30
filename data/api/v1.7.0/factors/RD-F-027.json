@@ -413,6 +413,35 @@
       ],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The shared Aave governance process governs protocol changes; Aave docs list governance contracts, executors, and emergency guardian roles. V2 Ethereum address book maps POOL_ADMIN to Executor Lvl1 rather than a deployer EOA.",
+          "evidence_summary": "Aave V2 and V3 sensitive governance/admin roles are controlled through Aave DAO governance, executors/timelocks, and guardian multisigs; no single EOA is the effective protocol admin.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "family",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/GovernanceV3Ethereum.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/AaveV2Ethereum.sol"
+            }
+          ]
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -435,7 +464,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -23,6 +23,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave v3 uses Transparent Proxy pattern (not UUPS) for all Pool contracts. UUPS _authorizeUpgrade is not applicable. Upgrade gating is via PoolAddressesProvider and Executor timelocks — assessed under Cat 2.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "etherscan",
+              "url": "https://github.com/bgd-labs/aave-address-book/blob/main/src/AaveV3Ethereum.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official address book names ProxyAdmin contracts and owners rather than UUPS administration.",
           "evidence_summary": "The approved core deployment uses ProxyAdmin and transparent proxy administration, so the UUPS-specific _authorizeUpgrade gate is structurally moot.",
@@ -38,7 +58,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

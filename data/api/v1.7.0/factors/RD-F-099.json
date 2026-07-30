@@ -663,6 +663,71 @@
       ],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 deprecation ARFCs continue to adjust parameters/caps, creating a governance-watch signal during wind-down.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No current oracle deviation on core Chainlink feeds (ETH/USD, BTC/USD, USDC/USD, USDT/USD). rsETH oracle reported correctly during incident — the oracle accurately priced rsETH relative to its redemption backing; the attack was at the bridge/mint layer above the oracle layer. Phase 2 signal.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://github.com/bgd-labs/aave-address-book/blob/main/src/AaveV3Ethereum.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V4 is early and has active configuration/deployment changes, so governance/config watches remain relevant.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/getting-started/graphql"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Synchronized primary and secondary observations for every Kelp-used oracle asset were unavailable.",
@@ -678,7 +743,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

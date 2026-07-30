@@ -23,6 +23,36 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave's a.DI governance control plane includes a LayerZero adapter among multiple transports, but its deployment-specific DVN configuration was not verified in this pass. Separately, Kelp's rsETH LayerZero route used a 1-of-1 DVN and failed in April 2026. That route was not an Aave-owned bridge or Aave core failure; it was an external collateral dependency whose forged rsETH reached Aave V3 markets.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://www.blockaid.io/blog/how-a-single-layerzero-dvn-compromise-drained-292m-from-kelpdao"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Historical 1-of-1 state cannot be projected to July 30. Current effective getConfig output and peer-active evidence are required for a graded current RD-F-179 conclusion.",
           "evidence_summary": "The April route had a catastrophic 1-of-1 DVN topology, but current per-peer configuration and activity were unavailable.",
@@ -49,7 +79,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -22,6 +22,26 @@
       "linked_hacks": [],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave's emergency mechanism is per-reserve freeze by the Granular Guardian (not an automated outflow rate-limiter). April 2026 rsETH incident demonstrated 75-minute Guardian freeze response across 11 deployments — fast human-coordinated circuit-breaker. No automated per-window rate-limiter. F185 is primarily bridge-specific; for lending protocols the analog is the emergency pause mechanism. Partial credit for the fast Guardian response but no automated rate-limiter exists.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -49,7 +69,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

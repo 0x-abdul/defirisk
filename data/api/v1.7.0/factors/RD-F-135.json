@@ -23,6 +23,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The former yellow rationale asserted an OpenZeppelin-version advisory result that the cited repository landing page did not substantiate. Public .gitmodules confirms the shared-library repositories, but a deployed-bytecode-to-pinned-commit mapping and advisory evaluation remain necessary before assigning a positive or adverse color.",
+          "evidence_summary": "The public v3 origin repository identifies solidity-utils and forge-std as submodules, but this review did not establish the exact dependency commits represented in every deployed v3.6 implementation or a reproducible advisory match for those commits; known-vulnerability status is therefore gray.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/.gitmodules"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The exact version is public and pinned. A current vulnerability-and-reachability review remains necessary before green.",
           "evidence_summary": "The repository vendors OpenZeppelin 4.9.3, but advisory reachability against deployed Kelp paths was not completed.",
@@ -43,7 +63,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

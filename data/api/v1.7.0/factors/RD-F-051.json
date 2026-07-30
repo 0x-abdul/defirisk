@@ -23,6 +23,81 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 AaveOracle has fallback behavior, but fallback/staleness handling does not prove a robust stale-price circuit breaker for every live reserve.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AaveOracle forwards to its configured fallback only when an asset source is absent or the source returns a non-positive answer. The call to latestAnswer() is not wrapped in try/catch, so a reverting primary source is not automatically caught and redirected.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v3/smart-contracts/oracles"
+            },
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/misc/AaveOracle.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V4 fallback/stale-price behavior is not fully proven for every spoke oracle path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
           "primary_chain": "ethereum",
@@ -42,7 +117,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

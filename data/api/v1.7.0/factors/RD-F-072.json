@@ -94,6 +94,76 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No V2-specific protocol-owned leverage or reflexive collateral design was identified in this refresh.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "New market listings require a full DAO AIP vote on-chain at vote.onaave.com, preceded by ARFC community discussion and optional Snapshot signal vote. This is the highest governance threshold classification. Risk Stewards can adjust parameters of existing markets but cannot list new markets without DAO approval. High-threshold DAO vote = green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://github.com/aave-dao/aave-proposals-reports/blob/master/reports/v3-205-aave-v3-Ethereum-onboard-rsETH.md"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The V4 overview documents governance-mediated market introduction, modular Spokes, independent risk settings, and Hub-enforced constraints. It does not establish the relevant role membership, voting quorum, timelock, or other approval threshold needed to classify market listing as low- or high-threshold under RD-F-072.",
+          "evidence_summary": "Aave's public V4 overview says governance introduces new markets and Hubs enforce per-Spoke credit/debit limits, but it does not identify the approval threshold for adding a market or Spoke.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Kelp DAO does not operate a lending-market listing process. Administrative allowlisting of deposit assets is not a borrow-market governance threshold, so RD-F-072 is not applicable.",
           "gap_reason": "not_applicable",
@@ -108,7 +178,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

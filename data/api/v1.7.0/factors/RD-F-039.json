@@ -44,6 +44,30 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave governance docs describe the forum/Snapshot/ARFC/AIP lifecycle, Ethereum core governance, execution networks, executors, and guardians. Arbitrary proposal execution remains yellow under the calibrated standard, not red.",
+          "evidence_summary": "Aave governance can execute proposal payloads through executors, but the path is mitigated by proposal lifecycle review, voting, timelocks, guardian veto/cancel controls, and public payload review.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "family",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/GovernanceV3Ethereum.sol"
+            }
+          ]
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "No published Governor proposal executor was identified; observed administration is manual Safe/timelock execution, so proposal-supplied target restrictions are not assessable.",
@@ -65,7 +89,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

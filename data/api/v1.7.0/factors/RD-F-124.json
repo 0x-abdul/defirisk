@@ -22,6 +22,91 @@
       "linked_hacks": [],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Independent second review accepted yellow-to-green because the prior caution came from incomplete reconstruction, not adverse evidence.",
+          "evidence_summary": "Aave V2 Ethereum LendingPool creator is Etherscan-labeled Aave Deployer 4, whose page shows funding by Binance; no mixer-funded deployer within 30 days was found in the reviewed public evidence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9#code"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xbd723fc4f1d737dcfc48a07fe7336766d34cad5f"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Primary v3 deployer 0xb90594ea5128a8178e132286dc2b7fbac7d7266c funded from Kraken (US-regulated CEX) ~129 days before deploy — well outside the 30-day window. No mixer (Tornado Cash / Railgun / similar) interaction in the 30-day pre-deploy window or at any time. Legacy deployer 0x51f22ac850d29c879367a77d241734acb276b815 funded from Binance 2020; no mixer interaction. Both wallets confirmed clean.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x51f22ac850d29c879367a77d241734acb276b815"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xb90594ea5128a8178e132286dc2b7fbac7d7266c"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Etherscan pages for sampled V4 hubs show Aave: Deployer 42 as creator. That is strong provenance, but no wallet-hop/mixer funding graph was computed in this migration pass.",
+          "evidence_summary": "Sampled V4 contracts were created by Etherscan-labeled Aave Deployer 42, but this pass did not reconstruct the deployer funding graph for the 30-day pre-deploy window.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCca852Bc40e560adC3b1Cc58CA5b55638ce826c9"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x06002e9c4412CB7814a791eA3666D905871E536A"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x943827DCA022D0F354a8a8c332dA1e5Eb9f9F931"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x62d63197660c080236193CA60b70E49A08E90368"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Etherscan identifies a Stader deployer as the funding source; a label alone is not a complete mixer-cluster analysis.",
@@ -38,7 +123,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -1304,6 +1304,66 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "This is a factual date correction to the preserved V3 row; score remains yellow because the unresolved runtime/audit mapping gap still controls the factor.",
+          "evidence_summary": "Aave v3.6.0 latest release is dated Jan. 8, 2026, not Jan. 8, 2025. Public audit coverage remains strong but audit-to-deployment mapping is still not fully programmatically reconstructed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/releases"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "DefiLlama TVL history starts 2026-03-30 and official Aave address docs list active Ethereum V4 deployments. Aave lists V4 audits in late 2025 and 2026, including post-launch May 2026 review coverage. Because this pass did not map every deployed implementation to an audited commit and sign-off date, the score remains yellow.",
+          "evidence_summary": "V4 audits exist before and around the active launch window, but the audit-to-deploy gap for each currently deployed hub, spoke, oracle, and configurator implementation was not fully reconstructed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4/tree/main/audits"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The repository and address book cover multiple generations. A complete per-implementation date calculation remains outstanding.",
           "evidence_summary": "Audit reports and deployment records are public, but contract-level audit sign-off-to-deployment intervals were not completely mapped.",
@@ -1324,7 +1384,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -23,6 +23,81 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 stale-price handling remains partially unresolved; oracle reads do not prove a complete protocol-level staleness guard for all live reserves.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AaveOracle.getAssetPrice() calls AggregatorInterface.latestAnswer() and does not read updatedAt or enforce a protocol-level maximum age. The canonical contract therefore does not itself reject a positive answer based on staleness.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x54586bE62E3c3580375aE3723C145253060Ca0C2"
+            },
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/misc/AaveOracle.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V4 stale-price guards were not fully proven for every spoke oracle path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The deployed ChainlinkPriceOracle proxy's reviewed implementation discards updatedAt from latestRoundData and performs no max-age check.",
           "primary_chain": "ethereum",
@@ -47,7 +122,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

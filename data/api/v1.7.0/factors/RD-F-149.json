@@ -34,6 +34,31 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "a.DI uses requiredConfirmations per destination chain — the number of bridge adapters that must independently deliver a message before execution. Documentation recommends >2. Specific per-chain requiredConfirmations values not confirmed from public sources. If any chain uses confirmations=1, governance messages to that chain could be forged by a single compromised adapter. If confirmations ≥ 2 for all chains, this is a strong positive (multi-bridge threshold). On-chain read of CrossChainController.getConfigsByChain() or equivalent required.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure/blob/main/docs/overview.md"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://governance.aave.com/t/bgd-a-di-aave-delivery-infrastructure/13951"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Kelp selected the historical 1-of-1 application policy. Without current getConfig and peer-active evidence, that historical threshold is not treated as July 30 state.",
           "evidence_summary": "The exploited route was 1-of-1, but the current effective threshold for each active peer was not established.",
@@ -55,7 +80,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

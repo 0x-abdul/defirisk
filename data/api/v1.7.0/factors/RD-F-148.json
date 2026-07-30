@@ -34,6 +34,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "a.DI uses multiple bridge adapters (CCIP, LayerZero V2, Hyperlane, native bridges) — architecturally multi-validator by design. CCIP: Chainlink DON (established, geographically diverse). Hyperlane: independent validator network. Native bridges: chain-specific. Specific validator counts per adapter not confirmed by on-chain read. GHO CCIP: Chainlink DON only. Note: rsETH incident involved Kelp DAO's own LayerZero OFT (1/1 DVN) — NOT a.DI.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure/blob/main/docs/overview.md"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The incident report establishes historical state only. Current getConfig results and active-peer status were unavailable, so the July 30 validator count is not inferred.",
           "evidence_summary": "The exploited route had one required DVN, but current effective per-peer validator counts were not obtained.",
@@ -60,7 +80,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

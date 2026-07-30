@@ -44,6 +44,30 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The Aave governance docs describe token-holder governance on Ethereum mainnet and voting networks using storage proofs rather than live borrowed balances.",
+          "evidence_summary": "Aave Governance uses snapshot/checkpointed AAVE, stkAAVE, and aAAVE voting power on Ethereum mainnet, so flash-loaned balances after the proposal snapshot do not create voting weight.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "family",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/GovernanceV3Ethereum.sol"
+            }
+          ]
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "Kelp has not published an active token-voting executor; its governance page labels voting as Coming Soon.",
@@ -59,7 +83,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -22,6 +22,81 @@
       "linked_hacks": [],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The V2 lending surface predates GHO. GHO facilitator mint/bucket controls are scoped to the Aave V3/GHO ecosystem evidence, not V2 lending.",
+          "evidence_summary": "Aave V2 has no GHO/facilitator mint surface; aToken and debt-token minting is pool-mediated by deposits/borrows rather than arbitrary unlimited admin minting.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/lendingpool/LendingPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/gho"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave docs describe GHO as native to Aave, with facilitators approved by governance. Minting must respect bucketCapacity/bucketLevel limits; GHO Stewards can adjust defined parameters within governance-approved thresholds. This is Aave/V3 ecosystem scope, not a separate graded surface in this migration.",
+          "evidence_summary": "GHO uses approved Facilitator contracts that can mint/burn GHO, but each facilitator is constrained by governance-defined bucketCapacity caps and steward thresholds.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/gho"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Independent second review accepted yellow-to-green after code-source review of TokenizationSpoke and Hub.",
+          "evidence_summary": "V4 TokenizationSpoke minting is deposit-backed and hub fee-share minting is restricted to accrued-fee accounting, not an unbounded admin mint path over user assets.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4/blob/main/src/spoke/TokenizationSpoke.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4/blob/main/src/hub/Hub.sol"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -44,7 +119,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

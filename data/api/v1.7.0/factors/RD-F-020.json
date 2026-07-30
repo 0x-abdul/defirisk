@@ -23,6 +23,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave v3 core lending functions do not use EIP-712 signatures. Pool interactions are direct on-chain calls. EIP-712 appears in peripheral AAVE token permit functions which use standard domain separators including chainId.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime signing-path inventory is required.",
           "evidence_summary": "No exhaustive deployed signing-path review established whether every EIP-712 domain includes chainId.",
@@ -43,7 +63,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

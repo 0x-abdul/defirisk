@@ -843,6 +843,31 @@
       ],
       "scored_protocols": [
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave Labs' 2026-07-01 public June update states that both V3 reserve onboardings were completed and that the Core onboarding reached execution; proposal 493 covered the Plasma onboarding. A 2026-07-08 risk-steward post independently identifies both as newly onboarded V3 reserves and their deployed price adapters. This proves fresh V3 deployment/configuration activity in the 2026-06-11 through 2026-07-11 window, while the public governance process and post-onboarding steward review mitigate, but do not eliminate, the added attack surface.",
+          "evidence_summary": "Aave V3 added PT-srUSDe-22OCT2026 on Ethereum Core and PT-sUSDe-22OCT2026 on Plasma during the trailing 30-day window. The fresh reserve integrations expand the live contract/configuration surface through executed governance proposals.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/al-development-update-june-2026/25266"
+            },
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/risk-stewards-pt-parameter-changes-on-aave-v3-and-aave-v4-2026-07-08/25285"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -865,7 +890,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

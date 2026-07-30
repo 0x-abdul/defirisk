@@ -23,6 +23,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave v3 uses RAY normalization (27-decimal) for liquidity-index and rate calculations with explicit decimal scaling per asset on intake. No finding of un-normalized cross-decimal arithmetic in any audit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The report notes a shared minimum deposit amount across tokens with different prices and other oracle boundary concerns. This is partial adverse evidence, not proof of a deployed exploit.",
           "evidence_summary": "Bailsec identified token-amount and price-boundary concerns, while full deployed mixed-decimal normalization analysis remains incomplete.",
@@ -43,7 +63,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

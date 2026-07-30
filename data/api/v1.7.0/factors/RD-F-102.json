@@ -22,6 +22,81 @@
       "linked_hacks": [],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 wind-down is a standing governance process, not a fresh emergency signal; live emergency-feed status was not assessed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Guardian freeze executed April 18 within ~75 minutes of the rsETH exploit being identified. At April 27 (9 days post-event): rsETH markets frozen across all 11 deployments; WETH Ethereum Core V3 unfrozen (supply only; LTV=0); WETH frozen on Prime, Arbitrum, Base, Mantle, Linea. No new emergency admin transactions in mempool as of April 27. Further admin actions (governed unfreeze AIPs) anticipated but will route through governance timelock. Was RED at T-10 (April 21). Delta: emergency-red → governance-yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://www.banklesstimes.com/articles/2026/04/21/aave-keeps-weth-frozen-on-prime-and-key-l2-networks-after-kelpdao-exploit/"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x4457cA11E90f416Cc1D3a8E1cA41C0cdEcC251d4"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V4 live emergency response posture is still immature due surface youth and incomplete role/feed monitoring.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/getting-started/graphql"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Known Safe and timelock identities were not backed by a continuous public mempool stream and admin allowlist.",
@@ -37,7 +112,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

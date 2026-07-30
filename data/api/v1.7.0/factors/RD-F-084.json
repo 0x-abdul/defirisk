@@ -73,6 +73,86 @@
       ],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 reimbursement/claims completeness for historical incidents was not fully reassessed in this redo.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The public series ranged from $11.345B to $26.052B and ended at $13.174B. The active taxonomy defines coefficient of variation over 90 days but provides no numeric color threshold. Under the canonical ops prompt's rule to default to yellow when adverse evidence is uncertain, yellow is the conservative adjudication.",
+          "evidence_summary": "DefiLlama returned 90 daily Aave V3 TVL points from 2026-04-13 through 2026-07-10; mean TVL was $14.050B, population standard deviation $3.412B, and trailing-window coefficient of variation 0.2428.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/aave-v3"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No V4 reimbursement or claims process gap was identified because no V4 user-loss incident was found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/bug-bounties/300"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The cached public API series covers 90 samples with mean $1.125B and standard deviation $249.9M, yielding CV 0.22209.",
@@ -94,7 +174,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -23,6 +23,81 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Legacy compiler posture is version-specific and should not inherit V3/V4 tooling rows.",
+          "evidence_summary": "Aave V2 uses legacy Solidity 0.6.x-era contracts. No exploitable compiler-bug reachability was proven, but known-bugs and ABIEncoderV2 reachability were not fully reconstructed for all live V2 deployments.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9#code"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "No exploitable compiler-bug reachability was proven, but the version-distance and ABIEncoderV2/known-bug review remain incomplete.",
+          "evidence_summary": "Aave v3.6.0 pins solc 0.8.27 while the official Solidity release index lists 0.8.36 as current. The compiler remains on the supported 0.8.x line, but deployed-version compiler metadata and known-bug reachability have not been reconstructed across every approved deployment, so the tooling posture remains yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/v3.6.0/foundry.toml"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/ethereum/solidity/releases"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "V4 is modern and audited, but this migration did not complete per-contract compiler metadata extraction across all hubs/spokes.",
+          "evidence_summary": "Aave V4 compiler/tooling posture is cautiously yellow until deployed implementations, compiler metadata, and known-bug reachability are mapped contract-by-contract.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Foundry configuration pins solc 0.8.27, optimizer enabled, 4,000 runs, and Cancun EVM.",
           "evidence_summary": "The current repository pins Solidity 0.8.27 with optimizer settings; no protocol-specific known-compiler-bug reachability was identified.",
@@ -43,7 +118,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

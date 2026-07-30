@@ -63,6 +63,71 @@
       ],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "VersionedInitializable stores lastInitializedRevision and the initializer modifier reverts unless a higher revision is initialized. It predates the modern _disableInitializers pattern used in the factor text.",
+          "evidence_summary": "Aave V2 uses VersionedInitializable revision guards rather than OpenZeppelin _disableInitializers(); initializer protection exists, but the older pattern does not satisfy the modern constructor-lock criterion cleanly.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/libraries/aave-upgradeability/VersionedInitializable.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/lendingpool/LendingPool.sol"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "VersionedInitializable uses a version integer stored in unstructured storage to prevent re-initialization. It does NOT call _disableInitializers() in the constructor (predates that OZ pattern). Implementation contract could in theory be initialized directly if version slot is in default state, though this would not affect proxy-delegated user funds. Latent footgun; has not been triggered in 50 months of v3.x upgrades.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Independent second review accepted yellow-to-green for HubInstance, SpokeInstance, TokenizationSpokeInstance, and TreasurySpokeInstance.",
+          "evidence_summary": "Primary V4 implementation instance contracts reviewed in the Aave V4 repository call _disableInitializers() or otherwise lock implementation initializers.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -85,7 +150,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }
