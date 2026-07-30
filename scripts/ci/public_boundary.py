@@ -181,17 +181,53 @@ def validate_protocol_citations(detail: dict[str, Any], source: str) -> list[str
     factors = detail.get("data", {}).get("protocol_data", {}).get("factor_scores")
     if not isinstance(factors, list):
         return [f"{source}: data.protocol_data.factor_scores must be an array"]
-    seen: set[str] = set()
+    seen: set[tuple[Any, ...]] = set()
     for index, factor in enumerate(factors):
         pointer = f"{source}/data/protocol_data/factor_scores/{index}"
         if not isinstance(factor, dict):
             failures.append(f"{pointer}: factor score must be an object")
             continue
         factor_id = factor.get("factor_id")
-        if not isinstance(factor_id, str) or not factor_id or factor_id in seen:
-            failures.append(f"{pointer}: factor_id must be non-empty and unique")
+        valid_factor_id = isinstance(factor_id, str) and bool(factor_id)
+        scope_level = factor.get("scope_level")
+        valid_scope = True
+        if scope_level == "family":
+            family_slug = factor.get("family_slug")
+            valid_scope = isinstance(family_slug, str) and bool(family_slug)
+            scope_target = (family_slug,) if valid_scope else ()
+        elif scope_level == "surface":
+            surface_slug = factor.get("surface_slug")
+            valid_scope = isinstance(surface_slug, str) and bool(surface_slug)
+            scope_target = (surface_slug,) if valid_scope else ()
+        elif scope_level == "deployment":
+            targets = (
+                factor.get("surface_slug"),
+                factor.get("chain"),
+                factor.get("deployment_key"),
+            )
+            valid_scope = all(isinstance(value, str) and bool(value) for value in targets)
+            scope_target = targets if valid_scope else ()
         else:
-            seen.add(factor_id)
+            valid_scope = False
+            scope_target = ()
+        if not valid_scope:
+            failures.append(
+                f"{pointer}: scope identity must be family, surface, or deployment "
+                "with its required non-empty string target"
+            )
+        scoped_identity = (
+            (scope_level, *scope_target, factor_id)
+            if valid_factor_id and valid_scope
+            else None
+        )
+        if not valid_factor_id or (
+            scoped_identity is not None and scoped_identity in seen
+        ):
+            failures.append(
+                f"{pointer}: scoped factor identity must be non-empty and unique"
+            )
+        elif scoped_identity is not None:
+            seen.add(scoped_identity)
         if not isinstance(factor.get("evidence_summary"), str) or not factor[
             "evidence_summary"
         ].strip():
