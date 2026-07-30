@@ -93,6 +93,29 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The HubPool owner can relay arbitrary SpokePool admin calldata and directly set protocol fee capture, bond, liveness, and the UMA identifier. Official repository documentation says the HubPool owner governs SpokePools cross-chain. The passed AcrossCo proposal and delayed ACX portal do not publicly establish a replacement or separation of these roles.",
+          "evidence_summary": "Upgrade, fee, and oracle/configuration authority remains concentrated in the HubPool-owner control path; the pending AcrossCo transition has not publicly separated those roles.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/555475cdee6109afc85065ca415c740d7f97b992/contracts/HubPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "Upgrade, fee, oracle, and pause roles are nominally separated, but related operational Safes retain broad manager/admin parameter authority.",
@@ -115,6 +138,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

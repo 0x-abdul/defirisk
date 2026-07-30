@@ -93,6 +93,29 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "SpokePool uses the same onlyAdmin gate for _authorizeUpgrade, pauseDeposits, and pauseFills. HubPool similarly uses onlyOwner for its pause and for relaying SpokePool admin functions. No distinct pause-only guardian role appears in these reviewed control paths.",
+          "evidence_summary": "Pause and upgrade authority converge on the same owner/admin paths; a distinct guardian or pause-only keeper is not demonstrated.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/555475cdee6109afc85065ca415c740d7f97b992/contracts/SpokePool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/555475cdee6109afc85065ca415c740d7f97b992/contracts/HubPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "The dedicated Pauser Safe is distinct from the Admin and Manager Safes and from the core ProxyAdmin timelock.",
@@ -115,6 +138,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

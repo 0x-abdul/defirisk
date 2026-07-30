@@ -43,6 +43,29 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "SpokePool exposes onlyAdmin binary pauseDeposits, pauseFills, and route-enable controls, while HubPool exposes onlyOwner setPaused. Across used service-level containment and CCTP restoration after the 2026-07-17 Solana event-reader incident, which the official account attributes to a Risk Labs-operated off-chain relayer/event-reader boundary rather than user custody. No protocol-wide quantified per-window outflow limiter was demonstrated in the reviewed current contracts.",
+          "evidence_summary": "Across has binary admin pause and route-disable controls and used operational containment after the July Solana event-reader incident, but no quantified protocol-wide outflow rate limiter is demonstrated.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/555475cdee6109afc85065ca415c740d7f97b992/contracts/SpokePool.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/AcrossProtocol/status/2078164426268557340"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "The verified source and ABI for adapter 0x85d456…98Ef3 expose no pause or rate-limit control, and Kelp reports that one forged bridge packet released 116,500 rsETH.",
@@ -70,6 +93,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

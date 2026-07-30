@@ -43,6 +43,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The 52a1e946 scan found no ERC-777 or ERC-1155 receiver-hook implementation in HubPool, SpokePool, or the seven approved chain implementations. HubPool explicitly documents that ERC-777 can cause reverts and core state-changing token paths are nonReentrant. The separate test ERC1155 contract is outside the approved deployed surface. Green is assigned.",
+          "evidence_summary": "The 52a1e946 scan found no ERC-777 or ERC-1155 receiver-hook implementation in HubPool, SpokePool, or the seven approved chain implementations. HubPool explicitly documents that ERC-777 can cause reverts and core state-changing token paths are nonReentrant. The separate test ERC1155 contract is outside the approved deployed surface. Green is assigned.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/across-v3-incremental-audit"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime analyzer and integration inventory are required.",
           "evidence_summary": "No exhaustive callback-token integration scan was published for ERC-777, ERC-1155, or ERC-721 hooks.",
@@ -64,6 +89,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

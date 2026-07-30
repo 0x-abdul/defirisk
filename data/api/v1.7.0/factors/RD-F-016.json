@@ -43,6 +43,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The targeted 52a1e946 arithmetic scan of HubPool and SpokePool accounting paths found multiplication before division in exchange-rate, fee, utilization, and relay calculations; it found no divide-before-multiply sequence in the approved core paths. The historical decimal-scaling finding remains resolved in its cited fix. Green is assigned for zero current matches.",
+          "evidence_summary": "The targeted 52a1e946 arithmetic scan of HubPool and SpokePool accounting paths found multiplication before division in exchange-rate, fee, utilization, and relay calculations; it found no divide-before-multiply sequence in the approved core paths. The historical decimal-scaling finding remains resolved in its cited fix. Green is assigned for zero current matches.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/across-protocol-diff-audit"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A deployed-source Slither or equivalent run is required.",
           "evidence_summary": "No reproducible divide-before-multiply detector output for matched deployed source was published.",
@@ -64,6 +89,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

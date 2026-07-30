@@ -774,6 +774,46 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Live EIP-1967 reads mapped the seven approved proxies to current implementations and the Ethereum HubPool is non-proxy. Rename-aware diffing from audited commit 47c1bea9 to current deployment-source commit 52a1e946 found core changes, not merely peripheral drift: HubPool 5+/5−, SpokePool 27+/23−, Polygon 8+/5−, Universal 5+/2−, and smaller changes in the other approved implementations. The core delta adds SafeTransferERC20 routing, tryMulticall handling, and changed transfer paths. Because current fund-holding bridge logic materially differs from the audited commit without a cited delta audit covering 52a1e946, the pinned rubric requires red.",
+          "evidence_summary": "Live EIP-1967 reads mapped the seven approved proxies to current implementations and the Ethereum HubPool is non-proxy. Rename-aware diffing from audited commit 47c1bea9 to current deployment-source commit 52a1e946 found core changes, not merely peripheral drift: HubPool 5+/5−, SpokePool 27+/23−, Polygon 8+/5−, Universal 5+/2−, and smaller changes in the other approved implementations. The core delta adds SafeTransferERC20 routing, tryMulticall handling, and changed transfer paths. Because current fund-holding bridge logic materially differs from the audited commit without a cited delta audit covering 52a1e946, the pinned rubric requires red.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5c7bcd6e7de5423a257d81b442095a1a6ced35c5"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/across-protocol-erc-3009-and-deterministic-depositids-audit"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/across-audit"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/broadcast"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://docs.across.to/chains-and-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official audit index lists repeated reviews and the address book identifies current contracts. This pass did not prove byte-for-byte parity between every report scope and every current implementation, so it does not assert a mismatch.",
           "evidence_summary": "Public audits and verified source exist, but audit-commit-to-current-runtime parity was not reconstructed across the full Ethereum contract set.",
@@ -800,6 +840,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

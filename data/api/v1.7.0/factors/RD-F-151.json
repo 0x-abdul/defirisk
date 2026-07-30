@@ -47,6 +47,35 @@
           "surface_slug": "v3"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_summary": "At commit 52a1e946, base SpokePool uses OpenZeppelin SignatureChecker.isValidSignatureNow, and repository search found no production override of its virtual verifier. However, the eight approved proxies were not all bytecode-matched to that commit; even Ethereum implementation 0x5E5B... was not deterministically commit-mapped. Universal safety is unproven.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/spoke-pools/SpokePool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5#code"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5E5B726C81f43b953a62ad87e2835c85c4d9dd3b#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The standard DVN accepts only configured signers; the incident involved a valid signer attestation, not zero-address recovery.",
@@ -68,6 +97,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

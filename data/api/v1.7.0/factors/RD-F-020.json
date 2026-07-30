@@ -43,6 +43,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The 52a1e946 scan found the Across cross-chain EIP-712 type hash explicitly includes `uint256 chainId`; OpenZeppelin EIP712 used by periphery includes chainId and verifyingContract. The February audit's acknowledged replay issue concerns fields omitted from the signed payload, not omission of chainId from a domain separator. Green is assigned for this factor.",
+          "evidence_summary": "The 52a1e946 scan found the Across cross-chain EIP-712 type hash explicitly includes `uint256 chainId`; OpenZeppelin EIP712 used by periphery includes chainId and verifyingContract. The February audit's acknowledged replay issue concerns fields omitted from the signed payload, not omission of chainId from a domain separator. Green is assigned for this factor.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/deposit-flow-audit"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime signing-path inventory is required.",
           "evidence_summary": "No exhaustive deployed signing-path review established whether every EIP-712 domain includes chainId.",
@@ -64,6 +89,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

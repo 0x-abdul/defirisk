@@ -64,6 +64,26 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Selected SpokePool and HubPool paths use OpenZeppelin reentrancy guards, and published audits provide additional review evidence. The cited record does not enumerate every external-call path across all deployed chain-specific and periphery contracts, so full-surface coverage is not established.",
+          "evidence_summary": "Selected SpokePool and HubPool paths use OpenZeppelin reentrancy guards, and published audits provide additional review evidence. The cited record does not enumerate every external-call path across all deployed chain-specific and periphery contracts, so full-surface coverage is not established.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/customer-stories/across"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Deposit, swap, and transfer paths in the current public LRTDepositPool source use the guard. This is not an exhaustive assessment of every deployed implementation.",
           "evidence_summary": "The core deposit implementation applies nonReentrant to externally calling state-changing paths, but full deployed-contract coverage was not proven.",
@@ -85,6 +105,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

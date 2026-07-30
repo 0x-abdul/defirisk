@@ -128,6 +128,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The HubPool mints dedicated LP tokens for bridge liquidity pools. It is not a Compound V2 cToken lending fork and has no borrow-enabled cToken markets. Share-inflation risk in the HubPool is evaluated under RD-F-075 instead of being misclassified as this critical lending factor.",
+          "evidence_summary": "Across is not a Compound V2-style lending fork, so the empty-cToken market test in critical factor RD-F-070 is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://docs.across.to/guides/concepts/intents-architecture"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol#L390-L406"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "RD-F-070 is scoped to an empty Compound V2-fork cToken market with zero supply and borrow. Kelp DAO is a liquid-restaking deposit/mint system and exposes no Kelp-owned cToken borrowing market under the approved surface, so this critical factor is not applicable.",
           "gap_reason": "not_applicable",
@@ -143,6 +168,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

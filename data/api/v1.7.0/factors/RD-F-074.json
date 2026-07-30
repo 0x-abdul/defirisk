@@ -124,6 +124,26 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Across's HubPool uses protocol-specific LP tokens and custom exchange-rate accounting. It is not an ERC-4626 vault, so the OpenZeppelin 4.9 ERC-4626 virtual-share-offset version test does not apply.",
+          "evidence_summary": "Across has no in-scope ERC-4626 HubPool vault, so RD-F-074 is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol#L449-L462"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Public architecture documentation describes rsETH as a custom repricing ERC-20 receipt whose exchange rate is calculated by Kelp contracts, not as an ERC-4626 vault. The OpenZeppelin ERC-4626 virtual-share-offset test is therefore structurally not applicable.",
           "gap_reason": "not_applicable",
@@ -139,6 +159,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

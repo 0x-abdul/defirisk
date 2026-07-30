@@ -98,6 +98,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_summary": "No independent fallback replaces UMA for bundle settlement. The July 2026 Solana response used CCTP to restore the affected Solana route, but that was a route-level transport fallback and does not provide a fallback settlement oracle.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://blog.asymmetric.re/across-solana-event-spoofing/"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://en.cryptonomist.ch/2026/07/24/across-solana-relayer-attack/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
           "primary_chain": "ethereum",
@@ -118,6 +141,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }
