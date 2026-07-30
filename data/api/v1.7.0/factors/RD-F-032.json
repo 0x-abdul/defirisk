@@ -1,140 +1,161 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-032",
-        "category_id": 2,
-        "name": "Timelock duration on upgrades",
-        "description": "Read the timelock delay (in hours) between a queued upgrade proposal and its executable state.",
-        "scoring_methodology": "**What this measures**\nThis factor records the timelock delay between a queued and executable upgrade proposal, measured in hours. The value is read directly from the TimelockController or equivalent contract's minDelay parameter. For protocols without an on-chain timelock, the value is zero. This is the temporal window available to users to exit a protocol before a potentially malicious upgrade takes effect.\n\n**Why it matters**\nTimelocks are the primary mechanism by which depositors can exit a protocol before a malicious governance action executes. OpenZeppelin's timelock guidance frames the delay as the period during which \"the community can better understand and review changes\" — but for risk dashboard purposes, it is equally the window in which users can withdraw funds after identifying a malicious queued transaction. Ten protocols in the evidence base show a zero or near-zero timelock as a contributing factor to their exploit, because the admin action was either instant or faster than any user's practical exit speed.\n\n**Green / Yellow / Red**\nGreen is assigned when the upgrade timelock is at least 48 hours for protocols under $100M TVL, or at least 72 hours for protocols above $100M TVL. Yellow covers 12–48 hours. Red is assigned when the timelock is zero (instant execution) or under 12 hours on any sensitive action category.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no upgradeable contracts (immutable architecture), where a timelock duration is technically not applicable.\n\n**Notable historical examples**\n- **EasyFi** ($59M, 2021): Zero timelock on admin key; single-transaction drain upon key compromise.\n- **Orange Finance** ($843K, 2025): No timelock on 1-of-1 multisig; complete drain executed without delay.\n- **BrincFi** ($1.1M, 2021): Head of development held full upgrade authority with no timelock; executed drain.\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key with no timelock on token approval contract.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read the timelock delay (in hours) between a queued upgrade proposal and its executable state.",
-        "data_source": "`TimelockController.getMinDelay()` or equivalent via RPC; cross-check with governance docs",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Timelock contract address + `getMinDelay()` return value in seconds + hours-converted",
+        "category_id": 2,
         "confidence_signal": "green = ≥48 hours; yellow = 24–47 hours; red = <24 hours or no timelock; gray = upgrade path does not use a public timelock contract",
+        "curation_archetype": "PE",
+        "data_source": "`TimelockController.getMinDelay()` or equivalent via RPC; cross-check with governance docs",
+        "deprecated_in_rubric": null,
+        "description": "Read the timelock delay (in hours) between a queued upgrade proposal and its executable state.",
+        "evidence_artifact": "Timelock contract address + `getMinDelay()` return value in seconds + hours-converted",
+        "id": "RD-F-032",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read the timelock delay (in hours) between a queued upgrade proposal and its executable state.",
+        "method": "PE",
+        "name": "Timelock duration on upgrades",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the timelock delay between a queued and executable upgrade proposal, measured in hours. The value is read directly from the TimelockController or equivalent contract's minDelay parameter. For protocols without an on-chain timelock, the value is zero. This is the temporal window available to users to exit a protocol before a potentially malicious upgrade takes effect.\n\n**Why it matters**\nTimelocks are the primary mechanism by which depositors can exit a protocol before a malicious governance action executes. OpenZeppelin's timelock guidance frames the delay as the period during which \"the community can better understand and review changes\" — but for risk dashboard purposes, it is equally the window in which users can withdraw funds after identifying a malicious queued transaction. Ten protocols in the evidence base show a zero or near-zero timelock as a contributing factor to their exploit, because the admin action was either instant or faster than any user's practical exit speed.\n\n**Green / Yellow / Red**\nGreen is assigned when the upgrade timelock is at least 48 hours for protocols under $100M TVL, or at least 72 hours for protocols above $100M TVL. Yellow covers 12–48 hours. Red is assigned when the timelock is zero (instant execution) or under 12 hours on any sensitive action category.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no upgradeable contracts (immutable architecture), where a timelock duration is technically not applicable.\n\n**Notable historical examples**\n- **EasyFi** ($59M, 2021): Zero timelock on admin key; single-transaction drain upon key compromise.\n- **Orange Finance** ($843K, 2025): No timelock on 1-of-1 multisig; complete drain executed without delay.\n- **BrincFi** ($1.1M, 2021): Head of development held full upgrade authority with no timelock; executed drain.\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key with no timelock on token approval contract."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "iotex-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "IoTeX (ioTube Bridge)",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-02-21",
           "loss_usd": 4400000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2026-02-21",
+          "relevance": "related",
           "root_cause": "Private key compromise → malicious contract upgrade → TokenSafe drain + MinterPool abuse"
         },
         {
           "hack_id": "hacken-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Hacken ($HAI token)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-20",
           "loss_usd": 170000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2025-06-20",
+          "relevance": "related",
           "root_cause": "Bridge private key leak from decommissioned server → unauthorized token minting → dump"
         },
         {
           "hack_id": "force-bridge-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Force Bridge (Nervos Network)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-01",
           "loss_usd": 3760000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2025-06-01",
+          "relevance": "related",
           "root_cause": "Access control compromise — admin key leak → privileged unlock() drain across two chains"
         },
         {
           "hack_id": "orange-finance-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Orange Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-01-07",
           "loss_usd": 843500.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2025-01-07",
+          "relevance": "related",
           "root_cause": "Admin private key compromise → proxy upgrade → privileged drain of LP vault positions"
         },
         {
           "hack_id": "grand-base-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Grand Base",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-04-15",
           "loss_usd": 2000000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2024-04-15",
+          "relevance": "related",
           "root_cause": "Deployer wallet private key leak → unauthorized token minting → dump"
         },
         {
           "hack_id": "okx-dex-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-12-13",
           "loss_usd": 2700000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2023-12-13",
+          "relevance": "related",
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
         },
         {
           "hack_id": "rocketswap-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "RocketSwap",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-08-14",
           "loss_usd": 869000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2023-08-14",
+          "relevance": "related",
           "root_cause": "Bruteforced server private keys → farming contract drain via proxy admin + high-risk permissions"
         },
         {
           "hack_id": "raydium-rekt",
-          "relevance": "illustrative",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Raydium",
           "hack_protocol_slug": "raydium",
-          "occurred_at": "2022-12-16",
           "loss_usd": 4400000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2022-12-16",
+          "relevance": "illustrative",
           "root_cause": "Compromised pool owner private key → withdraw_pnl() fee drain + SyncNeedTake parameter manipulation"
         },
         {
           "hack_id": "brincfi-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "BrincFi",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-12-14",
           "loss_usd": 1100000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2021-12-14",
+          "relevance": "related",
           "root_cause": "Insider backdoor — rescueTokens() admin drain via ownership transfer + malicious contract upgrade"
         },
         {
           "hack_id": "snowdog-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "Snowdog (SnowdogDAO)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-11-25",
           "loss_usd": 21000000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2021-11-25",
+          "relevance": "related",
           "root_cause": "Insider front-running — privileged challengeKey knowledge + custom AMM sniping"
         },
         {
           "hack_id": "easyfi-rekt",
-          "relevance": "related",
-          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
           "hack_protocol_name": "EasyFi (Easy Network)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-04-19",
           "loss_usd": 59000000.0,
+          "notes": "Timelock duration on upgrades = 0 [via cross-hack: Factor 18: Single Admin Key With No On-Chain Delay]",
+          "occurred_at": "2021-04-19",
+          "relevance": "related",
           "root_cause": "Admin key theft via compromised machine (malicious MetaMask binary)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The core upgrade log states a 10-day delay, and on-chain getMinDelay reads return 10 days for core upgrades and 3 days for the L1-vault timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

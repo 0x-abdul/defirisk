@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-058",
-        "category_id": 3,
-        "name": "Max-deviation threshold (bps)",
-        "description": "If a circuit breaker exists, read the configured deviation threshold in basis points.",
-        "scoring_methodology": "**What this measures**\nThis factor records the specific circuit-breaker threshold configured for oracle price deviation, expressed in basis points (bps). This field is only populated when RD-F-057 confirms a circuit breaker exists; the value is read directly from on-chain configuration or governance parameters.\n\n**Why it matters**\nThe presence of a circuit breaker (RD-F-057) is necessary but not sufficient — the threshold calibration determines whether it provides meaningful protection. A 10,000 bps (100%) threshold circuit breaker is nearly useless for assets that can be moved 50x via flash loans. Conversely, an excessively tight threshold (10–20 bps) on a volatile asset may trigger false positives during normal market conditions, causing unnecessary protocol pauses. The threshold must be calibrated to the asset's natural volatility and the minimum manipulation cost given available liquidity, creating a per-asset configuration requirement that curators must verify against oracle pool depth (RD-F-055).\n\n**Green / Yellow / Red**\nGreen is scored when the threshold is within the range of 200–2000 bps (2–20%) and is documented as calibrated to the asset's historical volatility profile. Yellow is scored when the threshold exists but is either too wide (over 2000 bps for stable assets) or too narrow (under 100 bps for volatile assets). Red is scored when no threshold is configured (i.e., circuit breaker field is N/A because RD-F-057 is red).\n\n**Common gray cases**\nGray is applied when the threshold is set dynamically by an off-chain keeper and the current value cannot be read from a public on-chain configuration.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "If a circuit breaker exists, read the configured deviation threshold in basis points.",
-        "data_source": "`maxDeviationBps()` or equivalent state variable via RPC on oracle/lending contract",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Contract address + deviation threshold bps value",
+        "category_id": 3,
         "confidence_signal": "green = threshold ≤2000 bps (20%); yellow = 2001–5000 bps; red = >5000 bps or unconfigured; gray = no circuit breaker (see F057)",
+        "curation_archetype": "PE",
+        "data_source": "`maxDeviationBps()` or equivalent state variable via RPC on oracle/lending contract",
+        "deprecated_in_rubric": null,
+        "description": "If a circuit breaker exists, read the configured deviation threshold in basis points.",
+        "evidence_artifact": "Contract address + deviation threshold bps value",
+        "id": "RD-F-058",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "If a circuit breaker exists, read the configured deviation threshold in basis points.",
+        "method": "PE",
+        "name": "Max-deviation threshold (bps)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the specific circuit-breaker threshold configured for oracle price deviation, expressed in basis points (bps). This field is only populated when RD-F-057 confirms a circuit breaker exists; the value is read directly from on-chain configuration or governance parameters.\n\n**Why it matters**\nThe presence of a circuit breaker (RD-F-057) is necessary but not sufficient — the threshold calibration determines whether it provides meaningful protection. A 10,000 bps (100%) threshold circuit breaker is nearly useless for assets that can be moved 50x via flash loans. Conversely, an excessively tight threshold (10–20 bps) on a volatile asset may trigger false positives during normal market conditions, causing unnecessary protocol pauses. The threshold must be calibrated to the asset's natural volatility and the minimum manipulation cost given available liquidity, creating a per-asset configuration requirement that curators must verify against oracle pool depth (RD-F-055).\n\n**Green / Yellow / Red**\nGreen is scored when the threshold is within the range of 200–2000 bps (2–20%) and is documented as calibrated to the asset's historical volatility profile. Yellow is scored when the threshold exists but is either too wide (over 2000 bps for stable assets) or too narrow (under 100 bps for volatile assets). Red is scored when no threshold is configured (i.e., circuit breaker field is N/A because RD-F-057 is red).\n\n**Common gray cases**\nGray is applied when the threshold is set dynamically by an off-chain keeper and the current value cannot be read from a public on-chain configuration.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "The threshold is configurable as pricePercentageLimit, but the reviewed public record does not establish its live value.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

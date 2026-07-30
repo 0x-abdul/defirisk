@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-017",
-        "category_id": 1,
-        "name": "Mixed-decimals math without explicit scaling",
-        "description": "Determine whether shared numerator/denominator arithmetic operates over tokens with different decimals without WAD/RAY normalization or explicit decimal-adjustment.",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol performs arithmetic operations over token amounts with different decimal precisions -- for example, combining a 6-decimal USDC amount with an 18-decimal ETH amount in the same numerator or denominator -- without explicit WAD/RAY normalization or equivalent decimal-aware scaling. The assessment is performed by static analysis and source inspection, looking for arithmetic expressions that mix token amounts without consistent decimal normalization.\n\n**Why it matters**\nMixed-decimals arithmetic produces values that differ by factors of 10^12 or more depending on which token is in the numerator. A protocol that divides an 18-decimal amount by a 6-decimal amount without scaling will produce a result 10^12 times larger than intended, or 10^12 times smaller. This class of error has caused approximately five documented hacks in the T-01 evidence base. Lending protocols that support multiple collateral types with different decimal precisions are the primary risk surface -- a single price or collateral calculation that mixes decimals can make an asset appear massively over- or under-valued.\n\n**Green / Yellow / Red**\nGreen: all arithmetic operations involving token amounts explicitly normalize to a common precision (18 decimals / WAD / RAY or equivalent) before combining values across different token types. Yellow: normalization is applied in primary fund-movement functions but some peripheral calculations (e.g., display math, off-chain computation helpers) mix decimals without scaling. Red: any core collateral, exchange rate, or liquidation calculation mixes token amounts of different decimal precisions without explicit normalization.\n\n**Common gray cases**\nThis factor is gray for single-asset protocols where all token amounts share the same decimal precision and mixed-decimals arithmetic is structurally impossible.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately five supporting instances in the T-01 vulnerability inventory.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether shared numerator/denominator arithmetic operates over tokens with different decimals without WAD/RAY normalization or explicit decimal-adjustment.",
-        "data_source": "Slither + manual source review; search for multi-token arithmetic paths in Etherscan-verified source",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt with annotated arithmetic path + curator sign-off",
+        "category_id": 1,
         "confidence_signal": "green = all cross-decimal arithmetic uses explicit normalization; yellow = potential issue in low-TVL market only; red = confirmed un-normalized cross-decimal arithmetic in live market; gray = source unverified",
+        "curation_archetype": "PH",
+        "data_source": "Slither + manual source review; search for multi-token arithmetic paths in Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether shared numerator/denominator arithmetic operates over tokens with different decimals without WAD/RAY normalization or explicit decimal-adjustment.",
+        "evidence_artifact": "Source excerpt with annotated arithmetic path + curator sign-off",
+        "id": "RD-F-017",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether shared numerator/denominator arithmetic operates over tokens with different decimals without WAD/RAY normalization or explicit decimal-adjustment.",
+        "method": "PH",
+        "name": "Mixed-decimals math without explicit scaling",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol performs arithmetic operations over token amounts with different decimal precisions -- for example, combining a 6-decimal USDC amount with an 18-decimal ETH amount in the same numerator or denominator -- without explicit WAD/RAY normalization or equivalent decimal-aware scaling. The assessment is performed by static analysis and source inspection, looking for arithmetic expressions that mix token amounts without consistent decimal normalization.\n\n**Why it matters**\nMixed-decimals arithmetic produces values that differ by factors of 10^12 or more depending on which token is in the numerator. A protocol that divides an 18-decimal amount by a 6-decimal amount without scaling will produce a result 10^12 times larger than intended, or 10^12 times smaller. This class of error has caused approximately five documented hacks in the T-01 evidence base. Lending protocols that support multiple collateral types with different decimal precisions are the primary risk surface -- a single price or collateral calculation that mixes decimals can make an asset appear massively over- or under-valued.\n\n**Green / Yellow / Red**\nGreen: all arithmetic operations involving token amounts explicitly normalize to a common precision (18 decimals / WAD / RAY or equivalent) before combining values across different token types. Yellow: normalization is applied in primary fund-movement functions but some peripheral calculations (e.g., display math, off-chain computation helpers) mix decimals without scaling. Red: any core collateral, exchange rate, or liquidation calculation mixes token amounts of different decimal precisions without explicit normalization.\n\n**Common gray cases**\nThis factor is gray for single-asset protocols where all token amounts share the same decimal precision and mixed-decimals arithmetic is structurally impossible.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately five supporting instances in the T-01 vulnerability inventory."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The report notes a shared minimum deposit amount across tokens with different prices and other oracle boundary concerns. This is partial adverse evidence, not proof of a deployed exploit.",
+          "evidence_summary": "Bailsec identified token-amount and price-boundary concerns, while full deployed mixed-decimal normalization analysis remains incomplete.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://kerneldao.com/kelp/audits/smartcontracts/Bailsec_rsETH_november.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

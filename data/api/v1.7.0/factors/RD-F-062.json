@@ -1,70 +1,89 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-062",
-        "category_id": 3,
-        "name": "External keeper/relayer not redundant",
-        "description": "Determine whether the protocol depends on a single keeper or relayer (Gelato, Chainlink Automation, custom) with no redundancy or failover.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol depends on a single external keeper or relayer (e.g., Gelato, Chainlink Automation, a bespoke keeper bot) for a critical protocol function — such as liquidations, oracle updates, or reward distribution — without redundancy or a documented failover path. Source inspection and protocol documentation are the primary data sources.\n\n**Why it matters**\nA single keeper with no redundancy is a centralisation risk and a potential availability failure: if the keeper goes offline, goes rogue, or is compromised, protocol functions that depend on it halt. The Badger DAO hack ($120M, 2021) involved a Cloudflare front-end dependency that was compromised via an off-chain infrastructure attack. SwissBorg ($41.5M, 2025) lost funds when a Kiln staking partner API compromise allowed malicious authorisations to be embedded in routine keeper transactions. MonoX's novel AMM design reduced effective audit coverage due to infrastructure complexity. Keeper redundancy is a maturity indicator for protocols: single-keeper designs are common in early-stage deployments but represent an operational risk that scales with TVL.\n\n**Green / Yellow / Red**\nGreen is scored when critical protocol functions use multiple independent keepers or a permissionless execution path (any address can trigger liquidations). Yellow is scored when a single keeper is in use but the function is also triggerable by a backup path or by governance in an emergency. Red is scored when a single keeper is the sole triggering mechanism for a critical function and no failover path is documented.\n\n**Common gray cases**\nGray is applied when keeper infrastructure is partially off-chain and the redundancy configuration cannot be verified from public sources.\n\n**Notable historical examples**\n- **SwissBorg** ($41.5M, 2025): Kiln staking partner API compromise; malicious authorisations embedded in keeper transactions over 8 days.\n- **Badger DAO** ($120M, 2021): Off-chain Cloudflare infrastructure dependency compromised; front-end served malicious approval scripts.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol depends on a single keeper or relayer (Gelato, Chainlink Automation, custom) with no redundancy or failover.",
-        "data_source": "Source inspection for keeper/relayer interface calls + protocol docs on keeper redundancy",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Keeper contract address or interface + redundancy evidence (or absence)",
+        "category_id": 3,
         "confidence_signal": "green = multiple independent keeper providers or permissionless keeper; yellow = single keeper provider but protocol can function (degraded) without it; red = single keeper with no fallback and protocol halts on keeper failure; gray = protocol does not use keepers (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection for keeper/relayer interface calls + protocol docs on keeper redundancy",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol depends on a single keeper or relayer (Gelato, Chainlink Automation, custom) with no redundancy or failover.",
+        "evidence_artifact": "Keeper contract address or interface + redundancy evidence (or absence)",
+        "id": "RD-F-062",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol depends on a single keeper or relayer (Gelato, Chainlink Automation, custom) with no redundancy or failover.",
+        "method": "PE",
+        "name": "External keeper/relayer not redundant",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol depends on a single external keeper or relayer (e.g., Gelato, Chainlink Automation, a bespoke keeper bot) for a critical protocol function — such as liquidations, oracle updates, or reward distribution — without redundancy or a documented failover path. Source inspection and protocol documentation are the primary data sources.\n\n**Why it matters**\nA single keeper with no redundancy is a centralisation risk and a potential availability failure: if the keeper goes offline, goes rogue, or is compromised, protocol functions that depend on it halt. The Badger DAO hack ($120M, 2021) involved a Cloudflare front-end dependency that was compromised via an off-chain infrastructure attack. SwissBorg ($41.5M, 2025) lost funds when a Kiln staking partner API compromise allowed malicious authorisations to be embedded in routine keeper transactions. MonoX's novel AMM design reduced effective audit coverage due to infrastructure complexity. Keeper redundancy is a maturity indicator for protocols: single-keeper designs are common in early-stage deployments but represent an operational risk that scales with TVL.\n\n**Green / Yellow / Red**\nGreen is scored when critical protocol functions use multiple independent keepers or a permissionless execution path (any address can trigger liquidations). Yellow is scored when a single keeper is in use but the function is also triggerable by a backup path or by governance in an emergency. Red is scored when a single keeper is the sole triggering mechanism for a critical function and no failover path is documented.\n\n**Common gray cases**\nGray is applied when keeper infrastructure is partially off-chain and the redundancy configuration cannot be verified from public sources.\n\n**Notable historical examples**\n- **SwissBorg** ($41.5M, 2025): Kiln staking partner API compromise; malicious authorisations embedded in keeper transactions over 8 days.\n- **Badger DAO** ($120M, 2021): Off-chain Cloudflare infrastructure dependency compromised; front-end served malicious approval scripts."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "swissborg-rekt",
-          "relevance": "causal",
-          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 32: Third-Party API / Infrastructure Dependency] || External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "SwissBorg (via Kiln staking partner)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-09-08",
           "loss_usd": 41500000.0,
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 32: Third-Party API / Infrastructure Dependency] || External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2025-09-08",
+          "relevance": "causal",
           "root_cause": "Partner API compromise — withdrawal authority transfer via hidden staking instructions"
         },
         {
           "hack_id": "badger-rekt",
-          "relevance": "related",
-          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "Badger DAO (Bitcoin-yield vaults on Ethereum)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-12-02",
           "loss_usd": 120000000.0,
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-12-02",
+          "relevance": "related",
           "root_cause": "Front-end injection (Cloudflare account compromise) → malicious `increaseAllowance()` approvals → vault token drain"
         },
         {
           "hack_id": "monox-rekt",
-          "relevance": "related",
-          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "MonoX",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-11-30",
           "loss_usd": 31400000.0,
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-11-30",
+          "relevance": "related",
           "root_cause": "Native token self-swap price inflation — tokenIn/tokenOut identity bypass"
         },
         {
           "hack_id": "anyswap-rekt",
-          "relevance": "related",
-          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "AnySwap (Multichain) V3",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-07-10",
           "loss_usd": 7900000.0,
+          "notes": "External keeper/relayer dependency not redundant [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-07-10",
+          "relevance": "related",
           "root_cause": "ECDSA repeated k-value (same R signature) → MPC private key back-calculation"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "updateRSETHPrice is public, so routine price updating is not restricted to one external keeper.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

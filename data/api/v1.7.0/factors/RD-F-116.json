@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-116",
-        "category_id": 7,
-        "name": "Contributor tenure at admin-permissioned PR",
-        "description": "Measure the number of days contributing to the repo of the author of the most recent admin-permissioned code change.",
-        "scoring_methodology": "**What this measures**\nThis factor measures the tenure — in days since first contribution — of the author of the most recent admin-permissioned code change. A short-tenured contributor being granted admin-level merge or deploy authority is a structural insider-risk signal, particularly when the contributor's identity is not otherwise verifiable. Measurement is programmatic via GitHub API: the factor queries the merge timestamp of the most recent commit touching admin-role or upgrade-path code and compares it to the author's first contribution date in the repository. Category 7 context: DPRK insider-implant attacks specifically exploit short-tenured developers being granted premature admin access.\n\n**Why it matters**\nThe Drift Protocol incident (April 2026) exemplifies the risk: UNC4736 (DPRK-attributed) infiltrated the team by posing as an external integrator, built real-capital credibility over six months, and was ultimately granted sufficient access to influence the Security Council threshold reduction that preceded the $285M exploit. Short-tenured contributor access is not inherently malicious — legitimate security researchers are onboarded quickly — but it creates a window where the contributor's intent cannot be verified through track record. Protocols with documented insider attribution consistently show short-tenure → admin-access patterns.\n\n**Green / Yellow / Red**\nGreen is scored when the most recent admin-permissioned PR author has a contribution history of at least 180 days in the repository, or is a verified external audit firm contributor. Yellow applies when the author's tenure is 30–180 days with verifiable identity. Red is scored when the most recent admin-permissioned change was authored by a contributor with fewer than 30 days of repository history and no verifiable external identity.\n\n**Common gray cases**\nGray is assigned when the repository does not clearly distinguish admin-path code from general code changes, when the repo is private, or when the most recent admin change is more than 12 months old and assessing tenure at that historical point is impractical.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Measure the number of days contributing to the repo of the author of the most recent admin-permissioned code change.",
-        "data_source": "GitHub API: PR author's first-commit date to this repo vs PR merge date + `git log` for author",
-        "method": "PH",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "PR URL + author GitHub handle + first-commit date + days-tenure",
+        "category_id": 7,
         "confidence_signal": "green = PR author has ≥180 days tenure in repo; yellow = 30–179 days; red = <30 days or author is external with no prior commits; gray = repo is private or commit history not accessible",
+        "curation_archetype": "PH",
+        "data_source": "GitHub API: PR author's first-commit date to this repo vs PR merge date + `git log` for author",
+        "deprecated_in_rubric": null,
+        "description": "Measure the number of days contributing to the repo of the author of the most recent admin-permissioned code change.",
+        "evidence_artifact": "PR URL + author GitHub handle + first-commit date + days-tenure",
+        "id": "RD-F-116",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the number of days contributing to the repo of the author of the most recent admin-permissioned code change.",
+        "method": "PH",
+        "name": "Contributor tenure at admin-permissioned PR",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor measures the tenure — in days since first contribution — of the author of the most recent admin-permissioned code change. A short-tenured contributor being granted admin-level merge or deploy authority is a structural insider-risk signal, particularly when the contributor's identity is not otherwise verifiable. Measurement is programmatic via GitHub API: the factor queries the merge timestamp of the most recent commit touching admin-role or upgrade-path code and compares it to the author's first contribution date in the repository. Category 7 context: DPRK insider-implant attacks specifically exploit short-tenured developers being granted premature admin access.\n\n**Why it matters**\nThe Drift Protocol incident (April 2026) exemplifies the risk: UNC4736 (DPRK-attributed) infiltrated the team by posing as an external integrator, built real-capital credibility over six months, and was ultimately granted sufficient access to influence the Security Council threshold reduction that preceded the $285M exploit. Short-tenured contributor access is not inherently malicious — legitimate security researchers are onboarded quickly — but it creates a window where the contributor's intent cannot be verified through track record. Protocols with documented insider attribution consistently show short-tenure → admin-access patterns.\n\n**Green / Yellow / Red**\nGreen is scored when the most recent admin-permissioned PR author has a contribution history of at least 180 days in the repository, or is a verified external audit firm contributor. Yellow applies when the author's tenure is 30–180 days with verifiable identity. Red is scored when the most recent admin-permissioned change was authored by a contributor with fewer than 30 days of repository history and no verifiable external identity.\n\n**Common gray cases**\nGray is assigned when the repository does not clearly distinguish admin-path code from general code changes, when the repo is private, or when the most recent admin change is more than 12 months old and assessing tenure at that historical point is impractical.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Public upgrade material identifies code changes but does not bind a contributor-tenure calculation.",
+          "evidence_summary": "The contributor and tenure associated with the most recent admin-permissioned code change were not reliably resolved.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

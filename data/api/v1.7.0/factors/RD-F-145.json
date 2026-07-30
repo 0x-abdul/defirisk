@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-145",
-        "category_id": 9,
-        "name": "Deployed bytecode reproducibility",
-        "description": "Determine whether anyone can independently reproduce the deployed bytecode from the repo and declared build toolchain.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's deployed bytecode is independently reproducible from the public repository and the protocol's declared build toolchain — meaning a third party can clone the repo, install the declared compiler version and dependencies, run the declared build command, and produce bytecode that matches the deployed runtime bytecode byte-for-byte. Reproducible builds are a necessary condition for independent verification of any deployment claim.\n\n**Why it matters**\nBuild reproducibility is the technical foundation for auditability. Without it, even a fully audited and source-verified protocol cannot be confirmed to deploy what it published: compiler version drift, dependency version differences, and build-environment assumptions can all produce materially different bytecode from identical source. The StableMagnet exploit ($27M) demonstrated this attack class: Techrate audited code from the GitHub repository while the deployed BSC library was a completely different binary — users had no way to detect the discrepancy because build reproducibility was not established. Reproducible builds create a deterministic verification path from source to deployment that any party can independently audit.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol provides a documented build configuration (Dockerfile, pinned foundry.toml, or equivalent) and independent reproduction of the deployed bytecode is confirmed for at least the most recent deployment. Yellow covers cases where build instructions are published but contain environment-specific assumptions, or where reproducibility has been verified for earlier versions but not the current deployment. Red is assigned when no build reproducibility documentation exists and independent bytecode reproduction cannot be performed.\n\n**Common gray cases**\nThis factor is grayed when the protocol operates on a non-EVM chain where deterministic compilation tooling is not yet standardized, or when the deployment predates the availability of reproducible build tooling for the relevant compiler.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether anyone can independently reproduce the deployed bytecode from the repo and declared build toolchain.",
-        "data_source": "Protocol docs build instructions + curator attempt to reproduce bytecode from declared toolchain (solc version, optimizer settings)",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Reproduction attempt result: match/mismatch + build command used + source commit SHA",
+        "category_id": 9,
         "confidence_signal": "green = bytecode reproducible with declared toolchain; yellow = minor metadata hash difference only (non-logic); red = bytecode not reproducible; gray = build instructions not published",
+        "curation_archetype": "M",
+        "data_source": "Protocol docs build instructions + curator attempt to reproduce bytecode from declared toolchain (solc version, optimizer settings)",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether anyone can independently reproduce the deployed bytecode from the repo and declared build toolchain.",
+        "evidence_artifact": "Reproduction attempt result: match/mismatch + build command used + source commit SHA",
+        "id": "RD-F-145",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether anyone can independently reproduce the deployed bytecode from the repo and declared build toolchain.",
+        "method": "M",
+        "name": "Deployed bytecode reproducibility",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's deployed bytecode is independently reproducible from the public repository and the protocol's declared build toolchain — meaning a third party can clone the repo, install the declared compiler version and dependencies, run the declared build command, and produce bytecode that matches the deployed runtime bytecode byte-for-byte. Reproducible builds are a necessary condition for independent verification of any deployment claim.\n\n**Why it matters**\nBuild reproducibility is the technical foundation for auditability. Without it, even a fully audited and source-verified protocol cannot be confirmed to deploy what it published: compiler version drift, dependency version differences, and build-environment assumptions can all produce materially different bytecode from identical source. The StableMagnet exploit ($27M) demonstrated this attack class: Techrate audited code from the GitHub repository while the deployed BSC library was a completely different binary — users had no way to detect the discrepancy because build reproducibility was not established. Reproducible builds create a deterministic verification path from source to deployment that any party can independently audit.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol provides a documented build configuration (Dockerfile, pinned foundry.toml, or equivalent) and independent reproduction of the deployed bytecode is confirmed for at least the most recent deployment. Yellow covers cases where build instructions are published but contain environment-specific assumptions, or where reproducibility has been verified for earlier versions but not the current deployment. Red is assigned when no build reproducibility documentation exists and independent bytecode reproduction cannot be performed.\n\n**Common gray cases**\nThis factor is grayed when the protocol operates on a non-EVM chain where deterministic compilation tooling is not yet standardized, or when the deployment predates the availability of reproducible build tooling for the relevant compiler.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The repository publishes Foundry build inputs, but no independent current byte-for-byte reproduction is bound to the live implementation addresses.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

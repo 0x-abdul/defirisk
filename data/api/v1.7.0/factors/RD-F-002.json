@@ -1,120 +1,140 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-002",
-        "category_id": 1,
-        "name": "Audit recency",
-        "description": "Measure the number of days between today and the sign-off date of the most recent audit report covering the currently-deployed bytecode.",
-        "scoring_methodology": "**What this measures**\nThis factor records the number of days between the most recent audit report sign-off date and the current assessment date, measured over the currently deployed bytecode. If the protocol has deployed code changes since the audit, the clock resets to zero coverage for that surface and the factor is assessed relative to the most recent audit that covers the live code. The data source is audit PDF metadata combined with on-chain deploy timestamps.\n\n**Why it matters**\nCode that was reviewed two or more years ago was reviewed against the vulnerability knowledge of that era. The Onyx Protocol's second exploit (September 2024) came 32 months after a January 2022 CertiK audit -- the longest audit-to-exploit gap for an 'audited' protocol in the dataset -- and crucially, the empty-market attack pattern exploited had only been publicly documented after the audit was completed. Audit recency is not a guarantee of safety, but a stale audit is a leading indicator that the protocol's code has drifted beyond what the security review covered, particularly for fast-moving ecosystems where new vulnerability classes emerge regularly.\n\n**Green / Yellow / Red**\nGreen: the most recent audit covering the deployed bytecode was completed within 12 months and no code changes have been deployed since. Yellow: the audit is 12 to 24 months old, or code changes have been deployed since the audit with a delta-review covering the changes. Red: the most recent audit is older than 24 months, or deployed code has changed substantially since the last audit with no subsequent review of any kind.\n\n**Common gray cases**\nCurators cannot grade this factor when no audit report with a clear sign-off date is publicly available, or when the protocol refuses to disclose audit metadata.\n\n**Notable historical examples**\n- **Atomic Wallet** ($100M est., 2023): Least Authority findings from a 2021 audit were never addressed; the audit was approximately two years stale at exploit time.\n- **Onyx Protocol 2nd** ($3.8M, 2024): CertiK audit from January 2022 was 32 months stale; the exploited empty-market pattern was not known at audit time.\n- **GMX V1** ($42M recovered, 2025): Approximately three years of post-audit code changes had accumulated before the exploit.\n- **Yearn Finance** ($10M, 2023): Exploit occurred approximately three years after a February 2020 audit.\n- **Venus Protocol** ($3.7M, 2026): Code4rena audit that had flagged the exact vulnerability class was approximately three years old at exploit time.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Measure the number of days between today and the sign-off date of the most recent audit report covering the currently-deployed bytecode.",
-        "data_source": "Auditor firm's published PDF (sign-off date) + Etherscan deploy timestamp for current bytecode",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Audit PDF URL + sign-off date + deploy block timestamp + days-delta integer",
+        "category_id": 1,
         "confidence_signal": "green = ≤365 days; yellow = 366–730 days; red = >730 days or no audit found; gray = no audit report accessible",
+        "curation_archetype": "PE",
+        "data_source": "Auditor firm's published PDF (sign-off date) + Etherscan deploy timestamp for current bytecode",
+        "deprecated_in_rubric": null,
+        "description": "Measure the number of days between today and the sign-off date of the most recent audit report covering the currently-deployed bytecode.",
+        "evidence_artifact": "Audit PDF URL + sign-off date + deploy block timestamp + days-delta integer",
+        "id": "RD-F-002",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the number of days between today and the sign-off date of the most recent audit report covering the currently-deployed bytecode.",
+        "method": "PE",
+        "name": "Audit recency",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the number of days between the most recent audit report sign-off date and the current assessment date, measured over the currently deployed bytecode. If the protocol has deployed code changes since the audit, the clock resets to zero coverage for that surface and the factor is assessed relative to the most recent audit that covers the live code. The data source is audit PDF metadata combined with on-chain deploy timestamps.\n\n**Why it matters**\nCode that was reviewed two or more years ago was reviewed against the vulnerability knowledge of that era. The Onyx Protocol's second exploit (September 2024) came 32 months after a January 2022 CertiK audit -- the longest audit-to-exploit gap for an 'audited' protocol in the dataset -- and crucially, the empty-market attack pattern exploited had only been publicly documented after the audit was completed. Audit recency is not a guarantee of safety, but a stale audit is a leading indicator that the protocol's code has drifted beyond what the security review covered, particularly for fast-moving ecosystems where new vulnerability classes emerge regularly.\n\n**Green / Yellow / Red**\nGreen: the most recent audit covering the deployed bytecode was completed within 12 months and no code changes have been deployed since. Yellow: the audit is 12 to 24 months old, or code changes have been deployed since the audit with a delta-review covering the changes. Red: the most recent audit is older than 24 months, or deployed code has changed substantially since the last audit with no subsequent review of any kind.\n\n**Common gray cases**\nCurators cannot grade this factor when no audit report with a clear sign-off date is publicly available, or when the protocol refuses to disclose audit metadata.\n\n**Notable historical examples**\n- **Atomic Wallet** ($100M est., 2023): Least Authority findings from a 2021 audit were never addressed; the audit was approximately two years stale at exploit time.\n- **Onyx Protocol 2nd** ($3.8M, 2024): CertiK audit from January 2022 was 32 months stale; the exploited empty-market pattern was not known at audit time.\n- **GMX V1** ($42M recovered, 2025): Approximately three years of post-audit code changes had accumulated before the exploit.\n- **Yearn Finance** ($10M, 2023): Exploit occurred approximately three years after a February 2020 audit.\n- **Venus Protocol** ($3.7M, 2026): Code4rena audit that had flagged the exact vulnerability class was approximately three years old at exploit time."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "hyperbridge-rekt",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~16–18 months (2024 → April 2026)]",
           "hack_protocol_name": "Hyperbridge (Polkadot-native interoperability rollup built by Polytope Labs; Token Gateway / HandlerV1)",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-04-13",
           "loss_usd": 2500000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~16–18 months (2024 → April 2026)]",
+          "occurred_at": "2026-04-13",
+          "relevance": "related",
           "root_cause": "Smart-contract proof-verification bypass — MMR bounds-check failure + missing proof-to-request binding + zero challenge period + single-step admin transfer"
         },
         {
           "hack_id": "venus-protocol-rekt4",
-          "relevance": "illustrative",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years since Code4rena audit that flagged the exact vulnerability]",
           "hack_protocol_name": "Venus Protocol",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2026-03-15",
           "loss_usd": 3700000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years since Code4rena audit that flagged the exact vulnerability]",
+          "occurred_at": "2026-03-15",
+          "relevance": "illustrative",
           "root_cause": "Donation Attack → Supply Cap Bypass → Collateral Inflation → Recursive Borrow Loop"
         },
         {
           "hack_id": "gmx",
-          "relevance": "illustrative",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years at exploit (extensive post-audit code changes)]",
           "hack_protocol_name": "GMX V1",
           "hack_protocol_slug": "gmx-v2",
-          "occurred_at": "2025-07-09",
           "loss_usd": 0.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years at exploit (extensive post-audit code changes)]",
+          "occurred_at": "2025-07-09",
+          "relevance": "illustrative",
           "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback"
         },
         {
           "hack_id": "1inch-rekt",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: Unknown; v1 deprecated mid-2023 — ~18 months before exploit]",
           "hack_protocol_name": "1inch (Fusion v1 resolver contracts)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-05",
           "loss_usd": 5000000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: Unknown; v1 deprecated mid-2023 — ~18 months before exploit]",
+          "occurred_at": "2025-03-05",
+          "relevance": "related",
           "root_cause": "Integer underflow in deprecated assembly — calldata pointer corruption → resolver address forgery"
         },
         {
           "hack_id": "onyx-protocol-rekt2",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years 8 months at time of exploit]",
           "hack_protocol_name": "Onyx Protocol (2nd incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-25",
           "loss_usd": 3800000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years 8 months at time of exploit]",
+          "occurred_at": "2024-09-25",
+          "relevance": "related",
           "root_cause": "Compound V2 empty-market donation attack — VUSD governance-added market"
         },
         {
           "hack_id": "unizen-rekt",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2022 audit; exploit March 2024)]",
           "hack_protocol_name": "Unizen",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-03-08",
           "loss_usd": 2100000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2022 audit; exploit March 2024)]",
+          "occurred_at": "2024-03-08",
+          "relevance": "related",
           "root_cause": "Unvalidated external call in upgraded DEX Aggregation contract — approval drain"
         },
         {
           "hack_id": "atomic-wallet-rekt",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (Least Authority findings from 2021 never addressed)]",
           "hack_protocol_name": "Atomic Wallet (non-custodial multi-chain wallet)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-06-02",
           "loss_usd": 100000000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (Least Authority findings from 2021 never addressed)]",
+          "occurred_at": "2023-06-02",
+          "relevance": "related",
           "root_cause": "Unknown officially; suspected: BGP hijacking combined with client-side vulnerability (possibly private key logging); Least Authority had flagged vulnerabilities in 2021 that were never addressed"
         },
         {
           "hack_id": "yearn2-rekt",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years (Feb 2020 audit; April 2023 exploit)]",
           "hack_protocol_name": "Yearn Finance (iearn yUSDT)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-04-13",
           "loss_usd": 10000000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~3 years (Feb 2020 audit; April 2023 exploit)]",
+          "occurred_at": "2023-04-13",
+          "relevance": "related",
           "root_cause": "Misconfiguration (copy/paste error) in yUSDT — wrong Fulcrum USDC address used instead of USDT → share price manipulation → 1.2 quadrillion yUSDT minted"
         },
         {
           "hack_id": "hedera",
-          "relevance": "related",
-          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2021 audit; exploit 2023)]",
           "hack_protocol_name": "Hedera (Network-level — Hashgraph Smart Contract Service)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-03-09",
           "loss_usd": 515000.0,
+          "notes": "Audit recency (stale signal — text variants only; numeric thresholds need value-parser, deferred) [via dashboard_risk_factors/Time since last audit: ~2 years (2021 audit; exploit 2023)]",
+          "occurred_at": "2023-03-09",
+          "relevance": "related",
           "root_cause": "Smart Contract Service (HTS) Code Bug — Uniswap V2 Port Exploit"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The dated public report covers the Kelp rsETH contract suite and is less than 365 days old.",
+          "evidence_summary": "Bailsec's September 2025 rsETH final report is within one year of the 2026-07-30 assessment.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://kerneldao.com/kelp/audits/smartcontracts/Bailsec_rsETH_november.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

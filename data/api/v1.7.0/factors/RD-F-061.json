@@ -1,50 +1,69 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-061",
-        "category_id": 3,
-        "name": "LP token balanceOf used for pricing",
-        "description": "Determine whether protocol pricing is derived from the `balanceOf` of LP tokens in a contract (manipulable by direct token transfer / donation).",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol derives pricing from the `balanceOf` of LP tokens held in a contract — a pattern that is manipulable by direct token transfer (\"donation\") without going through the protocol's normal deposit path. Source inspection identifies whether price calculations depend on `balanceOf` rather than internal accounting state.\n\n**Why it matters**\nUsing `balanceOf` for pricing creates a donation-manipulable oracle: any attacker who can transfer tokens directly to the contract (bypassing `deposit()`) can artificially inflate the apparent value of LP shares. The Cashio hack ($48M, 2022) is the definitive case: the CASH stablecoin's LP token collateral validation never checked the `.mint` field of the SPL token, allowing an attacker to create fake collateral. bEarnFi ($18M, 2021) suffered a multi-layer vault accounting failure where token denomination consistency was broken by a similar balance-manipulation path. ERC-4626 share-inflation attacks (Silo Finance variant) use an analogous mechanism. Protocols that use `balanceOf` for pricing without canonical reserve tracking are structurally vulnerable.\n\n**Green / Yellow / Red**\nGreen is scored when pricing is derived from internal accounting state (tracked reserves, virtual shares) rather than live `balanceOf` calls. Yellow is scored when `balanceOf` is used but mediated through a time-delayed or TWAP-based calculation that reduces instant manipulation risk. Red is scored when the protocol derives collateral or exchange-rate pricing directly from `balanceOf` of an LP or vault token with no additional protection.\n\n**Common gray cases**\nGray is applied when the pricing mechanism is implemented in an upgradeable module and the current deployed logic cannot be confirmed through source inspection alone.\n\n**Notable historical examples**\n- **Cashio** ($48M, 2022): LP token collateral validation relied on balance fields; the `.mint` field was never validated, enabling fake collateral creation.\n- **bEarnFi** ($18M, 2021): Multi-layer vault strategy used cross-token balance accounting that was manipulated via token denomination mismatch.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether protocol pricing is derived from the `balanceOf` of LP tokens in a contract (manipulable by direct token transfer / donation).",
-        "data_source": "Source inspection for `balanceOf` calls in price calculation paths on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of price calculation function + any `balanceOf` call in that path",
+        "category_id": 3,
         "confidence_signal": "green = `balanceOf` not used in price path; red = `balanceOf` used in price path without donation protection; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection for `balanceOf` calls in price calculation paths on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether protocol pricing is derived from the `balanceOf` of LP tokens in a contract (manipulable by direct token transfer / donation).",
+        "evidence_artifact": "Source excerpt of price calculation function + any `balanceOf` call in that path",
+        "id": "RD-F-061",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether protocol pricing is derived from the `balanceOf` of LP tokens in a contract (manipulable by direct token transfer / donation).",
+        "method": "PE",
+        "name": "LP token balanceOf used for pricing",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol derives pricing from the `balanceOf` of LP tokens held in a contract — a pattern that is manipulable by direct token transfer (\"donation\") without going through the protocol's normal deposit path. Source inspection identifies whether price calculations depend on `balanceOf` rather than internal accounting state.\n\n**Why it matters**\nUsing `balanceOf` for pricing creates a donation-manipulable oracle: any attacker who can transfer tokens directly to the contract (bypassing `deposit()`) can artificially inflate the apparent value of LP shares. The Cashio hack ($48M, 2022) is the definitive case: the CASH stablecoin's LP token collateral validation never checked the `.mint` field of the SPL token, allowing an attacker to create fake collateral. bEarnFi ($18M, 2021) suffered a multi-layer vault accounting failure where token denomination consistency was broken by a similar balance-manipulation path. ERC-4626 share-inflation attacks (Silo Finance variant) use an analogous mechanism. Protocols that use `balanceOf` for pricing without canonical reserve tracking are structurally vulnerable.\n\n**Green / Yellow / Red**\nGreen is scored when pricing is derived from internal accounting state (tracked reserves, virtual shares) rather than live `balanceOf` calls. Yellow is scored when `balanceOf` is used but mediated through a time-delayed or TWAP-based calculation that reduces instant manipulation risk. Red is scored when the protocol derives collateral or exchange-rate pricing directly from `balanceOf` of an LP or vault token with no additional protection.\n\n**Common gray cases**\nGray is applied when the pricing mechanism is implemented in an upgradeable module and the current deployed logic cannot be confirmed through source inspection alone.\n\n**Notable historical examples**\n- **Cashio** ($48M, 2022): LP token collateral validation relied on balance fields; the `.mint` field was never validated, enabling fake collateral creation.\n- **bEarnFi** ($18M, 2021): Multi-layer vault strategy used cross-token balance accounting that was manipulated via token denomination mismatch."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "cashio",
-          "relevance": "causal",
-          "notes": "Protocol trusts LP token balanceOf for pricing — donation-manipulable [via cross-hack: Factor 12: LP Token Collateral With Incomplete Field Validation]",
           "hack_protocol_name": "Cashio",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-03-23",
           "loss_usd": 48000000.0,
+          "notes": "Protocol trusts LP token balanceOf for pricing — donation-manipulable [via cross-hack: Factor 12: LP Token Collateral With Incomplete Field Validation]",
+          "occurred_at": "2022-03-23",
+          "relevance": "causal",
           "root_cause": "Infinite mint via incomplete collateral validation — fake account chain bypasses all verification"
         },
         {
           "hack_id": "bearn",
-          "relevance": "causal",
-          "notes": "Protocol trusts LP token balanceOf for pricing [via cross-hack: Factor 11: Multi-Layer Vault/Strategy Architecture With Cross-Token Accounting]",
           "hack_protocol_name": "bEarnFi (BvaultsBank)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-16",
           "loss_usd": 18000000.0,
+          "notes": "Protocol trusts LP token balanceOf for pricing [via cross-hack: Factor 11: Multi-Layer Vault/Strategy Architecture With Cross-Token Accounting]",
+          "occurred_at": "2021-05-16",
+          "relevance": "causal",
           "root_cause": "Logic bug — token denomination mismatch between vault and strategy layers"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Aggregate pricing uses protocol-recorded total deposits rather than raw token balanceOf, avoiding direct-donation pricing.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

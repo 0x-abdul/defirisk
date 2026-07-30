@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-154",
-        "category_id": 10,
-        "name": "Default bytes32(0) acceptable as valid root",
-        "description": "Determine whether the bridge inbox accepts a default-value (bytes32(0)) Merkle root as a valid proof root (Nomad bug class).",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether a bridge inbox or Merkle proof verifier accepts the 32-byte default value (`bytes32(0)`) as a valid committed root. A correctly implemented verifier initialises its accepted-root mapping to a non-default sentinel and admits only roots that have passed through the validator submission and timing queue. Static analysis of the bridge inbox contract is the primary assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nThe Nomad bridge $190M hack of August 2022 is the definitive instance of this failure mode. A routine upgrade inadvertently initialised the `confirmAt` mapping such that `bytes32(0)` was treated as a valid committed root, allowing any caller to submit a Merkle proof against the zero root and immediately pass verification — requiring zero cryptographic knowledge of the validator set. The attack required no exploiter sophistication; it was replicated by hundreds of independent copycats within hours of the first drain. Default-value trust is a recurring class of smart contract bugs where uninitialised or zero-default state transitions from \"unset\" to \"implicitly valid,\" and bridges are especially exposed because the proof-submission path is permissionless by design.\n\n**Green / Yellow / Red**\nGreen is scored when the verifier explicitly rejects `bytes32(0)` and only admits roots that passed through the submission and timing queue. Yellow is scored when the check exists in production code but a prior upgrade or migration introduced a window during which zero roots were transiently valid. Red is scored when `bytes32(0)` is accepted as a valid root in the current deployed code.\n\n**Common gray cases**\nGray is applied when the bridge uses a closed-source or partially-verified verifier module and the root-acceptance logic cannot be confirmed through static analysis.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Accepting the default zero value as a valid Merkle root entirely nullifies the bridge's proof system, enabling permissionless, unauthenticated asset extraction — as demonstrated by the $190M Nomad exploit.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the bridge inbox accepts a default-value (bytes32(0)) Merkle root as a valid proof root (Nomad bug class).",
-        "data_source": "Source inspection of root acceptance logic on Etherscan-verified source: check for explicit `require(root != bytes32(0))` guard",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of root acceptance logic + zero-root guard presence",
+        "category_id": 10,
         "confidence_signal": "green = bytes32(0) explicitly rejected as invalid root; red = bytes32(0) accepted as valid root; gray = bridge source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of root acceptance logic on Etherscan-verified source: check for explicit `require(root != bytes32(0))` guard",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the bridge inbox accepts a default-value (bytes32(0)) Merkle root as a valid proof root (Nomad bug class).",
+        "evidence_artifact": "Source excerpt of root acceptance logic + zero-root guard presence",
+        "id": "RD-F-154",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether the bridge inbox accepts a default-value (bytes32(0)) Merkle root as a valid proof root (Nomad bug class).",
+        "method": "PE",
+        "name": "Default bytes32(0) acceptable as valid root",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether a bridge inbox or Merkle proof verifier accepts the 32-byte default value (`bytes32(0)`) as a valid committed root. A correctly implemented verifier initialises its accepted-root mapping to a non-default sentinel and admits only roots that have passed through the validator submission and timing queue. Static analysis of the bridge inbox contract is the primary assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nThe Nomad bridge $190M hack of August 2022 is the definitive instance of this failure mode. A routine upgrade inadvertently initialised the `confirmAt` mapping such that `bytes32(0)` was treated as a valid committed root, allowing any caller to submit a Merkle proof against the zero root and immediately pass verification — requiring zero cryptographic knowledge of the validator set. The attack required no exploiter sophistication; it was replicated by hundreds of independent copycats within hours of the first drain. Default-value trust is a recurring class of smart contract bugs where uninitialised or zero-default state transitions from \"unset\" to \"implicitly valid,\" and bridges are especially exposed because the proof-submission path is permissionless by design.\n\n**Green / Yellow / Red**\nGreen is scored when the verifier explicitly rejects `bytes32(0)` and only admits roots that passed through the submission and timing queue. Yellow is scored when the check exists in production code but a prior upgrade or migration introduced a window during which zero roots were transiently valid. Red is scored when `bytes32(0)` is accepted as a valid root in the current deployed code.\n\n**Common gray cases**\nGray is applied when the bridge uses a closed-source or partially-verified verifier module and the root-acceptance logic cannot be confirmed through static analysis.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Accepting the default zero value as a valid Merkle root entirely nullifies the bridge's proof system, enabling permissionless, unauthenticated asset extraction — as demonstrated by the $190M Nomad exploit."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "The LayerZero path verifies non-empty payload hashes rather than accepting a default Merkle root.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/LayerZero-Labs/LayerZero-v2/blob/main/packages/layerzero-v2/evm/protocol/contracts/EndpointV2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

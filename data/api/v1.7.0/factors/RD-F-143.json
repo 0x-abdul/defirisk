@@ -1,70 +1,91 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-143",
-        "category_id": 9,
-        "name": "Reinitializable implementation (no _disableInitializers)",
-        "description": "Determine whether the implementation contract does not call `_disableInitializers()` in its constructor, leaving re-initialization possible.",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether an upgradeable proxy's implementation contract fails to call _disableInitializers() in its constructor, leaving the initialize() function callable on the bare implementation address. OpenZeppelin's upgradeable contract guidance recommends including \"a flag so that you can't initialize a logic contract more than once\" to prevent this vulnerability. Without _disableInitializers(), an attacker can call initialize() directly on the implementation contract, claim ownership or admin roles, and — depending on how the proxy's storage is structured — potentially execute a privileged drain through the proxy.\n\n**Why it matters**\nReinitializable implementations represent a proxy takeover pattern that is both automated and deterministic: an attacker scans newly deployed upgradeable contracts for unprotected initialize() functions on the implementation address, calls them, and establishes an unauthorized admin role before the legitimate protocol team or users are aware. The Dedaub/SEAL911 \"CPIMP\" research documented this attack class publicly in 2024; USPD lost $1M after an attacker front-ran the initialize transaction and waited 78 days for TVL to accumulate before executing the drain. The Raft protocol loss ($3.3M, 2023) illustrates a related delegatecall storage pattern where unguarded initialization state caused attacker funds to route unexpectedly. OpenZeppelin's proxy pattern documentation explicitly flags that implementation contracts must be treated as separately attackable surfaces.\n\n**Green / Yellow / Red**\nGreen is assigned when the implementation contract calls _disableInitializers() in its constructor (verified via static analysis or source inspection), or when the implementation is deployed behind an initializer modifier that is already set before deployment completes. Yellow covers cases where the initialize function exists and is unprotected on the implementation but the proxy's admin is a trusted multisig that has already initialized the state, reducing the exploitability window. Red is assigned when static analysis confirms the implementation contract has an initialize() function callable by any address with no _disableInitializers() call in the constructor.\n\n**Common gray cases**\nThis factor is grayed when the proxy architecture does not use an upgradeable pattern (immutable contracts, Beacon-without-initialize, or UUPS with fully locked implementation), or when the implementation's constructor is not accessible for analysis.\n\n**Notable historical examples**\n- **Raft** ($3.3M, 2023): Delegatecall into implementation with uninitialized storage slot caused funds to route to the burn address; pattern adjacent to unguarded initialization state.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An unprotected initialize() function on an implementation contract creates a front-runnable proxy takeover vector that can establish unauthorized admin control before any user interaction — a one-transaction full account takeover with no code-quality mitigation available after deployment.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the implementation contract does not call `_disableInitializers()` in its constructor, leaving re-initialization possible.",
-        "data_source": "Source search for `_disableInitializers()` in constructor + Slither `unprotected-upgrade` detector on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of constructor + `_disableInitializers()` presence flag",
+        "category_id": 9,
         "confidence_signal": "green = `_disableInitializers()` present in all implementation constructors; red = any implementation constructor missing `_disableInitializers()`; gray = source unverified or no proxy pattern",
+        "curation_archetype": "PE",
+        "data_source": "Source search for `_disableInitializers()` in constructor + Slither `unprotected-upgrade` detector on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the implementation contract does not call `_disableInitializers()` in its constructor, leaving re-initialization possible.",
+        "evidence_artifact": "Source excerpt of constructor + `_disableInitializers()` presence flag",
+        "id": "RD-F-143",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether the implementation contract does not call `_disableInitializers()` in its constructor, leaving re-initialization possible.",
+        "method": "PE",
+        "name": "Reinitializable implementation (no _disableInitializers)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether an upgradeable proxy's implementation contract fails to call _disableInitializers() in its constructor, leaving the initialize() function callable on the bare implementation address. OpenZeppelin's upgradeable contract guidance recommends including \"a flag so that you can't initialize a logic contract more than once\" to prevent this vulnerability. Without _disableInitializers(), an attacker can call initialize() directly on the implementation contract, claim ownership or admin roles, and — depending on how the proxy's storage is structured — potentially execute a privileged drain through the proxy.\n\n**Why it matters**\nReinitializable implementations represent a proxy takeover pattern that is both automated and deterministic: an attacker scans newly deployed upgradeable contracts for unprotected initialize() functions on the implementation address, calls them, and establishes an unauthorized admin role before the legitimate protocol team or users are aware. The Dedaub/SEAL911 \"CPIMP\" research documented this attack class publicly in 2024; USPD lost $1M after an attacker front-ran the initialize transaction and waited 78 days for TVL to accumulate before executing the drain. The Raft protocol loss ($3.3M, 2023) illustrates a related delegatecall storage pattern where unguarded initialization state caused attacker funds to route unexpectedly. OpenZeppelin's proxy pattern documentation explicitly flags that implementation contracts must be treated as separately attackable surfaces.\n\n**Green / Yellow / Red**\nGreen is assigned when the implementation contract calls _disableInitializers() in its constructor (verified via static analysis or source inspection), or when the implementation is deployed behind an initializer modifier that is already set before deployment completes. Yellow covers cases where the initialize function exists and is unprotected on the implementation but the proxy's admin is a trusted multisig that has already initialized the state, reducing the exploitability window. Red is assigned when static analysis confirms the implementation contract has an initialize() function callable by any address with no _disableInitializers() call in the constructor.\n\n**Common gray cases**\nThis factor is grayed when the proxy architecture does not use an upgradeable pattern (immutable contracts, Beacon-without-initialize, or UUPS with fully locked implementation), or when the implementation's constructor is not accessible for analysis.\n\n**Notable historical examples**\n- **Raft** ($3.3M, 2023): Delegatecall into implementation with uninitialized storage slot caused funds to route to the burn address; pattern adjacent to unguarded initialization state.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An unprotected initialize() function on an implementation contract creates a front-runnable proxy takeover vector that can establish unauthorized admin control before any user interaction — a one-transaction full account takeover with no code-quality mitigation available after deployment."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "aave-v3-2026-capo-rekt",
-          "relevance": "illustrative",
-          "notes": "Cat 9 post-deploy hygiene gap; new-listing process did not include parameter-set validation prior to activation",
           "hack_protocol_name": "Aave V3",
           "hack_protocol_slug": "aave-v3",
-          "occurred_at": "2026-03-12",
           "loss_usd": 862000.0,
+          "notes": "Cat 9 post-deploy hygiene gap; new-listing process did not include parameter-set validation prior to activation",
+          "occurred_at": "2026-03-12",
+          "relevance": "illustrative",
           "root_cause": "CAPO (Correlated Asset Price Oracle) misconfigured price feed for a freshly-listed correlated asset → mispriced collateral → cascade of involuntary liquidations"
         },
         {
           "hack_id": "curve-llamalend-2026-rekt",
-          "relevance": "illustrative",
-          "notes": "LlamaLend factory did not back-port the first-depositor fix from mainnet Venus / Compound III",
           "hack_protocol_name": "Curve LlamaLend",
           "hack_protocol_slug": "curve-v2",
-          "occurred_at": "2026-03-02",
           "loss_usd": 240000.0,
+          "notes": "LlamaLend factory did not back-port the first-depositor fix from mainnet Venus / Compound III",
+          "occurred_at": "2026-03-02",
+          "relevance": "illustrative",
           "root_cause": "Empty-market donation attack on a freshly-listed lending market"
         },
         {
           "hack_id": "venus-zksync-2025-rekt",
-          "relevance": "related",
-          "notes": "Cross-chain deployment did not back-port mainnet first-depositor protection before listing — Cat 9 hygiene failure",
           "hack_protocol_name": "Venus Protocol (zkSync Era deployment)",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2025-03-29",
           "loss_usd": 902000.0,
+          "notes": "Cross-chain deployment did not back-port mainnet first-depositor protection before listing — Cat 9 hygiene failure",
+          "occurred_at": "2025-03-29",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection"
         },
         {
           "hack_id": "raft-rekt",
-          "relevance": "related",
-          "notes": "★ Reinitializable implementation [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]",
           "hack_protocol_name": "Raft",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-11-10",
           "loss_usd": 3300000.0,
+          "notes": "★ Reinitializable implementation [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]",
+          "occurred_at": "2023-11-10",
+          "relevance": "related",
           "root_cause": "Flash loan + collateral inflation via position liquidation → infinite R mint → stablecoin dump"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Reviewed current core implementations call _disableInitializers() in constructors, including config, deposit, withdrawal, oracle, token, converter, and node-delegator contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

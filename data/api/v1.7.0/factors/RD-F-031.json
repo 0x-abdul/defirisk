@@ -1,70 +1,91 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-031",
-        "category_id": 2,
-        "name": "Signer rotation recency",
-        "description": "Measure the number of months since the most recent signer-set change (add/remove signer) on the admin multisig; flag if threshold was reduced within 14 days of a timelock removal or new-signer addition.",
-        "scoring_methodology": "**What this measures**\nThis factor records the number of months since the most recent signer-set change on the protocol's governance multisig — including any addition or removal of a signer, or a change to the threshold. A long-dormant signer set is a stale-key risk: signers who departed the team may retain active keys, and uncirculated keys have an accumulating exposure window. The v1.1 extension notes that the direction of the change matters: a threshold reduction combined with a new signer addition within a short window is a precursor pattern for targeted key compromise attacks.\n\n**Why it matters**\nSigner sets that have not been rotated in 12 or more months represent an operational security gap. Team members depart, key storage disciplines lapse, and the probability of at least one key in a stagnant set being compromised grows over time. The Gala Games exploit involved an admin key that had been dormant for over 30 days, a pattern that correlated with reduced operational vigilance. Force Bridge and OKX DEX both show that decommissioned or stale infrastructure retaining active credential authority is a persistent attacker target.\n\n**Green / Yellow / Red**\nGreen is assigned when a signer rotation or threshold review has occurred within the past 12 months, or when the protocol uses a smart-contract-based signer registry with automatic expiry. Yellow covers 12–24 months since last rotation with no evidence of key compromise. Red is assigned when the signer set has not been reviewed or rotated in more than 24 months, or when a recent change shows a threshold reduction without a corresponding security review.\n\n**Common gray cases**\nThis factor is grayed when the multisig signer set is not public and on-chain transaction data does not resolve the last-rotation date.\n\n**Notable historical examples**\n- **Gala Games** ($21.8M, 2024): Admin key dormant for extended period; compromise via unauthorized access to a dormant signing credential.\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key not rotated or revoked; key was live on decommissioned infrastructure.\n- **Force Bridge** ($3.76M, 2025): Key on sunset infrastructure exploited immediately after sunset announcement.\n- **GANA Payment** ($3.1M, 2025): Stale onlyEOA pattern combined with EIP-7702 exploit on nine-day-old protocol.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Measure the number of months since the most recent signer-set change (add/remove signer) on the admin multisig; flag if threshold was reduced within 14 days of a timelock removal or new-signer addition.",
-        "data_source": "`AddedOwner`/`RemovedOwner`/`ChangedThreshold` events on Safe/Gnosis contract via RPC event log",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Event log of signer-set changes + timestamps + threshold-reduction flag if applicable",
+        "category_id": 2,
         "confidence_signal": "green = no signer change in last 90 days OR change was threshold-increase; yellow = signer change within 90 days (routine rotation); red = threshold reduction within 14 days of timelock removal or new-signer add (DPRK-precursor pattern); gray = multisig contract not identifiable",
+        "curation_archetype": "PE",
+        "data_source": "`AddedOwner`/`RemovedOwner`/`ChangedThreshold` events on Safe/Gnosis contract via RPC event log",
+        "deprecated_in_rubric": null,
+        "description": "Measure the number of months since the most recent signer-set change (add/remove signer) on the admin multisig; flag if threshold was reduced within 14 days of a timelock removal or new-signer addition.",
+        "evidence_artifact": "Event log of signer-set changes + timestamps + threshold-reduction flag if applicable",
+        "id": "RD-F-031",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the number of months since the most recent signer-set change (add/remove signer) on the admin multisig; flag if threshold was reduced within 14 days of a timelock removal or new-signer addition.",
+        "method": "PE",
+        "name": "Signer rotation recency",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the number of months since the most recent signer-set change on the protocol's governance multisig — including any addition or removal of a signer, or a change to the threshold. A long-dormant signer set is a stale-key risk: signers who departed the team may retain active keys, and uncirculated keys have an accumulating exposure window. The v1.1 extension notes that the direction of the change matters: a threshold reduction combined with a new signer addition within a short window is a precursor pattern for targeted key compromise attacks.\n\n**Why it matters**\nSigner sets that have not been rotated in 12 or more months represent an operational security gap. Team members depart, key storage disciplines lapse, and the probability of at least one key in a stagnant set being compromised grows over time. The Gala Games exploit involved an admin key that had been dormant for over 30 days, a pattern that correlated with reduced operational vigilance. Force Bridge and OKX DEX both show that decommissioned or stale infrastructure retaining active credential authority is a persistent attacker target.\n\n**Green / Yellow / Red**\nGreen is assigned when a signer rotation or threshold review has occurred within the past 12 months, or when the protocol uses a smart-contract-based signer registry with automatic expiry. Yellow covers 12–24 months since last rotation with no evidence of key compromise. Red is assigned when the signer set has not been reviewed or rotated in more than 24 months, or when a recent change shows a threshold reduction without a corresponding security review.\n\n**Common gray cases**\nThis factor is grayed when the multisig signer set is not public and on-chain transaction data does not resolve the last-rotation date.\n\n**Notable historical examples**\n- **Gala Games** ($21.8M, 2024): Admin key dormant for extended period; compromise via unauthorized access to a dormant signing credential.\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key not rotated or revoked; key was live on decommissioned infrastructure.\n- **Force Bridge** ($3.76M, 2025): Key on sunset infrastructure exploited immediately after sunset announcement.\n- **GANA Payment** ($3.1M, 2025): Stale onlyEOA pattern combined with EIP-7702 exploit on nine-day-old protocol."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "gana-payment",
-          "relevance": "causal",
-          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
           "hack_protocol_name": "GANA Payment",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-11-20",
           "loss_usd": 3100000.0,
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
+          "occurred_at": "2025-11-20",
+          "relevance": "causal",
           "root_cause": "Leaked Owner Key + EIP-7702 Delegator Contract (onlyEOA Bypass)"
         },
         {
           "hack_id": "force-bridge-rekt",
-          "relevance": "causal",
-          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
           "hack_protocol_name": "Force Bridge (Nervos Network)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-01",
           "loss_usd": 3760000.0,
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
+          "occurred_at": "2025-06-01",
+          "relevance": "causal",
           "root_cause": "Access control compromise — admin key leak → privileged unlock() drain across two chains"
         },
         {
           "hack_id": "gala-games",
-          "relevance": "causal",
-          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
           "hack_protocol_name": "Gala Games (GALA token contract)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-21",
           "loss_usd": 21800000.0,
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
+          "occurred_at": "2024-05-21",
+          "relevance": "causal",
           "root_cause": "Compromised Admin Account — Unauthorized Token Minting"
         },
         {
           "hack_id": "okx-dex-rekt",
-          "relevance": "causal",
-          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
           "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-12-13",
           "loss_usd": 2700000.0,
+          "notes": "Signer rotation recency [via cross-hack: Factor 56: Dormant Admin Key > 30 Days]",
+          "occurred_at": "2023-12-13",
+          "relevance": "causal",
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Current Safe owner sets and nonces are public, but a complete identity-aware signer-rotation history was not established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xb3696a817D01C8623E66D156B6798291fa10a46d/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

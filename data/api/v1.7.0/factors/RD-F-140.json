@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-140",
-        "category_id": 9,
-        "name": "Fix-merged-but-not-deployed gap",
-        "description": "Determine whether a known vulnerability has a PR merged in the repo but the fix has not been included in the deployed bytecode.",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether a known vulnerability exists in the deployed codebase — confirmed via a PR merged in the public repository — but the fix has not been included in the currently deployed bytecode. This gap between a merged fix and a deployed fix is the \"fix-merged-but-not-deployed\" state: the team acknowledged the vulnerability and prepared a patch, but users' funds remain at risk from the unpatched deployed code.\n\n**Why it matters**\nMirror Protocol and the Venus REKT4 incident both exemplify this failure mode: a governance proposal to fix a known vulnerability was created and merged, but the production deployment lagged behind the repository state. The Deus DAO 2 exploit demonstrated the urgency particularly clearly — the attacker's bypass of a post-hack oracle fix came 40 days after the fix was deployed, but the window between the first fix being described and the second vector being closed was entirely preventable. A fix-merged-but-not-deployed gap means users are exposed to a vulnerability the team knows about and has solved — the only remaining question is when the attacker will find it.\n\n**Green / Yellow / Red**\nGreen is assigned when the deployed bytecode is current with the repository's main branch and no known vulnerabilities have open PRs without corresponding deployments. Yellow covers cases where a low-severity fix has been merged but not yet deployed, with a documented deployment timeline. Red is assigned when a high or critical severity fix has been merged into the repository but the corresponding upgrade has not been applied to the production deployment.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private or when the PRs cannot be matched to specific bytecode changes within the assessment window.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether a known vulnerability has a PR merged in the repo but the fix has not been included in the deployed bytecode.",
-        "data_source": "GitHub merged PR list (security/fix labels) + bytecode diff vs post-fix commit SHA",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "PR URL + merge date + deployed bytecode commit SHA + diff showing whether fix is present",
+        "category_id": 9,
         "confidence_signal": "green = all merged security fixes are present in deployed bytecode; red = merged security fix not yet deployed; gray = cannot determine deployed bytecode commit (see F136)",
+        "curation_archetype": "M",
+        "data_source": "GitHub merged PR list (security/fix labels) + bytecode diff vs post-fix commit SHA",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a known vulnerability has a PR merged in the repo but the fix has not been included in the deployed bytecode.",
+        "evidence_artifact": "PR URL + merge date + deployed bytecode commit SHA + diff showing whether fix is present",
+        "id": "RD-F-140",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a known vulnerability has a PR merged in the repo but the fix has not been included in the deployed bytecode.",
+        "method": "M",
+        "name": "Fix-merged-but-not-deployed gap",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether a known vulnerability exists in the deployed codebase — confirmed via a PR merged in the public repository — but the fix has not been included in the currently deployed bytecode. This gap between a merged fix and a deployed fix is the \"fix-merged-but-not-deployed\" state: the team acknowledged the vulnerability and prepared a patch, but users' funds remain at risk from the unpatched deployed code.\n\n**Why it matters**\nMirror Protocol and the Venus REKT4 incident both exemplify this failure mode: a governance proposal to fix a known vulnerability was created and merged, but the production deployment lagged behind the repository state. The Deus DAO 2 exploit demonstrated the urgency particularly clearly — the attacker's bypass of a post-hack oracle fix came 40 days after the fix was deployed, but the window between the first fix being described and the second vector being closed was entirely preventable. A fix-merged-but-not-deployed gap means users are exposed to a vulnerability the team knows about and has solved — the only remaining question is when the attacker will find it.\n\n**Green / Yellow / Red**\nGreen is assigned when the deployed bytecode is current with the repository's main branch and no known vulnerabilities have open PRs without corresponding deployments. Yellow covers cases where a low-severity fix has been merged but not yet deployed, with a documented deployment timeline. Red is assigned when a high or critical severity fix has been merged into the repository but the corresponding upgrade has not been applied to the production deployment.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private or when the PRs cannot be matched to specific bytecode changes within the assessment window.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository and upgrade log do not provide a complete ledger mapping every known vulnerability fix to live deployed bytecode.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

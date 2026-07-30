@@ -1,70 +1,90 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-105",
-        "category_id": 6,
-        "name": "DNS/CDN/frontend hash drift",
-        "description": "Detect whether the hash of production frontend JS changes versus the prior published hash, or a DNS config change is detected.",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the hash of the production frontend JavaScript bundle changes from the last published hash, or when a DNS configuration change is detected for the protocol's primary domain. Hash monitoring is conducted by periodic comparison of the loaded JS content against the last known-good hash stored at assessment time. DNS change detection covers nameserver changes, A-record modifications, and CDN configuration updates. Category 6 context: frontend compromises represent the off-chain attack surface that smart contract audits cannot cover; the Badger DAO and Curve Finance DNS incidents demonstrate that these attacks operate with no on-chain pre-signal.\n\n**Why it matters**\nBadger DAO ($120M, 2021) is the clearest example: the Cloudflare frontend compromise injected a malicious script that inserted approval-harvesting calls into user transactions, and the malicious frontend persisted for approximately 12 days before the drain was executed. The attack would have been detected immediately by a frontend hash monitor. SwissBorg ($41.5M, 2025) involved a Kiln API compromise where malicious authorization was embedded in routine transactions — adjacent infrastructure. Curve Finance's DNS nameserver hijack ($575K) illustrates that DNS monitoring provides an independent alert channel from contract monitoring. AnySwap V3 ($7.9M, 2021) showed MPC key compromise enabling frontend-level attacks.\n\n**Green / Yellow / Red**\nGreen is the baseline when the frontend hash matches the last published hash and DNS records are unchanged from the baseline configuration. Yellow fires when a minor frontend update is detected that could represent a legitimate deploy — the system checks whether a corresponding GitHub release or commit was published within six hours. Red fires when a frontend hash change is detected with no corresponding public release, or when a DNS nameserver or A-record change occurs without any prior announcement from the protocol team.\n\n**Common gray cases**\nGray applies when the protocol does not have a traditional web frontend (e.g., fully on-chain UI via ENS or IPFS with content-addressed hashes), or when the CDN configuration is managed by a third party whose change events cannot be independently monitored.\n\n**Notable historical examples**\n- **Badger DAO** ($120M, 2021): Cloudflare frontend compromise; malicious script injected; 12-day window before drain.\n- **SwissBorg (via Kiln)** ($41.5M, 2025): Third-party API compromise enabling malicious authorization in routine transactions.\n- **MonoX** ($31.4M, 2021): Off-chain infrastructure dependency compromise contributing to attack surface.\n- **AnySwap V3** ($7.9M, 2021): MPC ECDSA nonce reuse enabling off-chain signing compromise.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Detect whether the hash of production frontend JS changes versus the prior published hash, or a DNS config change is detected.",
-        "data_source": "Frontend JS hash monitor (hourly fetch + compare) + DNS change detection via DNS probes",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "Prior hash + new hash + diff description + timestamp; or DNS change record",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; yellow = hash change from legitimate deployment (curator confirmed); red = hash change unannounced or DNS change detected; gray = frontend not monitored (no known frontend URL)",
+        "curation_archetype": "PH",
+        "data_source": "Frontend JS hash monitor (hourly fetch + compare) + DNS change detection via DNS probes",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether the hash of production frontend JS changes versus the prior published hash, or a DNS config change is detected.",
+        "evidence_artifact": "Prior hash + new hash + diff description + timestamp; or DNS change record",
+        "id": "RD-F-105",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether the hash of production frontend JS changes versus the prior published hash, or a DNS config change is detected.",
+        "method": "PH",
+        "name": "DNS/CDN/frontend hash drift",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the hash of the production frontend JavaScript bundle changes from the last published hash, or when a DNS configuration change is detected for the protocol's primary domain. Hash monitoring is conducted by periodic comparison of the loaded JS content against the last known-good hash stored at assessment time. DNS change detection covers nameserver changes, A-record modifications, and CDN configuration updates. Category 6 context: frontend compromises represent the off-chain attack surface that smart contract audits cannot cover; the Badger DAO and Curve Finance DNS incidents demonstrate that these attacks operate with no on-chain pre-signal.\n\n**Why it matters**\nBadger DAO ($120M, 2021) is the clearest example: the Cloudflare frontend compromise injected a malicious script that inserted approval-harvesting calls into user transactions, and the malicious frontend persisted for approximately 12 days before the drain was executed. The attack would have been detected immediately by a frontend hash monitor. SwissBorg ($41.5M, 2025) involved a Kiln API compromise where malicious authorization was embedded in routine transactions — adjacent infrastructure. Curve Finance's DNS nameserver hijack ($575K) illustrates that DNS monitoring provides an independent alert channel from contract monitoring. AnySwap V3 ($7.9M, 2021) showed MPC key compromise enabling frontend-level attacks.\n\n**Green / Yellow / Red**\nGreen is the baseline when the frontend hash matches the last published hash and DNS records are unchanged from the baseline configuration. Yellow fires when a minor frontend update is detected that could represent a legitimate deploy — the system checks whether a corresponding GitHub release or commit was published within six hours. Red fires when a frontend hash change is detected with no corresponding public release, or when a DNS nameserver or A-record change occurs without any prior announcement from the protocol team.\n\n**Common gray cases**\nGray applies when the protocol does not have a traditional web frontend (e.g., fully on-chain UI via ENS or IPFS with content-addressed hashes), or when the CDN configuration is managed by a third party whose change events cannot be independently monitored.\n\n**Notable historical examples**\n- **Badger DAO** ($120M, 2021): Cloudflare frontend compromise; malicious script injected; 12-day window before drain.\n- **SwissBorg (via Kiln)** ($41.5M, 2025): Third-party API compromise enabling malicious authorization in routine transactions.\n- **MonoX** ($31.4M, 2021): Off-chain infrastructure dependency compromise contributing to attack surface.\n- **AnySwap V3** ($7.9M, 2021): MPC ECDSA nonce reuse enabling off-chain signing compromise."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "swissborg-rekt",
-          "relevance": "causal",
-          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "SwissBorg (via Kiln staking partner)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-09-08",
           "loss_usd": 41500000.0,
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2025-09-08",
+          "relevance": "causal",
           "root_cause": "Partner API compromise — withdrawal authority transfer via hidden staking instructions"
         },
         {
           "hack_id": "badger-rekt",
-          "relevance": "causal",
-          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "Badger DAO (Bitcoin-yield vaults on Ethereum)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-12-02",
           "loss_usd": 120000000.0,
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-12-02",
+          "relevance": "causal",
           "root_cause": "Front-end injection (Cloudflare account compromise) → malicious `increaseAllowance()` approvals → vault token drain"
         },
         {
           "hack_id": "monox-rekt",
-          "relevance": "causal",
-          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "MonoX",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-11-30",
           "loss_usd": 31400000.0,
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-11-30",
+          "relevance": "causal",
           "root_cause": "Native token self-swap price inflation — tokenIn/tokenOut identity bypass"
         },
         {
           "hack_id": "anyswap-rekt",
-          "relevance": "causal",
-          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
           "hack_protocol_name": "AnySwap (Multichain) V3",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-07-10",
           "loss_usd": 7900000.0,
+          "notes": "DNS / CDN / frontend change detected [via cross-hack: Factor 8: Off-Chain Infrastructure Dependency]",
+          "occurred_at": "2021-07-10",
+          "relevance": "causal",
           "root_cause": "ECDSA repeated k-value (same R signature) → MPC private key back-calculation"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "A 2024 Kelp domain incident establishes applicability, but no current DNS and production-JavaScript baseline was available to measure drift.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://quadrigainitiative.com/casestudy/kelpdaodnshijackingattack.php"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-044",
-        "category_id": 2,
-        "name": "Admin wallet interacts with flagged addresses",
-        "description": "Determine whether the admin/upgrader address has sent or received transactions with addresses on the curator watchlist (mixer deposits, dust-attack targets, OFAC-listed).",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's admin address has sent or received transactions involving addresses on a curator-maintained watchlist — including known dust-attack targets, mixer deposit addresses, sanctioned clusters, and addresses linked to prior exploits or exit scams. The check is performed via on-chain transaction history analysis and cross-referenced against the watchlist.\n\n**Why it matters**\nAdmin address interactions with flagged addresses are a soft signal of potential insider risk or compromised key custodian relationships. A protocol whose admin wallet has received funds from a mixer, sent funds to a OFAC-sanctioned address, or interacted with a known exit-scam contract presents an elevated risk of insider-motivated drain. This factor is not individually sufficient to alter a grade, but it contributes to the overall governance risk picture and can corroborate other signals in the dev identity category (Cat 7).\n\n**Green / Yellow / Red**\nGreen is assigned when the admin address has no interactions with flagged addresses in the watchlist. Yellow covers cases where interactions are present but explainable (e.g., dust-attack receipt with no active response) or where the watchlist confidence is low. Red is assigned when the admin address has sent funds to or actively interacted with mixer addresses, sanctioned clusters, or known exit-scam deployers.\n\n**Common gray cases**\nThis factor is grayed when the admin address cannot be identified from on-chain data, or when the watchlist coverage for the relevant chain is sparse.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the admin/upgrader address has sent or received transactions with addresses on the curator watchlist (mixer deposits, dust-attack targets, OFAC-listed).",
-        "data_source": "Chainalysis/TRM API cluster feed + Etherscan tx history of admin address",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Admin address + cluster-feed hit list + most recent flagged interaction tx hash",
+        "category_id": 2,
         "confidence_signal": "green = no flagged interactions; yellow = distant interaction (3+ hops) with flagged cluster; red = direct send/receive with OFAC-listed or known-rug address; gray = cluster feed unavailable",
+        "curation_archetype": "PE",
+        "data_source": "Chainalysis/TRM API cluster feed + Etherscan tx history of admin address",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the admin/upgrader address has sent or received transactions with addresses on the curator watchlist (mixer deposits, dust-attack targets, OFAC-listed).",
+        "evidence_artifact": "Admin address + cluster-feed hit list + most recent flagged interaction tx hash",
+        "id": "RD-F-044",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the admin/upgrader address has sent or received transactions with addresses on the curator watchlist (mixer deposits, dust-attack targets, OFAC-listed).",
+        "method": "PE",
+        "name": "Admin wallet interacts with flagged addresses",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's admin address has sent or received transactions involving addresses on a curator-maintained watchlist — including known dust-attack targets, mixer deposit addresses, sanctioned clusters, and addresses linked to prior exploits or exit scams. The check is performed via on-chain transaction history analysis and cross-referenced against the watchlist.\n\n**Why it matters**\nAdmin address interactions with flagged addresses are a soft signal of potential insider risk or compromised key custodian relationships. A protocol whose admin wallet has received funds from a mixer, sent funds to a OFAC-sanctioned address, or interacted with a known exit-scam contract presents an elevated risk of insider-motivated drain. This factor is not individually sufficient to alter a grade, but it contributes to the overall governance risk picture and can corroborate other signals in the dev identity category (Cat 7).\n\n**Green / Yellow / Red**\nGreen is assigned when the admin address has no interactions with flagged addresses in the watchlist. Yellow covers cases where interactions are present but explainable (e.g., dust-attack receipt with no active response) or where the watchlist confidence is low. Red is assigned when the admin address has sent funds to or actively interacted with mixer addresses, sanctioned clusters, or known exit-scam deployers.\n\n**Common gray cases**\nThis factor is grayed when the admin address cannot be identified from on-chain data, or when the watchlist coverage for the relevant chain is sparse.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "No authoritative public sanctions or watchlist analysis binds every privileged Kelp Safe owner address.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xb9577E83a6d9A6DE35047aa066E3758221FE0DA2/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

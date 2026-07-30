@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-124",
-        "category_id": 7,
-        "name": "Deployer wallet mixer-funded within 30 days",
-        "description": "Determine whether the deployer wallet received funds via Tornado Cash, Railgun, or similar mixer within 30 days before the protocol's first deploy.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the wallet that deployed the protocol's primary contracts received funds via a privacy mixer — Tornado Cash, Railgun, or a comparable service — within the 30 calendar days prior to the deployment transaction. Measurement is programmatic: on-chain transaction graph analysis traces the deployer address back through its funding source, flagging any mixer cluster within a 30-day look-back window. Category 7 context: the mixer-funded deployer pattern is the single most reliable structural precursor to a deliberate rug or exit scam, as it establishes operational anonymity before the protocol receives user deposits.\n\n**Why it matters**\nA deployer who funds their wallet through a mixer immediately before launch is making an active choice to sever the financial identity trail that would otherwise link the deployment to a real-world identity. Across the T-01 hack database this pattern appears in approximately eight in-sample cases with rug or insider-drain outcomes. While legitimate privacy-focused developers occasionally use mixers for personal transactions, the 30-day pre-deploy window narrows the signal to intentional pre-launch obfuscation rather than incidental mixing. The combination of mixer funding, pseudonymous team, and no audit is the highest-probability rug precursor combination in the dataset.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer's funding history for the 30 days pre-deploy is fully traceable to identifiable on-chain sources — CEX withdrawal, ENS-linked wallet, or prior audited-protocol interactions. Yellow applies when funding is partially obscured (e.g., the deployer received funds from an intermediary wallet whose own history is opaque) but no direct mixer-cluster hop is confirmed within the window. Red is scored when on-chain analysis confirms a direct Tornado Cash, Railgun, or equivalent mixer withdrawal to the deployer address within 30 days of the first protocol deployment, triggering the critical flag.\n\n**Common gray cases**\nGray is assigned when the deployer address predates the protocol by many years and mixer interactions are present but outside the 30-day window, or when the mixer interaction is to a non-deployer address that subsequently funded the deployer through multiple intermediate hops exceeding the three-hop cluster definition.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nA confirmed direct mixer-to-deployer funding event within 30 days of deployment is alone sufficient to trigger a D or F grade under rubric v1.5; it represents a deliberate choice to eliminate identity accountability before accepting user funds.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the deployer wallet received funds via Tornado Cash, Railgun, or similar mixer within 30 days before the protocol's first deploy.",
-        "data_source": "Chainalysis/TRM mixer-withdrawal cluster labels + Etherscan tx history of deployer address in 30d pre-deploy window",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Deployer address + mixer-withdrawal tx hash (if found) + CTI feed label",
+        "category_id": 7,
         "confidence_signal": "green = no mixer funding within 30d of deploy; red = mixer-funded deployer confirmed; gray = CTI feed unavailable",
+        "curation_archetype": "PE",
+        "data_source": "Chainalysis/TRM mixer-withdrawal cluster labels + Etherscan tx history of deployer address in 30d pre-deploy window",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the deployer wallet received funds via Tornado Cash, Railgun, or similar mixer within 30 days before the protocol's first deploy.",
+        "evidence_artifact": "Deployer address + mixer-withdrawal tx hash (if found) + CTI feed label",
+        "id": "RD-F-124",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether the deployer wallet received funds via Tornado Cash, Railgun, or similar mixer within 30 days before the protocol's first deploy.",
+        "method": "PE",
+        "name": "Deployer wallet mixer-funded within 30 days",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the wallet that deployed the protocol's primary contracts received funds via a privacy mixer — Tornado Cash, Railgun, or a comparable service — within the 30 calendar days prior to the deployment transaction. Measurement is programmatic: on-chain transaction graph analysis traces the deployer address back through its funding source, flagging any mixer cluster within a 30-day look-back window. Category 7 context: the mixer-funded deployer pattern is the single most reliable structural precursor to a deliberate rug or exit scam, as it establishes operational anonymity before the protocol receives user deposits.\n\n**Why it matters**\nA deployer who funds their wallet through a mixer immediately before launch is making an active choice to sever the financial identity trail that would otherwise link the deployment to a real-world identity. Across the T-01 hack database this pattern appears in approximately eight in-sample cases with rug or insider-drain outcomes. While legitimate privacy-focused developers occasionally use mixers for personal transactions, the 30-day pre-deploy window narrows the signal to intentional pre-launch obfuscation rather than incidental mixing. The combination of mixer funding, pseudonymous team, and no audit is the highest-probability rug precursor combination in the dataset.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer's funding history for the 30 days pre-deploy is fully traceable to identifiable on-chain sources — CEX withdrawal, ENS-linked wallet, or prior audited-protocol interactions. Yellow applies when funding is partially obscured (e.g., the deployer received funds from an intermediary wallet whose own history is opaque) but no direct mixer-cluster hop is confirmed within the window. Red is scored when on-chain analysis confirms a direct Tornado Cash, Railgun, or equivalent mixer withdrawal to the deployer address within 30 days of the first protocol deployment, triggering the critical flag.\n\n**Common gray cases**\nGray is assigned when the deployer address predates the protocol by many years and mixer interactions are present but outside the 30-day window, or when the mixer interaction is to a non-deployer address that subsequently funded the deployer through multiple intermediate hops exceeding the three-hop cluster definition.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nA confirmed direct mixer-to-deployer funding event within 30 days of deployment is alone sufficient to trigger a D or F grade under rubric v1.5; it represents a deliberate choice to eliminate identity accountability before accepting user funds."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Etherscan identifies a Stader deployer as the funding source; a label alone is not a complete mixer-cluster analysis.",
+          "evidence_summary": "Kelp's deployer and first labeled funding hop are public, but the exact 30-day pre-deployment mixer-proximity trace was not completed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

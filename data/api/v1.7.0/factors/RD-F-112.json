@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-112",
-        "category_id": 7,
-        "name": "Team public accountability surface",
-        "description": "Count the number of verifiable public trails per team member (LinkedIn with employment history, conference talks, prior employer records, GitHub with aged contribution history).",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of verifiable public accountability trails per core team member: LinkedIn profiles with substantive employment history, conference talk attributions with recorded video, prior employer references where the employment is independently verifiable, and GitHub profiles with multi-year contribution histories predating the current protocol. The output is a per-member count and a team aggregate score. Category 7 context: accountability surface depth is a proxy for the cost of exit — the more traceable the team, the higher the real-world consequence of executing a rug or insider drain.\n\n**Why it matters**\nA single social media handle is trivially discardable; a LinkedIn profile with ten years of employment history connected to a verifiable employer, combined with conference talks and peer references, is operationally difficult to abandon. Protocols where multiple team members have deep accountability surfaces have a materially lower observed exit-scam rate in the database. The signal is particularly relevant for protocols in early launch phase where no on-chain history exists yet to substitute for identity credibility.\n\n**Green / Yellow / Red**\nGreen is scored when the majority of core team members each have three or more independent verifiable accountability surface entries — LinkedIn with history, GitHub with multi-year activity, plus one additional source such as a conference talk or prior employer reference. Yellow applies when team members have one to two verifiable entries, or when accountability surface is concentrated in a single platform that could be fabricated. Red is scored when team members have zero independently verifiable accountability entries beyond a social handle or a newly created LinkedIn with no substantive history.\n\n**Common gray cases**\nGray is assigned when the protocol team is fully pseudonymous and accountability surface assessment relies entirely on unverifiable self-assertions, or when the team has not disclosed sufficient identifying information to begin the OSINT process within the evidence budget.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Count the number of verifiable public trails per team member (LinkedIn with employment history, conference talks, prior employer records, GitHub with aged contribution history).",
-        "data_source": "LinkedIn + conference archives + GitHub API contributor stats (OSINT)",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Count of verifiable trails per team member + supporting URLs",
+        "category_id": 7,
         "confidence_signal": "green = ≥3 verifiable trails per core member; yellow = 1–2 trails per core member; red = 0 trails (no accountability surface); gray = team composition unknown",
+        "curation_archetype": "M",
+        "data_source": "LinkedIn + conference archives + GitHub API contributor stats (OSINT)",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of verifiable public trails per team member (LinkedIn with employment history, conference talks, prior employer records, GitHub with aged contribution history).",
+        "evidence_artifact": "Count of verifiable trails per team member + supporting URLs",
+        "id": "RD-F-112",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of verifiable public trails per team member (LinkedIn with employment history, conference talks, prior employer records, GitHub with aged contribution history).",
+        "method": "M",
+        "name": "Team public accountability surface",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of verifiable public accountability trails per core team member: LinkedIn profiles with substantive employment history, conference talk attributions with recorded video, prior employer references where the employment is independently verifiable, and GitHub profiles with multi-year contribution histories predating the current protocol. The output is a per-member count and a team aggregate score. Category 7 context: accountability surface depth is a proxy for the cost of exit — the more traceable the team, the higher the real-world consequence of executing a rug or insider drain.\n\n**Why it matters**\nA single social media handle is trivially discardable; a LinkedIn profile with ten years of employment history connected to a verifiable employer, combined with conference talks and peer references, is operationally difficult to abandon. Protocols where multiple team members have deep accountability surfaces have a materially lower observed exit-scam rate in the database. The signal is particularly relevant for protocols in early launch phase where no on-chain history exists yet to substitute for identity credibility.\n\n**Green / Yellow / Red**\nGreen is scored when the majority of core team members each have three or more independent verifiable accountability surface entries — LinkedIn with history, GitHub with multi-year activity, plus one additional source such as a conference talk or prior employer reference. Yellow applies when team members have one to two verifiable entries, or when accountability surface is concentrated in a single platform that could be fabricated. Red is scored when team members have zero independently verifiable accountability entries beyond a social handle or a newly created LinkedIn with no substantive history.\n\n**Common gray cases**\nGray is assigned when the protocol team is fully pseudonymous and accountability surface assessment relies entirely on unverifiable self-assertions, or when the team has not disclosed sufficient identifying information to begin the OSINT process within the evidence budget.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The Kelp LTIPP application provides several independent public identity surfaces for each founder.",
+          "evidence_summary": "Kelp's founders have multiple verifiable accountability trails spanning education, prior employers, LinkedIn, X, and prior protocol work.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "governance_post",
+              "url": "https://forum.arbitrum.foundation/t/kelpdao-ltipp-application-final/21976"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-117",
-        "category_id": 7,
-        "name": "ENS/NameStone identity bound to deployer",
-        "description": "Determine whether the deployer address has a bound ENS or NameStone name resolvable to a verifiable identity.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the deployer address has a bound Ethereum Name Service (ENS) domain or NameStone name that resolves to a verifiable human identity — one where the ENS registration itself is connected to a social profile, GitHub account, or other identity anchor. Measurement is programmatic via ENS resolution: the factor queries the reverse ENS record for the deployer address and, if present, traces the ENS name to any linked identity records. Category 7 context: an ENS name bound to a deployer is a weak but non-trivial accountability signal — it requires the deployer to have established an on-chain identity prior to deployment.\n\n**Why it matters**\nENS names are not a strong identity guarantee — they can be registered pseudonymously — but their presence indicates that the deployer made an active choice to establish an on-chain identity, which marginally increases the cost of disappearing after a rug. More importantly, ENS names linked to verifiable social profiles (e.g., a vitalik.eth-style linkage where the ENS resolves to a Twitter account with history) provide meaningful corroborating identity signal. The absence of any ENS binding on a high-TVL deployer is a weak negative signal, particularly for protocols where other identity signals are also absent.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer has an ENS or NameStone name that resolves to a verifiable identity anchor — linked to a GitHub account with multi-year history, a public social profile, or a prior audited-protocol deployment. Yellow applies when an ENS name is present but resolves only to the address itself or to a pseudonymous social handle with no further verifiable history. Red is not applicable as a standalone grade trigger; this factor is a positive mitigant or neutral signal, not a disqualifier.\n\n**Common gray cases**\nGray is assigned when the deployer uses a multi-sig factory or CREATE2 pattern where the originating EOA is not the direct deployer of record, making ENS reverse-resolution inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the deployer address has a bound ENS or NameStone name resolvable to a verifiable identity.",
-        "data_source": "ENS `reverseResolver` lookup + NameStone API for deployer address",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Deployer address + ENS name (if any) + resolution result",
+        "category_id": 7,
         "confidence_signal": "green = ENS name bound and resolvable to consistent identity; yellow = ENS name bound but identity not further verifiable; red = no ENS/NameStone binding; gray = deployer address not identified",
+        "curation_archetype": "PE",
+        "data_source": "ENS `reverseResolver` lookup + NameStone API for deployer address",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the deployer address has a bound ENS or NameStone name resolvable to a verifiable identity.",
+        "evidence_artifact": "Deployer address + ENS name (if any) + resolution result",
+        "id": "RD-F-117",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the deployer address has a bound ENS or NameStone name resolvable to a verifiable identity.",
+        "method": "PE",
+        "name": "ENS/NameStone identity bound to deployer",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the deployer address has a bound Ethereum Name Service (ENS) domain or NameStone name that resolves to a verifiable human identity — one where the ENS registration itself is connected to a social profile, GitHub account, or other identity anchor. Measurement is programmatic via ENS resolution: the factor queries the reverse ENS record for the deployer address and, if present, traces the ENS name to any linked identity records. Category 7 context: an ENS name bound to a deployer is a weak but non-trivial accountability signal — it requires the deployer to have established an on-chain identity prior to deployment.\n\n**Why it matters**\nENS names are not a strong identity guarantee — they can be registered pseudonymously — but their presence indicates that the deployer made an active choice to establish an on-chain identity, which marginally increases the cost of disappearing after a rug. More importantly, ENS names linked to verifiable social profiles (e.g., a vitalik.eth-style linkage where the ENS resolves to a Twitter account with history) provide meaningful corroborating identity signal. The absence of any ENS binding on a high-TVL deployer is a weak negative signal, particularly for protocols where other identity signals are also absent.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer has an ENS or NameStone name that resolves to a verifiable identity anchor — linked to a GitHub account with multi-year history, a public social profile, or a prior audited-protocol deployment. Yellow applies when an ENS name is present but resolves only to the address itself or to a pseudonymous social handle with no further verifiable history. Red is not applicable as a standalone grade trigger; this factor is a positive mitigant or neutral signal, not a disqualifier.\n\n**Common gray cases**\nGray is assigned when the deployer uses a multi-sig factory or CREATE2 pattern where the originating EOA is not the direct deployer of record, making ENS reverse-resolution inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Etherscan provides a protocol label, but that is not equivalent to establishing naming-service bindings for all relevant identities.",
+          "evidence_summary": "No complete ENS or NameStone resolution check was performed for the deployer and the human owners of privileged Safes.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-130",
-        "category_id": 8,
-        "name": "Fork depth (generations from original audit)",
-        "description": "Count the number of fork hops from an originally audited protocol (0 = direct fork of an audited protocol, N = N-th generation).",
-        "scoring_methodology": "**What this measures**\nThis factor records the number of fork hops between the assessed protocol and an originally-audited base protocol. A direct fork of Compound Finance has a fork depth of 1. A fork of a Compound fork has a fork depth of 2. Each additional hop potentially dilutes the audit coverage assurance and introduces new parameter divergences at each layer. The data source is a curator-maintained lineage map cross-referenced with bytecode similarity analysis.\n\n**Why it matters**\nFork-of-fork deployments compound the audit coverage risk at each layer. A third-generation fork (depth 3) may carry bugs introduced at the second-generation level that were never audited, combined with parameter changes introduced at the third level that diverge from both the first and second generation audits. The BSC DeFi ecosystem during 2021-2022 was dominated by second- and third-generation forks where an already-dangerous pattern (unaudited BSC fork of an audited Ethereum protocol) was further forked without any additional review. AutoShark was a fork of PancakeBunny which was itself a yield aggregator inspired by Yearn -- two hops from the original audited design, with vulnerabilities introduced at each layer.\n\n**Green / Yellow / Red**\nGreen: fork depth of 0 (original code) or 1 (direct fork with independent audit of the fork itself). Yellow: fork depth of 2, where the protocol can demonstrate that the intermediate fork's changes were reviewed. Red: fork depth of 3 or more, or fork depth of 2 without any audit of the intermediate changes.\n\n**Common gray cases**\nFork depth is gray when the lineage cannot be reliably traced due to undisclosed or multiple overlapping upstream sources.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural modifier on the overall Cat 8 lineage assessment.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of fork hops from an originally audited protocol (0 = direct fork of an audited protocol, N = N-th generation).",
-        "data_source": "Curator lineage map built from F126 results + GitHub repo histories",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Fork chain list (protocol names + commit SHAs) + depth integer",
+        "category_id": 8,
         "confidence_signal": "green = depth 0–1 (direct fork of audited protocol); yellow = depth 2; red = depth ≥3 (audit coverage very diluted); gray = fork lineage not determinable",
+        "curation_archetype": "PE",
+        "data_source": "Curator lineage map built from F126 results + GitHub repo histories",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of fork hops from an originally audited protocol (0 = direct fork of an audited protocol, N = N-th generation).",
+        "evidence_artifact": "Fork chain list (protocol names + commit SHAs) + depth integer",
+        "id": "RD-F-130",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of fork hops from an originally audited protocol (0 = direct fork of an audited protocol, N = N-th generation).",
+        "method": "PE",
+        "name": "Fork depth (generations from original audit)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the number of fork hops between the assessed protocol and an originally-audited base protocol. A direct fork of Compound Finance has a fork depth of 1. A fork of a Compound fork has a fork depth of 2. Each additional hop potentially dilutes the audit coverage assurance and introduces new parameter divergences at each layer. The data source is a curator-maintained lineage map cross-referenced with bytecode similarity analysis.\n\n**Why it matters**\nFork-of-fork deployments compound the audit coverage risk at each layer. A third-generation fork (depth 3) may carry bugs introduced at the second-generation level that were never audited, combined with parameter changes introduced at the third level that diverge from both the first and second generation audits. The BSC DeFi ecosystem during 2021-2022 was dominated by second- and third-generation forks where an already-dangerous pattern (unaudited BSC fork of an audited Ethereum protocol) was further forked without any additional review. AutoShark was a fork of PancakeBunny which was itself a yield aggregator inspired by Yearn -- two hops from the original audited design, with vulnerabilities introduced at each layer.\n\n**Green / Yellow / Red**\nGreen: fork depth of 0 (original code) or 1 (direct fork with independent audit of the fork itself). Yellow: fork depth of 2, where the protocol can demonstrate that the intermediate fork's changes were reviewed. Red: fork depth of 3 or more, or fork depth of 2 without any audit of the intermediate changes.\n\n**Common gray cases**\nFork depth is gray when the lineage cannot be reliably traced due to undisclosed or multiple overlapping upstream sources.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural modifier on the overall Cat 8 lineage assessment."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Kelp core is not identified as a fork, so fork depth is moot.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

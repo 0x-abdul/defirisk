@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-131",
-        "category_id": 8,
-        "name": "Fork retains upstream audit coverage",
-        "description": "Determine whether the fork's deployed code is covered by either: (a) the upstream audit plus a delta-audit for fork-specific changes, or (b) a fresh independent audit of the fork.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether the fork's audit coverage is adequate for its deployed code, specifically whether: (a) the upstream audit covers the portions of code the fork shares with the upstream, AND (b) any diverged portions (identified by RD-F-129 code divergence) have been covered by either a fresh fork-specific audit or a documented delta-review. The data source is audit PDFs combined with bytecode diffing against the upstream.\n\n**Why it matters**\nA fork protocol that relies on the upstream's audit without its own review of diverged code has a false audit signal. Cork Protocol ($12M, 2025) is the sharpest example in the dataset: four separate audit firms reviewed the protocol across multiple rounds, yet the specific CorkHook contract that was exploited was outside at least three firms' scope. The protocol's management of a complex fork with multiple audit firms failed to cover the single most critical contract. For fork protocols specifically, the question is not 'has the protocol been audited?' but 'is the audit coverage continuous from the upstream through all divergence points to the deployed bytecode?'\n\n**Green / Yellow / Red**\nGreen: either (a) the fork divergence is below 10% and the upstream audit explicitly covers the shared code, or (b) the fork has a dedicated independent audit covering all deployed code including all diverged portions. Yellow: the fork has a delta-review or spot-review of the diverged portions but no full audit of the fork as a whole. Red: the fork relies entirely on the upstream's audit with no coverage of its own diverged code, or the diverged code exceeds 40% and no audit of any kind covers the fork-specific portions.\n\n**Common gray cases**\nThis factor is gray when audit PDFs are not publicly available and audit scope cannot be assessed, or when the fork origin cannot be confirmed to map the divergence.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor functions as the integrated audit-coverage signal for the Cat 8 lineage assessment.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether the fork's deployed code is covered by either: (a) the upstream audit plus a delta-audit for fork-specific changes, or (b) a fresh independent audit of the fork.",
-        "data_source": "Audit PDFs for this fork + upstream audit PDF + code diff to assess gap",
-        "method": "M",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Audit coverage classification: full-fresh / upstream+delta / upstream-only (gap risk) / none + audit PDF URLs",
+        "category_id": 8,
         "confidence_signal": "green = full fresh audit or upstream + delta-audit covering all changes; yellow = upstream audit only with <20% divergence; red = no audit covering fork-specific changes; gray = no audit at all",
+        "curation_archetype": "M",
+        "data_source": "Audit PDFs for this fork + upstream audit PDF + code diff to assess gap",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the fork's deployed code is covered by either: (a) the upstream audit plus a delta-audit for fork-specific changes, or (b) a fresh independent audit of the fork.",
+        "evidence_artifact": "Audit coverage classification: full-fresh / upstream+delta / upstream-only (gap risk) / none + audit PDF URLs",
+        "id": "RD-F-131",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the fork's deployed code is covered by either: (a) the upstream audit plus a delta-audit for fork-specific changes, or (b) a fresh independent audit of the fork.",
+        "method": "M",
+        "name": "Fork retains upstream audit coverage",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether the fork's audit coverage is adequate for its deployed code, specifically whether: (a) the upstream audit covers the portions of code the fork shares with the upstream, AND (b) any diverged portions (identified by RD-F-129 code divergence) have been covered by either a fresh fork-specific audit or a documented delta-review. The data source is audit PDFs combined with bytecode diffing against the upstream.\n\n**Why it matters**\nA fork protocol that relies on the upstream's audit without its own review of diverged code has a false audit signal. Cork Protocol ($12M, 2025) is the sharpest example in the dataset: four separate audit firms reviewed the protocol across multiple rounds, yet the specific CorkHook contract that was exploited was outside at least three firms' scope. The protocol's management of a complex fork with multiple audit firms failed to cover the single most critical contract. For fork protocols specifically, the question is not 'has the protocol been audited?' but 'is the audit coverage continuous from the upstream through all divergence points to the deployed bytecode?'\n\n**Green / Yellow / Red**\nGreen: either (a) the fork divergence is below 10% and the upstream audit explicitly covers the shared code, or (b) the fork has a dedicated independent audit covering all deployed code including all diverged portions. Yellow: the fork has a delta-review or spot-review of the diverged portions but no full audit of the fork as a whole. Red: the fork relies entirely on the upstream's audit with no coverage of its own diverged code, or the diverged code exceeds 40% and no audit of any kind covers the fork-specific portions.\n\n**Common gray cases**\nThis factor is gray when audit PDFs are not publicly available and audit scope cannot be assessed, or when the fork origin cannot be confirmed to map the divergence.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor functions as the integrated audit-coverage signal for the Cat 8 lineage assessment."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Kelp core is not identified as a fork, so retained upstream audit coverage is moot.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-048",
-        "category_id": 3,
-        "name": "Oracle providers used",
-        "description": "List all oracle providers used (Chainlink, Pyth, Redstone, Uniswap-TWAP, in-house, etc.) per asset/market pair in the protocol.",
-        "scoring_methodology": "**What this measures**\nThis factor enumerates the oracle providers used by the protocol — such as Chainlink, Pyth, Redstone, Uniswap TWAP, or in-house custom feeds — listing each provider per asset or market. Data is collected via on-chain reads and protocol documentation. This field serves as the dependency map foundation for the rest of the oracle category.\n\n**Why it matters**\nOracle provider diversity determines how concentrated a protocol's price-feed risk is. A protocol relying on a single provider for all assets has correlated failure modes: if that provider experiences downtime, data manipulation, or a governance incident, all markets are simultaneously affected. The synthesis dataset documents multiple exploits where thin-liquidity or single-source oracles were the root cause; knowing which providers are in use is the first step in assessing that risk. Protocols that mix aggregated off-chain feeds (Chainlink) with on-chain DEX-derived feeds introduce additional composability surface that must be mapped before downstream factors can be assessed.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol uses one or more reputable aggregated providers (Chainlink, Pyth, Redstone) with documented source diversification per asset. Yellow is scored when the provider list is partially documented, includes at least one in-house or DEX-derived feed, or has material gaps between documented and observed on-chain feed calls. Red is scored when no reputable aggregated provider is in use and the oracle source is entirely in-house or spot-DEX derived.\n\n**Common gray cases**\nGray is applied when on-chain feed calls cannot be attributed to a specific provider (e.g., unverified aggregator contract or proxy with obfuscated source) or when the protocol has not yet listed any assets requiring external pricing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "List all oracle providers used (Chainlink, Pyth, Redstone, Uniswap-TWAP, in-house, etc.) per asset/market pair in the protocol.",
-        "data_source": "Protocol docs + Etherscan-verified source search for feed address imports + on-chain feed address registry reads",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "JSON map of asset → oracle-provider-slug + feed contract addresses",
+        "category_id": 3,
         "confidence_signal": "green = all assets use established push-oracle providers (Chainlink/Pyth/Redstone) with documented SLAs; yellow = mix of established and DEX-TWAP; red = any asset uses spot DEX price without TWAP; gray = oracle architecture not determinable from source",
+        "curation_archetype": "PE",
+        "data_source": "Protocol docs + Etherscan-verified source search for feed address imports + on-chain feed address registry reads",
+        "deprecated_in_rubric": null,
+        "description": "List all oracle providers used (Chainlink, Pyth, Redstone, Uniswap-TWAP, in-house, etc.) per asset/market pair in the protocol.",
+        "evidence_artifact": "JSON map of asset → oracle-provider-slug + feed contract addresses",
+        "id": "RD-F-048",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "List all oracle providers used (Chainlink, Pyth, Redstone, Uniswap-TWAP, in-house, etc.) per asset/market pair in the protocol.",
+        "method": "PE",
+        "name": "Oracle providers used",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor enumerates the oracle providers used by the protocol — such as Chainlink, Pyth, Redstone, Uniswap TWAP, or in-house custom feeds — listing each provider per asset or market. Data is collected via on-chain reads and protocol documentation. This field serves as the dependency map foundation for the rest of the oracle category.\n\n**Why it matters**\nOracle provider diversity determines how concentrated a protocol's price-feed risk is. A protocol relying on a single provider for all assets has correlated failure modes: if that provider experiences downtime, data manipulation, or a governance incident, all markets are simultaneously affected. The synthesis dataset documents multiple exploits where thin-liquidity or single-source oracles were the root cause; knowing which providers are in use is the first step in assessing that risk. Protocols that mix aggregated off-chain feeds (Chainlink) with on-chain DEX-derived feeds introduce additional composability surface that must be mapped before downstream factors can be assessed.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol uses one or more reputable aggregated providers (Chainlink, Pyth, Redstone) with documented source diversification per asset. Yellow is scored when the provider list is partially documented, includes at least one in-house or DEX-derived feed, or has material gaps between documented and observed on-chain feed calls. Red is scored when no reputable aggregated provider is in use and the oracle source is entirely in-house or spot-DEX derived.\n\n**Common gray cases**\nGray is applied when on-chain feed calls cannot be attributed to a specific provider (e.g., unverified aggregator contract or proxy with obfuscated source) or when the protocol has not yet listed any assets requiring external pricing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp uses administrator-selected per-asset IPriceFetcher adapters, including a Chainlink wrapper and dedicated LST adapters.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

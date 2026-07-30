@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-134",
-        "category_id": 8,
-        "name": "Dependency had malicious-release incident (last 90d)",
-        "description": "Determine whether any npm/PyPI/crates.io dependency of this protocol had a flagged malicious release in the trailing 90 days.",
-        "scoring_methodology": "**What this measures**\nThis factor monitors whether any npm, PyPI, or crates.io dependency used by the protocol has had a flagged malicious release incident in the trailing 90 days. The assessment runs on an episodic, event-driven cadence by cross-referencing the protocol's public dependency list against security advisory feeds (npm advisories, OSV database, GitHub Security Advisories). A flag is recorded if any protocol dependency appears in a confirmed supply-chain compromise report within the 90-day window.\n\n**Why it matters**\nSupply-chain attacks on DeFi tooling dependencies are an emerging and undermonitored risk vector. If a protocol's deployment scripts, testing infrastructure, or build tools depend on a compromised package, a malicious actor could inject code that modifies the deployment artifact, exfiltrates private keys used in the deployment process, or corrupts test results to hide a vulnerability. While approximately two directly linked instances exist in the T-01 inventory, the supply-chain attack surface is growing as DeFi protocols use increasingly complex build pipelines with many transitive dependencies.\n\n**Green / Yellow / Red**\nGreen: no dependencies in the protocol's public dependency list have appeared in any supply-chain compromise advisory in the trailing 90 days. Yellow: a dependency had a flagged advisory but only for versions the protocol does not use, confirmed by the pinned version check. Red: a dependency used by the protocol at its currently pinned version is under an active supply-chain compromise advisory.\n\n**Common gray cases**\nThis factor is gray when the protocol does not maintain a public repository and the dependency list cannot be assessed, or when the protocol uses proprietary tooling with no public advisory channel.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately two supporting instances in the T-01 evidence inventory and the growing supply-chain attack trend.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any npm/PyPI/crates.io dependency of this protocol had a flagged malicious release in the trailing 90 days.",
-        "data_source": "GitHub Security Advisories feed + npm audit + Socket.dev dependency scanner",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Advisory URL + affected dependency name + version range + this protocol's installed version",
+        "category_id": 8,
         "confidence_signal": "green = no malicious-release advisories affecting this protocol's deps in 90 days; red = malicious-release advisory confirmed for a used dependency; gray = dependency list not accessible (private repo or no lockfile)",
+        "curation_archetype": "PE",
+        "data_source": "GitHub Security Advisories feed + npm audit + Socket.dev dependency scanner",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any npm/PyPI/crates.io dependency of this protocol had a flagged malicious release in the trailing 90 days.",
+        "evidence_artifact": "Advisory URL + affected dependency name + version range + this protocol's installed version",
+        "id": "RD-F-134",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any npm/PyPI/crates.io dependency of this protocol had a flagged malicious release in the trailing 90 days.",
+        "method": "PE",
+        "name": "Dependency had malicious-release incident (last 90d)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor monitors whether any npm, PyPI, or crates.io dependency used by the protocol has had a flagged malicious release incident in the trailing 90 days. The assessment runs on an episodic, event-driven cadence by cross-referencing the protocol's public dependency list against security advisory feeds (npm advisories, OSV database, GitHub Security Advisories). A flag is recorded if any protocol dependency appears in a confirmed supply-chain compromise report within the 90-day window.\n\n**Why it matters**\nSupply-chain attacks on DeFi tooling dependencies are an emerging and undermonitored risk vector. If a protocol's deployment scripts, testing infrastructure, or build tools depend on a compromised package, a malicious actor could inject code that modifies the deployment artifact, exfiltrates private keys used in the deployment process, or corrupts test results to hide a vulnerability. While approximately two directly linked instances exist in the T-01 inventory, the supply-chain attack surface is growing as DeFi protocols use increasingly complex build pipelines with many transitive dependencies.\n\n**Green / Yellow / Red**\nGreen: no dependencies in the protocol's public dependency list have appeared in any supply-chain compromise advisory in the trailing 90 days. Yellow: a dependency had a flagged advisory but only for versions the protocol does not use, confirmed by the pinned version check. Red: a dependency used by the protocol at its currently pinned version is under an active supply-chain compromise advisory.\n\n**Common gray cases**\nThis factor is gray when the protocol does not maintain a public repository and the dependency list cannot be assessed, or when the protocol uses proprietary tooling with no public advisory channel.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately two supporting instances in the T-01 evidence inventory and the growing supply-chain attack trend."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A dependency inventory and current advisory-feed comparison are required.",
+          "evidence_summary": "No complete trailing-90-day malicious-release advisory scan was published for the vendored dependency tree.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/lib"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

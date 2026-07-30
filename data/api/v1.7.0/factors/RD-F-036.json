@@ -1,50 +1,65 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-036",
-        "category_id": 2,
-        "name": "Flash-loanable voting weight",
-        "description": "Determine whether governance voting power is a function of current token balance of a transferable token with no lock or checkpoint, making it flash-loan susceptible.",
-        "scoring_methodology": "**What this measures**\nThis factor tests whether a protocol's governance system allows current token balance — rather than a snapshotted or time-locked balance — to determine voting weight. When voting power is calculated at the moment of the vote using a transferable token with no minimum lock period and no historical-balance checkpoint, any holder of a flash loan facility can borrow enough tokens to achieve quorum, pass a malicious proposal, and repay the loan within a single transaction.\n\n**Why it matters**\nFlash loan governance attacks represent one of the most structurally dangerous attack patterns in DeFi because they convert a temporary capital position into a permanent governance outcome. A timelock \"doesn't stop transactions from being confirmed — it simply broadcasts the action prior to its execution,\" per OpenZeppelin, meaning that even a timelock can be circumvented if voting power is not locked before the proposal is cast. Beanstalk's $182M loss in 2022 remains the canonical case: the attacker borrowed governance tokens via a flash loan, passed a malicious proposal granting themselves full treasury access, and executed the drain — all within one Ethereum block. The attack was architecturally certain once the protocol chose spot-balance voting with no lock requirement.\n\n**Green / Yellow / Red**\nGreen is assigned when governance voting power is determined by a balance snapshot taken at a block prior to proposal submission (ERC20Votes/Compound-style checkpoint), or when tokens must be locked for a minimum period before counting toward quorum. Yellow covers protocols that use checkpoints but with a window of less than one block, or where checkpointing can be bypassed via delegation. Red is assigned when voting weight is determined by current token balance at the time of the vote, with no lock, no snapshot, and a transferable governance token accessible via flash loans.\n\n**Common gray cases**\nThis factor is grayed when governance is off-chain (Snapshot-only) with no on-chain execution, or when the governance token is not listed on any venue that offers flash loans at meaningful depth.\n\n**Notable historical examples**\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution window with insufficient delay enabled attacker to front-run market activation after proposal passed.\n- **Radiant Capital (1st incident)** ($4.5M, 2024): Governance-activated empty market with a 6-second execution window exploited via front-running.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Flash-loanable voting weight eliminates the economic cost of a governance takeover, reducing the attack to a single-block transaction regardless of the protocol's TVL or audit history.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether governance voting power is a function of current token balance of a transferable token with no lock or checkpoint, making it flash-loan susceptible.",
-        "data_source": "Governance contract source inspection (Etherscan-verified): check for `balanceOf` vs `getPriorVotes`/`getVotes` with checkpoint; check if governance token is flash-loan enabled on major venues",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Governance contract address + vote-weight function source excerpt + flash-loan availability check on Aave/Uniswap/Balancer",
+        "category_id": 2,
         "confidence_signal": "green = voting uses checkpointed balance or locked token; red = voting uses spot `balanceOf` of a flash-loanable token; gray = no on-chain governance",
+        "curation_archetype": "PE",
+        "data_source": "Governance contract source inspection (Etherscan-verified): check for `balanceOf` vs `getPriorVotes`/`getVotes` with checkpoint; check if governance token is flash-loan enabled on major venues",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether governance voting power is a function of current token balance of a transferable token with no lock or checkpoint, making it flash-loan susceptible.",
+        "evidence_artifact": "Governance contract address + vote-weight function source excerpt + flash-loan availability check on Aave/Uniswap/Balancer",
+        "id": "RD-F-036",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether governance voting power is a function of current token balance of a transferable token with no lock or checkpoint, making it flash-loan susceptible.",
+        "method": "PE",
+        "name": "Flash-loanable voting weight",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor tests whether a protocol's governance system allows current token balance — rather than a snapshotted or time-locked balance — to determine voting weight. When voting power is calculated at the moment of the vote using a transferable token with no minimum lock period and no historical-balance checkpoint, any holder of a flash loan facility can borrow enough tokens to achieve quorum, pass a malicious proposal, and repay the loan within a single transaction.\n\n**Why it matters**\nFlash loan governance attacks represent one of the most structurally dangerous attack patterns in DeFi because they convert a temporary capital position into a permanent governance outcome. A timelock \"doesn't stop transactions from being confirmed — it simply broadcasts the action prior to its execution,\" per OpenZeppelin, meaning that even a timelock can be circumvented if voting power is not locked before the proposal is cast. Beanstalk's $182M loss in 2022 remains the canonical case: the attacker borrowed governance tokens via a flash loan, passed a malicious proposal granting themselves full treasury access, and executed the drain — all within one Ethereum block. The attack was architecturally certain once the protocol chose spot-balance voting with no lock requirement.\n\n**Green / Yellow / Red**\nGreen is assigned when governance voting power is determined by a balance snapshot taken at a block prior to proposal submission (ERC20Votes/Compound-style checkpoint), or when tokens must be locked for a minimum period before counting toward quorum. Yellow covers protocols that use checkpoints but with a window of less than one block, or where checkpointing can be bypassed via delegation. Red is assigned when voting weight is determined by current token balance at the time of the vote, with no lock, no snapshot, and a transferable governance token accessible via flash loans.\n\n**Common gray cases**\nThis factor is grayed when governance is off-chain (Snapshot-only) with no on-chain execution, or when the governance token is not listed on any venue that offers flash loans at meaningful depth.\n\n**Notable historical examples**\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution window with insufficient delay enabled attacker to front-run market activation after proposal passed.\n- **Radiant Capital (1st incident)** ($4.5M, 2024): Governance-activated empty market with a 6-second execution window exploited via front-running.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Flash-loanable voting weight eliminates the economic cost of a governance takeover, reducing the attack to a single-block transaction regardless of the protocol's TVL or audit history."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "sonne-finance-rekt",
-          "relevance": "related",
-          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
           "hack_protocol_name": "Sonne Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
           "loss_usd": 20000000.0,
+          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
+          "occurred_at": "2024-05-14",
+          "relevance": "related",
           "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "radiant-capital-rekt",
-          "relevance": "related",
-          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
           "hack_protocol_name": "Radiant Capital (1st incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-01-02",
           "loss_usd": 4500000.0,
+          "notes": "★ Flash-loanable voting weight — adjacent [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
+          "occurred_at": "2024-01-02",
+          "relevance": "related",
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp has not published an active token-voting executor; its governance page labels voting as Coming Soon.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

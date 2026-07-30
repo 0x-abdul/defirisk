@@ -1,29 +1,54 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-087",
-        "category_id": 5,
-        "name": "Pause > 7 consecutive days",
-        "description": "Determine whether the protocol has been paused for more than 7 consecutive days at any point in the last 12 months.",
-        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag set to true if the protocol has been paused for more than seven consecutive days at least once in the trailing twelve months. It is derived from on-chain pause-event data and updated on each new pause event. A sustained pause -- as distinct from a brief precautionary halt -- indicates either a serious unresolved vulnerability, a governance deadlock preventing the protocol from resuming, or operational instability severe enough to warrant extended downtime.\n\n**Why it matters**\nA pause lasting more than seven days is qualitatively different from a brief emergency halt. It signals that the underlying issue was complex enough (or the team's response capacity was insufficient) to prevent rapid resolution. For depositors, a seven-day pause means their capital is locked for a minimum of a week with no certainty of when function resumes. In the dataset, extended pauses have preceded both successful recoveries (e.g., multi-week pauses following white-hat negotiations) and protocol sunsettings (e.g., Raft sunsetted after its exploited state made resumption impossible). Either outcome represents material depositor risk.\n\n**Green / Yellow / Red**\nGreen: no pause exceeding seven consecutive days in the trailing twelve months. Yellow: one pause between seven and thirty days in the trailing twelve months, with documented resolution and protocol resumption. Red: any pause exceeding thirty consecutive days in the trailing twelve months, or a pause still active at time of assessment.\n\n**Common gray cases**\nPlanned maintenance pauses announced well in advance (e.g., a scheduled chain migration) may be treated differently from emergency pauses. Curator must verify whether the pause was planned or reactive, and whether user funds were accessible during the pause period.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol has been paused for more than 7 consecutive days at any point in the last 12 months.",
-        "data_source": "`Paused`/`Unpaused` on-chain event timestamps via RPC; compute max consecutive pause duration",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Pause/unpause event pairs + max-consecutive-duration",
+        "category_id": 5,
         "confidence_signal": "green = no pause >7d in last 12 months; red = any pause >7 consecutive days; gray = no pause events in last 12 months",
+        "curation_archetype": "PE",
+        "data_source": "`Paused`/`Unpaused` on-chain event timestamps via RPC; compute max consecutive pause duration",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol has been paused for more than 7 consecutive days at any point in the last 12 months.",
+        "evidence_artifact": "Pause/unpause event pairs + max-consecutive-duration",
+        "id": "RD-F-087",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol has been paused for more than 7 consecutive days at any point in the last 12 months.",
+        "method": "PE",
+        "name": "Pause > 7 consecutive days",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag set to true if the protocol has been paused for more than seven consecutive days at least once in the trailing twelve months. It is derived from on-chain pause-event data and updated on each new pause event. A sustained pause -- as distinct from a brief precautionary halt -- indicates either a serious unresolved vulnerability, a governance deadlock preventing the protocol from resuming, or operational instability severe enough to warrant extended downtime.\n\n**Why it matters**\nA pause lasting more than seven days is qualitatively different from a brief emergency halt. It signals that the underlying issue was complex enough (or the team's response capacity was insufficient) to prevent rapid resolution. For depositors, a seven-day pause means their capital is locked for a minimum of a week with no certainty of when function resumes. In the dataset, extended pauses have preceded both successful recoveries (e.g., multi-week pauses following white-hat negotiations) and protocol sunsettings (e.g., Raft sunsetted after its exploited state made resumption impossible). Either outcome represents material depositor risk.\n\n**Green / Yellow / Red**\nGreen: no pause exceeding seven consecutive days in the trailing twelve months. Yellow: one pause between seven and thirty days in the trailing twelve months, with documented resolution and protocol resumption. Red: any pause exceeding thirty consecutive days in the trailing twelve months, or a pause still active at time of assessment.\n\n**Common gray cases**\nPlanned maintenance pauses announced well in advance (e.g., a scheduled chain migration) may be treated differently from emergency pauses. Curator must verify whether the pause was planned or reactive, and whether user funds were accessible during the pause period.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The April 18 pauseAll transaction covered Kelp's mainnet LRTDepositPool, Withdrawal, LRTOracle, and rsETH token. On May 12 Kelp said withdrawals would be unpaused after the first recovery tranche and other smart-contract operations would then resume.",
+          "evidence_summary": "Kelp's May 12 update said withdrawals and smart contracts still awaited unpause, more than 24 days after the April 18 Ethereum core pause.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x4f52256ab6c8ab95d30cf994e0264f1de27e089764bb011824d5ddd47d9a1698"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://x.com/KelpDAO/status/2054290142152831309"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

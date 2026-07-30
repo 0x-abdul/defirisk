@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-156",
-        "category_id": 10,
-        "name": "Bridge uses same key custody for >30% validators",
-        "description": "Determine whether >30% of bridge validators share a single key custodian.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether more than 30% of bridge validators share a single key custodian — defined as a single cloud key management service, hardware vendor, or institutional custody provider holding keys on behalf of multiple validators. OSINT and bridge documentation are the primary assessment methods. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCustodian concentration means that a single compromise event — a cloud KMS breach, a hardware wallet vendor supply-chain attack, or an institutional custody failure — can simultaneously compromise multiple validator keys. This converts a k-of-M multisig into a 1-of-1 institutional-custodian attack surface in the worst case. The T-01 evidence base links shared-custodian patterns to approximately 2 protocols in the hack database. Harmony Bridge's signer-set compromise was facilitated in part by operational proximity among the five signers, reducing the effective independence of each key.\n\n**Green / Yellow / Red**\nGreen is scored when no single custodian holds keys for more than 20% of the validator set and custody diversity is documented. Yellow is scored when a single custodian controls 20–30% of the validator set or when custody information is partially undocumented. Red is scored when a single custodian controls more than 30% of the validator set, or when a quorum of validators share a single custodian.\n\n**Common gray cases**\nGray is applied when custody arrangements cannot be determined from public documentation and OSINT cannot confidently identify custodian relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether >30% of bridge validators share a single key custodian.",
-        "data_source": "OSINT on validator operators + Chainalysis infrastructure intel",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Validator custodian inference list + concentration %",
+        "category_id": 10,
         "confidence_signal": "green = no single custodian holds >30% of validators; red = single custodian holds >30%; gray = custodian information not determinable",
+        "curation_archetype": "PH",
+        "data_source": "OSINT on validator operators + Chainalysis infrastructure intel",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether >30% of bridge validators share a single key custodian.",
+        "evidence_artifact": "Validator custodian inference list + concentration %",
+        "id": "RD-F-156",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether >30% of bridge validators share a single key custodian.",
+        "method": "PH",
+        "name": "Bridge uses same key custody for >30% validators",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether more than 30% of bridge validators share a single key custodian — defined as a single cloud key management service, hardware vendor, or institutional custody provider holding keys on behalf of multiple validators. OSINT and bridge documentation are the primary assessment methods. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCustodian concentration means that a single compromise event — a cloud KMS breach, a hardware wallet vendor supply-chain attack, or an institutional custody failure — can simultaneously compromise multiple validator keys. This converts a k-of-M multisig into a 1-of-1 institutional-custodian attack surface in the worst case. The T-01 evidence base links shared-custodian patterns to approximately 2 protocols in the hack database. Harmony Bridge's signer-set compromise was facilitated in part by operational proximity among the five signers, reducing the effective independence of each key.\n\n**Green / Yellow / Red**\nGreen is scored when no single custodian holds keys for more than 20% of the validator set and custody diversity is documented. Yellow is scored when a single custodian controls 20–30% of the validator set or when custody information is partially undocumented. Red is scored when a single custodian controls more than 30% of the validator set, or when a quorum of validators share a single custodian.\n\n**Common gray cases**\nGray is applied when custody arrangements cannot be determined from public documentation and OSINT cannot confidently identify custodian relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "One LayerZero Labs DVN held 100% of the historical route's required verification, but current custody share is unverified.",
+          "gap_reason": "external_api_blocked",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

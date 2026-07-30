@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-042",
-        "category_id": 2,
-        "name": "Admin has mint() with unlimited max",
-        "description": "Determine whether an admin-callable `mint` on a protocol token has no supply cap or an unlimited maximum supply.",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol's admin role holds the ability to call a mint() function on the protocol's token with no enforced supply cap — meaning the admin can issue an arbitrary quantity of tokens at will. Static analysis of the token contract determines whether a mint function exists with admin or owner access control and no explicit maximum supply check. The critical condition is not the existence of mint itself but the absence of any on-chain ceiling on the quantity that can be minted in a single administrative transaction.\n\n**Why it matters**\nUnlimited admin mint is a structural rug-pull vector that bypasses all smart contract code quality safeguards. An attacker who gains admin credentials — through key compromise, insider action, or a governance takeover — can immediately mint tokens in unlimited quantities, sell them into available liquidity pools, and drain collateral or liquidity from the protocol without triggering any code-level protection. The T-01 dataset documents approximately eight in-sample hacks linked to this pattern. Several Solana protocol exploits (Gala Games, $21.8M in 2024) proceeded via unauthorized exercise of an admin mint function after key compromise. The pattern is particularly dangerous in protocols where the minted token is also accepted as collateral or provides governance voting power, as the attacker can simultaneously drain liquidity and claim governance control.\n\n**Green / Yellow / Red**\nGreen is assigned when no admin-callable mint function exists on live token contracts, or when mint is subject to a hard-coded supply cap enforced on-chain with no admin override. Yellow covers cases where mint is gated behind a timelock of at least 24 hours, or where the supply cap can only be increased via governance with a meaningful quorum requirement. Red is assigned when an admin or owner role can call mint() with no supply ceiling, no timelock, and no additional social check — including cases where the cap is stored in an admin-modifiable state variable.\n\n**Common gray cases**\nThis factor is grayed when the token contract source is unverified and bytecode-level analysis is inconclusive, or when the protocol uses a complex multi-token architecture where mint authority is distributed across non-obvious contract relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Unlimited admin mint is a latent total-loss vector: any key compromise event converts it into an instantaneous and irreversible dilution or drain of all user positions.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether an admin-callable `mint` on a protocol token has no supply cap or an unlimited maximum supply.",
-        "data_source": "Source search for `mint` function + supply cap check (`maxSupply()`, `cap()`) on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Token contract address + `mint` function source excerpt + supply cap value (or absence)",
+        "category_id": 2,
         "confidence_signal": "green = `mint` gated behind timelock + capped supply; yellow = `mint` gated by multisig but uncapped; red = unlimited `mint` callable without timelock by any admin EOA; gray = source unverified or protocol has no mintable token",
+        "curation_archetype": "PE",
+        "data_source": "Source search for `mint` function + supply cap check (`maxSupply()`, `cap()`) on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether an admin-callable `mint` on a protocol token has no supply cap or an unlimited maximum supply.",
+        "evidence_artifact": "Token contract address + `mint` function source excerpt + supply cap value (or absence)",
+        "id": "RD-F-042",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether an admin-callable `mint` on a protocol token has no supply cap or an unlimited maximum supply.",
+        "method": "PE",
+        "name": "Admin has mint() with unlimited max",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol's admin role holds the ability to call a mint() function on the protocol's token with no enforced supply cap — meaning the admin can issue an arbitrary quantity of tokens at will. Static analysis of the token contract determines whether a mint function exists with admin or owner access control and no explicit maximum supply check. The critical condition is not the existence of mint itself but the absence of any on-chain ceiling on the quantity that can be minted in a single administrative transaction.\n\n**Why it matters**\nUnlimited admin mint is a structural rug-pull vector that bypasses all smart contract code quality safeguards. An attacker who gains admin credentials — through key compromise, insider action, or a governance takeover — can immediately mint tokens in unlimited quantities, sell them into available liquidity pools, and drain collateral or liquidity from the protocol without triggering any code-level protection. The T-01 dataset documents approximately eight in-sample hacks linked to this pattern. Several Solana protocol exploits (Gala Games, $21.8M in 2024) proceeded via unauthorized exercise of an admin mint function after key compromise. The pattern is particularly dangerous in protocols where the minted token is also accepted as collateral or provides governance voting power, as the attacker can simultaneously drain liquidity and claim governance control.\n\n**Green / Yellow / Red**\nGreen is assigned when no admin-callable mint function exists on live token contracts, or when mint is subject to a hard-coded supply cap enforced on-chain with no admin override. Yellow covers cases where mint is gated behind a timelock of at least 24 hours, or where the supply cap can only be increased via governance with a meaningful quorum requirement. Red is assigned when an admin or owner role can call mint() with no supply ceiling, no timelock, and no additional social check — including cases where the cap is stored in an admin-modifiable state variable.\n\n**Common gray cases**\nThis factor is grayed when the token contract source is unverified and bytecode-level analysis is inconclusive, or when the protocol uses a complex multi-token architecture where mint authority is distributed across non-obvious contract relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Unlimited admin mint is a latent total-loss vector: any key compromise event converts it into an instantaneous and irreversible dilution or drain of all user positions."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "RSETH.mint is MINTER_ROLE-gated and current source enforces a daily mint cap; January 2026 documentation says token and fee mint limits were aligned.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/RSETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

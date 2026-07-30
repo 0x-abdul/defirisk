@@ -1,50 +1,70 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-012",
-        "category_id": 1,
-        "name": "delegatecall with user-controlled target",
-        "description": "Determine whether any contract uses `delegatecall` where the target address is or can be user-supplied without an on-chain allowlist.",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether any contract in the protocol uses delegatecall where the target address is or can be supplied by an external user without an on-chain allowlist restricting the permissible targets. The assessment is performed by static analysis of the deployed bytecode, specifically looking for DELEGATECALL opcodes preceded by a user-controlled CALLDATALOAD or derived from external input without allowlist enforcement.\n\n**Why it matters**\nDelegatecall executes external code in the calling contract's storage context. A user-controlled delegatecall target allows an attacker to inject arbitrary logic that reads and writes the calling contract's storage, including modifying ownership, draining funds, or redirecting upgrade authority. Furucombo ($14M, 2021) lost funds when an attacker added Aave's lending pool as a handler in the combo registry, then used a delegatecall to the lending pool's initialize() function to claim ownership of Furucombo and approve fund transfers. The Raft exploit ($3.3M, 2023) involved a similar pattern where delegatecall reached an uninitialized storage slot. This vulnerability class is among the most consistently exploitable in proxy-heavy architectures.\n\n**Green / Yellow / Red**\nGreen: all delegatecall usage is to fixed, hardcoded addresses or to addresses validated against an on-chain allowlist enforced by a multisig or governance process. Yellow: delegatecall targets are restricted by a registry, but the registry itself is modifiable by a single admin key without a timelock. Red: delegatecall target can be supplied directly by an external caller with no on-chain allowlist check.\n\n**Common gray cases**\nThis factor is gray when the protocol's architecture does not use delegatecall at all -- common in simple non-upgradeable protocols. It cannot be assessed when source is unverified.\n\n**Notable historical examples**\n- **Furucombo** ($14M, 2021): Handler registry allowed attacker-controlled delegatecall target; Aave lending pool initialize() claimed ownership.\n- **Raft** ($3.3M, 2023): Delegatecall to uninitialized storage slot caused attacker's profit to route to burn address; protocol sunsetted.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any contract uses `delegatecall` where the target address is or can be user-supplied without an on-chain allowlist.",
-        "data_source": "Slither `controlled-delegatecall` detector + source review on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output JSON + contract + function name if flagged",
+        "category_id": 1,
         "confidence_signal": "green = no user-controlled delegatecall; red = user-controlled delegatecall found without allowlist; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `controlled-delegatecall` detector + source review on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any contract uses `delegatecall` where the target address is or can be user-supplied without an on-chain allowlist.",
+        "evidence_artifact": "Slither output JSON + contract + function name if flagged",
+        "id": "RD-F-012",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any contract uses `delegatecall` where the target address is or can be user-supplied without an on-chain allowlist.",
+        "method": "PE",
+        "name": "delegatecall with user-controlled target",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether any contract in the protocol uses delegatecall where the target address is or can be supplied by an external user without an on-chain allowlist restricting the permissible targets. The assessment is performed by static analysis of the deployed bytecode, specifically looking for DELEGATECALL opcodes preceded by a user-controlled CALLDATALOAD or derived from external input without allowlist enforcement.\n\n**Why it matters**\nDelegatecall executes external code in the calling contract's storage context. A user-controlled delegatecall target allows an attacker to inject arbitrary logic that reads and writes the calling contract's storage, including modifying ownership, draining funds, or redirecting upgrade authority. Furucombo ($14M, 2021) lost funds when an attacker added Aave's lending pool as a handler in the combo registry, then used a delegatecall to the lending pool's initialize() function to claim ownership of Furucombo and approve fund transfers. The Raft exploit ($3.3M, 2023) involved a similar pattern where delegatecall reached an uninitialized storage slot. This vulnerability class is among the most consistently exploitable in proxy-heavy architectures.\n\n**Green / Yellow / Red**\nGreen: all delegatecall usage is to fixed, hardcoded addresses or to addresses validated against an on-chain allowlist enforced by a multisig or governance process. Yellow: delegatecall targets are restricted by a registry, but the registry itself is modifiable by a single admin key without a timelock. Red: delegatecall target can be supplied directly by an external caller with no on-chain allowlist check.\n\n**Common gray cases**\nThis factor is gray when the protocol's architecture does not use delegatecall at all -- common in simple non-upgradeable protocols. It cannot be assessed when source is unverified.\n\n**Notable historical examples**\n- **Furucombo** ($14M, 2021): Handler registry allowed attacker-controlled delegatecall target; Aave lending pool initialize() claimed ownership.\n- **Raft** ($3.3M, 2023): Delegatecall to uninitialized storage slot caused attacker's profit to route to burn address; protocol sunsetted."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "raft-rekt",
-          "relevance": "causal",
-          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry] || delegatecall with user-controlled target [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]",
           "hack_protocol_name": "Raft",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-11-10",
           "loss_usd": 3300000.0,
+          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry] || delegatecall with user-controlled target [via cross-hack: Factor 45: Delegatecall Uninitialized Storage Slot]",
+          "occurred_at": "2023-11-10",
+          "relevance": "causal",
           "root_cause": "Flash loan + collateral inflation via position liquidation → infinite R mint → stablecoin dump"
         },
         {
           "hack_id": "furucombo",
-          "relevance": "causal",
-          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
           "hack_protocol_name": "Furucombo",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-27",
           "loss_usd": 14000000.0,
+          "notes": "delegatecall with user-controlled target [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
+          "occurred_at": "2021-02-27",
+          "relevance": "causal",
           "root_cause": "Evil Contract — Delegatecall Storage Collision"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A matched-runtime source scan is required.",
+          "evidence_summary": "No exhaustive deployed-source result established whether any delegatecall target is user-controlled.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

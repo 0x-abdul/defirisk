@@ -1,40 +1,61 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-149",
-        "category_id": 10,
-        "name": "Bridge validator threshold (k-of-M)",
-        "description": "Read the signature threshold required to approve a cross-chain message (for non-LZ bridges).",
-        "scoring_methodology": "**What this measures**\nThis factor records the signature threshold required to approve a cross-chain message — expressed as k-of-M where k is the required approvals and M is the total signer set. For LayerZero OFT deployments, this is the DVN approval threshold. The value is read from the bridge contract or OApp configuration. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nThe approval threshold determines the actual quorum required to authorise a message. A 3-of-11 multisig sounds more secure than a 2-of-5, but if the 11-signer set uses hardware wallets with documented independent custody while the 2-of-5 uses hot wallets, the absolute threshold is a misleading comparator — context from RD-F-150 (co-hosting) and RD-F-156 (shared custodian) is required. The Kelp DAO incident ($292M, 2026) used a threshold of 1 on a single-DVN LayerZero OFT, reducing the attack surface to a single point of failure. Radiant Capital II ($53M, 2024) used a 3-of-11 threshold that was defeated by nation-state-level key compromise of just three signers.\n\n**Green / Yellow / Red**\nGreen is scored when the threshold is at least 5-of-N with N >= 7 and independent signer custody. Yellow is scored when threshold is 3-of-N or higher but with documented custody concerns, or 2-of-N where N >= 5. Red is scored when threshold is 1 (single approver), 2-of-3, or when a LayerZero OFT uses a DVN threshold of 1.\n\n**Common gray cases**\nGray is applied when threshold configuration is managed off-chain or through an opaque governance layer that cannot be confirmed from on-chain inspection.\n\n**Notable historical examples**\n- **Kelp DAO** ($292M, 2026): LayerZero DVN threshold of 1; single operator controlled rsETH bridge message approval.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read the signature threshold required to approve a cross-chain message (for non-LZ bridges).",
-        "data_source": "Bridge contract threshold getter via RPC",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Threshold k + validator count M + contract address",
+        "category_id": 10,
         "confidence_signal": "green = threshold ≥ ⌈M/2⌉ + 1 (majority); yellow = threshold ≥ ⌈M/3⌉; red = threshold = 1 (any single validator can approve); gray = LayerZero OFT (use F179) or bridge not identifiable",
+        "curation_archetype": "PE",
+        "data_source": "Bridge contract threshold getter via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Read the signature threshold required to approve a cross-chain message (for non-LZ bridges).",
+        "evidence_artifact": "Threshold k + validator count M + contract address",
+        "id": "RD-F-149",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read the signature threshold required to approve a cross-chain message (for non-LZ bridges).",
+        "method": "PE",
+        "name": "Bridge validator threshold (k-of-M)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the signature threshold required to approve a cross-chain message — expressed as k-of-M where k is the required approvals and M is the total signer set. For LayerZero OFT deployments, this is the DVN approval threshold. The value is read from the bridge contract or OApp configuration. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nThe approval threshold determines the actual quorum required to authorise a message. A 3-of-11 multisig sounds more secure than a 2-of-5, but if the 11-signer set uses hardware wallets with documented independent custody while the 2-of-5 uses hot wallets, the absolute threshold is a misleading comparator — context from RD-F-150 (co-hosting) and RD-F-156 (shared custodian) is required. The Kelp DAO incident ($292M, 2026) used a threshold of 1 on a single-DVN LayerZero OFT, reducing the attack surface to a single point of failure. Radiant Capital II ($53M, 2024) used a 3-of-11 threshold that was defeated by nation-state-level key compromise of just three signers.\n\n**Green / Yellow / Red**\nGreen is scored when the threshold is at least 5-of-N with N >= 7 and independent signer custody. Yellow is scored when threshold is 3-of-N or higher but with documented custody concerns, or 2-of-N where N >= 5. Red is scored when threshold is 1 (single approver), 2-of-3, or when a LayerZero OFT uses a DVN threshold of 1.\n\n**Common gray cases**\nGray is applied when threshold configuration is managed off-chain or through an opaque governance layer that cannot be confirmed from on-chain inspection.\n\n**Notable historical examples**\n- **Kelp DAO** ($292M, 2026): LayerZero DVN threshold of 1; single operator controlled rsETH bridge message approval."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "kelp-dao-rekt",
-          "relevance": "related",
-          "notes": "Bridge validator threshold (k-of-M) [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]",
           "hack_protocol_name": "Kelp DAO (rsETH liquid restaking)",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-04-18",
           "loss_usd": 292000000.0,
+          "notes": "Bridge validator threshold (k-of-M) [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]",
+          "occurred_at": "2026-04-18",
+          "relevance": "related",
           "root_cause": "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Kelp selected the historical 1-of-1 application policy. Without current getConfig and peer-active evidence, that historical threshold is not treated as July 30 state.",
+          "evidence_summary": "The exploited route was 1-of-1, but the current effective threshold for each active peer was not established.",
+          "gap_reason": "external_api_blocked",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

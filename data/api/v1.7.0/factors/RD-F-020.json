@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-020",
-        "category_id": 1,
-        "name": "EIP-712 domain separator missing chainId",
-        "description": "Determine whether the EIP-712 domain separator struct omits the `chainId` field, allowing cross-chain replay.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether EIP-712 structured message signing in the protocol includes the chainId field in the domain separator. An EIP-712 domain separator that omits chainId allows a signed message valid on one chain to be replayed on any other chain where the protocol is deployed. The assessment is performed by static analysis of the domain separator construction in the protocol's verified source code.\n\n**Why it matters**\nCross-chain replay of signed messages is an underappreciated risk in multi-chain protocol deployments. If a protocol deploys to Ethereum, Arbitrum, and Base with the same contract logic and addresses, a permit() or governance vote signature from Ethereum can be submitted on Arbitrum and accepted as valid -- unless chainId is included in the domain separator. With approximately three documented hacks attributable to this pattern in the T-01 evidence base, and DeFi protocols increasingly deploying to five or more chains simultaneously, the absence of chainId in EIP-712 domain separators is a growing risk vector.\n\n**Green / Yellow / Red**\nGreen: all EIP-712 domain separators in deployed contracts include chainId, name, version, and verifyingContract fields as specified in the EIP. Yellow: chainId is included in the domain separator, but the domain separator is not recomputed on each verification call (cached domain separator pattern), creating a risk if the contract is ever deployed to a new chain with a cached stale separator. Red: any EIP-712 domain separator in the protocol omits the chainId field.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use EIP-712 signing in any function path, including protocols with purely on-chain governance and no permit()-style functions.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately three instances in the T-01 evidence inventory.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the EIP-712 domain separator struct omits the `chainId` field, allowing cross-chain replay.",
-        "data_source": "Slither + source search for `DOMAIN_SEPARATOR` or `EIP712` struct definition",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt showing domain struct definition",
+        "category_id": 1,
         "confidence_signal": "green = chainId present in domain separator; red = chainId absent; gray = protocol does not use EIP-712 signatures (N/A) or source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither + source search for `DOMAIN_SEPARATOR` or `EIP712` struct definition",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the EIP-712 domain separator struct omits the `chainId` field, allowing cross-chain replay.",
+        "evidence_artifact": "Source excerpt showing domain struct definition",
+        "id": "RD-F-020",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the EIP-712 domain separator struct omits the `chainId` field, allowing cross-chain replay.",
+        "method": "PE",
+        "name": "EIP-712 domain separator missing chainId",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether EIP-712 structured message signing in the protocol includes the chainId field in the domain separator. An EIP-712 domain separator that omits chainId allows a signed message valid on one chain to be replayed on any other chain where the protocol is deployed. The assessment is performed by static analysis of the domain separator construction in the protocol's verified source code.\n\n**Why it matters**\nCross-chain replay of signed messages is an underappreciated risk in multi-chain protocol deployments. If a protocol deploys to Ethereum, Arbitrum, and Base with the same contract logic and addresses, a permit() or governance vote signature from Ethereum can be submitted on Arbitrum and accepted as valid -- unless chainId is included in the domain separator. With approximately three documented hacks attributable to this pattern in the T-01 evidence base, and DeFi protocols increasingly deploying to five or more chains simultaneously, the absence of chainId in EIP-712 domain separators is a growing risk vector.\n\n**Green / Yellow / Red**\nGreen: all EIP-712 domain separators in deployed contracts include chainId, name, version, and verifyingContract fields as specified in the EIP. Yellow: chainId is included in the domain separator, but the domain separator is not recomputed on each verification call (cached domain separator pattern), creating a risk if the contract is ever deployed to a new chain with a cached stale separator. Red: any EIP-712 domain separator in the protocol omits the chainId field.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use EIP-712 signing in any function path, including protocols with purely on-chain governance and no permit()-style functions.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately three instances in the T-01 evidence inventory."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A matched-runtime signing-path inventory is required.",
+          "evidence_summary": "No exhaustive deployed signing-path review established whether every EIP-712 domain includes chainId.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

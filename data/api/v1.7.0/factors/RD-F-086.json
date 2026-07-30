@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-086",
-        "category_id": 5,
-        "name": "Pause activations (trailing 12 months)",
-        "description": "Count the number of deliberate pause activations with documented reason in the trailing 12 months.",
-        "scoring_methodology": "**What this measures**\nThis factor records the count of deliberate emergency-pause activations for this protocol in the trailing twelve months, along with the stated reason for each activation. Pauses triggered by governance vote are distinguished from pauses triggered by admin-role direct call. The cadence is event-driven: updated within twenty-four hours of each pause activation detected on-chain.\n\n**Why it matters**\nPause activation history reveals two distinct signals. First, a protocol that has activated its pause mechanism demonstrates that the mechanism works and is actually used -- a meaningful positive signal for protocols where the pause is often listed as a safeguard but never exercised. Second, frequent pauses (more than three in twelve months without clear external-market explanations) may indicate instability in the protocol's code or operational environment. A single pause following a whitehat disclosure and remediation is a positive signal; a pattern of unexplained pauses is a yellow warning. Compound's governance timelock prevented emergency pause during the Wave 2 incident; the absence of pause capability directly contributed to the $147M exposure period.\n\n**Green / Yellow / Red**\nGreen: zero or one pause activations in trailing twelve months, with documented reason for any activation that demonstrates appropriate use. Yellow: two or three pause activations in trailing twelve months, or one activation without a public explanation. Red: four or more pause activations in trailing twelve months, or any activation followed by a drain within thirty days, suggesting the pause was insufficient or came too late.\n\n**Common gray cases**\nProtocols that pause all markets simultaneously during protocol migrations or major upgrades as a precautionary measure are distinguished from emergency pauses triggered by detected anomalies. Curator should record the reason for each pause to enable accurate classification.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of deliberate pause activations with documented reason in the trailing 12 months.",
-        "data_source": "`Paused`/`Unpaused` on-chain events via RPC event log + curator annotation of reason per event",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "Pause event list + timestamps + curator reason annotation",
+        "category_id": 5,
         "confidence_signal": "green = 0 pauses; yellow = 1–2 pauses with documented reason; red = ≥3 pauses or any undocumented pause; gray = protocol has no pause mechanism",
+        "curation_archetype": "PE",
+        "data_source": "`Paused`/`Unpaused` on-chain events via RPC event log + curator annotation of reason per event",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of deliberate pause activations with documented reason in the trailing 12 months.",
+        "evidence_artifact": "Pause event list + timestamps + curator reason annotation",
+        "id": "RD-F-086",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of deliberate pause activations with documented reason in the trailing 12 months.",
+        "method": "PE",
+        "name": "Pause activations (trailing 12 months)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the count of deliberate emergency-pause activations for this protocol in the trailing twelve months, along with the stated reason for each activation. Pauses triggered by governance vote are distinguished from pauses triggered by admin-role direct call. The cadence is event-driven: updated within twenty-four hours of each pause activation detected on-chain.\n\n**Why it matters**\nPause activation history reveals two distinct signals. First, a protocol that has activated its pause mechanism demonstrates that the mechanism works and is actually used -- a meaningful positive signal for protocols where the pause is often listed as a safeguard but never exercised. Second, frequent pauses (more than three in twelve months without clear external-market explanations) may indicate instability in the protocol's code or operational environment. A single pause following a whitehat disclosure and remediation is a positive signal; a pattern of unexplained pauses is a yellow warning. Compound's governance timelock prevented emergency pause during the Wave 2 incident; the absence of pause capability directly contributed to the $147M exposure period.\n\n**Green / Yellow / Red**\nGreen: zero or one pause activations in trailing twelve months, with documented reason for any activation that demonstrates appropriate use. Yellow: two or three pause activations in trailing twelve months, or one activation without a public explanation. Red: four or more pause activations in trailing twelve months, or any activation followed by a drain within thirty days, suggesting the pause was insufficient or came too late.\n\n**Common gray cases**\nProtocols that pause all markets simultaneously during protocol migrations or major upgrades as a precautionary measure are distinguished from emergency pauses triggered by detected anomalies. Curator should record the reason for each pause to enable accurate classification.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Ethereum tx 0x4f52...1698 paused Kelp's LRTDepositPool, Withdrawal, LRTOracle, and rsETH token on April 18, 2026. It is distinct from the recipient freeze and Aave market freezes.",
+          "evidence_summary": "One Kelp-controlled Ethereum core-protocol pauseAll activation is documented in the trailing 12 months.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x4f52256ab6c8ab95d30cf994e0264f1de27e089764bb011824d5ddd47d9a1698"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

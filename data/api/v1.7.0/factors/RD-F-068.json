@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-068",
-        "category_id": 4,
-        "name": "Collateralization under stress",
-        "description": "Determine whether under curator-defined stress scenario (top-3 collateral assets drop 50%), protocol net collateralization falls below 110%.",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether, under a curator-defined stress scenario, the protocol's net collateralization falls below one hundred ten percent. The stress scenario applies a standardized asset price shock (typically a thirty percent single-day decline in all collateral assets simultaneously) and recomputes the aggregate collateral-to-debt ratio using on-chain position data. The measurement is sourced from curator simulation plus documentation and is updated on a slow cadence. This factor applies to lending protocols only; it is N/A for non-lending protocols.\n\n**Why it matters**\nUnder-collateralization under stress is the economic failure mode that transforms an oracle manipulation attack into a total loss event. When collateral prices fall faster than liquidation mechanisms can clear positions, the protocol accumulates bad debt. The Terra/Luna collapse demonstrated how algorithmic stabilization mechanisms can accelerate under-collateralization once collateral confidence breaks. Several lending protocols in the dataset accepted governance tokens as collateral with collateral factors above fifty percent -- meaning a governance token price drop of more than fifty percent would immediately push positions underwater. Under the stress scenario test, these positions would have appeared underwater in every crisis period in the dataset.\n\n**Green / Yellow / Red**\nGreen: net collateralization remains above one hundred fifty percent under the stress scenario, indicating adequate buffer for tail scenarios. Yellow: net collateralization falls between one hundred ten and one hundred fifty percent under stress, indicating meaningful but manageable vulnerability. Red: net collateralization falls below one hundred ten percent under the stress scenario, indicating the protocol would accumulate material bad debt in a standard risk-off event.\n\n**Common gray cases**\nProtocols that operate tiered isolation markets (where bad debt in one market cannot infect others) may present a less severe consolidated stress test outcome than their collateral composition suggests; curator must verify isolation boundaries before aggregating.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether under curator-defined stress scenario (top-3 collateral assets drop 50%), protocol net collateralization falls below 110%.",
-        "data_source": "Curator simulation using on-chain market data (collateral balances, borrow balances, price feeds) via RPC",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Simulation parameters + market data snapshot + result (collateral ratio under stress)",
+        "category_id": 4,
         "confidence_signal": "green = collateral ratio >150% under stress; yellow = 110–150% under stress; red = <110% under stress; gray = collateral structure not simulatable from available data",
+        "curation_archetype": "PH",
+        "data_source": "Curator simulation using on-chain market data (collateral balances, borrow balances, price feeds) via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether under curator-defined stress scenario (top-3 collateral assets drop 50%), protocol net collateralization falls below 110%.",
+        "evidence_artifact": "Simulation parameters + market data snapshot + result (collateral ratio under stress)",
+        "id": "RD-F-068",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether under curator-defined stress scenario (top-3 collateral assets drop 50%), protocol net collateralization falls below 110%.",
+        "method": "PH",
+        "name": "Collateralization under stress",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether, under a curator-defined stress scenario, the protocol's net collateralization falls below one hundred ten percent. The stress scenario applies a standardized asset price shock (typically a thirty percent single-day decline in all collateral assets simultaneously) and recomputes the aggregate collateral-to-debt ratio using on-chain position data. The measurement is sourced from curator simulation plus documentation and is updated on a slow cadence. This factor applies to lending protocols only; it is N/A for non-lending protocols.\n\n**Why it matters**\nUnder-collateralization under stress is the economic failure mode that transforms an oracle manipulation attack into a total loss event. When collateral prices fall faster than liquidation mechanisms can clear positions, the protocol accumulates bad debt. The Terra/Luna collapse demonstrated how algorithmic stabilization mechanisms can accelerate under-collateralization once collateral confidence breaks. Several lending protocols in the dataset accepted governance tokens as collateral with collateral factors above fifty percent -- meaning a governance token price drop of more than fifty percent would immediately push positions underwater. Under the stress scenario test, these positions would have appeared underwater in every crisis period in the dataset.\n\n**Green / Yellow / Red**\nGreen: net collateralization remains above one hundred fifty percent under the stress scenario, indicating adequate buffer for tail scenarios. Yellow: net collateralization falls between one hundred ten and one hundred fifty percent under stress, indicating meaningful but manageable vulnerability. Red: net collateralization falls below one hundred ten percent under the stress scenario, indicating the protocol would accumulate material bad debt in a standard risk-off event.\n\n**Common gray cases**\nProtocols that operate tiered isolation markets (where bad debt in one market cannot infect others) may present a less severe consolidated stress test outcome than their collateral composition suggests; curator must verify isolation boundaries before aggregating.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "RD-F-068 measures whether a lending or CDP book falls below 110% collateralization under stress. Kelp issues an ETH-denominated liquid-restaking receipt and does not operate such a lending/CDP book, so the factor is structurally not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

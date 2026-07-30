@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-178",
-        "category_id": 13,
-        "name": "CVE/GHSA advisory issued against protocol",
-        "description": "Determine whether a CVE, GHSA, or equivalent public advisory has been issued against this protocol or its code.",
-        "scoring_methodology": "**What this measures**\nThis factor records whether a CVE (Common Vulnerabilities and Exposures), GHSA (GitHub Security Advisory), or equivalent standardized public advisory has been issued against the monitored protocol or its core smart contracts. Detection is programmatic via the CVE database, GitHub Advisory Database, and OSV vulnerability feed, cross-referenced against the protocol's repository identifiers and known contract addresses. Category 13 context: a CVE or GHSA represents the highest-formality level of public vulnerability disclosure — it indicates that a vulnerability has been assessed as sufficiently significant to warrant standardized public notification, creating a documented public record and a timestamp against which the team's response can be measured.\n\n**Why it matters**\nA CVE issued against a DeFi protocol creates a public, indexed record that any researcher, auditor, or monitor can retrieve and cross-reference. KyberSwap Elastic ($48M, 2023) had its tick-crossing precision failure ultimately documented in public advisories after the exploit. Compound's governance vulnerability family has multiple associated GHSAs. The existence of a CVE or GHSA against a protocol is not inherently a red flag — it may indicate responsible disclosure and patching — but the combination of an open (unresolved) advisory and a live protocol represents a specific elevated risk state. A resolved advisory provides the opposite signal: evidence that the protocol has engaged with formal vulnerability disclosure processes and maintained a public fix record.\n\n**Green / Yellow / Red**\nGreen is scored when no open CVE, GHSA, or equivalent public advisory exists for the protocol's core contracts, or when all historical advisories are marked as patched with on-chain proof of fix. Yellow applies when a historical advisory exists and is marked resolved, but the curator cannot verify on-chain that the fix was actually deployed. Red is scored when an open (unresolved) CVE or GHSA advisory exists against the protocol's core smart contracts that have not been marked as patched, indicating a known public vulnerability with no confirmed fix.\n\n**Common gray cases**\nGray applies when the protocol's contracts are not registered in any vulnerability tracking system and the absence of a CVE/GHSA reflects non-registration rather than absence of known vulnerabilities — the typical state for most DeFi protocols that have not engaged with formal CVE coordination.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether a CVE, GHSA, or equivalent public advisory has been issued against this protocol or its code.",
-        "data_source": "GHSA API search for protocol repo + NVD CVE database search for protocol name",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "GHSA/CVE ID + advisory URL + severity + patched status",
+        "category_id": 13,
         "confidence_signal": "green = no advisory or all advisories patched; yellow = advisory exists and patched; red = advisory exists and unpatched in current deploy; gray = protocol not indexed in GHSA/NVD",
+        "curation_archetype": "PE",
+        "data_source": "GHSA API search for protocol repo + NVD CVE database search for protocol name",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a CVE, GHSA, or equivalent public advisory has been issued against this protocol or its code.",
+        "evidence_artifact": "GHSA/CVE ID + advisory URL + severity + patched status",
+        "id": "RD-F-178",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a CVE, GHSA, or equivalent public advisory has been issued against this protocol or its code.",
+        "method": "PE",
+        "name": "CVE/GHSA advisory issued against protocol",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor records whether a CVE (Common Vulnerabilities and Exposures), GHSA (GitHub Security Advisory), or equivalent standardized public advisory has been issued against the monitored protocol or its core smart contracts. Detection is programmatic via the CVE database, GitHub Advisory Database, and OSV vulnerability feed, cross-referenced against the protocol's repository identifiers and known contract addresses. Category 13 context: a CVE or GHSA represents the highest-formality level of public vulnerability disclosure — it indicates that a vulnerability has been assessed as sufficiently significant to warrant standardized public notification, creating a documented public record and a timestamp against which the team's response can be measured.\n\n**Why it matters**\nA CVE issued against a DeFi protocol creates a public, indexed record that any researcher, auditor, or monitor can retrieve and cross-reference. KyberSwap Elastic ($48M, 2023) had its tick-crossing precision failure ultimately documented in public advisories after the exploit. Compound's governance vulnerability family has multiple associated GHSAs. The existence of a CVE or GHSA against a protocol is not inherently a red flag — it may indicate responsible disclosure and patching — but the combination of an open (unresolved) advisory and a live protocol represents a specific elevated risk state. A resolved advisory provides the opposite signal: evidence that the protocol has engaged with formal vulnerability disclosure processes and maintained a public fix record.\n\n**Green / Yellow / Red**\nGreen is scored when no open CVE, GHSA, or equivalent public advisory exists for the protocol's core contracts, or when all historical advisories are marked as patched with on-chain proof of fix. Yellow applies when a historical advisory exists and is marked resolved, but the curator cannot verify on-chain that the fix was actually deployed. Red is scored when an open (unresolved) CVE or GHSA advisory exists against the protocol's core smart contracts that have not been marked as patched, indicating a known public vulnerability with no confirmed fix.\n\n**Common gray cases**\nGray applies when the protocol's contracts are not registered in any vulnerability tracking system and the absence of a CVE/GHSA reflects non-registration rather than absence of known vulnerabilities — the typical state for most DeFi protocols that have not engaged with formal CVE coordination.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The May 18 report publicly documents attack mechanics, attribution, configuration, timeline, scope, and remediation. It is an equivalent advisory rather than a registry CVE/GHSA.",
+          "evidence_summary": "A detailed equivalent public incident advisory exists and documents remediation, but no Kelp CVE or GHSA was identified.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

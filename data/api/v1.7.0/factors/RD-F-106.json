@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-106",
-        "category_id": 6,
-        "name": "Cross-chain bridge unverified mint pattern",
-        "description": "Detect cross-chain activity consistent with an unverified mint on the destination chain (deposit on source without corresponding verified proof on dest).",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when cross-chain activity is detected that is consistent with an unverified mint on the destination chain — specifically, when a large mint event on the destination chain occurs without a corresponding verifiable deposit or lock event on the source chain within the expected message-delivery latency window. The signal requires cross-chain indexing to correlate source-chain deposit events with destination-chain mint events. Category 6 context: the \"mint without corresponding lock\" pattern is the fundamental exploit signature of bridge replay and validation-bypass attacks.\n\n**Why it matters**\nNomad Bridge ($190M, 2022) — the bytes32(0) valid-root exploit — enabled any address to mint tokens on the destination chain without any source-chain deposit, once the bug was discovered. Wormhole ($320M, 2022) involved a signature-verification bypass that enabled fabricated guardian messages to trigger mints. The Meter Passport bridge exploit and Harmony Bridge incident both show variants of this pattern. Cross-chain indexing to detect mint-without-lock events is technically complex (PH curation) but provides the only real-time detection window for bridge validation exploits. Without this signal, bridge attacks are invisible until TVL is already drained.\n\n**Green / Yellow / Red**\nGreen is the baseline when all destination-chain mint events have corresponding verifiable source-chain deposit events within the expected delivery window. Yellow fires when a mint event arrives within the expected window but the source-chain confirmation count is below the safe threshold (e.g., four blocks on Ethereum for large amounts). Red fires when a mint event on the destination chain has no corresponding source-chain deposit within five times the expected delivery window — indicating either a validation bypass or a proof-fabrication attack.\n\n**Common gray cases**\nGray applies when the bridge uses a zero-knowledge proof system where proof verification on-chain does not correspond one-to-one with indexable source-chain events, or when source-chain monitoring coverage is incomplete for the specific chain pair.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Detect cross-chain activity consistent with an unverified mint on the destination chain (deposit on source without corresponding verified proof on dest).",
-        "data_source": "Bridge event indexer + cross-chain message verification state",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "Source-chain deposit tx + destination-chain mint tx + proof verification status",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; red = mint without verified proof detected; gray = protocol has no cross-chain bridge (N/A)",
+        "curation_archetype": "PH",
+        "data_source": "Bridge event indexer + cross-chain message verification state",
+        "deprecated_in_rubric": null,
+        "description": "Detect cross-chain activity consistent with an unverified mint on the destination chain (deposit on source without corresponding verified proof on dest).",
+        "evidence_artifact": "Source-chain deposit tx + destination-chain mint tx + proof verification status",
+        "id": "RD-F-106",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect cross-chain activity consistent with an unverified mint on the destination chain (deposit on source without corresponding verified proof on dest).",
+        "method": "PH",
+        "name": "Cross-chain bridge unverified mint pattern",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when cross-chain activity is detected that is consistent with an unverified mint on the destination chain — specifically, when a large mint event on the destination chain occurs without a corresponding verifiable deposit or lock event on the source chain within the expected message-delivery latency window. The signal requires cross-chain indexing to correlate source-chain deposit events with destination-chain mint events. Category 6 context: the \"mint without corresponding lock\" pattern is the fundamental exploit signature of bridge replay and validation-bypass attacks.\n\n**Why it matters**\nNomad Bridge ($190M, 2022) — the bytes32(0) valid-root exploit — enabled any address to mint tokens on the destination chain without any source-chain deposit, once the bug was discovered. Wormhole ($320M, 2022) involved a signature-verification bypass that enabled fabricated guardian messages to trigger mints. The Meter Passport bridge exploit and Harmony Bridge incident both show variants of this pattern. Cross-chain indexing to detect mint-without-lock events is technically complex (PH curation) but provides the only real-time detection window for bridge validation exploits. Without this signal, bridge attacks are invisible until TVL is already drained.\n\n**Green / Yellow / Red**\nGreen is the baseline when all destination-chain mint events have corresponding verifiable source-chain deposit events within the expected delivery window. Yellow fires when a mint event arrives within the expected window but the source-chain confirmation count is below the safe threshold (e.g., four blocks on Ethereum for large amounts). Red fires when a mint event on the destination chain has no corresponding source-chain deposit within five times the expected delivery window — indicating either a validation bypass or a proof-fabrication attack.\n\n**Common gray cases**\nGray applies when the bridge uses a zero-knowledge proof system where proof verification on-chain does not correspond one-to-one with indexable source-chain events, or when source-chain monitoring coverage is incomplete for the specific chain pair.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "No correlated source-deposit, destination-mint, and proof-verification stream was available across Kelp bridge routes.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

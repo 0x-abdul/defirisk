@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-066",
-        "category_id": 4,
-        "name": "Utilization rate (lending protocols)",
-        "description": "Read the borrowed/supplied ratio per market; flag markets above 95% utilization as at-risk for withdrawal freeze.",
-        "scoring_methodology": "**What this measures**\nThis factor records the utilization rate (borrowed amount divided by supplied amount) per market for lending protocols, read from on-chain state. High utilization means most of the supplied capital is actively borrowed and unavailable for withdrawal, increasing the risk of a liquidity crunch if multiple depositors attempt to exit simultaneously. The rate is displayed per market and updated continuously. This factor is not applicable (N/A) for non-lending protocols.\n\n**Why it matters**\nUtilization rate is a direct measure of withdrawal liquidity risk. When a lending market approaches one hundred percent utilization, new withdrawals become impossible without borrows being repaid first. In stress scenarios (exploit rumors, market crashes, governance failures), depositors often attempt to exit simultaneously, triggering a bank-run dynamic where early withdrawers drain the available liquidity and late withdrawers are locked in. High utilization in a protocol under other risk factors (poor multisig posture, post-audit code changes) is particularly dangerous because depositors cannot exit even if they receive advance warning of an impending exploit.\n\n**Green / Yellow / Red**\nGreen: all major markets below eighty percent utilization under normal conditions, indicating adequate withdrawal liquidity. Yellow: one or more markets between eighty and ninety-five percent utilization, indicating elevated exit risk if stress events coincide. Red: any market above ninety-five percent utilization for more than twenty-four consecutive hours, indicating a bank-run dynamic or liquidity trap is active or imminent.\n\n**Common gray cases**\nUtilization can spike temporarily during governance-driven borrow campaigns or yield optimization strategies; a single-day spike above the threshold is treated differently from sustained high utilization. Curator should verify whether elevated utilization is structural or transient before scoring.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read the borrowed/supplied ratio per market; flag markets above 95% utilization as at-risk for withdrawal freeze.",
-        "data_source": "On-chain `getReserveData()` / `markets()` calls via RPC on lending protocol",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Market address + utilization rate % + block number",
+        "category_id": 4,
         "confidence_signal": "green = all markets <80% utilization; yellow = any market 80–95%; red = any market >95% (withdrawal freeze risk); gray = protocol is not a lending protocol (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "On-chain `getReserveData()` / `markets()` calls via RPC on lending protocol",
+        "deprecated_in_rubric": null,
+        "description": "Read the borrowed/supplied ratio per market; flag markets above 95% utilization as at-risk for withdrawal freeze.",
+        "evidence_artifact": "Market address + utilization rate % + block number",
+        "id": "RD-F-066",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read the borrowed/supplied ratio per market; flag markets above 95% utilization as at-risk for withdrawal freeze.",
+        "method": "PE",
+        "name": "Utilization rate (lending protocols)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the utilization rate (borrowed amount divided by supplied amount) per market for lending protocols, read from on-chain state. High utilization means most of the supplied capital is actively borrowed and unavailable for withdrawal, increasing the risk of a liquidity crunch if multiple depositors attempt to exit simultaneously. The rate is displayed per market and updated continuously. This factor is not applicable (N/A) for non-lending protocols.\n\n**Why it matters**\nUtilization rate is a direct measure of withdrawal liquidity risk. When a lending market approaches one hundred percent utilization, new withdrawals become impossible without borrows being repaid first. In stress scenarios (exploit rumors, market crashes, governance failures), depositors often attempt to exit simultaneously, triggering a bank-run dynamic where early withdrawers drain the available liquidity and late withdrawers are locked in. High utilization in a protocol under other risk factors (poor multisig posture, post-audit code changes) is particularly dangerous because depositors cannot exit even if they receive advance warning of an impending exploit.\n\n**Green / Yellow / Red**\nGreen: all major markets below eighty percent utilization under normal conditions, indicating adequate withdrawal liquidity. Yellow: one or more markets between eighty and ninety-five percent utilization, indicating elevated exit risk if stress events coincide. Red: any market above ninety-five percent utilization for more than twenty-four consecutive hours, indicating a bank-run dynamic or liquidity trap is active or imminent.\n\n**Common gray cases**\nUtilization can spike temporarily during governance-driven borrow campaigns or yield optimization strategies; a single-day spike above the threshold is treated differently from sustained high utilization. Curator should verify whether elevated utilization is structural or transient before scoring.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp DAO is a liquid-restaking deposit and receipt-token system, not a lending protocol with supplied and borrowed balances. Utilization in external markets that accept rsETH belongs to those protocols, so RD-F-066 is not applicable to the approved Kelp surface.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

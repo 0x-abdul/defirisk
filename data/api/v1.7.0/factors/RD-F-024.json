@@ -1,70 +1,90 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-024",
-        "category_id": 1,
-        "name": "Code complexity vs audit coverage",
-        "description": "Determine whether the cyclomatic complexity or LOC-per-audit-day ratio exceeds the curator-declared credibility threshold for the audit to be meaningful.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether the protocol's code complexity -- measured by cyclomatic complexity of critical functions or by lines-of-code per audit-day ratio -- exceeds a curator-declared threshold that indicates the audit coverage was likely insufficient. The threshold is calibrated per audit type: a three-week, two-person audit of 5,000 LOC is flagged differently than the same audit applied to 50,000 LOC. The data source is static analyzer output (cyclomatic complexity) combined with audit PDF metadata (duration, auditor count, LOC covered).\n\n**Why it matters**\nCode complexity is a proxy for the probability that an audit missed a bug. KyberSwap Elastic ($48M, 2023) was a highly complex concentrated-liquidity AMM where the exploited precision failure in tick-crossing boundary arithmetic was a corner case invisible to conventional audit review and only detectable through exhaustive boundary testing or formal verification. MonoX ($31.4M, 2021) implemented a novel single-token AMM with complex pricing invariants that two independent auditors missed. In both cases, the code was too complex for the audit coverage applied. When LOC per audit-day is very high, the statistical probability of a missed bug increases substantially.\n\n**Green / Yellow / Red**\nGreen: the audit LOC-per-auditor-day ratio is below the curator threshold (approximately 300 LOC/day for novel math-heavy code, 500 LOC/day for standard DeFi patterns), and no individual function exceeds cyclomatic complexity of 20. Yellow: the ratio is 1.5x to 2x the threshold, or complexity is elevated in peripheral functions only. Red: the LOC-per-auditor-day ratio exceeds 2x the threshold for the protocol type, or any critical function has cyclomatic complexity above 30 with no dedicated review or formal verification.\n\n**Common gray cases**\nThis factor is gray when the audit does not disclose duration or auditor count, making the LOC-per-day calculation impossible.\n\n**Notable historical examples**\n- **KyberSwap Elastic** ($48M, 2023): Complex concentrated-liquidity tick arithmetic exceeded what conventional audit methods could reliably verify.\n- **MonoX** ($31.4M, 2021): Novel single-token AMM pricing model too complex for two independent auditors to fully verify.\n- **Value DeFi** ($10M, 2021): Complex multi-token pool math produced an exploitable edge case.\n- **Bunni** ($8.4M, 2025): Concentrated liquidity math without formal verification or sufficient complexity-adjusted audit depth.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the cyclomatic complexity or LOC-per-audit-day ratio exceeds the curator-declared credibility threshold for the audit to be meaningful.",
-        "data_source": "Slither complexity metrics on Etherscan-verified source + audit PDF page count + duration from PDF metadata",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Complexity score JSON + audit-day count + LOC count + derived ratio",
+        "category_id": 1,
         "confidence_signal": "green = ratio within threshold (audit appears adequate for code size); yellow = ratio borderline (audit scope narrow relative to code size); red = ratio clearly exceeds threshold (e.g. >500 LOC/audit-day); gray = audit duration not stated in PDF",
+        "curation_archetype": "PE",
+        "data_source": "Slither complexity metrics on Etherscan-verified source + audit PDF page count + duration from PDF metadata",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the cyclomatic complexity or LOC-per-audit-day ratio exceeds the curator-declared credibility threshold for the audit to be meaningful.",
+        "evidence_artifact": "Complexity score JSON + audit-day count + LOC count + derived ratio",
+        "id": "RD-F-024",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the cyclomatic complexity or LOC-per-audit-day ratio exceeds the curator-declared credibility threshold for the audit to be meaningful.",
+        "method": "PE",
+        "name": "Code complexity vs audit coverage",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether the protocol's code complexity -- measured by cyclomatic complexity of critical functions or by lines-of-code per audit-day ratio -- exceeds a curator-declared threshold that indicates the audit coverage was likely insufficient. The threshold is calibrated per audit type: a three-week, two-person audit of 5,000 LOC is flagged differently than the same audit applied to 50,000 LOC. The data source is static analyzer output (cyclomatic complexity) combined with audit PDF metadata (duration, auditor count, LOC covered).\n\n**Why it matters**\nCode complexity is a proxy for the probability that an audit missed a bug. KyberSwap Elastic ($48M, 2023) was a highly complex concentrated-liquidity AMM where the exploited precision failure in tick-crossing boundary arithmetic was a corner case invisible to conventional audit review and only detectable through exhaustive boundary testing or formal verification. MonoX ($31.4M, 2021) implemented a novel single-token AMM with complex pricing invariants that two independent auditors missed. In both cases, the code was too complex for the audit coverage applied. When LOC per audit-day is very high, the statistical probability of a missed bug increases substantially.\n\n**Green / Yellow / Red**\nGreen: the audit LOC-per-auditor-day ratio is below the curator threshold (approximately 300 LOC/day for novel math-heavy code, 500 LOC/day for standard DeFi patterns), and no individual function exceeds cyclomatic complexity of 20. Yellow: the ratio is 1.5x to 2x the threshold, or complexity is elevated in peripheral functions only. Red: the LOC-per-auditor-day ratio exceeds 2x the threshold for the protocol type, or any critical function has cyclomatic complexity above 30 with no dedicated review or formal verification.\n\n**Common gray cases**\nThis factor is gray when the audit does not disclose duration or auditor count, making the LOC-per-day calculation impossible.\n\n**Notable historical examples**\n- **KyberSwap Elastic** ($48M, 2023): Complex concentrated-liquidity tick arithmetic exceeded what conventional audit methods could reliably verify.\n- **MonoX** ($31.4M, 2021): Novel single-token AMM pricing model too complex for two independent auditors to fully verify.\n- **Value DeFi** ($10M, 2021): Complex multi-token pool math produced an exploitable edge case.\n- **Bunni** ($8.4M, 2025): Concentrated liquidity math without formal verification or sufficient complexity-adjusted audit depth."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "bunni",
-          "relevance": "causal",
-          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
           "hack_protocol_name": "Bunni",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-09-01",
           "loss_usd": 8400000.0,
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
+          "occurred_at": "2025-09-01",
+          "relevance": "causal",
           "root_cause": "Precision/Rounding Error in Custom Liquidity Distribution Function (LDF)"
         },
         {
           "hack_id": "kyberswap",
-          "relevance": "causal",
-          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
           "hack_protocol_name": "KyberSwap Elastic",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-11-22",
           "loss_usd": 48000000.0,
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
+          "occurred_at": "2023-11-22",
+          "relevance": "causal",
           "root_cause": "Tick Manipulation + Double Liquidity Counting — Precision Arithmetic Edge Case"
         },
         {
           "hack_id": "monox-rekt",
-          "relevance": "causal",
-          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
           "hack_protocol_name": "MonoX",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-11-30",
           "loss_usd": 31400000.0,
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
+          "occurred_at": "2021-11-30",
+          "relevance": "causal",
           "root_cause": "Native token self-swap price inflation — tokenIn/tokenOut identity bypass"
         },
         {
           "hack_id": "value-rekt2",
-          "relevance": "causal",
-          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
           "hack_protocol_name": "Value DeFi",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-05",
           "loss_usd": 10000000.0,
+          "notes": "Code complexity above threshold for audit coverage [via cross-hack: Factor 53: Custom Proprietary AMM Math Without Independent Verification]",
+          "occurred_at": "2021-05-05",
+          "relevance": "causal",
           "root_cause": "Uninitialized Pool Re-initialization (Missing initialized = true)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A reproducible analyzer run and declared threshold are required.",
+          "evidence_summary": "No published cyclomatic-complexity or LOC-per-audit-day measurement was located for the current deployed contract set.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

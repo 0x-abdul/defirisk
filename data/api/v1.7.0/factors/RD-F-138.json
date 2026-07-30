@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-138",
-        "category_id": 9,
-        "name": "Hot-patch deploys without timelock (last 30 days)",
-        "description": "Count upgrades executed in the last 30 days without going through the declared timelock path.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of upgrades executed in the trailing 30 days that bypassed the protocol's declared timelock path — meaning the upgrade was executed directly from an admin address without going through the queuing and delay mechanism. These are identified by comparing on-chain upgrade transaction timestamps against any prior queuing transactions in the timelock contract; upgrades with no corresponding queue event are classified as hot-patch deploys.\n\n**Why it matters**\nHot-patch deploys that bypass the timelock eliminate the user protection window that timelocks are designed to provide. Even legitimate emergency patches represent a choice to prioritize speed over the security of the timelock guarantee — and that choice, when made unilaterally, reduces the protocol's governance security posture to the level of a non-timelocked system for that specific change. The pattern of emergency-bypass deploys accumulating over time (four in the evidence base) indicates that the timelock is not structurally enforced but is instead a discretionary governance tool, which undermines its credibility as a security signal.\n\n**Green / Yellow / Red**\nGreen is assigned when zero hot-patch deploys occurred in the trailing 30 days, or when any bypass was explicitly authorized by governance vote and publicly documented. Yellow covers one hot-patch deploy in 30 days with a documented emergency justification. Red is assigned when two or more hot-patch deploys occurred in the trailing 30 days without corresponding governance authorization, or when any hot-patch modified a contract in scope for a current audit.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no timelock (making \"bypass\" undefined), or when all upgrades in the window preceded the protocol's adoption of a timelock.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count upgrades executed in the last 30 days without going through the declared timelock path.",
-        "data_source": "`Upgraded` event timestamps vs `TimelockController` `CallExecuted` event timestamps (must match within same tx or tx-set)",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "List of upgrade tx hashes + timelock bypass flag per upgrade",
+        "category_id": 9,
         "confidence_signal": "green = 0 hot-patches; yellow = 1 hot-patch with documented emergency rationale; red = ≥2 hot-patches or any hot-patch without public explanation; gray = no upgrades in last 30 days",
+        "curation_archetype": "PE",
+        "data_source": "`Upgraded` event timestamps vs `TimelockController` `CallExecuted` event timestamps (must match within same tx or tx-set)",
+        "deprecated_in_rubric": null,
+        "description": "Count upgrades executed in the last 30 days without going through the declared timelock path.",
+        "evidence_artifact": "List of upgrade tx hashes + timelock bypass flag per upgrade",
+        "id": "RD-F-138",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count upgrades executed in the last 30 days without going through the declared timelock path.",
+        "method": "PE",
+        "name": "Hot-patch deploys without timelock (last 30 days)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of upgrades executed in the trailing 30 days that bypassed the protocol's declared timelock path — meaning the upgrade was executed directly from an admin address without going through the queuing and delay mechanism. These are identified by comparing on-chain upgrade transaction timestamps against any prior queuing transactions in the timelock contract; upgrades with no corresponding queue event are classified as hot-patch deploys.\n\n**Why it matters**\nHot-patch deploys that bypass the timelock eliminate the user protection window that timelocks are designed to provide. Even legitimate emergency patches represent a choice to prioritize speed over the security of the timelock guarantee — and that choice, when made unilaterally, reduces the protocol's governance security posture to the level of a non-timelocked system for that specific change. The pattern of emergency-bypass deploys accumulating over time (four in the evidence base) indicates that the timelock is not structurally enforced but is instead a discretionary governance tool, which undermines its credibility as a security signal.\n\n**Green / Yellow / Red**\nGreen is assigned when zero hot-patch deploys occurred in the trailing 30 days, or when any bypass was explicitly authorized by governance vote and publicly documented. Yellow covers one hot-patch deploy in 30 days with a documented emergency justification. Red is assigned when two or more hot-patch deploys occurred in the trailing 30 days without corresponding governance authorization, or when any hot-patch modified a contract in scope for a current audit.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no timelock (making \"bypass\" undefined), or when all upgrades in the window preceded the protocol's adoption of a timelock.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "No core upgrade is documented in the trailing 30 days; the latest published upgrades each state a 10-day timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

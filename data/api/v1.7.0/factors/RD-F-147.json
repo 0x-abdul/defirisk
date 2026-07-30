@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-147",
-        "category_id": 10,
-        "name": "Protocol has bridge surface",
-        "description": "Determine whether the protocol has a bridge surface (its own bridge or a bridge-operated dependency for routing/minting).",
-        "scoring_methodology": "**What this measures**\nThis factor is a Boolean gate for the rest of Category 10: it records whether the protocol has any bridge surface — either its own bridge, a bridge-operated dependency for cross-chain routing, or a cross-chain messaging layer (LayerZero OFT, Wormhole, Axelar). Source inspection and protocol documentation are used. Non-bridge protocols show this entire category as N/A and the category is not counted against the rubric score.\n\n**Why it matters**\nCategory 10 applies only to bridge-touching protocols; this factor determines whether any of the subsequent 11 bridge-architecture factors are relevant for assessment. Bridges represent a qualitatively different security surface from single-chain DeFi: they require message authentication across trust domains, validator-set integrity, and replay protection — failure modes that do not exist in purely single-chain protocols. The dataset records over $2B in bridge-related losses historically. Accurate identification of bridge surface at the profiling stage prevents both false positives (scoring bridge factors on a single-chain protocol) and false negatives (missing a bridge dependency embedded in a routing layer).\n\n**Green / Yellow / Red**\nGreen is scored when the protocol has no bridge surface and all Category 10 factors are correctly recorded as N/A. For bridge-touching protocols, this factor is recorded as \"present\" and the remaining Cat 10 factors are activated. Red is not applicable to this factor itself — its function is categorical rather than evaluative.\n\n**Common gray cases**\nGray is applied when the protocol uses a token bridge or relayer in an optional or non-core capacity and it is ambiguous whether the bridge surface is in scope for security assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol has a bridge surface (its own bridge or a bridge-operated dependency for routing/minting).",
-        "data_source": "Source inspection + protocol docs + on-chain cross-chain message contract identification",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Bridge contract address(es) or declaration that bridge surface is absent",
+        "category_id": 10,
         "confidence_signal": "green = bridge surface absent (category is N/A); gray-as-applicable = N/A for non-bridge protocols; [note: this factor gates the rest of Cat 10 — if false, all remaining Cat 10 factors are N/A]",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection + protocol docs + on-chain cross-chain message contract identification",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol has a bridge surface (its own bridge or a bridge-operated dependency for routing/minting).",
+        "evidence_artifact": "Bridge contract address(es) or declaration that bridge surface is absent",
+        "id": "RD-F-147",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol has a bridge surface (its own bridge or a bridge-operated dependency for routing/minting).",
+        "method": "PE",
+        "name": "Protocol has bridge surface",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor is a Boolean gate for the rest of Category 10: it records whether the protocol has any bridge surface — either its own bridge, a bridge-operated dependency for cross-chain routing, or a cross-chain messaging layer (LayerZero OFT, Wormhole, Axelar). Source inspection and protocol documentation are used. Non-bridge protocols show this entire category as N/A and the category is not counted against the rubric score.\n\n**Why it matters**\nCategory 10 applies only to bridge-touching protocols; this factor determines whether any of the subsequent 11 bridge-architecture factors are relevant for assessment. Bridges represent a qualitatively different security surface from single-chain DeFi: they require message authentication across trust domains, validator-set integrity, and replay protection — failure modes that do not exist in purely single-chain protocols. The dataset records over $2B in bridge-related losses historically. Accurate identification of bridge surface at the profiling stage prevents both false positives (scoring bridge factors on a single-chain protocol) and false negatives (missing a bridge dependency embedded in a routing layer).\n\n**Green / Yellow / Red**\nGreen is scored when the protocol has no bridge surface and all Category 10 factors are correctly recorded as N/A. For bridge-touching protocols, this factor is recorded as \"present\" and the remaining Cat 10 factors are activated. Red is not applicable to this factor itself — its function is categorical rather than evaluative.\n\n**Common gray cases**\nGray is applied when the protocol uses a token bridge or relayer in an optional or non-core capacity and it is ambiguous whether the bridge surface is in scope for security assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp is bridge-touching; its official address book lists LayerZero OFT and old/new CCIP contracts without proving current route activity.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#bridged-rseth"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

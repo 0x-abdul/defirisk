@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-107",
-        "category_id": 6,
-        "name": "Admin EOA signing from new geography/device",
-        "description": "Detect whether an admin/upgrader EOA signs from a geography or device fingerprint inconsistent with prior signing history.",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the admin or upgrader EOA signs a transaction from a geography (as inferred from IP metadata, if observable) or device fingerprint inconsistent with the prior signing history for that address. This signal is off-chain in nature — it requires access to signing telemetry from the wallet provider or a relay — and is therefore M (manual) curation and P2 priority. Category 6 context: geography and device anomalies are the off-chain behavioral indicators of key compromise, particularly relevant for the class of exploits where the attacker physically compromised a signing device or intercepted signing credentials.\n\n**Why it matters**\nRadiant Capital II ($53M, 2024) involved what Radiant described as a sophisticated device-level compromise across three signers' hardware wallets — an attack that left no on-chain precursor signal but would theoretically have been detectable via signing-session fingerprint anomalies if those signers' device environments were monitored. EasyFi ($59M, 2021) involved a MetaMask compromise that exposed private keys. The Harmony Bridge compromise involved hot-wallet signers whose key exposure would have been preceded by an anomalous signing session. The signal is P2 because signing-session telemetry is not broadly accessible from protocol-external monitoring — it requires cooperation from wallet providers or relay operators.\n\n**Green / Yellow / Red**\nGreen is the baseline when all admin signing sessions show device fingerprints and network characteristics consistent with the established signing history for each admin address. Yellow fires when a signing session shows an unfamiliar device fingerprint but from a consistent geography — could indicate hardware upgrade. Red fires when an admin signing session originates from an entirely new geography and device fingerprint combination never previously associated with that address.\n\n**Common gray cases**\nGray applies in virtually all v1 monitoring cases where signing telemetry is not accessible from the dashboard's external vantage point — this is the norm and Gray is the expected baseline state for most protocols.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Detect whether an admin/upgrader EOA signs from a geography or device fingerprint inconsistent with prior signing history.",
-        "data_source": "Off-chain signing telemetry (requires protocol team opt-in monitoring integration)",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "Geography/device fingerprint anomaly report + signing tx hash",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; red = anomaly detected; gray = off-chain telemetry not available (requires team opt-in — practically always gray)",
+        "curation_archetype": "M",
+        "data_source": "Off-chain signing telemetry (requires protocol team opt-in monitoring integration)",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether an admin/upgrader EOA signs from a geography or device fingerprint inconsistent with prior signing history.",
+        "evidence_artifact": "Geography/device fingerprint anomaly report + signing tx hash",
+        "id": "RD-F-107",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether an admin/upgrader EOA signs from a geography or device fingerprint inconsistent with prior signing history.",
+        "method": "M",
+        "name": "Admin EOA signing from new geography/device",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the admin or upgrader EOA signs a transaction from a geography (as inferred from IP metadata, if observable) or device fingerprint inconsistent with the prior signing history for that address. This signal is off-chain in nature — it requires access to signing telemetry from the wallet provider or a relay — and is therefore M (manual) curation and P2 priority. Category 6 context: geography and device anomalies are the off-chain behavioral indicators of key compromise, particularly relevant for the class of exploits where the attacker physically compromised a signing device or intercepted signing credentials.\n\n**Why it matters**\nRadiant Capital II ($53M, 2024) involved what Radiant described as a sophisticated device-level compromise across three signers' hardware wallets — an attack that left no on-chain precursor signal but would theoretically have been detectable via signing-session fingerprint anomalies if those signers' device environments were monitored. EasyFi ($59M, 2021) involved a MetaMask compromise that exposed private keys. The Harmony Bridge compromise involved hot-wallet signers whose key exposure would have been preceded by an anomalous signing session. The signal is P2 because signing-session telemetry is not broadly accessible from protocol-external monitoring — it requires cooperation from wallet providers or relay operators.\n\n**Green / Yellow / Red**\nGreen is the baseline when all admin signing sessions show device fingerprints and network characteristics consistent with the established signing history for each admin address. Yellow fires when a signing session shows an unfamiliar device fingerprint but from a consistent geography — could indicate hardware upgrade. Red fires when an admin signing session originates from an entirely new geography and device fingerprint combination never previously associated with that address.\n\n**Common gray cases**\nGray applies in virtually all v1 monitoring cases where signing telemetry is not accessible from the dashboard's external vantage point — this is the norm and Gray is the expected baseline state for most protocols.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Geography and device-fingerprint telemetry for Kelp Safe and admin signers is not publicly observable.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

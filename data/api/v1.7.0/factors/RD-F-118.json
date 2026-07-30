@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-118",
-        "category_id": 7,
-        "name": "Handle reuse across failed/rugged projects",
-        "description": "Determine whether any social handle (Twitter, Discord) has been associated with a prior rugged or failed project under a different alias.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether any team member's social handles — Twitter/X, Discord, GitHub username, or Telegram — have previously been associated with a rugged or failed project under a different protocol name. Measurement is manual OSINT by the curator, cross-referencing current handles against archived social records, Wayback Machine captures, and curator-maintained alias databases. Category 7 context: handle reuse is a signature behavior of serial exit-scam operators who rebrand after each rug while retaining their online presence.\n\n**Why it matters**\nSerial exit-scam operators rarely create entirely new online identities — doing so sacrifices follower counts and credibility signals that are operationally useful for attracting new victims. More commonly, they retain the same handle but change the protocol branding, or use closely related handles across iterations. Handle reuse is documented in the rekt.news dataset for several BSC-era rug operators and in the Snowdog incident where wallet funding via FTX-KYC'd accounts provided cross-reference opportunities. The signal is weak in isolation but becomes strong when combined with pseudonymous identity, short protocol age, and no audit.\n\n**Green / Yellow / Red**\nGreen is scored when no handle associated with any core team member appears in curator rug alias databases or in archived references to failed/rugged projects under different protocol names. Yellow applies when a handle has a documented prior association with a project that failed (team dissolved, protocol sunsetted) but without confirmed rug attribution — normal project failure is not a risk signal. Red is scored when a verified handle reuse links a current team member to a prior confirmed rug or exit-scam protocol.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and no handles are publicly attributable, or when the OSINT trail is too sparse to cross-reference against rug databases with confidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether any social handle (Twitter, Discord) has been associated with a prior rugged or failed project under a different alias.",
-        "data_source": "OSINT: Twitter/X Wayback Machine + Discord handle history + archived project sites + rekt.news",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Handle + prior project association + evidence URL",
+        "category_id": 7,
         "confidence_signal": "green = no reuse detected; red = confirmed handle reuse with prior rug; gray = handles not publicly associated with team",
+        "curation_archetype": "M",
+        "data_source": "OSINT: Twitter/X Wayback Machine + Discord handle history + archived project sites + rekt.news",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any social handle (Twitter, Discord) has been associated with a prior rugged or failed project under a different alias.",
+        "evidence_artifact": "Handle + prior project association + evidence URL",
+        "id": "RD-F-118",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any social handle (Twitter, Discord) has been associated with a prior rugged or failed project under a different alias.",
+        "method": "M",
+        "name": "Handle reuse across failed/rugged projects",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether any team member's social handles — Twitter/X, Discord, GitHub username, or Telegram — have previously been associated with a rugged or failed project under a different protocol name. Measurement is manual OSINT by the curator, cross-referencing current handles against archived social records, Wayback Machine captures, and curator-maintained alias databases. Category 7 context: handle reuse is a signature behavior of serial exit-scam operators who rebrand after each rug while retaining their online presence.\n\n**Why it matters**\nSerial exit-scam operators rarely create entirely new online identities — doing so sacrifices follower counts and credibility signals that are operationally useful for attracting new victims. More commonly, they retain the same handle but change the protocol branding, or use closely related handles across iterations. Handle reuse is documented in the rekt.news dataset for several BSC-era rug operators and in the Snowdog incident where wallet funding via FTX-KYC'd accounts provided cross-reference opportunities. The signal is weak in isolation but becomes strong when combined with pseudonymous identity, short protocol age, and no audit.\n\n**Green / Yellow / Red**\nGreen is scored when no handle associated with any core team member appears in curator rug alias databases or in archived references to failed/rugged projects under different protocol names. Yellow applies when a handle has a documented prior association with a project that failed (team dissolved, protocol sunsetted) but without confirmed rug attribution — normal project failure is not a risk signal. Red is scored when a verified handle reuse links a current team member to a prior confirmed rug or exit-scam protocol.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and no handles are publicly attributable, or when the OSINT trail is too sparse to cross-reference against rug databases with confidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Current founder identities are public, but historical aliases and failed-project associations were not exhaustively resolved.",
+          "evidence_summary": "A systematic historical-handle reuse investigation was not completed for every Kelp contributor.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

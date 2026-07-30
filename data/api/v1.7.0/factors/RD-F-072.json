@@ -1,100 +1,114 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-072",
-        "category_id": 4,
-        "name": "Market-listing governance threshold",
-        "description": "Classify the governance threshold required to list a new market as: permissionless / low-threshold (team multisig) / high-threshold (DAO vote) / no new listings.",
-        "scoring_methodology": "**What this measures**\nThis factor is a categorical assessment of the protocol's market-listing governance threshold: permissionless (any address can create markets), low-threshold (governance vote required but with low quorum or short timelock), high-threshold (governance vote with meaningful quorum and timelock), or no new listings (protocol does not add new markets). The classification is derived from source code inspection and governance configuration. This factor applies to lending protocols and permissionless vaults.\n\n**Why it matters**\nThe ability of any address to list new markets or vaults without human review is a direct enabler of injection attacks. AlexLab II ($16.18M, 2025) was exploited when an attacker self-listed a malicious token through the protocol's permissionless vault mechanism. Cork Protocol ($12M, 2025) lost funds because its CorkHook contract accepted unvalidated external contracts as legitimate inputs. Penpie ($27M, 2024) and Pickle Finance ($19.7M, 2020) share the same root cause: permissionless registration paths that allowed fake markets or jars to be created without whitelist review. The severity of this factor is amplified when the protocol is also a Compound V2 fork (where permissionless market creation enables the empty-market inflation attack).\n\n**Green / Yellow / Red**\nGreen: no new market listings permitted (fixed market set), or new listings require a high-threshold governance vote with at least forty-eight hours of timelock and multisig countersignature. Yellow: new listings require a governance vote but with a low quorum threshold or less than forty-eight hours of timelock, creating an exploitable activation window. Red: any address can create markets, vaults, or pools without governance approval or whitelist review.\n\n**Common gray cases**\nProtocols that allow permissionless creation of isolated markets with limited collateral sharing may present lower risk than fully-shared-liquidity permissionless designs; curator must assess the isolation boundary when scoring.\n\n**Notable historical examples**\n- **Penpie** ($27M, 2024): Permissionless market registration allowed attacker to create a fake market and exploit the protocol.\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution enabled front-running of market activation.\n- **Pickle Finance** ($19.7M, 2020): Permissionless jar creation without whitelist review.\n- **AlexLab** ($16.18M, 2025): Permissionless vault token self-listing used to inject malicious asset.\n- **Cork Protocol** ($12M, 2025): Permissionless contract registration without validation of submitted contract code.\n- **Radiant Capital 1st** ($4.5M, 2024): Governance-activated market with 6-second exploitation window.\n- **Onyx Protocol** ($2.1M, 2023): Governance-added PEPE market with no seed deposit.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Classify the governance threshold required to list a new market as: permissionless / low-threshold (team multisig) / high-threshold (DAO vote) / no new listings.",
-        "data_source": "Governance contract source + protocol docs on market listing process",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Classification string + evidence URL",
+        "category_id": 4,
         "confidence_signal": "green = high-threshold (full DAO vote required); yellow = low-threshold (team multisig); red = permissionless (anyone can list); gray = protocol does not support new market listings",
+        "curation_archetype": "PE",
+        "data_source": "Governance contract source + protocol docs on market listing process",
+        "deprecated_in_rubric": null,
+        "description": "Classify the governance threshold required to list a new market as: permissionless / low-threshold (team multisig) / high-threshold (DAO vote) / no new listings.",
+        "evidence_artifact": "Classification string + evidence URL",
+        "id": "RD-F-072",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Classify the governance threshold required to list a new market as: permissionless / low-threshold (team multisig) / high-threshold (DAO vote) / no new listings.",
+        "method": "PE",
+        "name": "Market-listing governance threshold",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor is a categorical assessment of the protocol's market-listing governance threshold: permissionless (any address can create markets), low-threshold (governance vote required but with low quorum or short timelock), high-threshold (governance vote with meaningful quorum and timelock), or no new listings (protocol does not add new markets). The classification is derived from source code inspection and governance configuration. This factor applies to lending protocols and permissionless vaults.\n\n**Why it matters**\nThe ability of any address to list new markets or vaults without human review is a direct enabler of injection attacks. AlexLab II ($16.18M, 2025) was exploited when an attacker self-listed a malicious token through the protocol's permissionless vault mechanism. Cork Protocol ($12M, 2025) lost funds because its CorkHook contract accepted unvalidated external contracts as legitimate inputs. Penpie ($27M, 2024) and Pickle Finance ($19.7M, 2020) share the same root cause: permissionless registration paths that allowed fake markets or jars to be created without whitelist review. The severity of this factor is amplified when the protocol is also a Compound V2 fork (where permissionless market creation enables the empty-market inflation attack).\n\n**Green / Yellow / Red**\nGreen: no new market listings permitted (fixed market set), or new listings require a high-threshold governance vote with at least forty-eight hours of timelock and multisig countersignature. Yellow: new listings require a governance vote but with a low quorum threshold or less than forty-eight hours of timelock, creating an exploitable activation window. Red: any address can create markets, vaults, or pools without governance approval or whitelist review.\n\n**Common gray cases**\nProtocols that allow permissionless creation of isolated markets with limited collateral sharing may present lower risk than fully-shared-liquidity permissionless designs; curator must assess the isolation boundary when scoring.\n\n**Notable historical examples**\n- **Penpie** ($27M, 2024): Permissionless market registration allowed attacker to create a fake market and exploit the protocol.\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution enabled front-running of market activation.\n- **Pickle Finance** ($19.7M, 2020): Permissionless jar creation without whitelist review.\n- **AlexLab** ($16.18M, 2025): Permissionless vault token self-listing used to inject malicious asset.\n- **Cork Protocol** ($12M, 2025): Permissionless contract registration without validation of submitted contract code.\n- **Radiant Capital 1st** ($4.5M, 2024): Governance-activated market with 6-second exploitation window.\n- **Onyx Protocol** ($2.1M, 2023): Governance-added PEPE market with no seed deposit."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "alexlab-rekt2",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "AlexLab (Bitcoin DeFi / Stacks)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-06",
           "loss_usd": 16180000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2025-06-06",
+          "relevance": "causal",
           "root_cause": "Vault permission hijack via malicious token self-listing; `as-contract` context abuse"
         },
         {
           "hack_id": "cork-protocol-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Cork Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-28",
           "loss_usd": 12000000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2025-05-28",
+          "relevance": "causal",
           "root_cause": "Fake token injection → exchange rate manipulation via unvalidated CorkHook input"
         },
         {
           "hack_id": "penpie-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Penpie",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-03",
           "loss_usd": 27000000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-09-03",
+          "relevance": "causal",
           "root_cause": "Reentrancy via fake Pendle market → staking balance inflation → excess reward drain"
         },
         {
           "hack_id": "sonne-finance-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Sonne Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
           "loss_usd": 20000000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-05-14",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "radiant-capital-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Radiant Capital (1st incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-01-02",
           "loss_usd": 4500000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-01-02",
+          "relevance": "causal",
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
         },
         {
           "hack_id": "onyx-protocol-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Onyx Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-10-31",
           "loss_usd": 2100000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2023-10-31",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
         },
         {
           "hack_id": "pickle-finance-rekt",
-          "relevance": "causal",
-          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Pickle Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-22",
           "loss_usd": 19700000.0,
+          "notes": "Market-listing governance threshold = permissionless [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2020-11-22",
+          "relevance": "causal",
           "root_cause": "Fake jar injection — missing whitelist in Controller's jar-swap function"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp DAO does not operate a lending-market listing process. Administrative allowlisting of deposit assets is not a borrow-market governance threshold, so RD-F-072 is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

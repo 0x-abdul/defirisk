@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-152",
-        "category_id": 10,
-        "name": "Bridge binds message to srcChainId",
-        "description": "Determine whether the bridge message struct includes `srcChainId` and the verifier enforces per-chain separation.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the bridge message struct includes a `srcChainId` field and whether the verifier enforces chain-of-origin separation when validating messages. Without this, a valid message signed for chain A can be replayed on chain B if the signer set is shared. Static analysis of the bridge verifier and message struct is the assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCross-chain replay attacks exploit the absence of per-chain message binding: an attacker who captures a valid signed message from one chain can replay it on a different chain where the same validator set is trusted. This is particularly relevant for bridges that operate across many chains with a shared guardian set — a signed message to release tokens on Ethereum could be replayed to release tokens on BSC, BNB Chain, or Avalanche if chain binding is absent. The T-01 evidence base links cross-chain replay patterns to approximately 2 protocols in the hack database. Chain binding is a minimum security requirement for any multi-chain bridge architecture.\n\n**Green / Yellow / Red**\nGreen is scored when the message struct includes `srcChainId` (or equivalent), the verifier enforces it, and per-chain nonce or root state prevents cross-chain replay. Yellow is scored when chain binding exists in the struct but is not verified in all execution paths, or when chain binding is present only for some bridge functions. Red is scored when no chain binding exists in the message struct or verification logic.\n\n**Common gray cases**\nGray is applied when the bridge uses a proprietary message encoding that cannot be decoded without the closed-source ABI.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the bridge message struct includes `srcChainId` and the verifier enforces per-chain separation.",
-        "data_source": "Source inspection of bridge message struct and verifier logic on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Message struct definition source excerpt + chainId binding check",
+        "category_id": 10,
         "confidence_signal": "green = srcChainId present and enforced; red = srcChainId absent or not enforced; gray = bridge source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of bridge message struct and verifier logic on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the bridge message struct includes `srcChainId` and the verifier enforces per-chain separation.",
+        "evidence_artifact": "Message struct definition source excerpt + chainId binding check",
+        "id": "RD-F-152",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the bridge message struct includes `srcChainId` and the verifier enforces per-chain separation.",
+        "method": "PE",
+        "name": "Bridge binds message to srcChainId",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the bridge message struct includes a `srcChainId` field and whether the verifier enforces chain-of-origin separation when validating messages. Without this, a valid message signed for chain A can be replayed on chain B if the signer set is shared. Static analysis of the bridge verifier and message struct is the assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCross-chain replay attacks exploit the absence of per-chain message binding: an attacker who captures a valid signed message from one chain can replay it on a different chain where the same validator set is trusted. This is particularly relevant for bridges that operate across many chains with a shared guardian set — a signed message to release tokens on Ethereum could be replayed to release tokens on BSC, BNB Chain, or Avalanche if chain binding is absent. The T-01 evidence base links cross-chain replay patterns to approximately 2 protocols in the hack database. Chain binding is a minimum security requirement for any multi-chain bridge architecture.\n\n**Green / Yellow / Red**\nGreen is scored when the message struct includes `srcChainId` (or equivalent), the verifier enforces it, and per-chain nonce or root state prevents cross-chain replay. Yellow is scored when chain binding exists in the struct but is not verified in all execution paths, or when chain binding is present only for some bridge functions. Red is scored when no chain binding exists in the message struct or verification logic.\n\n**Common gray cases**\nGray is applied when the bridge uses a proprietary message encoding that cannot be decoded without the closed-source ABI.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "LayerZero V2 packet/origin structures bind source endpoint ID and sender to the delivered message.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/protocol/packet"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

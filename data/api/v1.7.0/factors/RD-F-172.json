@@ -1,40 +1,60 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-172",
-        "category_id": 12,
-        "name": "Repo shows AI-tool co-authorship in critical files",
-        "description": "Determine whether critical security files show commits with AI-tool co-authorship metadata (GitHub Copilot, ChatGPT Code Interpreter).",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether any critical contracts (contracts holding user funds or implementing core financial logic) have commits in the protocol's repository where the commit message or trailer includes AI-tool co-authorship markers (e.g., Co-authored-by: GitHub Copilot, Co-authored-by: ChatGPT Code Interpreter). The check is performed via GitHub API inspection and is updated on a slow continuous cadence.\n\n**Why it matters**\nAI co-authorship in security-critical files is a signal that the code was generated or modified with AI assistance rather than written entirely by a human developer who is accountable for its correctness. The risk is not that AI-generated code is inherently insecure -- it often is not -- but that AI tools can introduce subtle bugs in patterns they have seen frequently (e.g., inverting a comparison, omitting a boundary check, reordering a state update) and that neither the developer nor the auditor has incentive to scrutinize these changes with the same rigor as novel code. The Moonwell incident ($1.78M, 2026) is the first confirmed case in the dataset where AI-coauthored code in a security-critical contract contributed to an exploited vulnerability.\n\n**Green / Yellow / Red**\nGreen: no AI-tool co-authorship markers detected in any commits touching security-critical contract files. Yellow: AI co-authorship markers detected in non-critical files (e.g., documentation, test utilities, peripheral scripts) but not in core financial logic. Red: AI co-authorship markers detected in commits touching contracts that hold user funds, implement core financial logic, or control access to admin functions.\n\n**Common gray cases**\nSome developers use AI assistance without leaving co-authorship markers, making this a lower-bound indicator rather than a comprehensive detection. A green score on this factor does not exclude AI involvement; it only confirms that disclosed AI co-authorship is absent.\n\n**Notable historical examples**\n- **Moonwell** ($1.78M, 2026): AI-coauthored code in a security-critical contract contributed to the exploited vulnerability path.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether critical security files show commits with AI-tool co-authorship metadata (GitHub Copilot, ChatGPT Code Interpreter).",
-        "data_source": "GitHub API commit details for security-critical files: check `co-authored-by` trailers for AI-tool signatures",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "GitHub commit SHA list + co-authored-by trailer content for flagged files",
+        "category_id": 12,
         "confidence_signal": "green = no AI co-authorship in security-critical files; yellow = AI co-authorship in peripheral (non-security-critical) files; red = AI co-authorship detected in core security-critical contract files; gray = repo is private or commit history inaccessible",
+        "curation_archetype": "PE",
+        "data_source": "GitHub API commit details for security-critical files: check `co-authored-by` trailers for AI-tool signatures",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether critical security files show commits with AI-tool co-authorship metadata (GitHub Copilot, ChatGPT Code Interpreter).",
+        "evidence_artifact": "GitHub commit SHA list + co-authored-by trailer content for flagged files",
+        "id": "RD-F-172",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether critical security files show commits with AI-tool co-authorship metadata (GitHub Copilot, ChatGPT Code Interpreter).",
+        "method": "PE",
+        "name": "Repo shows AI-tool co-authorship in critical files",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether any critical contracts (contracts holding user funds or implementing core financial logic) have commits in the protocol's repository where the commit message or trailer includes AI-tool co-authorship markers (e.g., Co-authored-by: GitHub Copilot, Co-authored-by: ChatGPT Code Interpreter). The check is performed via GitHub API inspection and is updated on a slow continuous cadence.\n\n**Why it matters**\nAI co-authorship in security-critical files is a signal that the code was generated or modified with AI assistance rather than written entirely by a human developer who is accountable for its correctness. The risk is not that AI-generated code is inherently insecure -- it often is not -- but that AI tools can introduce subtle bugs in patterns they have seen frequently (e.g., inverting a comparison, omitting a boundary check, reordering a state update) and that neither the developer nor the auditor has incentive to scrutinize these changes with the same rigor as novel code. The Moonwell incident ($1.78M, 2026) is the first confirmed case in the dataset where AI-coauthored code in a security-critical contract contributed to an exploited vulnerability.\n\n**Green / Yellow / Red**\nGreen: no AI-tool co-authorship markers detected in any commits touching security-critical contract files. Yellow: AI co-authorship markers detected in non-critical files (e.g., documentation, test utilities, peripheral scripts) but not in core financial logic. Red: AI co-authorship markers detected in commits touching contracts that hold user funds, implement core financial logic, or control access to admin functions.\n\n**Common gray cases**\nSome developers use AI assistance without leaving co-authorship markers, making this a lower-bound indicator rather than a comprehensive detection. A green score on this factor does not exclude AI involvement; it only confirms that disclosed AI co-authorship is absent.\n\n**Notable historical examples**\n- **Moonwell** ($1.78M, 2026): AI-coauthored code in a security-critical contract contributed to the exploited vulnerability path."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "moonwell-rekt",
-          "relevance": "causal",
-          "notes": "Repo shows AI-tool co-authorship in critical files (Cat 12) [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]",
           "hack_protocol_name": "Moonwell",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-02-15",
           "loss_usd": 1780000.0,
+          "notes": "Repo shows AI-tool co-authorship in critical files (Cat 12) [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]",
+          "occurred_at": "2026-02-15",
+          "relevance": "causal",
           "root_cause": "Oracle Misconfiguration (Missing ETH/USD Multiplier)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A complete Git-history scan is required; absence from spot checks is not treated as a clean result.",
+          "evidence_summary": "No exhaustive critical-file commit-trailer scan established whether AI tools co-authored security-critical code.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/commits/main/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

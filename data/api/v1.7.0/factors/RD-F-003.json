@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-003",
-        "category_id": 1,
-        "name": "Resolved-without-proof findings",
-        "description": "Count the number of findings the audit report marks \"Resolved\" or \"Fixed\" where no matching on-chain bytecode change or verifiable commit can be found.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of findings in the protocol's most recent audit report that are marked 'Resolved' or 'Fixed' where no corresponding on-chain bytecode change or verifiable commit can be identified. A finding is counted as unverified-resolved when the audit marks it closed, but the deployed bytecode at the audited commit hash shows no change consistent with the described fix. The data source is audit PDF cross-referenced against commit trails and deployed bytecode.\n\n**Why it matters**\nAudit findings marked Resolved without on-chain proof create a false paper trail. Merlin DEX's CertiK audit marked a critical centralization risk -- maximum approval granted to a single EOA -- as Resolved after the team verbally promised to implement a multisig. The EOA was never replaced; the finding remained fully exploitable and was the direct vector for the $1.82M exploit. This pattern -- verbal or self-reported fixes accepted by auditors without on-chain verification -- is a documented class of false assurance. A protocol with multiple unverified Resolved findings has potentially fewer real security properties than its audit certificate suggests.\n\n**Green / Yellow / Red**\nGreen: all findings marked Resolved in the audit have on-chain proof of fix, either via a verifiable commit hash or a subsequent audit confirming the remediation. Yellow: one or two low-severity findings lack verifiable on-chain proof, but high and critical findings are all confirmed fixed. Red: any high or critical severity finding is marked Resolved without on-chain or commit-level proof of the fix.\n\n**Common gray cases**\nCurators cannot grade this factor when the audit report is not publicly available or when the protocol does not publish source code with verifiable commit history, making it impossible to cross-reference stated resolutions against deployed code.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The Merlin DEX case (noted in the Factor 27 cross-hack section) is the clearest documented example, but Merlin DEX does not appear in the linked hacks for RD-F-003 directly. The factor's evidence base of approximately 14 precursor instances in the T-01 inventory supports its P0 priority.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Count the number of findings the audit report marks \"Resolved\" or \"Fixed\" where no matching on-chain bytecode change or verifiable commit can be found.",
-        "data_source": "Audit PDF findings table + protocol GitHub commit history + Etherscan bytecode diff vs report commit",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Audit PDF URL + finding IDs marked resolved + commit SHA(s) purporting to fix each + bytecode diff confirming fix; curator sign-off",
+        "category_id": 1,
         "confidence_signal": "green = 0 unverifiable resolutions; yellow = 1–2 low/medium severity unverified; red = any high/critical finding marked resolved without verifiable on-chain proof; gray = audit PDF not accessible",
+        "curation_archetype": "M",
+        "data_source": "Audit PDF findings table + protocol GitHub commit history + Etherscan bytecode diff vs report commit",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of findings the audit report marks \"Resolved\" or \"Fixed\" where no matching on-chain bytecode change or verifiable commit can be found.",
+        "evidence_artifact": "Audit PDF URL + finding IDs marked resolved + commit SHA(s) purporting to fix each + bytecode diff confirming fix; curator sign-off",
+        "id": "RD-F-003",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of findings the audit report marks \"Resolved\" or \"Fixed\" where no matching on-chain bytecode change or verifiable commit can be found.",
+        "method": "M",
+        "name": "Resolved-without-proof findings",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of findings in the protocol's most recent audit report that are marked 'Resolved' or 'Fixed' where no corresponding on-chain bytecode change or verifiable commit can be identified. A finding is counted as unverified-resolved when the audit marks it closed, but the deployed bytecode at the audited commit hash shows no change consistent with the described fix. The data source is audit PDF cross-referenced against commit trails and deployed bytecode.\n\n**Why it matters**\nAudit findings marked Resolved without on-chain proof create a false paper trail. Merlin DEX's CertiK audit marked a critical centralization risk -- maximum approval granted to a single EOA -- as Resolved after the team verbally promised to implement a multisig. The EOA was never replaced; the finding remained fully exploitable and was the direct vector for the $1.82M exploit. This pattern -- verbal or self-reported fixes accepted by auditors without on-chain verification -- is a documented class of false assurance. A protocol with multiple unverified Resolved findings has potentially fewer real security properties than its audit certificate suggests.\n\n**Green / Yellow / Red**\nGreen: all findings marked Resolved in the audit have on-chain proof of fix, either via a verifiable commit hash or a subsequent audit confirming the remediation. Yellow: one or two low-severity findings lack verifiable on-chain proof, but high and critical findings are all confirmed fixed. Red: any high or critical severity finding is marked Resolved without on-chain or commit-level proof of the fix.\n\n**Common gray cases**\nCurators cannot grade this factor when the audit report is not publicly available or when the protocol does not publish source code with verifiable commit history, making it impossible to cross-reference stated resolutions against deployed code.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The Merlin DEX case (noted in the Factor 27 cross-hack section) is the clearest documented example, but Merlin DEX does not appear in the linked hacks for RD-F-003 directly. The factor's evidence base of approximately 14 precursor instances in the T-01 inventory supports its P0 priority."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The public report records resolution dispositions for numerous findings. The deployed bytecode and exact fixing commits were not mapped for every fixed disposition.",
+          "evidence_summary": "Bailsec marks findings fixed or acknowledged, but a complete report-finding-to-current-runtime resolution trail was not reconstructed.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://kerneldao.com/kelp/audits/smartcontracts/Bailsec_rsETH_november.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

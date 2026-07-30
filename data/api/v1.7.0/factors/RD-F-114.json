@@ -1,40 +1,61 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-114",
-        "category_id": 7,
-        "name": "Deployer address prior on-chain history",
-        "description": "Classify the deployer address history as: none (fresh address) / normal-dev-history (prior protocol deploys, non-flagged activity) / linked-to-prior-rug (deployer used in prior known rug).",
-        "scoring_methodology": "**What this measures**\nThis factor categorizes the deployer address's prior on-chain activity into one of three states: no prior history (fresh address), normal development history (prior legitimate protocol deployments, token interactions, no rug-linked transactions), or linked to a prior rug (address appears in a curator rug database or Chainalysis/OFAC label). Assessment is programmatic using on-chain transaction history analysis combined with curator rug-address lists. Category 7 context: a fresh deployer address with no prior history provides no baseline for assessing intent; a deployer with a documented rug history is an immediate red flag.\n\n**Why it matters**\nThe Eminence Finance case is the canonical example of deployer reputation being used as a false trust signal: $15M flooded into unannounced, unaudited contracts within hours simply because the deployer address was associated with Yearn Finance's known deployer. When deployer reputation is the primary trust signal, it creates exploitable asymmetry — users assume safety while the deployer faces no accountability. A fresh address with no history provides neither positive nor negative signal but eliminates the false-trust-signal risk. A rug-linked address is unambiguously disqualifying.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer has a clean, multi-year on-chain history showing legitimate development activity — prior audited protocol deployments, no rug-database matches, no mixer interactions. Yellow applies when the deployer address is relatively new (less than six months) but shows normal development patterns with no rug links. Red is scored when the deployer address matches a curator rug database entry, is linked to a prior exit-scam protocol, or has a mixer-to-fresh-wallet funding chain (overlaps with RD-F-124).\n\n**Common gray cases**\nGray is assigned when the deployer is a multi-sig factory or CREATE2 factory deployment where no single originating EOA is identifiable as the responsible party.\n\n**Notable historical examples**\n- **Eminence Finance** ($15M, 2020): Yearn deployer address used as false trust signal; $15M deposited into unaudited contracts within hours of silent deployment.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Classify the deployer address history as: none (fresh address) / normal-dev-history (prior protocol deploys, non-flagged activity) / linked-to-prior-rug (deployer used in prior known rug).",
-        "data_source": "Etherscan tx history of deployer address + Chainalysis/TRM cluster labels + curator rug-deployer watchlist",
-        "method": "PH",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Deployer address + Etherscan tx count + prior contract deploys + cluster label",
+        "category_id": 7,
         "confidence_signal": "green = deployer has normal dev history with ≥6 months of non-flagged activity; yellow = fresh address (no prior history, neutral); red = deployer address linked to prior rug or flagged by CTI feed; gray = deployer address not identified",
+        "curation_archetype": "PH",
+        "data_source": "Etherscan tx history of deployer address + Chainalysis/TRM cluster labels + curator rug-deployer watchlist",
+        "deprecated_in_rubric": null,
+        "description": "Classify the deployer address history as: none (fresh address) / normal-dev-history (prior protocol deploys, non-flagged activity) / linked-to-prior-rug (deployer used in prior known rug).",
+        "evidence_artifact": "Deployer address + Etherscan tx count + prior contract deploys + cluster label",
+        "id": "RD-F-114",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Classify the deployer address history as: none (fresh address) / normal-dev-history (prior protocol deploys, non-flagged activity) / linked-to-prior-rug (deployer used in prior known rug).",
+        "method": "PH",
+        "name": "Deployer address prior on-chain history",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor categorizes the deployer address's prior on-chain activity into one of three states: no prior history (fresh address), normal development history (prior legitimate protocol deployments, token interactions, no rug-linked transactions), or linked to a prior rug (address appears in a curator rug database or Chainalysis/OFAC label). Assessment is programmatic using on-chain transaction history analysis combined with curator rug-address lists. Category 7 context: a fresh deployer address with no prior history provides no baseline for assessing intent; a deployer with a documented rug history is an immediate red flag.\n\n**Why it matters**\nThe Eminence Finance case is the canonical example of deployer reputation being used as a false trust signal: $15M flooded into unannounced, unaudited contracts within hours simply because the deployer address was associated with Yearn Finance's known deployer. When deployer reputation is the primary trust signal, it creates exploitable asymmetry — users assume safety while the deployer faces no accountability. A fresh address with no history provides neither positive nor negative signal but eliminates the false-trust-signal risk. A rug-linked address is unambiguously disqualifying.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer has a clean, multi-year on-chain history showing legitimate development activity — prior audited protocol deployments, no rug-database matches, no mixer interactions. Yellow applies when the deployer address is relatively new (less than six months) but shows normal development patterns with no rug links. Red is scored when the deployer address matches a curator rug database entry, is linked to a prior exit-scam protocol, or has a mixer-to-fresh-wallet funding chain (overlaps with RD-F-124).\n\n**Common gray cases**\nGray is assigned when the deployer is a multi-sig factory or CREATE2 factory deployment where no single originating EOA is identifiable as the responsible party.\n\n**Notable historical examples**\n- **Eminence Finance** ($15M, 2020): Yearn deployer address used as false trust signal; $15M deposited into unaudited contracts within hours of silent deployment."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "eminence-rekt",
-          "relevance": "causal",
-          "notes": "Deployer address prior on-chain history [via cross-hack: Factor 20: Deployer Reputation as False Trust Signal]",
           "hack_protocol_name": "Eminence Finance (EMN)",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-09-28",
           "loss_usd": 15000000.0,
+          "notes": "Deployer address prior on-chain history [via cross-hack: Factor 20: Deployer Reputation as False Trust Signal]",
+          "occurred_at": "2020-09-28",
+          "relevance": "causal",
           "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The address has long-lived protocol activity and an attributed first funding hop, but this pass did not classify its entire on-chain history.",
+          "evidence_summary": "Etherscan labels 0x7AAd…af47 as Kelp's deployer and its first funder as a Stader deployer, but a full prior-transaction risk classification was not completed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7aad74b7f0d60d5867b59dbd377a71783425af47"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

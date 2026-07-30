@@ -1,70 +1,96 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-028",
-        "category_id": 2,
-        "name": "Low-threshold multisig vs TVL",
-        "description": "Determine whether the multisig threshold is abnormally low relative to TVL peer cohort (e.g., 2-of-3 for a protocol with >$100M TVL where peer norm is 5-of-8).",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether a protocol's multisig signing threshold is abnormally low relative to its TVL and peer cohort. Rather than scoring the raw threshold number in isolation, the measurement places it against the distribution of thresholds used by protocols in the same TVL bracket — flagging cases where the required signer count falls materially below what peers of equivalent size have adopted. A 2-of-3 threshold securing $5M may be unremarkable; the same configuration securing $500M is structurally indefensible.\n\n**Why it matters**\nLow signing thresholds concentrate effective control into a small, compromisable set of signers. OpenZeppelin governance security guidance recommends using battle-tested multisig implementations with \"publicly known\" owners who can be \"linked to specific individuals in the community\" — the accountability argument collapses when two or three unknown signers collectively hold the keys to hundreds of millions. The dataset's largest bridge and protocol exploits share a structural feature: a threshold low enough that a nation-state actor, rogue insider, or targeted phishing campaign need only compromise two or three endpoints. Both Harmony Bridge and Radiant Capital II demonstrated that even a 3-of-11 threshold on a $53M protocol represents an unacceptable concentration of risk.\n\n**Green / Yellow / Red**\nGreen is assigned when the multisig threshold meets or exceeds peer norms for the TVL cohort (typically 5-of-8 or higher at $100M+ TVL) and signers are geographically and institutionally distributed. Yellow covers cases where the threshold is within one signer of the peer median or where distribution of signers is unclear. Red is assigned when the threshold is two or more signers below the peer median for the TVL bracket, or when a protocol above $50M TVL uses a threshold below 3-of-N.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not publish a signer list and on-chain discovery is inconclusive, or when the TVL is below the $5M floor at which peer-cohort comparison becomes meaningful.\n\n**Notable historical examples**\n- **Harmony Horizon Bridge** ($100M, 2022): 2-of-5 multisig with hot wallet signers; threshold compression made key compromise catastrophic.\n- **Radiant Capital** ($53M, 2024): 3-of-11 threshold on a large lending protocol; suspected DPRK-attributed compromise of three signers was sufficient for full control.\n- **Poly Network (2nd incident)** ($4.4M extracted, 2023): 3-of-4 threshold enabled forged cross-chain proofs with minimal key exposure.\n- **Orange Finance** ($843K, 2025): Multisig misconfigured as effectively 1-of-1; complete drain executed unilaterally.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An abnormally low signing threshold relative to TVL is a structural vulnerability that makes every other security investment conditional on the safety of a small number of private keys.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the multisig threshold is abnormally low relative to TVL peer cohort (e.g., 2-of-3 for a protocol with >$100M TVL where peer norm is 5-of-8).",
-        "data_source": "Safe/Gnosis multisig contract `getThreshold()` and `getOwners()` calls via RPC + DeFiLlama TVL + curator peer-cohort threshold table",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Multisig address + threshold integer + owner count + TVL at check + peer-cohort table version",
+        "category_id": 2,
         "confidence_signal": "green = threshold ≥ peer-cohort norm for TVL band; yellow = one below norm; red = threshold ≤ 2-of-N or single signer for any TVL; gray = multisig contract not identifiable",
+        "curation_archetype": "PE",
+        "data_source": "Safe/Gnosis multisig contract `getThreshold()` and `getOwners()` calls via RPC + DeFiLlama TVL + curator peer-cohort threshold table",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the multisig threshold is abnormally low relative to TVL peer cohort (e.g., 2-of-3 for a protocol with >$100M TVL where peer norm is 5-of-8).",
+        "evidence_artifact": "Multisig address + threshold integer + owner count + TVL at check + peer-cohort table version",
+        "id": "RD-F-028",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether the multisig threshold is abnormally low relative to TVL peer cohort (e.g., 2-of-3 for a protocol with >$100M TVL where peer norm is 5-of-8).",
+        "method": "PE",
+        "name": "Low-threshold multisig vs TVL",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether a protocol's multisig signing threshold is abnormally low relative to its TVL and peer cohort. Rather than scoring the raw threshold number in isolation, the measurement places it against the distribution of thresholds used by protocols in the same TVL bracket — flagging cases where the required signer count falls materially below what peers of equivalent size have adopted. A 2-of-3 threshold securing $5M may be unremarkable; the same configuration securing $500M is structurally indefensible.\n\n**Why it matters**\nLow signing thresholds concentrate effective control into a small, compromisable set of signers. OpenZeppelin governance security guidance recommends using battle-tested multisig implementations with \"publicly known\" owners who can be \"linked to specific individuals in the community\" — the accountability argument collapses when two or three unknown signers collectively hold the keys to hundreds of millions. The dataset's largest bridge and protocol exploits share a structural feature: a threshold low enough that a nation-state actor, rogue insider, or targeted phishing campaign need only compromise two or three endpoints. Both Harmony Bridge and Radiant Capital II demonstrated that even a 3-of-11 threshold on a $53M protocol represents an unacceptable concentration of risk.\n\n**Green / Yellow / Red**\nGreen is assigned when the multisig threshold meets or exceeds peer norms for the TVL cohort (typically 5-of-8 or higher at $100M+ TVL) and signers are geographically and institutionally distributed. Yellow covers cases where the threshold is within one signer of the peer median or where distribution of signers is unclear. Red is assigned when the threshold is two or more signers below the peer median for the TVL bracket, or when a protocol above $50M TVL uses a threshold below 3-of-N.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not publish a signer list and on-chain discovery is inconclusive, or when the TVL is below the $5M floor at which peer-cohort comparison becomes meaningful.\n\n**Notable historical examples**\n- **Harmony Horizon Bridge** ($100M, 2022): 2-of-5 multisig with hot wallet signers; threshold compression made key compromise catastrophic.\n- **Radiant Capital** ($53M, 2024): 3-of-11 threshold on a large lending protocol; suspected DPRK-attributed compromise of three signers was sufficient for full control.\n- **Poly Network (2nd incident)** ($4.4M extracted, 2023): 3-of-4 threshold enabled forged cross-chain proofs with minimal key exposure.\n- **Orange Finance** ($843K, 2025): Multisig misconfigured as effectively 1-of-1; complete drain executed unilaterally.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An abnormally low signing threshold relative to TVL is a structural vulnerability that makes every other security investment conditional on the safety of a small number of private keys."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "orange-finance-rekt",
-          "relevance": "related",
-          "notes": "★ Low-threshold multisig [via cross-hack: Factor 39: Multi-Sig Misconfigured as Single-Sig]",
           "hack_protocol_name": "Orange Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-01-07",
           "loss_usd": 843500.0,
+          "notes": "★ Low-threshold multisig [via cross-hack: Factor 39: Multi-Sig Misconfigured as Single-Sig]",
+          "occurred_at": "2025-01-07",
+          "relevance": "related",
           "root_cause": "Admin private key compromise → proxy upgrade → privileged drain of LP vault positions"
         },
         {
           "hack_id": "radiant-capital-rekt2",
-          "relevance": "causal",
-          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]",
           "hack_protocol_name": "Radiant Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-10-16",
           "loss_usd": 53000000.0,
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]",
+          "occurred_at": "2024-10-16",
+          "relevance": "causal",
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
           "hack_id": "poly-network-rekt2",
-          "relevance": "causal",
-          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]",
           "hack_protocol_name": "Poly Network (2nd incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-01",
           "loss_usd": 4400000.0,
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers] || ★ Low-threshold multisig vs TVL [via cross-hack: Factor 28: Insufficient Multisig Signing Threshold for TVL at Risk]",
+          "occurred_at": "2023-07-01",
+          "relevance": "causal",
           "root_cause": "Compromised 3-of-4 multisig → forged deposit proofs → cross-chain withdrawal drain"
         },
         {
           "hack_id": "harmony-bridge",
-          "relevance": "causal",
-          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
           "hack_protocol_name": "Harmony Horizon Bridge",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-06-23",
           "loss_usd": 100000000.0,
+          "notes": "★ Low-threshold multisig vs TVL [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
+          "occurred_at": "2022-06-23",
+          "relevance": "causal",
           "root_cause": "Compromised Multisig Private Keys (Hot Wallets)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The official address book binds the Manager role to 0xCbcdd7…29A1; an on-chain Safe read returns threshold 3 with six owners, weak relative to roughly $900M TVL and broad manager reach.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#safe-multisigs"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCbcdd778AA25476F203814214dD3E9b9c46829A1"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

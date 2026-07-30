@@ -1,70 +1,91 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-166",
-        "category_id": 5,
-        "name": "Deprecated contracts still holding value",
-        "description": "Determine whether contracts marked deprecated by a protocol announcement still hold >$100K in assets.",
-        "scoring_methodology": "**What this measures**\nThis factor flags whether any protocol-announced deprecated contracts (contracts for which the team has publicly stated sunsetting or migration) still hold more than $100,000 in user funds or protocol assets. It is sourced from on-chain balance checks against a curator-maintained list of deprecated contract addresses, updated on a slow cadence (semi-annual or event-driven). A positive flag means the operational wind-down was not completed -- users were not migrated, funds were not drained, and the deprecated surface remains a live attack target.\n\n**Why it matters**\nDeprecated contracts represent a reduced-vigilance attack surface. The team has signalled they are moving away from the contract; monitoring attention is reduced; the codebase is no longer receiving security patches. OKX DEX lost $2.7M when attackers compromised a deprecated proxy admin key that had not been revoked. Force Bridge was drained on June 1, 2025 -- the day after announcing its May 31 sunset -- through a combination of reduced team attention and failed access control attempts in the six hours prior. The 1inch Fusion v1 settlement contract was deprecated but not destroyed, and resolvers continued calling it months after the successor was live. In each case, the deprecation announcement created a perception that the surface was gone while the financial exposure remained.\n\n**Green / Yellow / Red**\nGreen: all deprecated contracts hold zero or negligible (below $1,000) in assets; migrations fully complete. Yellow: deprecated contracts hold between $1,000 and $100,000 in assets, with migration actively in progress and a public timeline published. Red: deprecated contracts hold more than $100,000 in assets with no active migration in progress, or the team has confirmed deprecation without a published drain-and-migrate plan.\n\n**Common gray cases**\nContracts that are technically inactive (no user-callable functions remaining) but hold dust amounts due to rounding errors or stuck transactions are distinguished from contracts still accessible to users or holding meaningful protocol-owned liquidity.\n\n**Notable historical examples**\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key compromised; user approvals on deprecated TokenApprove contract drained.\n- **1inch Fusion v1** ($5M, 2025): Deprecated settlement contract not destroyed; resolvers still calling it post-deprecation.\n- **Force Bridge** ($3.76M, 2025): Drained the day after the team announced its sunset, through reduced-vigilance access control failures.\n- **Hacken HAI** ($170K, 2025): Bridge minter key on a decommissioned DigitalOcean server used to mint 900M tokens.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether contracts marked deprecated by a protocol announcement still hold >$100K in assets.",
-        "data_source": "Protocol deprecation announcements + on-chain asset balances at deprecated contract addresses via RPC",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Deprecated contract address list + asset balance USD per contract + protocol announcement URL",
+        "category_id": 5,
         "confidence_signal": "green = deprecated contracts hold $0 or have been self-destructed; yellow = deprecated contracts hold $1–$100K (residual users); red = deprecated contracts hold >$100K (significant unmitigated exposure); gray = deprecated contracts not identified",
+        "curation_archetype": "PE",
+        "data_source": "Protocol deprecation announcements + on-chain asset balances at deprecated contract addresses via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether contracts marked deprecated by a protocol announcement still hold >$100K in assets.",
+        "evidence_artifact": "Deprecated contract address list + asset balance USD per contract + protocol announcement URL",
+        "id": "RD-F-166",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether contracts marked deprecated by a protocol announcement still hold >$100K in assets.",
+        "method": "PE",
+        "name": "Deprecated contracts still holding value",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor flags whether any protocol-announced deprecated contracts (contracts for which the team has publicly stated sunsetting or migration) still hold more than $100,000 in user funds or protocol assets. It is sourced from on-chain balance checks against a curator-maintained list of deprecated contract addresses, updated on a slow cadence (semi-annual or event-driven). A positive flag means the operational wind-down was not completed -- users were not migrated, funds were not drained, and the deprecated surface remains a live attack target.\n\n**Why it matters**\nDeprecated contracts represent a reduced-vigilance attack surface. The team has signalled they are moving away from the contract; monitoring attention is reduced; the codebase is no longer receiving security patches. OKX DEX lost $2.7M when attackers compromised a deprecated proxy admin key that had not been revoked. Force Bridge was drained on June 1, 2025 -- the day after announcing its May 31 sunset -- through a combination of reduced team attention and failed access control attempts in the six hours prior. The 1inch Fusion v1 settlement contract was deprecated but not destroyed, and resolvers continued calling it months after the successor was live. In each case, the deprecation announcement created a perception that the surface was gone while the financial exposure remained.\n\n**Green / Yellow / Red**\nGreen: all deprecated contracts hold zero or negligible (below $1,000) in assets; migrations fully complete. Yellow: deprecated contracts hold between $1,000 and $100,000 in assets, with migration actively in progress and a public timeline published. Red: deprecated contracts hold more than $100,000 in assets with no active migration in progress, or the team has confirmed deprecation without a published drain-and-migrate plan.\n\n**Common gray cases**\nContracts that are technically inactive (no user-callable functions remaining) but hold dust amounts due to rounding errors or stuck transactions are distinguished from contracts still accessible to users or holding meaningful protocol-owned liquidity.\n\n**Notable historical examples**\n- **OKX DEX** ($2.7M, 2023): Deprecated proxy admin key compromised; user approvals on deprecated TokenApprove contract drained.\n- **1inch Fusion v1** ($5M, 2025): Deprecated settlement contract not destroyed; resolvers still calling it post-deprecation.\n- **Force Bridge** ($3.76M, 2025): Drained the day after the team announced its sunset, through reduced-vigilance access control failures.\n- **Hacken HAI** ($170K, 2025): Bridge minter key on a decommissioned DigitalOcean server used to mint 900M tokens."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "hacken-rekt",
-          "relevance": "causal",
-          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
           "hack_protocol_name": "Hacken ($HAI token)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-20",
           "loss_usd": 170000.0,
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
+          "occurred_at": "2025-06-20",
+          "relevance": "causal",
           "root_cause": "Bridge private key leak from decommissioned server → unauthorized token minting → dump"
         },
         {
           "hack_id": "force-bridge-rekt",
-          "relevance": "causal",
-          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]",
           "hack_protocol_name": "Force Bridge (Nervos Network)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-01",
           "loss_usd": 3760000.0,
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]",
+          "occurred_at": "2025-06-01",
+          "relevance": "causal",
           "root_cause": "Access control compromise — admin key leak → privileged unlock() drain across two chains"
         },
         {
           "hack_id": "1inch-rekt",
-          "relevance": "causal",
-          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key] || Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]",
           "hack_protocol_name": "1inch (Fusion v1 resolver contracts)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-05",
           "loss_usd": 5000000.0,
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key] || Officially-deprecated surface still holds material value [via cross-hack: Factor 46: Sunset / Wind-Down Period as Reduced Vigilance Window]",
+          "occurred_at": "2025-03-05",
+          "relevance": "causal",
           "root_cause": "Integer underflow in deprecated assembly — calldata pointer corruption → resolver address forgery"
         },
         {
           "hack_id": "okx-dex-rekt",
-          "relevance": "causal",
-          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials] || Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key]",
           "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-12-13",
           "loss_usd": 2700000.0,
+          "notes": "Officially-deprecated surface still holds material value [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials] || Officially-deprecated surface still holds material value [via cross-hack: Factor 36: Deprecated Contract With Live Admin Key]",
+          "occurred_at": "2023-12-13",
+          "relevance": "causal",
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Kelp offers a twelve-month recovery path for balances left on sunset networks, proving residual user claims exist. The guide does not publish a reproducible aggregate balance.",
+          "evidence_summary": "Twenty routes are officially retired and residual claims exist, but public evidence does not quantify whether remaining value exceeds $100,000.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/recovering-rseth-from-sunset-networks"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

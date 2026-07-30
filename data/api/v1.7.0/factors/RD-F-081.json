@@ -1,70 +1,95 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-081",
-        "category_id": 5,
-        "name": "Post-exploit response score",
-        "description": "Curator-score (1–5) the most recent incident response on: compensation completeness, transparency of disclosure, root-cause analysis depth, and operational recovery speed.",
-        "scoring_methodology": "**What this measures**\nThis factor is a curator-assigned score from 1 to 5 evaluating the protocol's response to its most recent incident across four dimensions: user compensation (restitution offered and delivered), transparency (public communication timeliness and completeness), root-cause depth (post-mortem technical precision), and operational recovery (time to restore normal function). A score of 5 represents exemplary response on all four dimensions; a score of 1 represents silence or denial.\n\n**Why it matters**\nPost-exploit response quality is a leading indicator of whether a future incident will be handled well. Protocols that respond poorly -- by going silent, providing vague post-mortems, or failing to compensate affected users -- demonstrate governance and operational cultures that increase systemic risk. In contrast, protocols that publish detailed post-mortems within thirty days, offer structured compensation, and commission re-audits signal that security is treated as a continuous process rather than a one-time checkbox. The dataset shows consistent correlation between poor response scores and subsequent second exploits.\n\n**Green / Yellow / Red**\nGreen: score of 4 or 5, indicating timely public communication, full root-cause disclosure, meaningful compensation effort, and rapid operational recovery. Yellow: score of 2 or 3, indicating partial disclosure, delayed communication, or incomplete compensation. Red: score of 1, indicating silence, denial, or team abandonment following the incident.\n\n**Common gray cases**\nFor protocols with multiple incidents, this score applies to the most recent incident only. If the most recent incident is ongoing (fewer than thirty days elapsed) and no post-mortem has been published, the field is marked gray pending curator assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Curator-score (1–5) the most recent incident response on: compensation completeness, transparency of disclosure, root-cause analysis depth, and operational recovery speed.",
-        "data_source": "Protocol post-mortem document + governance forum announcements + news coverage",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "Post-mortem URL + curator score sheet (1–5 per sub-dimension) + curator sign-off",
+        "category_id": 5,
         "confidence_signal": "green = score ≥4; yellow = score 2–3; red = score 1 or no response; gray = no prior exploits (N/A)",
+        "curation_archetype": "M",
+        "data_source": "Protocol post-mortem document + governance forum announcements + news coverage",
+        "deprecated_in_rubric": null,
+        "description": "Curator-score (1–5) the most recent incident response on: compensation completeness, transparency of disclosure, root-cause analysis depth, and operational recovery speed.",
+        "evidence_artifact": "Post-mortem URL + curator score sheet (1–5 per sub-dimension) + curator sign-off",
+        "id": "RD-F-081",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Curator-score (1–5) the most recent incident response on: compensation completeness, transparency of disclosure, root-cause analysis depth, and operational recovery speed.",
+        "method": "M",
+        "name": "Post-exploit response score",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor is a curator-assigned score from 1 to 5 evaluating the protocol's response to its most recent incident across four dimensions: user compensation (restitution offered and delivered), transparency (public communication timeliness and completeness), root-cause depth (post-mortem technical precision), and operational recovery (time to restore normal function). A score of 5 represents exemplary response on all four dimensions; a score of 1 represents silence or denial.\n\n**Why it matters**\nPost-exploit response quality is a leading indicator of whether a future incident will be handled well. Protocols that respond poorly -- by going silent, providing vague post-mortems, or failing to compensate affected users -- demonstrate governance and operational cultures that increase systemic risk. In contrast, protocols that publish detailed post-mortems within thirty days, offer structured compensation, and commission re-audits signal that security is treated as a continuous process rather than a one-time checkbox. The dataset shows consistent correlation between poor response scores and subsequent second exploits.\n\n**Green / Yellow / Red**\nGreen: score of 4 or 5, indicating timely public communication, full root-cause disclosure, meaningful compensation effort, and rapid operational recovery. Yellow: score of 2 or 3, indicating partial disclosure, delayed communication, or incomplete compensation. Red: score of 1, indicating silence, denial, or team abandonment following the incident.\n\n**Common gray cases**\nFor protocols with multiple incidents, this score applies to the most recent incident only. If the most recent incident is ongoing (fewer than thirty days elapsed) and no post-mortem has been published, the field is marked gray pending curator assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "balancer-2025-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Balancer V2 (Composable Stable Pools)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2025-11-03",
           "loss_usd": 128000000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2025-11-03",
+          "relevance": "related",
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
         },
         {
           "hack_id": "gmx",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "GMX V1",
           "hack_protocol_slug": "gmx-v2",
-          "occurred_at": "2025-07-09",
           "loss_usd": 0.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2025-07-09",
+          "relevance": "related",
           "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback"
         },
         {
           "hack_id": "euler-finance",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Euler Finance",
           "hack_protocol_slug": "euler-v2",
-          "occurred_at": "2023-03-13",
           "loss_usd": 197000000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2023-03-13",
+          "relevance": "related",
           "root_cause": "Donation Function Bypassing Health Check (Logic Bug in EIP-14 upgrade)"
         },
         {
           "hack_id": "curve-finance-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Curve Finance (curve.fi frontend)",
           "hack_protocol_slug": "curve-v2",
-          "occurred_at": "2022-08-09",
           "loss_usd": 575000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2022-08-09",
+          "relevance": "related",
           "root_cause": "DNS nameserver compromise → malicious frontend injection → approval harvesting"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Kelp contained operations quickly and published user guidance. The eventual report and recovery were substantial, but prior multi-DVN guidance had not been followed.",
+          "evidence_summary": "Response was fast and recovery-oriented, but followed a warned-about 1-of-1 verifier setup and the initial statement lacked the full root cause.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/kelp-dao-%C2%B7-incident-response-%C2%B7-april-19-2026"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

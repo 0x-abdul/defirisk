@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-005",
-        "category_id": 1,
-        "name": "Audit firm tier",
-        "description": "Classify each auditing firm into: Tier-1 (Trail of Bits / OpenZeppelin / ConsenSys Diligence / Certora / Sigma Prime / Spearbit / Zellic) / Tier-2 (established, named firm with public track record) / boutique / unknown.",
-        "scoring_methodology": "**What this measures**\nThis factor records the categorical tier assigned to the audit firms that have reviewed the protocol's deployed code. Tier classifications are maintained by curators on a published reputation list and are based on firm track record, auditor count, methodology rigor, and industry recognition. The categories are: Tier-1 (Trail of Bits, OpenZeppelin, Spearbit, ChainSecurity, Sigma Prime), Tier-2 (Halborn, Peckshield, Certik, Dedaub, MixBytes, others with established track records), boutique (smaller or newer firms), and unknown (no assessable reputation).\n\n**Why it matters**\nAudit firm quality affects the probability that a given bug survives review. KyberSwap Elastic ($48M, 2023) was reviewed by ChainSecurity (Tier-1) and Sherlock -- yet the sub-microscopic precision failure was missed by both, illustrating that tier alone does not guarantee coverage of novel vulnerability classes. Conversely, protocols audited only by unknown boutique firms or self-reported internal reviewers have a weaker baseline assurance. Audit firm tier is a soft signal that is most useful in combination with other Cat 1 factors -- particularly audit scope coverage and post-audit code change status.\n\n**Green / Yellow / Red**\nGreen: at least one Tier-1 firm has reviewed the currently deployed code. Yellow: all audits are from Tier-2 or boutique firms with established track records but no Tier-1 involvement. Red: all audits are from unknown-reputation firms, or the only audits are self-reported internal reviews with no independent third-party verification.\n\n**Common gray cases**\nCurators cannot grade this factor when audit firm identity is not disclosed, or when the curator-maintained reputation list has not yet classified a newly active firm. This factor is also gray when no audit exists (in which case RD-F-004 captures the absence).\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a causal driver; audit firm tier is a soft input rather than a single-factor sufficient condition for exploit. The factor's value is as a quality modifier on the audit count signal.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Classify each auditing firm into: Tier-1 (Trail of Bits / OpenZeppelin / ConsenSys Diligence / Certora / Sigma Prime / Spearbit / Zellic) / Tier-2 (established, named firm with public track record) / boutique / unknown.",
-        "data_source": "Curator-maintained firm-tier registry (updated monthly) + audit PDF firm letterhead",
-        "method": "M",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Curator-maintained registry version slug + firm name → tier mapping JSON + audit PDF URL",
+        "category_id": 1,
         "confidence_signal": "green = at least one Tier-1 audit of deployed code; yellow = Tier-2 only; red = boutique/unknown only; gray = no firm identifiable",
+        "curation_archetype": "M",
+        "data_source": "Curator-maintained firm-tier registry (updated monthly) + audit PDF firm letterhead",
+        "deprecated_in_rubric": null,
+        "description": "Classify each auditing firm into: Tier-1 (Trail of Bits / OpenZeppelin / ConsenSys Diligence / Certora / Sigma Prime / Spearbit / Zellic) / Tier-2 (established, named firm with public track record) / boutique / unknown.",
+        "evidence_artifact": "Curator-maintained registry version slug + firm name → tier mapping JSON + audit PDF URL",
+        "id": "RD-F-005",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Classify each auditing firm into: Tier-1 (Trail of Bits / OpenZeppelin / ConsenSys Diligence / Certora / Sigma Prime / Spearbit / Zellic) / Tier-2 (established, named firm with public track record) / boutique / unknown.",
+        "method": "M",
+        "name": "Audit firm tier",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor records the categorical tier assigned to the audit firms that have reviewed the protocol's deployed code. Tier classifications are maintained by curators on a published reputation list and are based on firm track record, auditor count, methodology rigor, and industry recognition. The categories are: Tier-1 (Trail of Bits, OpenZeppelin, Spearbit, ChainSecurity, Sigma Prime), Tier-2 (Halborn, Peckshield, Certik, Dedaub, MixBytes, others with established track records), boutique (smaller or newer firms), and unknown (no assessable reputation).\n\n**Why it matters**\nAudit firm quality affects the probability that a given bug survives review. KyberSwap Elastic ($48M, 2023) was reviewed by ChainSecurity (Tier-1) and Sherlock -- yet the sub-microscopic precision failure was missed by both, illustrating that tier alone does not guarantee coverage of novel vulnerability classes. Conversely, protocols audited only by unknown boutique firms or self-reported internal reviewers have a weaker baseline assurance. Audit firm tier is a soft signal that is most useful in combination with other Cat 1 factors -- particularly audit scope coverage and post-audit code change status.\n\n**Green / Yellow / Red**\nGreen: at least one Tier-1 firm has reviewed the currently deployed code. Yellow: all audits are from Tier-2 or boutique firms with established track records but no Tier-1 involvement. Red: all audits are from unknown-reputation firms, or the only audits are self-reported internal reviews with no independent third-party verification.\n\n**Common gray cases**\nCurators cannot grade this factor when audit firm identity is not disclosed, or when the curator-maintained reputation list has not yet classified a newly active firm. This factor is also gray when no audit exists (in which case RD-F-004 captures the absence).\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a causal driver; audit firm tier is a soft input rather than a single-factor sufficient condition for exploit. The factor's value is as a quality modifier on the audit count signal."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Sigma Prime, MixBytes, Bailsec, and Code4rena provide independently attributable public coverage.",
+          "evidence_summary": "Kelp's audit cohort includes established public security firms and a competitive Code4rena review.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/audits"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

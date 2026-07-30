@@ -1,120 +1,139 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-050",
-        "category_id": 3,
-        "name": "Dependency graph (protocols depended upon)",
-        "description": "List all external protocols whose failure would directly impair this protocol (LST providers, bridges, stablecoin issuers, keepers).",
-        "scoring_methodology": "**What this measures**\nThis factor produces a list of external protocols whose failure would directly impair this protocol's operation — including LST providers, bridge dependencies, stablecoin issuers, and AMM pools used as oracle sources. The dependency graph is maintained by curators with on-chain inference and serves as a differentiating data layer not produced by any current competitor.\n\n**Why it matters**\nDeFi composability means that a protocol's security is bounded by its weakest dependency. The synthesis dataset shows that composability failures (Cluster F: AMM/DEX as systemic oracle) account for over $350M in losses. Alpha Finance lost $37.5M because its leveraged yield farming strategy depended on Cream Finance's lending pool in a way that neither team had fully modelled. Sturdy Finance's oracle depended on a Balancer pool type that had been publicly flagged as manipulable four months before the exploit. Without a dependency map, depositors and risk analysts cannot trace the true failure surface of a protocol.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol's dependency graph is fully documented, each dependency has a failure-impact assessment, and no dependency is a single-point-of-failure for the protocol's core function. Yellow is scored when the dependency list is documented but failure-impact analysis is missing or when one or more undocumented dependencies are identified by curators. Red is scored when the protocol has undocumented critical dependencies that, if they failed, would directly impair core protocol function.\n\n**Common gray cases**\nGray is applied when the protocol interacts with generic token standards where external dependencies cannot be enumerated without dynamic tracing.\n\n**Notable historical examples**\n- **Alpha Finance** ($37.5M, 2021): Leveraged yield farming strategy's composability with Cream Finance lending was the causal path for the exploit.\n- **bEarnFi** ($18M, 2021): Multi-layer vault cross-protocol accounting failure between strategy and underlying protocol.\n- **Abracadabra Money** ($13M, 2025): gmCauldron upgrade introduced a dependency on GMX V2's GM token that created phantom collateral.\n- **Rari Capital** ($10M, 2021): Fuse pool dependency on Alpha Homora V2 allowed token injection into the lending pool.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "List all external protocols whose failure would directly impair this protocol (LST providers, bridges, stablecoin issuers, keepers).",
-        "data_source": "Curator analysis of source imports + on-chain contract calls in deployed code + protocol docs",
-        "method": "PH",
-        "output_format": "narrative-note",
         "cadence": "S",
-        "evidence_artifact": "Curator-maintained dependency list with protocol slug + failure-impact description per dep",
+        "category_id": 3,
         "confidence_signal": "green = all dependencies are highly reliable with redundancy; yellow = one non-redundant dependency with known risk; red = critical dependency with no fallback and documented prior failure; gray = dependency map not completed",
+        "curation_archetype": "PH",
+        "data_source": "Curator analysis of source imports + on-chain contract calls in deployed code + protocol docs",
+        "deprecated_in_rubric": null,
+        "description": "List all external protocols whose failure would directly impair this protocol (LST providers, bridges, stablecoin issuers, keepers).",
+        "evidence_artifact": "Curator-maintained dependency list with protocol slug + failure-impact description per dep",
+        "id": "RD-F-050",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "List all external protocols whose failure would directly impair this protocol (LST providers, bridges, stablecoin issuers, keepers).",
+        "method": "PH",
+        "name": "Dependency graph (protocols depended upon)",
+        "output_format": "narrative-note",
+        "scoring_methodology": "**What this measures**\nThis factor produces a list of external protocols whose failure would directly impair this protocol's operation — including LST providers, bridge dependencies, stablecoin issuers, and AMM pools used as oracle sources. The dependency graph is maintained by curators with on-chain inference and serves as a differentiating data layer not produced by any current competitor.\n\n**Why it matters**\nDeFi composability means that a protocol's security is bounded by its weakest dependency. The synthesis dataset shows that composability failures (Cluster F: AMM/DEX as systemic oracle) account for over $350M in losses. Alpha Finance lost $37.5M because its leveraged yield farming strategy depended on Cream Finance's lending pool in a way that neither team had fully modelled. Sturdy Finance's oracle depended on a Balancer pool type that had been publicly flagged as manipulable four months before the exploit. Without a dependency map, depositors and risk analysts cannot trace the true failure surface of a protocol.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol's dependency graph is fully documented, each dependency has a failure-impact assessment, and no dependency is a single-point-of-failure for the protocol's core function. Yellow is scored when the dependency list is documented but failure-impact analysis is missing or when one or more undocumented dependencies are identified by curators. Red is scored when the protocol has undocumented critical dependencies that, if they failed, would directly impair core protocol function.\n\n**Common gray cases**\nGray is applied when the protocol interacts with generic token standards where external dependencies cannot be enumerated without dynamic tracing.\n\n**Notable historical examples**\n- **Alpha Finance** ($37.5M, 2021): Leveraged yield farming strategy's composability with Cream Finance lending was the causal path for the exploit.\n- **bEarnFi** ($18M, 2021): Multi-layer vault cross-protocol accounting failure between strategy and underlying protocol.\n- **Abracadabra Money** ($13M, 2025): gmCauldron upgrade introduced a dependency on GMX V2's GM token that created phantom collateral.\n- **Rari Capital** ($10M, 2021): Fuse pool dependency on Alpha Homora V2 allowed token injection into the lending pool."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2026-01-20",
+          "relevance": "causal",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "abracadabra-rekt2",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Abracadabra Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-25",
           "loss_usd": 13000000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2025-03-25",
+          "relevance": "causal",
           "root_cause": "Logic bug — phantom collateral / post-liquidation state inconsistency"
         },
         {
           "hack_id": "conic-finance-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Conic Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-21",
           "loss_usd": 4200000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-07-21",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy in CurveLPOracleV2 (ETH/WETH mismatch bypassed reentrancy guard) + sandwich attack on imbalanced pool"
         },
         {
           "hack_id": "sturdy-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Sturdy Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-06-12",
           "loss_usd": 800000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-06-12",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy on Balancer LP (B-stETH-STABLE) → manipulated collateral price → undercollateralized borrow drain"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-05-06",
+          "relevance": "causal",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "midas-capital-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Midas Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-01-15",
           "loss_usd": 660000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-01-15",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy on Curve LP token virtual price — inflated collateral valuation"
         },
         {
           "hack_id": "bearn",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "bEarnFi (BvaultsBank)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-16",
           "loss_usd": 18000000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-05-16",
+          "relevance": "causal",
           "root_cause": "Logic bug — token denomination mismatch between vault and strategy layers"
         },
         {
           "hack_id": "rari-capital-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Rari Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-08",
           "loss_usd": 10000000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-05-08",
+          "relevance": "causal",
           "root_cause": "Fake token + protocol callback exploit (ibETH injection via Alpha Homora) → ETH pool drain"
         },
         {
           "hack_id": "alpha-finance-rekt",
-          "relevance": "causal",
-          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Alpha Finance / Alpha Homora V2 (leveraged yield farming)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-13",
           "loss_usd": 37500000.0,
+          "notes": "Dependency graph [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-02-13",
+          "relevance": "causal",
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Load-bearing dependencies include price adapters, EigenLayer strategies, Kelp accounting contracts, and listed LayerZero/CCIP contracts; migration completion is unverified.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

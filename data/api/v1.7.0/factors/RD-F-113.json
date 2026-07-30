@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-113",
-        "category_id": 7,
-        "name": "Team other-protocol involvement history",
-        "description": "Document current or prior protocol roles for team members (conflicts of interest, prior rugs, prior successful launches).",
-        "scoring_methodology": "**What this measures**\nThis factor documents the record of current and prior protocol roles for each team member — whether they have previously contributed to audited, live, and non-exploited protocols; whether any prior protocol they contributed to was subsequently exploited; and whether any prior project under their name was abandoned or exit-scammed. Output is a structured list of protocol involvement with outcome classification per role. Category 7 context: a team member's prior protocol track record is the strongest available proxy for security culture and operational competence, distinct from code quality which audits assess separately.\n\n**Why it matters**\nPrior involvement in a rugged or exit-scammed protocol is a documented precursor in the dataset. AlexLab experienced two independent exploits across separate vectors, suggesting team-level security culture deficiencies rather than isolated bugs. Hope Finance's three multisig signers coordinated the drain — their prior roles were not disclosed. Conversely, team members with documented histories at major audited protocols (Uniswap, Aave, Compound core contributors) represent a verifiable competence and accountability signal. The factor is not deterministic: contributors who moved between legitimate protocols carry positive signal even if one of those protocols was later exploited for unrelated reasons.\n\n**Green / Yellow / Red**\nGreen is scored when core team members have documented prior contributions to two or more audited, non-exploited protocols with verifiable on-chain deployment history. Yellow applies when prior involvement exists but protocols were smaller, less audited, or one of the prior protocols was exploited (though not by the same team member's code). Red is scored when any team member has a verified prior association with a protocol that was exit-scammed or where that member is listed in a curator rug database.\n\n**Common gray cases**\nGray is assigned when the team is pseudonymous and no prior protocol involvement can be verified through OSINT, or when stated prior involvement cannot be confirmed via on-chain deployer or contributor evidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Document current or prior protocol roles for team members (conflicts of interest, prior rugs, prior successful launches).",
-        "data_source": "LinkedIn + GitHub + OSINT protocol affiliation search + rekt.news rug database",
-        "method": "M",
-        "output_format": "narrative-note",
         "cadence": "S",
-        "evidence_artifact": "Curator-maintained team-affiliation map with prior protocol names + outcome (rug/success/active) + source URLs",
+        "category_id": 7,
         "confidence_signal": "green = clean prior history with verifiable successful prior protocol work; yellow = no verifiable prior history (neutral); red = any team member linked to prior rug or exit scam; gray = team composition unknown",
+        "curation_archetype": "M",
+        "data_source": "LinkedIn + GitHub + OSINT protocol affiliation search + rekt.news rug database",
+        "deprecated_in_rubric": null,
+        "description": "Document current or prior protocol roles for team members (conflicts of interest, prior rugs, prior successful launches).",
+        "evidence_artifact": "Curator-maintained team-affiliation map with prior protocol names + outcome (rug/success/active) + source URLs",
+        "id": "RD-F-113",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Document current or prior protocol roles for team members (conflicts of interest, prior rugs, prior successful launches).",
+        "method": "M",
+        "name": "Team other-protocol involvement history",
+        "output_format": "narrative-note",
+        "scoring_methodology": "**What this measures**\nThis factor documents the record of current and prior protocol roles for each team member — whether they have previously contributed to audited, live, and non-exploited protocols; whether any prior protocol they contributed to was subsequently exploited; and whether any prior project under their name was abandoned or exit-scammed. Output is a structured list of protocol involvement with outcome classification per role. Category 7 context: a team member's prior protocol track record is the strongest available proxy for security culture and operational competence, distinct from code quality which audits assess separately.\n\n**Why it matters**\nPrior involvement in a rugged or exit-scammed protocol is a documented precursor in the dataset. AlexLab experienced two independent exploits across separate vectors, suggesting team-level security culture deficiencies rather than isolated bugs. Hope Finance's three multisig signers coordinated the drain — their prior roles were not disclosed. Conversely, team members with documented histories at major audited protocols (Uniswap, Aave, Compound core contributors) represent a verifiable competence and accountability signal. The factor is not deterministic: contributors who moved between legitimate protocols carry positive signal even if one of those protocols was later exploited for unrelated reasons.\n\n**Green / Yellow / Red**\nGreen is scored when core team members have documented prior contributions to two or more audited, non-exploited protocols with verifiable on-chain deployment history. Yellow applies when prior involvement exists but protocols were smaller, less audited, or one of the prior protocols was exploited (though not by the same team member's code). Red is scored when any team member has a verified prior association with a protocol that was exit-scammed or where that member is listed in a curator rug database.\n\n**Common gray cases**\nGray is assigned when the team is pseudonymous and no prior protocol involvement can be verified through OSINT, or when stated prior involvement cannot be confirmed via on-chain deployer or contributor evidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The LTIPP application records the founders' Stader experience, multichain deployment history, integrations, and user scale.",
+          "evidence_summary": "Kelp's founders publicly document prior protocol involvement building and scaling Stader Labs before Kelp.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "governance_post",
+              "url": "https://forum.arbitrum.foundation/t/kelpdao-ltipp-application-final/21976"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,60 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-136",
-        "category_id": 9,
-        "name": "Deployed bytecode matches signed release tag",
-        "description": "Determine whether the deployed runtime bytecode corresponds to a signed git tag in the protocol's repository.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's currently deployed runtime bytecode corresponds to a signed git tag in the protocol's public repository. The verification process compares the on-chain bytecode hash against the compiled artifact from the tagged commit, using the protocol's declared compiler settings. A match means the deployed code is traceable to a specific point in the public version history; a mismatch means the deployed code was compiled from a state that is not publicly verifiable.\n\n**Why it matters**\nBytecode-to-release-tag correspondence is the foundational transparency requirement for any post-audit assurance claim. When an audit references a specific commit, users need to know that the deployed bytecode corresponds to that commit — or to a subsequent tagged release that documents what changed. Without this correspondence, an audit report cannot be meaningfully linked to the production system. The synthesis notes that \"audited protocol, unaudited upgrade\" is a recurring failure mode: release tag correspondence would catch the case where the deployed bytecode diverges from the audited commit without a documented release entry.\n\n**Green / Yellow / Red**\nGreen is assigned when all production contracts have their bytecode verified against a signed release tag that is publicly accessible and the compiler settings are reproducible. Yellow covers cases where a tag exists but is unsigned, or where the correspondence is established for major contracts but not peripheral ones. Red is assigned when the deployed bytecode does not match any tagged release in the public repository, or when the repository has no tagged releases and the deploy commit is not documented.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private and no public artifact verification path exists, or when the protocol operates on a chain where deterministic compilation tooling is not yet mature.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the deployed runtime bytecode corresponds to a signed git tag in the protocol's repository.",
-        "data_source": "GitHub release tags + `git tag -v` signature check + Etherscan bytecode vs compiled artifact from tag",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Signed tag commit SHA + deployed bytecode hash + match result",
+        "category_id": 9,
         "confidence_signal": "green = deployed bytecode matches a GPG-signed release tag; yellow = bytecode matches an unsigned tag; red = bytecode does not match any release tag; gray = repo is private or no release tags exist",
+        "curation_archetype": "PH",
+        "data_source": "GitHub release tags + `git tag -v` signature check + Etherscan bytecode vs compiled artifact from tag",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the deployed runtime bytecode corresponds to a signed git tag in the protocol's repository.",
+        "evidence_artifact": "Signed tag commit SHA + deployed bytecode hash + match result",
+        "id": "RD-F-136",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the deployed runtime bytecode corresponds to a signed git tag in the protocol's repository.",
+        "method": "PH",
+        "name": "Deployed bytecode matches signed release tag",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's currently deployed runtime bytecode corresponds to a signed git tag in the protocol's public repository. The verification process compares the on-chain bytecode hash against the compiled artifact from the tagged commit, using the protocol's declared compiler settings. A match means the deployed code is traceable to a specific point in the public version history; a mismatch means the deployed code was compiled from a state that is not publicly verifiable.\n\n**Why it matters**\nBytecode-to-release-tag correspondence is the foundational transparency requirement for any post-audit assurance claim. When an audit references a specific commit, users need to know that the deployed bytecode corresponds to that commit — or to a subsequent tagged release that documents what changed. Without this correspondence, an audit report cannot be meaningfully linked to the production system. The synthesis notes that \"audited protocol, unaudited upgrade\" is a recurring failure mode: release tag correspondence would catch the case where the deployed bytecode diverges from the audited commit without a documented release entry.\n\n**Green / Yellow / Red**\nGreen is assigned when all production contracts have their bytecode verified against a signed release tag that is publicly accessible and the compiler settings are reproducible. Yellow covers cases where a tag exists but is unsigned, or where the correspondence is established for major contracts but not peripheral ones. Red is assigned when the deployed bytecode does not match any tagged release in the public repository, or when the repository has no tagged releases and the deploy commit is not documented.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private and no public artifact verification path exists, or when the protocol operates on a chain where deterministic compilation tooling is not yet mature.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub's complete tag list exposes only native-eth-deployment, which GitHub reports as unsigned; the official January 2026 deployment record is not bound to a signed release tag.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.github.com/repos/Kelp-DAO/LRT-rsETH/tags"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.github.com/repos/Kelp-DAO/LRT-rsETH/git/tags/63e83a5bed07c61d5f303b7bc13a448aa910c582"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

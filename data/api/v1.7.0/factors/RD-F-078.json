@@ -1,200 +1,230 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-078",
-        "category_id": 5,
-        "name": "Chronic-exploit flag (≥3 incidents)",
-        "description": "Determine whether the protocol has ≥3 distinct incidents in the hack database.",
-        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag triggered when the prior exploit count (RD-F-077) reaches three or more distinct incidents. It is derived deterministically from the hacks database without curator judgment. The chronic flag is the direct input to the CHRONIC badge assignment under rubric v1.5, which requires at least three incidents with at least two occurring post-disclosure of the root cause.\n\n**Why it matters**\nA protocol with three or more exploits has crossed the threshold from isolated security failure into systemic security deficiency. In the dataset, protocols with three or more incidents share a common profile: incomplete remediation after each incident, failure to commission comprehensive re-audits, and in several cases the same vulnerability class reused across incidents. Platypus Finance suffered three incidents in eight months; Yearn Finance vault iterations were exploited under related logic patterns across years. The chronic flag exists because rubric v1.5 cannot treat this pattern the same as a single clean incident with full remediation.\n\n**Green / Yellow / Red**\nGreen: protocol has two or fewer prior exploits. Yellow: this field has no distinct yellow state; it is Boolean. The yellow gradation for exploit count lives in RD-F-077. Red: three or more prior exploits, triggering the chronic flag regardless of whether same-root-cause applies.\n\n**Common gray cases**\nProtocols that share a codebase with a separately-branded sister protocol may dispute whether incidents on nominally-separate deployments count toward one protocol's chronic flag. Curator must establish a consistent protocol-boundary definition and apply it uniformly across all assessments.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Multiple governance-related incidents across years representing a systemic upgrade-process weakness.\n- **Platypus Finance** ($8.5M, 2023): Three incidents in eight months, each exploiting variations of the same collateral accounting pattern.\n- **Yearn Finance** ($11M, 2021): Multiple vault exploit incidents across different product lines; chronic flag applies.\n- **Value DeFi** ($7M, 2020): Multiple incidents within a short window; chronic flag applies.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol has ≥3 distinct incidents in the hack database.",
-        "data_source": "In-house hack DB (derived from F077 count)",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Incident count from F077",
+        "category_id": 5,
         "confidence_signal": "green = <3 incidents; red = ≥3 incidents (chronic flag); gray = hack DB not checked",
+        "curation_archetype": "PE",
+        "data_source": "In-house hack DB (derived from F077 count)",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol has ≥3 distinct incidents in the hack database.",
+        "evidence_artifact": "Incident count from F077",
+        "id": "RD-F-078",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol has ≥3 distinct incidents in the hack database.",
+        "method": "PE",
+        "name": "Chronic-exploit flag (≥3 incidents)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag triggered when the prior exploit count (RD-F-077) reaches three or more distinct incidents. It is derived deterministically from the hacks database without curator judgment. The chronic flag is the direct input to the CHRONIC badge assignment under rubric v1.5, which requires at least three incidents with at least two occurring post-disclosure of the root cause.\n\n**Why it matters**\nA protocol with three or more exploits has crossed the threshold from isolated security failure into systemic security deficiency. In the dataset, protocols with three or more incidents share a common profile: incomplete remediation after each incident, failure to commission comprehensive re-audits, and in several cases the same vulnerability class reused across incidents. Platypus Finance suffered three incidents in eight months; Yearn Finance vault iterations were exploited under related logic patterns across years. The chronic flag exists because rubric v1.5 cannot treat this pattern the same as a single clean incident with full remediation.\n\n**Green / Yellow / Red**\nGreen: protocol has two or fewer prior exploits. Yellow: this field has no distinct yellow state; it is Boolean. The yellow gradation for exploit count lives in RD-F-077. Red: three or more prior exploits, triggering the chronic flag regardless of whether same-root-cause applies.\n\n**Common gray cases**\nProtocols that share a codebase with a separately-branded sister protocol may dispute whether incidents on nominally-separate deployments count toward one protocol's chronic flag. Curator must establish a consistent protocol-boundary definition and apply it uniformly across all assessments.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Multiple governance-related incidents across years representing a systemic upgrade-process weakness.\n- **Platypus Finance** ($8.5M, 2023): Three incidents in eight months, each exploiting variations of the same collateral accounting pattern.\n- **Yearn Finance** ($11M, 2021): Multiple vault exploit incidents across different product lines; chronic flag applies.\n- **Value DeFi** ($7M, 2020): Multiple incidents within a short window; chronic flag applies."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "venus-protocol-rekt4",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Venus Protocol",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2026-03-15",
           "loss_usd": 3700000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2026-03-15",
+          "relevance": "causal",
           "root_cause": "Donation Attack → Supply Cap Bypass → Collateral Inflation → Recursive Borrow Loop"
         },
         {
           "hack_id": "odin-fun-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Odin.Fun",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-08-12",
           "loss_usd": 7000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2025-08-12",
+          "relevance": "causal",
           "root_cause": "AMM Liquidity Manipulation (Governance Token Price Pump + Drain)"
         },
         {
           "hack_id": "alexlab-rekt2",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "AlexLab (Bitcoin DeFi / Stacks)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-06",
           "loss_usd": 16180000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2025-06-06",
+          "relevance": "causal",
           "root_cause": "Vault permission hijack via malicious token self-listing; `as-contract` context abuse"
         },
         {
           "hack_id": "abracadabra-rekt2",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Abracadabra Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-25",
           "loss_usd": 13000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2025-03-25",
+          "relevance": "causal",
           "root_cause": "Logic bug — phantom collateral / post-liquidation state inconsistency"
         },
         {
           "hack_id": "radiant-capital-rekt2",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Radiant Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-10-16",
           "loss_usd": 53000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2024-10-16",
+          "relevance": "causal",
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
           "hack_id": "abracadabra-rekt1",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Abracadabra Money (1st incident — abra-rekt)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-01-30",
           "loss_usd": 6500000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2024-01-30",
+          "relevance": "causal",
           "root_cause": "ERC-4626 rounding error — borrow share price inflation via repeated borrow/repay → phantom debt drain"
         },
         {
           "hack_id": "onyx-protocol-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Onyx Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-10-31",
           "loss_usd": 2100000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-10-31",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2023-05-06",
+          "relevance": "causal",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "level-finance-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Level Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-01",
           "loss_usd": 1100000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-05-01",
+          "relevance": "causal",
           "root_cause": "Logic bug — referral reward claimMultiple() epoch not checked for reuse"
         },
         {
           "hack_id": "hundred-finance-rekt2",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Hundred Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-04-15",
           "loss_usd": 7400000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-04-15",
+          "relevance": "causal",
           "root_cause": "ERC-4626-style cToken exchange rate manipulation + rounding error"
         },
         {
           "hack_id": "platypus-finance-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Platypus Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-02-16",
           "loss_usd": 8500000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2023-02-16",
+          "relevance": "causal",
           "root_cause": "Flash loan + emergencyWithdraw() solvency check bypass — collateral withdrawal without repaying borrowed USP"
         },
         {
           "hack_id": "midas-capital-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Midas Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-01-15",
           "loss_usd": 660000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-01-15",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy on Curve LP token virtual price — inflated collateral valuation"
         },
         {
           "hack_id": "daomaker-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "DAO Maker",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-09-04",
           "loss_usd": 4000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2021-09-04",
+          "relevance": "causal",
           "root_cause": "Reinitializable init() function + emergencyExit() drain on token vesting contracts"
         },
         {
           "hack_id": "merlin-labs-rekt2",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Merlin Labs (REKT 2)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-27",
           "loss_usd": 550000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol] || Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2021-05-27",
+          "relevance": "causal",
           "root_cause": "Oracle Mispricing"
         },
         {
           "hack_id": "uranium-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Uranium Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-04-28",
           "loss_usd": 57200000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2021-04-28",
+          "relevance": "causal",
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
         },
         {
           "hack_id": "yearn-rekt1",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Yearn Finance (yDAI v1 vault)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-04",
           "loss_usd": 11000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2021-02-04",
+          "relevance": "causal",
           "root_cause": "Flash loan + Curve 3pool spot price manipulation → vault share price arbitrage → DAI drain during migration"
         },
         {
           "hack_id": "value-defi-rekt",
-          "relevance": "causal",
-          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
           "hack_protocol_name": "Value DeFi",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-14",
           "loss_usd": 7000000.0,
+          "notes": "Chronic flag (≥3 prior exploits) [via cross-hack: Factor 59: Three-or-More Exploit History]",
+          "occurred_at": "2020-11-14",
+          "relevance": "causal",
           "root_cause": "Flash loan + Curve spot price oracle manipulation → inflated collateral → over-borrow drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The UI compromise, oracle-accounting failure, and bridge exploit are distinct in-scope operational/security events.",
+          "evidence_summary": "The three-event chronic threshold is met, with each event independently bound to its public incident record.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/kelp-dapp-ui-attack-post-mortem"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-precautionary-freezing-30-04-2025/21925"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

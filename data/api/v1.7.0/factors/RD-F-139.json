@@ -1,120 +1,141 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-139",
-        "category_id": 9,
-        "name": "Post-audit code changes without re-audit",
-        "description": "Count deployed changes to audited bytecode where no subsequent audit or spot-review covers the changed code.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of deployed changes to previously-audited bytecode for which no subsequent audit or targeted spot review is on record. The assessment compares the deployed bytecode hash at the time of the most recent audit against the current deployed bytecode, then cross-references any changes against the protocol's published audit history. Changes introduced after the audit cutoff that are not covered by a subsequent review increment this factor's count; a non-zero count triggers a red assessment.\n\n**Why it matters**\nPost-audit code changes are the most reliable predictor of upgrade-introduced vulnerabilities in the evidence base. The synthesis identifies this as the second-most impactful risk factor by dollar volume: Euler Finance ($197M) shipped a donateToReserves function that was specifically reviewed by Sherlock but contained the exploited flaw; GMX V1, Hedgey Finance, PancakeBunny, Pickle Finance, and Penpie all share the same structural failure — new code shipped without holistic re-audit, and the new code is where the vulnerability lived. The core insight is that time-since-last-upgrade is a more useful risk signal than time-since-last-audit: an audit is a point-in-time certification of a specific bytecode, and its assurance expires the moment any audited contract is modified.\n\n**Green / Yellow / Red**\nGreen is assigned when the current deployed bytecode hash matches the audited commit, or when any post-audit changes are fully covered by a subsequent professional audit or targeted spot review by a recognized firm. Yellow covers cases where one or two minor changes (parameter-only adjustments, non-logic updates) are unaudited but their scope can be bounded by curator review. Red is assigned when any logic change to an audited contract — particularly in reward distribution, collateral accounting, liquidation, or access control — has been deployed without subsequent audit coverage.\n\n**Common gray cases**\nThis factor is grayed when the bytecode comparison cannot be completed due to source verification gaps, or when the protocol uses an immutable (non-upgradeable) architecture where post-audit changes are structurally impossible.\n\n**Notable historical examples**\n- **PancakeBunny** ($45M, 2021): VaultFlipToFlip upgrade was not audited by Haechi; the new vault contained the exploited flash-loan manipulation path.\n- **Hedgey Finance** ($44.7M, 2024): Post-audit contract version introduced the vulnerability; Ethereum and Arbitrum drained simultaneously.\n- **Penpie** ($27M, 2024): Post-audit permissionless market registration introduced the reentrancy path; three audit firms had reviewed earlier code.\n- **Pickle Finance** ($19.7M, 2020): ControllerV4 strategy added after audit completed; contained the exploited cross-strategy drain.\n- **Safemoon** ($8.9M, 2023): Public burn() function introduced in an upgrade six hours before exploit; no re-audit of the change.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Post-audit code changes without re-audit are the structural mechanism by which protocols convert a high-assurance codebase into an unreviewed one — the Euler Finance lineage demonstrates that even well-resourced protocols with multiple auditors cannot treat audited status as permanent once code changes.",
-        "is_critical": true,
-        "curation_archetype": "M",
-        "measurement": "Count deployed changes to audited bytecode where no subsequent audit or spot-review covers the changed code.",
-        "data_source": "Audit PDF report commit SHA + deployed bytecode commits after audit + diff LOC + any post-audit audit PDF",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "Diff between audit commit and deployed commit + LOC changed + subsequent audit PDF URLs (if any)",
+        "category_id": 9,
         "confidence_signal": "green = all post-audit changes covered by follow-on audit or zero material changes; yellow = minor post-audit changes (<50 LOC) not covered but documented; red = material post-audit code changes deployed without any audit coverage; gray = audit commit SHA not determinable",
+        "curation_archetype": "M",
+        "data_source": "Audit PDF report commit SHA + deployed bytecode commits after audit + diff LOC + any post-audit audit PDF",
+        "deprecated_in_rubric": null,
+        "description": "Count deployed changes to audited bytecode where no subsequent audit or spot-review covers the changed code.",
+        "evidence_artifact": "Diff between audit commit and deployed commit + LOC changed + subsequent audit PDF URLs (if any)",
+        "id": "RD-F-139",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Count deployed changes to audited bytecode where no subsequent audit or spot-review covers the changed code.",
+        "method": "M",
+        "name": "Post-audit code changes without re-audit",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of deployed changes to previously-audited bytecode for which no subsequent audit or targeted spot review is on record. The assessment compares the deployed bytecode hash at the time of the most recent audit against the current deployed bytecode, then cross-references any changes against the protocol's published audit history. Changes introduced after the audit cutoff that are not covered by a subsequent review increment this factor's count; a non-zero count triggers a red assessment.\n\n**Why it matters**\nPost-audit code changes are the most reliable predictor of upgrade-introduced vulnerabilities in the evidence base. The synthesis identifies this as the second-most impactful risk factor by dollar volume: Euler Finance ($197M) shipped a donateToReserves function that was specifically reviewed by Sherlock but contained the exploited flaw; GMX V1, Hedgey Finance, PancakeBunny, Pickle Finance, and Penpie all share the same structural failure — new code shipped without holistic re-audit, and the new code is where the vulnerability lived. The core insight is that time-since-last-upgrade is a more useful risk signal than time-since-last-audit: an audit is a point-in-time certification of a specific bytecode, and its assurance expires the moment any audited contract is modified.\n\n**Green / Yellow / Red**\nGreen is assigned when the current deployed bytecode hash matches the audited commit, or when any post-audit changes are fully covered by a subsequent professional audit or targeted spot review by a recognized firm. Yellow covers cases where one or two minor changes (parameter-only adjustments, non-logic updates) are unaudited but their scope can be bounded by curator review. Red is assigned when any logic change to an audited contract — particularly in reward distribution, collateral accounting, liquidation, or access control — has been deployed without subsequent audit coverage.\n\n**Common gray cases**\nThis factor is grayed when the bytecode comparison cannot be completed due to source verification gaps, or when the protocol uses an immutable (non-upgradeable) architecture where post-audit changes are structurally impossible.\n\n**Notable historical examples**\n- **PancakeBunny** ($45M, 2021): VaultFlipToFlip upgrade was not audited by Haechi; the new vault contained the exploited flash-loan manipulation path.\n- **Hedgey Finance** ($44.7M, 2024): Post-audit contract version introduced the vulnerability; Ethereum and Arbitrum drained simultaneously.\n- **Penpie** ($27M, 2024): Post-audit permissionless market registration introduced the reentrancy path; three audit firms had reviewed earlier code.\n- **Pickle Finance** ($19.7M, 2020): ControllerV4 strategy added after audit completed; contained the exploited cross-strategy drain.\n- **Safemoon** ($8.9M, 2023): Public burn() function introduced in an upgrade six hours before exploit; no re-audit of the change.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Post-audit code changes without re-audit are the structural mechanism by which protocols convert a high-assurance codebase into an unreviewed one — the Euler Finance lineage demonstrates that even well-resourced protocols with multiple auditors cannot treat audited status as permanent once code changes."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "gmx",
-          "relevance": "related",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "GMX V1",
           "hack_protocol_slug": "gmx-v2",
-          "occurred_at": "2025-07-09",
           "loss_usd": 0.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2025-07-09",
+          "relevance": "related",
           "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback"
         },
         {
           "hack_id": "bedrock-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Bedrock (uniBTC vault)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-25",
           "loss_usd": 2000000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2024-09-25",
+          "relevance": "causal",
           "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
         },
         {
           "hack_id": "penpie-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Penpie",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-03",
           "loss_usd": 27000000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2024-09-03",
+          "relevance": "causal",
           "root_cause": "Reentrancy via fake Pendle market → staking balance inflation → excess reward drain"
         },
         {
           "hack_id": "hedgey-finance",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Hedgey Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-04-19",
           "loss_usd": 44700000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2024-04-19",
+          "relevance": "causal",
           "root_cause": "Unverified User Input — Flash Loan Enabled Approval Manipulation"
         },
         {
           "hack_id": "platypus-rekt2",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Platypus Finance (3rd exploit)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-10-12",
           "loss_usd": 2200000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2023-10-12",
+          "relevance": "causal",
           "root_cause": "Flash loan + LP-AVAX pool cash/liability manipulation → slippage-inflated swap output"
         },
         {
           "hack_id": "level-finance-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Level Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-01",
           "loss_usd": 1100000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2023-05-01",
+          "relevance": "causal",
           "root_cause": "Logic bug — referral reward claimMultiple() epoch not checked for reuse"
         },
         {
           "hack_id": "safemoon-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Safemoon",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-03-28",
           "loss_usd": 8900000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2023-03-28",
+          "relevance": "causal",
           "root_cause": "Upgrade introduced public burn() function → LP token burn → pool price manipulation → BNB drain"
         },
         {
           "hack_id": "pancakebunny-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "PancakeBunny",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-19",
           "loss_usd": 45000000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2021-05-19",
+          "relevance": "causal",
           "root_cause": "Flash loan + spot price manipulation → inflated LP token valuation → excess BUNNY minting"
         },
         {
           "hack_id": "pickle-finance-rekt",
-          "relevance": "causal",
-          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
           "hack_protocol_name": "Pickle Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-22",
           "loss_usd": 19700000.0,
+          "notes": "★ Post-audit code changes deployed without re-audit [via cross-hack: Factor 21: Post-Audit Code Change Without Re-Audit]",
+          "occurred_at": "2020-11-22",
+          "relevance": "causal",
           "root_cause": "Fake jar injection — missing whitelist in Controller's jar-swap function"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The December 2025 and January 2026 core upgrades each publish a corresponding Bailsec audit report and a 10-day timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

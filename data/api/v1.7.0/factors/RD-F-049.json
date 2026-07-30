@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-049",
-        "category_id": 3,
-        "name": "Oracle role per asset",
-        "description": "For each oracle, classify its role as Primary / Secondary / Fallback per asset/market.",
-        "scoring_methodology": "**What this measures**\nThis factor documents, for each oracle provider in use, whether it serves as the Primary, Secondary, or Fallback source for each asset or market. The role assignment is derived from on-chain reads of the protocol's price-fetch logic. This follows an analogous schema to DeFiLlama's oracle categorisation approach.\n\n**Why it matters**\nKnowing which oracle is primary versus fallback determines the actual risk exposure if a provider fails. A protocol that lists Chainlink as a secondary source but reads an in-house spot feed as primary has the same structural risk as a protocol with no Chainlink integration at all. Curators have found in prior assessments that protocols frequently document their \"best\" oracle in marketing materials while the actual on-chain feed prioritisation is different — role assignment per asset catches this discrepancy. Without understanding the primary/fallback structure, downstream factors such as RD-F-051 (fallback behaviour on failure) and RD-F-057 (circuit breaker) cannot be accurately scored.\n\n**Green / Yellow / Red**\nGreen is scored when primary, secondary, and fallback roles are explicitly documented in source code comments or governance documentation and confirmed on-chain. Yellow is scored when roles can be inferred from on-chain call ordering but are not explicitly documented, or when some markets lack a secondary or fallback assignment. Red is scored when the primary/fallback structure cannot be determined or when all markets share a single provider with no fallback assignment.\n\n**Common gray cases**\nGray is applied when the feed call graph is multi-hop or involves conditional logic that cannot be resolved without dynamic execution tracing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "For each oracle, classify its role as Primary / Secondary / Fallback per asset/market.",
-        "data_source": "Source inspection of price-feed call logic on Etherscan-verified source + protocol docs",
-        "method": "PH",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "JSON map of asset → {primary, secondary, fallback} feed addresses and provider slugs",
+        "category_id": 3,
         "confidence_signal": "green = each asset has primary + at least one fallback; yellow = primary only with no fallback documented; red = no fallback on any asset; gray = fallback logic not separable from source",
+        "curation_archetype": "PH",
+        "data_source": "Source inspection of price-feed call logic on Etherscan-verified source + protocol docs",
+        "deprecated_in_rubric": null,
+        "description": "For each oracle, classify its role as Primary / Secondary / Fallback per asset/market.",
+        "evidence_artifact": "JSON map of asset → {primary, secondary, fallback} feed addresses and provider slugs",
+        "id": "RD-F-049",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "For each oracle, classify its role as Primary / Secondary / Fallback per asset/market.",
+        "method": "PH",
+        "name": "Oracle role per asset",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor documents, for each oracle provider in use, whether it serves as the Primary, Secondary, or Fallback source for each asset or market. The role assignment is derived from on-chain reads of the protocol's price-fetch logic. This follows an analogous schema to DeFiLlama's oracle categorisation approach.\n\n**Why it matters**\nKnowing which oracle is primary versus fallback determines the actual risk exposure if a provider fails. A protocol that lists Chainlink as a secondary source but reads an in-house spot feed as primary has the same structural risk as a protocol with no Chainlink integration at all. Curators have found in prior assessments that protocols frequently document their \"best\" oracle in marketing materials while the actual on-chain feed prioritisation is different — role assignment per asset catches this discrepancy. Without understanding the primary/fallback structure, downstream factors such as RD-F-051 (fallback behaviour on failure) and RD-F-057 (circuit breaker) cannot be accurately scored.\n\n**Green / Yellow / Red**\nGreen is scored when primary, secondary, and fallback roles are explicitly documented in source code comments or governance documentation and confirmed on-chain. Yellow is scored when roles can be inferred from on-chain call ordering but are not explicitly documented, or when some markets lack a secondary or fallback assignment. Red is scored when the primary/fallback structure cannot be determined or when all markets share a single provider with no fallback assignment.\n\n**Common gray cases**\nGray is applied when the feed call graph is multi-hop or involves conditional logic that cannot be resolved without dynamic execution tracing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "assetPriceOracle maps each supported asset to its primary IPriceFetcher; no automatic secondary role is implemented.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

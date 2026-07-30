@@ -1,50 +1,71 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-039",
-        "category_id": 2,
-        "name": "delegatecall/call in proposal execution without allowlist",
-        "description": "Determine whether governance proposal execution can route proposal-supplied calls or delegatecalls to arbitrary targets without an allowlist, distinguishing executor-storage delegatecall risk from ordinary external call risk and from manual/off-chain execution.",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates the proposal execution path behind protocol governance. The highest-risk pattern is executor-context `delegatecall` to proposal-supplied code or target addresses without an on-chain allowlist, because proposal code can execute against the executor's own storage and authority. Ordinary external `call` to proposal-supplied targets remains governance-power risk, but it is not equivalent to arbitrary code execution in executor storage.\n\n**Green / Yellow / Red / Gray**\nGreen is assigned when there is no automated on-chain proposal executor, execution is manual signer action after off-chain governance, proposal execution is limited to typed/predefined actions, or callable targets are strictly allowlisted. Fixed internal delegatecall to immutable protocol extensions is also green when the proposal cannot choose the delegatecall target. Yellow is assigned when governance can execute proposal-supplied external `call` targets/calldata without a strict allowlist, but the path does not delegate into executor storage and meaningful safeguards such as timelocks, cancellation powers, quorum, or multisig implementation reduce exploitability. Red is assigned when proposal execution permits unrestricted proposal-supplied `delegatecall`, or an equivalent executor-context arbitrary execution path, without a strict allowlist. Gray is reserved for cases where the executor path, deployed source, or current governance implementation cannot be verified well enough to determine the execution semantics.\n\n**Common gray cases**\nGray should be used for unverified or ambiguous executor paths, not merely because governance execution is manual or off-chain. Manual execution after Snapshot/forum voting is a green outcome when no automated proposal executor accepts arbitrary proposal calldata.\n\n**Critical factor**\nA red assessment remains critical because unrestricted executor-context arbitrary execution can convert a passed proposal into a full governance takeover primitive.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Inspect governor, timelock, Safe module, and protocol-specific executor source for proposal-supplied target/value/calldata paths, delegatecall usage, target allowlists, and whether approved proposals execute automatically or are implemented manually by signers.",
-        "data_source": "Slither `controlled-delegatecall` detector + source inspection of governor/timelock executor on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output + executor source excerpt",
+        "category_id": 2,
         "confidence_signal": "green = no automated arbitrary executor, strict allowlist, typed actions, manual/off-chain implementation, or fixed internal delegatecall target; yellow = proposal-supplied external call without strict allowlist but no executor-storage delegatecall and meaningful safeguards; red = unrestricted proposal-supplied delegatecall or equivalent executor-context arbitrary execution; gray = executor path or deployed source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `controlled-delegatecall` detector + source inspection of governor/timelock executor on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether governance proposal execution can route proposal-supplied calls or delegatecalls to arbitrary targets without an allowlist, distinguishing executor-storage delegatecall risk from ordinary external call risk and from manual/off-chain execution.",
+        "evidence_artifact": "Slither output + executor source excerpt",
+        "id": "RD-F-039",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Inspect governor, timelock, Safe module, and protocol-specific executor source for proposal-supplied target/value/calldata paths, delegatecall usage, target allowlists, and whether approved proposals execute automatically or are implemented manually by signers.",
+        "method": "PE",
+        "name": "delegatecall/call in proposal execution without allowlist",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates the proposal execution path behind protocol governance. The highest-risk pattern is executor-context `delegatecall` to proposal-supplied code or target addresses without an on-chain allowlist, because proposal code can execute against the executor's own storage and authority. Ordinary external `call` to proposal-supplied targets remains governance-power risk, but it is not equivalent to arbitrary code execution in executor storage.\n\n**Green / Yellow / Red / Gray**\nGreen is assigned when there is no automated on-chain proposal executor, execution is manual signer action after off-chain governance, proposal execution is limited to typed/predefined actions, or callable targets are strictly allowlisted. Fixed internal delegatecall to immutable protocol extensions is also green when the proposal cannot choose the delegatecall target. Yellow is assigned when governance can execute proposal-supplied external `call` targets/calldata without a strict allowlist, but the path does not delegate into executor storage and meaningful safeguards such as timelocks, cancellation powers, quorum, or multisig implementation reduce exploitability. Red is assigned when proposal execution permits unrestricted proposal-supplied `delegatecall`, or an equivalent executor-context arbitrary execution path, without a strict allowlist. Gray is reserved for cases where the executor path, deployed source, or current governance implementation cannot be verified well enough to determine the execution semantics.\n\n**Common gray cases**\nGray should be used for unverified or ambiguous executor paths, not merely because governance execution is manual or off-chain. Manual execution after Snapshot/forum voting is a green outcome when no automated proposal executor accepts arbitrary proposal calldata.\n\n**Critical factor**\nA red assessment remains critical because unrestricted executor-context arbitrary execution can convert a passed proposal into a full governance takeover primitive."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "raft-rekt",
-          "relevance": "related",
-          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
           "hack_protocol_name": "Raft",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-11-10",
           "loss_usd": 3300000.0,
+          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
+          "occurred_at": "2023-11-10",
+          "relevance": "related",
           "root_cause": "Flash loan + collateral inflation via position liquidation → infinite R mint → stablecoin dump"
         },
         {
           "hack_id": "furucombo",
-          "relevance": "related",
-          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
           "hack_protocol_name": "Furucombo",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-27",
           "loss_usd": 14000000.0,
+          "notes": "★ delegatecall in proposal execution path [via cross-hack: Factor 22: Delegatecall-to-Proxy in Handler Registry]",
+          "occurred_at": "2021-02-27",
+          "relevance": "related",
           "root_cause": "Evil Contract — Delegatecall Storage Collision"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Governor proposal executor was identified; observed administration is manual Safe/timelock execution, so proposal-supplied target restrictions are not assessable.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#eth-mainnet"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-035",
-        "category_id": 2,
-        "name": "Role separation: upgrade ≠ fee ≠ oracle",
-        "description": "Determine whether the upgrade role, fee-collection role, and oracle-config role are assigned to distinct addresses.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the upgrade, fee collection, and oracle configuration functions are assigned to distinct addresses or distinct multisigs — meaning no single address holds all three administrative powers simultaneously. The on-chain AccessControl or equivalent role mapping is queried for each of the three action types and compared for address overlap.\n\n**Why it matters**\nRole separation across upgrade, fee, and oracle functions prevents a single key compromise from granting an attacker total protocol control. An attacker who gains access to the oracle setter role should not also be able to upgrade the protocol or drain fee revenues. In practice, many DeFi protocols use a single deployer-controlled multisig for all three roles — which means that any compromise of that multisig constitutes a simultaneous oracle, fee, and upgrade authority breach. The evidence base shows that full-authority-concentration in a single key or multisig is strongly correlated with post-compromise total drains rather than partial impacts.\n\n**Green / Yellow / Red**\nGreen is assigned when upgrade, fee, and oracle roles are held by three distinct addresses or multisigs with no overlap. Yellow covers two-of-three role separation (any one role shared with another). Red is assigned when all three roles are controlled by a single address or multisig, giving a single compromise total administrative authority.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all three role types (e.g., no oracle configuration because it uses an immutable oracle address — which is separately assessed under RD-F-180).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the upgrade role, fee-collection role, and oracle-config role are assigned to distinct addresses.",
-        "data_source": "`AccessControl` role member enumeration via RPC for upgrade/fee/oracle role IDs",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Role → address mapping JSON + distinctness check",
+        "category_id": 2,
         "confidence_signal": "green = all three roles held by distinct addresses; yellow = two of three distinct; red = single address holds all three; gray = protocol does not have all three role types",
+        "curation_archetype": "PE",
+        "data_source": "`AccessControl` role member enumeration via RPC for upgrade/fee/oracle role IDs",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the upgrade role, fee-collection role, and oracle-config role are assigned to distinct addresses.",
+        "evidence_artifact": "Role → address mapping JSON + distinctness check",
+        "id": "RD-F-035",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the upgrade role, fee-collection role, and oracle-config role are assigned to distinct addresses.",
+        "method": "PE",
+        "name": "Role separation: upgrade ≠ fee ≠ oracle",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the upgrade, fee collection, and oracle configuration functions are assigned to distinct addresses or distinct multisigs — meaning no single address holds all three administrative powers simultaneously. The on-chain AccessControl or equivalent role mapping is queried for each of the three action types and compared for address overlap.\n\n**Why it matters**\nRole separation across upgrade, fee, and oracle functions prevents a single key compromise from granting an attacker total protocol control. An attacker who gains access to the oracle setter role should not also be able to upgrade the protocol or drain fee revenues. In practice, many DeFi protocols use a single deployer-controlled multisig for all three roles — which means that any compromise of that multisig constitutes a simultaneous oracle, fee, and upgrade authority breach. The evidence base shows that full-authority-concentration in a single key or multisig is strongly correlated with post-compromise total drains rather than partial impacts.\n\n**Green / Yellow / Red**\nGreen is assigned when upgrade, fee, and oracle roles are held by three distinct addresses or multisigs with no overlap. Yellow covers two-of-three role separation (any one role shared with another). Red is assigned when all three roles are controlled by a single address or multisig, giving a single compromise total administrative authority.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all three role types (e.g., no oracle configuration because it uses an immutable oracle address — which is separately assessed under RD-F-180).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade, fee, oracle, and pause roles are nominally separated, but related operational Safes retain broad manager/admin parameter authority.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/LRTConfig.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

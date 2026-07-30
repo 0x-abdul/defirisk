@@ -1,50 +1,65 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-038",
-        "category_id": 2,
-        "name": "Proposal execution delay < 24h",
-        "description": "Determine whether the time between a governance proposal passing and its executability (including any internal delay) is less than 24 hours.",
-        "scoring_methodology": "**What this measures**\nThis factor measures the time between a governance proposal passing and when it becomes executable — the internal execution delay, distinct from the voting period. If a proposal that receives the final approving vote can be executed within 24 hours, the community has insufficient time to identify and respond to a malicious proposal that was disguised as benign during the voting period.\n\n**Why it matters**\nThe Sonne Finance and Radiant Capital first-incident exploits both involved governance execution windows so short that a prepared attacker could observe the vote result and front-run execution with a malicious transaction. Sonne lost $20M when an attacker front-ran the activation of a new market after the governance proposal passed. Radiant's first incident ($4.5M) involved a 6-second window between market activation and the attacker's donation-exploit transaction. An execution delay under 24 hours gives attackers who monitor governance activity a sufficient window to prepare and execute attacks before defenders can respond.\n\n**Green / Yellow / Red**\nGreen is assigned when the time between proposal pass and execution is at least 48 hours, providing the community and automated watchers meaningful response time. Yellow covers 24–48 hours. Red is assigned when the internal execution delay is under 24 hours, meaning a malicious proposal can be executed within one day of passing.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no on-chain governance execution (Snapshot-only with manual multisig execution), where execution timing is not mechanically determined.\n\n**Notable historical examples**\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution after proposal pass; attacker front-ran market activation.\n- **Radiant Capital (1st incident)** ($4.5M, 2024): 6-second window between activation and exploit; no meaningful response time.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the time between a governance proposal passing and its executability (including any internal delay) is less than 24 hours.",
-        "data_source": "Governance contract `votingDelay()`, `votingPeriod()`, and timelock `getMinDelay()` via RPC",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Governance contract address + delay parameters + total delay hours",
+        "category_id": 2,
         "confidence_signal": "green = total delay ≥ 48 hours; yellow = 24–47 hours; red = <24 hours; gray = no on-chain governance",
+        "curation_archetype": "PE",
+        "data_source": "Governance contract `votingDelay()`, `votingPeriod()`, and timelock `getMinDelay()` via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the time between a governance proposal passing and its executability (including any internal delay) is less than 24 hours.",
+        "evidence_artifact": "Governance contract address + delay parameters + total delay hours",
+        "id": "RD-F-038",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the time between a governance proposal passing and its executability (including any internal delay) is less than 24 hours.",
+        "method": "PE",
+        "name": "Proposal execution delay < 24h",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor measures the time between a governance proposal passing and when it becomes executable — the internal execution delay, distinct from the voting period. If a proposal that receives the final approving vote can be executed within 24 hours, the community has insufficient time to identify and respond to a malicious proposal that was disguised as benign during the voting period.\n\n**Why it matters**\nThe Sonne Finance and Radiant Capital first-incident exploits both involved governance execution windows so short that a prepared attacker could observe the vote result and front-run execution with a malicious transaction. Sonne lost $20M when an attacker front-ran the activation of a new market after the governance proposal passed. Radiant's first incident ($4.5M) involved a 6-second window between market activation and the attacker's donation-exploit transaction. An execution delay under 24 hours gives attackers who monitor governance activity a sufficient window to prepare and execute attacks before defenders can respond.\n\n**Green / Yellow / Red**\nGreen is assigned when the time between proposal pass and execution is at least 48 hours, providing the community and automated watchers meaningful response time. Yellow covers 24–48 hours. Red is assigned when the internal execution delay is under 24 hours, meaning a malicious proposal can be executed within one day of passing.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no on-chain governance execution (Snapshot-only with manual multisig execution), where execution timing is not mechanically determined.\n\n**Notable historical examples**\n- **Sonne Finance** ($20M, 2024): Permissionless governance execution after proposal pass; attacker front-ran market activation.\n- **Radiant Capital (1st incident)** ($4.5M, 2024): 6-second window between activation and exploit; no meaningful response time."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "sonne-finance-rekt",
-          "relevance": "causal",
-          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
           "hack_protocol_name": "Sonne Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
           "loss_usd": 20000000.0,
+          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
+          "occurred_at": "2024-05-14",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "radiant-capital-rekt",
-          "relevance": "causal",
-          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
           "hack_protocol_name": "Radiant Capital (1st incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-01-02",
           "loss_usd": 4500000.0,
+          "notes": "Proposal execution delay < 24h [via cross-hack: Factor 31: Permissionless Governance Execution Window]",
+          "occurred_at": "2024-01-02",
+          "relevance": "causal",
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp has no published Governor proposal-pass-to-execution path; the factual 180-second Manager Timelock delay is assessed under RD-F-033.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

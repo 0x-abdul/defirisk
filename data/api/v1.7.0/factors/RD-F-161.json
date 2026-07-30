@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-161",
-        "category_id": 11,
-        "name": "Protocol-impersonator domain registered (typosquat)",
-        "description": "Determine whether a typosquat of the official protocol domain has been registered in the last 90 days.",
-        "scoring_methodology": "**What this measures**\nThis episodic signal fires when a domain that is a typosquat or visual lookalike of the protocol's official domain has been registered within the trailing 90 days. Typosquat detection covers common substitution patterns (transposed characters, homoglyph substitutions, TLD variants, subdomain spoofing) against a monitored list of known protocol domains. Detection uses domain monitoring feeds (e.g., DNSTwist-class analysis) run at configurable intervals against the protocol's official domain. Category 11 context: typosquat domains are the infrastructure layer for phishing attacks targeting protocol users — they precede attacks by days to weeks.\n\n**Why it matters**\nTyposquat domains targeting DeFi protocols are documented across five in-sample hack precedents in the T-01 database. The Curve Finance DNS hijack ($575K, 2022) showed that frontend attacks can be executed via legitimate-looking domains. Badger DAO's Cloudflare compromise exploited user trust in the official frontend. Protocol-impersonator domains targeting users of high-TVL protocols typically serve fake wallet-connection prompts, seed-phrase phishing, or malicious approval requests. A newly registered lookalike domain is often registered one to four weeks before a phishing campaign launches, providing an actionable lead time.\n\n**Green / Yellow / Red**\nGreen is the baseline when no typosquat domains matching the protocol's official domain patterns have been registered in the trailing 90 days per the domain monitoring feed. Yellow fires when a domain with moderate similarity (e.g., protocol-app.xyz vs protocolapp.xyz) is registered — could be a legitimate user registering a fan site or a minor variant. Red fires when a high-similarity typosquat (e.g., prrotocol.app, pr0tocol.finance) targeting the protocol's exact brand is registered within the trailing 90 days.\n\n**Common gray cases**\nGray applies when the domain monitoring feed has incomplete TLD coverage, or when the protocol operates without a traditional domain (e.g., IPFS-only frontend with ENS access), making typosquat detection inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether a typosquat of the official protocol domain has been registered in the last 90 days.",
-        "data_source": "Domain monitoring feed (CertStream / PhishFort / DomainTools) filtered for protocol name variants",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Newly registered domain + registration date + similarity to official domain",
+        "category_id": 11,
         "confidence_signal": "green = no typosquat registered in last 90 days; red = typosquat domain detected and active; gray = domain monitoring not configured for this protocol",
+        "curation_archetype": "PE",
+        "data_source": "Domain monitoring feed (CertStream / PhishFort / DomainTools) filtered for protocol name variants",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a typosquat of the official protocol domain has been registered in the last 90 days.",
+        "evidence_artifact": "Newly registered domain + registration date + similarity to official domain",
+        "id": "RD-F-161",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a typosquat of the official protocol domain has been registered in the last 90 days.",
+        "method": "PE",
+        "name": "Protocol-impersonator domain registered (typosquat)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis episodic signal fires when a domain that is a typosquat or visual lookalike of the protocol's official domain has been registered within the trailing 90 days. Typosquat detection covers common substitution patterns (transposed characters, homoglyph substitutions, TLD variants, subdomain spoofing) against a monitored list of known protocol domains. Detection uses domain monitoring feeds (e.g., DNSTwist-class analysis) run at configurable intervals against the protocol's official domain. Category 11 context: typosquat domains are the infrastructure layer for phishing attacks targeting protocol users — they precede attacks by days to weeks.\n\n**Why it matters**\nTyposquat domains targeting DeFi protocols are documented across five in-sample hack precedents in the T-01 database. The Curve Finance DNS hijack ($575K, 2022) showed that frontend attacks can be executed via legitimate-looking domains. Badger DAO's Cloudflare compromise exploited user trust in the official frontend. Protocol-impersonator domains targeting users of high-TVL protocols typically serve fake wallet-connection prompts, seed-phrase phishing, or malicious approval requests. A newly registered lookalike domain is often registered one to four weeks before a phishing campaign launches, providing an actionable lead time.\n\n**Green / Yellow / Red**\nGreen is the baseline when no typosquat domains matching the protocol's official domain patterns have been registered in the trailing 90 days per the domain monitoring feed. Yellow fires when a domain with moderate similarity (e.g., protocol-app.xyz vs protocolapp.xyz) is registered — could be a legitimate user registering a fan site or a minor variant. Red fires when a high-similarity typosquat (e.g., prrotocol.app, pr0tocol.finance) targeting the protocol's exact brand is registered within the trailing 90 days.\n\n**Common gray cases**\nGray applies when the domain monitoring feed has incomplete TLD coverage, or when the protocol operates without a traditional domain (e.g., IPFS-only frontend with ENS access), making typosquat detection inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "No continuous domain-registration and similarity monitor covered likely Kelp and Kernel typosquats.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

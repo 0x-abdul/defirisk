@@ -1,29 +1,53 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-065",
-        "category_id": 4,
-        "name": "Liquidity depth per major asset",
-        "description": "Measure on-chain liquidity depth for protocol-held assets at 2% and 5% price impact in USD.",
-        "scoring_methodology": "**What this measures**\nThis factor measures the on-chain liquidity depth for the protocol's major held assets at two price impact thresholds: two percent and five percent. Liquidity depth is sourced from DEX subgraph data and represents the USD volume that can be traded at each impact level across the major trading venues for each asset. It is updated on a slow continuous cadence and displayed per asset rather than as a single protocol-level aggregate.\n\n**Why it matters**\nLiquidity depth determines how much capital an attacker needs to move asset prices by a meaningful amount. Inverse Finance ($15.6M, 2022) illustrates the failure mode precisely: the INV/WETH pool on SushiSwap held approximately $1M in liquidity, allowing an attacker with 500 ETH to move the INV price fifty times higher in a single transaction, which was then read by the lending protocol's TWAP oracle as the legitimate price. Deeper liquidity requires a proportionally larger attack capital outlay, reducing the economic viability of manipulation. For protocols that hold their own governance token as collateral, governance token liquidity depth is a critical oracle-manipulation-resistance metric.\n\n**Green / Yellow / Red**\nGreen: liquidity depth at two percent price impact exceeds ten times the maximum single-transaction borrow amount for the relevant asset market. Yellow: liquidity depth at five percent price impact exceeds the maximum single-transaction borrow amount but two percent depth does not. Red: liquidity depth at five percent price impact is less than the maximum single-transaction borrow amount, or the protocol holds governance tokens as collateral with no minimum liquidity floor.\n\n**Common gray cases**\nLiquidity depth measurements from DEX subgraphs can lag real-time conditions by up to several hours during high-volatility periods. Curator should treat the depth measurement as a snapshot and note that intra-day manipulation during low-liquidity periods (weekends, off-hours) may not be captured.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Measure on-chain liquidity depth for protocol-held assets at 2% and 5% price impact in USD.",
-        "data_source": "Uniswap v3 / Curve / Balancer subgraph depth queries or `ParaSwap` price-impact API",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Depth USD at 2% and 5% per asset + DEX venue + block number",
+        "category_id": 4,
         "confidence_signal": "green = depth at 2% ≥10% of protocol TVL for major assets; yellow = depth at 2% 2–9% of TVL; red = <2% (liquidations cannot be absorbed); gray = asset not traded on major DEXs",
+        "curation_archetype": "PE",
+        "data_source": "Uniswap v3 / Curve / Balancer subgraph depth queries or `ParaSwap` price-impact API",
+        "deprecated_in_rubric": null,
+        "description": "Measure on-chain liquidity depth for protocol-held assets at 2% and 5% price impact in USD.",
+        "evidence_artifact": "Depth USD at 2% and 5% per asset + DEX venue + block number",
+        "id": "RD-F-065",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure on-chain liquidity depth for protocol-held assets at 2% and 5% price impact in USD.",
+        "method": "PE",
+        "name": "Liquidity depth per major asset",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor measures the on-chain liquidity depth for the protocol's major held assets at two price impact thresholds: two percent and five percent. Liquidity depth is sourced from DEX subgraph data and represents the USD volume that can be traded at each impact level across the major trading venues for each asset. It is updated on a slow continuous cadence and displayed per asset rather than as a single protocol-level aggregate.\n\n**Why it matters**\nLiquidity depth determines how much capital an attacker needs to move asset prices by a meaningful amount. Inverse Finance ($15.6M, 2022) illustrates the failure mode precisely: the INV/WETH pool on SushiSwap held approximately $1M in liquidity, allowing an attacker with 500 ETH to move the INV price fifty times higher in a single transaction, which was then read by the lending protocol's TWAP oracle as the legitimate price. Deeper liquidity requires a proportionally larger attack capital outlay, reducing the economic viability of manipulation. For protocols that hold their own governance token as collateral, governance token liquidity depth is a critical oracle-manipulation-resistance metric.\n\n**Green / Yellow / Red**\nGreen: liquidity depth at two percent price impact exceeds ten times the maximum single-transaction borrow amount for the relevant asset market. Yellow: liquidity depth at five percent price impact exceeds the maximum single-transaction borrow amount but two percent depth does not. Red: liquidity depth at five percent price impact is less than the maximum single-transaction borrow amount, or the protocol holds governance tokens as collateral with no minimum liquidity floor.\n\n**Common gray cases**\nLiquidity depth measurements from DEX subgraphs can lag real-time conditions by up to several hours during high-volatility periods. Curator should treat the depth measurement as a snapshot and note that intra-day manipulation during low-liquidity periods (weekends, off-hours) may not be captured.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "A July 2024 review estimated 7,000 rsETH (about $24.4 million then) could trade to ETH below 0.5% slippage, but no current 2%/5% depth measurement is bound to this run. The April 2026 rsETH shock also produced severe market-wide liquidity stress. Yellow reflects meaningful but incompletely current exit capacity.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://llamarisk.com/research/collateral-risk-rseth"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://research.glassnode.com/anatomy-of-a-liquidity-freeze/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

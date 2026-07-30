@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-153",
-        "category_id": 10,
-        "name": "Bridge tracks nonce-consumed mapping",
-        "description": "Determine whether the bridge inbox maintains a nonce-consumed mapping and rejects replay of used nonces.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the bridge inbox maintains a nonce-consumed mapping that permanently records processed message nonces and rejects any attempt to process the same nonce twice. Static analysis of the bridge inbox contract is the assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nWithout replay protection, a valid bridge message — once processed — can be submitted again to trigger a second, unbacked release of tokens on the destination chain. This is distinct from the cross-chain replay addressed by RD-F-152: same-chain replay exploits the fact that the bridge contract does not remember which messages it has already executed. The T-01 evidence base links same-chain replay to approximately 2 protocols in the hack database. A consumed-nonce mapping (or equivalent commitment scheme such as a Merkle leaf membership proof with leaf-burn) is the standard mitigation and is considered table-stakes for any bridge operating at material TVL.\n\n**Green / Yellow / Red**\nGreen is scored when the bridge implements a nonce-consumed mapping (or equivalent one-use commitment scheme) that is enforced before processing any message. Yellow is scored when replay protection exists for some message types but not others, or when the nonce space is insufficiently large. Red is scored when no replay protection mechanism is present and previously processed messages can be re-submitted.\n\n**Common gray cases**\nGray is applied when the bridge uses an off-chain sequencer or relayer that maintains replay protection externally and the on-chain component cannot be independently assessed.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the bridge inbox maintains a nonce-consumed mapping and rejects replay of used nonces.",
-        "data_source": "Source inspection of inbox contract for replay-prevention mapping on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of nonce mapping + replay-rejection logic",
+        "category_id": 10,
         "confidence_signal": "green = nonce mapping present and replay rejected; red = no nonce tracking; gray = bridge source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of inbox contract for replay-prevention mapping on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the bridge inbox maintains a nonce-consumed mapping and rejects replay of used nonces.",
+        "evidence_artifact": "Source excerpt of nonce mapping + replay-rejection logic",
+        "id": "RD-F-153",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the bridge inbox maintains a nonce-consumed mapping and rejects replay of used nonces.",
+        "method": "PE",
+        "name": "Bridge tracks nonce-consumed mapping",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the bridge inbox maintains a nonce-consumed mapping that permanently records processed message nonces and rejects any attempt to process the same nonce twice. Static analysis of the bridge inbox contract is the assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nWithout replay protection, a valid bridge message — once processed — can be submitted again to trigger a second, unbacked release of tokens on the destination chain. This is distinct from the cross-chain replay addressed by RD-F-152: same-chain replay exploits the fact that the bridge contract does not remember which messages it has already executed. The T-01 evidence base links same-chain replay to approximately 2 protocols in the hack database. A consumed-nonce mapping (or equivalent commitment scheme such as a Merkle leaf membership proof with leaf-burn) is the standard mitigation and is considered table-stakes for any bridge operating at material TVL.\n\n**Green / Yellow / Red**\nGreen is scored when the bridge implements a nonce-consumed mapping (or equivalent one-use commitment scheme) that is enforced before processing any message. Yellow is scored when replay protection exists for some message types but not others, or when the nonce space is insufficiently large. Red is scored when no replay protection mechanism is present and previously processed messages can be re-submitted.\n\n**Common gray cases**\nGray is applied when the bridge uses an off-chain sequencer or relayer that maintains replay protection externally and the on-chain component cannot be independently assessed.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "LayerZero V2 tracks origin nonce and clears delivered payload state, providing replay rejection.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/LayerZero-Labs/LayerZero-v2/blob/main/packages/layerzero-v2/evm/protocol/contracts/EndpointV2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,54 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-089",
-        "category_id": 5,
-        "name": "Insurance coverage active",
-        "description": "Determine whether active coverage on Nexus Mutual, Unslashed, Sherlock, or equivalent is in force; record cover size in USD.",
-        "scoring_methodology": "**What this measures**\nThis factor records whether the protocol has active coverage on a recognized DeFi insurance provider (Nexus Mutual, Unslashed Finance, Sherlock, or a verified equivalent) and, if so, the current cover size in USD. Coverage is verified via provider APIs and is updated continuously. A protocol without any active insurance coverage scores yellow or red depending on TVL tier. The factor measures the presence and adequacy of formal insurance coverage, not informal treasury reserves.\n\n**Why it matters**\nActive insurance coverage provides two depositor-protection signals. First, it represents an independent third-party assessment of the protocol's risk posture: insurance providers (particularly Sherlock, which runs competitive audit contests) conduct their own review before offering coverage and reprice based on ongoing assessments. Second, it provides actual financial recourse for depositors in the event of an exploit. In the dataset, Euler Finance's $4.5M Sherlock insurance payout acknowledging the missed donateToReserves vulnerability is the clearest example of insurance functioning as designed. Coverage absence correlates with the dataset's highest-loss protocols: the majority of protocols with losses exceeding $50M had no active insurance coverage at the time of the exploit.\n\n**Green / Yellow / Red**\nGreen: active coverage from a recognized provider with cover size representing at least twenty percent of current TVL. Yellow: active coverage but cover size represents less than twenty percent of TVL, or coverage is from a provider without an active assessment process. Red: no active insurance coverage on any recognized provider, or coverage lapsed within the last ninety days.\n\n**Common gray cases**\nSelf-insurance (e.g., protocol treasury reserves earmarked for hack compensation) is not equivalent to third-party insurance coverage and is not counted for this factor. Curator must verify that the coverage is active via direct API check, not just protocol documentation, as policies can lapse silently.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether active coverage on Nexus Mutual, Unslashed, Sherlock, or equivalent is in force; record cover size in USD.",
-        "data_source": "Nexus Mutual cover API + Sherlock protocol coverage list + Unslashed dashboard",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "Coverage provider + cover size USD + expiry date + coverage URL",
+        "category_id": 5,
         "confidence_signal": "green = active coverage ≥5% of TVL; yellow = active coverage <5% of TVL or coverage exists but scope unclear; red = no active coverage; gray = insurance infrastructure not available for this protocol type",
+        "curation_archetype": "PE",
+        "data_source": "Nexus Mutual cover API + Sherlock protocol coverage list + Unslashed dashboard",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether active coverage on Nexus Mutual, Unslashed, Sherlock, or equivalent is in force; record cover size in USD.",
+        "evidence_artifact": "Coverage provider + cover size USD + expiry date + coverage URL",
+        "id": "RD-F-089",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether active coverage on Nexus Mutual, Unslashed, Sherlock, or equivalent is in force; record cover size in USD.",
+        "method": "PE",
+        "name": "Insurance coverage active",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records whether the protocol has active coverage on a recognized DeFi insurance provider (Nexus Mutual, Unslashed Finance, Sherlock, or a verified equivalent) and, if so, the current cover size in USD. Coverage is verified via provider APIs and is updated continuously. A protocol without any active insurance coverage scores yellow or red depending on TVL tier. The factor measures the presence and adequacy of formal insurance coverage, not informal treasury reserves.\n\n**Why it matters**\nActive insurance coverage provides two depositor-protection signals. First, it represents an independent third-party assessment of the protocol's risk posture: insurance providers (particularly Sherlock, which runs competitive audit contests) conduct their own review before offering coverage and reprice based on ongoing assessments. Second, it provides actual financial recourse for depositors in the event of an exploit. In the dataset, Euler Finance's $4.5M Sherlock insurance payout acknowledging the missed donateToReserves vulnerability is the clearest example of insurance functioning as designed. Coverage absence correlates with the dataset's highest-loss protocols: the majority of protocols with losses exceeding $50M had no active insurance coverage at the time of the exploit.\n\n**Green / Yellow / Red**\nGreen: active coverage from a recognized provider with cover size representing at least twenty percent of current TVL. Yellow: active coverage but cover size represents less than twenty percent of TVL, or coverage is from a provider without an active assessment process. Red: no active insurance coverage on any recognized provider, or coverage lapsed within the last ninety days.\n\n**Common gray cases**\nSelf-insurance (e.g., protocol treasury reserves earmarked for hack compensation) is not equivalent to third-party insurance coverage and is not counted for this factor. Curator must verify that the coverage is active via direct API check, not just protocol documentation, as policies can lapse silently.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Nexus's KelpDAO (Zircuit) Pendle annex limits cover to deposits in one named strategy and forbids applying it to an individual protocol. Nexus separately states that its products did not cover the bridge or operational-security loss class behind the April incident. This evidence does not establish complete protocol-wide coverage or its exhaustive absence.",
+          "evidence_summary": "The cited KelpDAO (Zircuit) Pendle cover is strategy-specific, and its annex excludes protocol-wide application.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://api.nexusmutual.io/ipfs/QmUD3G8kqMdJ32CspFPjJgRXunh6KfBb1NRWtyVBvSLhe7"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://nexusmutual.io/blog/kelpdao-layerzero-incident-report"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

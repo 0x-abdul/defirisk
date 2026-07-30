@@ -1,60 +1,81 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-030",
-        "category_id": 2,
-        "name": "Hot-wallet signer flag",
-        "description": "Determine whether ≥1 multisig signer address exhibits on-chain behavior consistent with a hot wallet (web-wallet signing pattern, no hardware signing indicators).",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether one or more signers on a protocol's governance multisig are using addresses consistent with a hot wallet — characterized by patterns such as browser-wallet transaction signing, gas payment from exchange withdrawals, or activity from multiple simultaneous IP-routed transactions. Hot wallet signers indicate that the private key is stored in software accessible from an internet-connected device, rather than in a hardware security module or offline hardware wallet.\n\n**Why it matters**\nThe operational security of a multisig's threshold guarantee depends on the security of each individual signer's key storage. A 5-of-8 multisig where five signers use browser extension wallets has a materially lower effective security than the same configuration with hardware wallets — because phishing, malware, or targeted key extraction is possible against software wallets. The Harmony Bridge and Radiant Capital II exploits both involved signers whose key exposure was facilitated by software-side compromise. Three in-sample hacks in the database have the hot-wallet signer pattern as a contributing factor.\n\n**Green / Yellow / Red**\nGreen is assigned when all multisig signers demonstrably use hardware wallets or HSMs, verifiable via on-chain signing patterns or published custody disclosure. Yellow covers configurations where hardware wallet use is claimed but not verifiable, or where some but not all signers use hardware keys. Red is assigned when one or more signers show on-chain patterns consistent with software wallet usage and no hardware wallet evidence exists.\n\n**Common gray cases**\nThis factor is grayed when the signer list is not public, making wallet type inference impossible, or when the protocol uses a smart-contract wallet with native MFA that renders the hardware/software distinction moot.\n\n**Notable historical examples**\n- **Harmony Horizon Bridge** ($100M, 2022): 2-of-5 multisig with hot wallet signers; combined with minimum threshold, key compromise caused full bridge drain.\n- **Radiant Capital** ($53M, 2024): Signers' hardware devices were themselves compromised via supply-chain attack, demonstrating that hot-vs-hardware distinction is a necessary but not sufficient safeguard.\n- **Poly Network (2nd incident)** ($4.4M, 2023): 3-of-4 threshold with compromised signer keys enabled forged cross-chain proof minting.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether ≥1 multisig signer address exhibits on-chain behavior consistent with a hot wallet (web-wallet signing pattern, no hardware signing indicators).",
-        "data_source": "On-chain tx patterns for signer addresses: nonce velocity, gas-price jitter, signing-time distribution; Etherscan tx history",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Signer address list + behavioral heuristic flags per address",
+        "category_id": 2,
         "confidence_signal": "green = all signers show hardware-wallet-consistent pattern; yellow = one signer ambiguous; red = ≥1 signer shows clear hot-wallet pattern; gray = insufficient signing history (<5 txs)",
+        "curation_archetype": "PE",
+        "data_source": "On-chain tx patterns for signer addresses: nonce velocity, gas-price jitter, signing-time distribution; Etherscan tx history",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether ≥1 multisig signer address exhibits on-chain behavior consistent with a hot wallet (web-wallet signing pattern, no hardware signing indicators).",
+        "evidence_artifact": "Signer address list + behavioral heuristic flags per address",
+        "id": "RD-F-030",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether ≥1 multisig signer address exhibits on-chain behavior consistent with a hot wallet (web-wallet signing pattern, no hardware signing indicators).",
+        "method": "PE",
+        "name": "Hot-wallet signer flag",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether one or more signers on a protocol's governance multisig are using addresses consistent with a hot wallet — characterized by patterns such as browser-wallet transaction signing, gas payment from exchange withdrawals, or activity from multiple simultaneous IP-routed transactions. Hot wallet signers indicate that the private key is stored in software accessible from an internet-connected device, rather than in a hardware security module or offline hardware wallet.\n\n**Why it matters**\nThe operational security of a multisig's threshold guarantee depends on the security of each individual signer's key storage. A 5-of-8 multisig where five signers use browser extension wallets has a materially lower effective security than the same configuration with hardware wallets — because phishing, malware, or targeted key extraction is possible against software wallets. The Harmony Bridge and Radiant Capital II exploits both involved signers whose key exposure was facilitated by software-side compromise. Three in-sample hacks in the database have the hot-wallet signer pattern as a contributing factor.\n\n**Green / Yellow / Red**\nGreen is assigned when all multisig signers demonstrably use hardware wallets or HSMs, verifiable via on-chain signing patterns or published custody disclosure. Yellow covers configurations where hardware wallet use is claimed but not verifiable, or where some but not all signers use hardware keys. Red is assigned when one or more signers show on-chain patterns consistent with software wallet usage and no hardware wallet evidence exists.\n\n**Common gray cases**\nThis factor is grayed when the signer list is not public, making wallet type inference impossible, or when the protocol uses a smart-contract wallet with native MFA that renders the hardware/software distinction moot.\n\n**Notable historical examples**\n- **Harmony Horizon Bridge** ($100M, 2022): 2-of-5 multisig with hot wallet signers; combined with minimum threshold, key compromise caused full bridge drain.\n- **Radiant Capital** ($53M, 2024): Signers' hardware devices were themselves compromised via supply-chain attack, demonstrating that hot-vs-hardware distinction is a necessary but not sufficient safeguard.\n- **Poly Network (2nd incident)** ($4.4M, 2023): 3-of-4 threshold with compromised signer keys enabled forged cross-chain proof minting."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "radiant-capital-rekt2",
-          "relevance": "causal",
-          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
           "hack_protocol_name": "Radiant Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-10-16",
           "loss_usd": 53000000.0,
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
+          "occurred_at": "2024-10-16",
+          "relevance": "causal",
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
           "hack_id": "poly-network-rekt2",
-          "relevance": "causal",
-          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
           "hack_protocol_name": "Poly Network (2nd incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-01",
           "loss_usd": 4400000.0,
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
+          "occurred_at": "2023-07-01",
+          "relevance": "causal",
           "root_cause": "Compromised 3-of-4 multisig → forged deposit proofs → cross-chain withdrawal drain"
         },
         {
           "hack_id": "harmony-bridge",
-          "relevance": "causal",
-          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
           "hack_protocol_name": "Harmony Horizon Bridge",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-06-23",
           "loss_usd": 100000000.0,
+          "notes": "Hot-wallet signer flag on multisig [via cross-hack: Factor 23: Minimum-Threshold Multisig With Hot Wallet Signers]",
+          "occurred_at": "2022-06-23",
+          "relevance": "causal",
           "root_cause": "Compromised Multisig Private Keys (Hot Wallets)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Safe records establish signer addresses but do not establish whether any signer uses a hot wallet or hardware-backed custody.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xCbcdd778AA25476F203814214dD3E9b9c46829A1/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

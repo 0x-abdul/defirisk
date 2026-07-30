@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-057",
-        "category_id": 3,
-        "name": "Circuit breaker on price deviation",
-        "description": "Determine whether the protocol halts or reverts if the oracle-reported price deviates by more than X% from a reference within Y blocks.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol implements a circuit breaker that halts operations or reverts oracle reads when the reported price deviates more than a configured threshold from a reference price within a defined window. Source inspection of the oracle integration layer is the assessment method.\n\n**Why it matters**\nCircuit breakers are the last line of defence against oracle manipulation that passes the TWAP or medianisation check — particularly for assets with genuine high volatility that may render a simple manipulation-resistance test insufficient. An oracle price deviation signal (RD-F-099) in the real-time layer depends on the same concept, but at the protocol level a circuit breaker provides in-protocol protection that does not require an external monitor to react. The synthesis dataset notes that Inverse Finance's oracle price anomaly was rated High detectability — a circuit breaker would have halted the protocol before the drain completed. Protocols with high-volatility assets as collateral are most exposed when this protection is absent.\n\n**Green / Yellow / Red**\nGreen is scored when a circuit breaker is implemented and configured with a documented threshold appropriate for the asset class (typically 5–15% deviation). Yellow is scored when a circuit breaker exists but the threshold is excessively wide (over 30%) or is not documented. Red is scored when no circuit breaker is present and the protocol will accept any price returned by the oracle without sanity checking.\n\n**Common gray cases**\nGray is applied when the circuit breaker is implemented at the oracle-provider layer (e.g., Chainlink's own deviation threshold) but the protocol has no additional in-protocol check.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol halts or reverts if the oracle-reported price deviates by more than X% from a reference within Y blocks.",
-        "data_source": "Source search for deviation check or `maxDeviationBps` / `priceGuard` pattern on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of deviation check + configured threshold",
+        "category_id": 3,
         "confidence_signal": "green = circuit breaker present and threshold ≤20%; yellow = circuit breaker present but threshold >20%; red = no circuit breaker; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source search for deviation check or `maxDeviationBps` / `priceGuard` pattern on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol halts or reverts if the oracle-reported price deviates by more than X% from a reference within Y blocks.",
+        "evidence_artifact": "Source excerpt of deviation check + configured threshold",
+        "id": "RD-F-057",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol halts or reverts if the oracle-reported price deviates by more than X% from a reference within Y blocks.",
+        "method": "PE",
+        "name": "Circuit breaker on price deviation",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol implements a circuit breaker that halts operations or reverts oracle reads when the reported price deviates more than a configured threshold from a reference price within a defined window. Source inspection of the oracle integration layer is the assessment method.\n\n**Why it matters**\nCircuit breakers are the last line of defence against oracle manipulation that passes the TWAP or medianisation check — particularly for assets with genuine high volatility that may render a simple manipulation-resistance test insufficient. An oracle price deviation signal (RD-F-099) in the real-time layer depends on the same concept, but at the protocol level a circuit breaker provides in-protocol protection that does not require an external monitor to react. The synthesis dataset notes that Inverse Finance's oracle price anomaly was rated High detectability — a circuit breaker would have halted the protocol before the drain completed. Protocols with high-volatility assets as collateral are most exposed when this protection is absent.\n\n**Green / Yellow / Red**\nGreen is scored when a circuit breaker is implemented and configured with a documented threshold appropriate for the asset class (typically 5–15% deviation). Yellow is scored when a circuit breaker exists but the threshold is excessively wide (over 30%) or is not documented. Red is scored when no circuit breaker is present and the protocol will accept any price returned by the oracle without sanity checking.\n\n**Common gray cases**\nGray is applied when the circuit breaker is implemented at the oracle-provider layer (e.g., Chainlink's own deviation threshold) but the protocol has no additional in-protocol check.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "LRTOracle applies a configurable percentage limit, restricts excessive upside updates, and pauses on excessive downside.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

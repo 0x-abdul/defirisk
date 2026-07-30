@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-025",
-        "category_id": 2,
-        "name": "Admin key custody type",
-        "description": "Read the effective admin/owner/upgrader role on deployed contracts and classify as: EOA / multisig / multisig+timelock / full DAO+timelock / immutable.",
-        "scoring_methodology": "**What this measures**\nThis factor records the categorical type of custody arrangement holding the protocol's most privileged admin role: one of EOA, multisig, multisig-plus-timelock, full DAO-plus-timelock, or immutable (no admin). The value is determined by an on-chain read of the owner, admin, or ProxyAdmin slot on every major deployed contract. The result is a single categorical label that anchors the full governance & admin section — it is the baseline posture description from which more specific factors (RD-F-027 through RD-F-047) derive their context.\n\n**Why it matters**\nAdmin key custody type is the foundational governance signal — before assessing threshold sizes, timelock durations, or role separation, a depositor needs to know what class of mechanism holds ultimate control. The evidence base shows that every off-chain key compromise incident in the dataset was possible only because the exploited admin role was held by a custody type that could be compromised with a single key or a small coordinated set of keys. Immutable protocols cannot be upgraded by anyone and occupy a different risk category entirely; DAO-plus-timelock protocols have the highest structural resistance to unilateral action; EOA protocols have the lowest. This factor drives the display value on the protocol card and informs which sub-factors are applicable.\n\n**Green / Yellow / Red**\nGreen is assigned when the highest-privilege admin role is held by a multisig-plus-timelock or full DAO-plus-timelock, with the timelock meeting the minimum duration threshold assessed under RD-F-032. Yellow covers a multisig without timelock or a DAO without timelock. Red is assigned when the admin role is held by a single EOA (which also triggers RD-F-027), or when no admin role can be identified from on-chain data (opacity, not immutability).\n\n**Common gray cases**\nThis factor is grayed only when proxy architecture obscures the admin slot entirely and no published documentation identifies the governance type — an uncommon state for any protocol with material TVL.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read the effective admin/owner/upgrader role on deployed contracts and classify as: EOA / multisig / multisig+timelock / full DAO+timelock / immutable.",
-        "data_source": "`owner()`, `admin()`, `getRoleMember()` calls via RPC + Etherscan contract read tab",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Contract address + role slot value + address type classification + checked_at",
+        "category_id": 2,
         "confidence_signal": "green = multisig+timelock or DAO+timelock; yellow = multisig without timelock; red = EOA; gray = admin role not readable (unverified or non-standard)",
+        "curation_archetype": "PE",
+        "data_source": "`owner()`, `admin()`, `getRoleMember()` calls via RPC + Etherscan contract read tab",
+        "deprecated_in_rubric": null,
+        "description": "Read the effective admin/owner/upgrader role on deployed contracts and classify as: EOA / multisig / multisig+timelock / full DAO+timelock / immutable.",
+        "evidence_artifact": "Contract address + role slot value + address type classification + checked_at",
+        "id": "RD-F-025",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read the effective admin/owner/upgrader role on deployed contracts and classify as: EOA / multisig / multisig+timelock / full DAO+timelock / immutable.",
+        "method": "PE",
+        "name": "Admin key custody type",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor records the categorical type of custody arrangement holding the protocol's most privileged admin role: one of EOA, multisig, multisig-plus-timelock, full DAO-plus-timelock, or immutable (no admin). The value is determined by an on-chain read of the owner, admin, or ProxyAdmin slot on every major deployed contract. The result is a single categorical label that anchors the full governance & admin section — it is the baseline posture description from which more specific factors (RD-F-027 through RD-F-047) derive their context.\n\n**Why it matters**\nAdmin key custody type is the foundational governance signal — before assessing threshold sizes, timelock durations, or role separation, a depositor needs to know what class of mechanism holds ultimate control. The evidence base shows that every off-chain key compromise incident in the dataset was possible only because the exploited admin role was held by a custody type that could be compromised with a single key or a small coordinated set of keys. Immutable protocols cannot be upgraded by anyone and occupy a different risk category entirely; DAO-plus-timelock protocols have the highest structural resistance to unilateral action; EOA protocols have the lowest. This factor drives the display value on the protocol card and informs which sub-factors are applicable.\n\n**Green / Yellow / Red**\nGreen is assigned when the highest-privilege admin role is held by a multisig-plus-timelock or full DAO-plus-timelock, with the timelock meeting the minimum duration threshold assessed under RD-F-032. Yellow covers a multisig without timelock or a DAO without timelock. Red is assigned when the admin role is held by a single EOA (which also triggers RD-F-027), or when no admin role can be identified from on-chain data (opacity, not immutability).\n\n**Common gray cases**\nThis factor is grayed only when proxy architecture obscures the admin slot entirely and no published documentation identifies the governance type — an uncommon state for any protocol with material TVL.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp publishes mixed Safe-plus-timelock custody: its core Ethereum ProxyAdmin is timelock-owned, while a second ProxyAdmin is Admin-Safe-owned.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#eth-mainnet"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }
