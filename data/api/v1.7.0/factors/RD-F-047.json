@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-047",
-        "category_id": 2,
-        "name": "Governance token concentration (Gini)",
-        "description": "Compute the Gini coefficient of governance token holdings across the top-1000 holder addresses.",
-        "scoring_methodology": "**What this measures**\nThis factor computes the Gini coefficient of governance token holdings across the top-N holders — producing a concentration measure between 0 (perfectly equal distribution) and 1 (fully concentrated in one address). The assessment reads on-chain token holder distributions for the governance token and applies the Gini formula, displayed alongside the protocol's current quorum threshold to provide context on whether a small number of whales can unilaterally control governance outcomes.\n\n**Why it matters**\nHighly concentrated governance token distributions are a prerequisite for governance attacks by large holders without requiring flash loans. When the top five holders collectively control more than 50% of the voting supply, any two or three of them can pass a proposal unilaterally. This factor surfaces the structural power distribution within a protocol's governance, which is orthogonal to the attack surface factors (RD-F-036, RD-F-037) but relevant for assessing governance capture risk from large holders. It is a display field rather than a critical factor — concentration alone is not sufficient for a D or F grade — but it informs the holistic governance picture.\n\n**Green / Yellow / Red**\nGreen is assigned when the Gini coefficient of voting token distribution is below 0.6 and no single address controls more than 20% of voting supply. Yellow covers Gini 0.6–0.8 or single-address control of 20–40%. Red is assigned when a single address or a clearly coordinated group controls more than 40% of voting supply, enabling unilateral governance outcomes.\n\n**Common gray cases**\nThis factor is grayed when the governance token is vote-locked (non-transferable), where the standard holder scan does not accurately represent voting power, or when governance is off-chain and token distribution is not directly linked to proposal authority.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Compute the Gini coefficient of governance token holdings across the top-1000 holder addresses.",
-        "data_source": "Etherscan token holders API + on-chain `Transfer` event history via subgraph (The Graph governance subgraph or protocol-specific)",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Holder distribution snapshot JSON + Gini coefficient + top-10 share % + block number",
+        "category_id": 2,
         "confidence_signal": "green = Gini <0.7 (reasonably distributed); yellow = 0.7–0.85; red = >0.85 or top-3 holders control >50%; gray = governance token not identified or no on-chain governance",
+        "curation_archetype": "PE",
+        "data_source": "Etherscan token holders API + on-chain `Transfer` event history via subgraph (The Graph governance subgraph or protocol-specific)",
+        "deprecated_in_rubric": null,
+        "description": "Compute the Gini coefficient of governance token holdings across the top-1000 holder addresses.",
+        "evidence_artifact": "Holder distribution snapshot JSON + Gini coefficient + top-10 share % + block number",
+        "id": "RD-F-047",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Compute the Gini coefficient of governance token holdings across the top-1000 holder addresses.",
+        "method": "PE",
+        "name": "Governance token concentration (Gini)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor computes the Gini coefficient of governance token holdings across the top-N holders — producing a concentration measure between 0 (perfectly equal distribution) and 1 (fully concentrated in one address). The assessment reads on-chain token holder distributions for the governance token and applies the Gini formula, displayed alongside the protocol's current quorum threshold to provide context on whether a small number of whales can unilaterally control governance outcomes.\n\n**Why it matters**\nHighly concentrated governance token distributions are a prerequisite for governance attacks by large holders without requiring flash loans. When the top five holders collectively control more than 50% of the voting supply, any two or three of them can pass a proposal unilaterally. This factor surfaces the structural power distribution within a protocol's governance, which is orthogonal to the attack surface factors (RD-F-036, RD-F-037) but relevant for assessing governance capture risk from large holders. It is a display field rather than a critical factor — concentration alone is not sufficient for a D or F grade — but it informs the holistic governance picture.\n\n**Green / Yellow / Red**\nGreen is assigned when the Gini coefficient of voting token distribution is below 0.6 and no single address controls more than 20% of voting supply. Yellow covers Gini 0.6–0.8 or single-address control of 20–40%. Red is assigned when a single address or a clearly coordinated group controls more than 40% of voting supply, enabling unilateral governance outcomes.\n\n**Common gray cases**\nThis factor is grayed when the governance token is vote-locked (non-transferable), where the standard holder scan does not accurately represent voting power, or when governance is off-chain and token distribution is not directly linked to proposal authority.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "KERNEL has published tokenomics, but no reproducible voting-power holder Gini was published for an active executable governance system.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/usdkernel-tokenomics"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

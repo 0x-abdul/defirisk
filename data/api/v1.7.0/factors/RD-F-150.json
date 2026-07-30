@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-150",
-        "category_id": 10,
-        "name": "Bridge validator co-hosting",
-        "description": "Determine whether validators share ASN or data-center/custodian per on-chain and OSINT inference.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether bridge validators share ASN (Autonomous System Number), data-centre operator, or cloud custodian — indicating that multiple validators could be taken offline or compromised by a single infrastructure event. Assessment combines bridge documentation with OSINT on validator operator infrastructure. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nPhysical and infrastructure co-location transforms a nominally independent validator set into a correlated failure group. A 7-of-10 bridge with all validators hosted on the same AWS region effectively has a single infrastructure point of failure — a region outage or targeted attack against that provider can simultaneously compromise the quorum. The T-01 evidence base links co-hosting patterns to approximately 3 protocols in the hack database, including bridge incidents where signer-set compromise was facilitated by shared infrastructure. Harmony Bridge validators reportedly shared operational infrastructure that reduced the effective independence of its 2-of-5 threshold.\n\n**Green / Yellow / Red**\nGreen is scored when validators use diverse cloud providers, geographic regions, and independent node operators with documented independence. Yellow is scored when some validators share a cloud provider or region but no single provider controls a quorum. Red is scored when validators sharing a single provider or region constitute a quorum, or when all validators are operated by the same entity.\n\n**Common gray cases**\nGray is applied when validator infrastructure cannot be determined from public documentation and OSINT cannot confidently identify hosting relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether validators share ASN or data-center/custodian per on-chain and OSINT inference.",
-        "data_source": "Validator address list (from F148) + Chainalysis/TRM infrastructure OSINT + ASN lookup",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Validator address list + ASN/custodian inference per validator + co-hosting flag",
+        "category_id": 10,
         "confidence_signal": "green = validators demonstrably on independent infrastructure; yellow = partial evidence or insufficient data; red = majority of validators share ASN or custodian; gray = bridge not identified or validator set not public",
+        "curation_archetype": "PH",
+        "data_source": "Validator address list (from F148) + Chainalysis/TRM infrastructure OSINT + ASN lookup",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether validators share ASN or data-center/custodian per on-chain and OSINT inference.",
+        "evidence_artifact": "Validator address list + ASN/custodian inference per validator + co-hosting flag",
+        "id": "RD-F-150",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether validators share ASN or data-center/custodian per on-chain and OSINT inference.",
+        "method": "PH",
+        "name": "Bridge validator co-hosting",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether bridge validators share ASN (Autonomous System Number), data-centre operator, or cloud custodian — indicating that multiple validators could be taken offline or compromised by a single infrastructure event. Assessment combines bridge documentation with OSINT on validator operator infrastructure. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nPhysical and infrastructure co-location transforms a nominally independent validator set into a correlated failure group. A 7-of-10 bridge with all validators hosted on the same AWS region effectively has a single infrastructure point of failure — a region outage or targeted attack against that provider can simultaneously compromise the quorum. The T-01 evidence base links co-hosting patterns to approximately 3 protocols in the hack database, including bridge incidents where signer-set compromise was facilitated by shared infrastructure. Harmony Bridge validators reportedly shared operational infrastructure that reduced the effective independence of its 2-of-5 threshold.\n\n**Green / Yellow / Red**\nGreen is scored when validators use diverse cloud providers, geographic regions, and independent node operators with documented independence. Yellow is scored when some validators share a cloud provider or region but no single provider controls a quorum. Red is scored when validators sharing a single provider or region constitute a quorum, or when all validators are operated by the same entity.\n\n**Common gray cases**\nGray is applied when validator infrastructure cannot be determined from public documentation and OSINT cannot confidently identify hosting relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Kelp chose the 1-of-1 policy. LayerZero's RPC infrastructure was compromised and its signing service produced the valid forged-data attestation. Current co-hosting/ASN state was not obtained.",
+          "evidence_summary": "Historical validation was concentrated in LayerZero's service; current active-peer infrastructure diversity is unverified.",
+          "gap_reason": "external_api_blocked",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

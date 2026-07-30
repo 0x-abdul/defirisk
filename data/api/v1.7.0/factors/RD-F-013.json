@@ -1,50 +1,70 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-013",
-        "category_id": 1,
-        "name": "Arbitrary call with user-controlled target",
-        "description": "Determine whether any contract performs `.call(target, data)` where target and/or data is user-supplied without a target allowlist or selector filter.",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether any contract in the protocol makes a low-level .call() to a user-supplied target address with user-supplied calldata, where no allowlist of permitted targets or selector-filter is applied. Static analysis examines the bytecode for CALL opcodes where the target or data is derived from external input without validation. This differs from RD-F-012 in that it covers arbitrary external calls (not delegatecalls) with user-controlled destinations.\n\n**Why it matters**\nAn arbitrary call with user-controlled args and target creates a universal relay for any on-chain action: an attacker can supply a target of any contract and calldata encoding any function, using the protocol itself as the caller. This pattern has been exploited in aggregators and routers, where the protocol is trusted by external contracts and an attacker uses it to forward privileged calls. Compound's drip() vulnerability ($147M at risk, 2021) involved a public permissionless function that could refill the vulnerable Comptroller state; Makina Finance ($4.13M, 2026) fell to a permissionless updateTotalAum() call that used manipulable Curve pool state as input.\n\n**Green / Yellow / Red**\nGreen: no .call() with user-supplied target is present, or all external calls use hardcoded targets and selector-filtered calldata. Yellow: arbitrary external calls exist but are gated by a whitelist that is protected by governance or multisig with a timelock. Red: any contract accepts user-supplied target and calldata and forwards them as an external call without an on-chain allowlist.\n\n**Common gray cases**\nThis factor is gray for protocols that do not include aggregation, routing, or meta-transaction functionality -- the pattern is specific to contract architectures that intentionally relay arbitrary calls.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Permissionless drip() function could be called by any address to refill the vulnerable Comptroller.\n- **Makina Finance** ($4.13M, 2026): Permissionless updateTotalAum() used manipulable Curve pool state; arbitrary state-refill pattern.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any contract performs `.call(target, data)` where target and/or data is user-supplied without a target allowlist or selector filter.",
-        "data_source": "Slither `arbitrary-send-eth` + `controlled-delegatecall` detectors + source review",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output JSON + contract + function name if flagged",
+        "category_id": 1,
         "confidence_signal": "green = no unfiltered user-controlled external call; yellow = external call with selector filter but no target allowlist; red = fully user-controlled call target and data; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `arbitrary-send-eth` + `controlled-delegatecall` detectors + source review",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any contract performs `.call(target, data)` where target and/or data is user-supplied without a target allowlist or selector filter.",
+        "evidence_artifact": "Slither output JSON + contract + function name if flagged",
+        "id": "RD-F-013",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any contract performs `.call(target, data)` where target and/or data is user-supplied without a target allowlist or selector filter.",
+        "method": "PE",
+        "name": "Arbitrary call with user-controlled target",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether any contract in the protocol makes a low-level .call() to a user-supplied target address with user-supplied calldata, where no allowlist of permitted targets or selector-filter is applied. Static analysis examines the bytecode for CALL opcodes where the target or data is derived from external input without validation. This differs from RD-F-012 in that it covers arbitrary external calls (not delegatecalls) with user-controlled destinations.\n\n**Why it matters**\nAn arbitrary call with user-controlled args and target creates a universal relay for any on-chain action: an attacker can supply a target of any contract and calldata encoding any function, using the protocol itself as the caller. This pattern has been exploited in aggregators and routers, where the protocol is trusted by external contracts and an attacker uses it to forward privileged calls. Compound's drip() vulnerability ($147M at risk, 2021) involved a public permissionless function that could refill the vulnerable Comptroller state; Makina Finance ($4.13M, 2026) fell to a permissionless updateTotalAum() call that used manipulable Curve pool state as input.\n\n**Green / Yellow / Red**\nGreen: no .call() with user-supplied target is present, or all external calls use hardcoded targets and selector-filtered calldata. Yellow: arbitrary external calls exist but are gated by a whitelist that is protected by governance or multisig with a timelock. Red: any contract accepts user-supplied target and calldata and forwards them as an external call without an on-chain allowlist.\n\n**Common gray cases**\nThis factor is gray for protocols that do not include aggregation, routing, or meta-transaction functionality -- the pattern is specific to contract architectures that intentionally relay arbitrary calls.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Permissionless drip() function could be called by any address to refill the vulnerable Comptroller.\n- **Makina Finance** ($4.13M, 2026): Permissionless updateTotalAum() used manipulable Curve pool state; arbitrary state-refill pattern."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "causal",
-          "notes": "Arbitrary call with user-controlled args [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Arbitrary call with user-controlled args [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
+          "occurred_at": "2026-01-20",
+          "relevance": "causal",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "compound",
-          "relevance": "related",
-          "notes": "Arbitrary call with user-controlled args [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
           "hack_protocol_name": "Compound Finance",
           "hack_protocol_slug": "compound-v3",
-          "occurred_at": "2021-09-29",
           "loss_usd": 147000000.0,
+          "notes": "Arbitrary call with user-controlled args [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
+          "occurred_at": "2021-09-29",
+          "relevance": "related",
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A matched-runtime source scan is required.",
+          "evidence_summary": "No exhaustive deployed-source result established whether arbitrary user-controlled target and calldata calls exist without allowlisting.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

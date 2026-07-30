@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-115",
-        "category_id": 7,
-        "name": "Prior rug/exit-scam affiliation",
-        "description": "Determine whether any team member is linked via verified OSINT to a prior rug or exit-scam-labeled protocol.",
-        "scoring_methodology": "**What this measures**\nThis factor records whether any team member is linked via verified OSINT to a prior rug pull or exit-scam-labeled protocol — specifically, a protocol where curator rug lists, post-mortem analysis, or law enforcement records attribute deliberate team-orchestrated theft. Measurement is manual curator OSINT cross-referencing team handles, wallet addresses, and social accounts against maintained rug databases (rekt.news, DeFiYield, Chainalysis labels, and curator-maintained lists). Category 7 context: prior rug affiliation is the most direct insider-risk signal available for protocols where no exploit has yet occurred.\n\n**Why it matters**\nExit scams are rarely isolated incidents — teams that successfully rug one protocol often attempt to launch another under a new identity, leveraging the proceeds of the prior scam to seed credibility. The Hope Finance incident ($1.86M) showed all three multisig signers coordinating a drain. Merlin DEX demonstrated how a nominally \"audited\" protocol with a backdoor-embedded privileged EOA constitutes a planned insider exit. The curator rug database is the primary mechanism for detecting serial bad actors before they acquire new user funds.\n\n**Green / Yellow / Red**\nGreen is scored when OSINT confirms no team member has any association with a prior rug-labeled protocol across all discoverable handles, wallet addresses, and social accounts. Yellow applies when a team member has a distant or unconfirmed association — for instance, they contributed code to a protocol that was later rugged but are not attributed as a principal. Red is scored when any verified OSINT trail links a core team member (founder, lead developer, multisig signer) to a prior confirmed rug or exit scam.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and OSINT cannot progress beyond handles that cannot be cross-referenced against rug databases, or when a potential match exists but curator confidence falls below the attribution threshold.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether any team member is linked via verified OSINT to a prior rug or exit-scam-labeled protocol.",
-        "data_source": "Curator rug watchlist (cross-referenced with T-01 rug-deployer cluster) + OSINT name/handle matching",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Team member name/handle + prior protocol name + evidence source URL + curator sign-off",
+        "category_id": 7,
         "confidence_signal": "green = no rug affiliations found; red = confirmed rug affiliation for any team member; gray = team composition unknown (cannot assess)",
+        "curation_archetype": "M",
+        "data_source": "Curator rug watchlist (cross-referenced with T-01 rug-deployer cluster) + OSINT name/handle matching",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any team member is linked via verified OSINT to a prior rug or exit-scam-labeled protocol.",
+        "evidence_artifact": "Team member name/handle + prior protocol name + evidence source URL + curator sign-off",
+        "id": "RD-F-115",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any team member is linked via verified OSINT to a prior rug or exit-scam-labeled protocol.",
+        "method": "M",
+        "name": "Prior rug/exit-scam affiliation",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor records whether any team member is linked via verified OSINT to a prior rug pull or exit-scam-labeled protocol — specifically, a protocol where curator rug lists, post-mortem analysis, or law enforcement records attribute deliberate team-orchestrated theft. Measurement is manual curator OSINT cross-referencing team handles, wallet addresses, and social accounts against maintained rug databases (rekt.news, DeFiYield, Chainalysis labels, and curator-maintained lists). Category 7 context: prior rug affiliation is the most direct insider-risk signal available for protocols where no exploit has yet occurred.\n\n**Why it matters**\nExit scams are rarely isolated incidents — teams that successfully rug one protocol often attempt to launch another under a new identity, leveraging the proceeds of the prior scam to seed credibility. The Hope Finance incident ($1.86M) showed all three multisig signers coordinating a drain. Merlin DEX demonstrated how a nominally \"audited\" protocol with a backdoor-embedded privileged EOA constitutes a planned insider exit. The curator rug database is the primary mechanism for detecting serial bad actors before they acquire new user funds.\n\n**Green / Yellow / Red**\nGreen is scored when OSINT confirms no team member has any association with a prior rug-labeled protocol across all discoverable handles, wallet addresses, and social accounts. Yellow applies when a team member has a distant or unconfirmed association — for instance, they contributed code to a protocol that was later rugged but are not attributed as a principal. Red is scored when any verified OSINT trail links a core team member (founder, lead developer, multisig signer) to a prior confirmed rug or exit scam.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and OSINT cannot progress beyond handles that cannot be cross-referenced against rug databases, or when a potential match exists but curator confidence falls below the attribution threshold.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The source identifies the prior project and professional history; gray preserves the unresolved negative-screening gap.",
+          "evidence_summary": "Public records establish the founders' prior Stader affiliation, but this pass did not complete a comprehensive rug or exit-scam affiliation screen.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "governance_post",
+              "url": "https://forum.arbitrum.foundation/t/kelpdao-ltipp-application-final/21976"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

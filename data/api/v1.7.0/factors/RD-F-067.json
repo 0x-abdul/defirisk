@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-067",
-        "category_id": 4,
-        "name": "Historical bad-debt events",
-        "description": "Count and sum (USD) the number of documented bad-debt events where the protocol socialized losses across depositors.",
-        "scoring_methodology": "**What this measures**\nThis factor records the count and total USD value of documented bad-debt events in which the protocol socialized losses across depositors. Bad debt occurs when a borrower's collateral is liquidated at a value insufficient to repay the outstanding borrow, leaving a deficit that the protocol absorbs. Sources include protocol governance forum posts, post-mortem documentation, and news coverage. The cadence is event-driven; the factor is updated whenever a new bad-debt event is confirmed.\n\n**Why it matters**\nBad-debt events are a direct measure of economic model stress. Unlike exploits (which are externally inflicted), bad debt represents a failure of the protocol's own risk parameters -- collateral factors, liquidation penalties, and borrow caps -- to account for tail scenarios. The dataset includes oracle manipulation attacks (Inverse Finance, Mango Markets) that used artificially inflated collateral prices to borrow against phantom value, resulting in uncollectible bad debt that was ultimately socialized. A protocol with a history of bad-debt events has demonstrated that its economic model is insufficiently conservative for its actual operating environment.\n\n**Green / Yellow / Red**\nGreen: zero documented bad-debt events in the hacks database or protocol governance history. Yellow: one or two bad-debt events with total socialized losses below one percent of current TVL, and risk parameters updated following the events. Red: three or more bad-debt events, or any single event with socialized losses exceeding five percent of TVL at the time, or any event without subsequent parameter updates.\n\n**Common gray cases**\nProtocols that operate insurance funds or treasury backstops that absorbed bad debt without socializing losses to depositors may argue the event does not constitute a depositor loss; curator must evaluate whether the backstop mechanism was pre-committed (green) or ad hoc (yellow).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Count and sum (USD) the number of documented bad-debt events where the protocol socialized losses across depositors.",
-        "data_source": "Protocol governance forum posts + protocol docs incident history + rekt.news + DeFiLlama hack DB",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "List of event dates + USD loss per event + protocol announcement URLs",
+        "category_id": 4,
         "confidence_signal": "green = 0 bad-debt events; yellow = 1 event with full user compensation; red = ≥2 events or any uncompensated loss; gray = protocol history not assessable",
+        "curation_archetype": "M",
+        "data_source": "Protocol governance forum posts + protocol docs incident history + rekt.news + DeFiLlama hack DB",
+        "deprecated_in_rubric": null,
+        "description": "Count and sum (USD) the number of documented bad-debt events where the protocol socialized losses across depositors.",
+        "evidence_artifact": "List of event dates + USD loss per event + protocol announcement URLs",
+        "id": "RD-F-067",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count and sum (USD) the number of documented bad-debt events where the protocol socialized losses across depositors.",
+        "method": "M",
+        "name": "Historical bad-debt events",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the count and total USD value of documented bad-debt events in which the protocol socialized losses across depositors. Bad debt occurs when a borrower's collateral is liquidated at a value insufficient to repay the outstanding borrow, leaving a deficit that the protocol absorbs. Sources include protocol governance forum posts, post-mortem documentation, and news coverage. The cadence is event-driven; the factor is updated whenever a new bad-debt event is confirmed.\n\n**Why it matters**\nBad-debt events are a direct measure of economic model stress. Unlike exploits (which are externally inflicted), bad debt represents a failure of the protocol's own risk parameters -- collateral factors, liquidation penalties, and borrow caps -- to account for tail scenarios. The dataset includes oracle manipulation attacks (Inverse Finance, Mango Markets) that used artificially inflated collateral prices to borrow against phantom value, resulting in uncollectible bad debt that was ultimately socialized. A protocol with a history of bad-debt events has demonstrated that its economic model is insufficiently conservative for its actual operating environment.\n\n**Green / Yellow / Red**\nGreen: zero documented bad-debt events in the hacks database or protocol governance history. Yellow: one or two bad-debt events with total socialized losses below one percent of current TVL, and risk parameters updated following the events. Red: three or more bad-debt events, or any single event with socialized losses exceeding five percent of TVL at the time, or any event without subsequent parameter updates.\n\n**Common gray cases**\nProtocols that operate insurance funds or treasury backstops that absorbed bad debt without socializing losses to depositors may argue the event does not constitute a depositor loss; curator must evaluate whether the backstop mechanism was pre-committed (green) or ad hoc (yellow).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp DAO does not operate a collateralized borrowing book whose shortfall is socialized as protocol bad debt. Loss and incident history, including the bridge event's downstream effects, belongs to operational-history assessment rather than RD-F-067.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

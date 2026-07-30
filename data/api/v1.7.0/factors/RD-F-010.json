@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-010",
-        "category_id": 1,
-        "name": "Static-analyzer high-severity count",
-        "description": "Count the number of unique high-severity detector findings from Slither + Mythril + Semgrep run against the deployed verified source (after deduplication across tools).",
-        "scoring_methodology": "**What this measures**\nThis factor records the count of high-severity findings flagged by static analysis tools -- specifically Slither, Mythril, and Semgrep -- run against the protocol's deployed bytecode and verified source code, after deduplication across tools. The count excludes findings that have documented on-chain fixes or that the protocol has formally acknowledged and risk-accepted with curator review. The measurement is programmatic and runs on each assessment cadence using the verified source from Etherscan.\n\n**Why it matters**\nStatic analyzers detect a broad range of well-documented vulnerability patterns automatically: reentrancy, unchecked return values, integer overflow, arbitrary call targets, and storage collision risks. A high count of unresolved high-severity findings indicates that the protocol has deployed code with known warning patterns that have not been investigated or resolved. While false positives exist, each unresolved high finding represents a potential real vulnerability that deserves manual review. Protocols with large numbers of unaddressed static findings have consistently lower code quality baselines in the historical exploit dataset.\n\n**Green / Yellow / Red**\nGreen: zero unresolved high-severity static analysis findings across all deployed contracts covering user funds, or all findings are documented as accepted-risk with curator rationale on file. Yellow: one to three unresolved high-severity findings in non-critical contract paths, with documentation that the team is aware. Red: four or more unresolved high-severity findings, or any unresolved finding in a function that directly controls user fund movements.\n\n**Common gray cases**\nCurators cannot grade this factor when the protocol's source is not verified on any explorer and static analysis cannot be run, or when the verified source is Yul or assembly-heavy code that the standard Slither/Mythril detectors cannot parse reliably.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. Static analyzer findings are a preventive input that correlates with code quality rather than directly with exploits.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of unique high-severity detector findings from Slither + Mythril + Semgrep run against the deployed verified source (after deduplication across tools).",
-        "data_source": "Slither + Mythril + Semgrep run on Etherscan-verified source tree; deduplicated by finding class",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Tool run timestamp + source hash + JSON findings output + dedup count",
+        "category_id": 1,
         "confidence_signal": "green = 0 high-severity findings; yellow = 1–3 high-severity with documented curator dismissals; red = ≥4 undismissed high-severity or any unfixed critical; gray = source not verified on Etherscan/Sourcify — cannot run",
+        "curation_archetype": "PE",
+        "data_source": "Slither + Mythril + Semgrep run on Etherscan-verified source tree; deduplicated by finding class",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of unique high-severity detector findings from Slither + Mythril + Semgrep run against the deployed verified source (after deduplication across tools).",
+        "evidence_artifact": "Tool run timestamp + source hash + JSON findings output + dedup count",
+        "id": "RD-F-010",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of unique high-severity detector findings from Slither + Mythril + Semgrep run against the deployed verified source (after deduplication across tools).",
+        "method": "PE",
+        "name": "Static-analyzer high-severity count",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the count of high-severity findings flagged by static analysis tools -- specifically Slither, Mythril, and Semgrep -- run against the protocol's deployed bytecode and verified source code, after deduplication across tools. The count excludes findings that have documented on-chain fixes or that the protocol has formally acknowledged and risk-accepted with curator review. The measurement is programmatic and runs on each assessment cadence using the verified source from Etherscan.\n\n**Why it matters**\nStatic analyzers detect a broad range of well-documented vulnerability patterns automatically: reentrancy, unchecked return values, integer overflow, arbitrary call targets, and storage collision risks. A high count of unresolved high-severity findings indicates that the protocol has deployed code with known warning patterns that have not been investigated or resolved. While false positives exist, each unresolved high finding represents a potential real vulnerability that deserves manual review. Protocols with large numbers of unaddressed static findings have consistently lower code quality baselines in the historical exploit dataset.\n\n**Green / Yellow / Red**\nGreen: zero unresolved high-severity static analysis findings across all deployed contracts covering user funds, or all findings are documented as accepted-risk with curator rationale on file. Yellow: one to three unresolved high-severity findings in non-critical contract paths, with documentation that the team is aware. Red: four or more unresolved high-severity findings, or any unresolved finding in a function that directly controls user fund movements.\n\n**Common gray cases**\nCurators cannot grade this factor when the protocol's source is not verified on any explorer and static analysis cannot be run, or when the verified source is Yul or assembly-heavy code that the standard Slither/Mythril detectors cannot parse reliably.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. Static analyzer findings are a preventive input that correlates with code quality rather than directly with exploits."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A programmatic run against matched deployed source is required.",
+          "evidence_summary": "The repository documents Aderyn usage, but no reproducible current deployed-source high-severity count was published.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#using-static-analyzer-for-the-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

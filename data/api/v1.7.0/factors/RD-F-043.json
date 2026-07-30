@@ -1,80 +1,101 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-043",
-        "category_id": 2,
-        "name": "Admin = deployer EOA after 7 days",
-        "description": "Determine whether, at t = deploy+7d, the admin address still equals the deployer EOA with no evidence of transfer to a multisig.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether, at the time of assessment (or at deploy+7 days for newly launched protocols), the admin address is still equal to the original deployer EOA with no evidence of transfer to a multisig or governance contract. On-chain reads of the owner(), admin(), or equivalent role slot are compared against the deployer address recorded at contract creation. A seven-day window is used because legitimate teams typically migrate admin authority to a governance structure within the first week of launch; persistence beyond that window is a strong signal of retained unilateral control.\n\n**Why it matters**\nWhen a protocol's admin is the same wallet that deployed it, one entity holds both the privileged knowledge of how the protocol was constructed and the unilateral ability to modify or drain it. This combination is strongly correlated with rug pulls in the evidence base. Infini ($49.5M, 2025) demonstrated that a developer who retained admin credentials for 114 days after the handover period could execute a full drain with no external coordination. Merlin DEX ($1.82M, 2023) and Hope Finance ($1.86M, 2023) show the same pattern at smaller scale. The dashboard's synthesis data identifies \"retained developer admin role\" as one of the clearest predictors of insider-originated loss, particularly when combined with an anonymous team and no public access-control audit.\n\n**Green / Yellow / Red**\nGreen is assigned when admin authority has been verifiably transferred to a multisig or governance contract within seven days of deploy, with on-chain proof of the transfer transaction. Yellow covers cases where the transfer is pending or partially executed (e.g., one of two required steps completed), or where the deployer retains a non-critical role such as a fee-parameter setter. Red is assigned when the admin address is still the deployer EOA at day seven or later, with no on-chain evidence of a transfer in progress.\n\n**Common gray cases**\nThis factor is grayed when the deployer address cannot be identified from on-chain data (e.g., factory-deployed contracts where the factory's own admin holds the role), or when the protocol's governance architecture legitimately uses a deployer-controlled multisig that is separately assessed under RD-F-027 and RD-F-028.\n\n**Notable historical examples**\n- **Infini** ($49.5M, 2025): Developer retained admin credentials 114 days post-deployment; executed drain without any external coordination.\n- **Hope Finance** ($1.86M, 2023): All three multisig owners coordinated a drain; admin had never been separated from the founding team.\n- **Merlin DEX** ($1.82M, 2023): Privileged Feeto EOA at deployment gave the developer direct drain capability confirmed by auditor but not remediated.\n- **BrincFi** ($1.1M, 2021): Head of development retained full upgrade authority post-launch; lawsuit filed after drain.\n- **Kannagi Finance** ($1.1M, 2023): Anonymous team retained MainChef privileged withdrawal function on zkSync.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. When the deployer EOA remains admin beyond the seven-day migration window, the protocol's security model is entirely dependent on the continued trustworthiness and operational security of a single individual.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether, at t = deploy+7d, the admin address still equals the deployer EOA with no evidence of transfer to a multisig.",
-        "data_source": "`owner()` read at current block + compare to deployer address from contract creation tx on Etherscan",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Deployer address (from creation tx) + current owner address + deploy block timestamp",
+        "category_id": 2,
         "confidence_signal": "green = admin transferred to multisig within 7 days of deploy; red = admin address still equals deployer EOA at check time; gray = admin role not determinable",
+        "curation_archetype": "PE",
+        "data_source": "`owner()` read at current block + compare to deployer address from contract creation tx on Etherscan",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether, at t = deploy+7d, the admin address still equals the deployer EOA with no evidence of transfer to a multisig.",
+        "evidence_artifact": "Deployer address (from creation tx) + current owner address + deploy block timestamp",
+        "id": "RD-F-043",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether, at t = deploy+7d, the admin address still equals the deployer EOA with no evidence of transfer to a multisig.",
+        "method": "PE",
+        "name": "Admin = deployer EOA after 7 days",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether, at the time of assessment (or at deploy+7 days for newly launched protocols), the admin address is still equal to the original deployer EOA with no evidence of transfer to a multisig or governance contract. On-chain reads of the owner(), admin(), or equivalent role slot are compared against the deployer address recorded at contract creation. A seven-day window is used because legitimate teams typically migrate admin authority to a governance structure within the first week of launch; persistence beyond that window is a strong signal of retained unilateral control.\n\n**Why it matters**\nWhen a protocol's admin is the same wallet that deployed it, one entity holds both the privileged knowledge of how the protocol was constructed and the unilateral ability to modify or drain it. This combination is strongly correlated with rug pulls in the evidence base. Infini ($49.5M, 2025) demonstrated that a developer who retained admin credentials for 114 days after the handover period could execute a full drain with no external coordination. Merlin DEX ($1.82M, 2023) and Hope Finance ($1.86M, 2023) show the same pattern at smaller scale. The dashboard's synthesis data identifies \"retained developer admin role\" as one of the clearest predictors of insider-originated loss, particularly when combined with an anonymous team and no public access-control audit.\n\n**Green / Yellow / Red**\nGreen is assigned when admin authority has been verifiably transferred to a multisig or governance contract within seven days of deploy, with on-chain proof of the transfer transaction. Yellow covers cases where the transfer is pending or partially executed (e.g., one of two required steps completed), or where the deployer retains a non-critical role such as a fee-parameter setter. Red is assigned when the admin address is still the deployer EOA at day seven or later, with no on-chain evidence of a transfer in progress.\n\n**Common gray cases**\nThis factor is grayed when the deployer address cannot be identified from on-chain data (e.g., factory-deployed contracts where the factory's own admin holds the role), or when the protocol's governance architecture legitimately uses a deployer-controlled multisig that is separately assessed under RD-F-027 and RD-F-028.\n\n**Notable historical examples**\n- **Infini** ($49.5M, 2025): Developer retained admin credentials 114 days post-deployment; executed drain without any external coordination.\n- **Hope Finance** ($1.86M, 2023): All three multisig owners coordinated a drain; admin had never been separated from the founding team.\n- **Merlin DEX** ($1.82M, 2023): Privileged Feeto EOA at deployment gave the developer direct drain capability confirmed by auditor but not remediated.\n- **BrincFi** ($1.1M, 2021): Head of development retained full upgrade authority post-launch; lawsuit filed after drain.\n- **Kannagi Finance** ($1.1M, 2023): Anonymous team retained MainChef privileged withdrawal function on zkSync.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. When the deployer EOA remains admin beyond the seven-day migration window, the protocol's security model is entirely dependent on the continued trustworthiness and operational security of a single individual."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "infini",
-          "relevance": "causal",
-          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
           "hack_protocol_name": "Infini (Crypto Neobank)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-02-24",
           "loss_usd": 49500000.0,
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
+          "occurred_at": "2025-02-24",
+          "relevance": "causal",
           "root_cause": "Retained Admin Privileges — Rogue Developer Backdoor"
         },
         {
           "hack_id": "kannagi-finance-rekt",
-          "relevance": "causal",
-          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
           "hack_protocol_name": "Kannagi Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-29",
           "loss_usd": 1100000.0,
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
+          "occurred_at": "2023-07-29",
+          "relevance": "causal",
           "root_cause": "Insider rug — privileged admin withdrawal on behalf of users (MainChef address)"
         },
         {
           "hack_id": "merlin-dex-rekt",
-          "relevance": "causal",
-          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
           "hack_protocol_name": "Merlin DEX",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-04-25",
           "loss_usd": 1820000.0,
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
+          "occurred_at": "2023-04-25",
+          "relevance": "causal",
           "root_cause": "Insider rug — max approval drain via privileged Feeto address"
         },
         {
           "hack_id": "hope-finance",
-          "relevance": "causal",
-          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
           "hack_protocol_name": "Hope Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-02-20",
           "loss_usd": 1860000.0,
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
+          "occurred_at": "2023-02-20",
+          "relevance": "causal",
           "root_cause": "Insider Exit Scam — Malicious Fake Router Pre-Deployed"
         },
         {
           "hack_id": "brincfi-rekt",
-          "relevance": "causal",
-          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
           "hack_protocol_name": "BrincFi",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-12-14",
           "loss_usd": 1100000.0,
+          "notes": "★ Admin = deployer EOA + no multisig transfer within 7 days [via cross-hack: Factor 24: Retained Developer Admin Role Post-Deployment]",
+          "occurred_at": "2021-12-14",
+          "relevance": "causal",
           "root_cause": "Insider backdoor — rescueTokens() admin drain via ownership transfer + malicious contract upgrade"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Current administrators are Safes and timelocks, but the reviewed public record does not prove transfer away from the deployer occurred within seven days of launch.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#eth-mainnet"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

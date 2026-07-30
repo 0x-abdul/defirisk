@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-171",
-        "category_id": 12,
-        "name": "Bytecode similarity to audited upstream with behavior deviation",
-        "description": "Determine whether the bytecode has high structural similarity to an audited upstream but deviates in state-mutation ordering (AI-generated copy risk pattern).",
-        "scoring_methodology": "**What this measures**\nThis factor flags whether the protocol's deployed bytecode has high similarity to an audited upstream codebase but deviates in state-mutation ordering or control flow in a way consistent with AI-generated code modification. The detection method is a bytecode diff against known-audited upstream deployments, combined with curator inspection of state-mutation patterns. A positive flag does not prove AI generation but warrants additional scrutiny of the deviated sections.\n\n**Why it matters**\nAI-assisted code generation can produce code that appears syntactically correct and semantically similar to audited upstream code but introduces subtle ordering violations (e.g., checks after effects, state mutations before external calls) that create exploitable vulnerabilities. The risk is amplified when the AI-modified code closely resembles audited code, because security reviewers may rely on pattern-recognition from the upstream audit rather than re-reviewing the modified sections from scratch. Two post-mortems in the in-sample dataset explicitly attributed exploited vulnerabilities to AI-generated code that deviated from the audited upstream pattern.\n\n**Green / Yellow / Red**\nGreen: bytecode diff against known-audited upstream shows only expected, documented modifications with no state-mutation ordering changes in security-critical paths. Yellow: bytecode diff reveals unexplained deviations in non-critical paths, or deviations in critical paths that can be explained by documented intentional changes. Red: bytecode diff reveals state-mutation ordering changes in security-critical functions (e.g., external calls before state updates, reentrancy-guard bypasses) that are not present in the audited upstream.\n\n**Common gray cases**\nProtocols that fork from upstream code with documented security improvements (e.g., adding reentrancy guards that the upstream lacked) will show bytecode differences in security-critical paths; curator must evaluate whether the deviation is an improvement or a regression.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the bytecode has high structural similarity to an audited upstream but deviates in state-mutation ordering (AI-generated copy risk pattern).",
-        "data_source": "Bytecode diff tool + Slither CFG comparison between this contract and upstream audited version",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Bytecode similarity score + CFG comparison highlighting state-mutation order differences",
+        "category_id": 12,
         "confidence_signal": "green = no significant behavioral deviation from audited upstream; yellow = similarity >80% with minor ordering differences; red = similarity >80% with material state-mutation ordering deviation; gray = no audited upstream to compare against",
+        "curation_archetype": "PH",
+        "data_source": "Bytecode diff tool + Slither CFG comparison between this contract and upstream audited version",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the bytecode has high structural similarity to an audited upstream but deviates in state-mutation ordering (AI-generated copy risk pattern).",
+        "evidence_artifact": "Bytecode similarity score + CFG comparison highlighting state-mutation order differences",
+        "id": "RD-F-171",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the bytecode has high structural similarity to an audited upstream but deviates in state-mutation ordering (AI-generated copy risk pattern).",
+        "method": "PH",
+        "name": "Bytecode similarity to audited upstream with behavior deviation",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor flags whether the protocol's deployed bytecode has high similarity to an audited upstream codebase but deviates in state-mutation ordering or control flow in a way consistent with AI-generated code modification. The detection method is a bytecode diff against known-audited upstream deployments, combined with curator inspection of state-mutation patterns. A positive flag does not prove AI generation but warrants additional scrutiny of the deviated sections.\n\n**Why it matters**\nAI-assisted code generation can produce code that appears syntactically correct and semantically similar to audited upstream code but introduces subtle ordering violations (e.g., checks after effects, state mutations before external calls) that create exploitable vulnerabilities. The risk is amplified when the AI-modified code closely resembles audited code, because security reviewers may rely on pattern-recognition from the upstream audit rather than re-reviewing the modified sections from scratch. Two post-mortems in the in-sample dataset explicitly attributed exploited vulnerabilities to AI-generated code that deviated from the audited upstream pattern.\n\n**Green / Yellow / Red**\nGreen: bytecode diff against known-audited upstream shows only expected, documented modifications with no state-mutation ordering changes in security-critical paths. Yellow: bytecode diff reveals unexplained deviations in non-critical paths, or deviations in critical paths that can be explained by documented intentional changes. Red: bytecode diff reveals state-mutation ordering changes in security-critical functions (e.g., external calls before state updates, reentrancy-guard bypasses) that are not present in the audited upstream.\n\n**Common gray cases**\nProtocols that fork from upstream code with documented security improvements (e.g., adding reentrancy guards that the upstream lacked) will show bytecode differences in security-critical paths; curator must evaluate whether the deviation is an improvement or a regression.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol is not identified as a fork of an audited upstream, so audited-upstream behavior-deviation comparison is moot.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

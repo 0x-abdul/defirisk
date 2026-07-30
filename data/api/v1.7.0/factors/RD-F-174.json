@@ -1,29 +1,54 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-174",
-        "category_id": 12,
-        "name": "Dependency tree uses EOL Solidity version",
-        "description": "Determine whether the deployed code or its dependencies use an EOL or unsupported Solidity version without a forward-compatibility patch.",
-        "scoring_methodology": "**What this measures**\nThis factor flags whether the protocol's deployed code or its key dependencies use an end-of-life (EOL) Solidity version -- defined as a version no longer receiving any security patches from the Solidity team. EOL status is determined by the official Solidity changelog and is updated on a semi-annual cadence. The factor covers both the protocol's own contracts and the shared library versions (OpenZeppelin, Solady) where the library was compiled with an EOL version.\n\n**Why it matters**\nEnd-of-life compiler versions accumulate known vulnerabilities without patches, creating a growing gap between the deployed code's security properties and the current state of compiler knowledge. Unlike active versions where bugs are reported and patched, EOL versions have no patch pathway: a discovered vulnerability in an EOL version will never be fixed, and protocols using that version must migrate their entire codebase to receive the fix. The migration cost is exactly the risk that leads to extended use of EOL versions, creating a compounding risk: the longer the protocol stays on EOL, the more known-but-unpatched compiler bugs accumulate. This factor is forward-looking -- it flags exposure before a specific compiler bug is exploited rather than after.\n\n**Green / Yellow / Red**\nGreen: all deployed contracts use a Solidity version that is currently supported and receiving security patches, with no EOL versions in the dependency tree. Yellow: deployed contracts use a Solidity version that is in the final six months of active support (approaching EOL) but has no currently-known critical bugs. Red: any deployed contract uses an EOL Solidity version with no active patching, or any shared library dependency was compiled with an EOL version that affects the protocol's deployed bytecode.\n\n**Common gray cases**\nProtocols that use a pinned older version for reproducibility reasons but have documented, audited evidence of compatibility with a patched newer version may be treated as yellow rather than red; curator must verify that the documented upgrade path has been implemented or has a firm timeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the deployed code or its dependencies use an EOL or unsupported Solidity version without a forward-compatibility patch.",
-        "data_source": "Etherscan bytecode metadata for deployed contracts + `package.json` / `foundry.toml` dep versions",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Solidity version per contract + EOL status per the solc versioning schedule",
+        "category_id": 12,
         "confidence_signal": "green = all contracts on supported (non-EOL) Solidity version; yellow = minor deps on EOL version but core contracts supported; red = core contracts on EOL Solidity version; gray = version not determinable from bytecode metadata",
+        "curation_archetype": "PE",
+        "data_source": "Etherscan bytecode metadata for deployed contracts + `package.json` / `foundry.toml` dep versions",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the deployed code or its dependencies use an EOL or unsupported Solidity version without a forward-compatibility patch.",
+        "evidence_artifact": "Solidity version per contract + EOL status per the solc versioning schedule",
+        "id": "RD-F-174",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the deployed code or its dependencies use an EOL or unsupported Solidity version without a forward-compatibility patch.",
+        "method": "PE",
+        "name": "Dependency tree uses EOL Solidity version",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor flags whether the protocol's deployed code or its key dependencies use an end-of-life (EOL) Solidity version -- defined as a version no longer receiving any security patches from the Solidity team. EOL status is determined by the official Solidity changelog and is updated on a semi-annual cadence. The factor covers both the protocol's own contracts and the shared library versions (OpenZeppelin, Solady) where the library was compiled with an EOL version.\n\n**Why it matters**\nEnd-of-life compiler versions accumulate known vulnerabilities without patches, creating a growing gap between the deployed code's security properties and the current state of compiler knowledge. Unlike active versions where bugs are reported and patched, EOL versions have no patch pathway: a discovered vulnerability in an EOL version will never be fixed, and protocols using that version must migrate their entire codebase to receive the fix. The migration cost is exactly the risk that leads to extended use of EOL versions, creating a compounding risk: the longer the protocol stays on EOL, the more known-but-unpatched compiler bugs accumulate. This factor is forward-looking -- it flags exposure before a specific compiler bug is exploited rather than after.\n\n**Green / Yellow / Red**\nGreen: all deployed contracts use a Solidity version that is currently supported and receiving security patches, with no EOL versions in the dependency tree. Yellow: deployed contracts use a Solidity version that is in the final six months of active support (approaching EOL) but has no currently-known critical bugs. Red: any deployed contract uses an EOL Solidity version with no active patching, or any shared library dependency was compiled with an EOL version that affects the protocol's deployed bytecode.\n\n**Common gray cases**\nProtocols that use a pinned older version for reproducibility reasons but have documented, audited evidence of compatibility with a patched newer version may be treated as yellow rather than red; curator must verify that the documented upgrade path has been implemented or has a firm timeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The source tree consistently uses pragma Solidity 0.8.27 and the build config pins the same version.",
+          "evidence_summary": "The current public build pins Solidity 0.8.27, an active 0.8.x compiler line rather than an EOL major line.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/foundry.toml"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://github.com/ethereum/solidity/releases"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

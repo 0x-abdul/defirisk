@@ -1,29 +1,55 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-179",
-        "category_id": 10,
-        "name": "LayerZero OFT DVN config (count, threshold, diversity)",
-        "description": "For any LayerZero OFT adapter, read the DVN configuration: count of DVNs, k-of-N threshold, and operator diversity (independent operators vs same-operator multi-DVN).",
-        "scoring_methodology": "**What this measures**\n\nThis factor assesses the LayerZero OFT (Omnichain Fungible Token) adapter's DVN (Decentralized Verifier Network) configuration: how many DVNs are required to attest a cross-chain message, what threshold of those DVNs must agree (k-of-N), and whether the listed DVN operators are independent entities or the same operator running multiple endpoints. Cat 10 applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A. The 1-of-1 DVN configuration is the catastrophic edge — a single DVN can unilaterally attest to a forged inbound message and trigger an unbacked mint on the destination chain.\n\n**Why it matters**\n\nLayerZero OFT is now the dominant cross-chain token-bridging primitive on EVM L2s, but its security guarantees are a function of how the OFT adapter is configured by the deploying protocol — not an intrinsic property of LayerZero itself. A 1/1 DVN configuration means there is no honest-majority assumption: a single compromised, captured, or buggy DVN can forge an `lzReceive` payload and the destination chain will accept the mint as legitimate. Threshold without operator diversity is similarly weak: 2-of-3 DVNs all run by the same operator collapses to single-operator trust at validator level, even though the on-chain config looks redundant.\n\n**Green / Yellow / Red**\n\nGreen is ≥3 independent DVN operators with threshold ≥2 — a meaningful k-of-N attestation set. Yellow is 2 DVNs with threshold 2, or any threshold-2 configuration where operators are not fully independent. Red is the 1/1 configuration: a single DVN with threshold 1, where any single attestation suffices to mint on the destination chain.\n\n**Common gray cases**\n\nThe protocol does not deploy a LayerZero OFT adapter at all (factor is N/A). On-chain DVN registry reads are inconclusive when the adapter uses a custom DVN list that is not standard-registered, requiring source inspection.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The most-cited industry incident is **Kelp DAO** (Apr 2026, $292M loss), where a 1-of-1 DVN configuration on the rsETH OFT adapter allowed a single forged message to mint unbacked rsETH on a destination chain. Aave governance forum publicly flagged the 1/1 DVN risk approximately 15 months prior to the exploit, making this a structural risk that was visible on-chain and publicly debated long before failure.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "For any LayerZero OFT adapter, read the DVN configuration: count of DVNs, k-of-N threshold, and operator diversity (independent operators vs same-operator multi-DVN).",
-        "data_source": "LayerZero endpoint contract `getConfig()` for the OFT adapter address + LayerZero DVN registry on-chain reads",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "OFT adapter address + DVN addresses list + threshold k + operator-diversity assessment",
+        "category_id": 10,
         "confidence_signal": "green = ≥3 independent DVN operators with threshold ≥2; yellow = 2 DVNs or threshold=2 but operators not fully independent; red = 1/1 DVN configuration (any single DVN can approve); gray = protocol does not use LayerZero OFT (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "LayerZero endpoint contract `getConfig()` for the OFT adapter address + LayerZero DVN registry on-chain reads",
+        "deprecated_in_rubric": null,
+        "description": "For any LayerZero OFT adapter, read the DVN configuration: count of DVNs, k-of-N threshold, and operator diversity (independent operators vs same-operator multi-DVN).",
+        "evidence_artifact": "OFT adapter address + DVN addresses list + threshold k + operator-diversity assessment",
+        "id": "RD-F-179",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "For any LayerZero OFT adapter, read the DVN configuration: count of DVNs, k-of-N threshold, and operator diversity (independent operators vs same-operator multi-DVN).",
+        "method": "PE",
+        "name": "LayerZero OFT DVN config (count, threshold, diversity)",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\n\nThis factor assesses the LayerZero OFT (Omnichain Fungible Token) adapter's DVN (Decentralized Verifier Network) configuration: how many DVNs are required to attest a cross-chain message, what threshold of those DVNs must agree (k-of-N), and whether the listed DVN operators are independent entities or the same operator running multiple endpoints. Cat 10 applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A. The 1-of-1 DVN configuration is the catastrophic edge — a single DVN can unilaterally attest to a forged inbound message and trigger an unbacked mint on the destination chain.\n\n**Why it matters**\n\nLayerZero OFT is now the dominant cross-chain token-bridging primitive on EVM L2s, but its security guarantees are a function of how the OFT adapter is configured by the deploying protocol — not an intrinsic property of LayerZero itself. A 1/1 DVN configuration means there is no honest-majority assumption: a single compromised, captured, or buggy DVN can forge an `lzReceive` payload and the destination chain will accept the mint as legitimate. Threshold without operator diversity is similarly weak: 2-of-3 DVNs all run by the same operator collapses to single-operator trust at validator level, even though the on-chain config looks redundant.\n\n**Green / Yellow / Red**\n\nGreen is ≥3 independent DVN operators with threshold ≥2 — a meaningful k-of-N attestation set. Yellow is 2 DVNs with threshold 2, or any threshold-2 configuration where operators are not fully independent. Red is the 1/1 configuration: a single DVN with threshold 1, where any single attestation suffices to mint on the destination chain.\n\n**Common gray cases**\n\nThe protocol does not deploy a LayerZero OFT adapter at all (factor is N/A). On-chain DVN registry reads are inconclusive when the adapter uses a custom DVN list that is not standard-registered, requiring source inspection.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The most-cited industry incident is **Kelp DAO** (Apr 2026, $292M loss), where a 1-of-1 DVN configuration on the rsETH OFT adapter allowed a single forged message to mint unbacked rsETH on a destination chain. Aave governance forum publicly flagged the 1/1 DVN risk approximately 15 months prior to the exploit, making this a structural risk that was visible on-chain and publicly debated long before failure."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Historical 1-of-1 state cannot be projected to July 30. Current effective getConfig output and peer-active evidence are required for a graded current RD-F-179 conclusion.",
+          "evidence_summary": "The April route had a catastrophic 1-of-1 DVN topology, but current per-peer configuration and activity were unavailable.",
+          "gap_reason": "external_api_blocked",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#bridged-rseth"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-080",
-        "category_id": 5,
-        "name": "Days since last exploit",
-        "description": "Measure the number of days between today and the most recent incident for this protocol (0 if an incident is currently active).",
-        "scoring_methodology": "**What this measures**\nThis factor calculates the number of days between today and the most recent recorded hack incident for this protocol. When a protocol is under an active incident (confirmed drain with ongoing post-mortem), the value is set to zero. The field is computed continuously from the hacks database and is display-only; it does not directly trigger a rubric color but informs curator judgment on the freshness of the risk profile and the post-exploit response scoring window.\n\n**Why it matters**\nTime elapsed since last exploit has a nuanced relationship with current risk. In the short term (fewer than ninety days), a recently exploited protocol is at elevated risk of a follow-on attack: six of the dataset's repeat exploits occurred within twelve months, and in one case (Deus DAO) the attacker bypassed the post-hack fix in just forty days. In the medium term (ninety to three hundred sixty-five days), risk may be lower if a verified re-audit was conducted and the patch is confirmed on-chain. Beyond twelve months without another incident, the exploit-recency signal fades and other factors (audit coverage, multisig posture) dominate. The field is most useful as a temporal qualifier on the exploit count rather than a standalone risk signal.\n\n**Green / Yellow / Red**\nThis factor is display-only and contributes no direct rubric color. It is shown on the protocol detail page as a time-since counter and informs the curator when setting the post-exploit response score (RD-F-081) and the auditor-re-engagement flag (RD-F-083).\n\n**Common gray cases**\nProtocols with multiple incidents record the most recent one. If a protocol was exploited and subsequently fully wound down and relaunched under the same branding, curator must determine whether the clock resets (new protocol entity) or continues (same team, same codebase lineage).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Measure the number of days between today and the most recent incident for this protocol (0 if an incident is currently active).",
-        "data_source": "In-house hack DB most-recent incident timestamp",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Most-recent incident date + days-delta",
+        "category_id": 5,
         "confidence_signal": "green = >365 days or no incidents; yellow = 90–365 days; red = <90 days or 0 (active); gray = incident history not assessed",
+        "curation_archetype": "PE",
+        "data_source": "In-house hack DB most-recent incident timestamp",
+        "deprecated_in_rubric": null,
+        "description": "Measure the number of days between today and the most recent incident for this protocol (0 if an incident is currently active).",
+        "evidence_artifact": "Most-recent incident date + days-delta",
+        "id": "RD-F-080",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the number of days between today and the most recent incident for this protocol (0 if an incident is currently active).",
+        "method": "PE",
+        "name": "Days since last exploit",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor calculates the number of days between today and the most recent recorded hack incident for this protocol. When a protocol is under an active incident (confirmed drain with ongoing post-mortem), the value is set to zero. The field is computed continuously from the hacks database and is display-only; it does not directly trigger a rubric color but informs curator judgment on the freshness of the risk profile and the post-exploit response scoring window.\n\n**Why it matters**\nTime elapsed since last exploit has a nuanced relationship with current risk. In the short term (fewer than ninety days), a recently exploited protocol is at elevated risk of a follow-on attack: six of the dataset's repeat exploits occurred within twelve months, and in one case (Deus DAO) the attacker bypassed the post-hack fix in just forty days. In the medium term (ninety to three hundred sixty-five days), risk may be lower if a verified re-audit was conducted and the patch is confirmed on-chain. Beyond twelve months without another incident, the exploit-recency signal fades and other factors (audit coverage, multisig posture) dominate. The field is most useful as a temporal qualifier on the exploit count rather than a standalone risk signal.\n\n**Green / Yellow / Red**\nThis factor is display-only and contributes no direct rubric color. It is shown on the protocol detail page as a time-since counter and informs the curator when setting the post-exploit response score (RD-F-081) and the auditor-re-engagement flag (RD-F-083).\n\n**Common gray cases**\nProtocols with multiple incidents record the most recent one. If a protocol was exploited and subsequently fully wound down and relaunched under the same branding, curator must determine whether the clock resets (new protocol entity) or continues (same team, same codebase lineage).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The incident occurred on 2026-04-18. Kelp's recovery window for balances on retired networks runs through 2027-06-15.",
+          "evidence_summary": "The latest exploit occurred 103 days before assessment; recovery was substantial but sunset-chain claims remain open.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

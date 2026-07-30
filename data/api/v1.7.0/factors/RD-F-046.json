@@ -1,120 +1,141 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-046",
-        "category_id": 2,
-        "name": "Contract unverified on Etherscan/Sourcify",
-        "description": "Determine whether the protocol's deployed contracts have source code verified on Etherscan or Sourcify (public ABI available).",
-        "scoring_methodology": "**What this measures**\nThis factor determines whether a protocol's deployed contracts have their source code verified on a major block explorer (Etherscan, Sourcify, or equivalent) as of the launch date. Verification means the protocol's ABI is publicly readable and its bytecode can be matched against published source. An unverified contract at launch means no third party — whether auditor, security researcher, or user — can independently confirm that the deployed bytecode corresponds to any reviewed codebase.\n\n**Why it matters**\nSource verification is the minimum transparency bar for any protocol claiming an audit or public security review. Without it, the ABI is opaque, any published audit report is unverifiable against the deployed code, and users have no way to confirm that the contracts they are interacting with correspond to any document they have been shown. Transit Swap ($21M, 2022) operated with closed-source contracts that prevented discovery of a critical allowance-drain vulnerability in the claimTokens function. MobiusDAO ($2.15M, 2025) used unverified contracts concealing an arithmetic error on a three-day-old protocol. OpenZeppelin's governance security guidelines note that accountability requires linking protocol actions to \"publicly known\" identities and auditable code — unverified contracts eliminate the code side of that equation entirely.\n\n**Green / Yellow / Red**\nGreen is assigned when all contracts holding user funds or controlling admin roles are source-verified on at least one major explorer as of the launch block. Yellow covers cases where core contracts are verified but peripheral contracts (fee routers, helper contracts) are not, or when verification is in progress within 48 hours of launch. Red is assigned when any contract that holds user funds, controls a key admin role, or executes the primary protocol logic is unverified at launch with no public ABI available.\n\n**Common gray cases**\nThis factor is grayed when the protocol operates on a chain where block explorer verification infrastructure is unavailable or immature (some newer L2s), provided alternative verification via Sourcify or equivalent is demonstrated.\n\n**Notable historical examples**\n- **Transit Swap** ($21M, 2022): Closed-source claimTokens function concealed a critical allowance-drain path; no audit covered the unverified code.\n- **MobiusDAO** ($2.15M, 2025): Unverified three-day-old protocol; arithmetic error hidden in unreadable bytecode.\n- **Penpie** ($27M, 2024): Permissionless market registration accepted unvalidated external contracts — adjacent pattern where code opacity enabled the exploit.\n- **Cork Protocol** ($12M, 2025): Audit scope excluded CorkHook contract that held the exploited logic.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An unverified contract at launch means no audit is verifiable, no monitoring is possible at the function level, and no user can assess what they are trusting — it is the foundational transparency floor of the entire scoring system.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol's deployed contracts have source code verified on Etherscan or Sourcify (public ABI available).",
-        "data_source": "Etherscan API `?module=contract&action=getsourcecode` + Sourcify API `check-by-addresses` endpoint",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Contract address + verification status JSON from Etherscan API",
+        "category_id": 2,
         "confidence_signal": "green = all core contracts verified; yellow = non-core periphery contracts unverified; red = any core contract (with user funds) unverified at launch; gray = deployed on a chain with no Etherscan/Sourcify equivalent",
+        "curation_archetype": "PE",
+        "data_source": "Etherscan API `?module=contract&action=getsourcecode` + Sourcify API `check-by-addresses` endpoint",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol's deployed contracts have source code verified on Etherscan or Sourcify (public ABI available).",
+        "evidence_artifact": "Contract address + verification status JSON from Etherscan API",
+        "id": "RD-F-046",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether the protocol's deployed contracts have source code verified on Etherscan or Sourcify (public ABI available).",
+        "method": "PE",
+        "name": "Contract unverified on Etherscan/Sourcify",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor determines whether a protocol's deployed contracts have their source code verified on a major block explorer (Etherscan, Sourcify, or equivalent) as of the launch date. Verification means the protocol's ABI is publicly readable and its bytecode can be matched against published source. An unverified contract at launch means no third party — whether auditor, security researcher, or user — can independently confirm that the deployed bytecode corresponds to any reviewed codebase.\n\n**Why it matters**\nSource verification is the minimum transparency bar for any protocol claiming an audit or public security review. Without it, the ABI is opaque, any published audit report is unverifiable against the deployed code, and users have no way to confirm that the contracts they are interacting with correspond to any document they have been shown. Transit Swap ($21M, 2022) operated with closed-source contracts that prevented discovery of a critical allowance-drain vulnerability in the claimTokens function. MobiusDAO ($2.15M, 2025) used unverified contracts concealing an arithmetic error on a three-day-old protocol. OpenZeppelin's governance security guidelines note that accountability requires linking protocol actions to \"publicly known\" identities and auditable code — unverified contracts eliminate the code side of that equation entirely.\n\n**Green / Yellow / Red**\nGreen is assigned when all contracts holding user funds or controlling admin roles are source-verified on at least one major explorer as of the launch block. Yellow covers cases where core contracts are verified but peripheral contracts (fee routers, helper contracts) are not, or when verification is in progress within 48 hours of launch. Red is assigned when any contract that holds user funds, controls a key admin role, or executes the primary protocol logic is unverified at launch with no public ABI available.\n\n**Common gray cases**\nThis factor is grayed when the protocol operates on a chain where block explorer verification infrastructure is unavailable or immature (some newer L2s), provided alternative verification via Sourcify or equivalent is demonstrated.\n\n**Notable historical examples**\n- **Transit Swap** ($21M, 2022): Closed-source claimTokens function concealed a critical allowance-drain path; no audit covered the unverified code.\n- **MobiusDAO** ($2.15M, 2025): Unverified three-day-old protocol; arithmetic error hidden in unreadable bytecode.\n- **Penpie** ($27M, 2024): Permissionless market registration accepted unvalidated external contracts — adjacent pattern where code opacity enabled the exploit.\n- **Cork Protocol** ($12M, 2025): Audit scope excluded CorkHook contract that held the exploited logic.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An unverified contract at launch means no audit is verifiable, no monitoring is possible at the function level, and no user can assess what they are trusting — it is the foundational transparency floor of the entire scoring system."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "alexlab-rekt2",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "AlexLab (Bitcoin DeFi / Stacks)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-06",
           "loss_usd": 16180000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2025-06-06",
+          "relevance": "related",
           "root_cause": "Vault permission hijack via malicious token self-listing; `as-contract` context abuse"
         },
         {
           "hack_id": "cork-protocol-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Cork Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-28",
           "loss_usd": 12000000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2025-05-28",
+          "relevance": "related",
           "root_cause": "Fake token injection → exchange rate manipulation via unvalidated CorkHook input"
         },
         {
           "hack_id": "mobiusdao-rekt",
-          "relevance": "causal",
-          "notes": "★ Contract unverified on Etherscan/Sourcify at launch [via cross-hack: Factor 30: Closed-Source / Unverified Contracts]",
           "hack_protocol_name": "MobiusDAO",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-11",
           "loss_usd": 2150000.0,
+          "notes": "★ Contract unverified on Etherscan/Sourcify at launch [via cross-hack: Factor 30: Closed-Source / Unverified Contracts]",
+          "occurred_at": "2025-05-11",
+          "relevance": "causal",
           "root_cause": "Decimal handling double-multiplication bug in minting function — pennies-to-quadrillions inflation"
         },
         {
           "hack_id": "penpie-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Penpie",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-03",
           "loss_usd": 27000000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-09-03",
+          "relevance": "related",
           "root_cause": "Reentrancy via fake Pendle market → staking balance inflation → excess reward drain"
         },
         {
           "hack_id": "sonne-finance-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Sonne Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
           "loss_usd": 20000000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-05-14",
+          "relevance": "related",
           "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "radiant-capital-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Radiant Capital (1st incident)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-01-02",
           "loss_usd": 4500000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2024-01-02",
+          "relevance": "related",
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
         },
         {
           "hack_id": "onyx-protocol-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Onyx Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-10-31",
           "loss_usd": 2100000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2023-10-31",
+          "relevance": "related",
           "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
         },
         {
           "hack_id": "transit-swap-rekt",
-          "relevance": "causal",
-          "notes": "★ Contract unverified on Etherscan/Sourcify at launch [via cross-hack: Factor 30: Closed-Source / Unverified Contracts]",
           "hack_protocol_name": "Transit Swap",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-10-01",
           "loss_usd": 21000000.0,
+          "notes": "★ Contract unverified on Etherscan/Sourcify at launch [via cross-hack: Factor 30: Closed-Source / Unverified Contracts]",
+          "occurred_at": "2022-10-01",
+          "relevance": "causal",
           "root_cause": "Controllable transferFrom() in unverified (closed-source) swap contract — approval drain"
         },
         {
           "hack_id": "pickle-finance-rekt",
-          "relevance": "related",
-          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
           "hack_protocol_name": "Pickle Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-22",
           "loss_usd": 19700000.0,
+          "notes": "★ Contract unverified at launch — adjacent (no public ABI as a permissionless variant) [via cross-hack: Factor 7: Permissionless Feature Without Safety Validation]",
+          "occurred_at": "2020-11-22",
+          "relevance": "related",
           "root_cause": "Fake jar injection — missing whitelist in Controller's jar-swap function"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Current core contracts and source are public, but historical explorer verification status at the original launch date was not established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x036676389e48133B63a802f8635AD39E752D375D"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,160 +1,185 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-079",
-        "category_id": 5,
-        "name": "Same-root-cause repeat exploit",
-        "description": "Determine whether the protocol has been exploited ≥2 times via the same root-cause cluster.",
-        "scoring_methodology": "**What this measures**\nThis factor flags whether a protocol has been exploited two or more times via the same root-cause cluster. Root-cause clusters are defined in the hacks database synthesis (e.g., oracle manipulation, flash-loan governance, CEI reentrancy, off-chain key compromise). A positive flag indicates the first exploit did not produce a fix that prevented recurrence -- either the fix was incomplete, the pattern existed in an unpatched sister contract, or the team failed to apply the lesson across all affected surfaces.\n\n**Why it matters**\nSame-root-cause repeat exploits are the clearest signal of incomplete remediation. Deus DAO 2 is the most precise example: the attacker in the second incident specifically bypassed the oracle fix deployed after the first incident by exploiting a zero-day in Solidly's flash-swap mechanism that the new oracle did not filter, and that bypass happened in just forty days. Compound reentrancy was exploited four times across different fork instances of the same codebase. Same-root-cause recurrence indicates the team either does not understand the original vulnerability well enough to remediate fully, or lacks the audit discipline to verify the fix holds across all affected surfaces.\n\n**Green / Yellow / Red**\nGreen: no same-root-cause repeat exploit in the hacks database. Yellow: one prior exploit with a root cause documented and patched, but patch applied to only some affected contracts, with others still unverified. Red: confirmed same-root-cause second exploit, regardless of time elapsed between incidents.\n\n**Common gray cases**\nWhen two incidents share a root-cause cluster but the second uses a novel sub-technique (e.g., bypassing a specific fix via a different entry point), it is still classified as same-root-cause because the underlying architectural weakness is identical. Curator judgment is required to distinguish genuine different-vector from disguised same-vector recurrence.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Reentrancy cluster exploited across multiple forks; each instance is same-root-cause propagation.\n- **Deus DAO** ($6.5M, 2023): Second attacker bypassed the specific oracle fix from the first incident in forty days.\n- **Onyx Protocol** ($2.1M, 2023): Same empty-market vector exploited twice on the same protocol.\n- **Platypus Finance** ($8.5M, 2023): Three incidents in eight months with overlapping collateral accounting root cause.\n- **AlexLab** ($16.18M, 2025): First was key compromise, second was vault permission -- confirmed different root-cause clusters, not same-root-cause.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol has been exploited ≥2 times via the same root-cause cluster.",
-        "data_source": "In-house hack DB root-cause cluster tags (from T-01 cluster taxonomy)",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Incident list with root-cause cluster IDs; repeat-cluster flag",
+        "category_id": 5,
         "confidence_signal": "green = no repeat root cause; red = ≥2 incidents with same root-cause cluster; gray = root-cause not classifiable",
+        "curation_archetype": "PE",
+        "data_source": "In-house hack DB root-cause cluster tags (from T-01 cluster taxonomy)",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol has been exploited ≥2 times via the same root-cause cluster.",
+        "evidence_artifact": "Incident list with root-cause cluster IDs; repeat-cluster flag",
+        "id": "RD-F-079",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol has been exploited ≥2 times via the same root-cause cluster.",
+        "method": "PE",
+        "name": "Same-root-cause repeat exploit",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor flags whether a protocol has been exploited two or more times via the same root-cause cluster. Root-cause clusters are defined in the hacks database synthesis (e.g., oracle manipulation, flash-loan governance, CEI reentrancy, off-chain key compromise). A positive flag indicates the first exploit did not produce a fix that prevented recurrence -- either the fix was incomplete, the pattern existed in an unpatched sister contract, or the team failed to apply the lesson across all affected surfaces.\n\n**Why it matters**\nSame-root-cause repeat exploits are the clearest signal of incomplete remediation. Deus DAO 2 is the most precise example: the attacker in the second incident specifically bypassed the oracle fix deployed after the first incident by exploiting a zero-day in Solidly's flash-swap mechanism that the new oracle did not filter, and that bypass happened in just forty days. Compound reentrancy was exploited four times across different fork instances of the same codebase. Same-root-cause recurrence indicates the team either does not understand the original vulnerability well enough to remediate fully, or lacks the audit discipline to verify the fix holds across all affected surfaces.\n\n**Green / Yellow / Red**\nGreen: no same-root-cause repeat exploit in the hacks database. Yellow: one prior exploit with a root cause documented and patched, but patch applied to only some affected contracts, with others still unverified. Red: confirmed same-root-cause second exploit, regardless of time elapsed between incidents.\n\n**Common gray cases**\nWhen two incidents share a root-cause cluster but the second uses a novel sub-technique (e.g., bypassing a specific fix via a different entry point), it is still classified as same-root-cause because the underlying architectural weakness is identical. Curator judgment is required to distinguish genuine different-vector from disguised same-vector recurrence.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Reentrancy cluster exploited across multiple forks; each instance is same-root-cause propagation.\n- **Deus DAO** ($6.5M, 2023): Second attacker bypassed the specific oracle fix from the first incident in forty days.\n- **Onyx Protocol** ($2.1M, 2023): Same empty-market vector exploited twice on the same protocol.\n- **Platypus Finance** ($8.5M, 2023): Three incidents in eight months with overlapping collateral accounting root cause.\n- **AlexLab** ($16.18M, 2025): First was key compromise, second was vault permission -- confirmed different root-cause clusters, not same-root-cause."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "alexlab-rekt2",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "AlexLab (Bitcoin DeFi / Stacks)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-06",
           "loss_usd": 16180000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2025-06-06",
+          "relevance": "causal",
           "root_cause": "Vault permission hijack via malicious token self-listing; `as-contract` context abuse"
         },
         {
           "hack_id": "venus-zksync-2025-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Venus Protocol (zkSync Era deployment)",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2025-03-29",
           "loss_usd": 902000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2025-03-29",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection"
         },
         {
           "hack_id": "abracadabra-rekt2",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Abracadabra Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-25",
           "loss_usd": 13000000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2025-03-25",
+          "relevance": "causal",
           "root_cause": "Logic bug — phantom collateral / post-liquidation state inconsistency"
         },
         {
           "hack_id": "radiant-capital-rekt2",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Radiant Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-10-16",
           "loss_usd": 53000000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2024-10-16",
+          "relevance": "causal",
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
           "hack_id": "onyx-protocol-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Onyx Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-10-31",
           "loss_usd": 2100000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-10-31",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — governance-added PEPE market exploited via rounding + exchange rate inflation"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-05-06",
+          "relevance": "causal",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "level-finance-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Level Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-01",
           "loss_usd": 1100000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-05-01",
+          "relevance": "causal",
           "root_cause": "Logic bug — referral reward claimMultiple() epoch not checked for reuse"
         },
         {
           "hack_id": "hundred-finance-rekt2",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Hundred Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-04-15",
           "loss_usd": 7400000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-04-15",
+          "relevance": "causal",
           "root_cause": "ERC-4626-style cToken exchange rate manipulation + rounding error"
         },
         {
           "hack_id": "platypus-finance-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Platypus Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-02-16",
           "loss_usd": 8500000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-02-16",
+          "relevance": "causal",
           "root_cause": "Flash loan + emergencyWithdraw() solvency check bypass — collateral withdrawal without repaying borrowed USP"
         },
         {
           "hack_id": "midas-capital-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Midas Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-01-15",
           "loss_usd": 660000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2023-01-15",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy on Curve LP token virtual price — inflated collateral valuation"
         },
         {
           "hack_id": "daomaker-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "DAO Maker",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-09-04",
           "loss_usd": 4000000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2021-09-04",
+          "relevance": "causal",
           "root_cause": "Reinitializable init() function + emergencyExit() drain on token vesting contracts"
         },
         {
           "hack_id": "merlin-labs-rekt2",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Merlin Labs (REKT 2)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-27",
           "loss_usd": 550000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2021-05-27",
+          "relevance": "causal",
           "root_cause": "Oracle Mispricing"
         },
         {
           "hack_id": "uranium-rekt",
-          "relevance": "causal",
-          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
           "hack_protocol_name": "Uranium Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-04-28",
           "loss_usd": 57200000.0,
+          "notes": "Same-root-cause repeat exploit [via cross-hack: Factor 5: Second Exploit on Same Protocol]",
+          "occurred_at": "2021-04-28",
+          "relevance": "causal",
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The roots were registrar social engineering, fee-math scaling in an oracle upgrade, and compromised cross-chain RPC/DVN infrastructure.",
+          "evidence_summary": "The three incidents have different root-cause clusters; no same-root-cause repeat is established.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/kelp-dapp-ui-attack-post-mortem"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

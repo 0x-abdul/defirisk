@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-069",
-        "category_id": 4,
-        "name": "Algorithmic / under-collateralized stablecoin",
-        "description": "Classify whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification.",
-        "scoring_methodology": "**What this measures**\nThis factor is a curator-assigned categorical classification: whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification. The classification is based on the protocol's stated design, its collateralization mechanism, and the nature of its stabilization mechanism. Purely fiat-backed or overcollateralized designs score green; partially algorithmic designs or designs relying on endogenous collateral score yellow; purely algorithmic or fractional-reserve designs score red.\n\n**Why it matters**\nAlgorithmic stablecoins represent a distinct economic failure mode not present in overcollateralized lending or AMM designs: the reflexive collapse. Under Terra/Luna, the protocol's stabilization mechanism (mint/burn arbitrage between LUNA and UST) amplified rather than damped the depegging event, producing a total loss of approximately $40B in market value within days. The fundamental risk is that the stabilization mechanism is pro-cyclical at the tail: it works well during small deviations but fails catastrophically during large ones because the collateral (endogenous LUNA) depreciates as the stabilization mechanism is exercised. Any protocol featuring an endogenous token as a meaningful component of its stabilization reserve is exposed to this dynamic.\n\n**Green / Yellow / Red**\nGreen: protocol uses no algorithmic stabilization; stablecoin is fully backed by exogenous overcollateralized assets with a minimum collateral ratio enforced on-chain. Yellow: protocol uses a hybrid mechanism with partial algorithmic backing; stabilization reserve includes some endogenous tokens but exogenous collateral exceeds fifty percent. Red: protocol is primarily algorithmic (stabilization reserve is majority endogenous tokens) or is fractional-reserve by design.\n\n**Common gray cases**\nProtocols that use algorithmic mechanisms for rate adjustment (e.g., Liquity's interest rate targeting) but maintain full collateralization are not classified as algorithmic stablecoins; the risk category applies to stabilization collateral composition, not rate-setting mechanisms.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Classify whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification.",
-        "data_source": "Protocol docs + whitepaper + curator classification",
-        "method": "M",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Curator classification: over-collateralized / partially-collateralized / algorithmic / fiat-backed + protocol docs URL",
+        "category_id": 4,
         "confidence_signal": "green = fully over-collateralized with excess reserves; yellow = partially collateralized with stability mechanism; red = algorithmic (no exogenous collateral); gray = stablecoin classification not applicable to this protocol",
+        "curation_archetype": "M",
+        "data_source": "Protocol docs + whitepaper + curator classification",
+        "deprecated_in_rubric": null,
+        "description": "Classify whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification.",
+        "evidence_artifact": "Curator classification: over-collateralized / partially-collateralized / algorithmic / fiat-backed + protocol docs URL",
+        "id": "RD-F-069",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Classify whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification.",
+        "method": "M",
+        "name": "Algorithmic / under-collateralized stablecoin",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor is a curator-assigned categorical classification: whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification. The classification is based on the protocol's stated design, its collateralization mechanism, and the nature of its stabilization mechanism. Purely fiat-backed or overcollateralized designs score green; partially algorithmic designs or designs relying on endogenous collateral score yellow; purely algorithmic or fractional-reserve designs score red.\n\n**Why it matters**\nAlgorithmic stablecoins represent a distinct economic failure mode not present in overcollateralized lending or AMM designs: the reflexive collapse. Under Terra/Luna, the protocol's stabilization mechanism (mint/burn arbitrage between LUNA and UST) amplified rather than damped the depegging event, producing a total loss of approximately $40B in market value within days. The fundamental risk is that the stabilization mechanism is pro-cyclical at the tail: it works well during small deviations but fails catastrophically during large ones because the collateral (endogenous LUNA) depreciates as the stabilization mechanism is exercised. Any protocol featuring an endogenous token as a meaningful component of its stabilization reserve is exposed to this dynamic.\n\n**Green / Yellow / Red**\nGreen: protocol uses no algorithmic stabilization; stablecoin is fully backed by exogenous overcollateralized assets with a minimum collateral ratio enforced on-chain. Yellow: protocol uses a hybrid mechanism with partial algorithmic backing; stabilization reserve includes some endogenous tokens but exogenous collateral exceeds fifty percent. Red: protocol is primarily algorithmic (stabilization reserve is majority endogenous tokens) or is fractional-reserve by design.\n\n**Common gray cases**\nProtocols that use algorithmic mechanisms for rate adjustment (e.g., Liquity's interest rate targeting) but maintain full collateralization are not classified as algorithmic stablecoins; the risk category applies to stabilization collateral composition, not rate-setting mechanisms.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "rsETH is an ETH-denominated liquid-restaking receipt backed by deposited ETH and whitelisted liquid-staking assets. Kelp DAO does not issue an algorithmic or under-collateralized stablecoin under the approved surface, so RD-F-069 is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

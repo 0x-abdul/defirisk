@@ -1,120 +1,135 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-122",
-        "category_id": 7,
-        "name": "Contributor paid to DPRK-cluster wallet",
-        "description": "Determine whether protocol payments to any contributor wallet have an on-chain path ≤3 hops to a known DPRK-labeled cluster.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether protocol payments to any contributor's wallet — salary, bounty, or grant transactions from the protocol treasury or multisig — have an on-chain path within three hops to a known DPRK-attributed cluster address. This is distinct from RD-F-125 (which examines the deployer wallet) and focuses specifically on payroll-flow routing. Measurement is programmatic: on-chain graph traversal from treasury outflows to contributor wallets, then forward-tracing from those wallets to known DPRK cluster addresses. Category 7 context: payroll routing is the operational money-flow layer of DPRK IT worker infiltration; profits are laundered through a chain of intermediate wallets to DPRK-controlled cluster addresses.\n\n**Why it matters**\nFBI, CISA, and blockchain analytics firms have documented that DPRK IT workers route earnings through a predictable layering chain: personal wallet → mixer or exchange → DPRK-controlled consolidation address. The on-chain path often becomes visible within three to six hops from the contributor wallet. Orbit Bridge, Munchables, Radiant Capital II, and LNDFi all show patterns where contributor wallet flows can be traced toward DPRK-attributed clusters. This factor is P1 (not P0★) because confirming the path requires active Chainalysis-feed access and curator interpretation; it is strong corroborating evidence for RD-F-125 but not independently critical.\n\n**Green / Yellow / Red**\nGreen is scored when on-chain analysis of contributor payment flows shows no path within three hops to DPRK-attributed cluster addresses. Yellow applies when a path exists to a cluster with medium-confidence attribution, or when an intermediate wallet shows high-risk patterns (mixer, OFAC-adjacent) without confirmed DPRK labeling. Red is scored when a confirmed three-hop path connects protocol treasury outflows through a contributor wallet to a high-confidence DPRK-attributed cluster address.\n\n**Common gray cases**\nGray is assigned when the protocol treasury operates via a DAO with diffuse on-chain disbursements that are impractical to trace per-contributor, or when the cluster feed lacks sufficient coverage of the relevant chain.\n\n**Notable historical examples**\n- **Orbit Bridge** ($81.5M, 2023): Contributor payment routing to DPRK cluster confirmed in post-exploit attribution analysis.\n- **Munchables** ($62.5M, 2024): DPRK IT worker salary payments routed toward DPRK-attributed consolidation addresses.\n- **Radiant Capital II** ($53M, 2024): Suspected DPRK payroll routing identified in post-mortem blockchain analysis.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether protocol payments to any contributor wallet have an on-chain path ≤3 hops to a known DPRK-labeled cluster.",
-        "data_source": "Chainalysis/TRM cluster feed (DPRK/Lazarus labels) + on-chain contributor payment addresses",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Payment tx hashes + hop-count to DPRK cluster + CTI feed report",
+        "category_id": 7,
         "confidence_signal": "green = no contributor wallet within 3 hops of DPRK cluster; red = ≥1 contributor wallet within 3 hops; gray = CTI feed not available or contributor payment addresses unknown",
+        "curation_archetype": "PH",
+        "data_source": "Chainalysis/TRM cluster feed (DPRK/Lazarus labels) + on-chain contributor payment addresses",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether protocol payments to any contributor wallet have an on-chain path ≤3 hops to a known DPRK-labeled cluster.",
+        "evidence_artifact": "Payment tx hashes + hop-count to DPRK cluster + CTI feed report",
+        "id": "RD-F-122",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether protocol payments to any contributor wallet have an on-chain path ≤3 hops to a known DPRK-labeled cluster.",
+        "method": "PH",
+        "name": "Contributor paid to DPRK-cluster wallet",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether protocol payments to any contributor's wallet — salary, bounty, or grant transactions from the protocol treasury or multisig — have an on-chain path within three hops to a known DPRK-attributed cluster address. This is distinct from RD-F-125 (which examines the deployer wallet) and focuses specifically on payroll-flow routing. Measurement is programmatic: on-chain graph traversal from treasury outflows to contributor wallets, then forward-tracing from those wallets to known DPRK cluster addresses. Category 7 context: payroll routing is the operational money-flow layer of DPRK IT worker infiltration; profits are laundered through a chain of intermediate wallets to DPRK-controlled cluster addresses.\n\n**Why it matters**\nFBI, CISA, and blockchain analytics firms have documented that DPRK IT workers route earnings through a predictable layering chain: personal wallet → mixer or exchange → DPRK-controlled consolidation address. The on-chain path often becomes visible within three to six hops from the contributor wallet. Orbit Bridge, Munchables, Radiant Capital II, and LNDFi all show patterns where contributor wallet flows can be traced toward DPRK-attributed clusters. This factor is P1 (not P0★) because confirming the path requires active Chainalysis-feed access and curator interpretation; it is strong corroborating evidence for RD-F-125 but not independently critical.\n\n**Green / Yellow / Red**\nGreen is scored when on-chain analysis of contributor payment flows shows no path within three hops to DPRK-attributed cluster addresses. Yellow applies when a path exists to a cluster with medium-confidence attribution, or when an intermediate wallet shows high-risk patterns (mixer, OFAC-adjacent) without confirmed DPRK labeling. Red is scored when a confirmed three-hop path connects protocol treasury outflows through a contributor wallet to a high-confidence DPRK-attributed cluster address.\n\n**Common gray cases**\nGray is assigned when the protocol treasury operates via a DAO with diffuse on-chain disbursements that are impractical to trace per-contributor, or when the cluster feed lacks sufficient coverage of the relevant chain.\n\n**Notable historical examples**\n- **Orbit Bridge** ($81.5M, 2023): Contributor payment routing to DPRK cluster confirmed in post-exploit attribution analysis.\n- **Munchables** ($62.5M, 2024): DPRK IT worker salary payments routed toward DPRK-attributed consolidation addresses.\n- **Radiant Capital II** ($53M, 2024): Suspected DPRK payroll routing identified in post-mortem blockchain analysis."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "lndfi",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
           "hack_protocol_name": "LNDFi (LND.fi)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-09",
           "loss_usd": 1180000.0,
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
+          "occurred_at": "2025-05-09",
+          "relevance": "related",
           "root_cause": "Admin Backdoor (Malicious Code Injection by Contractor / DPRK Dev)"
         },
         {
           "hack_id": "radiant-capital-rekt2",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
           "hack_protocol_name": "Radiant Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-10-16",
           "loss_usd": 53000000.0,
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
+          "occurred_at": "2024-10-16",
+          "relevance": "related",
           "root_cause": "Compromised multisig private keys → malicious contract upgrade → pool ownership transfer → drain"
         },
         {
           "hack_id": "munchables-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
           "hack_protocol_name": "Munchables",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-03-26",
           "loss_usd": 62500000.0,
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
+          "occurred_at": "2024-03-26",
+          "relevance": "related",
           "root_cause": "Malicious Insider — Storage Slot Manipulation via Upgradeable Proxy"
         },
         {
           "hack_id": "orbit-bridge-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
           "hack_protocol_name": "Orbit Bridge (by Ozys)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-12-31",
           "loss_usd": 81500000.0,
+          "notes": "Contributor paid to wallet routing to DPRK cluster [via cross-hack: Factor 65: DPRK Developer Risk]",
+          "occurred_at": "2023-12-31",
+          "relevance": "related",
           "root_cause": "Compromised Multisig Signer Keys (via rogue former CISO)"
         },
         {
           "hack_id": "kannagi-finance-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
           "hack_protocol_name": "Kannagi Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-29",
           "loss_usd": 1100000.0,
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
+          "occurred_at": "2023-07-29",
+          "relevance": "related",
           "root_cause": "Insider rug — privileged admin withdrawal on behalf of users (MainChef address)"
         },
         {
           "hack_id": "kokomo-finance-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
           "hack_protocol_name": "Kokomo Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-03-26",
           "loss_usd": 4000000.0,
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
+          "occurred_at": "2023-03-26",
+          "relevance": "related",
           "root_cause": "Insider rug — deployer upgraded implementation to malicious contract → drained WBTC deposits"
         },
         {
           "hack_id": "brincfi-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
           "hack_protocol_name": "BrincFi",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-12-14",
           "loss_usd": 1100000.0,
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
+          "occurred_at": "2021-12-14",
+          "relevance": "related",
           "root_cause": "Insider backdoor — rescueTokens() admin drain via ownership transfer + malicious contract upgrade"
         },
         {
           "hack_id": "snowdog-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
           "hack_protocol_name": "Snowdog (SnowdogDAO)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-11-25",
           "loss_usd": 21000000.0,
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
+          "occurred_at": "2021-11-25",
+          "relevance": "related",
           "root_cause": "Insider front-running — privileged challengeKey knowledge + custom AMM sniping"
         },
         {
           "hack_id": "uranium-rekt",
-          "relevance": "related",
-          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
           "hack_protocol_name": "Uranium Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-04-28",
           "loss_usd": 57200000.0,
+          "notes": "Contributor paid to wallet routing to known DPRK cluster [via cross-hack: Factor 34: Suspected Insider Involvement]",
+          "occurred_at": "2021-04-28",
+          "relevance": "related",
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Public team identities do not establish the wallets receiving protocol payments.",
+          "evidence_summary": "Protocol payment wallets for contributors were not enumerated and traced through three hops to provider-labeled DPRK clusters.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

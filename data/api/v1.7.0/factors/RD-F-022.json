@@ -1,40 +1,65 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-022",
-        "category_id": 1,
-        "name": "Public initialize() without initializer modifier",
-        "description": "Determine whether any implementation contract exposes `initialize(…)` without the OpenZeppelin `initializer` modifier or equivalent initialization lock.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether any implementation contract in the protocol's proxy architecture exposes an initialize() function (or equivalent setup function) without OpenZeppelin's initializer modifier or an equivalent one-time-call guard. The static analyzer checks deployed bytecode for the presence of a function selector matching initialize(...) on implementation contracts (not proxies) and verifies whether the modifier's revert-if-already-initialized guard is present.\n\n**Why it matters**\nAn unguarded initialize() on an implementation contract allows any caller to invoke it directly, resetting ownership or critical parameters to attacker-controlled values in a single transaction. This is a known one-transaction exploit class: because the implementation's storage is separate from the proxy's storage, the attack does not affect proxy state -- but it can redirect upgrade authority or allow the attacker to call selfdestruct on the implementation, bricking all proxies pointing to it. Industry proxy pattern research has documented that unstructured storage patterns in upgradeable contracts hinder static analysis, making manual curator review of initialization guards especially important. The Parity wallet freeze ($150M locked permanently) is the canonical example of an unguarded initWallet() on a library contract called by any user.\n\n**Green / Yellow / Red**\nGreen: all implementation contracts either call _disableInitializers() in the constructor (the OpenZeppelin-recommended pattern) or carry the initializer modifier on any initialize-type function, confirmed by static analysis of deployed bytecode. Yellow: the initializer modifier is present but the constructor does not call _disableInitializers(), leaving a narrow race condition window at deploy time. Red: an implementation contract exposes a public initialize() or similar function with no one-time-call guard, allowing any address to claim ownership or reset protocol parameters.\n\n**Common gray cases**\nCurators legitimately cannot grade this factor when the protocol's source code is not verified on any explorer, making static analysis of the initialization path impossible.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor (the pattern has been exploited in ecosystem incidents outside this dataset, most notably the 2017 Parity wallet freeze). The factor is retained as ★ critical based on its one-transaction exploit class and ~4 documented precursor instances in the T-01 evidence base.\n\n***** Critical factor\nThis factor is critical under rubric v1.5: a single Red assessment is sufficient to trigger a D or F grade regardless of all other category scores, because an unguarded initialize() represents a one-transaction total-compromise vector on the protocol's upgrade authority.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any implementation contract exposes `initialize(…)` without the OpenZeppelin `initializer` modifier or equivalent initialization lock.",
-        "data_source": "Slither `uninitialized-local` + `missing-zero-check` + `unprotected-upgrade` detectors + source search for `initialize` function signature",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output JSON + function signature + modifier list",
+        "category_id": 1,
         "confidence_signal": "green = all `initialize` functions protected by `initializer` or equivalent; red = any unprotected `initialize` on a live implementation; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `uninitialized-local` + `missing-zero-check` + `unprotected-upgrade` detectors + source search for `initialize` function signature",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any implementation contract exposes `initialize(…)` without the OpenZeppelin `initializer` modifier or equivalent initialization lock.",
+        "evidence_artifact": "Slither output JSON + function signature + modifier list",
+        "id": "RD-F-022",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether any implementation contract exposes `initialize(…)` without the OpenZeppelin `initializer` modifier or equivalent initialization lock.",
+        "method": "PE",
+        "name": "Public initialize() without initializer modifier",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether any implementation contract in the protocol's proxy architecture exposes an initialize() function (or equivalent setup function) without OpenZeppelin's initializer modifier or an equivalent one-time-call guard. The static analyzer checks deployed bytecode for the presence of a function selector matching initialize(...) on implementation contracts (not proxies) and verifies whether the modifier's revert-if-already-initialized guard is present.\n\n**Why it matters**\nAn unguarded initialize() on an implementation contract allows any caller to invoke it directly, resetting ownership or critical parameters to attacker-controlled values in a single transaction. This is a known one-transaction exploit class: because the implementation's storage is separate from the proxy's storage, the attack does not affect proxy state -- but it can redirect upgrade authority or allow the attacker to call selfdestruct on the implementation, bricking all proxies pointing to it. Industry proxy pattern research has documented that unstructured storage patterns in upgradeable contracts hinder static analysis, making manual curator review of initialization guards especially important. The Parity wallet freeze ($150M locked permanently) is the canonical example of an unguarded initWallet() on a library contract called by any user.\n\n**Green / Yellow / Red**\nGreen: all implementation contracts either call _disableInitializers() in the constructor (the OpenZeppelin-recommended pattern) or carry the initializer modifier on any initialize-type function, confirmed by static analysis of deployed bytecode. Yellow: the initializer modifier is present but the constructor does not call _disableInitializers(), leaving a narrow race condition window at deploy time. Red: an implementation contract exposes a public initialize() or similar function with no one-time-call guard, allowing any address to claim ownership or reset protocol parameters.\n\n**Common gray cases**\nCurators legitimately cannot grade this factor when the protocol's source code is not verified on any explorer, making static analysis of the initialization path impossible.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor (the pattern has been exploited in ecosystem incidents outside this dataset, most notably the 2017 Parity wallet freeze). The factor is retained as ★ critical based on its one-transaction exploit class and ~4 documented precursor instances in the T-01 evidence base.\n\n***** Critical factor\nThis factor is critical under rubric v1.5: a single Red assessment is sufficient to trigger a D or F grade regardless of all other category scores, because an unguarded initialize() represents a one-transaction total-compromise vector on the protocol's upgrade authority."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "balancer-2025-rekt",
-          "relevance": "illustrative",
-          "notes": "Cat 9 hygiene pattern: audited but not stress-tested under batch composition; live 4+ years before vector discovered",
           "hack_protocol_name": "Balancer V2 (Composable Stable Pools)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2025-11-03",
           "loss_usd": 128000000.0,
+          "notes": "Cat 9 hygiene pattern: audited but not stress-tested under batch composition; live 4+ years before vector discovered",
+          "occurred_at": "2025-11-03",
+          "relevance": "illustrative",
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "LRTDepositPool and RSETH show the expected OpenZeppelin initialization controls. The score remains cautious until the complete current implementation set is verified.",
+          "evidence_summary": "Public core implementations use initializer plus constructor _disableInitializers(), but every current implementation was not exhaustively matched.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/LRTDepositPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/RSETH.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

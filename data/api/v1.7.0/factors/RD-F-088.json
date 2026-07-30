@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-088",
-        "category_id": 5,
-        "name": "Re-deployed to new addresses in last year",
-        "description": "Determine whether the protocol retired prior deployed contracts and redeployed to a new address set in the last 12 months.",
-        "scoring_methodology": "**What this measures**\nThis factor records whether the protocol redeployed to a new set of contract addresses in the trailing twelve months, retiring at least one previously-live contract that held user funds. Redeployments are detected via on-chain history and protocol announcements. This does not include proxy upgrades (which preserve the address), only full address migrations. It flags the risk that a migration introduced new, unaudited code or created a window during which user funds were briefly in a less-secure state.\n\n**Why it matters**\nFull redeployments are high-risk events for two related reasons. First, the new contracts are effectively new code that begins life with no battle-testing clock, resetting the age signal (RD-F-076). Second, redeployments often occur under operational pressure (post-exploit remediation, V2 launches) when the team's attention is divided and the temptation to skip re-audit is strongest. GMX V1 ($42M recovered, 2025) was exploited via a security patch added three years after the last audit -- a redeployment-style risk even without a full address migration. Several protocols in the dataset also exploited migration windows to front-run users moving funds to the new version.\n\n**Green / Yellow / Red**\nGreen: no redeployment to new addresses in the trailing twelve months. Yellow: one redeployment with a full audit of the new contracts and public migration announcement with adequate lead time. Red: redeployment without a new audit of the migrated code, or redeployment with fewer than seventy-two hours of public notice to allow users to exit.\n\n**Common gray cases**\nProtocols that operate a perpetual multi-version architecture (V1 and V2 simultaneously live) are distinguished from full migrations; the score applies only to deployments intended to replace prior versions that held user funds.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the protocol retired prior deployed contracts and redeployed to a new address set in the last 12 months.",
-        "data_source": "Protocol docs migration announcements + on-chain self-destruct or migration-migration events + Etherscan contract creation dates",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "New deploy tx hashes + prior contract addresses (deprecated) + announcement URL",
+        "category_id": 5,
         "confidence_signal": "green = no full redeployment in last 12 months; yellow = redeployment with documented migration path and user communication; red = redeployment with incomplete migration or unexplained; gray = no prior contracts to compare",
+        "curation_archetype": "PE",
+        "data_source": "Protocol docs migration announcements + on-chain self-destruct or migration-migration events + Etherscan contract creation dates",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the protocol retired prior deployed contracts and redeployed to a new address set in the last 12 months.",
+        "evidence_artifact": "New deploy tx hashes + prior contract addresses (deprecated) + announcement URL",
+        "id": "RD-F-088",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the protocol retired prior deployed contracts and redeployed to a new address set in the last 12 months.",
+        "method": "PE",
+        "name": "Re-deployed to new addresses in last year",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor records whether the protocol redeployed to a new set of contract addresses in the trailing twelve months, retiring at least one previously-live contract that held user funds. Redeployments are detected via on-chain history and protocol announcements. This does not include proxy upgrades (which preserve the address), only full address migrations. It flags the risk that a migration introduced new, unaudited code or created a window during which user funds were briefly in a less-secure state.\n\n**Why it matters**\nFull redeployments are high-risk events for two related reasons. First, the new contracts are effectively new code that begins life with no battle-testing clock, resetting the age signal (RD-F-076). Second, redeployments often occur under operational pressure (post-exploit remediation, V2 launches) when the team's attention is divided and the temptation to skip re-audit is strongest. GMX V1 ($42M recovered, 2025) was exploited via a security patch added three years after the last audit -- a redeployment-style risk even without a full address migration. Several protocols in the dataset also exploited migration windows to front-run users moving funds to the new version.\n\n**Green / Yellow / Red**\nGreen: no redeployment to new addresses in the trailing twelve months. Yellow: one redeployment with a full audit of the new contracts and public migration announcement with adequate lead time. Red: redeployment without a new audit of the migrated code, or redeployment with fewer than seventy-two hours of public notice to allow users to exit.\n\n**Common gray cases**\nProtocols that operate a perpetual multi-version architecture (V1 and V2 simultaneously live) are distinguished from full migrations; the score applies only to deployments intended to replace prior versions that held user funds.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The post-incident process consolidated supported networks and introduced recovery from retired routes rather than continuing the prior address set.",
+          "evidence_summary": "Kelp migrated cross-chain rsETH away from the LayerZero OFT route and retired a broad network/address set within the last year.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/recovering-rseth-from-sunset-networks"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

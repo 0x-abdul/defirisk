@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-104",
-        "category_id": 6,
-        "name": "Stablecoin depeg >2% on shared-LP venue",
-        "description": "Detect whether a stablecoin in this protocol's dependency graph depegs >2% on a venue with shared liquidity.",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when a stablecoin in the protocol's dependency graph depegs by more than 2% from its target peg on a venue that shares liquidity with the monitored protocol. A stablecoin is considered in-dependency-graph if it serves as collateral, underlies an LP token used by the protocol, or acts as an oracle reference asset. Depeg detection is via continuous DEX subgraph and price feed monitoring. Category 6 context: stablecoin depegs in shared-liquidity venues propagate systemic risk to all protocols relying on those stablecoins as collateral or oracle references.\n\n**Why it matters**\nThe LUNA/UST collapse ($40B+ ecosystem loss, May 2022) demonstrated that stablecoin depeg events have rapid cascading effects across protocols using UST as collateral or reference. Mirror Protocol ($92M) shows the direct dataset example: the LUNA depeg oracle inconsistency was a detectable signal during the exploit. More broadly, any protocol using a yield-bearing stablecoin (e.g., USD0++, xUSD, USDX in the 2025–2026 immutable-oracle cluster) as collateral faces systemic exposure when that stablecoin depegs and the oracle cannot reprice due to immutability. A 2% depeg on a shared-liquidity venue provides approximately 60–120 seconds of warning time before liquidation cascades begin.\n\n**Green / Yellow / Red**\nGreen is the baseline when all stablecoins in the dependency graph are within 0.5% of peg across all monitored venues. Yellow fires when a depeg of 0.5–2% is detected — elevated but potentially within normal market volatility for some stablecoins. Red fires when any dependency-graph stablecoin depegs more than 2% on a venue with shared LP, triggering immediate elevated-risk alerting.\n\n**Common gray cases**\nGray applies when the protocol's stablecoin dependency graph is not fully mappable from on-chain data alone, or when the depeg is occurring on a venue with no shared liquidity and the systemic risk is limited.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Detect whether a stablecoin in this protocol's dependency graph depegs >2% on a venue with shared liquidity.",
-        "data_source": "Chainlink/Pyth stablecoin price feed + DEX shared-LP identification from protocol dependency graph",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "Stablecoin address + price + depeg % + venue + timestamp",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; red = depeg >2% detected on shared-LP venue; gray = dependency graph (F050) not completed",
+        "curation_archetype": "PE",
+        "data_source": "Chainlink/Pyth stablecoin price feed + DEX shared-LP identification from protocol dependency graph",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether a stablecoin in this protocol's dependency graph depegs >2% on a venue with shared liquidity.",
+        "evidence_artifact": "Stablecoin address + price + depeg % + venue + timestamp",
+        "id": "RD-F-104",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether a stablecoin in this protocol's dependency graph depegs >2% on a venue with shared liquidity.",
+        "method": "PE",
+        "name": "Stablecoin depeg >2% on shared-LP venue",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when a stablecoin in the protocol's dependency graph depegs by more than 2% from its target peg on a venue that shares liquidity with the monitored protocol. A stablecoin is considered in-dependency-graph if it serves as collateral, underlies an LP token used by the protocol, or acts as an oracle reference asset. Depeg detection is via continuous DEX subgraph and price feed monitoring. Category 6 context: stablecoin depegs in shared-liquidity venues propagate systemic risk to all protocols relying on those stablecoins as collateral or oracle references.\n\n**Why it matters**\nThe LUNA/UST collapse ($40B+ ecosystem loss, May 2022) demonstrated that stablecoin depeg events have rapid cascading effects across protocols using UST as collateral or reference. Mirror Protocol ($92M) shows the direct dataset example: the LUNA depeg oracle inconsistency was a detectable signal during the exploit. More broadly, any protocol using a yield-bearing stablecoin (e.g., USD0++, xUSD, USDX in the 2025–2026 immutable-oracle cluster) as collateral faces systemic exposure when that stablecoin depegs and the oracle cannot reprice due to immutability. A 2% depeg on a shared-liquidity venue provides approximately 60–120 seconds of warning time before liquidation cascades begin.\n\n**Green / Yellow / Red**\nGreen is the baseline when all stablecoins in the dependency graph are within 0.5% of peg across all monitored venues. Yellow fires when a depeg of 0.5–2% is detected — elevated but potentially within normal market volatility for some stablecoins. Red fires when any dependency-graph stablecoin depegs more than 2% on a venue with shared LP, triggering immediate elevated-risk alerting.\n\n**Common gray cases**\nGray applies when the protocol's stablecoin dependency graph is not fully mappable from on-chain data alone, or when the depeg is occurring on a venue with no shared liquidity and the systemic risk is limited.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp's approved core surface is backed by ETH and liquid-staking tokens rather than a stablecoin dependency meeting the trigger.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

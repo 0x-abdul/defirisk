@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-133",
-        "category_id": 8,
-        "name": "Dependency manifest uses unpinned versions",
-        "description": "Determine whether `package.json`, `Cargo.toml`, or `foundry.toml` uses `^` or `~` version ranges for security-critical libraries (OpenZeppelin, Solady, etc.).",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol's package manifest files -- package.json, Cargo.toml, foundry.toml, or equivalent -- use range specifiers (^ or ~) for security-critical library dependencies such as OpenZeppelin Contracts, Solady, or Solmate, rather than exact pinned version strings. Unpinned dependencies allow npm or package managers to silently update the library to a newer version on the next install, potentially introducing a newly-published vulnerability or a supply-chain-compromised release. The data source is the protocol's public repository.\n\n**Why it matters**\nUnpinned critical library dependencies are a supply-chain attack surface. If an attacker compromises an npm package for OpenZeppelin at version 4.9.4 (hypothetically), all protocols using ^4.9.0 or ~4.9.0 in their package.json will pull the malicious version on their next npm install -- including CI/CD pipelines building the deployment artifact. Even without a malicious release, auto-updating to a library version with a newly-discovered bug can introduce a vulnerability that was not present in the previously pinned version. Approximately two documented instances in the T-01 inventory involve library dependency incidents.\n\n**Green / Yellow / Red**\nGreen: all security-critical library dependencies (OpenZeppelin, Solady, Solmate, or equivalents) are pinned to exact version strings (no ^ or ~ prefix) in all package manifest files, and lock files are committed. Yellow: non-security-critical development dependencies use range specifiers, but all deployed contract libraries are pinned. Red: any range specifier is used for OpenZeppelin, Solady, or equivalent libraries that are compiled into the deployed bytecode.\n\n**Common gray cases**\nThis factor is gray when the protocol does not use a package manager (e.g., vendored or inline library copies) or when the repository is private and the manifest cannot be inspected.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on its supply-chain risk classification in the T-01 evidence inventory.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether `package.json`, `Cargo.toml`, or `foundry.toml` uses `^` or `~` version ranges for security-critical libraries (OpenZeppelin, Solady, etc.).",
-        "data_source": "Protocol GitHub repo manifest files (`package.json`, `foundry.toml`) + library version pinning check",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Manifest file URL + commit SHA + dependency version strings",
+        "category_id": 8,
         "confidence_signal": "green = all critical libraries pinned to exact version; yellow = minor libs unpinned but OZ and Solady pinned; red = OpenZeppelin or Solady unpinned; gray = repo not publicly accessible",
+        "curation_archetype": "PE",
+        "data_source": "Protocol GitHub repo manifest files (`package.json`, `foundry.toml`) + library version pinning check",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether `package.json`, `Cargo.toml`, or `foundry.toml` uses `^` or `~` version ranges for security-critical libraries (OpenZeppelin, Solady, etc.).",
+        "evidence_artifact": "Manifest file URL + commit SHA + dependency version strings",
+        "id": "RD-F-133",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether `package.json`, `Cargo.toml`, or `foundry.toml` uses `^` or `~` version ranges for security-critical libraries (OpenZeppelin, Solady, etc.).",
+        "method": "PE",
+        "name": "Dependency manifest uses unpinned versions",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol's package manifest files -- package.json, Cargo.toml, foundry.toml, or equivalent -- use range specifiers (^ or ~) for security-critical library dependencies such as OpenZeppelin Contracts, Solady, or Solmate, rather than exact pinned version strings. Unpinned dependencies allow npm or package managers to silently update the library to a newer version on the next install, potentially introducing a newly-published vulnerability or a supply-chain-compromised release. The data source is the protocol's public repository.\n\n**Why it matters**\nUnpinned critical library dependencies are a supply-chain attack surface. If an attacker compromises an npm package for OpenZeppelin at version 4.9.4 (hypothetically), all protocols using ^4.9.0 or ~4.9.0 in their package.json will pull the malicious version on their next npm install -- including CI/CD pipelines building the deployment artifact. Even without a malicious release, auto-updating to a library version with a newly-discovered bug can introduce a vulnerability that was not present in the previously pinned version. Approximately two documented instances in the T-01 inventory involve library dependency incidents.\n\n**Green / Yellow / Red**\nGreen: all security-critical library dependencies (OpenZeppelin, Solady, Solmate, or equivalents) are pinned to exact version strings (no ^ or ~ prefix) in all package manifest files, and lock files are committed. Yellow: non-security-critical development dependencies use range specifiers, but all deployed contract libraries are pinned. Red: any range specifier is used for OpenZeppelin, Solady, or equivalent libraries that are compiled into the deployed bytecode.\n\n**Common gray cases**\nThis factor is gray when the protocol does not use a package manager (e.g., vendored or inline library copies) or when the repository is private and the manifest cannot be inspected.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on its supply-chain risk classification in the T-01 evidence inventory."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The public repository contains the dependency code and fixed Git tree state; no root package manifest with caret or tilde security-library ranges exists.",
+          "evidence_summary": "Security-critical OpenZeppelin dependencies are vendored at fixed repository revisions rather than declared through floating package ranges.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/lib/openzeppelin-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

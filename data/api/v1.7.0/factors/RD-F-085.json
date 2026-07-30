@@ -1,40 +1,60 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-085",
-        "category_id": 5,
-        "name": "Incident response time (minutes)",
-        "description": "Measure the time in minutes from the first exploit transaction to the first official team statement for the most recent incident.",
-        "scoring_methodology": "**What this measures**\nThis factor records the elapsed time in minutes between the first on-chain transaction of the most recent exploit and the first official team statement (tweet, blog post, Discord announcement, or governance forum post) acknowledging the incident. For off-chain-initiated exploits where the on-chain drain is the primary event, the clock starts at the first anomalous transaction. This factor applies only to protocols with at least one prior incident; for protocols with no incidents it is marked gray.\n\n**Why it matters**\nIncident response time is a direct measure of monitoring maturity and operational preparedness. Badger DAO had malicious approvals visible on-chain for twelve days before the drain; Harmony Bridge's $100M exploit had a fourteen-hour detection lag before the team publicly acknowledged it. Fast detection and communication enables depositors to take protective action (withdrawing remaining funds) and allows the protocol to invoke emergency pause functions before the drain is complete. In the dataset, median response time across Medium and High detectability hacks was approximately forty-five minutes; protocols with sub-fifteen-minute response times generally had active monitoring infrastructure and pause capabilities.\n\n**Green / Yellow / Red**\nGreen: first official team statement within fifteen minutes of first anomalous on-chain transaction. Yellow: response time between fifteen minutes and four hours. Red: response time exceeding four hours, or no public statement within twenty-four hours of confirmed drain.\n\n**Common gray cases**\nFor off-chain-initiated exploits (e.g., private key compromise) where the first on-chain signal is the drain itself, response time is measured from first drain transaction to first public statement, which may be instantaneous if monitoring detected the key compromise. Curator judgment required on determining the correct clock-start event.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Measure the time in minutes from the first exploit transaction to the first official team statement for the most recent incident.",
-        "data_source": "Exploit first-tx timestamp (Etherscan) + earliest team statement timestamp (Twitter/X, Discord, governance forum)",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "Exploit tx hash + exploit block timestamp + team statement URL + statement timestamp + minutes-delta",
+        "category_id": 5,
         "confidence_signal": "green = ≤60 min; yellow = 61–240 min; red = >240 min or no statement; gray = no prior incidents (N/A)",
+        "curation_archetype": "M",
+        "data_source": "Exploit first-tx timestamp (Etherscan) + earliest team statement timestamp (Twitter/X, Discord, governance forum)",
+        "deprecated_in_rubric": null,
+        "description": "Measure the time in minutes from the first exploit transaction to the first official team statement for the most recent incident.",
+        "evidence_artifact": "Exploit tx hash + exploit block timestamp + team statement URL + statement timestamp + minutes-delta",
+        "id": "RD-F-085",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the time in minutes from the first exploit transaction to the first official team statement for the most recent incident.",
+        "method": "M",
+        "name": "Incident response time (minutes)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the elapsed time in minutes between the first on-chain transaction of the most recent exploit and the first official team statement (tweet, blog post, Discord announcement, or governance forum post) acknowledging the incident. For off-chain-initiated exploits where the on-chain drain is the primary event, the clock starts at the first anomalous transaction. This factor applies only to protocols with at least one prior incident; for protocols with no incidents it is marked gray.\n\n**Why it matters**\nIncident response time is a direct measure of monitoring maturity and operational preparedness. Badger DAO had malicious approvals visible on-chain for twelve days before the drain; Harmony Bridge's $100M exploit had a fourteen-hour detection lag before the team publicly acknowledged it. Fast detection and communication enables depositors to take protective action (withdrawing remaining funds) and allows the protocol to invoke emergency pause functions before the drain is complete. In the dataset, median response time across Medium and High detectability hacks was approximately forty-five minutes; protocols with sub-fifteen-minute response times generally had active monitoring infrastructure and pause capabilities.\n\n**Green / Yellow / Red**\nGreen: first official team statement within fifteen minutes of first anomalous on-chain transaction. Yellow: response time between fifteen minutes and four hours. Red: response time exceeding four hours, or no public statement within twenty-four hours of confirmed drain.\n\n**Common gray cases**\nFor off-chain-initiated exploits (e.g., private key compromise) where the first on-chain signal is the drain itself, response time is measured from first drain transaction to first public statement, which may be instantaneous if monitoring detected the key compromise. Curator judgment required on determining the correct clock-start event.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "venus-zksync-2025-rekt",
-          "relevance": "illustrative",
-          "notes": "Part of Venus chronic-pattern cluster (this + 2026-03-15 BNB Chain incident) per PD-022",
           "hack_protocol_name": "Venus Protocol (zkSync Era deployment)",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2025-03-29",
           "loss_usd": 902000.0,
+          "notes": "Part of Venus chronic-pattern cluster (this + 2026-03-15 BNB Chain incident) per PD-022",
+          "occurred_at": "2025-03-29",
+          "relevance": "illustrative",
           "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The forged release occurred at 17:35 UTC. Ethereum transaction 0x4f52...1698 succeeded at 18:21:59 UTC and emitted Paused events from Kelp's LRTDepositPool, Withdrawal, LRTOracle, and rsETH token.",
+          "evidence_summary": "Kelp's Ethereum core-protocol pauseAll transaction followed the successful release by approximately 46 minutes.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x4f52256ab6c8ab95d30cf994e0264f1de27e089764bb011824d5ddd47d9a1698"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

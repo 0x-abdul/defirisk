@@ -1,110 +1,129 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-056",
-        "category_id": 3,
-        "name": "Single-pool oracle (no medianization)",
-        "description": "Determine whether the oracle reads from a single DEX venue with no medianization across multiple pools or venues.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the oracle reads price from a single DEX venue without aggregating (medianising) across multiple independent pools or venues. A protocol is flagged if price is derived exclusively from one pool, regardless of whether that pool uses spot or TWAP. Source inspection is the primary assessment method.\n\n**Why it matters**\nSingle-pool oracles create a concentrated attack surface: an adversary need only manipulate one venue to corrupt the protocol's price feed. Medianisation across multiple independent pools raises the cost of attack proportionally — the attacker must move prices on all venues simultaneously to shift the median. The T-01 evidence base links single-pool oracles (no medianisation) to approximately 10 exploited protocols. The Cheese Bank hack ($3.3M) exploited a WETH balance ratio directly from a single Uniswap LP. Inverse Finance, Elephant Money, and Polter Finance all used single-source feeds that were individually movable within a single block or across a small number of blocks.\n\n**Green / Yellow / Red**\nGreen is scored when price is aggregated or medianised across three or more independent venues, or when an aggregated off-chain feed (Chainlink, Pyth) is used as the sole source. Yellow is scored when price is derived from two venues without medianisation, or from one venue with a circuit breaker. Red is scored when a single pool is the sole price source with no medianisation and no circuit breaker.\n\n**Common gray cases**\nGray is applied when the protocol uses a custom aggregator whose source diversification cannot be confirmed through available source inspection.\n\n**Notable historical examples**\n- **Inverse Finance** ($15.6M, 2022): INV/WETH single-pool TWAP oracle.\n- **Elephant Money** ($22.2M, 2022): Single PancakeSwap pool for ELEPHANT price.\n- **Polter Finance** ($8.7M, 2024): Single SpookySwap pool for BOO collateral.\n- **Deus DAO** ($6.5M, 2023): sAMM used as single spot oracle source.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the oracle reads from a single DEX venue with no medianization across multiple pools or venues.",
-        "data_source": "Source inspection of price computation logic on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of price read logic + pool address(es)",
+        "category_id": 3,
         "confidence_signal": "green = price medianized across ≥2 independent venues; yellow = single pool but cross-validated with Chainlink; red = single DEX pool with no cross-validation; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of price computation logic on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the oracle reads from a single DEX venue with no medianization across multiple pools or venues.",
+        "evidence_artifact": "Source excerpt of price read logic + pool address(es)",
+        "id": "RD-F-056",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the oracle reads from a single DEX venue with no medianization across multiple pools or venues.",
+        "method": "PE",
+        "name": "Single-pool oracle (no medianization)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the oracle reads price from a single DEX venue without aggregating (medianising) across multiple independent pools or venues. A protocol is flagged if price is derived exclusively from one pool, regardless of whether that pool uses spot or TWAP. Source inspection is the primary assessment method.\n\n**Why it matters**\nSingle-pool oracles create a concentrated attack surface: an adversary need only manipulate one venue to corrupt the protocol's price feed. Medianisation across multiple independent pools raises the cost of attack proportionally — the attacker must move prices on all venues simultaneously to shift the median. The T-01 evidence base links single-pool oracles (no medianisation) to approximately 10 exploited protocols. The Cheese Bank hack ($3.3M) exploited a WETH balance ratio directly from a single Uniswap LP. Inverse Finance, Elephant Money, and Polter Finance all used single-source feeds that were individually movable within a single block or across a small number of blocks.\n\n**Green / Yellow / Red**\nGreen is scored when price is aggregated or medianised across three or more independent venues, or when an aggregated off-chain feed (Chainlink, Pyth) is used as the sole source. Yellow is scored when price is derived from two venues without medianisation, or from one venue with a circuit breaker. Red is scored when a single pool is the sole price source with no medianisation and no circuit breaker.\n\n**Common gray cases**\nGray is applied when the protocol uses a custom aggregator whose source diversification cannot be confirmed through available source inspection.\n\n**Notable historical examples**\n- **Inverse Finance** ($15.6M, 2022): INV/WETH single-pool TWAP oracle.\n- **Elephant Money** ($22.2M, 2022): Single PancakeSwap pool for ELEPHANT price.\n- **Polter Finance** ($8.7M, 2024): Single SpookySwap pool for BOO collateral.\n- **Deus DAO** ($6.5M, 2023): sAMM used as single spot oracle source."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2026-01-20",
+          "relevance": "related",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "polter-finance-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Polter Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-11-16",
           "loss_usd": 8700000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2024-11-16",
+          "relevance": "related",
           "root_cause": "Spot price oracle manipulation (SpookySwap V2/V3) → inflated BOO collateral → draining borrow"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2023-05-06",
+          "relevance": "related",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "elephant-money-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Elephant Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-04-12",
           "loss_usd": 22200000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2022-04-12",
+          "relevance": "related",
           "root_cause": "Flash loan + spot price manipulation during stablecoin minting"
         },
         {
           "hack_id": "inverse-finance",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Inverse Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-04-02",
           "loss_usd": 15600000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2022-04-02",
+          "relevance": "related",
           "root_cause": "SushiSwap TWAP Oracle Manipulation — Thin Liquidity Governance Token"
         },
         {
           "hack_id": "spartan-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Spartan Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-01",
           "loss_usd": 30500000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2021-05-01",
+          "relevance": "related",
           "root_cause": "Flash loan + inflated pool balance → LP burn liquidity share manipulation"
         },
         {
           "hack_id": "cheese-bank-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Cheese Bank",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-06",
           "loss_usd": 3300000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2020-11-06",
+          "relevance": "related",
           "root_cause": "Flash loan + Uniswap LP spot oracle manipulation → inflated collateral value → drain via borrow()"
         },
         {
           "hack_id": "harvest-finance-rekt",
-          "relevance": "related",
-          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Harvest Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-10-26",
           "loss_usd": 33800000.0,
+          "notes": "Single-pool oracle (no medianization) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2020-10-26",
+          "relevance": "related",
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Each asset selects one adapter at a time and the current LRTOracle does not medianize across venues.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

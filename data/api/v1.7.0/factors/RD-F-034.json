@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-034",
-        "category_id": 2,
-        "name": "Guardian/pause-keeper distinct from upgrader",
-        "description": "Determine whether a pauser/guardian role exists and is held by an address distinct from the upgrader address.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether a distinct guardian or pause-keeper role exists in the protocol's access control system — separate from the upgrader address — and whether that role is held by an address distinct from the upgrader. The presence of a separate pauser is a role-separation signal: it means an emergency pause can be executed by a party that does not also hold upgrade authority, which limits the blast radius of a compromised pauser key.\n\n**Why it matters**\nRole separation is a defense-in-depth principle: a single compromised key should grant an attacker the minimum possible authority, not all administrative powers simultaneously. When the same address or multisig is both the pauser and the upgrader, an attacker who compromises that address can not only pause the protocol (preventing user withdrawals) but also upgrade it — turning a defensive mechanism into an offensive one. Protocols that separate these roles constrain a compromised pauser to the pause action only, buying time for the legitimate governance process to respond.\n\n**Green / Yellow / Red**\nGreen is assigned when a guardian or pause role exists, is held by an address distinct from the upgrader, and is held by a multisig with at least a 2-of-N threshold. Yellow covers cases where the pause role is distinct from the upgrader but held by a single EOA, or where a pause mechanism exists but is gated behind the same multisig as the upgrade path. Red is assigned when no distinct pause role exists (upgrade is the only emergency mechanism) or when the pause and upgrade roles share the same controlling address.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no pause mechanism at all (fully immutable or fully permissionless) — absence of a pause capability is its own risk dimension assessed elsewhere.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether a pauser/guardian role exists and is held by an address distinct from the upgrader address.",
-        "data_source": "`PAUSER_ROLE` / `GUARDIAN_ROLE` member read via `getRoleMember()` + upgrader address read; compare",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Pauser role address + upgrader address + equality check",
+        "category_id": 2,
         "confidence_signal": "green = distinct addresses; yellow = same contract intermediary but different signing key; red = same address holds both roles; gray = no pause functionality present",
+        "curation_archetype": "PE",
+        "data_source": "`PAUSER_ROLE` / `GUARDIAN_ROLE` member read via `getRoleMember()` + upgrader address read; compare",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a pauser/guardian role exists and is held by an address distinct from the upgrader address.",
+        "evidence_artifact": "Pauser role address + upgrader address + equality check",
+        "id": "RD-F-034",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a pauser/guardian role exists and is held by an address distinct from the upgrader address.",
+        "method": "PE",
+        "name": "Guardian/pause-keeper distinct from upgrader",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether a distinct guardian or pause-keeper role exists in the protocol's access control system — separate from the upgrader address — and whether that role is held by an address distinct from the upgrader. The presence of a separate pauser is a role-separation signal: it means an emergency pause can be executed by a party that does not also hold upgrade authority, which limits the blast radius of a compromised pauser key.\n\n**Why it matters**\nRole separation is a defense-in-depth principle: a single compromised key should grant an attacker the minimum possible authority, not all administrative powers simultaneously. When the same address or multisig is both the pauser and the upgrader, an attacker who compromises that address can not only pause the protocol (preventing user withdrawals) but also upgrade it — turning a defensive mechanism into an offensive one. Protocols that separate these roles constrain a compromised pauser to the pause action only, buying time for the legitimate governance process to respond.\n\n**Green / Yellow / Red**\nGreen is assigned when a guardian or pause role exists, is held by an address distinct from the upgrader, and is held by a multisig with at least a 2-of-N threshold. Yellow covers cases where the pause role is distinct from the upgrader but held by a single EOA, or where a pause mechanism exists but is gated behind the same multisig as the upgrade path. Red is assigned when no distinct pause role exists (upgrade is the only emergency mechanism) or when the pause and upgrade roles share the same controlling address.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no pause mechanism at all (fully immutable or fully permissionless) — absence of a pause capability is its own risk dimension assessed elsewhere.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The dedicated Pauser Safe is distinct from the Admin and Manager Safes and from the core ProxyAdmin timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#pauser-safes"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

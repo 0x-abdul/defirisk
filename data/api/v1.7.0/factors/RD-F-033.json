@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-033",
-        "category_id": 2,
-        "name": "Timelock on sensitive actions",
-        "description": "For each sensitive action category (mint / pause / rescue / setOracle / upgrade), determine whether execution requires going through the declared timelock.",
-        "scoring_methodology": "**What this measures**\nThis factor is a boolean checklist recording whether each sensitive action category — mint, pause, rescue, oracle change, and contract upgrade — is subject to a timelock delay before execution. The result is a per-action boolean map (timelocked: yes/no) rather than a single aggregate score. A protocol that timelocks upgrades but not rescue functions scores partially; the non-timelocked rescue path still represents an immediate drain vector.\n\n**Why it matters**\nAdmin action categories have asymmetric risk profiles. A rescue function that bypasses the timelock covering upgrades negates the security value of that timelock entirely — an attacker who gains admin key access can call rescue() immediately while the upgrade mechanism remains protected by a 48-hour delay. The pattern of selective timelock application is common in DeFi protocols that added a governance timelock in response to market pressure but did not apply it consistently across all privileged action categories. The evidence base shows that mint and rescue are the two most frequently bypassed categories.\n\n**Green / Yellow / Red**\nGreen is assigned when all five action categories (mint, pause, rescue, oracle change, upgrade) are timelocked with a delay meeting the RD-F-032 threshold. Yellow covers configurations where three or four categories are timelocked and the untimelocked categories are low-severity (pause only). Red is assigned when mint, rescue, or upgrade is executable without any timelock by an admin-level role.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all five action types (e.g., no mint function on a DEX), in which case only applicable categories are scored and missing categories are noted.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "For each sensitive action category (mint / pause / rescue / setOracle / upgrade), determine whether execution requires going through the declared timelock.",
-        "data_source": "Source inspection + on-chain `AccessControl` / `TimelockController` role mapping via RPC",
-        "method": "PE",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "JSON map of action-type → timelocked (bool) + timelock address",
+        "category_id": 2,
         "confidence_signal": "green = all five action types timelocked; yellow = 3–4 timelocked; red = ≤2 timelocked or rescue/upgrade not timelocked; gray = action types not separable from source",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection + on-chain `AccessControl` / `TimelockController` role mapping via RPC",
+        "deprecated_in_rubric": null,
+        "description": "For each sensitive action category (mint / pause / rescue / setOracle / upgrade), determine whether execution requires going through the declared timelock.",
+        "evidence_artifact": "JSON map of action-type → timelocked (bool) + timelock address",
+        "id": "RD-F-033",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "For each sensitive action category (mint / pause / rescue / setOracle / upgrade), determine whether execution requires going through the declared timelock.",
+        "method": "PE",
+        "name": "Timelock on sensitive actions",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor is a boolean checklist recording whether each sensitive action category — mint, pause, rescue, oracle change, and contract upgrade — is subject to a timelock delay before execution. The result is a per-action boolean map (timelocked: yes/no) rather than a single aggregate score. A protocol that timelocks upgrades but not rescue functions scores partially; the non-timelocked rescue path still represents an immediate drain vector.\n\n**Why it matters**\nAdmin action categories have asymmetric risk profiles. A rescue function that bypasses the timelock covering upgrades negates the security value of that timelock entirely — an attacker who gains admin key access can call rescue() immediately while the upgrade mechanism remains protected by a 48-hour delay. The pattern of selective timelock application is common in DeFi protocols that added a governance timelock in response to market pressure but did not apply it consistently across all privileged action categories. The evidence base shows that mint and rescue are the two most frequently bypassed categories.\n\n**Green / Yellow / Red**\nGreen is assigned when all five action categories (mint, pause, rescue, oracle change, upgrade) are timelocked with a delay meeting the RD-F-032 threshold. Yellow covers configurations where three or four categories are timelocked and the untimelocked categories are low-severity (pause only). Red is assigned when mint, rescue, or upgrade is executable without any timelock by an admin-level role.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all five action types (e.g., no mint function on a DEX), in which case only applicable categories are scored and missing categories are noted.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core upgrades are timelocked, but direct Manager, Pauser, and Admin functions remain; the published Manager Timelock has an on-chain minimum delay of only 180 seconds.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1Fda02CF28F28a763d996AD5Ee37B9f1b608E674"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

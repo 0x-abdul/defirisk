@@ -1,170 +1,191 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-141",
-        "category_id": 9,
-        "name": "Test-mode parameters in deploy",
-        "description": "Determine whether the deployed configuration retains test-mode parameters (test oracle address, infinite allowance, admin = deployer EOA).",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether a deployed contract retains test-mode configuration parameters — such as a test oracle address, infinite token allowances for deployer addresses, an admin role still set to the deployer EOA, or debug-level access control conditions. These are parameters that are appropriate in a testing environment but represent active security vulnerabilities in production. Detection combines static analysis of the deployed configuration against the declared production parameter set.\n\n**Why it matters**\nTest-mode configurations left active in production have caused several significant exploits. Eminence Finance lost $15M because speculative depositors found and funded what was effectively a development contract that had not been made production-safe. The pattern of \"deployed to mainnet before final hardening\" appears across multiple incidents in the evidence base — particularly in newly deployed contracts and contracts deployed as part of a rapid upgrade cycle. The risk is not the test-mode configuration alone but the combination of that configuration with live user funds: a debug admin address or infinite allowance in production is an immediately exploitable state.\n\n**Green / Yellow / Red**\nGreen is assigned when source inspection and on-chain configuration confirm no test-mode parameters are active in the production deployment. Yellow covers cases where minor non-security-critical test parameters remain (e.g., verbose event emissions) but no privilege-escalating test configs are present. Red is assigned when any privilege-escalating test-mode configuration is found in the production deployment — including deployer-admin, infinite allowances for test addresses, or a mock oracle address.\n\n**Common gray cases**\nThis factor is grayed when source code is unavailable and bytecode-level configuration analysis is inconclusive.\n\n**Notable historical examples**\n- **Eminence Finance** ($15M, 2020): Protocol deployed to mainnet in development state; speculative deposits funded what was essentially a test contract.\n- **Compound Finance** ($147M at risk, 2021): Proposal 62 introduced a governance upgrade with test-level parameter assumptions.\n- **Penpie** ($27M, 2024): Permissionless market registration accepted external contracts without the whitelist that the production spec required.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the deployed configuration retains test-mode parameters (test oracle address, infinite allowance, admin = deployer EOA).",
-        "data_source": "Source inspection of deploy config + constructor args decode on Etherscan + comparison to production-expected values",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Constructor args JSON + decoded config values + expected production values",
+        "category_id": 9,
         "confidence_signal": "green = no test-mode parameters detected; red = test-mode parameter confirmed in production deploy; gray = constructor args not decodable",
+        "curation_archetype": "PH",
+        "data_source": "Source inspection of deploy config + constructor args decode on Etherscan + comparison to production-expected values",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the deployed configuration retains test-mode parameters (test oracle address, infinite allowance, admin = deployer EOA).",
+        "evidence_artifact": "Constructor args JSON + decoded config values + expected production values",
+        "id": "RD-F-141",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the deployed configuration retains test-mode parameters (test oracle address, infinite allowance, admin = deployer EOA).",
+        "method": "PH",
+        "name": "Test-mode parameters in deploy",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether a deployed contract retains test-mode configuration parameters — such as a test oracle address, infinite token allowances for deployer addresses, an admin role still set to the deployer EOA, or debug-level access control conditions. These are parameters that are appropriate in a testing environment but represent active security vulnerabilities in production. Detection combines static analysis of the deployed configuration against the declared production parameter set.\n\n**Why it matters**\nTest-mode configurations left active in production have caused several significant exploits. Eminence Finance lost $15M because speculative depositors found and funded what was effectively a development contract that had not been made production-safe. The pattern of \"deployed to mainnet before final hardening\" appears across multiple incidents in the evidence base — particularly in newly deployed contracts and contracts deployed as part of a rapid upgrade cycle. The risk is not the test-mode configuration alone but the combination of that configuration with live user funds: a debug admin address or infinite allowance in production is an immediately exploitable state.\n\n**Green / Yellow / Red**\nGreen is assigned when source inspection and on-chain configuration confirm no test-mode parameters are active in the production deployment. Yellow covers cases where minor non-security-critical test parameters remain (e.g., verbose event emissions) but no privilege-escalating test configs are present. Red is assigned when any privilege-escalating test-mode configuration is found in the production deployment — including deployer-admin, infinite allowances for test addresses, or a mock oracle address.\n\n**Common gray cases**\nThis factor is grayed when source code is unavailable and bytecode-level configuration analysis is inconclusive.\n\n**Notable historical examples**\n- **Eminence Finance** ($15M, 2020): Protocol deployed to mainnet in development state; speculative deposits funded what was essentially a test contract.\n- **Compound Finance** ($147M at risk, 2021): Proposal 62 introduced a governance upgrade with test-level parameter assumptions.\n- **Penpie** ($27M, 2024): Permissionless market registration accepted external contracts without the whitelist that the production spec required."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2026-01-20",
+          "relevance": "related",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "gmx",
-          "relevance": "illustrative",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "GMX V1",
           "hack_protocol_slug": "gmx-v2",
-          "occurred_at": "2025-07-09",
           "loss_usd": 0.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2025-07-09",
+          "relevance": "illustrative",
           "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback"
         },
         {
           "hack_id": "mobiusdao-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "MobiusDAO",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-11",
           "loss_usd": 2150000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2025-05-11",
+          "relevance": "related",
           "root_cause": "Decimal handling double-multiplication bug in minting function — pennies-to-quadrillions inflation"
         },
         {
           "hack_id": "polter-finance-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Polter Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-11-16",
           "loss_usd": 8700000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2024-11-16",
+          "relevance": "related",
           "root_cause": "Spot price oracle manipulation (SpookySwap V2/V3) → inflated BOO collateral → draining borrow"
         },
         {
           "hack_id": "bedrock-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Bedrock (uniBTC vault)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-25",
           "loss_usd": 2000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2024-09-25",
+          "relevance": "related",
           "root_cause": "Unregistered NATIVE_BTC in SigmaSupplier → disabled supply cap → ETH-to-BTC 1:1 minting (infinite mint)"
         },
         {
           "hack_id": "penpie-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Penpie",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-09-03",
           "loss_usd": 27000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2024-09-03",
+          "relevance": "related",
           "root_cause": "Reentrancy via fake Pendle market → staking balance inflation → excess reward drain"
         },
         {
           "hack_id": "jimbo-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Jimbo's Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-28",
           "loss_usd": 7500000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2023-05-28",
+          "relevance": "related",
           "root_cause": "Flash loan + missing slippage control in rebalancing function → liquidity drain"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2023-05-06",
+          "relevance": "related",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "kokomo-finance-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Kokomo Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-03-26",
           "loss_usd": 4000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2023-03-26",
+          "relevance": "related",
           "root_cause": "Insider rug — deployer upgraded implementation to malicious contract → drained WBTC deposits"
         },
         {
           "hack_id": "compound",
-          "relevance": "illustrative",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Compound Finance",
           "hack_protocol_slug": "compound-v3",
-          "occurred_at": "2021-09-29",
           "loss_usd": 147000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2021-09-29",
+          "relevance": "illustrative",
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
         },
         {
           "hack_id": "cream-finance",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Cream Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-08-30",
           "loss_usd": 18800000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2021-08-30",
+          "relevance": "related",
           "root_cause": "ERC-777 Reentrancy (Token Integration Vulnerability)"
         },
         {
           "hack_id": "pancakebunny-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "PancakeBunny",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-19",
           "loss_usd": 45000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2021-05-19",
+          "relevance": "related",
           "root_cause": "Flash loan + spot price manipulation → inflated LP token valuation → excess BUNNY minting"
         },
         {
           "hack_id": "alpha-finance-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Alpha Finance / Alpha Homora V2 (leveraged yield farming)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-13",
           "loss_usd": 37500000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2021-02-13",
+          "relevance": "related",
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
         },
         {
           "hack_id": "eminence-rekt",
-          "relevance": "related",
-          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
           "hack_protocol_name": "Eminence Finance (EMN)",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-09-28",
           "loss_usd": 15000000.0,
+          "notes": "Test-mode parameters left on in deploy (possibly related) [via cross-hack: Factor 4: Newly Deployed or Unannounced Contract]",
+          "occurred_at": "2020-09-28",
+          "relevance": "related",
           "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Published source does not prove the complete live storage configuration is free from test-mode addresses, allowances, or parameter values.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

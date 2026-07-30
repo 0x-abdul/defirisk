@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-051",
-        "category_id": 3,
-        "name": "Fallback behavior on oracle failure",
-        "description": "Identify the declared fallback behavior (pause, secondary source, last-known-price, revert) when the primary oracle reverts or reports a stale value.",
-        "scoring_methodology": "**What this measures**\nThis factor documents what the protocol does when its primary oracle reverts, returns stale data, or becomes unavailable — specifically whether it pauses, switches to a secondary source, uses a last-known-price cache, or reverts all affected transactions. The assessment is based on protocol documentation and source code inspection of fallback logic.\n\n**Why it matters**\nOracle failure is not purely an adversarial event; Chainlink feeds have experienced latency during periods of extreme network congestion, and aggregators have returned stale prices during market dislocations. A protocol with no defined fallback behaviour may either freeze all operations (starving users of liquidity) or, worse, silently continue operating on stale prices — enabling economic exploitation without an active attacker. The T-02 gap analysis identified fallback behaviour documentation as one of the most consistently absent fields across competitor risk platforms, making this a direct differentiator for the dashboard.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol has a documented and code-verified fallback: either a pause mechanism that halts borrowing/liquidations or a secondary source that is automatically queried on primary failure. Yellow is scored when a fallback is mentioned in documentation but not verifiable in deployed source code, or when the fallback is a last-known-price cache with no maximum age. Red is scored when the protocol has no fallback documented or implemented and will operate on whatever the primary oracle returns, including stale or zero values.\n\n**Common gray cases**\nGray is applied when the fallback path involves off-chain keepers or multi-sig emergency oracle updates that have no on-chain proof of mechanism.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Identify the declared fallback behavior (pause, secondary source, last-known-price, revert) when the primary oracle reverts or reports a stale value.",
-        "data_source": "Protocol docs + source inspection of `try/catch` or stale-check logic around oracle calls on Etherscan-verified source",
-        "method": "M",
-        "output_format": "categorical",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt showing fallback logic + protocol docs URL",
+        "category_id": 3,
         "confidence_signal": "green = fallback to secondary oracle or circuit-breaker pause; yellow = fallback to last-known-price (stale risk); red = no fallback: uses primary oracle result unconditionally; gray = fallback behavior not determinable from source or docs",
+        "curation_archetype": "M",
+        "data_source": "Protocol docs + source inspection of `try/catch` or stale-check logic around oracle calls on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Identify the declared fallback behavior (pause, secondary source, last-known-price, revert) when the primary oracle reverts or reports a stale value.",
+        "evidence_artifact": "Source excerpt showing fallback logic + protocol docs URL",
+        "id": "RD-F-051",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Identify the declared fallback behavior (pause, secondary source, last-known-price, revert) when the primary oracle reverts or reports a stale value.",
+        "method": "M",
+        "name": "Fallback behavior on oracle failure",
+        "output_format": "categorical",
+        "scoring_methodology": "**What this measures**\nThis factor documents what the protocol does when its primary oracle reverts, returns stale data, or becomes unavailable — specifically whether it pauses, switches to a secondary source, uses a last-known-price cache, or reverts all affected transactions. The assessment is based on protocol documentation and source code inspection of fallback logic.\n\n**Why it matters**\nOracle failure is not purely an adversarial event; Chainlink feeds have experienced latency during periods of extreme network congestion, and aggregators have returned stale prices during market dislocations. A protocol with no defined fallback behaviour may either freeze all operations (starving users of liquidity) or, worse, silently continue operating on stale prices — enabling economic exploitation without an active attacker. The T-02 gap analysis identified fallback behaviour documentation as one of the most consistently absent fields across competitor risk platforms, making this a direct differentiator for the dashboard.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol has a documented and code-verified fallback: either a pause mechanism that halts borrowing/liquidations or a secondary source that is automatically queried on primary failure. Yellow is scored when a fallback is mentioned in documentation but not verifiable in deployed source code, or when the fallback is a last-known-price cache with no maximum age. Red is scored when the protocol has no fallback documented or implemented and will operate on whatever the primary oracle returns, including stale or zero values.\n\n**Common gray cases**\nGray is applied when the fallback path involves off-chain keepers or multi-sig emergency oracle updates that have no on-chain proof of mechanism.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

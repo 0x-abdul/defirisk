@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-075",
-        "category_id": 4,
-        "name": "First-depositor / share-inflation guard",
-        "description": "Determine whether the vault has a first-depositor guard (seed deposit on deploy, virtual-share offset, or floor-check).",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's vaults or lending markets implement a first-depositor guard against share inflation attacks. Acceptable guards include: a seed deposit locked at deploy time (dead shares), a virtual-share offset (OZ 4.9 implementation), or an explicit floor check that prevents first deposits from setting an exploitable exchange rate. The check covers both ERC-4626 vaults and Compound-fork cToken markets. Source inspection is the primary data source.\n\n**Why it matters**\nThe first-depositor share inflation attack affects any share-based accounting system where total supply can reach zero. The attack class spans cToken markets (RD-F-070), ERC-4626 vaults (RD-F-074), and hybrid architectures like Silo Finance where the receiver parameter allowed external depositors to inflate shares against capped markets. The common thread is that a zero-supply state creates a denominator-manipulation opportunity that the attacker can exploit before any legitimate user deposits. First-depositor guards (dead shares, virtual shares, or floor checks) eliminate this attack class by ensuring the denominator is never zero in practice.\n\n**Green / Yellow / Red**\nGreen: all share-based accounting systems in the protocol have a first-depositor guard implemented in code and verifiable on-chain. Yellow: some but not all share-based systems have guards, or guards exist for ERC-4626 vaults but not for cToken-style markets. Red: no first-depositor guards in any share-based accounting system, or guards exist in documentation but are not enforced in deployed code.\n\n**Common gray cases**\nProtocols that deploy markets with a founding team deposit (non-code-enforced) may argue the risk is mitigated; curator must verify whether the founding deposit is locked in a way that prevents withdrawal before user deposits arrive, not merely present at the time of assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the vault has a first-depositor guard (seed deposit on deploy, virtual-share offset, or floor-check).",
-        "data_source": "Source inspection + deploy transaction analysis for seed deposit on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of guard logic OR deploy tx showing seed deposit",
+        "category_id": 4,
         "confidence_signal": "green = explicit guard present (seed deposit confirmed on-chain OR virtual offset ≥10^3); yellow = protocol docs claim guard but on-chain evidence absent; red = no guard mechanism identifiable; gray = not an ERC-4626 vault (N/A) or source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection + deploy transaction analysis for seed deposit on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the vault has a first-depositor guard (seed deposit on deploy, virtual-share offset, or floor-check).",
+        "evidence_artifact": "Source excerpt of guard logic OR deploy tx showing seed deposit",
+        "id": "RD-F-075",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the vault has a first-depositor guard (seed deposit on deploy, virtual-share offset, or floor-check).",
+        "method": "PE",
+        "name": "First-depositor / share-inflation guard",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's vaults or lending markets implement a first-depositor guard against share inflation attacks. Acceptable guards include: a seed deposit locked at deploy time (dead shares), a virtual-share offset (OZ 4.9 implementation), or an explicit floor check that prevents first deposits from setting an exploitable exchange rate. The check covers both ERC-4626 vaults and Compound-fork cToken markets. Source inspection is the primary data source.\n\n**Why it matters**\nThe first-depositor share inflation attack affects any share-based accounting system where total supply can reach zero. The attack class spans cToken markets (RD-F-070), ERC-4626 vaults (RD-F-074), and hybrid architectures like Silo Finance where the receiver parameter allowed external depositors to inflate shares against capped markets. The common thread is that a zero-supply state creates a denominator-manipulation opportunity that the attacker can exploit before any legitimate user deposits. First-depositor guards (dead shares, virtual shares, or floor checks) eliminate this attack class by ensuring the denominator is never zero in practice.\n\n**Green / Yellow / Red**\nGreen: all share-based accounting systems in the protocol have a first-depositor guard implemented in code and verifiable on-chain. Yellow: some but not all share-based systems have guards, or guards exist for ERC-4626 vaults but not for cToken-style markets. Red: no first-depositor guards in any share-based accounting system, or guards exist in documentation but are not enforced in deployed code.\n\n**Common gray cases**\nProtocols that deploy markets with a founding team deposit (non-code-enforced) may argue the risk is mitigated; curator must verify whether the founding deposit is locked in a way that prevents withdrawal before user deposits arrive, not merely present at the time of assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The audit explains the 1-wei first mint plus direct-transfer donation scenario, recommends virtual shares or an initial mint, and records Kelp's choice of an initial mint immediately after deployment.",
+          "evidence_summary": "Sigma Prime identified the first-minter donation/share-inflation pattern in Kelp's deposit pool. The report records Kelp's resolution as an initial mint immediately after deployment, which is an explicit first-depositor guard under RD-F-075.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://kelpdao.xyz/audits/smartcontracts/SigmaPrime.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

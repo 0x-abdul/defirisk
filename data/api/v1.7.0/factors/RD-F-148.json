@@ -1,40 +1,66 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-148",
-        "category_id": 10,
-        "name": "Bridge validator count (M)",
-        "description": "Count the number of distinct validators or signers in the bridge's signer set (for non-LZ bridges; use F179 for LayerZero OFT).",
-        "scoring_methodology": "**What this measures**\nThis factor records the number of distinct validators or signers in the bridge's signer set — or, for LayerZero OFT integrations, the count, threshold, and operator diversity of the Decentralised Verifier Network (DVN) configuration. The count is derived from bridge contract reads and protocol documentation. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nValidator count directly determines the minimum attacker footprint required to forge a bridge message. Harmony Bridge ($100M, 2022) used a 2-of-5 multisig with hot-wallet signers; compromising two keys was sufficient to drain the bridge. The Kelp DAO rsETH hack ($292M, 2026) exploited a 1/1 DVN configuration on a LayerZero OFT adapter — a single validator node controlled the entire message verification path, reducing the attack surface to a single key compromise. The T-01 evidence base links low validator counts to approximately 7 protocols, and the Kelp DAO incident has elevated the threshold-of-1 edge case to a near-critical finding for LayerZero deployments.\n\n**Green / Yellow / Red**\nGreen is scored when the bridge uses 7 or more independent validators (or DVN operators for LayerZero) with documented geographic and organisational independence. Yellow is scored when the count is 3–6 with partial independence documentation. Red is scored when the validator count is 1 or 2, or when a LayerZero OFT uses a single DVN operator.\n\n**Common gray cases**\nGray is applied when validator identity and independence cannot be confirmed from public on-chain or documentation sources.\n\n**Notable historical examples**\n- **Kelp DAO** ($292M, 2026): 1/1 LayerZero DVN configuration; single validator controlled rsETH message verification.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of distinct validators or signers in the bridge's signer set (for non-LZ bridges; use F179 for LayerZero OFT).",
-        "data_source": "Bridge contract `getValidators()` / `signers()` or equivalent via RPC + bridge docs",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Validator address list + count + bridge contract address",
+        "category_id": 10,
         "confidence_signal": "green = ≥7 validators; yellow = 4–6 validators; red = ≤3 validators; gray = LayerZero OFT (use F179 instead) or bridge contract not identifiable",
+        "curation_archetype": "PE",
+        "data_source": "Bridge contract `getValidators()` / `signers()` or equivalent via RPC + bridge docs",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of distinct validators or signers in the bridge's signer set (for non-LZ bridges; use F179 for LayerZero OFT).",
+        "evidence_artifact": "Validator address list + count + bridge contract address",
+        "id": "RD-F-148",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of distinct validators or signers in the bridge's signer set (for non-LZ bridges; use F179 for LayerZero OFT).",
+        "method": "PE",
+        "name": "Bridge validator count (M)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the number of distinct validators or signers in the bridge's signer set — or, for LayerZero OFT integrations, the count, threshold, and operator diversity of the Decentralised Verifier Network (DVN) configuration. The count is derived from bridge contract reads and protocol documentation. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nValidator count directly determines the minimum attacker footprint required to forge a bridge message. Harmony Bridge ($100M, 2022) used a 2-of-5 multisig with hot-wallet signers; compromising two keys was sufficient to drain the bridge. The Kelp DAO rsETH hack ($292M, 2026) exploited a 1/1 DVN configuration on a LayerZero OFT adapter — a single validator node controlled the entire message verification path, reducing the attack surface to a single key compromise. The T-01 evidence base links low validator counts to approximately 7 protocols, and the Kelp DAO incident has elevated the threshold-of-1 edge case to a near-critical finding for LayerZero deployments.\n\n**Green / Yellow / Red**\nGreen is scored when the bridge uses 7 or more independent validators (or DVN operators for LayerZero) with documented geographic and organisational independence. Yellow is scored when the count is 3–6 with partial independence documentation. Red is scored when the validator count is 1 or 2, or when a LayerZero OFT uses a single DVN operator.\n\n**Common gray cases**\nGray is applied when validator identity and independence cannot be confirmed from public on-chain or documentation sources.\n\n**Notable historical examples**\n- **Kelp DAO** ($292M, 2026): 1/1 LayerZero DVN configuration; single validator controlled rsETH message verification."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "kelp-dao-rekt",
-          "relevance": "causal",
-          "notes": "Bridge validator count (M) — LayerZero DVN sub-field [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]",
           "hack_protocol_name": "Kelp DAO (rsETH liquid restaking)",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-04-18",
           "loss_usd": 292000000.0,
+          "notes": "Bridge validator count (M) — LayerZero DVN sub-field [via cross-hack: Factor 80: DVN / Multi-Validator Configuration on Cross-Chain Messages]",
+          "occurred_at": "2026-04-18",
+          "relevance": "causal",
           "root_cause": "Forged cross-chain message via LayerZero EndpointV2 lzReceive — exploitation of 1/1 DVN (single-validator) configuration"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The incident report establishes historical state only. Current getConfig results and active-peer status were unavailable, so the July 30 validator count is not inferred.",
+          "evidence_summary": "The exploited route had one required DVN, but current effective per-peer validator counts were not obtained.",
+          "gap_reason": "external_api_blocked",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x85d456B2DfF1fd8245387C0BfB64Dfb700e98Ef3#code"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

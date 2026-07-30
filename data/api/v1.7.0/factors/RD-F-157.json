@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-157",
-        "category_id": 10,
-        "name": "Bridge TVL per validator ratio",
-        "description": "Compute bridge TVL divided by validator count as a concentration-of-compromise measure.",
-        "scoring_methodology": "**What this measures**\nThis factor computes the bridge TVL divided by the validator count, expressed in USD per validator. A high ratio indicates that each individual validator controls a disproportionately large amount of locked value, raising the economic incentive for targeted compromise. The value is derived from bridge TVL feeds and the validator count from RD-F-148. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nTVL-per-validator is a risk concentration metric analogous to TVL-per-multisig-signer in governance contexts (RD-F-028). A bridge with $1B TVL and 3 validators has a $333M-per-validator ratio — an extremely high-value target for nation-state-level or well-funded adversaries. Harmony Bridge had approximately $100M TVL across 5 validators ($20M per validator) when it was compromised. Radiant Capital II secured $53M across 3 required signers from an 11-signer set. As bridge TVL grows without corresponding validator set expansion, the per-validator ratio grows and the economic incentive to compromise individual keys increases proportionally.\n\n**Green / Yellow / Red**\nGreen is scored when the TVL-per-validator ratio is below $10M with a quorum-of-N structure that prevents single-validator compromise from being sufficient. Yellow is scored when the ratio is $10M–$50M per validator. Red is scored when the ratio exceeds $50M per required-quorum validator, or when TVL growth has outpaced any validator-set expansion in the past 12 months.\n\n**Common gray cases**\nGray is applied when bridge TVL cannot be reliably attributed to a specific bridge contract due to multi-chain routing architectures.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Compute bridge TVL divided by validator count as a concentration-of-compromise measure.",
-        "data_source": "Bridge TVL from DeFiLlama + validator count from F148",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Bridge TVL USD + validator count + USD-per-validator ratio",
+        "category_id": 10,
         "confidence_signal": "green = <$50M TVL per validator; yellow = $50M–$200M per validator; red = >$200M per validator; gray = bridge not identified",
+        "curation_archetype": "PE",
+        "data_source": "Bridge TVL from DeFiLlama + validator count from F148",
+        "deprecated_in_rubric": null,
+        "description": "Compute bridge TVL divided by validator count as a concentration-of-compromise measure.",
+        "evidence_artifact": "Bridge TVL USD + validator count + USD-per-validator ratio",
+        "id": "RD-F-157",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Compute bridge TVL divided by validator count as a concentration-of-compromise measure.",
+        "method": "PE",
+        "name": "Bridge TVL per validator ratio",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor computes the bridge TVL divided by the validator count, expressed in USD per validator. A high ratio indicates that each individual validator controls a disproportionately large amount of locked value, raising the economic incentive for targeted compromise. The value is derived from bridge TVL feeds and the validator count from RD-F-148. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nTVL-per-validator is a risk concentration metric analogous to TVL-per-multisig-signer in governance contexts (RD-F-028). A bridge with $1B TVL and 3 validators has a $333M-per-validator ratio — an extremely high-value target for nation-state-level or well-funded adversaries. Harmony Bridge had approximately $100M TVL across 5 validators ($20M per validator) when it was compromised. Radiant Capital II secured $53M across 3 required signers from an 11-signer set. As bridge TVL grows without corresponding validator set expansion, the per-validator ratio grows and the economic incentive to compromise individual keys increases proportionally.\n\n**Green / Yellow / Red**\nGreen is scored when the TVL-per-validator ratio is below $10M with a quorum-of-N structure that prevents single-validator compromise from being sufficient. Yellow is scored when the ratio is $10M–$50M per validator. Red is scored when the ratio exceeds $50M per required-quorum validator, or when TVL growth has outpaced any validator-set expansion in the past 12 months.\n\n**Common gray cases**\nGray is applied when bridge TVL cannot be reliably attributed to a specific bridge contract due to multi-chain routing architectures.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The $292M incident amount is historical loss, not current bridge TVL. The methodology defines the ratio field but provides no numeric green/yellow/red threshold, so no color rule is invented.",
+          "evidence_summary": "Current bridge TVL and current active validator count were not both established, so no current ratio is calculated.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

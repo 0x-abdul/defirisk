@@ -1,60 +1,74 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-074",
-        "category_id": 4,
-        "name": "ERC-4626 virtual-share offset (OZ ≥4.9)",
-        "description": "Determine whether ERC-4626 vaults use OpenZeppelin ≥4.9 virtual-share offset pattern to prevent first-depositor share-inflation.",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether ERC-4626 vaults in the protocol use OpenZeppelin version 4.9 or later, which introduced virtual shares and virtual assets to prevent first-depositor share inflation attacks. The check is performed via source inspection against the deployed bytecode. For non-ERC-4626 protocols, this factor is N/A. For ERC-4626 vaults using OZ below version 4.9, the factor triggers a review of whether an alternative inflation mitigation (such as a dead-shares burn on deployment) is present.\n\n**Why it matters**\nThe ERC-4626 first-depositor inflation attack is a variant of the empty-cToken problem (RD-F-070) applied to yield-bearing vaults. When a vault has zero total supply, an attacker can donate assets directly to the vault contract before the first legitimate depositor, inflating the share price and causing the legitimate depositor's shares to be worth near-zero. OpenZeppelin 4.9 introduced virtual shares (a small constant added to both total supply and total assets) to make this attack economically non-viable. The bEarn exploit ($18M, 2021) demonstrated a related cross-token accounting vulnerability in a multi-layer vault architecture, illustrating the broader class of first-depositor attacks on vault share accounting.\n\n**Green / Yellow / Red**\nGreen: all ERC-4626 vaults use OZ version 4.9 or later, or implement an equivalent virtual-share offset that prevents inflation attacks. Yellow: some vaults use earlier OZ versions but implement a dead-shares burn or equivalent mitigation; or all vaults use earlier versions with curator-verified compensating controls. Red: one or more live ERC-4626 vaults use OZ below version 4.9 with no virtual-share offset or dead-shares mitigation.\n\n**Common gray cases**\nNon-standard ERC-4626 implementations that do not use OpenZeppelin may have equivalent protections implemented differently; curator must verify the economic properties of the share accounting rather than the specific library version.\n\n**Notable historical examples**\n- **bEarnFi** ($18M, 2021): Multi-layer vault with cross-token accounting vulnerability; related share-inflation class.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether ERC-4626 vaults use OpenZeppelin ≥4.9 virtual-share offset pattern to prevent first-depositor share-inflation.",
-        "data_source": "Source inspection for `_convertToShares` implementation + OpenZeppelin version in `package.json` on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of share calculation + OZ version string",
+        "category_id": 4,
         "confidence_signal": "green = OZ ≥4.9 virtual offset or equivalent mitigation present; yellow = non-OZ custom mitigation; red = no virtual offset and no first-depositor protection; gray = protocol is not an ERC-4626 vault (N/A) or source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection for `_convertToShares` implementation + OpenZeppelin version in `package.json` on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether ERC-4626 vaults use OpenZeppelin ≥4.9 virtual-share offset pattern to prevent first-depositor share-inflation.",
+        "evidence_artifact": "Source excerpt of share calculation + OZ version string",
+        "id": "RD-F-074",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether ERC-4626 vaults use OpenZeppelin ≥4.9 virtual-share offset pattern to prevent first-depositor share-inflation.",
+        "method": "PE",
+        "name": "ERC-4626 virtual-share offset (OZ ≥4.9)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether ERC-4626 vaults in the protocol use OpenZeppelin version 4.9 or later, which introduced virtual shares and virtual assets to prevent first-depositor share inflation attacks. The check is performed via source inspection against the deployed bytecode. For non-ERC-4626 protocols, this factor is N/A. For ERC-4626 vaults using OZ below version 4.9, the factor triggers a review of whether an alternative inflation mitigation (such as a dead-shares burn on deployment) is present.\n\n**Why it matters**\nThe ERC-4626 first-depositor inflation attack is a variant of the empty-cToken problem (RD-F-070) applied to yield-bearing vaults. When a vault has zero total supply, an attacker can donate assets directly to the vault contract before the first legitimate depositor, inflating the share price and causing the legitimate depositor's shares to be worth near-zero. OpenZeppelin 4.9 introduced virtual shares (a small constant added to both total supply and total assets) to make this attack economically non-viable. The bEarn exploit ($18M, 2021) demonstrated a related cross-token accounting vulnerability in a multi-layer vault architecture, illustrating the broader class of first-depositor attacks on vault share accounting.\n\n**Green / Yellow / Red**\nGreen: all ERC-4626 vaults use OZ version 4.9 or later, or implement an equivalent virtual-share offset that prevents inflation attacks. Yellow: some vaults use earlier OZ versions but implement a dead-shares burn or equivalent mitigation; or all vaults use earlier versions with curator-verified compensating controls. Red: one or more live ERC-4626 vaults use OZ below version 4.9 with no virtual-share offset or dead-shares mitigation.\n\n**Common gray cases**\nNon-standard ERC-4626 implementations that do not use OpenZeppelin may have equivalent protections implemented differently; curator must verify the economic properties of the share accounting rather than the specific library version.\n\n**Notable historical examples**\n- **bEarnFi** ($18M, 2021): Multi-layer vault with cross-token accounting vulnerability; related share-inflation class."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "curve-llamalend-2026-rekt",
-          "relevance": "related",
-          "notes": "_decimalsOffset() returning 0 + no virtual deposit; same ERC-4626 first-depositor config error as Venus",
           "hack_protocol_name": "Curve LlamaLend",
           "hack_protocol_slug": "curve-v2",
-          "occurred_at": "2026-03-02",
           "loss_usd": 240000.0,
+          "notes": "_decimalsOffset() returning 0 + no virtual deposit; same ERC-4626 first-depositor config error as Venus",
+          "occurred_at": "2026-03-02",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-listed lending market"
         },
         {
           "hack_id": "venus-zksync-2025-rekt",
-          "relevance": "related",
-          "notes": "_decimalsOffset() returning 0 + no virtual deposit is the textbook ERC-4626 first-depositor configuration error",
           "hack_protocol_name": "Venus Protocol (zkSync Era deployment)",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2025-03-29",
           "loss_usd": 902000.0,
+          "notes": "_decimalsOffset() returning 0 + no virtual deposit is the textbook ERC-4626 first-depositor configuration error",
+          "occurred_at": "2025-03-29",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection"
         },
         {
           "hack_id": "bearn",
-          "relevance": "related",
-          "notes": "ERC-4626 virtual-share offset [via cross-hack: Factor 11: Multi-Layer Vault/Strategy Architecture With Cross-Token Accounting]",
           "hack_protocol_name": "bEarnFi (BvaultsBank)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-16",
           "loss_usd": 18000000.0,
+          "notes": "ERC-4626 virtual-share offset [via cross-hack: Factor 11: Multi-Layer Vault/Strategy Architecture With Cross-Token Accounting]",
+          "occurred_at": "2021-05-16",
+          "relevance": "related",
           "root_cause": "Logic bug — token denomination mismatch between vault and strategy layers"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Public architecture documentation describes rsETH as a custom repricing ERC-20 receipt whose exchange rate is calculated by Kelp contracts, not as an ERC-4626 vault. The OpenZeppelin ERC-4626 virtual-share-offset test is therefore structurally not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,130 +1,150 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-098",
-        "category_id": 6,
-        "name": "TVL anomaly — % drop in <1h",
-        "description": "Detect whether TVL drops >X% within 1 hour versus the trailing 30-day baseline (X configurable per protocol TVL tier).",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the protocol's total value locked drops by more than a configurable threshold percentage within a one-hour window relative to the trailing 30-day baseline. The threshold is calibrated per protocol tier to balance sensitivity against false positives from legitimate large withdrawals. TVL is tracked via continuous DefiLlama integration and on-chain reserve reads. Category 6 context: TVL anomaly is the most broadly applicable exploit-in-progress signal — by the time a drain is occurring, TVL is falling in real time and this signal can alert remaining depositors before the drain completes.\n\n**Why it matters**\nApproximately 73% of the hack dataset involved hacks rated Medium or High detectability, meaning a real-time monitor watching TVL anomalies would have fired during the majority of incidents. Cetus Protocol ($223M, 2025) saw USDC depegging to zero on Sui and mass SUI dumps within minutes of pool drain — a TVL monitor would have fired immediately. Harvest Finance ($33.8M, 2020) triggered a bank run of roughly $700M TVL immediately post-attack. KyberSwap Elastic ($48M) saw TVL fall from $71M to under $3M during the attack. The signal is most valuable for partially-drained protocols where early detection can preserve remaining funds.\n\n**Green / Yellow / Red**\nGreen is the baseline when TVL moves within the expected range of normal user activity relative to the 30-day baseline. Yellow fires when TVL drops 5–15% within one hour — elevated but potentially explainable by large-withdrawal normal behavior. Red fires when TVL drops more than 15% within one hour, or when the rate of decline accelerates across consecutive monitoring windows — the exploit-in-progress pattern.\n\n**Common gray cases**\nGray applies during market stress events (broad crypto drawdowns) when TVL falls across all protocols simultaneously, making protocol-specific signals unreliable, or when the protocol is small enough that a single large user withdrawal produces false positives.\n\n**Notable historical examples**\n- **Cetus Protocol** ($223M, 2025): USDC depegging to zero on Sui; sequential pool drains detectable by TVL monitor.\n- **KyberSwap Elastic** ($48M, 2023): TVL fell from $71M to under $3M during the attack window.\n- **Harvest Finance** ($33.8M, 2020): $700M TVL bank run immediately post-attack; each manipulation cycle preceded by large Curve swaps.\n- **Saga** ($7M, 2026): $37M to $13.6M TVL drop with $D depeg during exploit.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Detect whether TVL drops >X% within 1 hour versus the trailing 30-day baseline (X configurable per protocol TVL tier).",
-        "data_source": "DeFiLlama real-time TVL endpoint + rolling 30d baseline model",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "RT",
-        "evidence_artifact": "TVL time-series snapshot + drop % + threshold config + timestamp",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; yellow = drop between low-alert and high-alert threshold; red = drop exceeds high-alert threshold; gray = TVL monitoring not configured",
+        "curation_archetype": "PE",
+        "data_source": "DeFiLlama real-time TVL endpoint + rolling 30d baseline model",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether TVL drops >X% within 1 hour versus the trailing 30-day baseline (X configurable per protocol TVL tier).",
+        "evidence_artifact": "TVL time-series snapshot + drop % + threshold config + timestamp",
+        "id": "RD-F-098",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether TVL drops >X% within 1 hour versus the trailing 30-day baseline (X configurable per protocol TVL tier).",
+        "method": "PE",
+        "name": "TVL anomaly — % drop in <1h",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the protocol's total value locked drops by more than a configurable threshold percentage within a one-hour window relative to the trailing 30-day baseline. The threshold is calibrated per protocol tier to balance sensitivity against false positives from legitimate large withdrawals. TVL is tracked via continuous DefiLlama integration and on-chain reserve reads. Category 6 context: TVL anomaly is the most broadly applicable exploit-in-progress signal — by the time a drain is occurring, TVL is falling in real time and this signal can alert remaining depositors before the drain completes.\n\n**Why it matters**\nApproximately 73% of the hack dataset involved hacks rated Medium or High detectability, meaning a real-time monitor watching TVL anomalies would have fired during the majority of incidents. Cetus Protocol ($223M, 2025) saw USDC depegging to zero on Sui and mass SUI dumps within minutes of pool drain — a TVL monitor would have fired immediately. Harvest Finance ($33.8M, 2020) triggered a bank run of roughly $700M TVL immediately post-attack. KyberSwap Elastic ($48M) saw TVL fall from $71M to under $3M during the attack. The signal is most valuable for partially-drained protocols where early detection can preserve remaining funds.\n\n**Green / Yellow / Red**\nGreen is the baseline when TVL moves within the expected range of normal user activity relative to the 30-day baseline. Yellow fires when TVL drops 5–15% within one hour — elevated but potentially explainable by large-withdrawal normal behavior. Red fires when TVL drops more than 15% within one hour, or when the rate of decline accelerates across consecutive monitoring windows — the exploit-in-progress pattern.\n\n**Common gray cases**\nGray applies during market stress events (broad crypto drawdowns) when TVL falls across all protocols simultaneously, making protocol-specific signals unreliable, or when the protocol is small enough that a single large user withdrawal produces false positives.\n\n**Notable historical examples**\n- **Cetus Protocol** ($223M, 2025): USDC depegging to zero on Sui; sequential pool drains detectable by TVL monitor.\n- **KyberSwap Elastic** ($48M, 2023): TVL fell from $71M to under $3M during the attack window.\n- **Harvest Finance** ($33.8M, 2020): $700M TVL bank run immediately post-attack; each manipulation cycle preceded by large Curve swaps.\n- **Saga** ($7M, 2026): $37M to $13.6M TVL drop with $D depeg during exploit."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "saga-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — $37M → $13.6M TVL drop; $D depeg to $0.73 during/after exploit]",
           "hack_protocol_name": "Saga (SagaEVM / Saga Dollar)",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-21",
           "loss_usd": 7000000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — $37M → $13.6M TVL drop; $D depeg to $0.73 during/after exploit]",
+          "occurred_at": "2026-01-21",
+          "relevance": "illustrative",
           "root_cause": "IBC Precompile Input Validation Bypass → Infinite Mint"
         },
         {
           "hack_id": "odin-fun-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — BTC reserve monitoring would show drawdown]",
           "hack_protocol_name": "Odin.Fun",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-08-12",
           "loss_usd": 7000000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — BTC reserve monitoring would show drawdown]",
+          "occurred_at": "2025-08-12",
+          "relevance": "illustrative",
           "root_cause": "AMM Liquidity Manipulation (Governance Token Price Pump + Drain)"
         },
         {
           "hack_id": "cetus",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N + detail): YES** — HODLFM flagged USDC depegging to zero on Sui and mass SUI token dumps within minutes of pools being drained. The sequential drain ac...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability Reasoning: Each individual exploit was atomic (single tx). However, the sequential nature (every Cetus pool drained one after another) and the immediat...]",
           "hack_protocol_name": "Cetus Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-05-22",
           "loss_usd": 223000000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N + detail): YES** — HODLFM flagged USDC depegging to zero on Sui and mass SUI token dumps within minutes of pools being drained. The sequential drain ac...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability Reasoning: Each individual exploit was atomic (single tx). However, the sequential nature (every Cetus pool drained one after another) and the immediat...]",
+          "occurred_at": "2025-05-22",
+          "relevance": "illustrative",
           "root_cause": "Integer Overflow / Division-by-Near-Zero in Concentrated Liquidity Math"
         },
         {
           "hack_id": "kyberswap",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — TVL fell from $71M to <$3M on KyberSwap Elastic during attack] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]",
           "hack_protocol_name": "KyberSwap Elastic",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-11-22",
           "loss_usd": 48000000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — TVL fell from $71M to <$3M on KyberSwap Elastic during attack] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]",
+          "occurred_at": "2023-11-22",
+          "relevance": "illustrative",
           "root_cause": "Tick Manipulation + Double Liquidity Counting — Precision Arithmetic Edge Case"
         },
         {
           "hack_id": "balancer-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — majority of at-risk TVL was withdrawn in the 5-day window; only remaining stragglers were drained]",
           "hack_protocol_name": "Balancer V2 (+ Beethoven X fork)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2023-08-27",
           "loss_usd": 2100000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — majority of at-risk TVL was withdrawn in the 5-day window; only remaining stragglers were drained]",
+          "occurred_at": "2023-08-27",
+          "relevance": "illustrative",
           "root_cause": "Linear pool rounding-down logic → cached rate manipulation → boosted pool drain"
         },
         {
           "hack_id": "multichain-rekt2",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — some TVL flight post-force-majeure in May]",
           "hack_protocol_name": "Multichain (formerly Anyswap)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-07",
           "loss_usd": 126000000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — some TVL flight post-force-majeure in May]",
+          "occurred_at": "2023-07-07",
+          "relevance": "illustrative",
           "root_cause": "Private Key Compromise (MPC Address) — suspected backend breach or insider"
         },
         {
           "hack_id": "hedera",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — post-attack panic caused $12M TVL exit, not pre-exploit signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability: Low]",
           "hack_protocol_name": "Hedera (Network-level — Hashgraph Smart Contract Service)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-03-09",
           "loss_usd": 515000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — post-attack panic caused $12M TVL exit, not pre-exploit signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability: Low]",
+          "occurred_at": "2023-03-09",
+          "relevance": "illustrative",
           "root_cause": "Smart Contract Service (HTS) Code Bug — Uniswap V2 Port Exploit"
         },
         {
           "hack_id": "alchemix-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — ETH collateral being withdrawn without corresponding debt repayment would be detectable]",
           "hack_protocol_name": "Alchemix",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-06-16",
           "loss_usd": 4.8,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early (Y/N): Y — ETH collateral being withdrawn without corresponding debt repayment would be detectable]",
+          "occurred_at": "2021-06-16",
+          "relevance": "illustrative",
           "root_cause": "Logic bug in alETH collateral accounting — ETH collateral position assigned zero debt → users could withdraw collateral without repaying loan"
         },
         {
           "hack_id": "alpha-finance-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — SBF withdrew $400M FTT from Cream Finance; Three Arrows Capital sent $3M ALPHA to Binance shortly after the exploit broke publicly (like...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]",
           "hack_protocol_name": "Alpha Finance / Alpha Homora V2 (leveraged yield farming)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-13",
           "loss_usd": 37500000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — SBF withdrew $400M FTT from Cream Finance; Three Arrows Capital sent $3M ALPHA to Binance shortly after the exploit broke publicly (like...] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability rating: Low] || Low detectability — alternate field name [via realtime_signals/Detectability rating: Low]",
+          "occurred_at": "2021-02-13",
+          "relevance": "illustrative",
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
         },
         {
           "hack_id": "harvest-finance-rekt",
-          "relevance": "illustrative",
-          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — bank run of ~$700M TVL followed immediately post-attack; no pre-attack TVL signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability reasoning: The 32-cycle attack over 7 minutes generated extremely large and anomalous Curve Y-pool swaps repeatedly — a monitoring system watching for ...]",
           "hack_protocol_name": "Harvest Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-10-26",
           "loss_usd": 33800000.0,
+          "notes": "TVL anomaly — % drop in <1h vs 30d baseline [via realtime_signals/TVL exit early: Y — bank run of ~$700M TVL followed immediately post-attack; no pre-attack TVL signal] || Low detectability — RT signals would NOT have caught (negative-evidence) [via realtime_signals/Detectability reasoning: The 32-cycle attack over 7 minutes generated extremely large and anomalous Curve Y-pool swaps repeatedly — a monitoring system watching for ...]",
+          "occurred_at": "2020-10-26",
+          "relevance": "illustrative",
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "DefiLlama reports about $903.1m TVL without a daily collapse, but its snapshot cannot prove the required one-hour versus 30-day same-hour threshold.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/kelp-dao"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

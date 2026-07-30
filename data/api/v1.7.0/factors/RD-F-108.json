@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-108",
-        "category_id": 6,
-        "name": "GitHub force-push to sensitive branch",
-        "description": "Detect whether the repository shows a force-push or push to a sensitive branch (main, production tag) from a non-protocol account.",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the protocol's primary repository shows a force-push or push to a sensitive branch (main, master, production, or tagged release) from an account that is not on the protocol's known-contributor list, or when a force-push removes commits from the history of a production branch. The signal is generated via GitHub API webhook monitoring on the repository's push events. Category 6 context: repository history manipulation is documented in exit-scam scenarios — Uranium Finance deleted their GitHub post-exploit — and a force-push to production by an unknown actor is a supply-chain compromise signal.\n\n**Why it matters**\nUranium Finance ($57.2M, 2021) deleted their GitHub repository post-exploit — a retroactive cover-up rather than a pre-exploit signal, but indicative of the pattern. More relevantly, a supply-chain compromise scenario where an attacker gains repository access and force-pushes malicious code to the production branch would be detected by this signal before any on-chain consequence materializes. The XZ Utils supply-chain attack (not DeFi, but the canonical example) demonstrated that months of contribution activity can precede a single malicious commit to a sensitive branch. GitHub monitoring provides an automated mechanism for detecting this class of supply-chain attack.\n\n**Green / Yellow / Red**\nGreen is the baseline when all pushes to sensitive branches originate from known contributors with established repository history. Yellow fires when a push to a sensitive branch occurs from a contributor with shorter tenure than the 30-day threshold — flagged for curator review but not immediately red. Red fires when a force-push occurs on a production branch, or when any push to a production branch originates from an account not in the known-contributor list, particularly if combined with no associated PR review.\n\n**Common gray cases**\nGray applies when the repository is private and push events are not accessible via the monitoring API, or when the protocol does not maintain a public repository and deployments are managed through a closed DevOps pipeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Detect whether the repository shows a force-push or push to a sensitive branch (main, production tag) from a non-protocol account.",
-        "data_source": "GitHub API webhook on repository events filtered for `push` to protected branches",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "GitHub event payload + branch name + pusher identity + timestamp",
+        "category_id": 6,
         "confidence_signal": "green = signal not firing; red = force-push or unauthorized push detected; gray = GitHub monitoring not configured for this repo",
+        "curation_archetype": "PE",
+        "data_source": "GitHub API webhook on repository events filtered for `push` to protected branches",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether the repository shows a force-push or push to a sensitive branch (main, production tag) from a non-protocol account.",
+        "evidence_artifact": "GitHub event payload + branch name + pusher identity + timestamp",
+        "id": "RD-F-108",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether the repository shows a force-push or push to a sensitive branch (main, production tag) from a non-protocol account.",
+        "method": "PE",
+        "name": "GitHub force-push to sensitive branch",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when the protocol's primary repository shows a force-push or push to a sensitive branch (main, master, production, or tagged release) from an account that is not on the protocol's known-contributor list, or when a force-push removes commits from the history of a production branch. The signal is generated via GitHub API webhook monitoring on the repository's push events. Category 6 context: repository history manipulation is documented in exit-scam scenarios — Uranium Finance deleted their GitHub post-exploit — and a force-push to production by an unknown actor is a supply-chain compromise signal.\n\n**Why it matters**\nUranium Finance ($57.2M, 2021) deleted their GitHub repository post-exploit — a retroactive cover-up rather than a pre-exploit signal, but indicative of the pattern. More relevantly, a supply-chain compromise scenario where an attacker gains repository access and force-pushes malicious code to the production branch would be detected by this signal before any on-chain consequence materializes. The XZ Utils supply-chain attack (not DeFi, but the canonical example) demonstrated that months of contribution activity can precede a single malicious commit to a sensitive branch. GitHub monitoring provides an automated mechanism for detecting this class of supply-chain attack.\n\n**Green / Yellow / Red**\nGreen is the baseline when all pushes to sensitive branches originate from known contributors with established repository history. Yellow fires when a push to a sensitive branch occurs from a contributor with shorter tenure than the 30-day threshold — flagged for curator review but not immediately red. Red fires when a force-push occurs on a production branch, or when any push to a production branch originates from an account not in the known-contributor list, particularly if combined with no associated PR review.\n\n**Common gray cases**\nGray applies when the repository is private and push events are not accessible via the monitoring API, or when the protocol does not maintain a public repository and deployments are managed through a closed DevOps pipeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "GitHub's public event API exposes recent repository activity but cannot prove force-push absence or authenticate actors against Kelp's allowlist.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Kelp-DAO/LRT-rsETH/events?per_page=100"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

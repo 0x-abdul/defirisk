@@ -1,80 +1,100 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-084",
-        "category_id": 5,
-        "name": "TVL stability (CoV over 90d)",
-        "description": "Compute the coefficient of variation (σ/μ) of daily TVL over the trailing 90 days as a proxy for operational stability.",
-        "scoring_methodology": "**What this measures**\nThis factor calculates the coefficient of variation (standard deviation divided by mean) of daily TVL over the trailing ninety days. A low coefficient of variation indicates stable TVL; a high coefficient indicates high volatility. The metric is sourced from DeFiLlama time-series data and updated continuously. It serves as a team-health and protocol-stability proxy: abrupt TVL drops that are not explained by market conditions or announced migrations suggest hidden problems that depositors are voting against with their capital.\n\n**Why it matters**\nTVL volatility has a dual signal value. Rapid outflows preceding a known exploit are a leading indicator that sophisticated depositors detected risk before retail users; Euler Finance's TVL had already declined meaningfully in the weeks before the March 2023 exploit. Conversely, highly volatile TVL on a protocol with no prior incidents may indicate farming-driven mercenary capital that will exit rapidly at the first sign of stress, reducing the stability of the protocol's deposit base. Sustained TVL stability across a ninety-day window, particularly through periods of market stress, is a meaningful positive signal.\n\n**Green / Yellow / Red**\nGreen: coefficient of variation below 0.15 over the trailing ninety days, indicating stable deposit composition. Yellow: coefficient of variation between 0.15 and 0.35, indicating moderate volatility potentially consistent with market-wide movements. Red: coefficient of variation above 0.35, or a single-day TVL drop exceeding twenty percent not explained by a known market event or announced migration.\n\n**Common gray cases**\nProtocols that recently launched or migrated TVL to a new version will show high volatility during the migration window; this is scored gray during the transition and re-evaluated once the migration stabilizes.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Compute the coefficient of variation (σ/μ) of daily TVL over the trailing 90 days as a proxy for operational stability.",
-        "data_source": "DeFiLlama historical TVL API `/protocol/<slug>` daily time-series",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "TVL daily series JSON + σ + μ + CoV ratio + window dates",
+        "category_id": 5,
         "confidence_signal": "green = CoV <0.15 (stable); yellow = 0.15–0.35; red = >0.35 (high volatility / instability signal); gray = TVL history <90 days available",
+        "curation_archetype": "PE",
+        "data_source": "DeFiLlama historical TVL API `/protocol/<slug>` daily time-series",
+        "deprecated_in_rubric": null,
+        "description": "Compute the coefficient of variation (σ/μ) of daily TVL over the trailing 90 days as a proxy for operational stability.",
+        "evidence_artifact": "TVL daily series JSON + σ + μ + CoV ratio + window dates",
+        "id": "RD-F-084",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Compute the coefficient of variation (σ/μ) of daily TVL over the trailing 90 days as a proxy for operational stability.",
+        "method": "PE",
+        "name": "TVL stability (CoV over 90d)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor calculates the coefficient of variation (standard deviation divided by mean) of daily TVL over the trailing ninety days. A low coefficient of variation indicates stable TVL; a high coefficient indicates high volatility. The metric is sourced from DeFiLlama time-series data and updated continuously. It serves as a team-health and protocol-stability proxy: abrupt TVL drops that are not explained by market conditions or announced migrations suggest hidden problems that depositors are voting against with their capital.\n\n**Why it matters**\nTVL volatility has a dual signal value. Rapid outflows preceding a known exploit are a leading indicator that sophisticated depositors detected risk before retail users; Euler Finance's TVL had already declined meaningfully in the weeks before the March 2023 exploit. Conversely, highly volatile TVL on a protocol with no prior incidents may indicate farming-driven mercenary capital that will exit rapidly at the first sign of stress, reducing the stability of the protocol's deposit base. Sustained TVL stability across a ninety-day window, particularly through periods of market stress, is a meaningful positive signal.\n\n**Green / Yellow / Red**\nGreen: coefficient of variation below 0.15 over the trailing ninety days, indicating stable deposit composition. Yellow: coefficient of variation between 0.15 and 0.35, indicating moderate volatility potentially consistent with market-wide movements. Red: coefficient of variation above 0.35, or a single-day TVL drop exceeding twenty percent not explained by a known market event or announced migration.\n\n**Common gray cases**\nProtocols that recently launched or migrated TVL to a new version will show high volatility during the migration window; this is scored gray during the transition and re-evaluated once the migration stabilizes.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "venus-protocol-rekt4",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Venus Protocol",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2026-03-15",
           "loss_usd": 3700000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2026-03-15",
+          "relevance": "related",
           "root_cause": "Donation Attack → Supply Cap Bypass → Collateral Inflation → Recursive Borrow Loop"
         },
         {
           "hack_id": "aave-v3-2026-capo-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Aave V3",
           "hack_protocol_slug": "aave-v3",
-          "occurred_at": "2026-03-12",
           "loss_usd": 862000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2026-03-12",
+          "relevance": "related",
           "root_cause": "CAPO (Correlated Asset Price Oracle) misconfigured price feed for a freshly-listed correlated asset → mispriced collateral → cascade of involuntary liquidations"
         },
         {
           "hack_id": "curve-llamalend-2026-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Curve LlamaLend",
           "hack_protocol_slug": "curve-v2",
-          "occurred_at": "2026-03-02",
           "loss_usd": 240000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2026-03-02",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-listed lending market"
         },
         {
           "hack_id": "balancer-2025-rekt",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "Balancer V2 (Composable Stable Pools)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2025-11-03",
           "loss_usd": 128000000.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2025-11-03",
+          "relevance": "related",
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
         },
         {
           "hack_id": "gmx",
-          "relevance": "related",
-          "notes": "Auto-linked by C.4 triage 2026-05-07",
           "hack_protocol_name": "GMX V1",
           "hack_protocol_slug": "gmx-v2",
-          "occurred_at": "2025-07-09",
           "loss_usd": 0.0,
+          "notes": "Auto-linked by C.4 triage 2026-05-07",
+          "occurred_at": "2025-07-09",
+          "relevance": "related",
           "root_cause": "Cross-Contract Reentrancy via Order-Keeper Callback"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The cached public API series covers 90 samples with mean $1.125B and standard deviation $249.9M, yielding CV 0.22209.",
+          "evidence_summary": "DefiLlama's 90-day series has coefficient of variation 0.22209 and a material decline during the window.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/kelp-dao"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

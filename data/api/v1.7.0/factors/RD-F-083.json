@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-083",
-        "category_id": 5,
-        "name": "Auditor re-engaged after last exploit",
-        "description": "Determine whether a reputable auditor performed a re-audit or incident review after the most recent exploit.",
-        "scoring_methodology": "**What this measures**\nThis factor is a Boolean recording whether a reputable auditor performed a re-audit or formal incident review after the most recent exploit. Re-engagement must be from a firm of comparable or higher tier than the original auditor and must cover at minimum the affected contracts and any related functions. An informal code review by the team's own developers does not satisfy this criterion.\n\n**Why it matters**\nRe-audit after an exploit is the strongest available signal that a protocol is treating the root cause as systemic rather than treating the specific attack vector as isolated. In the dataset, protocols that re-engaged auditors after incidents showed materially lower rates of same-root-cause recurrence. Conversely, protocols that did not re-engage auditors -- or that re-engaged auditors for only a narrow slice of the affected code -- were disproportionately represented in the same-root-cause repeat-exploit cluster. Euler Finance ($197M, 2023) and Sherlock's $4.5M insurance claim acknowledging the missed donateToReserves function highlight that re-audit does not guarantee correctness, but its absence is a reliable negative signal.\n\n**Green / Yellow / Red**\nGreen: re-audit completed by a reputable firm after the most recent exploit, covering all affected contracts, with findings published or attested on-chain. Yellow: re-audit completed but with a scope narrower than the affected surface, or by a lower-tier firm than the original audit. Red: no re-audit after most recent exploit; or re-audit conducted but findings not published.\n\n**Common gray cases**\nBug-bounty payouts from whitehats following an incident are not equivalent to a formal re-audit unless the bounty submission prompted a full scope review. Curator must verify that the re-audit scope covered the actual exploit path, not merely the patched function.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether a reputable auditor performed a re-audit or incident review after the most recent exploit.",
-        "data_source": "Audit PDF list (post-incident dates) + curator search of auditor firm report indexes",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Audit PDF URL + firm name + date (must be after incident date)",
+        "category_id": 5,
         "confidence_signal": "green = Tier-1/2 re-audit post-incident; yellow = internal review only (not external audit); red = no re-audit after exploit; gray = no prior exploits (N/A)",
+        "curation_archetype": "M",
+        "data_source": "Audit PDF list (post-incident dates) + curator search of auditor firm report indexes",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a reputable auditor performed a re-audit or incident review after the most recent exploit.",
+        "evidence_artifact": "Audit PDF URL + firm name + date (must be after incident date)",
+        "id": "RD-F-083",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a reputable auditor performed a re-audit or incident review after the most recent exploit.",
+        "method": "M",
+        "name": "Auditor re-engaged after last exploit",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor is a Boolean recording whether a reputable auditor performed a re-audit or formal incident review after the most recent exploit. Re-engagement must be from a firm of comparable or higher tier than the original auditor and must cover at minimum the affected contracts and any related functions. An informal code review by the team's own developers does not satisfy this criterion.\n\n**Why it matters**\nRe-audit after an exploit is the strongest available signal that a protocol is treating the root cause as systemic rather than treating the specific attack vector as isolated. In the dataset, protocols that re-engaged auditors after incidents showed materially lower rates of same-root-cause recurrence. Conversely, protocols that did not re-engage auditors -- or that re-engaged auditors for only a narrow slice of the affected code -- were disproportionately represented in the same-root-cause repeat-exploit cluster. Euler Finance ($197M, 2023) and Sherlock's $4.5M insurance claim acknowledging the missed donateToReserves function highlight that re-audit does not guarantee correctness, but its absence is a reliable negative signal.\n\n**Green / Yellow / Red**\nGreen: re-audit completed by a reputable firm after the most recent exploit, covering all affected contracts, with findings published or attested on-chain. Yellow: re-audit completed but with a scope narrower than the affected surface, or by a lower-tier firm than the original audit. Red: no re-audit after most recent exploit; or re-audit conducted but findings not published.\n\n**Common gray cases**\nBug-bounty payouts from whitehats following an incident are not equivalent to a formal re-audit unless the bounty submission prompted a full scope review. Curator must verify that the re-audit scope covered the actual exploit path, not merely the patched function.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Mandiant and CrowdStrike supported forensic attribution in LayerZero's report. That is strong incident review, but it is not a published audit of Kelp's replacement CCIP configuration.",
+          "evidence_summary": "External forensic review occurred, but no explicit incident-triggered re-audit of Kelp's replacement bridge configuration was identified.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

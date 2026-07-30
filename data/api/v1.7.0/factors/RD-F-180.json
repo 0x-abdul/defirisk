@@ -1,40 +1,59 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-180",
-        "category_id": 3,
-        "name": "Immutable oracle address",
-        "description": "Determine whether any collateral oracle address is marked `immutable` in protocol config with no admin-replaceable adapter wrapper, preventing the protocol from repricing when the upstream asset depegs.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol has hard-coded an oracle address — using the EVM `immutable` keyword, a non-EVM hardcoded constant, or a closed-source binary oracle embedding — such that the address cannot be replaced by an authorised admin without deploying new contract code. Source inspection, on-chain reads, and protocol documentation are used across all substrate types (EVM, non-EVM, closed-source).\n\n**Why it matters**\nAn oracle that cannot be swapped out by an admin becomes a single load-bearing dependency with no operational escape valve. Even a high-quality aggregated feed (Chainlink, Pyth) becomes a critical failure point if the asset it prices depegs, the feed is deprecated, or the aggregator experiences an incident — because the protocol has no path to emergency substitution. The 2024–2026 period produced four stablecoin-oracle incidents in 14 months (USR, USDX, xUSD, USD0++) where immutable oracle addresses prevented the protocol from reacting to peg events, leading to this factor being promoted to critical status under rubric v1.4 in April 2026. This failure mode is orthogonal to RD-F-053: a protocol can use a Chainlink-grade source yet still be critically exposed if it cannot replace that source when the underlying asset or feed fails.\n\n**Green / Yellow / Red**\nGreen is scored when an admin-replaceable oracle wrapper exists with a governance-controlled setter, a timelock, and documented change procedures. Yellow is scored when the setter exists but is undocumented, uses an EOA without multisig, or has no timelock. Red is scored when the oracle address is hardcoded (`immutable`, compile-time constant, or opaque binary) with no admin path to replacement.\n\n**Common gray cases**\nGray is applied when source code is unavailable or partially verified and the oracle binding mechanism cannot be confirmed from inspection alone.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Immutable oracle binding removes the protocol team's last operational lever to respond to feed failure, depeg, or aggregator incidents — transforming any oracle weakness into an unrecoverable structural exposure.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any collateral oracle address is marked `immutable` in protocol config with no admin-replaceable adapter wrapper, preventing the protocol from repricing when the upstream asset depegs.",
-        "data_source": "Source inspection for `immutable` keyword on oracle address variables + check for admin `setOracle`/`updateFeed` function on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of oracle address declaration + admin-setter function (or absence) + curator note on adapter wrapper status",
+        "category_id": 3,
         "confidence_signal": "green = oracle address configurable via admin setter with timelock; yellow = oracle address configurable but no timelock on update; red = oracle address `immutable` with no admin-replaceable wrapper; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection for `immutable` keyword on oracle address variables + check for admin `setOracle`/`updateFeed` function on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any collateral oracle address is marked `immutable` in protocol config with no admin-replaceable adapter wrapper, preventing the protocol from repricing when the upstream asset depegs.",
+        "evidence_artifact": "Source excerpt of oracle address declaration + admin-setter function (or absence) + curator note on adapter wrapper status",
+        "id": "RD-F-180",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether any collateral oracle address is marked `immutable` in protocol config with no admin-replaceable adapter wrapper, preventing the protocol from repricing when the upstream asset depegs.",
+        "method": "PE",
+        "name": "Immutable oracle address",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol has hard-coded an oracle address — using the EVM `immutable` keyword, a non-EVM hardcoded constant, or a closed-source binary oracle embedding — such that the address cannot be replaced by an authorised admin without deploying new contract code. Source inspection, on-chain reads, and protocol documentation are used across all substrate types (EVM, non-EVM, closed-source).\n\n**Why it matters**\nAn oracle that cannot be swapped out by an admin becomes a single load-bearing dependency with no operational escape valve. Even a high-quality aggregated feed (Chainlink, Pyth) becomes a critical failure point if the asset it prices depegs, the feed is deprecated, or the aggregator experiences an incident — because the protocol has no path to emergency substitution. The 2024–2026 period produced four stablecoin-oracle incidents in 14 months (USR, USDX, xUSD, USD0++) where immutable oracle addresses prevented the protocol from reacting to peg events, leading to this factor being promoted to critical status under rubric v1.4 in April 2026. This failure mode is orthogonal to RD-F-053: a protocol can use a Chainlink-grade source yet still be critically exposed if it cannot replace that source when the underlying asset or feed fails.\n\n**Green / Yellow / Red**\nGreen is scored when an admin-replaceable oracle wrapper exists with a governance-controlled setter, a timelock, and documented change procedures. Yellow is scored when the setter exists but is undocumented, uses an EOA without multisig, or has no timelock. Red is scored when the oracle address is hardcoded (`immutable`, compile-time constant, or opaque binary) with no admin path to replacement.\n\n**Common gray cases**\nGray is applied when source code is unavailable or partially verified and the oracle binding mechanism cannot be confirmed from inspection alone.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Immutable oracle binding removes the protocol team's last operational lever to respond to feed failure, depeg, or aggregator incidents — transforming any oracle weakness into an unrecoverable structural exposure."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "aave-v3-2026-capo-rekt",
-          "relevance": "related",
-          "notes": "Oracle config posture factor — CAPO listing process gap allowed mis-correlated mapping into production",
           "hack_protocol_name": "Aave V3",
           "hack_protocol_slug": "aave-v3",
-          "occurred_at": "2026-03-12",
           "loss_usd": 862000.0,
+          "notes": "Oracle config posture factor — CAPO listing process gap allowed mis-correlated mapping into production",
+          "occurred_at": "2026-03-12",
+          "relevance": "related",
           "root_cause": "CAPO (Correlated Asset Price Oracle) misconfigured price feed for a freshly-listed correlated asset → mispriced collateral → cascade of involuntary liquidations"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Authorized roles can replace both each asset adapter and each Chainlink feed without a full protocol upgrade.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kelp-DAO/LRT-rsETH/main/contracts/LRTOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

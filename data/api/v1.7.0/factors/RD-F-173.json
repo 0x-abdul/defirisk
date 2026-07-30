@@ -1,40 +1,60 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-173",
-        "category_id": 12,
-        "name": "Team self-disclosure of AI-generated Solidity",
-        "description": "Determine whether the team has publicly disclosed (blog, tweet, docs) that AI-generated Solidity was used in security-critical paths.",
-        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag set to true if the protocol's team has publicly disclosed (via blog post, tweet, documentation, or conference presentation) that AI-generated Solidity or Vyper was used in security-critical code paths. Sources include curator review of public communications, documentation repositories, and recorded conference talks. The cadence is event-driven and is updated whenever a new public disclosure is identified.\n\n**Why it matters**\nTeam self-disclosure of AI-generated code in security-critical paths is a stronger signal than the co-authorship marker detection in RD-F-172, because it represents the team's own acknowledgment that AI tools were used beyond peripheral automation. Self-disclosure enables auditors and depositors to direct additional scrutiny to the AI-assisted sections and ask whether those sections received the same depth of independent review as hand-written code. In the dataset, protocols that disclosed AI assistance in post-mortems were also those where the AI-generated code's deviation from audited patterns was identified as a contributing factor to the exploit.\n\n**Green / Yellow / Red**\nGreen: no public disclosure of AI-generated code in security-critical paths; or team has disclosed AI-assisted documentation and test generation only, with explicit statement that production financial logic was not AI-generated. Yellow: team has disclosed AI-assisted code generation in non-critical paths (e.g., boilerplate, interface implementations) without clarity on whether critical paths were included. Red: team has publicly disclosed that AI-generated Solidity was used in security-critical code paths (core financial logic, access control, or fund-holding contracts).\n\n**Common gray cases**\nInformal mentions of AI tool use (e.g., using Copilot for autocomplete while writing code) may be ambiguous about the extent of AI influence on the final production code; curator must assess whether the disclosure specifically references security-critical contract code.\n\n**Notable historical examples**\n- **Moonwell** ($1.78M, 2026): Post-mortem and team communications referenced AI-generated code in the security-critical component that was exploited.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether the team has publicly disclosed (blog, tweet, docs) that AI-generated Solidity was used in security-critical paths.",
-        "data_source": "Curator search of protocol blog + Twitter/X + docs for AI-disclosure statements",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Disclosure URL + curator note",
+        "category_id": 12,
         "confidence_signal": "green = no AI-generated Solidity disclosure; yellow = AI used for non-security-critical tooling/tests only; red = AI-generated Solidity disclosed in production security-critical contracts; gray = no public statements found",
+        "curation_archetype": "M",
+        "data_source": "Curator search of protocol blog + Twitter/X + docs for AI-disclosure statements",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the team has publicly disclosed (blog, tweet, docs) that AI-generated Solidity was used in security-critical paths.",
+        "evidence_artifact": "Disclosure URL + curator note",
+        "id": "RD-F-173",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the team has publicly disclosed (blog, tweet, docs) that AI-generated Solidity was used in security-critical paths.",
+        "method": "M",
+        "name": "Team self-disclosure of AI-generated Solidity",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor is a Boolean flag set to true if the protocol's team has publicly disclosed (via blog post, tweet, documentation, or conference presentation) that AI-generated Solidity or Vyper was used in security-critical code paths. Sources include curator review of public communications, documentation repositories, and recorded conference talks. The cadence is event-driven and is updated whenever a new public disclosure is identified.\n\n**Why it matters**\nTeam self-disclosure of AI-generated code in security-critical paths is a stronger signal than the co-authorship marker detection in RD-F-172, because it represents the team's own acknowledgment that AI tools were used beyond peripheral automation. Self-disclosure enables auditors and depositors to direct additional scrutiny to the AI-assisted sections and ask whether those sections received the same depth of independent review as hand-written code. In the dataset, protocols that disclosed AI assistance in post-mortems were also those where the AI-generated code's deviation from audited patterns was identified as a contributing factor to the exploit.\n\n**Green / Yellow / Red**\nGreen: no public disclosure of AI-generated code in security-critical paths; or team has disclosed AI-assisted documentation and test generation only, with explicit statement that production financial logic was not AI-generated. Yellow: team has disclosed AI-assisted code generation in non-critical paths (e.g., boilerplate, interface implementations) without clarity on whether critical paths were included. Red: team has publicly disclosed that AI-generated Solidity was used in security-critical code paths (core financial logic, access control, or fund-holding contracts).\n\n**Common gray cases**\nInformal mentions of AI tool use (e.g., using Copilot for autocomplete while writing code) may be ambiguous about the extent of AI influence on the final production code; curator must assess whether the disclosure specifically references security-critical contract code.\n\n**Notable historical examples**\n- **Moonwell** ($1.78M, 2026): Post-mortem and team communications referenced AI-generated code in the security-critical component that was exploited."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "moonwell-rekt",
-          "relevance": "related",
-          "notes": "Team self-disclosure of AI-generated Solidity [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]",
           "hack_protocol_name": "Moonwell",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-02-15",
           "loss_usd": 1780000.0,
+          "notes": "Team self-disclosure of AI-generated Solidity [via cross-hack: Factor 63: AI-Coauthored Code in Security-Critical Components]",
+          "occurred_at": "2026-02-15",
+          "relevance": "related",
           "root_cause": "Oracle Misconfiguration (Missing ETH/USD Multiplier)"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Absence of a disclosure is not affirmative evidence that AI tools were not used.",
+          "evidence_summary": "No public team disclosure of AI-generated Solidity in security-critical paths was located.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

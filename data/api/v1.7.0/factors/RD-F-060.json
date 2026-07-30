@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-060",
-        "category_id": 3,
-        "name": "Chainlink aggregator min/max bound misconfig",
-        "description": "Determine whether the Chainlink aggregator's `minAnswer` and `maxAnswer` circuit-breaker bounds are misconfigured (too wide or too narrow) for the asset class.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether the Chainlink price feed configuration for any asset uses `minAnswer` and `maxAnswer` bounds that are incorrectly set — either too wide (failing to catch extreme outliers) or too narrow (triggering false circuit-breaker activations for legitimate price moves). Chainlink feed configuration and on-chain reads of the aggregator contract are the data sources.\n\n**Why it matters**\nChainlink v2 aggregators include hardcoded min/max answer bounds. If an asset crashes below the `minAnswer` floor (as happened with several assets during the March 2020 and Terra 2022 market events), the aggregator continues to return the floor value rather than the actual price — creating a known-incorrect price that lending protocols accept. The ETH/USD feed's historical `minAnswer` of $1 (later updated) is the canonical example: a protocol that trusted the Chainlink-returned price without checking against its own circuit breaker would have priced ETH at $1 during any hypothetical sub-$1 crash. The T-01 evidence base links Chainlink min/max misconfig to approximately three protocols in the hack database.\n\n**Green / Yellow / Red**\nGreen is scored when min/max bounds are calibrated to realistic asset-class ranges and the protocol additionally implements its own circuit breaker independent of the Chainlink bounds. Yellow is scored when bounds appear reasonable but the protocol relies solely on Chainlink bounds without a secondary check. Red is scored when bounds are clearly misconfigured — e.g., `minAnswer = 1` for a volatile asset — or when bounds have not been reviewed since protocol deployment.\n\n**Common gray cases**\nGray is applied when the protocol uses a Chainlink feed via a third-party adapter whose bound configuration cannot be read from public on-chain sources.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the Chainlink aggregator's `minAnswer` and `maxAnswer` circuit-breaker bounds are misconfigured (too wide or too narrow) for the asset class.",
-        "data_source": "Chainlink feed registry + `AggregatorV3Interface` `minAnswer()`/`maxAnswer()` via RPC; compare to asset historical price range",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Feed address + minAnswer + maxAnswer + asset historical range for comparison",
+        "category_id": 3,
         "confidence_signal": "green = bounds are within ±50% of asset's realistic range; yellow = bounds wider than historical 2× swing (insufficient protection); red = bounds at Chainlink default (1/type(int192).max — effectively unlimited) for volatile asset; gray = protocol does not use Chainlink or feed does not expose these bounds",
+        "curation_archetype": "PH",
+        "data_source": "Chainlink feed registry + `AggregatorV3Interface` `minAnswer()`/`maxAnswer()` via RPC; compare to asset historical price range",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the Chainlink aggregator's `minAnswer` and `maxAnswer` circuit-breaker bounds are misconfigured (too wide or too narrow) for the asset class.",
+        "evidence_artifact": "Feed address + minAnswer + maxAnswer + asset historical range for comparison",
+        "id": "RD-F-060",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the Chainlink aggregator's `minAnswer` and `maxAnswer` circuit-breaker bounds are misconfigured (too wide or too narrow) for the asset class.",
+        "method": "PH",
+        "name": "Chainlink aggregator min/max bound misconfig",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether the Chainlink price feed configuration for any asset uses `minAnswer` and `maxAnswer` bounds that are incorrectly set — either too wide (failing to catch extreme outliers) or too narrow (triggering false circuit-breaker activations for legitimate price moves). Chainlink feed configuration and on-chain reads of the aggregator contract are the data sources.\n\n**Why it matters**\nChainlink v2 aggregators include hardcoded min/max answer bounds. If an asset crashes below the `minAnswer` floor (as happened with several assets during the March 2020 and Terra 2022 market events), the aggregator continues to return the floor value rather than the actual price — creating a known-incorrect price that lending protocols accept. The ETH/USD feed's historical `minAnswer` of $1 (later updated) is the canonical example: a protocol that trusted the Chainlink-returned price without checking against its own circuit breaker would have priced ETH at $1 during any hypothetical sub-$1 crash. The T-01 evidence base links Chainlink min/max misconfig to approximately three protocols in the hack database.\n\n**Green / Yellow / Red**\nGreen is scored when min/max bounds are calibrated to realistic asset-class ranges and the protocol additionally implements its own circuit breaker independent of the Chainlink bounds. Yellow is scored when bounds appear reasonable but the protocol relies solely on Chainlink bounds without a secondary check. Red is scored when bounds are clearly misconfigured — e.g., `minAnswer = 1` for a volatile asset — or when bounds have not been reviewed since protocol deployment.\n\n**Common gray cases**\nGray is applied when the protocol uses a Chainlink feed via a third-party adapter whose bound configuration cannot be read from public on-chain sources.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp consumes Chainlink answers without a protocol-side min/max-bound check; the audit also documented feed deviation and heartbeat risk.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://github.com/code-423n4/2023-11-kelp-findings/blob/main/report.md"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

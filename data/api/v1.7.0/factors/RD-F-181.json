@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-181",
-        "category_id": 3,
-        "name": "Permissionless-pool lending oracle",
-        "description": "Determine whether the lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side.",
-        "scoring_methodology": "**What this measures**\n\nThis factor assesses whether a lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side. The failure mode is at the *oracle-acceptance layer* — the lending protocol may use a respected oracle source (Chainlink-tier or Uniswap v3 TWAP) for blue-chip assets, but if its acceptance logic also consumes spot prices from a permissionless venue without filters, attacker-created fake pools can be borrowed against as collateral.\n\n**Why it matters**\n\nThis is structurally distinct from the better-known oracle-manipulation pattern (RD-F-053) where an attacker manipulates an existing pool via flash-loan to corrupt a spot price. With permissionless-pool acceptance, the attacker does not need to manipulate any real pool — they create their own pools, seed them with worthless tokens, and the lending protocol accepts those spot prices because its acceptance logic has no liquidity floor or venue allowlist. The exploit is *outside* the borrowing protocol's blast radius: nothing fails on-chain at the source, the lending protocol simply trusts a venue it should not trust.\n\n**Green / Yellow / Red**\n\nGreen: oracle acceptance logic requires liquidity floor ≥$1M AND token age ≥7 days AND a TWAP window (not raw spot). Yellow: partial filters — one or two of the three controls present, but not all. Red: protocol accepts spot prices from any permissionlessly-created pool with no liquidity, age, or TWAP filter. Gray: source contract unverified on the chain explorer.\n\n**Common gray cases**\n\nAcceptance filters live in off-chain configuration that the contract reads at oracle-set time, requiring multi-step verification beyond static source inspection.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The reference incident is **Rhea Finance** on NEAR (Apr 2026, $18.4M loss), where 8 fake pools were seeded via a 423-wallet fan-out, the lending protocol's oracle accepted the spot prices from those pools without venue filters, and the attacker borrowed against the synthetic collateral until liquidity drained.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether the lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side.",
-        "data_source": "Source inspection of oracle acceptance logic + venue-listing configuration on Etherscan-verified source; check if protocol uses Uniswap v2/v3 factory without pool filters",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Oracle acceptance logic source excerpt + venue factory address + liquidity/age filter presence",
+        "category_id": 3,
         "confidence_signal": "green = oracle acceptance requires liquidity floor ≥$1M AND token age ≥7 days AND TWAP; yellow = partial filters (one or two of the three); red = accepts any permissionlessly-created pool spot price with no filters; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of oracle acceptance logic + venue-listing configuration on Etherscan-verified source; check if protocol uses Uniswap v2/v3 factory without pool filters",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side.",
+        "evidence_artifact": "Oracle acceptance logic source excerpt + venue factory address + liquidity/age filter presence",
+        "id": "RD-F-181",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side.",
+        "method": "PE",
+        "name": "Permissionless-pool lending oracle",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\n\nThis factor assesses whether a lending protocol accepts spot prices from a DEX where any user can permissionlessly create new pools, without requiring a TWAP window, liquidity floor, or token-age minimum on the venue side. The failure mode is at the *oracle-acceptance layer* — the lending protocol may use a respected oracle source (Chainlink-tier or Uniswap v3 TWAP) for blue-chip assets, but if its acceptance logic also consumes spot prices from a permissionless venue without filters, attacker-created fake pools can be borrowed against as collateral.\n\n**Why it matters**\n\nThis is structurally distinct from the better-known oracle-manipulation pattern (RD-F-053) where an attacker manipulates an existing pool via flash-loan to corrupt a spot price. With permissionless-pool acceptance, the attacker does not need to manipulate any real pool — they create their own pools, seed them with worthless tokens, and the lending protocol accepts those spot prices because its acceptance logic has no liquidity floor or venue allowlist. The exploit is *outside* the borrowing protocol's blast radius: nothing fails on-chain at the source, the lending protocol simply trusts a venue it should not trust.\n\n**Green / Yellow / Red**\n\nGreen: oracle acceptance logic requires liquidity floor ≥$1M AND token age ≥7 days AND a TWAP window (not raw spot). Yellow: partial filters — one or two of the three controls present, but not all. Red: protocol accepts spot prices from any permissionlessly-created pool with no liquidity, age, or TWAP filter. Gray: source contract unverified on the chain explorer.\n\n**Common gray cases**\n\nAcceptance filters live in off-chain configuration that the contract reads at oracle-set time, requiring multi-step verification beyond static source inspection.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The reference incident is **Rhea Finance** on NEAR (Apr 2026, $18.4M loss), where 8 fake pools were seeded via a 423-wallet fan-out, the lending protocol's oracle accepted the spot prices from those pools without venue filters, and the attacker borrowed against the synthetic collateral until liquidity drained."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp is an LRT, not a lending protocol accepting permissionless DEX pools as collateral-price sources.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

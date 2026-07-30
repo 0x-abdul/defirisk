@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-167",
-        "category_id": 2,
-        "name": "Deprecated contract paused but pause reversible by live admin",
-        "description": "Determine whether a deprecated-and-paused contract's pause state is revertible by a currently-live admin role.",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol has formally deprecated a contract but left the pause state on that contract reversible by a currently-live admin role. The deprecated contract is paused — appearing inactive — but the pause is not permanent: an admin can unpause it, restoring its functionality and any attack surface it carries. The factor is populated by on-chain checks of deprecated contracts listed in protocol documentation against their current pause state and who holds the unpause authority.\n\n**Why it matters**\nDeprecated but unfinalized contracts present an invisible attack surface. Users and monitoring systems may treat a paused deprecated contract as inert, but if a live admin role can unpause it, an attacker who compromises that admin can restore the contract's full functionality. OKX DEX lost $2.7M via a deprecated TokenApprove contract whose admin key had not been revoked — users still had open approvals to the contract, and a single admin action allowed the attacker to drain them. This pattern is distinct from a protocol that has burned or renounced admin on deprecated contracts, which would score green; the risk is specifically the combination of \"announced deprecated\" and \"admin pause is still reversible.\"\n\n**Green / Yellow / Red**\nGreen is assigned when deprecated contracts have had admin authority renounced or transferred to an immutable address, or when the pause is executed by a burned admin key with no live unpause capability. Yellow covers cases where a timelock of at least 48 hours gates any unpause action on deprecated contracts. Red is assigned when a deprecated contract's pause is reversible by a currently-live admin role with no timelock, effectively leaving the deprecated surface under live admin control.\n\n**Common gray cases**\nThis factor is grayed when no contracts have been deprecated or when the deprecation status cannot be confirmed from public protocol documentation.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether a deprecated-and-paused contract's pause state is revertible by a currently-live admin role.",
-        "data_source": "On-chain `paused()` state read + `PAUSER_ROLE` or `pause`/`unpause` permission on deprecated contract via RPC",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Deprecated contract address + paused state + pause-role address + whether pause-role is still active",
+        "category_id": 2,
         "confidence_signal": "green = deprecated contract paused and pause role has been renounced or burned; yellow = deprecated contract paused but pause-role still active (can be unpaused); red = deprecated contract not paused and still holds value; gray = deprecated contracts not identified",
+        "curation_archetype": "PE",
+        "data_source": "On-chain `paused()` state read + `PAUSER_ROLE` or `pause`/`unpause` permission on deprecated contract via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether a deprecated-and-paused contract's pause state is revertible by a currently-live admin role.",
+        "evidence_artifact": "Deprecated contract address + paused state + pause-role address + whether pause-role is still active",
+        "id": "RD-F-167",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether a deprecated-and-paused contract's pause state is revertible by a currently-live admin role.",
+        "method": "PE",
+        "name": "Deprecated contract paused but pause reversible by live admin",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol has formally deprecated a contract but left the pause state on that contract reversible by a currently-live admin role. The deprecated contract is paused — appearing inactive — but the pause is not permanent: an admin can unpause it, restoring its functionality and any attack surface it carries. The factor is populated by on-chain checks of deprecated contracts listed in protocol documentation against their current pause state and who holds the unpause authority.\n\n**Why it matters**\nDeprecated but unfinalized contracts present an invisible attack surface. Users and monitoring systems may treat a paused deprecated contract as inert, but if a live admin role can unpause it, an attacker who compromises that admin can restore the contract's full functionality. OKX DEX lost $2.7M via a deprecated TokenApprove contract whose admin key had not been revoked — users still had open approvals to the contract, and a single admin action allowed the attacker to drain them. This pattern is distinct from a protocol that has burned or renounced admin on deprecated contracts, which would score green; the risk is specifically the combination of \"announced deprecated\" and \"admin pause is still reversible.\"\n\n**Green / Yellow / Red**\nGreen is assigned when deprecated contracts have had admin authority renounced or transferred to an immutable address, or when the pause is executed by a burned admin key with no live unpause capability. Yellow covers cases where a timelock of at least 48 hours gates any unpause action on deprecated contracts. Red is assigned when a deprecated contract's pause is reversible by a currently-live admin role with no timelock, effectively leaving the deprecated surface under live admin control.\n\n**Common gray cases**\nThis factor is grayed when no contracts have been deprecated or when the deprecation status cannot be confirmed from public protocol documentation.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp retired bridging on many networks in June 2026, but the public record reviewed does not bind an exact retired endpoint, live pause state, and current admin re-enable path.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/recovering-rseth-from-sunset-networks"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,50 +1,71 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-168",
-        "category_id": 9,
-        "name": "Stale-approval exposure on deprecated router",
-        "description": "Count the number of active user approvals (ERC-20 `allowance`) to deprecated router or protocol contracts.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of active user approvals (ERC-20 allowances) granted to contracts that the protocol has officially deprecated — approval slots that remain open on deprecated router or protocol contracts and represent a residual drain vector even after the protocol formally retired those contracts. The count is derived by scanning allowance events against the deprecated contract address set and cross-referencing with the protocol's public deprecation announcements.\n\n**Why it matters**\nStale user approvals on deprecated contracts are a persistent post-deploy hygiene failure: once a user grants an ERC-20 approval, it remains active indefinitely unless explicitly revoked. When a protocol deprecates a contract without notifying users to revoke approvals, those approvals remain exploitable for as long as the admin keys for the deprecated contract are alive or unchecked. OKX DEX lost $2.7M when a deprecated TokenApprove contract's admin key was compromised — thousands of users had never revoked their approvals because the protocol had not communicated the need to do so. Hacken HAI's $170K loss followed a similar pattern where a decommissioned bridge minter key retained credential authority over contracts that users had not revoked.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol has sent user communications about approval revocation for deprecated contracts, and the count of active approvals to deprecated contracts has fallen to near zero. Yellow covers cases where deprecation was announced but revocation guidance was not prominently communicated, leaving a moderate tail of open approvals. Red is assigned when a protocol has deprecated contracts with material numbers of outstanding user approvals and no revocation guidance or technical enforcement (e.g., a forced-revoke migration) has been deployed.\n\n**Common gray cases**\nThis factor is grayed when the protocol has never deprecated any contracts, or when the allowance scanning infrastructure cannot cover the relevant chain within the assessment window.\n\n**Notable historical examples**\n- **OKX DEX** ($2.7M, 2023): Deprecated TokenApprove contract retained active user approvals; admin key compromise allowed drain of those approvals.\n- **Hacken ($HAI token)** ($170K, 2025): Decommissioned bridge minter key retained authority over approval surfaces that had not been revoked.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of active user approvals (ERC-20 `allowance`) to deprecated router or protocol contracts.",
-        "data_source": "On-chain `Approval` event log for deprecated contract addresses via subgraph or Etherscan token-approvals API",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Deprecated contract addresses + approval count + total approved value USD estimate",
+        "category_id": 9,
         "confidence_signal": "green = 0 active approvals to deprecated contracts; yellow = <100 approvals or <$1M total approved value; red = ≥100 approvals or ≥$1M total approved value; gray = deprecated contract addresses not identified",
+        "curation_archetype": "PE",
+        "data_source": "On-chain `Approval` event log for deprecated contract addresses via subgraph or Etherscan token-approvals API",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of active user approvals (ERC-20 `allowance`) to deprecated router or protocol contracts.",
+        "evidence_artifact": "Deprecated contract addresses + approval count + total approved value USD estimate",
+        "id": "RD-F-168",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of active user approvals (ERC-20 `allowance`) to deprecated router or protocol contracts.",
+        "method": "PE",
+        "name": "Stale-approval exposure on deprecated router",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of active user approvals (ERC-20 allowances) granted to contracts that the protocol has officially deprecated — approval slots that remain open on deprecated router or protocol contracts and represent a residual drain vector even after the protocol formally retired those contracts. The count is derived by scanning allowance events against the deprecated contract address set and cross-referencing with the protocol's public deprecation announcements.\n\n**Why it matters**\nStale user approvals on deprecated contracts are a persistent post-deploy hygiene failure: once a user grants an ERC-20 approval, it remains active indefinitely unless explicitly revoked. When a protocol deprecates a contract without notifying users to revoke approvals, those approvals remain exploitable for as long as the admin keys for the deprecated contract are alive or unchecked. OKX DEX lost $2.7M when a deprecated TokenApprove contract's admin key was compromised — thousands of users had never revoked their approvals because the protocol had not communicated the need to do so. Hacken HAI's $170K loss followed a similar pattern where a decommissioned bridge minter key retained credential authority over contracts that users had not revoked.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol has sent user communications about approval revocation for deprecated contracts, and the count of active approvals to deprecated contracts has fallen to near zero. Yellow covers cases where deprecation was announced but revocation guidance was not prominently communicated, leaving a moderate tail of open approvals. Red is assigned when a protocol has deprecated contracts with material numbers of outstanding user approvals and no revocation guidance or technical enforcement (e.g., a forced-revoke migration) has been deployed.\n\n**Common gray cases**\nThis factor is grayed when the protocol has never deprecated any contracts, or when the allowance scanning infrastructure cannot cover the relevant chain within the assessment window.\n\n**Notable historical examples**\n- **OKX DEX** ($2.7M, 2023): Deprecated TokenApprove contract retained active user approvals; admin key compromise allowed drain of those approvals.\n- **Hacken ($HAI token)** ($170K, 2025): Decommissioned bridge minter key retained authority over approval surfaces that had not been revoked."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "hacken-rekt",
-          "relevance": "related",
-          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
           "hack_protocol_name": "Hacken ($HAI token)",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-06-20",
           "loss_usd": 170000.0,
+          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
+          "occurred_at": "2025-06-20",
+          "relevance": "related",
           "root_cause": "Bridge private key leak from decommissioned server → unauthorized token minting → dump"
         },
         {
           "hack_id": "okx-dex-rekt",
-          "relevance": "related",
-          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
           "hack_protocol_name": "OKX DEX (OKX Decentralized Exchange Aggregator)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-12-13",
           "loss_usd": 2700000.0,
+          "notes": "Stale user approvals on deprecated router [via cross-hack: Factor 33: Decommissioned Infrastructure Retaining Live Credentials]",
+          "occurred_at": "2023-12-13",
+          "relevance": "related",
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp sunset numerous bridge networks, but no public allowance inventory quantifies live user approvals to the retired router and adapter endpoints.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://blogs.kerneldao.com/blog/recovering-rseth-from-sunset-networks"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

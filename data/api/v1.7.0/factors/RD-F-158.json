@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-158",
-        "category_id": 11,
-        "name": "Known-threat-actor cluster has touched protocol",
-        "description": "Detect whether an address from the curator-maintained threat-actor cluster (past exploiters, labeled attacker families) interacted with this protocol in the last 30 days.",
-        "scoring_methodology": "**What this measures**\nThis real-time signal fires when an address from a curator-maintained threat-actor cluster — comprising past exploiters, labeled attacker families, and sanctioned addresses — has interacted with the monitored protocol within the trailing 30 days. The threat-actor cluster is drawn from Chainalysis TRM labels, OFAC SDN list entries, curator-maintained attacker address lists derived from post-mortem analysis, and known DPRK/Lazarus wallet sets. Category 11 context: attacker-side reconnaissance precedes the majority of DeFi exploits; a known threat actor interacting with a protocol is the highest-confidence forward-looking threat intelligence signal available.\n\n**Why it matters**\nThe T-01 synthesis documents approximately eight in-sample hack precedents where known-threat-actor addresses were interacting with target protocols before the exploit. Radiant Capital II ($53M, 2024) included a failed exploit attempt six days before the successful attack — if the attacker address were labeled from the failed attempt, a second interaction would have triggered this signal. Post-mortem analysis consistently identifies attacker addresses that were active in earlier hacks — attacker address reuse across protocols is documented. The signal is P0 because a labeled threat actor probing a protocol is the most actionable pre-exploit intelligence available, regardless of the absence of on-chain vulnerability evidence.\n\n**Green / Yellow / Red**\nGreen is the baseline when no known-threat-actor cluster addresses have interacted with the protocol in the trailing 30 days per the current cluster feed. Yellow fires when a medium-confidence threat-actor address (curator-labeled but not OFAC-sanctioned) interacts with the protocol — elevated but potentially a coincidental interaction. Red fires when a high-confidence labeled threat-actor address (OFAC SDN, Chainalysis-confirmed exploiter, or prior DPRK-attributed address) interacts with the protocol within the trailing 30 days.\n\n**Common gray cases**\nGray applies when the cluster feed has not been updated within 30 days (stale data) or when the protocol operates on a chain where cluster coverage is materially incomplete, making the absence of hits unreliable as a green signal.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Detect whether an address from the curator-maintained threat-actor cluster (past exploiters, labeled attacker families) interacted with this protocol in the last 30 days.",
-        "data_source": "Chainalysis/TRM threat-actor cluster feed + on-chain tx indexer for protocol contract interactions",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "RT",
-        "evidence_artifact": "Flagged address + cluster label + interaction tx hash + timestamp",
+        "category_id": 11,
         "confidence_signal": "green = signal not firing; red = known-threat-actor interaction detected in last 30 days; gray = CTI feed not configured",
+        "curation_archetype": "PH",
+        "data_source": "Chainalysis/TRM threat-actor cluster feed + on-chain tx indexer for protocol contract interactions",
+        "deprecated_in_rubric": null,
+        "description": "Detect whether an address from the curator-maintained threat-actor cluster (past exploiters, labeled attacker families) interacted with this protocol in the last 30 days.",
+        "evidence_artifact": "Flagged address + cluster label + interaction tx hash + timestamp",
+        "id": "RD-F-158",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Detect whether an address from the curator-maintained threat-actor cluster (past exploiters, labeled attacker families) interacted with this protocol in the last 30 days.",
+        "method": "PH",
+        "name": "Known-threat-actor cluster has touched protocol",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis real-time signal fires when an address from a curator-maintained threat-actor cluster — comprising past exploiters, labeled attacker families, and sanctioned addresses — has interacted with the monitored protocol within the trailing 30 days. The threat-actor cluster is drawn from Chainalysis TRM labels, OFAC SDN list entries, curator-maintained attacker address lists derived from post-mortem analysis, and known DPRK/Lazarus wallet sets. Category 11 context: attacker-side reconnaissance precedes the majority of DeFi exploits; a known threat actor interacting with a protocol is the highest-confidence forward-looking threat intelligence signal available.\n\n**Why it matters**\nThe T-01 synthesis documents approximately eight in-sample hack precedents where known-threat-actor addresses were interacting with target protocols before the exploit. Radiant Capital II ($53M, 2024) included a failed exploit attempt six days before the successful attack — if the attacker address were labeled from the failed attempt, a second interaction would have triggered this signal. Post-mortem analysis consistently identifies attacker addresses that were active in earlier hacks — attacker address reuse across protocols is documented. The signal is P0 because a labeled threat actor probing a protocol is the most actionable pre-exploit intelligence available, regardless of the absence of on-chain vulnerability evidence.\n\n**Green / Yellow / Red**\nGreen is the baseline when no known-threat-actor cluster addresses have interacted with the protocol in the trailing 30 days per the current cluster feed. Yellow fires when a medium-confidence threat-actor address (curator-labeled but not OFAC-sanctioned) interacts with the protocol — elevated but potentially a coincidental interaction. Red fires when a high-confidence labeled threat-actor address (OFAC SDN, Chainalysis-confirmed exploiter, or prior DPRK-attributed address) interacts with the protocol within the trailing 30 days.\n\n**Common gray cases**\nGray applies when the cluster feed has not been updated within 30 days (stale data) or when the protocol operates on a chain where cluster coverage is materially incomplete, making the absence of hits unreliable as a green signal.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Lazarus attribution is documented for the April 2026 incident, but that contact is outside 30 days and no current cluster feed establishes a new touch.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

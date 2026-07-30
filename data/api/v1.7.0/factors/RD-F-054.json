@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-054",
-        "category_id": 3,
-        "name": "TWAP window duration",
-        "description": "For each DEX-TWAP oracle, measure the TWAP window duration in minutes; flag any window < 30 minutes as high risk.",
-        "scoring_methodology": "**What this measures**\nThis factor records the TWAP window duration in minutes for each oracle that uses a time-weighted average price. Windows shorter than 30 minutes are flagged as high risk. The value is extracted per oracle via source inspection and on-chain reads.\n\n**Why it matters**\nTWAP window length is the primary determinant of how expensive a price manipulation attack is to execute. A 1-minute TWAP requires the attacker to hold a position for only 60 seconds — achievable with a flash loan sequence across multiple blocks. A 30-minute TWAP requires sustained capital lock-up that makes the attack economically irrational for most targets. The T-01 evidence base links short or nonexistent TWAP windows to approximately 15 protocols in the hack database. The cost-of-attack scales roughly linearly with window length for low-liquidity pools; for high-liquidity pools, window length interacts with pool depth to determine the true manipulation threshold.\n\n**Green / Yellow / Red**\nGreen is scored when all TWAP-based oracles use windows of 30 minutes or longer. Yellow is scored when at least one TWAP oracle uses a window between 10 and 29 minutes. Red is scored when any TWAP oracle uses a window under 10 minutes, or when no TWAP is used at all (scored alongside RD-F-053).\n\n**Common gray cases**\nGray is applied when the TWAP implementation uses dynamic observation selection that cannot be reduced to a fixed window duration, or when the oracle is an aggregated feed whose internal averaging methodology is not publicly documented.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "For each DEX-TWAP oracle, measure the TWAP window duration in minutes; flag any window < 30 minutes as high risk.",
-        "data_source": "Source inspection of `OracleLibrary.consult()` period parameter or equivalent on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "TWAP window in seconds per oracle + contract address",
+        "category_id": 3,
         "confidence_signal": "green = all TWAP windows ≥30 min; yellow = any TWAP window 10–29 min; red = any TWAP window <10 min; gray = protocol does not use TWAP oracles (N/A) or source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of `OracleLibrary.consult()` period parameter or equivalent on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "For each DEX-TWAP oracle, measure the TWAP window duration in minutes; flag any window < 30 minutes as high risk.",
+        "evidence_artifact": "TWAP window in seconds per oracle + contract address",
+        "id": "RD-F-054",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "For each DEX-TWAP oracle, measure the TWAP window duration in minutes; flag any window < 30 minutes as high risk.",
+        "method": "PE",
+        "name": "TWAP window duration",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the TWAP window duration in minutes for each oracle that uses a time-weighted average price. Windows shorter than 30 minutes are flagged as high risk. The value is extracted per oracle via source inspection and on-chain reads.\n\n**Why it matters**\nTWAP window length is the primary determinant of how expensive a price manipulation attack is to execute. A 1-minute TWAP requires the attacker to hold a position for only 60 seconds — achievable with a flash loan sequence across multiple blocks. A 30-minute TWAP requires sustained capital lock-up that makes the attack economically irrational for most targets. The T-01 evidence base links short or nonexistent TWAP windows to approximately 15 protocols in the hack database. The cost-of-attack scales roughly linearly with window length for low-liquidity pools; for high-liquidity pools, window length interacts with pool depth to determine the true manipulation threshold.\n\n**Green / Yellow / Red**\nGreen is scored when all TWAP-based oracles use windows of 30 minutes or longer. Yellow is scored when at least one TWAP oracle uses a window between 10 and 29 minutes. Red is scored when any TWAP oracle uses a window under 10 minutes, or when no TWAP is used at all (scored alongside RD-F-053).\n\n**Common gray cases**\nGray is applied when the TWAP implementation uses dynamic observation selection that cannot be reduced to a fixed window duration, or when the oracle is an aggregated feed whose internal averaging methodology is not publicly documented.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "No DEX TWAP supplies Kelp's reviewed primary LST pricing path.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

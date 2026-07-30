@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-071",
-        "category_id": 4,
-        "name": "Seed-deposit requirement for new market listing",
-        "description": "Determine whether market-listing governance or code requires a minimum seed deposit before borrow-enabling a new market.",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's market-listing governance or code requires a minimum seed deposit before a new market's borrow functionality is enabled. The seed-deposit requirement is the primary defense against the empty-cToken exchange-rate inflation attack (RD-F-070). Sources include source code inspection and governance proposal analysis. This factor is applicable only to Compound-fork lending protocols; it is N/A for non-lending and non-Compound-fork protocols.\n\n**Why it matters**\nThe seed-deposit requirement directly prevents the cToken inflation attack by ensuring that at least one legitimate supply-side deposit exists in every market before borrowing is enabled. When Sonne Finance's yAudit audit flagged the Compound V2 donation attack as a high-severity issue in their own report, the recommended fix was precisely a seed-deposit requirement. Onyx Protocol was exploited twice using the same empty-market vector because it did not implement a seed-deposit guard on governance-added markets. Hundred Finance's $7.4M loss was similarly preventable: an attacker donated 500 WBTC to an empty hWBTC market with no minimum deposit guard, inflating the exchange rate before the first legitimate depositor arrived.\n\n**Green / Yellow / Red**\nGreen: protocol enforces an on-chain minimum seed deposit for all markets before borrow enablement, with the seed amount set to a level that makes the inflation attack economically non-viable. Yellow: seed-deposit requirement exists in governance documentation but is not enforced on-chain at market activation, leaving a window between activation and first legitimate deposit. Red: no seed-deposit requirement exists in code or governance; markets can be activated with zero supply.\n\n**Common gray cases**\nProtocols that require a governance vote to activate new markets but have no minimum seed deposit still score red on this factor, because the activation window (even if short) is the critical vulnerability window as demonstrated by the Sonne Finance 6-second front-running attack.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether market-listing governance or code requires a minimum seed deposit before borrow-enabling a new market.",
-        "data_source": "Source inspection of market-listing code path + governance proposal template on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Source excerpt of listing logic + minimum-seed-deposit value",
+        "category_id": 4,
         "confidence_signal": "green = seed deposit required (≥configured floor) before borrow-enable; yellow = seed deposit encouraged but not enforced; red = no seed deposit requirement; gray = protocol does not list new markets (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "Source inspection of market-listing code path + governance proposal template on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether market-listing governance or code requires a minimum seed deposit before borrow-enabling a new market.",
+        "evidence_artifact": "Source excerpt of listing logic + minimum-seed-deposit value",
+        "id": "RD-F-071",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether market-listing governance or code requires a minimum seed deposit before borrow-enabling a new market.",
+        "method": "PE",
+        "name": "Seed-deposit requirement for new market listing",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's market-listing governance or code requires a minimum seed deposit before a new market's borrow functionality is enabled. The seed-deposit requirement is the primary defense against the empty-cToken exchange-rate inflation attack (RD-F-070). Sources include source code inspection and governance proposal analysis. This factor is applicable only to Compound-fork lending protocols; it is N/A for non-lending and non-Compound-fork protocols.\n\n**Why it matters**\nThe seed-deposit requirement directly prevents the cToken inflation attack by ensuring that at least one legitimate supply-side deposit exists in every market before borrowing is enabled. When Sonne Finance's yAudit audit flagged the Compound V2 donation attack as a high-severity issue in their own report, the recommended fix was precisely a seed-deposit requirement. Onyx Protocol was exploited twice using the same empty-market vector because it did not implement a seed-deposit guard on governance-added markets. Hundred Finance's $7.4M loss was similarly preventable: an attacker donated 500 WBTC to an empty hWBTC market with no minimum deposit guard, inflating the exchange rate before the first legitimate depositor arrived.\n\n**Green / Yellow / Red**\nGreen: protocol enforces an on-chain minimum seed deposit for all markets before borrow enablement, with the seed amount set to a level that makes the inflation attack economically non-viable. Yellow: seed-deposit requirement exists in governance documentation but is not enforced on-chain at market activation, leaving a window between activation and first legitimate deposit. Red: no seed-deposit requirement exists in code or governance; markets can be activated with zero supply.\n\n**Common gray cases**\nProtocols that require a governance vote to activate new markets but have no minimum seed deposit still score red on this factor, because the activation window (even if short) is the critical vulnerability window as demonstrated by the Sonne Finance 6-second front-running attack.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp DAO does not list or borrow-enable lending markets, so a lending-market seed-deposit requirement is not defined. The distinct rsETH first-depositor protection is assessed under RD-F-075.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

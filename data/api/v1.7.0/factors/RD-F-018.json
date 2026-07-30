@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-018",
-        "category_id": 1,
-        "name": "Signed/unsigned arithmetic confusion",
-        "description": "Determine whether signed-integer conversions or comparisons where unsigned was intended exist in the deployed bytecode/source.",
-        "scoring_methodology": "**What this measures**\nThis factor detects signed/unsigned arithmetic confusion in the deployed bytecode: specifically, cases where a signed integer (int256) is cast to unsigned (uint256) in a context where the value may be negative, or where comparison operators are applied to signed values where unsigned was intended. The assessment uses static analysis and symbolic execution on verified source code. A flag is recorded when the detector identifies a potential underflow or semantic inversion due to signedness mismatch.\n\n**Why it matters**\nSigned-to-unsigned conversions with negative values wrap around to large positive integers in Solidity (two's complement). A negative int256 value cast to uint256 produces a number close to 2^256, which when used in a comparison or arithmetic context can bypass a bound check or produce a wildly incorrect amount. This pattern has appeared in approximately three documented hacks in the T-01 evidence base, primarily in protocols that use signed arithmetic for position accounting (perps, options, yield-bearing positions) and then convert to unsigned for token transfer amounts.\n\n**Green / Yellow / Red**\nGreen: no signed-to-unsigned conversions are present in code paths that handle token amounts, collateral values, or position sizes, or all such conversions have explicit bounds checks that revert if the input is negative. Yellow: conversions exist in peripheral calculation paths where the value is always positive by construction, with curator confirmation. Red: a signed-to-unsigned conversion is present in a core fund-movement or collateral calculation path without a negative-check guard.\n\n**Common gray cases**\nThis factor is gray for protocols written in Vyper (where the type system prevents implicit signedness conversions) or for simple token protocols with no signed arithmetic.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P2 based on approximately three supporting instances in the T-01 evidence inventory.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether signed-integer conversions or comparisons where unsigned was intended exist in the deployed bytecode/source.",
-        "data_source": "Slither + symbolic exec (Manticore/Echidna property check) on Etherscan-verified source",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Tool output JSON + flagged location",
+        "category_id": 1,
         "confidence_signal": "green = 0 confirmed signed/unsigned issues; red = confirmed signed/unsigned confusion in live path; gray = source unverified",
+        "curation_archetype": "PH",
+        "data_source": "Slither + symbolic exec (Manticore/Echidna property check) on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether signed-integer conversions or comparisons where unsigned was intended exist in the deployed bytecode/source.",
+        "evidence_artifact": "Tool output JSON + flagged location",
+        "id": "RD-F-018",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether signed-integer conversions or comparisons where unsigned was intended exist in the deployed bytecode/source.",
+        "method": "PH",
+        "name": "Signed/unsigned arithmetic confusion",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects signed/unsigned arithmetic confusion in the deployed bytecode: specifically, cases where a signed integer (int256) is cast to unsigned (uint256) in a context where the value may be negative, or where comparison operators are applied to signed values where unsigned was intended. The assessment uses static analysis and symbolic execution on verified source code. A flag is recorded when the detector identifies a potential underflow or semantic inversion due to signedness mismatch.\n\n**Why it matters**\nSigned-to-unsigned conversions with negative values wrap around to large positive integers in Solidity (two's complement). A negative int256 value cast to uint256 produces a number close to 2^256, which when used in a comparison or arithmetic context can bypass a bound check or produce a wildly incorrect amount. This pattern has appeared in approximately three documented hacks in the T-01 evidence base, primarily in protocols that use signed arithmetic for position accounting (perps, options, yield-bearing positions) and then convert to unsigned for token transfer amounts.\n\n**Green / Yellow / Red**\nGreen: no signed-to-unsigned conversions are present in code paths that handle token amounts, collateral values, or position sizes, or all such conversions have explicit bounds checks that revert if the input is negative. Yellow: conversions exist in peripheral calculation paths where the value is always positive by construction, with curator confirmation. Red: a signed-to-unsigned conversion is present in a core fund-movement or collateral calculation path without a negative-check guard.\n\n**Common gray cases**\nThis factor is gray for protocols written in Vyper (where the type system prevents implicit signedness conversions) or for simple token protocols with no signed arithmetic.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P2 based on approximately three supporting instances in the T-01 evidence inventory."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A static or symbolic analysis run is required.",
+          "evidence_summary": "No reproducible signed-versus-unsigned arithmetic analysis for matched deployed source was published.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

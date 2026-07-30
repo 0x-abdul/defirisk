@@ -1,40 +1,54 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-073",
-        "category_id": 4,
-        "name": "Oracle-manipulation-proof borrow cap",
-        "description": "Determine whether the per-asset borrow cap is ≤ (oracle pool depth × manipulation-resistance multiplier).",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol enforces a per-asset borrow cap that is calibrated to the manipulation-resistance of the oracle for that asset. Specifically, it checks whether the maximum single-transaction borrow amount is less than or equal to the oracle source pool depth multiplied by a manipulation-resistance multiplier (typically set at ten to twenty times). Sources include on-chain reads of borrow caps and DEX subgraph data for oracle source pool liquidity. This factor applies to lending protocols only.\n\n**Why it matters**\nOracle manipulation attacks are profitable only when the borrowable value exceeds the cost of manipulation. Mango Markets ($115M, 2022) is the most extreme example in the dataset: the attacker used $5M in USDC to pump the MNGO token price thirty times higher, then borrowed against the inflated unrealized profit as collateral, draining all borrow liquidity across the protocol. An oracle-manipulation-proof borrow cap would have limited the attacker's maximum extractable value to a fraction of the oracle pool depth, making the attack economically non-viable. Without per-asset borrow caps, lending protocols with thin oracle liquidity are exposed to unbounded loss from oracle manipulation.\n\n**Green / Yellow / Red**\nGreen: all assets have borrow caps set at or below the oracle pool depth times ten, with caps enforced on-chain and updated when oracle pool depth changes materially. Yellow: borrow caps exist but are set above the oracle pool depth times ten for one or more assets, or caps are not updated when oracle pool depth changes. Red: no per-asset borrow caps, or borrow caps are set at protocol-wide maximums unrelated to oracle pool depth.\n\n**Common gray cases**\nFor assets with deep, multi-venue liquidity (e.g., ETH, USDC), the manipulation-resistance threshold is effectively unlimited and this factor scores green by default. The critical scoring cases are governance tokens and long-tail assets used as collateral.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): No oracle-manipulation-proof borrow cap; attacker borrowed all available liquidity against a self-inflated MNGO position.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the per-asset borrow cap is ≤ (oracle pool depth × manipulation-resistance multiplier).",
-        "data_source": "On-chain borrow cap per asset via RPC + oracle pool depth from DEX subgraph (see F055)",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Borrow cap USD + oracle pool depth USD + derived manipulation-cost estimate",
+        "category_id": 4,
         "confidence_signal": "green = borrow cap <10% of oracle pool depth (manipulation cost >> profit); yellow = 10–50% of pool depth; red = >50% of pool depth (profitable to manipulate oracle to max out borrow); gray = protocol does not use DEX-TWAP oracle (N/A)",
+        "curation_archetype": "PH",
+        "data_source": "On-chain borrow cap per asset via RPC + oracle pool depth from DEX subgraph (see F055)",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the per-asset borrow cap is ≤ (oracle pool depth × manipulation-resistance multiplier).",
+        "evidence_artifact": "Borrow cap USD + oracle pool depth USD + derived manipulation-cost estimate",
+        "id": "RD-F-073",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the per-asset borrow cap is ≤ (oracle pool depth × manipulation-resistance multiplier).",
+        "method": "PH",
+        "name": "Oracle-manipulation-proof borrow cap",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol enforces a per-asset borrow cap that is calibrated to the manipulation-resistance of the oracle for that asset. Specifically, it checks whether the maximum single-transaction borrow amount is less than or equal to the oracle source pool depth multiplied by a manipulation-resistance multiplier (typically set at ten to twenty times). Sources include on-chain reads of borrow caps and DEX subgraph data for oracle source pool liquidity. This factor applies to lending protocols only.\n\n**Why it matters**\nOracle manipulation attacks are profitable only when the borrowable value exceeds the cost of manipulation. Mango Markets ($115M, 2022) is the most extreme example in the dataset: the attacker used $5M in USDC to pump the MNGO token price thirty times higher, then borrowed against the inflated unrealized profit as collateral, draining all borrow liquidity across the protocol. An oracle-manipulation-proof borrow cap would have limited the attacker's maximum extractable value to a fraction of the oracle pool depth, making the attack economically non-viable. Without per-asset borrow caps, lending protocols with thin oracle liquidity are exposed to unbounded loss from oracle manipulation.\n\n**Green / Yellow / Red**\nGreen: all assets have borrow caps set at or below the oracle pool depth times ten, with caps enforced on-chain and updated when oracle pool depth changes materially. Yellow: borrow caps exist but are set above the oracle pool depth times ten for one or more assets, or caps are not updated when oracle pool depth changes. Red: no per-asset borrow caps, or borrow caps are set at protocol-wide maximums unrelated to oracle pool depth.\n\n**Common gray cases**\nFor assets with deep, multi-venue liquidity (e.g., ETH, USDC), the manipulation-resistance threshold is effectively unlimited and this factor scores green by default. The critical scoring cases are governance tokens and long-tail assets used as collateral.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): No oracle-manipulation-proof borrow cap; attacker borrowed all available liquidity against a self-inflated MNGO position."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "mango-markets-rekt",
-          "relevance": "causal",
-          "notes": "Oracle-manipulation-proof borrow cap per asset [via cross-hack: Factor 42: Unrealized PnL Accepted as Borrowing Collateral]",
           "hack_protocol_name": "Mango Markets",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-10-11",
           "loss_usd": 115000000.0,
+          "notes": "Oracle-manipulation-proof borrow cap per asset [via cross-hack: Factor 42: Unrealized PnL Accepted as Borrowing Collateral]",
+          "occurred_at": "2022-10-11",
+          "relevance": "causal",
           "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Kelp DAO does not set per-asset borrow caps for a lending book. Oracle use in rsETH minting and redemption is assessed by the oracle/dependency specialist, while the oracle-manipulation-proof lending borrow-cap test is not applicable here.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

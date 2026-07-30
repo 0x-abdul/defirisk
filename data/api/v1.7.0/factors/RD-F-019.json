@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-019",
-        "category_id": 1,
-        "name": "ecrecover zero-address return unchecked",
-        "description": "Determine whether any `ecrecover` call result is used without a `!= address(0)` guard.",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether any use of ecrecover() in the protocol's deployed code fails to validate that the returned address is not address(0). In Solidity, ecrecover() returns address(0) when the signature is invalid rather than reverting. If the calling code uses the return value without a != address(0) check, an invalid or malformed signature passes as valid, with address(0) treated as the signer. The detection is performed by static analysis of the verified source.\n\n**Why it matters**\nA missing zero-address check on ecrecover() enables signature forgery: any attacker can submit a malformed signature and be treated as having been signed by address(0). If address(0) has any special permissions in the protocol (a common pattern in early contracts), the attacker gains those permissions. This pattern underpins the Wormhole-class signature validation failures -- Wormhole ($326M, 2022) involved a guardian signature verification bypass where the zero-address edge case was not handled. The vulnerability is simple to detect and fix but can be catastrophic when present in a signature-gated permission system.\n\n**Green / Yellow / Red**\nGreen: all uses of ecrecover() are followed by a require(signer != address(0)) check, confirmed by static analysis. Yellow: the check is absent in ecrecover() calls for non-critical signature paths (e.g., permit() functions without admin privilege), but all admin or governance signatures are correctly validated. Red: any ecrecover() call in an admin, governance, or fund-movement path lacks the != address(0) validation.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use ecrecover() or ECDSA signature verification in any function path.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The factor is retained as P1 based on approximately four documented precursor instances in the T-01 evidence inventory, including the Wormhole-class pattern.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any `ecrecover` call result is used without a `!= address(0)` guard.",
-        "data_source": "Slither `ecrecover-malleable` detector + source search for `ecrecover` calls",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output JSON + function location",
+        "category_id": 1,
         "confidence_signal": "green = all ecrecover results guarded; red = any unguarded ecrecover result used as an address; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `ecrecover-malleable` detector + source search for `ecrecover` calls",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any `ecrecover` call result is used without a `!= address(0)` guard.",
+        "evidence_artifact": "Slither output JSON + function location",
+        "id": "RD-F-019",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether any `ecrecover` call result is used without a `!= address(0)` guard.",
+        "method": "PE",
+        "name": "ecrecover zero-address return unchecked",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether any use of ecrecover() in the protocol's deployed code fails to validate that the returned address is not address(0). In Solidity, ecrecover() returns address(0) when the signature is invalid rather than reverting. If the calling code uses the return value without a != address(0) check, an invalid or malformed signature passes as valid, with address(0) treated as the signer. The detection is performed by static analysis of the verified source.\n\n**Why it matters**\nA missing zero-address check on ecrecover() enables signature forgery: any attacker can submit a malformed signature and be treated as having been signed by address(0). If address(0) has any special permissions in the protocol (a common pattern in early contracts), the attacker gains those permissions. This pattern underpins the Wormhole-class signature validation failures -- Wormhole ($326M, 2022) involved a guardian signature verification bypass where the zero-address edge case was not handled. The vulnerability is simple to detect and fix but can be catastrophic when present in a signature-gated permission system.\n\n**Green / Yellow / Red**\nGreen: all uses of ecrecover() are followed by a require(signer != address(0)) check, confirmed by static analysis. Yellow: the check is absent in ecrecover() calls for non-critical signature paths (e.g., permit() functions without admin privilege), but all admin or governance signatures are correctly validated. Red: any ecrecover() call in an admin, governance, or fund-movement path lacks the != address(0) validation.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use ecrecover() or ECDSA signature verification in any function path.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The factor is retained as P1 based on approximately four documented precursor instances in the T-01 evidence inventory, including the Wormhole-class pattern."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "A matched-runtime source scan is required.",
+          "evidence_summary": "No exhaustive deployed-source result established whether all ecrecover returns are checked against address zero.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/tree/main/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

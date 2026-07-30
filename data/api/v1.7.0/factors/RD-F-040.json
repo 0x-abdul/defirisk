@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-040",
-        "category_id": 2,
-        "name": "Emergency-veto multisig present",
-        "description": "Determine whether an emergency-veto or guardian multisig exists with power to cancel malicious proposals before execution.",
-        "scoring_methodology": "**What this measures**\nThis factor checks whether a governance veto or emergency-pause multisig exists that is specifically empowered to stop malicious proposals before they execute — distinct from the standard pause mechanism. The veto multisig must have the power to cancel or delay a queued proposal in the timelock, not merely pause the protocol's operational functions.\n\n**Why it matters**\nA veto mechanism adds a second defensive layer above the standard timelock: even if a malicious governance proposal accumulates enough votes to pass (flash loan attack, whale concentration, insider vote), a veto multisig composed of independent security-focused parties can cancel it before execution. Several post-2022 governance improvements in major protocols (Compound, Aave, Uniswap) have added security councils or guardian roles specifically for this purpose. The absence of a veto mechanism means the only defense against a passed malicious proposal is the timelock delay itself — which is only useful if someone monitoring the queue takes action.\n\n**Green / Yellow / Red**\nGreen is assigned when an emergency veto multisig exists with at least a 2-of-N threshold, independent from the primary governance multisig, and with documented authority to cancel queued proposals. Yellow covers cases where a veto mechanism exists but is held by the same multisig as the governance executor (not truly independent). Red is assigned when no veto mechanism exists — the timelock alone is the only buffer between a passed proposal and execution.\n\n**Common gray cases**\nThis factor is grayed when the governance system is immutable or operates via a single-step on-chain vote with no separate queueing mechanism, rendering a veto multisig architecturally irrelevant.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether an emergency-veto or guardian multisig exists with power to cancel malicious proposals before execution.",
-        "data_source": "Governance contract `cancel()` function + role holding the cancel permission via `AccessControl` read",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Cancel-role address + multisig type check",
+        "category_id": 2,
         "confidence_signal": "green = veto/cancel role held by separate multisig with ≥3-of-N threshold; yellow = cancel role exists but held by same multisig as proposer; red = no cancel/veto mechanism; gray = no on-chain governance",
+        "curation_archetype": "PE",
+        "data_source": "Governance contract `cancel()` function + role holding the cancel permission via `AccessControl` read",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether an emergency-veto or guardian multisig exists with power to cancel malicious proposals before execution.",
+        "evidence_artifact": "Cancel-role address + multisig type check",
+        "id": "RD-F-040",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether an emergency-veto or guardian multisig exists with power to cancel malicious proposals before execution.",
+        "method": "PE",
+        "name": "Emergency-veto multisig present",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor checks whether a governance veto or emergency-pause multisig exists that is specifically empowered to stop malicious proposals before they execute — distinct from the standard pause mechanism. The veto multisig must have the power to cancel or delay a queued proposal in the timelock, not merely pause the protocol's operational functions.\n\n**Why it matters**\nA veto mechanism adds a second defensive layer above the standard timelock: even if a malicious governance proposal accumulates enough votes to pass (flash loan attack, whale concentration, insider vote), a veto multisig composed of independent security-focused parties can cancel it before execution. Several post-2022 governance improvements in major protocols (Compound, Aave, Uniswap) have added security councils or guardian roles specifically for this purpose. The absence of a veto mechanism means the only defense against a passed malicious proposal is the timelock delay itself — which is only useful if someone monitoring the queue takes action.\n\n**Green / Yellow / Red**\nGreen is assigned when an emergency veto multisig exists with at least a 2-of-N threshold, independent from the primary governance multisig, and with documented authority to cancel queued proposals. Yellow covers cases where a veto mechanism exists but is held by the same multisig as the governance executor (not truly independent). Red is assigned when no veto mechanism exists — the timelock alone is the only buffer between a passed proposal and execution.\n\n**Common gray cases**\nThis factor is grayed when the governance system is immutable or operates via a single-step on-chain vote with no separate queueing mechanism, rendering a veto multisig architecturally irrelevant.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "A dedicated 1-of-5 Pauser Safe can stop core contracts, but the public record does not show a distinct veto role that can cancel every queued upgrade.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#pauser-safes"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

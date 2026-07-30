@@ -1,40 +1,55 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-132",
-        "category_id": 8,
-        "name": "Fork has different economic parameters than upstream",
-        "description": "Determine whether the fork's economic parameters (collateral factor, LTV, fee structure) differ from upstream audited defaults without a subsequent re-audit.",
-        "scoring_methodology": "**What this measures**\nThis factor identifies whether the fork's economic parameters -- collateral factors, liquidation thresholds, LTV ratios, fee tiers, reserve factors -- differ from the upstream protocol's audited defaults, without a corresponding re-audit or independent parameter review covering those changes. The assessment requires comparing the deployed parameter values against the upstream's documented defaults and checking whether any audit report specifically reviewed the fork's parameterization.\n\n**Why it matters**\nEconomic parameters in lending and governance protocols are not purely configuration: they affect the mathematical properties that auditors review for safety. A Compound fork that changes the collateral factor for a governance token from 60% to 85% without re-audit has introduced a parameter that the original security review never validated. Curio ($16M, 2024) exploited a MakerDAO fork where the IDSChief voting power privilege logic had been parameterized differently from MakerDAO's canonical settings; the modified parameters created an exploitable governance privilege escalation. The governance fork category in the synthesis covers three hack instances of this specific pattern.\n\n**Green / Yellow / Red**\nGreen: all economic parameters match the upstream's audited defaults, or an independent parameter review or audit specifically validates the fork's parameter choices for safety. Yellow: parameters differ from upstream defaults in low-risk ways (e.g., lower fees, not higher collateral factors) that a curator has confirmed do not introduce additional mathematical risk. Red: collateral factors, LTV ratios, or governance voting power thresholds differ materially from upstream audited values with no independent parameter review.\n\n**Common gray cases**\nThis factor is gray for original protocols (no upstream comparison possible) or when the upstream's audited parameter values are not publicly documented.\n\n**Notable historical examples**\n- **Curio** ($16M, 2024): MakerDAO governance fork with modified IDSChief voting power parameterization; no independent parameter audit; governance privilege exploited.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether the fork's economic parameters (collateral factor, LTV, fee structure) differ from upstream audited defaults without a subsequent re-audit.",
-        "data_source": "Source inspection of config params vs upstream repo + audit PDF scope check",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Fork config values + upstream config values + diff + audit coverage of changed params",
+        "category_id": 8,
         "confidence_signal": "green = parameters match upstream audited defaults or parameter changes are covered by delta-audit; yellow = minor parameter deviations without specific audit coverage; red = major parameter deviations (e.g. LTV >10pp higher than upstream) without re-audit; gray = upstream not identified",
+        "curation_archetype": "M",
+        "data_source": "Source inspection of config params vs upstream repo + audit PDF scope check",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the fork's economic parameters (collateral factor, LTV, fee structure) differ from upstream audited defaults without a subsequent re-audit.",
+        "evidence_artifact": "Fork config values + upstream config values + diff + audit coverage of changed params",
+        "id": "RD-F-132",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the fork's economic parameters (collateral factor, LTV, fee structure) differ from upstream audited defaults without a subsequent re-audit.",
+        "method": "M",
+        "name": "Fork has different economic parameters than upstream",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor identifies whether the fork's economic parameters -- collateral factors, liquidation thresholds, LTV ratios, fee tiers, reserve factors -- differ from the upstream protocol's audited defaults, without a corresponding re-audit or independent parameter review covering those changes. The assessment requires comparing the deployed parameter values against the upstream's documented defaults and checking whether any audit report specifically reviewed the fork's parameterization.\n\n**Why it matters**\nEconomic parameters in lending and governance protocols are not purely configuration: they affect the mathematical properties that auditors review for safety. A Compound fork that changes the collateral factor for a governance token from 60% to 85% without re-audit has introduced a parameter that the original security review never validated. Curio ($16M, 2024) exploited a MakerDAO fork where the IDSChief voting power privilege logic had been parameterized differently from MakerDAO's canonical settings; the modified parameters created an exploitable governance privilege escalation. The governance fork category in the synthesis covers three hack instances of this specific pattern.\n\n**Green / Yellow / Red**\nGreen: all economic parameters match the upstream's audited defaults, or an independent parameter review or audit specifically validates the fork's parameter choices for safety. Yellow: parameters differ from upstream defaults in low-risk ways (e.g., lower fees, not higher collateral factors) that a curator has confirmed do not introduce additional mathematical risk. Red: collateral factors, LTV ratios, or governance voting power thresholds differ materially from upstream audited values with no independent parameter review.\n\n**Common gray cases**\nThis factor is gray for original protocols (no upstream comparison possible) or when the upstream's audited parameter values are not publicly documented.\n\n**Notable historical examples**\n- **Curio** ($16M, 2024): MakerDAO governance fork with modified IDSChief voting power parameterization; no independent parameter audit; governance privilege exploited."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "curio-rekt",
-          "relevance": "causal",
-          "notes": "Fork has different economic parameters than upstream (audit gap) [via cross-hack: Factor 17: Governance Fork Without Independent Parameter Audit]",
           "hack_protocol_name": "Curio (CurioDAO)",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-03-23",
           "loss_usd": 16000000.0,
+          "notes": "Fork has different economic parameters than upstream (audit gap) [via cross-hack: Factor 17: Governance Fork Without Independent Parameter Audit]",
+          "occurred_at": "2024-03-23",
+          "relevance": "causal",
           "root_cause": "Voting power privilege escalation via MakerDAO fork governance bug → mass CGT token minting"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Kelp core is not identified as a fork, so fork-specific economic parameter deltas are moot.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

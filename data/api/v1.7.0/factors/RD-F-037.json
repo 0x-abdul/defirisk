@@ -1,29 +1,44 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-037",
-        "category_id": 2,
-        "name": "Quorum achievable via single-entity flash loan",
-        "description": "Determine whether the governance quorum threshold is ≤ the largest available flash-loan notional in the governance token at reference DEX depth.",
-        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the total quorum required for a governance vote is achievable by a single entity using a flash loan in the governance token. The assessment compares the governance quorum threshold (in token units) against the maximum single-transaction borrowable depth in the governance token across all major flash loan venues (Aave, Uniswap, Balancer) at the reference block. If the largest flash-loanable notional exceeds the quorum threshold, the flash-loan attack is theoretically viable from a capital standpoint.\n\n**Why it matters**\nEven when voting power requires a balance snapshot rather than a spot balance (which is assessed under RD-F-036), quorum achievability via flash loan identifies a second-order risk: a protocol where quorum is denominated in a token that is deeply liquidity-pooled may face governance attacks that are cheap enough to be economically viable for a well-capitalized attacker. This factor is subordinate to RD-F-036 — it is most relevant for protocols that use snapshotted voting but have a quorum threshold that is very low relative to flash loan depth.\n\n**Green / Yellow / Red**\nGreen is assigned when the quorum threshold exceeds the maximum flash-loanable notional in the governance token by at least 5x, or when the governance token is not flash-loanable on any major venue. Yellow covers cases where the threshold is 2–5x the maximum flash loan depth. Red is assigned when the quorum threshold is achievable or nearly achievable (within 120% of) via a single flash loan transaction.\n\n**Common gray cases**\nThis factor is grayed when the governance token is not listed on any venue offering flash loans, or when quorum is denominated in a non-transferable token (vote-locked positions, time-weighted balances).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PH",
-        "measurement": "Determine whether the governance quorum threshold is ≤ the largest available flash-loan notional in the governance token at reference DEX depth.",
-        "data_source": "Governance contract `quorumNumerator()` or equivalent + governance token total supply + Uniswap/Aave/Balancer flash-loan pool depth via subgraph",
-        "method": "PH",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Quorum threshold % + token supply + flash-loan depth (USD) + derived comparison",
+        "category_id": 2,
         "confidence_signal": "green = quorum materially exceeds max flash-loan depth; yellow = quorum within 2× of flash-loan depth; red = flash-loan alone can reach quorum; gray = no on-chain governance or governance token not flash-loanable",
+        "curation_archetype": "PH",
+        "data_source": "Governance contract `quorumNumerator()` or equivalent + governance token total supply + Uniswap/Aave/Balancer flash-loan pool depth via subgraph",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether the governance quorum threshold is ≤ the largest available flash-loan notional in the governance token at reference DEX depth.",
+        "evidence_artifact": "Quorum threshold % + token supply + flash-loan depth (USD) + derived comparison",
+        "id": "RD-F-037",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether the governance quorum threshold is ≤ the largest available flash-loan notional in the governance token at reference DEX depth.",
+        "method": "PH",
+        "name": "Quorum achievable via single-entity flash loan",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor evaluates whether the total quorum required for a governance vote is achievable by a single entity using a flash loan in the governance token. The assessment compares the governance quorum threshold (in token units) against the maximum single-transaction borrowable depth in the governance token across all major flash loan venues (Aave, Uniswap, Balancer) at the reference block. If the largest flash-loanable notional exceeds the quorum threshold, the flash-loan attack is theoretically viable from a capital standpoint.\n\n**Why it matters**\nEven when voting power requires a balance snapshot rather than a spot balance (which is assessed under RD-F-036), quorum achievability via flash loan identifies a second-order risk: a protocol where quorum is denominated in a token that is deeply liquidity-pooled may face governance attacks that are cheap enough to be economically viable for a well-capitalized attacker. This factor is subordinate to RD-F-036 — it is most relevant for protocols that use snapshotted voting but have a quorum threshold that is very low relative to flash loan depth.\n\n**Green / Yellow / Red**\nGreen is assigned when the quorum threshold exceeds the maximum flash-loanable notional in the governance token by at least 5x, or when the governance token is not flash-loanable on any major venue. Yellow covers cases where the threshold is 2–5x the maximum flash loan depth. Red is assigned when the quorum threshold is achievable or nearly achievable (within 120% of) via a single flash loan transaction.\n\n**Common gray cases**\nThis factor is grayed when the governance token is not listed on any venue offering flash loans, or when quorum is denominated in a non-transferable token (vote-locked positions, time-weighted balances).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kelp has not published an active governance-token quorum or proposal executor.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

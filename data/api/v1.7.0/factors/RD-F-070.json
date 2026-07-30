@@ -1,60 +1,74 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-070",
-        "category_id": 4,
-        "name": "Empty cToken-style market (zero supply/borrow)",
-        "description": "Determine whether any listed Compound V2-fork market has `totalSupply == 0` and `totalBorrow == 0`, the precondition for a donation-exploit.",
-        "scoring_methodology": "**What this measures**\nThis factor detects whether any Compound V2-fork lending market has totalSupply at or near zero with a non-zero collateral factor enabled. An empty market -- one with no initial supply locked -- creates a critical arithmetic vulnerability in the exchange rate calculation underpinning every borrow and liquidation function.\n\n**Why it matters**\nWhen a cToken market has zero supply, its exchange rate is computed from scratch on the first deposit. An attacker who donates a small amount of the underlying asset directly to the cToken contract before anyone supplies can inflate the exchange rate by orders of magnitude. A second depositor of even 2 wei then holds shares worth far more than deposited; using those inflated shares as collateral, the attacker drains the entire lending pool. This attack class has been executed across at least nine protocols including Hundred Finance, Sonne Finance, Onyx Protocol, and Radiant Capital. The yAudit firm explicitly flagged this risk in Sonne Finance's own audit report before the exploit; the permissionless governance execution gap was not addressed.\n\n**Green / Yellow / Red**\nGreen: all cToken markets have non-trivial supply locked at deploy time, or code enforces a minimum seed deposit before a market's collateral factor can be non-zero. Yellow: markets exist activated via governance with zero or minimal seed-deposit window, mitigated by other controls. Red: one or more live markets has totalSupply at or near zero with a non-zero collateral factor and no on-chain guard preventing exchange-rate inflation.\n\n**Common gray cases**\nCurators may encounter markets where totalSupply is very low but non-zero (a few hundred wei from a genesis deposit). This is scored conditional yellow unless the seed deposit is economically sufficient to prevent the attack at current TVL levels; curator judgment required.\n\n**Notable historical examples**\n- **Hundred Finance** (.4M, 2023): Attacker donated 500 WBTC to empty hWBTC market, inflated exchange rate, drained pool with 2 wei.\n- **Sonne Finance** (0M, 2024): Governance-activated empty market; attacker front-ran activation despite a yAudit warning in the protocol's own audit report.\n- **Onyx Protocol** (.1M, 2023): Governance-added PEPE market with no seed deposit; same vector repeated in a second incident months later.\n- **Radiant Capital 1st** (.5M, 2024): Aave V2 fork; native USDC market exploited in a 6-second activation window.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Any live Compound V2-fork market with totalSupply at or near zero and a non-zero collateral factor is scored as an immediate critical flag regardless of all other category outcomes.",
-        "is_critical": true,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether any listed Compound V2-fork market has `totalSupply == 0` and `totalBorrow == 0`, the precondition for a donation-exploit.",
-        "data_source": "`totalSupply()` and `totalBorrow()` calls on each market contract via RPC",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Market address + `totalSupply` value + `totalBorrow` value + block number",
+        "category_id": 4,
         "confidence_signal": "green = all markets have seed deposit / non-zero supply; red = any market has zero supply AND zero borrow (donation exploit setup); gray = protocol is not a Compound V2-style lending fork (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "`totalSupply()` and `totalBorrow()` calls on each market contract via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether any listed Compound V2-fork market has `totalSupply == 0` and `totalBorrow == 0`, the precondition for a donation-exploit.",
+        "evidence_artifact": "Market address + `totalSupply` value + `totalBorrow` value + block number",
+        "id": "RD-F-070",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": true,
+        "measurement": "Determine whether any listed Compound V2-fork market has `totalSupply == 0` and `totalBorrow == 0`, the precondition for a donation-exploit.",
+        "method": "PE",
+        "name": "Empty cToken-style market (zero supply/borrow)",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor detects whether any Compound V2-fork lending market has totalSupply at or near zero with a non-zero collateral factor enabled. An empty market -- one with no initial supply locked -- creates a critical arithmetic vulnerability in the exchange rate calculation underpinning every borrow and liquidation function.\n\n**Why it matters**\nWhen a cToken market has zero supply, its exchange rate is computed from scratch on the first deposit. An attacker who donates a small amount of the underlying asset directly to the cToken contract before anyone supplies can inflate the exchange rate by orders of magnitude. A second depositor of even 2 wei then holds shares worth far more than deposited; using those inflated shares as collateral, the attacker drains the entire lending pool. This attack class has been executed across at least nine protocols including Hundred Finance, Sonne Finance, Onyx Protocol, and Radiant Capital. The yAudit firm explicitly flagged this risk in Sonne Finance's own audit report before the exploit; the permissionless governance execution gap was not addressed.\n\n**Green / Yellow / Red**\nGreen: all cToken markets have non-trivial supply locked at deploy time, or code enforces a minimum seed deposit before a market's collateral factor can be non-zero. Yellow: markets exist activated via governance with zero or minimal seed-deposit window, mitigated by other controls. Red: one or more live markets has totalSupply at or near zero with a non-zero collateral factor and no on-chain guard preventing exchange-rate inflation.\n\n**Common gray cases**\nCurators may encounter markets where totalSupply is very low but non-zero (a few hundred wei from a genesis deposit). This is scored conditional yellow unless the seed deposit is economically sufficient to prevent the attack at current TVL levels; curator judgment required.\n\n**Notable historical examples**\n- **Hundred Finance** (.4M, 2023): Attacker donated 500 WBTC to empty hWBTC market, inflated exchange rate, drained pool with 2 wei.\n- **Sonne Finance** (0M, 2024): Governance-activated empty market; attacker front-ran activation despite a yAudit warning in the protocol's own audit report.\n- **Onyx Protocol** (.1M, 2023): Governance-added PEPE market with no seed deposit; same vector repeated in a second incident months later.\n- **Radiant Capital 1st** (.5M, 2024): Aave V2 fork; native USDC market exploited in a 6-second activation window.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Any live Compound V2-fork market with totalSupply at or near zero and a non-zero collateral factor is scored as an immediate critical flag regardless of all other category outcomes."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "curve-llamalend-2026-rekt",
-          "relevance": "related",
-          "notes": "Same empty-market donation pattern as Venus zkSync incident",
           "hack_protocol_name": "Curve LlamaLend",
           "hack_protocol_slug": "curve-v2",
-          "occurred_at": "2026-03-02",
           "loss_usd": 240000.0,
+          "notes": "Same empty-market donation pattern as Venus zkSync incident",
+          "occurred_at": "2026-03-02",
+          "relevance": "related",
           "root_cause": "Empty-market donation attack on a freshly-listed lending market"
         },
         {
           "hack_id": "balancer-2025-rekt",
-          "relevance": "related",
-          "notes": "Composable Stable Pool _upscale() rounding-down compounded across batch swaps; root cause of $128M loss",
           "hack_protocol_name": "Balancer V2 (Composable Stable Pools)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2025-11-03",
           "loss_usd": 128000000.0,
+          "notes": "Composable Stable Pool _upscale() rounding-down compounded across batch swaps; root cause of $128M loss",
+          "occurred_at": "2025-11-03",
+          "relevance": "related",
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
         },
         {
           "hack_id": "venus-zksync-2025-rekt",
-          "relevance": "causal",
-          "notes": "Empty-market donation attack — canonical RD-F-070 evidence pattern",
           "hack_protocol_name": "Venus Protocol (zkSync Era deployment)",
           "hack_protocol_slug": "venus",
-          "occurred_at": "2025-03-29",
           "loss_usd": 902000.0,
+          "notes": "Empty-market donation attack — canonical RD-F-070 evidence pattern",
+          "occurred_at": "2025-03-29",
+          "relevance": "causal",
           "root_cause": "Empty-market donation attack on a freshly-deployed market with no virtual liquidity / no `_decimalsOffset()` first-depositor protection"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "RD-F-070 is scoped to an empty Compound V2-fork cToken market with zero supply and borrow. Kelp DAO is a liquid-restaking deposit/mint system and exposes no Kelp-owned cToken borrowing market under the approved surface, so this critical factor is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

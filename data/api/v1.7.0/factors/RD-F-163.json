@@ -1,29 +1,43 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-163",
-        "category_id": 11,
-        "name": "Avg attacker reconnaissance time for peer-class protocols",
-        "description": "Report the average number of days of attacker reconnaissance activity before a strike on peer-class protocols (lending/DEX/bridge/perps), sourced from the hack database.",
-        "scoring_methodology": "**What this measures**\nThis static factor records the average number of days of documented reconnaissance activity — on-chain probing, test transactions, mixer wallet preparation — by attacker-labeled wallets before executing a strike on peer-class protocols in the hack database. The value is derived from curator analysis of the hack database and is protocol-class-specific: lending protocols, bridge protocols, and DEXes each have documented reconnaissance lead times. Output is a days-value benchmark for the class, updated when new post-mortem evidence expands the database. Category 11 context: the reconnaissance window benchmark tells curators how much advance warning time is theoretically available and frames the urgency of real-time signal response.\n\n**Why it matters**\nThe T-01 synthesis documents the detection window distribution across 37 hacks: High detectability hacks had reconnaissance windows up to 12 days (Badger DAO's malicious approvals), Medium detectability hacks typically had hours to days of pre-exploit on-chain activity, and Low/None detectability hacks had zero advance signal. For the lending protocol class, oracle manipulation setup is typically executed within the same transaction or within minutes, while governance attack preparation can span 24 hours or more. Bridge exploits involving social engineering (DPRK implant class) have the longest reconnaissance windows — months to years. The benchmark informs alert threshold calibration for Cat 6 signals for this protocol class.\n\n**Green / Yellow / Red**\nGreen is informational — a longer reconnaissance window benchmark is more favorable as it provides more actionable alert time. Yellow applies when the benchmark for the class is less than 24 hours — most signals will fire during or after the exploit. Red applies when the class benchmark is under one hour — Cat 6 signals become primarily exploit-in-progress rather than precursor alerts.\n\n**Common gray cases**\nGray applies when the hack database has insufficient examples of the specific protocol class to compute a reliable benchmark (fewer than three in-sample exploits), or when the protocol combines multiple classes making the applicable benchmark ambiguous.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Report the average number of days of attacker reconnaissance activity before a strike on peer-class protocols (lending/DEX/bridge/perps), sourced from the hack database.",
-        "data_source": "In-house hack DB reconnaissance field (T-01 cluster analysis) + curator analysis",
-        "method": "M",
-        "output_format": "threshold-triggered",
         "cadence": "S",
-        "evidence_artifact": "Hack DB query results + mean reconnaissance days for protocol class + class definition",
+        "category_id": 11,
         "confidence_signal": "green = ≥30 days average reconnaissance time for this class (sufficient warning window); yellow = 7–29 days; red = <7 days (near-instant-strike class); gray = insufficient hack DB sample for this class",
+        "curation_archetype": "M",
+        "data_source": "In-house hack DB reconnaissance field (T-01 cluster analysis) + curator analysis",
+        "deprecated_in_rubric": null,
+        "description": "Report the average number of days of attacker reconnaissance activity before a strike on peer-class protocols (lending/DEX/bridge/perps), sourced from the hack database.",
+        "evidence_artifact": "Hack DB query results + mean reconnaissance days for protocol class + class definition",
+        "id": "RD-F-163",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Report the average number of days of attacker reconnaissance activity before a strike on peer-class protocols (lending/DEX/bridge/perps), sourced from the hack database.",
+        "method": "M",
+        "name": "Avg attacker reconnaissance time for peer-class protocols",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis static factor records the average number of days of documented reconnaissance activity — on-chain probing, test transactions, mixer wallet preparation — by attacker-labeled wallets before executing a strike on peer-class protocols in the hack database. The value is derived from curator analysis of the hack database and is protocol-class-specific: lending protocols, bridge protocols, and DEXes each have documented reconnaissance lead times. Output is a days-value benchmark for the class, updated when new post-mortem evidence expands the database. Category 11 context: the reconnaissance window benchmark tells curators how much advance warning time is theoretically available and frames the urgency of real-time signal response.\n\n**Why it matters**\nThe T-01 synthesis documents the detection window distribution across 37 hacks: High detectability hacks had reconnaissance windows up to 12 days (Badger DAO's malicious approvals), Medium detectability hacks typically had hours to days of pre-exploit on-chain activity, and Low/None detectability hacks had zero advance signal. For the lending protocol class, oracle manipulation setup is typically executed within the same transaction or within minutes, while governance attack preparation can span 24 hours or more. Bridge exploits involving social engineering (DPRK implant class) have the longest reconnaissance windows — months to years. The benchmark informs alert threshold calibration for Cat 6 signals for this protocol class.\n\n**Green / Yellow / Red**\nGreen is informational — a longer reconnaissance window benchmark is more favorable as it provides more actionable alert time. Yellow applies when the benchmark for the class is less than 24 hours — most signals will fire during or after the exploit. Red applies when the class benchmark is under one hour — Cat 6 signals become primarily exploit-in-progress rather than precursor alerts.\n\n**Common gray cases**\nGray applies when the hack database has insufficient examples of the specific protocol class to compute a reliable benchmark (fewer than three in-sample exploits), or when the protocol combines multiple classes making the applicable benchmark ambiguous.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Public incident records did not provide a complete attacker-wallet reconnaissance interval suitable for this metric.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

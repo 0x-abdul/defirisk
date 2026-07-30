@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-026",
-        "category_id": 2,
-        "name": "Upgrade multisig signer configuration (M/N)",
-        "description": "Read `threshold` and `getOwners()` on the multisig controlling upgrade / sensitive ops. Store as `required` (M) and `total` (N); render as \"M/N\". For EOA admins record `required=1, total=1` (display \"1/1\"). Null when admin is immutable or full DAO with no fixed signer set.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct addresses that hold any admin role across the protocol's deployed contract system — including owner, ProxyAdmin, upgrader, pauser, minter, fee collector, oracle setter, and any other role with elevated permissions. The count is produced by an on-chain sweep of AccessControl role members and owner slots across all contracts associated with the protocol.\n\n**Why it matters**\nThe count of distinct admin addresses sets the floor for understanding the protocol's attack surface. A protocol with a single admin address is maximally centralized; one with twenty role-separated addresses across multiple independent parties has a dramatically larger attacker burden. The evidence base shows that protocols with very small admin address counts — particularly those where count equals one — are over-represented in the off-chain key compromise cluster. The count alone is not graded as critical (role separation and threshold are assessed separately), but it is a required display field that contextualizes every other governance signal.\n\n**Green / Yellow / Red**\nGreen is assigned when three or more distinct addresses hold clearly-separated roles (upgrader, pauser, oracle setter, and fee collector are held by different addresses or multisigs). Yellow covers cases where two to three addresses hold the full role set, or where the count is high but roles overlap significantly. Red is assigned when a single address holds all elevated roles, regardless of whether that address is an EOA or a multisig — single-address role concentration is the underlying condition for RD-F-027.\n\n**Common gray cases**\nThis factor is grayed when on-chain AccessControl events are absent and source inspection is required but unavailable within the assessment window, or when a protocol uses factory-deployed contracts where role inheritance is unclear.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read `threshold` and `getOwners()` on the multisig controlling upgrade / sensitive ops. Store as `required` (M) and `total` (N); render as \"M/N\". For EOA admins record `required=1, total=1` (display \"1/1\"). Null when admin is immutable or full DAO with no fixed signer set.",
-        "data_source": "Safe Transaction Service API `{safe_address}/` endpoint (`threshold` + `owners` array); on-chain `getThreshold()` / `getOwners()` RPC fallback via Etherscan contract read; for non-EVM chains, equivalent multisig program account data",
-        "method": "PE",
-        "output_format": "structured",
         "cadence": "S",
-        "evidence_artifact": "multisig address + Safe API response or on-chain call result + `checked_at`; output schema `{\"required\": M, \"total\": N, \"display\": \"M/N\"}`",
+        "category_id": 2,
         "confidence_signal": "green = threshold ≥ peer norm for TVL band; yellow = below peer norm; red = 1/1 (EOA) or abnormally low (cross-reference RD-F-028); gray = multisig not identifiable or non-standard admin pattern",
+        "curation_archetype": "PE",
+        "data_source": "Safe Transaction Service API `{safe_address}/` endpoint (`threshold` + `owners` array); on-chain `getThreshold()` / `getOwners()` RPC fallback via Etherscan contract read; for non-EVM chains, equivalent multisig program account data",
+        "deprecated_in_rubric": null,
+        "description": "Read `threshold` and `getOwners()` on the multisig controlling upgrade / sensitive ops. Store as `required` (M) and `total` (N); render as \"M/N\". For EOA admins record `required=1, total=1` (display \"1/1\"). Null when admin is immutable or full DAO with no fixed signer set.",
+        "evidence_artifact": "multisig address + Safe API response or on-chain call result + `checked_at`; output schema `{\"required\": M, \"total\": N, \"display\": \"M/N\"}`",
+        "id": "RD-F-026",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read `threshold` and `getOwners()` on the multisig controlling upgrade / sensitive ops. Store as `required` (M) and `total` (N); render as \"M/N\". For EOA admins record `required=1, total=1` (display \"1/1\"). Null when admin is immutable or full DAO with no fixed signer set.",
+        "method": "PE",
+        "name": "Upgrade multisig signer configuration (M/N)",
+        "output_format": "structured",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct addresses that hold any admin role across the protocol's deployed contract system — including owner, ProxyAdmin, upgrader, pauser, minter, fee collector, oracle setter, and any other role with elevated permissions. The count is produced by an on-chain sweep of AccessControl role members and owner slots across all contracts associated with the protocol.\n\n**Why it matters**\nThe count of distinct admin addresses sets the floor for understanding the protocol's attack surface. A protocol with a single admin address is maximally centralized; one with twenty role-separated addresses across multiple independent parties has a dramatically larger attacker burden. The evidence base shows that protocols with very small admin address counts — particularly those where count equals one — are over-represented in the off-chain key compromise cluster. The count alone is not graded as critical (role separation and threshold are assessed separately), but it is a required display field that contextualizes every other governance signal.\n\n**Green / Yellow / Red**\nGreen is assigned when three or more distinct addresses hold clearly-separated roles (upgrader, pauser, oracle setter, and fee collector are held by different addresses or multisigs). Yellow covers cases where two to three addresses hold the full role set, or where the count is high but roles overlap significantly. Red is assigned when a single address holds all elevated roles, regardless of whether that address is an EOA or a multisig — single-address role concentration is the underlying condition for RD-F-027.\n\n**Common gray cases**\nThis factor is grayed when on-chain AccessControl events are absent and source inspection is required but unavailable within the assessment window, or when a protocol uses factory-deployed contracts where role inheritance is unclear.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "Published Ethereum administration includes three timelocks plus distinct Admin, External Admin, Manager, Pauser, Treasury, and asset-transfer Safes.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH#safe-multisigs"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,120 +1,139 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-052",
-        "category_id": 3,
-        "name": "Breakage analysis per dependency",
-        "description": "Produce a short per-dependency text describing which protocol functions halt or degrade and impact severity if each declared dependency fails.",
-        "scoring_methodology": "**What this measures**\nThis factor contains short curator-written analyses — one per dependency identified in RD-F-050 — describing which protocol functions halt or degrade if that dependency fails, and at what severity (core function impaired vs. peripheral feature reduced). This is a qualitative, curator-maintained field with no automated source.\n\n**Why it matters**\nA dependency graph (RD-F-050) names the connections; breakage analysis explains what those connections mean for depositors. A protocol may depend on a bridge only for a non-critical claim function, or may depend on a stablecoin oracle for its entire borrow-collateral calculation. These are materially different risk profiles that the dependency list alone does not distinguish. The synthesis dataset shows that composability failures (Cluster F) account for $350M+ in losses precisely because downstream protocols did not understand how deeply they depended on upstream price validity. Breakage analysis makes that impact explicit for the dashboard user.\n\n**Green / Yellow / Red**\nGreen is scored when a curator has completed breakage analysis for each critical dependency and assessed impact as peripheral or gracefully degraded (no core function loss). Yellow is scored when one or more critical dependencies have incomplete breakage analysis or where failure of a dependency would partially impair core protocol function. Red is scored when failure of any single dependency would fully impair the protocol's core function (borrowing, liquidation, or settlement).\n\n**Common gray cases**\nGray is applied when the breakage analysis cannot be completed within the assessment time budget due to insufficient documentation or source complexity.\n\n**Notable historical examples**\n- **Alpha Finance** ($37.5M, 2021): Breakage from Cream Finance dependency — causal path for the exploit.\n- **Conic Finance** ($4.2M, 2023): Curve LP oracle dependency; Curve pool manipulation propagated directly to Conic collateral values.\n- **Sturdy Finance** ($0.8M, 2023): Balancer LP oracle dependency; B-stETH-STABLE pool had been publicly flagged as manipulable four months before the exploit.\n- **Midas Capital** ($0.66M, 2023): Curve LP collateral dependency exploited via oracle manipulation of underlying pool.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Produce a short per-dependency text describing which protocol functions halt or degrade and impact severity if each declared dependency fails.",
-        "data_source": "Curator analysis of dependency graph (from F050) + protocol docs + source inspection",
-        "method": "M",
-        "output_format": "narrative-note",
         "cadence": "S",
-        "evidence_artifact": "Curator note per dependency: function name → degradation description + severity classification",
+        "category_id": 3,
         "confidence_signal": "green = breakage analysis documented with mitigations for all critical deps; yellow = partial analysis (major deps covered); red = no breakage analysis and at least one critical dep with prior failure event; gray = dependency graph not completed (see F050)",
+        "curation_archetype": "M",
+        "data_source": "Curator analysis of dependency graph (from F050) + protocol docs + source inspection",
+        "deprecated_in_rubric": null,
+        "description": "Produce a short per-dependency text describing which protocol functions halt or degrade and impact severity if each declared dependency fails.",
+        "evidence_artifact": "Curator note per dependency: function name → degradation description + severity classification",
+        "id": "RD-F-052",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Produce a short per-dependency text describing which protocol functions halt or degrade and impact severity if each declared dependency fails.",
+        "method": "M",
+        "name": "Breakage analysis per dependency",
+        "output_format": "narrative-note",
+        "scoring_methodology": "**What this measures**\nThis factor contains short curator-written analyses — one per dependency identified in RD-F-050 — describing which protocol functions halt or degrade if that dependency fails, and at what severity (core function impaired vs. peripheral feature reduced). This is a qualitative, curator-maintained field with no automated source.\n\n**Why it matters**\nA dependency graph (RD-F-050) names the connections; breakage analysis explains what those connections mean for depositors. A protocol may depend on a bridge only for a non-critical claim function, or may depend on a stablecoin oracle for its entire borrow-collateral calculation. These are materially different risk profiles that the dependency list alone does not distinguish. The synthesis dataset shows that composability failures (Cluster F) account for $350M+ in losses precisely because downstream protocols did not understand how deeply they depended on upstream price validity. Breakage analysis makes that impact explicit for the dashboard user.\n\n**Green / Yellow / Red**\nGreen is scored when a curator has completed breakage analysis for each critical dependency and assessed impact as peripheral or gracefully degraded (no core function loss). Yellow is scored when one or more critical dependencies have incomplete breakage analysis or where failure of a dependency would partially impair core protocol function. Red is scored when failure of any single dependency would fully impair the protocol's core function (borrowing, liquidation, or settlement).\n\n**Common gray cases**\nGray is applied when the breakage analysis cannot be completed within the assessment time budget due to insufficient documentation or source complexity.\n\n**Notable historical examples**\n- **Alpha Finance** ($37.5M, 2021): Breakage from Cream Finance dependency — causal path for the exploit.\n- **Conic Finance** ($4.2M, 2023): Curve LP oracle dependency; Curve pool manipulation propagated directly to Conic collateral values.\n- **Sturdy Finance** ($0.8M, 2023): Balancer LP oracle dependency; B-stETH-STABLE pool had been publicly flagged as manipulable four months before the exploit.\n- **Midas Capital** ($0.66M, 2023): Curve LP collateral dependency exploited via oracle manipulation of underlying pool."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2026-01-20",
+          "relevance": "related",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "abracadabra-rekt2",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Abracadabra Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2025-03-25",
           "loss_usd": 13000000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2025-03-25",
+          "relevance": "related",
           "root_cause": "Logic bug — phantom collateral / post-liquidation state inconsistency"
         },
         {
           "hack_id": "conic-finance-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Conic Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-07-21",
           "loss_usd": 4200000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-07-21",
+          "relevance": "related",
           "root_cause": "Read-only reentrancy in CurveLPOracleV2 (ETH/WETH mismatch bypassed reentrancy guard) + sandwich attack on imbalanced pool"
         },
         {
           "hack_id": "sturdy-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Sturdy Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-06-12",
           "loss_usd": 800000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-06-12",
+          "relevance": "related",
           "root_cause": "Read-only reentrancy on Balancer LP (B-stETH-STABLE) → manipulated collateral price → undercollateralized borrow drain"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-05-06",
+          "relevance": "related",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "midas-capital-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Midas Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-01-15",
           "loss_usd": 660000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2023-01-15",
+          "relevance": "related",
           "root_cause": "Read-only reentrancy on Curve LP token virtual price — inflated collateral valuation"
         },
         {
           "hack_id": "bearn",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "bEarnFi (BvaultsBank)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-16",
           "loss_usd": 18000000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-05-16",
+          "relevance": "related",
           "root_cause": "Logic bug — token denomination mismatch between vault and strategy layers"
         },
         {
           "hack_id": "rari-capital-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Rari Capital",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-08",
           "loss_usd": 10000000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-05-08",
+          "relevance": "related",
           "root_cause": "Fake token + protocol callback exploit (ibETH injection via Alpha Homora) → ETH pool drain"
         },
         {
           "hack_id": "alpha-finance-rekt",
-          "relevance": "related",
-          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
           "hack_protocol_name": "Alpha Finance / Alpha Homora V2 (leveraged yield farming)",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-02-13",
           "loss_usd": 37500000.0,
+          "notes": "Breakage analysis [via cross-hack: Factor 6: Cross-Protocol / Composability Complexity]",
+          "occurred_at": "2021-02-13",
+          "relevance": "related",
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "Oracle failure blocks price updates; EigenLayer failure impairs delegated assets; verifier failure can release unbacked rsETH.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

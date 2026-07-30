@@ -1,29 +1,49 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-063",
-        "category_id": 4,
-        "name": "TVL (current + 30d trend)",
-        "description": "Read current TVL in USD and 30-day trend using DeFiLlama adapter methodology.",
-        "scoring_methodology": "**What this measures**\nThis factor records the current total value locked (TVL) in USD and a thirty-day trend sparkline derived from DeFiLlama data via the in-house adapter. TVL is the aggregate market value of all user-deposited assets in the protocol's live contracts. The thirty-day trend captures whether capital is flowing in or out and at what velocity. Both the absolute value and the trend direction are displayed on the protocol card; neither alone is a sufficient risk signal without context.\n\n**Why it matters**\nTVL is a proxy for depositor demand and protocol health, but its primary risk-dashboard role is as a denominator for concentration and adequacy calculations. A protocol with $10M TVL and a 2-of-3 multisig faces a categorically different risk profile than a protocol with $2B TVL and the same multisig -- because the dollar value at risk per compromised signer is two hundred times higher. TVL also anchors the oracle-manipulation-resistance threshold: the cost of manipulating an oracle pool must exceed the attacker's potential gain, which scales with TVL. Declining TVL trends have historically preceded several exploits, suggesting sophisticated capital was exiting before public disclosure.\n\n**Green / Yellow / Red**\nGreen: TVL above $100M with a stable or rising thirty-day trend, meeting the A-grade eligibility floor. Yellow: TVL between $10M and $100M, or TVL above $100M but with a declining trend exceeding twenty percent over thirty days. Red: TVL below $10M, or a single-day drop exceeding thirty percent not explained by a known market event.\n\n**Common gray cases**\nProtocols with multi-chain TVL that is aggregated inconsistently across DeFiLlama adapters may show misleading totals. Curator must verify that the in-house adapter matches DeFiLlama's methodology for the specific protocol before relying on the TVL figure.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Read current TVL in USD and 30-day trend using DeFiLlama adapter methodology.",
-        "data_source": "DeFiLlama API `/protocol/<slug>` endpoint + in-house adapter if DeFiLlama coverage is absent",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "DeFiLlama response JSON + TVL USD + 30d sparkline data + methodology slug",
+        "category_id": 4,
         "confidence_signal": "green = TVL ≥$100M with stable or growing 30d trend; yellow = $10M–$99M or declining trend >20%; red = <$10M or TVL decline >50% in 30d; gray = TVL not computable (adapter missing or protocol unlaunched)",
+        "curation_archetype": "PE",
+        "data_source": "DeFiLlama API `/protocol/<slug>` endpoint + in-house adapter if DeFiLlama coverage is absent",
+        "deprecated_in_rubric": null,
+        "description": "Read current TVL in USD and 30-day trend using DeFiLlama adapter methodology.",
+        "evidence_artifact": "DeFiLlama response JSON + TVL USD + 30d sparkline data + methodology slug",
+        "id": "RD-F-063",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Read current TVL in USD and 30-day trend using DeFiLlama adapter methodology.",
+        "method": "PE",
+        "name": "TVL (current + 30d trend)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the current total value locked (TVL) in USD and a thirty-day trend sparkline derived from DeFiLlama data via the in-house adapter. TVL is the aggregate market value of all user-deposited assets in the protocol's live contracts. The thirty-day trend captures whether capital is flowing in or out and at what velocity. Both the absolute value and the trend direction are displayed on the protocol card; neither alone is a sufficient risk signal without context.\n\n**Why it matters**\nTVL is a proxy for depositor demand and protocol health, but its primary risk-dashboard role is as a denominator for concentration and adequacy calculations. A protocol with $10M TVL and a 2-of-3 multisig faces a categorically different risk profile than a protocol with $2B TVL and the same multisig -- because the dollar value at risk per compromised signer is two hundred times higher. TVL also anchors the oracle-manipulation-resistance threshold: the cost of manipulating an oracle pool must exceed the attacker's potential gain, which scales with TVL. Declining TVL trends have historically preceded several exploits, suggesting sophisticated capital was exiting before public disclosure.\n\n**Green / Yellow / Red**\nGreen: TVL above $100M with a stable or rising thirty-day trend, meeting the A-grade eligibility floor. Yellow: TVL between $10M and $100M, or TVL above $100M but with a declining trend exceeding twenty percent over thirty days. Red: TVL below $10M, or a single-day drop exceeding thirty percent not explained by a known market event.\n\n**Common gray cases**\nProtocols with multi-chain TVL that is aggregated inconsistently across DeFiLlama adapters may show misleading totals. Curator must verify that the in-house adapter matches DeFiLlama's methodology for the specific protocol before relying on the TVL figure.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "The cached DefiLlama record contains $903,060,369.95 current TVL and +5.18% over 30 days. The profile also records an approximately 40.7% decline over 90 days, which is material context but not a red/yellow trigger under the current TVL scoring rule.",
+          "evidence_summary": "DefiLlama reports approximately $903.1 million Kelp DAO TVL as of 2026-07-30, with a +5.18% 30-day change. The current value clears the rubric's $100 million green threshold; the longer 90-day decline is recorded without overriding the current-plus-30-day rule.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/kelp-dao"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

@@ -1,120 +1,134 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-055",
-        "category_id": 3,
-        "name": "Oracle pool depth (USD)",
-        "description": "Measure the liquidity depth of each DEX pool feeding a TWAP oracle, in USD at reference block; updated continuously.",
-        "scoring_methodology": "**What this measures**\nThis factor records the liquidity depth of the DEX pool feeding the oracle — measured in USD at a reference block. This is a continuous, dynamically updated metric drawn from DEX subgraph queries and on-chain reads. It applies to any protocol using a DEX pool as a price source, whether spot or TWAP.\n\n**Why it matters**\nPool depth is the economic cost of oracle manipulation. The Inverse Finance exploit is the canonical illustration: with approximately $1M in pool liquidity, an attacker moved the INV price 50x using only 500 ETH, enabling $15.6M in undercollateralised borrowing. Mango Markets suffered $115M in losses from a MNGO spot oracle with thin underlying liquidity. Polter Finance's BOO token oracle had insufficient pool depth to resist the manipulation that resulted in $8.7M in losses. The synthesis dataset (Cluster O) shows that flash-loan amplification makes even \"medium-liquidity\" pools vulnerable when the protocol TVL is large relative to oracle pool depth.\n\n**Green / Yellow / Red**\nGreen is scored when the oracle pool depth exceeds a protocol-TVL-relative threshold that makes manipulation economically irrational (typically oracle pool depth > 5x the maximum single-asset borrow/drain possible). Yellow is scored when pool depth provides partial but not full manipulation resistance. Red is scored when oracle pool depth is demonstrably insufficient to resist a flash-loan-amplified price move.\n\n**Common gray cases**\nGray is applied when pool depth data cannot be retrieved from available subgraphs or when the oracle source uses an aggregated off-chain feed whose underlying pool depth is not publicly queryable.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): Thin MNGO oracle pool; 30x price pump with self-funded positions.\n- **Harvest Finance** ($33.8M, 2020): Curve Y-pool spot price manipulated via flash swap on thin liquidity.\n- **Inverse Finance** ($15.6M, 2022): ~$1M INV/WETH pool depth; 500 ETH moved price 50x.\n- **Polter Finance** ($8.7M, 2024): BOO token SpookySwap pool depth insufficient to resist flash-loan drain.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Measure the liquidity depth of each DEX pool feeding a TWAP oracle, in USD at reference block; updated continuously.",
-        "data_source": "Uniswap v3 subgraph (pool TVL query) or equivalent DEX subgraph; on-chain pool `slot0` + `liquidity` reads",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Pool address + TVL USD + block number + subgraph query timestamp",
+        "category_id": 3,
         "confidence_signal": "green = pool depth ≥$10M; yellow = $1M–$9.9M; red = <$1M (manipulable); gray = protocol does not use DEX-TWAP oracle (N/A)",
+        "curation_archetype": "PE",
+        "data_source": "Uniswap v3 subgraph (pool TVL query) or equivalent DEX subgraph; on-chain pool `slot0` + `liquidity` reads",
+        "deprecated_in_rubric": null,
+        "description": "Measure the liquidity depth of each DEX pool feeding a TWAP oracle, in USD at reference block; updated continuously.",
+        "evidence_artifact": "Pool address + TVL USD + block number + subgraph query timestamp",
+        "id": "RD-F-055",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Measure the liquidity depth of each DEX pool feeding a TWAP oracle, in USD at reference block; updated continuously.",
+        "method": "PE",
+        "name": "Oracle pool depth (USD)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor records the liquidity depth of the DEX pool feeding the oracle — measured in USD at a reference block. This is a continuous, dynamically updated metric drawn from DEX subgraph queries and on-chain reads. It applies to any protocol using a DEX pool as a price source, whether spot or TWAP.\n\n**Why it matters**\nPool depth is the economic cost of oracle manipulation. The Inverse Finance exploit is the canonical illustration: with approximately $1M in pool liquidity, an attacker moved the INV price 50x using only 500 ETH, enabling $15.6M in undercollateralised borrowing. Mango Markets suffered $115M in losses from a MNGO spot oracle with thin underlying liquidity. Polter Finance's BOO token oracle had insufficient pool depth to resist the manipulation that resulted in $8.7M in losses. The synthesis dataset (Cluster O) shows that flash-loan amplification makes even \"medium-liquidity\" pools vulnerable when the protocol TVL is large relative to oracle pool depth.\n\n**Green / Yellow / Red**\nGreen is scored when the oracle pool depth exceeds a protocol-TVL-relative threshold that makes manipulation economically irrational (typically oracle pool depth > 5x the maximum single-asset borrow/drain possible). Yellow is scored when pool depth provides partial but not full manipulation resistance. Red is scored when oracle pool depth is demonstrably insufficient to resist a flash-loan-amplified price move.\n\n**Common gray cases**\nGray is applied when pool depth data cannot be retrieved from available subgraphs or when the oracle source uses an aggregated off-chain feed whose underlying pool depth is not publicly queryable.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): Thin MNGO oracle pool; 30x price pump with self-funded positions.\n- **Harvest Finance** ($33.8M, 2020): Curve Y-pool spot price manipulated via flash swap on thin liquidity.\n- **Inverse Finance** ($15.6M, 2022): ~$1M INV/WETH pool depth; 500 ETH moved price 50x.\n- **Polter Finance** ($8.7M, 2024): BOO token SpookySwap pool depth insufficient to resist flash-loan drain."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2026-01-20",
+          "relevance": "related",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "polter-finance-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
           "hack_protocol_name": "Polter Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-11-16",
           "loss_usd": 8700000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
+          "occurred_at": "2024-11-16",
+          "relevance": "related",
           "root_cause": "Spot price oracle manipulation (SpookySwap V2/V3) → inflated BOO collateral → draining borrow"
         },
         {
           "hack_id": "deus-dao",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Deus DAO / DEI stablecoin",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-05-06",
           "loss_usd": 6500000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2023-05-06",
+          "relevance": "related",
           "root_cause": "Mis-ordered Parameters in burnFrom — Public Approval Override"
         },
         {
           "hack_id": "mango-markets-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
           "hack_protocol_name": "Mango Markets",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-10-11",
           "loss_usd": 115000000.0,
+          "notes": "Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
+          "occurred_at": "2022-10-11",
+          "relevance": "related",
           "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
         },
         {
           "hack_id": "elephant-money-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Elephant Money",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-04-12",
           "loss_usd": 22200000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2022-04-12",
+          "relevance": "related",
           "root_cause": "Flash loan + spot price manipulation during stablecoin minting"
         },
         {
           "hack_id": "inverse-finance",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
           "hack_protocol_name": "Inverse Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-04-02",
           "loss_usd": 15600000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering] || Underlying oracle pool depth [via cross-hack: Factor 25: Single-Source TWAP Oracle From Low-Liquidity Pool Used as Lending Collateral]",
+          "occurred_at": "2022-04-02",
+          "relevance": "related",
           "root_cause": "SushiSwap TWAP Oracle Manipulation — Thin Liquidity Governance Token"
         },
         {
           "hack_id": "spartan-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Spartan Protocol",
           "hack_protocol_slug": null,
-          "occurred_at": "2021-05-01",
           "loss_usd": 30500000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2021-05-01",
+          "relevance": "related",
           "root_cause": "Flash loan + inflated pool balance → LP burn liquidity share manipulation"
         },
         {
           "hack_id": "cheese-bank-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Cheese Bank",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-11-06",
           "loss_usd": 3300000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2020-11-06",
+          "relevance": "related",
           "root_cause": "Flash loan + Uniswap LP spot oracle manipulation → inflated collateral value → drain via borrow()"
         },
         {
           "hack_id": "harvest-finance-rekt",
-          "relevance": "related",
-          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
           "hack_protocol_name": "Harvest Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2020-10-26",
           "loss_usd": 33800000.0,
+          "notes": "Underlying oracle pool depth (USD) [via cross-hack: Factor 16: Single-Source VWAP / Thin-Liquidity Oracle Without Flash Swap Filtering]",
+          "occurred_at": "2020-10-26",
+          "relevance": "related",
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "No underlying DEX pool supplies the reviewed primary oracle path.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

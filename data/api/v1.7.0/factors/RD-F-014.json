@@ -1,50 +1,70 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-014",
-        "category_id": 1,
-        "name": "Reentrancy guard on external-calling functions",
-        "description": "Determine whether all state-mutating functions that perform external calls carry `nonReentrant` or an equivalent reentrancy guard.",
-        "scoring_methodology": "**What this measures**\nThis factor assesses whether all functions that perform an external call before completing state updates carry a nonReentrant modifier or an equivalent reentrancy guard. The assessment is performed by static analysis: for each function containing an external CALL or DELEGATECALL opcode, the tool verifies whether a reentrancy lock (storage slot or transient storage flag) is set before the call and cleared after. Functions that follow strict Checks-Effects-Interactions ordering without a lock are reviewed manually.\n\n**Why it matters**\nReentrancy is the most persistently exploited vulnerability class in DeFi history, accounting for approximately 15 hacks in the T-01 evidence inventory. The Compound fork reentrancy pattern -- where a callback token triggers a reentrant borrow or exitMarket() before the protocol updates the caller's balance -- was exploited four times across Cream Finance, Voltage/Ola, Hundred Finance, and Fei/Rari Fuse. Each time, the same CEI violation was present in a different fork of the same codebase. The nonReentrant guard is a low-cost, high-coverage defense that eliminates the entire callback-reentrancy class; its absence on externally-calling functions is a clear code quality gap.\n\n**Green / Yellow / Red**\nGreen: all functions that make external calls before completing state updates carry nonReentrant or equivalent guards, confirmed by static analysis of deployed bytecode. Yellow: reentrancy guards are present on primary fund-moving functions but absent on peripheral functions (e.g., reward claims, fee collection) that make external calls. Red: any function that moves user funds or updates critical accounting state makes an external call before completing state updates without a reentrancy guard.\n\n**Common gray cases**\nReentrancy guards are not meaningful for protocols with no external call paths (pure computation contracts). This factor is gray for simple token contracts or non-interactive computation modules.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Permissionless state-refill function without reentrancy guard enabled the drip() attack.\n- **Makina Finance** ($4.13M, 2026): Reentrancy guard absent on permissionless state update function using external pool state.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Determine whether all state-mutating functions that perform external calls carry `nonReentrant` or an equivalent reentrancy guard.",
-        "data_source": "Slither `reentrancy-eth` + `reentrancy-no-eth` detectors on Etherscan-verified source",
-        "method": "PE",
-        "output_format": "binary-flag",
         "cadence": "S",
-        "evidence_artifact": "Slither output JSON + list of flagged function names",
+        "category_id": 1,
         "confidence_signal": "green = 0 reentrancy findings; yellow = findings present but only in low-TVL peripheral contracts; red = reentrancy finding in core (borrow/withdraw/mint) function; gray = source unverified",
+        "curation_archetype": "PE",
+        "data_source": "Slither `reentrancy-eth` + `reentrancy-no-eth` detectors on Etherscan-verified source",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether all state-mutating functions that perform external calls carry `nonReentrant` or an equivalent reentrancy guard.",
+        "evidence_artifact": "Slither output JSON + list of flagged function names",
+        "id": "RD-F-014",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether all state-mutating functions that perform external calls carry `nonReentrant` or an equivalent reentrancy guard.",
+        "method": "PE",
+        "name": "Reentrancy guard on external-calling functions",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor assesses whether all functions that perform an external call before completing state updates carry a nonReentrant modifier or an equivalent reentrancy guard. The assessment is performed by static analysis: for each function containing an external CALL or DELEGATECALL opcode, the tool verifies whether a reentrancy lock (storage slot or transient storage flag) is set before the call and cleared after. Functions that follow strict Checks-Effects-Interactions ordering without a lock are reviewed manually.\n\n**Why it matters**\nReentrancy is the most persistently exploited vulnerability class in DeFi history, accounting for approximately 15 hacks in the T-01 evidence inventory. The Compound fork reentrancy pattern -- where a callback token triggers a reentrant borrow or exitMarket() before the protocol updates the caller's balance -- was exploited four times across Cream Finance, Voltage/Ola, Hundred Finance, and Fei/Rari Fuse. Each time, the same CEI violation was present in a different fork of the same codebase. The nonReentrant guard is a low-cost, high-coverage defense that eliminates the entire callback-reentrancy class; its absence on externally-calling functions is a clear code quality gap.\n\n**Green / Yellow / Red**\nGreen: all functions that make external calls before completing state updates carry nonReentrant or equivalent guards, confirmed by static analysis of deployed bytecode. Yellow: reentrancy guards are present on primary fund-moving functions but absent on peripheral functions (e.g., reward claims, fee collection) that make external calls. Red: any function that moves user funds or updates critical accounting state makes an external call before completing state updates without a reentrancy guard.\n\n**Common gray cases**\nReentrancy guards are not meaningful for protocols with no external call paths (pure computation contracts). This factor is gray for simple token contracts or non-interactive computation modules.\n\n**Notable historical examples**\n- **Compound Finance** ($147M, 2021): Permissionless state-refill function without reentrancy guard enabled the drip() attack.\n- **Makina Finance** ($4.13M, 2026): Reentrancy guard absent on permissionless state update function using external pool state."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "makina-rekt",
-          "relevance": "related",
-          "notes": "Reentrancy guard absence [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
           "hack_protocol_name": "Makina Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2026-01-20",
           "loss_usd": 4130000.0,
+          "notes": "Reentrancy guard absence [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
+          "occurred_at": "2026-01-20",
+          "relevance": "related",
           "root_cause": "Permissionless share price oracle update (updateTotalAum) + flash loan Curve pool manipulation → share price inflation → LP drain"
         },
         {
           "hack_id": "compound",
-          "relevance": "illustrative",
-          "notes": "Reentrancy guard absence [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
           "hack_protocol_name": "Compound Finance",
           "hack_protocol_slug": "compound-v3",
-          "occurred_at": "2021-09-29",
           "loss_usd": 147000000.0,
+          "notes": "Reentrancy guard absence [via cross-hack: Factor 14: Public Permissionless Functions That Can Re-Trigger Vulnerable State]",
+          "occurred_at": "2021-09-29",
+          "relevance": "illustrative",
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "Deposit, swap, and transfer paths in the current public LRTDepositPool source use the guard. This is not an exhaustive assessment of every deployed implementation.",
+          "evidence_summary": "The core deposit implementation applies nonReentrant to externally calling state-changing paths, but full deployed-contract coverage was not proven.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/LRTDepositPool.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

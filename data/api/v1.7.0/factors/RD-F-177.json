@@ -1,80 +1,110 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-177",
-        "category_id": 13,
-        "name": "Prior known-ignored disclosure",
-        "description": "Determine whether evidence exists in prior-incident post-mortems that a disclosed vulnerability was reported to the team and not actioned before exploit.",
-        "scoring_methodology": "**What this measures**\nThis factor records evidence in prior-incident post-mortems or public records that a disclosed vulnerability was known to the protocol team before the exploit but was not acted upon within a reasonable timeframe. Evidence sources include: post-mortem disclosures by audit firms, security researchers, or the team itself; governance forum posts naming specific vulnerabilities; Discord or Telegram records; and curator-maintained records of ignored disclosure events. Measurement is manual curator review of all available post-mortems and public records for the protocol. Category 13 context: prior ignored disclosure is the strongest available signal for systematic response-hygiene failure — it demonstrates that the team's disclosure process failed under real conditions.\n\n**Why it matters**\nPrior ignored disclosure is documented across five in-sample hacks with total losses exceeding $233M. Mango Markets ($115M, 2022) had a Discord warning in March 2022 specifically referencing Venus Protocol and the oracle manipulation vector — the attack occurred six months later. Atomic Wallet ($100M, 2023) ignored a Least Authority security report describing the vulnerability class. Sonne Finance ($20M, 2024) had yAudit flag the Compound V2 donation risk in their own audit report — the governance execution gap was not addressed. Balancer ($2.1M, 2023) had a five-day public warning before the exploit. Sturdy Finance ($800K, 2023) had a Balancer forum post specifically naming Sturdy's pools as vulnerable four months before the exploit.\n\n**Green / Yellow / Red**\nGreen is scored when no evidence exists in any accessible post-mortem or public record of a prior security disclosure being ignored or unacted upon within the response window. Yellow applies when a prior disclosure was acted upon but with a delay exceeding the protocol's stated SLA, or when the response was partial (the disclosed finding was addressed but a related attack surface was not). Red is scored when post-mortem evidence confirms that a prior disclosed vulnerability was known to the team and no action was taken within 30 days, and the vulnerability was subsequently exploited.\n\n**Common gray cases**\nGray applies when the protocol is new enough that no post-mortem record exists, or when prior disclosures were made through private channels that the curator cannot access.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): Discord warning in March 2022 referencing the exact oracle manipulation vector; ignored for six months before exploit.\n- **Atomic Wallet** ($100M, 2023): Least Authority security report (2022) describing vulnerability class; not acted upon.\n- **Sonne Finance** ($20M, 2024): yAudit flagged Compound V2 donation risk; governance execution gap not addressed.\n- **Balancer V2** ($2.1M, 2023): Five-day public warning before exploit; at-risk TVL partially evacuated.\n- **Sturdy Finance** ($800K, 2023): Balancer forum named Sturdy's specific pools as vulnerable four months before exploit; no action taken.",
-        "is_critical": false,
-        "curation_archetype": "M",
-        "measurement": "Determine whether evidence exists in prior-incident post-mortems that a disclosed vulnerability was reported to the team and not actioned before exploit.",
-        "data_source": "Protocol post-mortems + OSINT (rekt.news, governance forum incident discussions) + security researcher public disclosures",
-        "method": "M",
-        "output_format": "binary-flag",
         "cadence": "E",
-        "evidence_artifact": "Post-mortem URL + disclosure report URL + curator note connecting disclosure to exploit",
+        "category_id": 13,
         "confidence_signal": "green = no evidence of ignored disclosure; red = confirmed prior ignored disclosure (post-mortem acknowledges received-but-not-actioned report); gray = no prior incidents",
+        "curation_archetype": "M",
+        "data_source": "Protocol post-mortems + OSINT (rekt.news, governance forum incident discussions) + security researcher public disclosures",
+        "deprecated_in_rubric": null,
+        "description": "Determine whether evidence exists in prior-incident post-mortems that a disclosed vulnerability was reported to the team and not actioned before exploit.",
+        "evidence_artifact": "Post-mortem URL + disclosure report URL + curator note connecting disclosure to exploit",
+        "id": "RD-F-177",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Determine whether evidence exists in prior-incident post-mortems that a disclosed vulnerability was reported to the team and not actioned before exploit.",
+        "method": "M",
+        "name": "Prior known-ignored disclosure",
+        "output_format": "binary-flag",
+        "scoring_methodology": "**What this measures**\nThis factor records evidence in prior-incident post-mortems or public records that a disclosed vulnerability was known to the protocol team before the exploit but was not acted upon within a reasonable timeframe. Evidence sources include: post-mortem disclosures by audit firms, security researchers, or the team itself; governance forum posts naming specific vulnerabilities; Discord or Telegram records; and curator-maintained records of ignored disclosure events. Measurement is manual curator review of all available post-mortems and public records for the protocol. Category 13 context: prior ignored disclosure is the strongest available signal for systematic response-hygiene failure — it demonstrates that the team's disclosure process failed under real conditions.\n\n**Why it matters**\nPrior ignored disclosure is documented across five in-sample hacks with total losses exceeding $233M. Mango Markets ($115M, 2022) had a Discord warning in March 2022 specifically referencing Venus Protocol and the oracle manipulation vector — the attack occurred six months later. Atomic Wallet ($100M, 2023) ignored a Least Authority security report describing the vulnerability class. Sonne Finance ($20M, 2024) had yAudit flag the Compound V2 donation risk in their own audit report — the governance execution gap was not addressed. Balancer ($2.1M, 2023) had a five-day public warning before the exploit. Sturdy Finance ($800K, 2023) had a Balancer forum post specifically naming Sturdy's pools as vulnerable four months before the exploit.\n\n**Green / Yellow / Red**\nGreen is scored when no evidence exists in any accessible post-mortem or public record of a prior security disclosure being ignored or unacted upon within the response window. Yellow applies when a prior disclosure was acted upon but with a delay exceeding the protocol's stated SLA, or when the response was partial (the disclosed finding was addressed but a related attack surface was not). Red is scored when post-mortem evidence confirms that a prior disclosed vulnerability was known to the team and no action was taken within 30 days, and the vulnerability was subsequently exploited.\n\n**Common gray cases**\nGray applies when the protocol is new enough that no post-mortem record exists, or when prior disclosures were made through private channels that the curator cannot access.\n\n**Notable historical examples**\n- **Mango Markets** ($115M, 2022): Discord warning in March 2022 referencing the exact oracle manipulation vector; ignored for six months before exploit.\n- **Atomic Wallet** ($100M, 2023): Least Authority security report (2022) describing vulnerability class; not acted upon.\n- **Sonne Finance** ($20M, 2024): yAudit flagged Compound V2 donation risk; governance execution gap not addressed.\n- **Balancer V2** ($2.1M, 2023): Five-day public warning before exploit; at-risk TVL partially evacuated.\n- **Sturdy Finance** ($800K, 2023): Balancer forum named Sturdy's specific pools as vulnerable four months before exploit; no action taken."
       },
-      "scored_protocols": [],
       "linked_hacks": [
         {
           "hack_id": "sonne-finance-rekt",
-          "relevance": "causal",
-          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
           "hack_protocol_name": "Sonne Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2024-05-14",
           "loss_usd": 20000000.0,
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
+          "occurred_at": "2024-05-14",
+          "relevance": "causal",
           "root_cause": "Compound V2 empty-market donation attack — permissionless governance execution + exchange rate manipulation"
         },
         {
           "hack_id": "balancer-rekt",
-          "relevance": "related",
-          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
           "hack_protocol_name": "Balancer V2 (+ Beethoven X fork)",
           "hack_protocol_slug": "balancer",
-          "occurred_at": "2023-08-27",
           "loss_usd": 2100000.0,
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
+          "occurred_at": "2023-08-27",
+          "relevance": "related",
           "root_cause": "Linear pool rounding-down logic → cached rate manipulation → boosted pool drain"
         },
         {
           "hack_id": "sturdy-rekt",
-          "relevance": "causal",
-          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
           "hack_protocol_name": "Sturdy Finance",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-06-12",
           "loss_usd": 800000.0,
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
+          "occurred_at": "2023-06-12",
+          "relevance": "causal",
           "root_cause": "Read-only reentrancy on Balancer LP (B-stETH-STABLE) → manipulated collateral price → undercollateralized borrow drain"
         },
         {
           "hack_id": "atomic-wallet-rekt",
-          "relevance": "causal",
-          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
           "hack_protocol_name": "Atomic Wallet (non-custodial multi-chain wallet)",
           "hack_protocol_slug": null,
-          "occurred_at": "2023-06-02",
           "loss_usd": 100000000.0,
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
+          "occurred_at": "2023-06-02",
+          "relevance": "causal",
           "root_cause": "Unknown officially; suspected: BGP hijacking combined with client-side vulnerability (possibly private key logging); Least Authority had flagged vulnerabilities in 2021 that were never addressed"
         },
         {
           "hack_id": "mango-markets-rekt",
-          "relevance": "causal",
-          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
           "hack_protocol_name": "Mango Markets",
           "hack_protocol_slug": null,
-          "occurred_at": "2022-10-11",
           "loss_usd": 115000000.0,
+          "notes": "Cat 13: Prior known-ignored disclosure [via cross-hack: Factor 3: Ignored / Dismissed Security Disclosure]",
+          "occurred_at": "2022-10-11",
+          "relevance": "causal",
           "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
+        }
+      ],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": "BGD's February 20, 2025 analysis observed Kelp using LayerZero's DVN and recommended expansion. The Unichain 1-of-1 configuration was installed April 2, 2025. Kelp owned that configuration choice; the forged attestation itself arose from LayerZero's later RPC compromise.",
+          "evidence_summary": "BGD publicly recommended expanding beyond LayerZero's sole DVN in February 2025; Kelp later installed the exploited route as 1-of-1.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-onboard-rseth-to-arbitrum-and-base-v3-instances/20741/5"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x2d48d9331d96c46f8b4a9f7a7bdcf256d2034dadb42f039d27dc28077d520592"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://layerzero.network/blog/kelpdao-incident-statement"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

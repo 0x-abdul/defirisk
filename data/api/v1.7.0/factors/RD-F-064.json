@@ -1,29 +1,48 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-064",
-        "category_id": 4,
-        "name": "TVL concentration (top-10 wallet share)",
-        "description": "Compute the percentage of protocol TVL held in the top-10 depositor addresses.",
-        "scoring_methodology": "**What this measures**\nThis factor calculates the percentage of protocol TVL held in the top ten depositor addresses, sourced from on-chain scanning. A high concentration ratio means a small number of wallets control the majority of the protocol's deposit base, creating correlated withdrawal risk. The metric is updated continuously and displayed as a concentration percentage alongside the top-ten wallet count.\n\n**Why it matters**\nHigh TVL concentration creates two distinct risks. First, the coordinated exit of even two or three top depositors can cause a TVL collapse that triggers oracle-based liquidation cascades or drops the protocol below the threshold where insurance coverage is economically rational. Second, in a lending protocol, a highly concentrated deposit base allows a single large depositor to also become the dominant borrower, creating circular collateral relationships that amplify liquidation risk. The dataset includes several cases where post-exploit TVL recovery was complicated by the exit of a few large holders who accounted for the majority of the residual deposit base.\n\n**Green / Yellow / Red**\nGreen: top-ten wallet share below thirty percent, indicating broad distribution and low correlated-exit risk. Yellow: top-ten wallet share between thirty and sixty percent, indicating meaningful concentration that warrants monitoring of the largest depositor addresses. Red: top-ten wallet share above sixty percent, or a single wallet accounting for more than twenty-five percent of TVL, indicating that the departure of one address would constitute a material liquidity event.\n\n**Common gray cases**\nProtocols where the largest depositor is a verified protocol-owned treasury account (not a user) may present differently; curator must distinguish user TVL concentration from protocol-owned reserves when calculating the ratio.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Compute the percentage of protocol TVL held in the top-10 depositor addresses.",
-        "data_source": "On-chain deposit event logs + balance reads via subgraph (The Graph protocol adapter or Dune Analytics query)",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "C",
-        "evidence_artifact": "Holder share snapshot JSON + top-10 address list + share % + block number",
+        "category_id": 4,
         "confidence_signal": "green = top-10 hold <30% of TVL; yellow = 30–60%; red = >60% (single exit risk); gray = deposit structure not enumerable from on-chain events",
+        "curation_archetype": "PE",
+        "data_source": "On-chain deposit event logs + balance reads via subgraph (The Graph protocol adapter or Dune Analytics query)",
+        "deprecated_in_rubric": null,
+        "description": "Compute the percentage of protocol TVL held in the top-10 depositor addresses.",
+        "evidence_artifact": "Holder share snapshot JSON + top-10 address list + share % + block number",
+        "id": "RD-F-064",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Compute the percentage of protocol TVL held in the top-10 depositor addresses.",
+        "method": "PE",
+        "name": "TVL concentration (top-10 wallet share)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor calculates the percentage of protocol TVL held in the top ten depositor addresses, sourced from on-chain scanning. A high concentration ratio means a small number of wallets control the majority of the protocol's deposit base, creating correlated withdrawal risk. The metric is updated continuously and displayed as a concentration percentage alongside the top-ten wallet count.\n\n**Why it matters**\nHigh TVL concentration creates two distinct risks. First, the coordinated exit of even two or three top depositors can cause a TVL collapse that triggers oracle-based liquidation cascades or drops the protocol below the threshold where insurance coverage is economically rational. Second, in a lending protocol, a highly concentrated deposit base allows a single large depositor to also become the dominant borrower, creating circular collateral relationships that amplify liquidation risk. The dataset includes several cases where post-exploit TVL recovery was complicated by the exit of a few large holders who accounted for the majority of the residual deposit base.\n\n**Green / Yellow / Red**\nGreen: top-ten wallet share below thirty percent, indicating broad distribution and low correlated-exit risk. Yellow: top-ten wallet share between thirty and sixty percent, indicating meaningful concentration that warrants monitoring of the largest depositor addresses. Red: top-ten wallet share above sixty percent, or a single wallet accounting for more than twenty-five percent of TVL, indicating that the departure of one address would constitute a material liquidity event.\n\n**Common gray cases**\nProtocols where the largest depositor is a verified protocol-owned treasury account (not a user) may present differently; curator must distinguish user TVL concentration from protocol-owned reserves when calculating the ratio.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_summary": "The latest detailed public distribution review (July 2024) reported 16.3%, 14.9%, and 12.3% for the top three rsETH holders and more than 23% for the next three, exceeding 66.5% across six holders. A current top-10 scan is unavailable, so yellow preserves the concentration concern without claiming a current precise share.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://llamarisk.com/research/collateral-risk-rseth"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }

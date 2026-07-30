@@ -1,29 +1,50 @@
 {
-  "rubric_version": "v1.7.0",
-  "data_as_of": "2026-07-29T09:00:00Z",
-  "generated_at": "2026-07-29T09:00:00Z",
   "data": {
     "factor_data": {
       "factor": {
-        "id": "RD-F-137",
-        "category_id": 9,
-        "name": "Upgrade frequency (per 90 days)",
-        "description": "Count the number of contract upgrades in the trailing 90 days via on-chain upgrade events.",
-        "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct contract upgrades executed for the protocol's core contracts in the trailing 90-day window. The count is derived from on-chain Upgraded events emitted by UUPS or transparent proxy contracts, or equivalent upgrade-execution events for other proxy patterns. High upgrade frequency is a proxy for ongoing development activity on production contracts — an elevated surface area for post-audit code changes.\n\n**Why it matters**\nUpgrade frequency is an operational hygiene indicator: protocols that upgrade frequently are making ongoing changes to live production code, each of which represents a potential introduction of unreviewed vulnerability. A protocol that upgrades its core lending contracts six times in 90 days has introduced six windows during which post-audit changes may be unreviewed (assessed separately under RD-F-139). High upgrade frequency also signals that the codebase is not in a stabilized state, which correlates with lower battle-test confidence. This factor is displayed as a count rather than a pass/fail to give context to the RD-F-139 assessment.\n\n**Green / Yellow / Red**\nGreen is assigned when the upgrade count is 0 or 1 in the trailing 90 days, indicating a stable deployed codebase. Yellow covers 2–4 upgrades in 90 days with all changes documented via release notes or governance proposals. Red is assigned when 5 or more upgrades have been executed in the trailing 90 days, or when upgrades are occurring without publicly documented justification.\n\n**Common gray cases**\nThis factor is grayed when the protocol uses immutable (non-upgradeable) contracts, where an upgrade count of zero is structural rather than behavioral.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.",
-        "is_critical": false,
-        "curation_archetype": "PE",
-        "measurement": "Count the number of contract upgrades in the trailing 90 days via on-chain upgrade events.",
-        "data_source": "`Upgraded` events (EIP-1967 proxy) + `Implementation` storage slot change monitoring via RPC",
-        "method": "PE",
-        "output_format": "threshold-triggered",
         "cadence": "E",
-        "evidence_artifact": "List of upgrade tx hashes + timestamps + implementation address before/after",
+        "category_id": 9,
         "confidence_signal": "green = 0–2 upgrades in 90 days (routine maintenance cadence); yellow = 3–5 upgrades; red = ≥6 upgrades in 90 days (high churn); gray = protocol has no upgradeable contracts",
+        "curation_archetype": "PE",
+        "data_source": "`Upgraded` events (EIP-1967 proxy) + `Implementation` storage slot change monitoring via RPC",
+        "deprecated_in_rubric": null,
+        "description": "Count the number of contract upgrades in the trailing 90 days via on-chain upgrade events.",
+        "evidence_artifact": "List of upgrade tx hashes + timestamps + implementation address before/after",
+        "id": "RD-F-137",
         "introduced_in_rubric": "v1.5.0",
-        "deprecated_in_rubric": null
+        "is_critical": false,
+        "measurement": "Count the number of contract upgrades in the trailing 90 days via on-chain upgrade events.",
+        "method": "PE",
+        "name": "Upgrade frequency (per 90 days)",
+        "output_format": "threshold-triggered",
+        "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct contract upgrades executed for the protocol's core contracts in the trailing 90-day window. The count is derived from on-chain Upgraded events emitted by UUPS or transparent proxy contracts, or equivalent upgrade-execution events for other proxy patterns. High upgrade frequency is a proxy for ongoing development activity on production contracts — an elevated surface area for post-audit code changes.\n\n**Why it matters**\nUpgrade frequency is an operational hygiene indicator: protocols that upgrade frequently are making ongoing changes to live production code, each of which represents a potential introduction of unreviewed vulnerability. A protocol that upgrades its core lending contracts six times in 90 days has introduced six windows during which post-audit changes may be unreviewed (assessed separately under RD-F-139). High upgrade frequency also signals that the codebase is not in a stabilized state, which correlates with lower battle-test confidence. This factor is displayed as a count rather than a pass/fail to give context to the RD-F-139 assessment.\n\n**Green / Yellow / Red**\nGreen is assigned when the upgrade count is 0 or 1 in the trailing 90 days, indicating a stable deployed codebase. Yellow covers 2–4 upgrades in 90 days with all changes documented via release notes or governance proposals. Red is assigned when 5 or more upgrades have been executed in the trailing 90 days, or when upgrades are occurring without publicly documented justification.\n\n**Common gray cases**\nThis factor is grayed when the protocol uses immutable (non-upgradeable) contracts, where an upgrade count of zero is structural rather than behavioral.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
-      "scored_protocols": [],
-      "linked_hacks": []
+      "linked_hacks": [],
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-30T14:26:52Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current official upgrade log records the latest core upgrade on 2026-01-24, so it documents zero core upgrades in the trailing 90 days.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Kelp DAO",
+          "protocol_slug": "kelp-dao",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "docs",
+              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
-  }
+  },
+  "data_as_of": "2026-07-30T14:26:52Z",
+  "generated_at": "2026-07-30T14:26:52Z",
+  "rubric_version": "v1.7.0"
 }
