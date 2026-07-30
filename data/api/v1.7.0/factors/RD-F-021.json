@@ -43,6 +43,36 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "All seven approved SpokePool implementation classes inherit the 52a1e946 SpokePool base, whose `_authorizeUpgrade(address)` is `internal override onlyAdmin`. Chain-specific admin validation resolves to the HubPool/cross-domain governance path, not a public caller. The live implementation-slot mapping and deployment receipts bind this inheritance pattern to the approved proxies. Green is assigned.",
+          "evidence_summary": "All seven approved SpokePool implementation classes inherit the 52a1e946 SpokePool base, whose `_authorizeUpgrade(address)` is `internal override onlyAdmin`. Chain-specific admin validation resolves to the HubPool/cross-domain governance path, not a public caller. The live implementation-slot mapping and deployment receipts bind this inheritance pattern to the approved proxies. Green is assigned.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/401e24ccca1b3af919dd521e58acd445297b65b6/contracts/SpokePool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/uma-across-v2-audit-2023"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official address book names ProxyAdmin contracts and owners rather than UUPS administration.",
           "evidence_summary": "The approved core deployment uses ProxyAdmin and transparent proxy administration, so the UUPS-specific _authorizeUpgrade gate is structurally moot.",
@@ -59,6 +89,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

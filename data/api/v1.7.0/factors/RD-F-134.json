@@ -43,6 +43,41 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "A reproducible 2026-07-30 scan parsed 530 resolved package names from committed yarn.lock, fetched all 1,049 GitHub npm advisories published from 2026-05-01 through 2026-07-30, and intersected advisory package names with the resolved tree. Sixteen advisories in that window were classified by summary as malicious, backdoor, compromised, or supply-chain events; zero intersected the resolved lock tree. This resolved-tree malicious-release scan supports green.",
+          "evidence_summary": "A reproducible 2026-07-30 scan parsed 530 resolved package names from committed yarn.lock, fetched all 1,049 GitHub npm advisories published from 2026-05-01 through 2026-07-30, and intersected advisory package names with the resolved tree. Sixteen advisories in that window were classified by summary as malicious, backdoor, compromised, or supply-chain events; zero intersected the resolved lock tree. This resolved-tree malicious-release scan supports green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories/GHSA-9rcw-c2f9-2j55"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/advisories?query=ecosystem%3Anpm+published%3A2026-05-01..2026-07-30"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/yarn.lock"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A dependency inventory and current advisory-feed comparison are required.",
           "evidence_summary": "No complete trailing-90-day malicious-release advisory scan was published for the vendored dependency tree.",
@@ -64,6 +99,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

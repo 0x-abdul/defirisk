@@ -43,6 +43,36 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The 52a1e946 SpokePool base constructor calls `_disableInitializers()` at line 244, and every approved chain implementation invokes that base constructor. The live implementation-slot mapping plus repository deployment receipts bind six implementations directly and the zkSync implementation by its chain-specific class/source. No approved SpokePool implementation omits the lock. Green is assigned.",
+          "evidence_summary": "The 52a1e946 SpokePool base constructor calls `_disableInitializers()` at line 244, and every approved chain implementation invokes that base constructor. The live implementation-slot mapping plus repository deployment receipts bind six implementations directly and the zkSync implementation by its chain-specific class/source. No approved SpokePool implementation omits the lock. Green is assigned.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/401e24ccca1b3af919dd521e58acd445297b65b6/contracts/SpokePool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/master/contracts/spoke-pools/Ethereum_SpokePool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/tree/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Both the deposit pool and rsETH token current source use the OpenZeppelin implementation-lock pattern.",
           "evidence_summary": "Inspected public core implementations call _disableInitializers() in constructors, but full current implementation coverage was not reconstructed.",
@@ -64,6 +94,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

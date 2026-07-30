@@ -47,6 +47,34 @@
           "surface_slug": "v3"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_summary": "Pinned HubPool code stores pool-rebalance, relayer-refund, and slow-relay bytes32 roots without nonzero guards; MerkleLib forwards roots directly to MerkleProof.verify. Under v1.7 this is red. Merkle proof requirements plus the bonded challenge/DVM queue mitigate exploitability but do not satisfy the guard requirement.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/libraries/MerkleLib.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://blog.uma.xyz/articles/case-study-how-uma-secures-across-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The LayerZero path verifies non-empty payload hashes rather than accepting a default Merkle root.",
@@ -68,6 +96,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -128,6 +128,37 @@
           "surface_slug": "v4"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The official deployment map identifies the approved Linea SpokePool proxy at 0x7E63A5f1a8F0B4d0934B2f2327DAED3F6bb2ee75. LineaScan identifies it as a proxy and resolves its current EIP-1967 implementation to 0x9187be534efeb258933ef7eff4b67fe80209afcd. The verified current SpokePool implementation source explicitly invokes _disableInitializers() in its constructor, preventing direct implementation initialization.",
+          "evidence_summary": "An approved live SpokePool proxy resolves through its current EIP-1967 implementation to verified SpokePool code whose constructor locks initialization with _disableInitializers().",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/master/broadcast/deployed-addresses.json"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://lineascan.build/address/0x7E63A5f1a8F0B4d0934B2f2327DAED3F6bb2ee75#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://lineascan.build/address/0x9187be534efeb258933ef7eff4b67fe80209afcd#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/555475cdee6109afc85065ca415c740d7f97b992/contracts/SpokePool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -151,6 +182,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

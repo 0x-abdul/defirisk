@@ -98,6 +98,36 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The current repository config specifies solc 0.8.30, while the cited deployed HubPool metadata reports solc 0.8.13. The public compiler-bug catalog does not establish an applicable critical bug from these sources, but compiler versions are inconsistent across the approved deployed surface, which is yellow under the pinned rubric.",
+          "evidence_summary": "The current repository config specifies solc 0.8.30, while the cited deployed HubPool metadata reports solc 0.8.13. The public compiler-bug catalog does not establish an applicable critical bug from these sources, but compiler versions are inconsistent across the approved deployed surface, which is yellow under the pinned rubric.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/master/foundry.toml"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://docs.soliditylang.org/en/v0.8.30/bugs.html"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xc186fa914353c44b2e33ebe05f21846f1048beda"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Foundry configuration pins solc 0.8.27, optimizer enabled, 4,000 runs, and Cancun EVM.",
           "evidence_summary": "The current repository pins Solidity 0.8.27 with optimizer settings; no protocol-specific known-compiler-bug reachability was identified.",
@@ -119,6 +149,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

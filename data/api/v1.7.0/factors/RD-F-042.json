@@ -98,6 +98,29 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The verified ACX token source contains mint(address,uint256) behind onlyOwner and no contract-level maximum-supply check, but the current owner() read returns 0x0000000000000000000000000000000000000000. A current eth_call simulation from the Across HubPool-owner Safe to mint reverts because the caller is not the owner. With ownership renounced, no live admin can invoke the otherwise uncapped mint path.",
+          "evidence_summary": "ACX contains an uncapped onlyOwner mint function, but current ownership is renounced to the zero address, leaving no callable admin mint authority.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x44108f0223A3C3028F5Fe7AEC7f9bb2E66beF82F#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x44108f0223A3C3028F5Fe7AEC7f9bb2E66beF82F#readContract"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "RSETH.mint is MINTER_ROLE-gated and current source enforces a daily mint cap; January 2026 documentation says token and fee mint limits were aligned.",
@@ -120,6 +143,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

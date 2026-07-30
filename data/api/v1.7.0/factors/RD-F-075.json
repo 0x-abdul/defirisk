@@ -93,6 +93,36 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "At current master commit 52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf, enableL1TokenForLiquidityProvision creates an LP token without enforcing a seed deposit. addLiquidity mints amount times 1e18 divided by _exchangeRateCurrent. When LP-token total supply is zero, _exchangeRateCurrent returns a fixed 1e18 before synchronizing donated token balances. No virtual shares, locked seed, or first-deposit floor is present in these paths.",
+          "evidence_summary": "Across's custom HubPool LP-token accounting has no code-enforced first-depositor guard for a newly enabled zero-supply pool. Under RD-F-075, the absence of a seed deposit, virtual offset, or floor check is red.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol#L390-L406"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol#L449-L462"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol#L920-L939"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The audit explains the 1-wei first mint plus direct-transfer donation scenario, recommends virtual shares or an initial mint, and records Kelp's choice of an initial mint immediately after deployment.",
           "evidence_summary": "Sigma Prime identified the first-minter donation/share-inflation pattern in Kelp's deposit pool. The report records Kelp's resolution as an initial mint immediately after deployment, which is an explicit first-depositor guard under RD-F-075.",
@@ -114,6 +144,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

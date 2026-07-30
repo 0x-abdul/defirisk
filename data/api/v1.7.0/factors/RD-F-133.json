@@ -43,6 +43,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The repository commits yarn.lock, which resolves dependencies reproducibly. However, package.json declares @eth-optimism/contracts as ^0.5.40, and the approved Base OP_SpokePool and Optimism_SpokePool source directly imports that package into deployed implementation builds. This is a proven security-critical runtime range, so RD-F-133 is red despite the lockfile. Ranged @scroll-tech/contracts and Anchor are not used to justify the result because their reachability to the approved EVM surface was not established.",
+          "evidence_summary": "The repository commits yarn.lock, which resolves dependencies reproducibly. However, package.json declares @eth-optimism/contracts as ^0.5.40, and the approved Base OP_SpokePool and Optimism_SpokePool source directly imports that package into deployed implementation builds. This is a proven security-critical runtime range, so RD-F-133 is red despite the lockfile. Ranged @scroll-tech/contracts and Anchor are not used to justify the result because their reachability to the approved EVM surface was not established.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/master/package.json"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/yarn.lock"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The public repository contains the dependency code and fixed Git tree state; no root package manifest with caret or tilde security-library ranges exists.",
           "evidence_summary": "Security-critical OpenZeppelin dependencies are vendored at fixed repository revisions rather than declared through floating package ranges.",
@@ -64,6 +89,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

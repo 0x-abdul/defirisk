@@ -118,6 +118,39 @@
           "surface_slug": "v4"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_summary": "HubPool resolves the active optimistic oracle through UMA Finder, so the implementation is replaceable. Finder owner() currently resolves to UMA GovernorV2 0x7b2920...; GovernorV2 exposes emergencyExecute to its EmergencyProposer role and that path bypasses ordinary voting. A universal timelock before oracle replacement is not proven.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/across-protocol/contracts/blob/52a1e946ccc7a03c4d2b876a4f2f64934c11a9bf/contracts/hub-pool/HubPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x40f941E48A552bF496B154Af6bf55725f18D77c3#readContract"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/UMAprotocol/protocol/blob/9b8b2292355717f70b516d3ece486b7e3d6b2703/packages/core/networks/1.json"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/UMAprotocol/protocol/blob/9b8b2292355717f70b516d3ece486b7e3d6b2703/packages/core/contracts/data-verification-mechanism/implementation/GovernorV2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Authorized roles can replace both each asset adapter and each Chainlink feed without a full protocol upgrade.",
@@ -139,6 +172,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }

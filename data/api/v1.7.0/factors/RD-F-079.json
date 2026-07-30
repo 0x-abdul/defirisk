@@ -234,6 +234,31 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Only one qualifying exploit is recorded. The April 2026 Asymmetric disclosure concerned a failed-transaction status check and was fixed before exploitation; the July incident report identifies a distinct missing event-discriminator check in Risk Labs' reader.",
+          "evidence_summary": "No same-root-cause repeat exploit is established. The April event-status bug was fixed without loss; July's incident involved a distinct missing discriminator check in the off-chain reader.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Across Protocol",
+          "protocol_slug": "across-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "audit_report",
+              "url": "https://blog.asymmetric.re/across-solana-event-spoofing/"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "url",
+              "url": "https://x.com/AcrossProtocol/article/2080722320814121237"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The roots were registrar social engineering, fee-math scaling in an oracle upgrade, and compromised cross-chain RPC/DVN infrastructure.",
           "evidence_summary": "The three incidents have different root-cause clusters; no same-root-cause repeat is established.",
@@ -260,6 +285,6 @@
     }
   },
   "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T21:02:56Z",
+  "generated_at": "2026-07-30T22:10:00Z",
   "rubric_version": "v1.7.0"
 }
