@@ -200,7 +200,7 @@ def validate_protocol_citations(detail: dict[str, Any], source: str) -> list[str
         if not isinstance(sources, list):
             failures.append(f"{pointer}: sources must be an array")
             continue
-        if factor.get("score") != "not_assessed" and not sources:
+        if factor.get("score") not in {"not_assessed", "not_applicable"} and not sources:
             failures.append(f"{pointer}: assessed factor requires a public citation")
         for source_index, citation in enumerate(sources):
             citation_pointer = f"{pointer}/sources/{source_index}"

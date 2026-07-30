@@ -73,6 +73,26 @@ def test_assessed_factor_requires_public_safe_citation() -> None:
     assert BOUNDARY.validate_protocol_citations(detail, "fixture.json") == []
 
 
+def test_not_applicable_factor_may_omit_a_citation() -> None:
+    detail = {
+        "data": {
+            "protocol_data": {
+                "factor_scores": [
+                    {
+                        "factor_id": "RD-F-001",
+                        "score": "not_applicable",
+                        "evidence_summary": (
+                            "The factor is structurally outside this protocol surface."
+                        ),
+                        "sources": [],
+                    }
+                ]
+            }
+        }
+    }
+    assert BOUNDARY.validate_protocol_citations(detail, "fixture.json") == []
+
+
 def test_private_or_tokenized_citation_url_is_rejected() -> None:
     for url in (
         "http://example.org/report",
