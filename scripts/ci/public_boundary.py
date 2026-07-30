@@ -38,6 +38,10 @@ PROHIBITED_EXACT_PATHS = {
     "scripts/compose.py",
     "scripts/dump.py",
     "scripts/import-protocol-assessment.py",
+    "scripts/apply-lean-protocol-refresh.py",
+    "scripts/lean_protocol_refresh/execution.py",
+    "scripts/lean_protocol_refresh/planning.py",
+    "scripts/lean_protocol_refresh/production.py",
     "scripts/set_published.py",
 }
 PROHIBITED_API_KEYS = {
