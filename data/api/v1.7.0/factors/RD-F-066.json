@@ -23,6 +23,81 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 reserve-level utilization was not fully extracted; no acute 100% utilization event was proven for this refresh.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "WETH and USDT markets hit 100% utilization April 18–20, 2026 during the rsETH/Kelp event. USDC remained at 99.87% utilization for more than four consecutive days according to April 23 reporting. Affected markets experienced withdrawal constraints, and Aave governance documented emergency interest-rate and WETH-freeze actions. The observed 100% utilization exceeds the methodology's red threshold.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-improve-liquidity-buffer-for-usdc-on-aave-v3-ethereum-core-raise-slope-2-lower-optimal-utilization/24684"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://www.coindesk.com/business/2026/04/21/aave-s-core-markets-hit-100-utilization-at-once-here-is-what-it-means-and-it-s-not-good"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://www.cryptotimes.io/2026/04/23/circle-pushes-aave-to-adjust-usdc-rates-after-utilization-hits-100/"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Independent second review accepted not_assessed-to-green. This is a source refresh from official V4 API data, not manual grade editing.",
+          "evidence_summary": "Fresh Aave V4 GraphQL hub utilization was below 85% for all reviewed hubs: Core 38.21%, Plus 32.59%, Prime 13.78%, Global Dollar 0.57%.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/getting-started/graphql"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Kelp DAO is a liquid-restaking deposit and receipt-token system, not a lending protocol with supplied and borrowed balances. Utilization in external markets that accept rsETH belongs to those protocols, so RD-F-066 is not applicable to the approved Kelp surface.",
           "gap_reason": "not_applicable",
@@ -37,7 +112,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

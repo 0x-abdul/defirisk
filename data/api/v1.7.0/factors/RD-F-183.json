@@ -23,6 +23,81 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The row is scoped to bounty/security-process coverage, not a claim that all V2 deployments have complete current audit-bytecode parity.",
+          "evidence_summary": "Aave V2 remains in the Aave bug-bounty/security process; no V2-specific exclusion of the live LendingPool surface was identified in this refresh.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9#code"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Immunefi program covers core Aave v3 contracts with a $1 million maximum payout and lists its in-scope assets. The rsETH OFT adapter exploited in April 2026 was a Kelp DAO contract, not an Aave core contract. No evidence reviewed indicates that Aave's highest-TVL contracts, including Pool and PoolAddressesProvider, are excluded from bounty scope.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/aave/"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Independent second review accepted green-to-yellow because the bounty is real, but highest-material in-scope mapping is still incomplete in the packet.",
+          "evidence_summary": "Aave V4 has a live Sherlock bounty with a reported $2.5m maximum, but exact Core/Plus/Prime/Global Dollar contract-to-scope archival is not complete enough for green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/bug-bounties/300"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",
@@ -63,7 +138,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

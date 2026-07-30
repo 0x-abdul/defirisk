@@ -23,6 +23,26 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "a.DI's multi-bridge design (CCIP + LZ + Hyperlane + native) inherently reduces co-hosting risk since each bridge uses different validator infrastructure. Full validator co-hosting analysis per bridge not performed in this assessment (OSINT lift). Architectural design is favorable for co-hosting independence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure/blob/main/docs/overview.md"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Kelp chose the 1-of-1 policy. LayerZero's RPC infrastructure was compromised and its signing service produced the valid forged-data attestation. Current co-hosting/ASN state was not obtained.",
           "evidence_summary": "Historical validation was concentrated in LayerZero's service; current active-peer infrastructure diversity is unverified.",
@@ -44,7 +64,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -114,6 +114,101 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Etherscan shows the Ethereum LendingPool proxy and AaveOracle source verified; PolygonScan shows the Polygon V2 LendingPool proxy source verified. Aave address book enumerates Avalanche anchors as well.",
+          "evidence_summary": "Aave V2 core pool/proxy and oracle contracts are verified on major explorers for the material Ethereum and Polygon deployments; address-book entries identify Ethereum, Polygon, and Avalanche anchors.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9#code"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xA50ba011c48153De246E5192C8f9258A2ba79Ca9#code"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://polygonscan.com/address/0x8dFf5E27EA6b7AC08EbFdf9eB090F32ee9a30fcf#code"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/AaveV2Avalanche.sol"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All core Ethereum contracts are verified on Etherscan: Pool, PoolAddressesProvider, ACLManager, AaveOracle, Governance Core, Executor Lvl1, Executor Lvl2, PayloadsController, CrossChainController. Source verified at deploy.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2#code"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The official address dashboard lists V4 hubs, spokes, peripheral contracts, and oracle contracts. Etherscan pages for Core Hub, Main Spoke, Access Manager, and Main Spoke Oracle all expose verified contract/source-code surfaces.",
+          "evidence_summary": "Aave V4 core Ethereum contracts sampled in this pass are published in the Aave address dashboard and show verified Etherscan proxy/source-code pages with implementation links.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCca852Bc40e560adC3b1Cc58CA5b55638ce826c9"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x94e7A5dCbE816e498b89aB752661904E2F56c485"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x08aE3BE30958cDd1847ec58fFfd4C451a87fDF01"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x99B2B6CEa9C3D2fd8F4d90f86741C44B212a6127"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "Current core contracts and source are public, but historical explorer verification status at the original launch date was not established.",
@@ -135,7 +230,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -84,6 +84,55 @@
       "scored_protocols": [
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave governance documentation describes the forum, Snapshot TEMP CHECK, ARFC, and on-chain AIP lifecycle; aave-proposals-reports provides public payload review artifacts for governance actions.",
+          "evidence_summary": "Aave admin and ACL changes are routed through public governance discussion, AIP payloads, timelocks, and proposal review, so no sudden unannounced admin-rescue/ACL change pattern is identified for the shared Aave control plane.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "family",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/ecosystem/governance"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-proposals-reports"
+            }
+          ]
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Surface-specific override: shared family governance transparency remains strong, but V4 early-deployment ACL history needs a full event-to-discussion map.",
+          "evidence_summary": "V4 Access Manager role grants/revokes/renounces around initial deployment were visible in the V4 setup path, but this redo did not fully map every role event to public governance/engineering discussion.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The January 2026 disclosure explicitly describes ASSET_TRANSFER_ROLE and PAUSER_ROLE additions and a 10-day timelock.",
           "evidence_summary": "Kelp publishes role-bearing upgrades with code diffs, audits, dates, and timelocks, but this review did not reconcile every ACL event to preceding public discussion.",
@@ -105,7 +154,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

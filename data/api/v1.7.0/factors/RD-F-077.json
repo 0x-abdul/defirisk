@@ -214,6 +214,91 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 has material historical incident context, including the 2022 CRV bad-debt episode, but no fresh unresolved V2-only exploit was identified in this redo.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Scope correction removes V2-only CRV from the V3 register while preserving the V3 red conclusion based on V3-scoped incidents.",
+          "evidence_summary": "V3 incident count remains red due to multiple material incidents including stable-rate disablement, periphery/approval exposure, March 2026 CAPO/wstETH, and the April 2026 rsETH/Kelp bad-debt event. The V2-only CRV incident is no longer used as V3 evidence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://www.chainalysis.com/blog/kelpdao-bridge-exploit-april-2026/"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public Aave V4 exploit or bad-debt incident was identified in the reviewed sources as of 2026-07-06.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/bug-bounties/300"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The events affected Kelp's user interface, rsETH accounting operations, and cross-chain rsETH bridge respectively; only the last is characterized here as a loss exploit.",
           "evidence_summary": "Three distinct scoped operational/security events are documented: 2024 UI compromise, 2025 oracle-accounting failure, and 2026 bridge exploit.",
@@ -244,7 +329,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

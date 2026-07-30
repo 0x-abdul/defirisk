@@ -74,6 +74,75 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave publishes security/audit resources and governance communications relevant to V2 wind-down.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No evidence in any published post-mortem that a disclosure to the Aave team was ignored pre-exploit. The January 2025 governance forum warning about Kelp's 1/1 DVN was a public forum flag about a third-party (Kelp's) bridge configuration, not a private disclosure to Aave about an Aave vulnerability. Aave had no authority to fix Kelp's bridge. No prior post-mortem documents a disclosed Aave vulnerability that was ignored. Green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/rseth-incident-report-april-20-2026/24580"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/aave-v2-v3-security-incident-04-11-2023/15335"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The April 2026 rsETH incident report scopes affected Aave positions to V3 Ethereum and Arbitrum. With no established V4 exploit, there is no V4 pre-exploit disclosure sequence to adjudicate.",
+          "evidence_summary": "RD-F-177 requires a prior V4 exploit and evidence that a vulnerability disclosed before it was ignored. The reviewed public incident record establishes no qualifying V4 exploit sequence.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "BGD's February 20, 2025 analysis observed Kelp using LayerZero's DVN and recommended expansion. The Unichain 1-of-1 configuration was installed April 2, 2025. Kelp owned that configuration choice; the forged attestation itself arose from LayerZero's later RPC compromise.",
           "evidence_summary": "BGD publicly recommended expanding beyond LayerZero's sole DVN in February 2025; Kelp later installed the exploited route as 1-of-1.",
@@ -104,7 +173,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

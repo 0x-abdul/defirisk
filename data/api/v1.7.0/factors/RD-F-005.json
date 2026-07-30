@@ -23,6 +23,61 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Five independent firms audited the v3.6.0 upgrade per Aave Governance Proposal 429 / aave-dao/aave-proposals-reports: Pashov Audit Group, Certora (continuous formal verification + adapted FV properties for v3.6), MixBytes, Savant, and Blackthorn. Certora is the standing security service provider for the Aave DAO. Historical v3 codebase has prior Tier-1 reviews (Trail of Bits, OpenZeppelin, SigmaPrime) but the v3.6.0 upgrade specifically was reviewed by the Pashov/Certora/MixBytes/Savant/Blackthorn cohort -- Spearbit is NOT a v3.6.0 reviewer.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-05-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-proposals-reports"
+            },
+            {
+              "retrieved_at": "2026-05-06",
+              "source_type": "governance_post",
+              "url": "https://vote.onaave.com/proposal/?proposalId=429"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Trail of Bits and ChainSecurity are explicitly identified in the V4 security/audit sources, satisfying audit firm quality. This does not remove the need for per-deployment audit cutoff checks.",
+          "evidence_summary": "Aave V4 audit coverage includes tier-one or established firms such as Trail of Bits and ChainSecurity, plus additional named review coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4/tree/main/audits"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Sigma Prime, MixBytes, Bailsec, and Code4rena provide independently attributable public coverage.",
           "evidence_summary": "Kelp's audit cohort includes established public security firms and a competitive Code4rena review.",
@@ -43,7 +98,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

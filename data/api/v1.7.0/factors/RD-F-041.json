@@ -23,6 +23,91 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "V2 LendingPool user funds flow through deposit/withdraw/borrow/repay/liquidation logic; admin functions are routed through the configurator/addresses-provider path. The periphery incident used disablement, patches, and an AIP for dust recovery rather than a direct core-pool emergency withdrawal.",
+          "evidence_summary": "Aave V2 exposes pause/freeze controls through configurator/admin roles, but no direct admin emergencyWithdraw/rescue path from the core LendingPool was identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/lendingpool/LendingPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/lendingpool/LendingPoolConfigurator.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/periphery-contracts-incident-august-28-2024/18821"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No standalone rescue()/emergencyWithdraw() function on the core Pool callable directly by admin without timelock. EMERGENCY_ADMIN (Granular Guardian) can freeze reserves but not withdraw funds. Fund rescue would require a timelocked AIP. Yellow per methodology: rescue exists but limited (governance-path, not direct-admin-call).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The V4 overview says hubs provide emergency controls and spokes have paused/frozen states. The design is governed through AccessManager/control-plane contracts, but this pass did not exhaustively diff every rescue-style function against timelock roles.",
+          "evidence_summary": "Aave V4 hubs and spokes expose emergency stop/local-control concepts, but no direct admin drain path was proven; full function-level rescue/emergencyWithdraw review is still pending.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/aave/aave-v4/main/docs/overview.md"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/liquidity/hubs"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/liquidity/spokes"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x08aE3BE30958cDd1847ec58fFfd4C451a87fDF01"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "LRTWithdrawalManager.emergencyWithdrawFromAave is directly PAUSER_ROLE-gated without a timelock, but withdrawn assets return to the protocol contract rather than an arbitrary recipient.",
@@ -44,7 +129,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

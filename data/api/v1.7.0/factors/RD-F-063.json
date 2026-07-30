@@ -22,6 +22,91 @@
       "linked_hacks": [],
       "scored_protocols": [
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Aave V2 remains above the materiality threshold with about $107.9m TVL, but it is legacy/wind-down and materially smaller than V3.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Current TVL $14.06B (DefiLlama, 2026-04-27). 30-day change -39.83% — severe decline driven by rsETH/Kelp event April 18–20, 2026 (>$6B TVL drain in 24h). 1-day recovery +2.42% indicates partial stabilization. TVL far above $100M threshold but 30d trend decline >20% triggers yellow per methodology threshold.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2026/04/19/aave-records-usd6-billion-tvl-drop-as-kelp-hack-exposes-structural-risk-at-defi-lender"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave-v3"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "DefiLlama tracks Aave V4 as an Ethereum lending protocol with 27 pools. Etherscan hub snapshots provide sampled anchor holdings, but the accepted surface-level materiality value is the independent DefiLlama TVL rather than summing sampled hub balances by hand.",
+          "evidence_summary": "DefiLlama reported Aave V4 at about $154.49m TVL and $83.93m active loans on 2026-07-06, crossing the $100m materiality floor for a gradeable active surface.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCca852Bc40e560adC3b1Cc58CA5b55638ce826c9"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x943827DCA022D0F354a8a8c332dA1e5Eb9f9F931"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The cached DefiLlama record contains $903,060,369.95 current TVL and +5.18% over 30 days. The profile also records an approximately 40.7% decline over 90 days, which is material context but not a red/yellow trigger under the current TVL scoring rule.",
@@ -43,7 +128,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

@@ -34,6 +34,91 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The V2 LendingPool implementation declares initialize(ILendingPoolAddressesProvider provider) public initializer. VersionedInitializable tracks lastInitializedRevision and reverts if the revision has already been initialized.",
+          "evidence_summary": "Aave V2 LendingPool initializes through VersionedInitializable and its initialize(provider) function is protected by the initializer modifier, preventing repeated initialization at the same revision.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/lendingpool/LendingPool.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/protocol/libraries/aave-upgradeability/VersionedInitializable.sol"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "VersionedInitializable sets lastInitializedRevision = getRevision() in the implementation constructor and requires a strictly greater revision outside construction. PoolInstance is concrete and its initialize(IPoolAddressesProvider) override explicitly uses initializer. This directly supports the concrete Pool pattern, but does not by itself prove that every deployed token, configurator, and auxiliary initializer-bearing implementation follows the same pattern.",
+          "evidence_summary": "Aave v3's public VersionedInitializable base defines an initializer modifier and implementation-constructor revision lock, and the concrete PoolInstance initialize() override applies that modifier. A surface-wide scan of every initializer-bearing v3 implementation was not completed, so the factor is yellow rather than green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/misc/aave-upgradeability/VersionedInitializable.sol"
+            },
+            {
+              "retrieved_at": "2026-07-30",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/instances/PoolInstance.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave V4 docs and repository identify a proxy/modular hub-and-spoke architecture. Etherscan shows verified proxy/implementation links for the Core Hub and other V4 contracts. No public evidence was found of an exploitable initializer, but full static verification of all implementation constructors was not completed in this pass.",
+          "evidence_summary": "Aave V4 uses verified proxy contracts and a modern access-manager architecture, but this migration did not complete a per-implementation initializer-lock scan for every hub, spoke, gateway, and configurator implementation.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCca852Bc40e560adC3b1Cc58CA5b55638ce826c9"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x08aE3BE30958cDd1847ec58fFfd4C451a87fDF01"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "LRTDepositPool and RSETH show the expected OpenZeppelin initialization controls. The score remains cautious until the complete current implementation set is verified.",
           "evidence_summary": "Public core implementations use initializer plus constructor _disableInitializers(), but every current implementation was not exhaustively matched.",
@@ -59,7 +144,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

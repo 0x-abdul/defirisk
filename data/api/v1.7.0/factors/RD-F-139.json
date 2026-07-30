@@ -114,6 +114,96 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Official Aave security page lists V2 audits in 2020-2021. The protocol-v2 repository is archived/read-only as of Dec. 9, 2025. Wind-down changes are mostly governance risk-parameter/oracle payloads, but full post-audit code-change parity was not rebuilt.",
+          "evidence_summary": "Aave V2 has substantial official audit coverage and no fresh core-code development, but the legacy proxy/audit-commit history and wind-down governance payload review trail were not fully reconstructed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "470+ proposal reviews in aave-dao/aave-proposals-reports. Certora formally engaged as security reviewer for all AIPs since April 2024. v3.1-v3.6 each had dedicated multi-firm audit engagements. No Upgraded event in last 12 months lacks an audit artifact. Deepest post-audit hygiene process in DeFi.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-proposals-reports"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave security lists V4 audit reports through May 14 2026; the GitHub audit directory includes Blackthorn, Trail of Bits, ChainSecurity, and Tokenization Spoke reports. Etherscan shows some V4 hubs created across late March through June 2026. A complete post-audit implementation-change diff remains open.",
+          "evidence_summary": "V4 has multiple 2025/2026 audits, including a May 2026 collaborative audit, but current V4 deployments include contracts created after some audit dates and this pass did not fully map every implementation to the latest covered commit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4/tree/main/audits"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x62d63197660c080236193CA60b70E49A08E90368"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/aave-v4"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "The December 2025 and January 2026 core upgrades each publish a corresponding Bailsec audit report and a 10-day timelock.",
@@ -135,7 +225,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

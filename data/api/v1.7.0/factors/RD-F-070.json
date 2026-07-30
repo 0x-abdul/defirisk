@@ -54,6 +54,80 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Aave V2 is not a Compound V2 cToken exchange-rate market; empty cToken-style market factor is structurally not applicable.",
+          "evidence_summary": "Aave V2 is not a Compound V2 cToken exchange-rate market; empty cToken-style market factor is structurally not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "SupplyLogic updates reserve state, computes scaledAmount as amount divided by nextLiquidityIndex, accounts liquidity through updateInterestRatesAndVirtualBalance, transfers underlying, and mints the precomputed scaled amount. AToken delegates that mint to _mintScaled. ReserveLogic initializes the liquidity index at RAY and calculates rates from virtualUnderlyingBalance, which is changed by explicit liquidityAdded/liquidityTaken values. A raw transfer to the aToken contract is outside this accounting path and cannot inflate the index or reduce shares minted to the next supplier.",
+          "evidence_summary": "Aave V3 derives each supply's scaled aToken amount from the supplied assets and protocol liquidity index, not from the aToken contract's raw underlying balance. Virtual-balance rate accounting prevents direct donations from changing that share conversion.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/protocol/libraries/logic/SupplyLogic.sol"
+            },
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/protocol/tokenization/AToken.sol"
+            },
+            {
+              "retrieved_at": "2026-07-11",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-v3-origin/blob/main/src/contracts/protocol/libraries/logic/ReserveLogic.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "V4 docs describe Hubs, Spokes, hub-spoke caps, and risk-premium accounting. The cToken empty-market donation precondition does not directly map to this architecture.",
+          "evidence_summary": "Aave V4 is not a Compound V2/cToken-style market architecture and uses hub/spoke accounting with governance-configured caps, not empty cToken exchange-rate markets.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/liquidity/hubs"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/aave/aave-v4/main/docs/overview.md"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "RD-F-070 is scoped to an empty Compound V2-fork cToken market with zero supply and borrow. Kelp DAO is a liquid-restaking deposit/mint system and exposes no Kelp-owned cToken borrowing market under the approved surface, so this critical factor is not applicable.",
           "gap_reason": "not_applicable",
@@ -68,7 +142,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

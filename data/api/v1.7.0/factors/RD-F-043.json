@@ -74,6 +74,86 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The current V2 Ethereum address book maps POOL_ADMIN to 0x5300... Executor Lvl1 and lists the deployed pool/proxy addresses. The core pool was created years ago by an Etherscan-labeled Aave deployer, but current admin control is governance/executor-based.",
+          "evidence_summary": "Aave V2 has been live since 2020 and current admin roles are not retained by the original deployer EOA; Ethereum V2 POOL_ADMIN maps to Aave Executor Lvl1 in the address book.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave-dao/aave-address-book/blob/main/src/AaveV2Ethereum.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer wallets (0xb90594ea5128a8178e132286dc2b7fbac7d7266c and 0x51f22ac850d29c879367a77d241734acb276b815) have no ongoing admin role. Protocol is 50 months old (v3 Ethereum: 27 months). All admin roles are held by Executor contracts and Guardian multisigs established at genesis.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "github",
+              "url": "https://github.com/bgd-labs/aave-address-book/blob/main/src/AaveV3Ethereum.sol"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "Etherscan labels sampled V4 hubs as created by Aave: Deployer 42 and Aave docs list an Access Manager contract. That is strong provenance, but the exact deploy+7d admin equivalence check was not reconstructed for all V4 contracts.",
+          "evidence_summary": "V4 contracts are labeled as Aave deployments and include an Access Manager, but this pass did not perform on-chain role reads at deploy+7d to prove every admin role moved away from the deployer EOA.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCca852Bc40e560adC3b1Cc58CA5b55638ce826c9"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x06002e9c4412CB7814a791eA3666D905871E536A"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x08aE3BE30958cDd1847ec58fFfd4C451a87fDF01"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "Current administrators are Safes and timelocks, but the reviewed public record does not prove transfer away from the deployer occurred within seven days of launch.",
@@ -95,7 +175,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

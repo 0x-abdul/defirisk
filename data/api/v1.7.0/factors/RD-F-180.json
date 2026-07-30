@@ -34,6 +34,91 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "AaveOracle exposes onlyOwner setters for asset sources and fallback oracle. V2 wind-down recommendations further show governance can change oracle treatment for selected assets.",
+          "evidence_summary": "Aave V2 oracle source addresses and fallback oracle are owner/governance replaceable via setAssetSources and setFallbackOracle; the lending surface is not locked to immutable collateral oracle addresses.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "github",
+              "url": "https://github.com/aave/protocol-v2/blob/master/contracts/misc/AaveOracle.sol"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AaveOracle.setAssetSources(address[] calldata assets, address[] calldata sources) is callable by POOL_ADMIN or ASSET_LISTING_ADMIN. These roles are controlled by Aave Governance with 1-day or 7-day timelock. Oracle price source addresses are NOT EVM immutable — they are stored in a governance-replaceable mapping. The March 2026 wstETH CAPO oracle update and the April 2026 rsETH response both confirmed governance can update oracle adapter configurations. AaveOracle contract is owned by governance. Factor definition (oracle source address not replaceable without full binary upgrade) is definitively not triggered.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v3/smart-contracts/oracles"
+            },
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "url",
+              "url": "https://governance.aave.com/t/direct-to-aip-re-enable-wsteth-borrow-caps-on-ethereum-core-and-prime-post-capo-incident/24295"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "The docs describe modular spokes with local oracle interactions and the address dashboard lists standalone oracle contracts for each spoke. This supports configurability, but a contract-level proof of replaceability for every oracle path remains pending.",
+          "evidence_summary": "V4 separates oracle contracts by spoke and uses governance/control-plane configuration, but this pass did not prove every collateral oracle address is admin-replaceable without a binary upgrade.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/aave-v4/liquidity/spokes"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/docs/resources/addresses"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x99B2B6CEa9C3D2fd8F4d90f86741C44B212a6127"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x08aE3BE30958cDd1847ec58fFfd4C451a87fDF01"
+            }
+          ],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Authorized roles can replace both each asset adapter and each Chainlink feed without a full protocol upgrade.",
           "primary_chain": "ethereum",
@@ -53,7 +138,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }

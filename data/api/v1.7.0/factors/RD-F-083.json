@@ -23,6 +23,70 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 wind-down is governance-directed rather than abandoned; no unsupported orphan operator process was identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "governance_post",
+              "url": "https://governance.aave.com/t/arfc-continued-deprecation-steps-of-aave-v2-markets/24351"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            },
+            {
+              "retrieved_at": "2026-07-06",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/aave"
+            }
+          ],
+          "surface_slug": "v2"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For rsETH/Kelp: root cause was external (Kelp's LayerZero DVN config). No Aave contract vulnerability was found. No specific post-incident targeted audit of Aave's collateral onboarding or LRT acceptance criteria announced. Certora continuous FV and multi-firm audit cadence provide ongoing coverage but no explicit post-incident re-engagement. Yellow: ongoing auditor engagement present but no specific incident-triggered re-audit announced.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-04-27",
+              "source_type": "docs",
+              "url": "https://aave.com/security"
+            }
+          ],
+          "surface_slug": "v3"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-31T00:00:00Z",
+          "evidence_detail": "No qualifying V4 last exploit was established, so whether an auditor was re-engaged after that nonexistent event is structurally not applicable.",
+          "evidence_summary": "RD-F-083 is conditional on a prior exploit of the assessed surface. The reviewed public incident record identifies the April 2026 rsETH event as affecting Aave V3 Ethereum and Arbitrum, not as an Aave V4 exploit.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Aave",
+          "protocol_slug": "aave",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "v4"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Mandiant and CrowdStrike supported forensic attribution in LayerZero's report. That is strong incident review, but it is not a published audit of Kelp's replacement CCIP configuration.",
           "evidence_summary": "External forensic review occurred, but no explicit incident-triggered re-audit of Kelp's replacement bridge configuration was identified.",
@@ -43,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-30T14:26:52Z",
-  "generated_at": "2026-07-30T14:26:52Z",
+  "data_as_of": "2026-07-31T00:00:00Z",
+  "generated_at": "2026-07-30T21:02:56Z",
   "rubric_version": "v1.7.0"
 }
