@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib
 import json
 import sys
 from pathlib import Path
@@ -11,12 +12,11 @@ import pytest
 SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
 
-from lean_protocol_refresh.contracts import (
-    CANONICAL_FACTOR_IDS,
-    ContractError,
-    RUBRIC_VERSION,
-    validate_change_set,
-)
+contracts = importlib.import_module("lean_protocol_refresh.contracts")
+CANONICAL_FACTOR_IDS = contracts.CANONICAL_FACTOR_IDS
+ContractError = contracts.ContractError
+RUBRIC_VERSION = contracts.RUBRIC_VERSION
+validate_change_set = contracts.validate_change_set
 
 
 def _semantic_sha256(value: object) -> str:
