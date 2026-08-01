@@ -87,6 +87,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Cosmos SDK governance executes typed Protobuf messages through the module router (MsgUpdateParams, MsgSoftwareUpgrade, etc.). No EVM-style delegatecall or arbitrary call(target, calldata) in governance execution. Each proposal type maps to a typed handler routed to the relevant module keeper. No user-supplied target address, no delegatecall attack surface in Cosmos SDK governance architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "No published Governor proposal executor was identified; observed administration is manual Safe/timelock execution, so proposal-supplied target restrictions are not assessable.",
@@ -108,7 +127,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

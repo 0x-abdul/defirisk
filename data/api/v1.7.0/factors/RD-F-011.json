@@ -68,6 +68,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SELFDESTRUCT opcode is an EVM Solidity construct. Babylon's execution environments (Bitcoin script, Cosmos SDK Go modules, CosmWasm Rust) have no equivalent. Bitcoin UTXOs can only be spent via valid script paths. Cosmos SDK modules persist via the KV store. CosmWasm contracts can be halted/migrated by admin but have no self-destruct equivalent.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime static analysis is required.",
           "evidence_summary": "No reproducible deployed-bytecode report established whether SELFDESTRUCT is reachable from a non-admin path.",
@@ -88,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

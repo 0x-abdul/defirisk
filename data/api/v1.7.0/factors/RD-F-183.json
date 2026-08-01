@@ -123,6 +123,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program explicitly excludes 'centralization risks' and 'covenant committee compromise scenarios' from scope. The covenant committee (6-of-9 federated multisig) co-signs all BTC unbonding transactions and is the primary security primitive protecting $4.16B in staked BTC. Its explicit exclusion from bug bounty scope creates a meaningful protection gap for the protocol's highest-value surface. cosmos-bsn-contracts not clearly enumerated as in-scope assets.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/babylon-labs/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",
@@ -163,7 +182,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
