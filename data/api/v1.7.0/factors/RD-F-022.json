@@ -191,6 +191,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeBridgeGate impl (0x797161): `constructor() initializer {}` — constructor marks itself as initializer using OZ ≤4.5 pattern, preventing direct re-initialization; `initialize()` also carries `initializer` modifier. DlnBase.sol (parent of DlnSource and DlnDestination): `constructor() { _disableInitializers(); }` — best-practice OZ ≥4.6 pattern. DlnSource.sol `initialize()`: `public initializer`. DlnDestination.sol `initialize()`: `public initializer`. CrosschainForwarder impl: `initializer` mo...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnBase.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "LRTDepositPool and RSETH show the expected OpenZeppelin initialization controls. The score remains cautious until the complete current implementation set is verified.",
           "evidence_summary": "Public core implementations use initializer plus constructor _disableInitializers(), but every current implementation was not exhaustively matched.",

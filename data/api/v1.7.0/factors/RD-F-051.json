@@ -163,6 +163,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DMP does not depend on a price oracle. Its documented execution path requires a minimum validator-signature threshold; if that threshold is unavailable, a message is not executed rather than falling back to a secondary oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.debridge.com/dmp-details/dmp/protocol-overview"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/OraclesManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
           "primary_chain": "ethereum",

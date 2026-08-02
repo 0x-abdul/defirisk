@@ -110,6 +110,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No Slither run conducted. Manual review of DeBridgeGate fee arithmetic did not reveal obvious divide-before-multiply patterns in critical paths. DLN contracts use basis-point-style fee calculations. Cannot confirm clean without tool run.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A deployed-source Slither or equivalent run is required.",
           "evidence_summary": "No reproducible divide-before-multiply detector output for matched deployed source was published.",

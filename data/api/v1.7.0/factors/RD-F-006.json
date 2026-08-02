@@ -1431,6 +1431,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For DLN EVM Upgrades: Halborn signed off 2024-12-30. DlnSource impl `0x322B481` deployed (as upgrade target) 2025-12-08 — that is 343 days after the audit. DlnDestination impl `0xE540eb6` deployed 2026-02-13 — 410 days after. These exceed the ≤60-day green threshold significantly and exceed the ≤180-day yellow threshold, pointing to red for the gap. For DeBridgeGate (2022 audit to 2022 deploy), gap was within normal range. Overall driven by DLN implementations: red threshold breached.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The repository and address book cover multiple generations. A complete per-implementation date calculation remains outstanding.",
           "evidence_summary": "Audit reports and deployment records are public, but contract-level audit sign-off-to-deployment intervals were not completely mapped.",

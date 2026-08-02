@@ -165,6 +165,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program lists 90 assets in scope across Ethereum, BNB Chain, Polygon, Arbitrum, Avalanche, Fantom, Heco. Specific contract enumeration in scope not confirmed from Immunefi page (API returned truncated data). The DeBridgeGate proxy (0x43dE...) is the highest-TVL contract on the protocol (~$6.26M aggregate as of 2026-05-07, DefiLlama; down from a ~$200M peak in 2022–2023) and is the core subject of the entire protocol; DLN is 0-TVL by architecture so DeBridgeGate is necessarily the largest TVL surface regardless of magnitude. No explicit exclusion of DeBridgeGate or DLN contracts identified from the Immunefi page content. DLN contracts (DlnSource, DlnDestination) are cross-chain bridging infrastructure and the unconfirmed scope is the basis for yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/debridge"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/debridge/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",

@@ -114,6 +114,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SignatureVerifier uses `SignatureUtil.getUnsignedMsg()` which produces `keccak256(abi.encodePacked(\"\\x19Ethereum Signed Message:\\n32\", _submissionId))` — EIP-191 format, not EIP-712 structured data. No domain separator with chainId is used in the signing layer. However, the submissionId itself is constructed from `abi.encodePacked(SUBMISSION_PREFIX, debridgeId, getChainId(), chainIdTo, amount, receiver, nonce)` — chain information is embedded in the signed payload itself. Cross-chain replay i...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/libraries/SignatureUtil.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime signing-path inventory is required.",
           "evidence_summary": "No exhaustive deployed signing-path review established whether every EIP-712 domain includes chainId.",

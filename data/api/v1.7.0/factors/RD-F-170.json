@@ -182,6 +182,37 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeBridgeGate impl (0x797161): `v0.8.17+commit.8df45f5f` — 0.8.17 fixed the StorageWriteRemoval optimizer bug introduced in 0.8.13; no active known bugs at 0.8.17 per solc bugs.json. DlnSource impl (0x322B481): `v0.8.28+commit.7893614a`. DlnDestination impl (0xE540eb6): `v0.8.28+commit.7893614a`. CrosschainForwarder impl (0x3c857eD): `v0.8.28+commit.7893614a`. Solc 0.8.28 has a known bug: TransientStorageClearingHelperCollisionBug (HIGH severity, fixed in 0.8.34, affects contracts using `--via...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x322B481088143d9FF74e4169Fb7f12f7808690DF"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/hardhat.config.ts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Foundry configuration pins solc 0.8.27, optimizer enabled, 4,000 runs, and Cancun EVM.",
           "evidence_summary": "The current repository pins Solidity 0.8.27 with optimizer settings; no protocol-specific known-compiler-bug reachability was identified.",
