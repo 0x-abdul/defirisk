@@ -118,6 +118,71 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "All sensitive actions (software upgrades, parameter changes, mint/inflation parameters, fee parameters) route through BABY governance module. No bypass path for normal operations. However: (a) no separate timelock delay after voting ends — execution is at the specified block height immediately after vote passes; (b) expedited proposals reduce delay to 24h with higher threshold (66.7%). No rescue/emergency function exists (structurally inapplicable). Oracle not applicable (no price oracle). Governance covers all actions but expedited path reduces delay.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Root's public implementation timelocks scheduled ward additions, while the published guardian documentation states that emergency pause actions can be immediate. Token recovery is implemented by a separate authorized TokenRecoverer contract. The complete timing and authorization path for every sensitive action is not established publicly, so this remains a partial-control finding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/protocol/security/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No timelock on any sensitive action type. Mint/pause/fee/oracle-config/upgrade are all directly executable by multisig in a single transaction. withdrawFee, pause, setSignatureVerifier, updateAsset, upgradeTo are all untimelocked.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The documented upgrade route has a minimum 10-day delay, but the Operations, Protocol Council, and Pauser multisigs can pause functionality in emergencies. The Pauser is 1-of-8 and has no other documented power; this is an intentional sensitive-action exception to the ordinary timelock route.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -157,6 +222,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

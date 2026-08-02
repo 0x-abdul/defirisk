@@ -68,6 +68,67 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "POSITIVE FINDING: V2 upgrade (June 2025) added IBC rate limiting capping BABY token exits at 10% of native supply within 24 hours — explicit outflow rate-limiter. No admin-triggered chain-level pause mechanism identified (Cosmos SDK x/crisis is validator-consensus-based halt, not admin key). Score yellow: rate-limiter present (positive) but no admin-triggered chain-pause capability separate from consensus. The rate-limiter is a material security mitigant for cross-chain outflow risk.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-genesis-v2-upgrade"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge documents that ProtocolGuardian can immediately trigger a global cross-chain pause and block outgoing messages for individual destination chains. The reviewed public material does not establish a Centrifuge-specific per-window outflow cap, so the available chain-pause mitigation supports a yellow result.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/blog/centrifuge-completes-v3-migration-delivering-unified-multichain-rwa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeBridgeGate has a per-asset static maxAmount cap and a pause function, but no time-windowed outflow rate limiter. The intent-based DLN side has no retained-value rate-limiter surface. Yellow reflects the available emergency pause but absent time-windowed limit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "EigenLayer's approved surface is a restaking protocol, not a bridge; bridge rate limiting and chain-pause controls are structurally inapplicable.",
           "gap_reason": "not_applicable",
           "primary_chain": "ethereum",
@@ -107,6 +168,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

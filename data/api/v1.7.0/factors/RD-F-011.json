@@ -70,6 +70,71 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "SELFDESTRUCT opcode is an EVM Solidity construct. Babylon's execution environments (Bitcoin script, Cosmos SDK Go modules, CosmWasm Rust) have no equivalent. Bitcoin UTXOs can only be spent via valid script paths. Cosmos SDK modules persist via the KV store. CosmWasm contracts can be halted/migrated by admin but have no self-destruct equivalent.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3/V3.1 uses immutable core pattern — no proxy upgrades, no selfdestruct. Source inspection of Root.sol confirms no selfdestruct operations. Multiple audits with no reported SELFDESTRUCT vulnerability. EVM Cancun (EIP-6780) further restricts selfdestruct semantics.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No SELFDESTRUCT opcode found in reviewed source files (DeBridgeGate.sol, DlnSource.sol, DlnDestination.sol, DlnBase.sol, CallProxy.sol). Protocol uses upgradeable proxy pattern; SELFDESTRUCT would destroy the proxy. No such function was identified in manual inspection.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No evidence of SELFDESTRUCT opcode in production EigenLayer contracts. TUP and BeaconProxy patterns do not include selfdestruct in the upgrade path. No published audit finding references selfdestruct in any core contract. Assessment is based on published analysis; needs tool run for programmatic confirmation.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -108,6 +173,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

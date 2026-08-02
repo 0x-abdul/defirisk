@@ -70,6 +70,71 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Slither divide-before-multiply detector applies to Solidity only. Babylon is Go and Rust. The factor concept (integer arithmetic precision) applies to Go but no Go-specific published analysis found. Manual review of x/finality voting power calculations and x/btcstaking satoshi-denomination arithmetic would be required. No published finding on this topic from Zellic/Coinspect audits found.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge's public repository exposes custom arithmetic utilities and the project publishes multiple reviews. A legacy Tinlake report discusses rounding concerns, while the public materials reviewed do not provide a current, exhaustive arithmetic-analysis result for V3.1; yellow reflects that verification limit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://leastauthority.com/static/publications/LeastAuthority_Centrifuge_Tinlake_0.3.0_Audit_Report.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No Slither run conducted. Manual review of DeBridgeGate fee arithmetic did not reveal obvious divide-before-multiply patterns in critical paths. DLN contracts use basis-point-style fee calculations. Cannot confirm clean without tool run.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No published analysis flags divide-before-multiply as a confirmed true-positive. Certora formal verification engagements would detect integer arithmetic ordering issues via invariant proofs. Olympix analysis did not identify divide-before-multiply. Assessment is green with [?] confidence pending tool run.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -108,6 +173,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

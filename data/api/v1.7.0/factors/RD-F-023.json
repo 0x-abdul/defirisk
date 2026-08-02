@@ -75,6 +75,66 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "OZ _disableInitializers() is an EVM Solidity pattern for upgradeable proxy impl contracts. Babylon has no EVM contracts. Cosmos SDK genesis initialization is structurally protected at the framework level. CosmWasm initialization semantics are enforced at VM level. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — _disableInitializers() is an OpenZeppelin pattern for upgradeable proxy implementations. Centrifuge does not use proxy contracts or OZ Initializable. All contracts use standard constructors. The _disableInitializers() pattern is not applicable to this immutable-core architecture.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DlnBase.sol (parent of DlnSource and DlnDestination): `constructor() { _disableInitializers(); }` — correctly calls `_disableInitializers()` in parent constructor, which propagates protection to both DlnSource and DlnDestination. DeBridgeGate impl uses the older `constructor() initializer {}` pattern (equivalent protection for OZ 4.x). CrosschainForwarder implementation at 0x3c857eD... (sol 0.8.28): no `_disableInitializers()` in constructor per inspection — uses `initializer` modifier on `in...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3c857eD51c8a2747ee8c6f30edda5ea0d487cc64"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnBase.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Confirmed for EigenPod (GitHub source) and StrategyManager (search evidence). Pattern consistent with OZ v4.9.0 upgradeable template across all implementation contracts. Certora and Sigma Prime formal audits have covered implementation contract posture.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -113,6 +173,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

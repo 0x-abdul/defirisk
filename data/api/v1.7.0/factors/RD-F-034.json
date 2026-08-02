@@ -118,6 +118,63 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No EVM-style pause-keeper role identified. No equivalent to EigenLayer's Pauser Multisig found for Babylon Genesis. Chain halt would require 2/3+ validator consensus (Cosmos SDK crisis module). IBC rate-limiter (V2 upgrade) provides partial circuit-breaker for cross-chain outflows (10%/24h) but is not an admin-controlled pause. The concept of a guardian role distinct from the upgrader (governance) is architecturally absent in this pure on-chain governance model.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://babylonlabs.io/blog/babylon-genesis-v2-upgrade"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Separation exists: OpsGuardian has NO pause authority; ProtocolGuardian handles pause + upgrades. Both are distinct from each other and from the CFG governance token holder community. Role separation is explicitly designed and documented.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GOVMONITORING_ROLE for pause is distinct from DEFAULT_ADMIN_ROLE for upgrade and configuration in the contract, but public evidence identifies no separate holder from the same 5-of-8 multisig.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The technical architecture identifies separate Operations, Protocol Council, Community, and Pauser multisigs. The Pauser is documented as having only emergency-pause authority rather than the ordinary upgrade-proposal or execution roles.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -157,6 +214,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

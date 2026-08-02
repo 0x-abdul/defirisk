@@ -59,6 +59,66 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Covenant committee: 7 distinct organizations. Babylon Labs holds 3/9 keys — organizational co-hosting risk within Babylon Labs is inherent. Other 6 keys distributed across 6 independent organizations (AltLayer, CoinSummer, Cubist, Informal Systems, RockX, Zellic). ASN-level infrastructure data for Bitcoin Schnorr key custodians not available. Partial independence confirmed by organizational diversity; within-org co-hosting for Babylon Labs 3 keys is a yellow finding.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "8 Guardian Safe signer addresses confirmed via Safe API (nonce=44, threshold=4/8). Signer identities are NOT publicly attested — docs state third-party signers from Cantina but no individual names or on-chain attestations exist. Co-hosting/ASN analysis is impossible without public identity. Cannot infer from available public OSINT.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public evidence reliably attributes the eight Safe signers to independent hosting providers or custodians.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The technical architecture identifies the 3-of-6 Operations Multisig as operated by Eigen Labs. This creates an organizational concentration signal for that privileged role; physical signing-infrastructure co-hosting is not established.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -98,6 +158,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -170,6 +170,71 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. Babylon Genesis is initialized at chain genesis and governed through the Cosmos SDK governance module; the deployed-system condition of a contract deployer EOA retaining admin after seven days does not map to this chain architecture.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylon.foundation/blogs/babylon-phase-2-launch-official-announcement"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge's current published architecture routes protocol administration through Root and Safe-controlled guardians. The public material reviewed here does not establish the deployer/admin relationship exactly seven days after every deployment, so the historical deploy-time test is not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7270b20603fbb3df0921381670fbd62b9991ada4"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin role held by 5-of-8 Gnosis Safe (created ~4 years ago). DeBridgeGate deployer (0xd6F0Dabb...) is not the current admin. Transfer to multisig occurred at or near protocol launch.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x6bec1faF33183e1Bc316984202eCc09d46AC92D5/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x43dE2d77BF8027e25dBD179B491e8d64f38398aA"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Current documentation shows multisig governance roles, but no complete historical deployment and ownership timeline was reviewed to verify the first seven days after deployment.",
           "gap_reason": "requires_curator_input",
           "primary_chain": "ethereum",
@@ -204,6 +269,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -141,6 +141,66 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The public BTC-staking specification shows individually controlled Bitcoin outputs with timelock and unbonding paths, rather than a legacy singleton staking contract. A public inventory of deprecated Babylon contracts and balances was not established; gray records that bounded evidence gap without asserting a clean inventory.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "True — Tinlake deprecated contracts still holding material value. DeFiLlama Tinlake tracking shows ~$74M TVL in 2024 (declining from peak). Harbor Trade Credit Series 2 pool has defaulted assets since April 2023 with capital locked due to off-chain recovery processes. Investor redemption blocked (zero pool reserve). DROP/TIN ERC-20 tokens representing claims are still on-chain with capital locked in deprecated pool contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/getting-started/legacy/centrifuge-v1/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://gov.centrifuge.io/t/harbor-trade-credit-series-2-ht2drp-redemptions-issue/5798"
+            },
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/tinlake"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No retained public contract-and-balance evidence establishes whether deprecated deBridge contracts hold material value.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The reviewed public materials did not identify a complete deprecated-contract inventory together with on-chain balances needed to determine whether any deprecated contract holds more than $100,000.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "ethereum",
@@ -175,6 +235,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

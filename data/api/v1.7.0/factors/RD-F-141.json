@@ -200,6 +200,75 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Official governance documentation lists the intended deposit, voting-period, quorum, and threshold parameters, and the V2 announcement describes its rollout. Those sources do not independently attest the full currently deployed chain configuration or exclude all test-mode parameters across modules.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-genesis-v2-upgrade"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Root constructor args show 172800s delay (production value, not 0). Escrow address is the canonical production deployment. No test-mode flags found in public sources. Deployer EOA has not retained admin role post-deployment.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No test-mode parameters detected from ABI inspection of all three core implementation contracts. Production-grade role assignments and contract addresses visible.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x322B481088143d9FF74e4169Fb7f12f7808690DF#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xE540eb6Bfee129d28d47e26ad33A138d66FD78f5#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Current source review was not paired with a complete deployed-configuration inventory, so test-mode parameters in every deployed component were not established.",
           "gap_reason": "requires_curator_input",
           "primary_chain": "ethereum",
@@ -234,6 +303,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

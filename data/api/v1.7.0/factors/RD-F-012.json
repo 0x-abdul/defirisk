@@ -91,6 +91,75 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "EVM delegatecall opcode does not exist in Go (Cosmos SDK) or Rust (CosmWasm) execution contexts. Factor is structurally inapplicable. The analogous CosmWasm SubMsg pattern uses typed Rust messages, not arbitrary calldata. No evidence of uncontrolled SubMsg with user-supplied contract addresses in cosmos-bsn-contracts.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x/btcstaking"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found across any inspected Centrifuge V3/V3.1 contract. Gateway.sol uses typed external interface calls. WormholeAdapter.sol calls immutable relayer address. Auth.sol and Root.sol use only standard external calls. No delegatecall pattern identified in any of 22+ audit engagements.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://audits.sherlock.xyz/contests/1028"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/core/messaging/Gateway.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found. CallProxy.sol explicitly states it \"reverts if a transaction tries to use a delegatecall.\" DeBridgeGate.sol uses no delegatecall. DlnSource/DlnDestination use standard OZ upgradeable pattern (proxy delegation is internal, not user-callable).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/periphery/CallProxy.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "EigenLayer uses OZ TransparentUpgradeableProxy delegatecall to implementation address stored in EIP-1967 slot, set only by Proxy Admin (not user-controlled). No published audit finding identifies delegatecall-to-user-supplied-target. Certora and Sigma Prime broad-scope engagements would have surfaced this pattern.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -129,6 +198,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

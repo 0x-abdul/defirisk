@@ -85,6 +85,79 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Zellic 2025 Genesis Chain audit: 32 findings (7 critical) — stated 'all resolved or acknowledged' but individual resolution commits for the 7 critical findings are not individually verifiable from accessible public secondary sources (PDF binary-encoded). OZ April 2026 findings: all 4 confirmed fixed (PR #584 jailing bypass, PR #1911 type assertion, plus 2 additional fixes per OZ blog). Informal Systems V2: 14 findings, all addressed. No 'Resolved' label without code change detected in accessible evidence.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/state-changes-at-the-boundary-lessons-from-security-research-on-babylon"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/pull/584"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/assets/files/zellic_babylon_genesis_chain_audit_2025_03.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Cantina July 2024 audit: 1 critical + 1 high + 2 medium findings, all marked fixed. Code4rena Sept 2023: 8 medium findings, all resolved. January 2026 yAudit fix review conducted specifically to verify remediations. No documented case of a finding marked resolved that was not patched. Individual fix commits not verified against on-chain bytecode in this assessment.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/8c15e83a-08fc-48b9-8cc1-4f9ca76bb064"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-01-yAudit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No evidence of Halborn findings marked \"Resolved\" but unverifiable on-chain. The audit PDFs are publicly available in debridge-security repo but their full findings tables were not directly parsed (PDF not machine-readable from web fetch). The protocol has an ongoing relationship with Halborn (33 audits) suggesting systematic resolution tracking. Cannot definitively enumerate all resolved findings.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No findings marked 'Resolved' without corresponding on-chain change. Code4rena 2023 H-01 (empty slot/block proof) and H-02 (loop increment misplacement) were confirmed and fixed. Sigma Prime slashing edge case in EigenPodManager._reduceSlashingFactor() was acknowledged as intentional design ('won't fix') with documentation — not a false resolution claim.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -127,6 +200,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

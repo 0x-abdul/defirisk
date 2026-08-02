@@ -116,6 +116,75 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon spans custom Cosmos SDK modules, Bitcoin-staking cryptography, off-chain services, and CosmWasm integration contracts. The public Zellic report recorded seven critical findings, and the public audit index does not identify a matching audit for every repository/component. The available evidence supports a yellow complexity-versus-audit-coverage concern.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/assets/files/zellic_babylon_genesis_chain_audit_2025_03.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V3.1 codebase spans approximately 22 Solidity source directories. 22+ distinct audit engagements 2023-2026. Sherlock+Blackthorn $320K USDC contest (Oct-Dec 2025) with 85+ wardens provides high-breadth coverage. yAudit conducted a dedicated fix review in January 2026. Audit breadth and firm diversity appear well-matched to code complexity.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/contests/1028"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/centrifuge/protocol/tree/main/docs/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "33 audit reports from 4 firms covering EVM, Solana, SDK, infrastructure, and operations. Audit coverage relative to code size appears substantial. DLN contracts (DlnSource.sol ~500 LOC, DlnDestination.sol ~400 LOC) were audited by a dedicated engagement in 2023-04-13 and supplementary audits (External Call 2023-09-25, EVM Bridge 2024-06-18, EVM Upgrades 2024-12-30). Code complexity is moderate for a bridge protocol. No evidence of audit-scope-to-LOC ratio red flag.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "EigenLayer's beacon chain proof verification (EigenPod) is exceptionally complex. Hexens found a critical Merkle bit-length validation gap (EIG-10) in the nested Merkle tree system. Certora found a critical validator hazard in checkpoint/Electra interaction. Both were pre-exploitation findings — demonstrating the complexity has strained audit coverage at least twice. AllocationManager was split into two contracts for size (v1.9.0). However, 22 audit engagements across 4 firms over 3 years provides adequate coverage-per-complexity ratio overall.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -158,6 +227,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

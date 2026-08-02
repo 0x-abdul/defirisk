@@ -90,6 +90,62 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Covenant committee signers hold compressed Schnorr public keys for Bitcoin co-signing — these are offline keys for a federated signing service, not EVM hot wallets. On-chain behavioral heuristics (nonce velocity, gas jitter) are inapplicable to Bitcoin Schnorr keys. BABY governance is DAO-level; individual validator signing behavior for governance is not equivalent to multisig hot-wallet risk. Insufficient data to assess; structurally different from EVM hot-wallet pattern.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/covenant-emulator"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge identifies the guardians as Safe-controlled and third-party verified, but public transaction pages alone do not establish whether a signer is a hot wallet or has hardware-signing controls. The hot-wallet condition is not assessed from the reviewed public evidence.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4d47a7a89478745200Bd51c26bA87664538Df541"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xc4576CE4603552c5BeAa056c449b0795D48fcf92"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public transaction history does not establish whether the Safe signers are hot-wallet operators.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public architecture identifies privileged multisigs but does not establish whether their signers use hot wallets. No signer-operation study was available for this refresh.",
           "gap_reason": "requires_curator_input",
           "primary_chain": "ethereum",
@@ -129,6 +185,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -59,6 +59,70 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin reports that Babylon Labs confirmed and triaged its findings and shipped fixes promptly. The public release history confirms later releases, but the reviewed public evidence does not map each disclosed fix to the currently running chain binary; an unresolved merged-but-not-deployed gap cannot be excluded.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/state-changes-at-the-boundary-lessons-from-security-research-on-babylon"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public audit material exists, but the reviewed sources do not establish a complete mapping from every known merged vulnerability fix to deployed bytecode. A fix-merged-but-not-deployed gap is not assessed.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-01-yAudit.pdf"
+            },
+            {
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/contests/1028"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/tree/main/docs/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The retained public repositories do not establish whether a security fix has been merged but remains undeployed.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No complete vulnerability-fix-to-mainnet-deployment reconciliation was available for this refresh.",
           "gap_reason": "requires_curator_input",
           "primary_chain": "ethereum",
@@ -93,6 +157,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
