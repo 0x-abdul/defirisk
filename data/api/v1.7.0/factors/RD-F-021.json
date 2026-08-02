@@ -73,6 +73,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "deBridge does NOT use UUPS pattern. DeBridgeGate, DlnSource, DlnDestination, and CrosschainForwarder all use EIP-1967 TransparentUpgradeableProxy pattern with a separate ProxyAdmin contract. `_authorizeUpgrade` is irrelevant. N-A for UUPS-specific check; upgrade path is governed by the ProxyAdmin (5-of-8 multisig per profile).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x43dE2d77BF8027e25dBD179B491e8d64f38398aA"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official address book names ProxyAdmin contracts and owners rather than UUPS administration.",
           "evidence_summary": "The approved core deployment uses ProxyAdmin and transparent proxy administration, so the UUPS-specific _authorizeUpgrade gate is structurally moot.",
@@ -88,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -63,6 +63,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "deBridge/DLN is primarily a bridge protocol, not a lending protocol with cross-asset arithmetic. DLN source/destination deal with token amounts specified by the maker — cross-decimal arithmetic risk is lower than in DEX/lending protocols. No obvious multi-token decimal normalization issue found in manual inspection of DlnSource.sol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The report notes a shared minimum deposit amount across tokens with different prices and other oracle boundary concerns. This is partial adverse evidence, not proof of a deployed exploit.",
           "evidence_summary": "Bailsec identified token-amount and price-boundary concerns, while full deployed mixed-decimal normalization analysis remains incomplete.",
@@ -83,7 +102,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

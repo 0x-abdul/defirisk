@@ -814,6 +814,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent EVM audit: Halborn \"DLN EVM Upgrades\" dated 2024-12-30 (PDF: `DLN-EVM_Upgrades_SSC.pdf` in debridge-security repo). DlnSource proxy at `0xeF4fB24...` was upgraded to impl `0x322B481...` (solc 0.8.28) on 2025-12-08 (tx `0x25b203...`). DlnDestination proxy at `0xe7351fd...` was upgraded to impl `0xE540eb6...` (solc 0.8.28) on 2026-02-13 (tx `0xf18791...`). These deployed implementations post-date the last confirmed EVM audit by 5–14 months. No subsequent audit PDF found in debridge-...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe7351fd770a37282b91d153ee690b63579d6dd7f"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xeF4fB24aD0916217251F553c0596F8Edc630EB66"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official audit index lists repeated reviews and the address book identifies current contracts. This pass did not prove byte-for-byte parity between every report scope and every current implementation, so it does not assert a mismatch.",
           "evidence_summary": "Public audits and verified source exist, but audit-commit-to-current-runtime parity was not reconstructed across the full Ethereum contract set.",
@@ -839,7 +866,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

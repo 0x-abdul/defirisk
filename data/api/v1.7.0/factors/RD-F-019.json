@@ -68,6 +68,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SignatureVerifier.sol uses `ecrecover(_submissionId.getUnsignedMsg(), v, r, s)` and then checks `if (getOracleInfo[oracle].isValid)` without an explicit `oracle != address(0)` guard before the validity check. If address(0) were ever registered as a valid oracle (unlikely in a correctly-operated system, but a residual risk), invalid signatures would produce a false positive. The `submissionId` includes chainId-specific data making cross-chain replay moot, but the zero-address check is absent. ...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/SignatureVerifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime source scan is required.",
           "evidence_summary": "No exhaustive deployed-source result established whether all ecrecover returns are checked against address zero.",
@@ -88,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

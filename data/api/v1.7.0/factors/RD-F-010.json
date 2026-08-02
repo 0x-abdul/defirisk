@@ -68,6 +68,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril output found in the debridge-security repo or any public analysis post. Static analysis was not run programmatically for this assessment. The DLN EVM audit (Halborn 2024-12-30) and prior audits would capture some of these findings; audit PDFs not machine-parseable here. Notable structural patterns reviewed manually: CallProxy uses `.call()` with user-controlled receiver and data (no allowlist); SignatureVerifier uses `ecrecover` without explicit address(0) guard; ...",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A programmatic run against matched deployed source is required.",
           "evidence_summary": "The repository documents Aderyn usage, but no reproducible current deployed-source high-severity count was published.",
@@ -88,7 +111,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
