@@ -172,6 +172,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "StakedUSDe implements OpenZeppelin ReentrancyGuard on transferInRewards(), _deposit(), _withdraw(). EthenaMinting V2 implements nonReentrant on mint(), redeem(), transferToCustody(). USDe has no external calls in critical paths requiring reentrancy guard.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Deposit, swap, and transfer paths in the current public LRTDepositPool source use the guard. This is not an exhaustive assessment of every deployed implementation.",
           "evidence_summary": "The core deposit implementation applies nonReentrant to externally calling state-changing paths, but full deployed-contract coverage was not proven.",
@@ -193,6 +216,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-02T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

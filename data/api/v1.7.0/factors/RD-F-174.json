@@ -177,6 +177,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All four core contracts use Solidity 0.8.19 or 0.8.20, both active/supported versions (not EOL). Foundry toolchain confirmed (foundry.toml present: optimizer=true, optimizer_runs=20000, evm_version=shanghai). forge-std is a development dependency, not a production dependency. No EOL Solidity version usage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/code-423n4/2023-10-ethena/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The source tree consistently uses pragma Solidity 0.8.27 and the build config pins the same version.",
@@ -204,6 +227,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-02T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

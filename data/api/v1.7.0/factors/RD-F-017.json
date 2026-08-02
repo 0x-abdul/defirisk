@@ -139,6 +139,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 uses allowlisted collateral assets. Price validation applies Chainlink oracle feeds (standard 8-decimal). Pashov V2 audit and Code4rena found no mixed-decimals vulnerability. No confirmed instance of this pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://596495599-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsBsPyff5ft3inFy9jyjt%2Fuploads%2FJHbdthPqKCPoZFzrpryW%2Fv2-audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The report notes a shared minimum deposit amount across tokens with different prices and other oracle boundary concerns. This is partial adverse evidence, not proof of a deployed exploit.",
           "evidence_summary": "Bailsec identified token-amount and price-boundary concerns, while full deployed mixed-decimal normalization analysis remains incomplete.",
@@ -160,6 +183,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-02T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

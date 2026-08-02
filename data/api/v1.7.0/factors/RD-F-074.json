@@ -215,6 +215,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public StakedUSDe source inherits OpenZeppelin ERC-4626 and uses a custom minimum-share check, but it does not implement the OpenZeppelin 4.9-and-later virtual-share offset pattern required by this factor. The separate minimum-share control reduces risk but does not satisfy the specified offset criterion.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Public architecture documentation describes rsETH as a custom repricing ERC-20 receipt whose exchange rate is calculated by Kelp contracts, not as an ERC-4626 vault. The OpenZeppelin ERC-4626 virtual-share-offset test is therefore structurally not applicable.",
           "gap_reason": "not_applicable",
@@ -230,6 +249,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-02T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
