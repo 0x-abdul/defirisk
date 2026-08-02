@@ -1,0 +1,3327 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 6.0606060606060606,
+    "10": 0.0,
+    "11": 0.0,
+    "12": 0.0,
+    "13": 11.11111111111111,
+    "2": 24.242424242424242,
+    "3": 26.666666666666668,
+    "4": 25.0,
+    "5": 10.0,
+    "6": 0.0,
+    "7": 33.33333333333333,
+    "8": 22.22222222222222,
+    "9": 8.333333333333332
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": "0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3",
+          "chain": "ethereum",
+          "deployed_at": "2024-01-28",
+          "deployment_key": "primary",
+          "display_name": "Ethena (Ethereum)",
+          "surface_slug": "default",
+          "tvs_share": 1.0,
+          "tvs_usd": 3790619996
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "13 distinct audit engagements across 7 firms covering core USDe contracts. V2 contracts (EthenaMinting V2, StakedUSDeV2) audited by Pashov (May 23 2024) prior to V2 deploy (July 8 2024). Etherscan verified source on all four core contracts. All audits completed pre-deploy per official docs. No critical or high findings across any engagement. Commit SHA not publicly disclosed, so bytecode-to-commit match is medium confidence, but no evidence of scope mismatch.",
+          "factor_id": "RD-F-001",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent audit covering core USDe contracts is Pashov V2 (May 23 2024), covering EthenaMinting V2 and StakedUSDeV2. As of 2026-04-28 this is approximately 706 days (~23 months). ENA audited by Pashov Sep 2 2024 (~600 days). No audit has been published for any post-July 2024 changes. Core architecture is unchanged since V2 deploy, reducing drift risk, but 23-month recency gap is notable.",
+          "factor_id": "RD-F-002",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://596495599-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsBsPyff5ft3inFy9jyjt%2Fuploads%2FJHbdthPqKCPoZFzrpryW%2Fv2-audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Code4rena 2023 found 4 mediums: M-01 (confirmed fixed), M-02 (disputed — team maintains it is not an invariant), M-03 (confirmed fixed), M-04 (acknowledged, mitigated by deployment practice only). Code4rena 2024 found 2 mediums: M-01 (fixed via PR #2), M-02 (acknowledged/disputed severity). No case where finding is marked Resolved without on-chain change evidence. Two Acknowledged-Disputed mediums create residual ambiguity: M-04 2023 DoS via MinShares is unpatched at contract level.",
+          "factor_id": "RD-F-003",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "13 distinct engagements across 7 firms: Zellic (1), Quantstamp (2), Spearbit/Cantina (1), Pashov (5), Code4rena (2 contests), Chaos Labs (economic, 1+), Cyfrin (1). Discounting Chaos Labs as economic-only, 12 code security engagements. Exceptional audit density for a 26-month-old protocol.",
+          "factor_id": "RD-F-004",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Tier-1 firms: Spearbit/Cantina, Zellic. Tier-2: Quantstamp, Cyfrin, Code4rena competitive contests. Boutique: Pashov Audit Group (4 engagements). Economic specialist: Chaos Labs. Strong firm diversity for the protocol's size and age.",
+          "factor_id": "RD-F-005",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V1 contracts: multiple audits Oct-Nov 2023, mainnet launch Feb 19 2024 — approximately 90-120 days post-audit. V2: Pashov audit May 23 2024, V2 deployed July 8 2024 — 46 days. Both within acceptable range. 46 days for V2 is slightly tight but not a red flag given prior extensive V1 coverage.",
+          "factor_id": "RD-F-006",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Active Immunefi bug bounty program live since April 4 2024. Max payout $3M for critical smart contract vulnerabilities (10% of affected funds, min $100K). 27 assets in scope. Core contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA, USDeSilo, EthenaLPStaking, StakingRewardsDistributor) confirmed in scope.",
+          "factor_id": "RD-F-007",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No post-mortem evidence of a disclosed vulnerability that was reported to the team and ignored before exploit. No smart contract exploits of Ethena core contracts have occurred as of 2026-04-28. April 2026 LayerZero bridge suspension was precautionary (not an exploit of Ethena's own contracts).",
+          "factor_id": "RD-F-008",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.panewslab.com/en/articles/019da869-0eb4-711c-8927-1f1477d57846"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora, Halmos, Kani) has been published for Ethena contracts. Chaos Labs provided economic risk analysis only (not FV). No FV coverage found in any of the 13 audit engagements.",
+          "factor_id": "RD-F-009",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Slither/Mythril/Semgrep run output published for Ethena deployed bytecode. Code4rena 2023 (competitive audit included automated tool use) found 0 high-severity findings and 4 mediums. Code4rena 2024 invitational found 0 high-severity findings and 2 mediums. True-positive high-severity count from systematic static analysis is not independently verifiable. Marked yellow as a programmatic gap, not because findings were identified.",
+          "factor_id": "RD-F-010",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Source inspection of USDe, EthenaMinting, StakedUSDeV2, StakedUSDe, USDeSilo shows no selfdestruct opcode in any contract. All contracts are non-upgradeable direct implementations.",
+          "factor_id": "RD-F-011",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/USDeSilo.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall usage found in USDe, EthenaMinting V2, StakedUSDeV2, or USDeSilo. All contracts are direct implementations with no proxy or delegatecall pattern. Confirmed via source inspection and Etherscan ABI review.",
+          "factor_id": "RD-F-012",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary call pattern found in inspected contracts. EthenaMinting uses ECDSA.recover() for authenticated minting/redemption. External calls are limited to allowlisted custodian addresses and the USDe token contract. No user-supplied target address for arbitrary external calls.",
+          "factor_id": "RD-F-013",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "StakedUSDe implements OpenZeppelin ReentrancyGuard on transferInRewards(), _deposit(), _withdraw(). EthenaMinting V2 implements nonReentrant on mint(), redeem(), transferToCustody(). USDe has no external calls in critical paths requiring reentrancy guard.",
+          "factor_id": "RD-F-014",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol does not integrate ERC-777 or ERC-1155 token standards. Collateral for minting is limited to allowlisted assets (stablecoins, LSTs — all standard ERC-20s). USDe itself is ERC-20 without hooks. No ERC-777 callback integration surface identified.",
+          "factor_id": "RD-F-015",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No divide-before-multiply finding documented in any of the 13 audit engagements or Code4rena reports. Code4rena 2023 (588 nSLOC, 98 low/NC findings) did not flag this at any severity. Absence of finding is positive but not fully programmatically confirmed.",
+          "factor_id": "RD-F-016",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 uses allowlisted collateral assets. Price validation applies Chainlink oracle feeds (standard 8-decimal). Pashov V2 audit and Code4rena found no mixed-decimals vulnerability. No confirmed instance of this pattern.",
+          "factor_id": "RD-F-017",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://596495599-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsBsPyff5ft3inFy9jyjt%2Fuploads%2FJHbdthPqKCPoZFzrpryW%2Fv2-audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.8.19/0.8.20 with default overflow protection (SafeMath built-in). No signed/unsigned confusion vulnerability documented in any audit. Pashov Oct 2024 (USDtb scope) found L-03 EIP712 type mismatch uint128/uint120 in UStbMinting, but this is the USDtb sub-product and is out of core USDe scope.",
+          "factor_id": "RD-F-018",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/pashov/audits/blob/master/team/md/Ethena-security-review-October.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 uses OpenZeppelin ECDSA.recover() which internally validates that the returned address is not address(0). No raw ecrecover without zero-address guard found. OZ ECDSA library is the gold standard for this check.",
+          "factor_id": "RD-F-019",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 implements EIP-712 with chainId validation: caches _chainId and recomputes domain separator on chain ID change. Cross-chain replay is prevented. EIP-712 domain separator includes chainId by construction.",
+          "factor_id": "RD-F-020",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "None of the core Ethena contracts use UUPS or any proxy pattern. USDe, EthenaMinting V2, StakedUSDeV2 are all direct non-upgradeable implementations. UUPS _authorizeUpgrade gate factor is not applicable. USDtb (sub-product) uses upgradeable pattern but is out of core scope.",
+          "factor_id": "RD-F-021",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "All four core contracts use constructor-based initialization. USDe: constructor(address admin). EthenaMinting V2: constructor(IUSDe _usde, IWETH9 _weth, address[] _assets, ...). StakedUSDeV2: constructor(IERC20 _asset, address initialRewarder, address owner). ENA: constructor-based. No initialize() function on any implementation contract. One-tx exploit vector does not exist.",
+          "factor_id": "RD-F-022",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/USDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — none of the core contracts use a proxy pattern. _disableInitializers() is only relevant for proxy-behind-implementation patterns (EIP-1967, UUPS, transparent proxy). No proxy architecture exists in core Ethena contracts.",
+          "factor_id": "RD-F-023",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V1 contest scope: 6 contracts, 588 nSLOC. V2 invitational scope: 4 contracts, 665 nSLOC. Multiple overlapping audits cover the same contracts. High audit density per line of code. Multiple independent reviews (competitive + boutique) further reduce missed-complexity risk.",
+          "factor_id": "RD-F-024",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents a protocol multisig and a separate Dev Multisig; the public contract and documentation reviewed do not establish an on-chain timelock for the relevant admin path. The documented multisig architecture leaves meaningful key-management risk.",
+          "factor_id": "RD-F-025",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3B0AAf6e6fCd4a7cEEf8c92C32DFeA9E64dC1862"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Dev Multisig 5-of-11 confirmed via Safe API. Reserve Fund 4-of-10 confirmed. sUSDe Payout Fund 3-of-11 claimed but Safe API not_found. DEFAULT_ADMIN_ROLE multisig '7/10 or more' per docs but address not published on-chain.",
+          "factor_id": "RD-F-026",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No single EOA admin. USDe owner = Dev Multisig 5-of-11 (0x3B0AAf...). EthenaMinting limits managed by Dev Multisig per docs. Deployer (0x8de54b1...) transferred admin to multisig before/at launch.",
+          "factor_id": "RD-F-027",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #21.",
+          "evidence_summary": "Ethena documents a protocol multisig with a high nominal signature threshold, while the public Dev Multisig record identifies a separate 5-of-11 operational Safe. The separate public descriptions do not establish a single, independently attributable signer posture for all privileged paths; yellow remains.",
+          "factor_id": "RD-F-028",
+          "gap_reason": null,
+          "notes": "Factual correction #21; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Docs claim geographic distribution and custody diversity (internal + external stakeholders including market makers and exchanges). Cannot independently verify ASN/custodian co-hosting at OSINT tier. Green claim in docs is plausible but unverified.",
+          "factor_id": "RD-F-029",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Docs state all multisig keys are cold wallets. Cannot independently verify signing device types via on-chain heuristics at OSINT tier. Documented claim accepted at low confidence.",
+          "factor_id": "RD-F-030",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, date-bounded signer-set change history sufficient to assess threshold drift was located.",
+          "factor_id": "RD-F-031",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public documentation identifies the current governance roles but does not provide a complete, date-bounded signer-change history for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public documentation describes multisig governance and a time-lock process, but the reviewed minting contract source shows privileged configuration is controlled through admin roles rather than a public TimelockController address. The on-chain-enforceable delay for the critical admin path is not substantiated; red remains.",
+          "factor_id": "RD-F-032",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No timelock verified on any sensitive function: mint limit changes, collateral add/remove, rescueTokens, redistributeLockedAmounts, role grants all execute immediately after multisig consensus. GATEKEEPER_ROLE can disable mint/redeem without timelock. DEFAULT_ADMIN_ROLE can change role assignments without timelock.",
+          "factor_id": "RD-F-033",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GATEKEEPER_ROLE exists in EthenaMinting, held by Ethena Labs staff and external third parties (market makers, exchanges). Gatekeepers can only disable mint/redeem (cannot re-enable — re-enable requires DEFAULT_ADMIN_ROLE). Meaningful separation of pause-keeper from upgrade/admin role.",
+          "factor_id": "RD-F-034",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions/matrix-of-multisig-and-timelocks"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No upgrade function exists (non-upgradeable contracts). Roles are separated at contract level: MINTER_ROLE, REDEEMER_ROLE, GATEKEEPER_ROLE distinct from DEFAULT_ADMIN_ROLE. However, Dev Multisig holds owner/admin over all contracts simultaneously — single Safe controls all levers including minter assignment, collateral config, role grants.",
+          "factor_id": "RD-F-035",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions/matrix-of-multisig-and-timelocks"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Second review approved #21 yellow->gray. Do not imply Snapshot itself is risk-free.",
+          "evidence_summary": "Ethena governance is non-binding Snapshot/committee-oriented with no on-chain ENA vote execution path. RD-F-036 is structurally inapplicable to non-binding Snapshot governance; admin execution risk belongs under multisig/admin factors.",
+          "factor_id": "RD-F-036",
+          "gap_reason": "not_applicable",
+          "notes": "Factual correction #21; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain governor. Snapshot votes are non-binding. Flash-loan-acquired quorum cannot execute funds transfer or protocol change — the Dev Multisig must sign any on-chain action. Flash-loan governance attack is structurally blocked.",
+          "factor_id": "RD-F-037",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain governor, no execution delay mechanism. Multisig executes directly after gathering 5-of-11 signatures. Functionally equivalent to 0-delay execution for any admin action once multisig consensus is reached. No mandatory waiting period between decision and execution.",
+          "factor_id": "RD-F-038",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Ethena documentation states that fully on-chain governance is not practical or viable at present and links governance to the forum and Snapshot. No verified on-chain proposal executor accepting proposal-supplied arbitrary call/delegatecall targets was identified.",
+          "evidence_summary": "Ethena governance uses forum/Snapshot signaling and manual multisig/admin execution rather than an on-chain proposal executor. No proposal-supplied arbitrary call/delegatecall target path was identified.",
+          "factor_id": "RD-F-039",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://snapshot.org/#/ethenagovernance.eth"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GATEKEEPER_ROLE holders (Ethena staff + external market makers/exchanges, ≥3 EOAs) can pause mint/redeem in EthenaMinting. Meaningful emergency halt capability. However, no formal veto multisig for governance proposals (because governance is off-chain). Specific gatekeeper addresses not published.",
+          "factor_id": "RD-F-040",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions/matrix-of-multisig-and-timelocks"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #21.",
+          "evidence_summary": "Ethena staking docs confirm rescueTokens excludes USDe, while restricted sUSDe redistribution is compliance/legal framed and limited to sUSDe. Yellow remains because admin-controlled bounded fund movement exists without a fully verified timelock path.",
+          "factor_id": "RD-F-041",
+          "gap_reason": null,
+          "notes": "Factual correction #21; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/staking-usde/staking-key-functions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "USDe mint() restricted to designated minter address (EthenaMinting contract); owner can change minter but EthenaMinting enforces per-block limits. ENA: 10% annual supply cap, 365-day MINT_WAIT_PERIOD enforced in contract. No unbounded admin mint path exists on either token.",
+          "factor_id": "RD-F-042",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.mexc.com/price/ENA/tokenomics"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer EOA 0x8de54b1... (labeled 'Ethena: Deployer' on Etherscan) transferred admin to Dev Multisig 0x3B0AAf... well before or at public mainnet launch (Feb 2024). Dev Multisig deployed 2023-09-28, predating the Feb 2024 launch. No evidence of deployer EOA retaining admin post-launch.",
+          "factor_id": "RD-F-043",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3B0AAf6e6fCd4a7cEEf8c92C32DFeA9E64dC1862"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Dev Multisig 0x3B0AAf... is a Gnosis Safe proxy — no individual signer-level flagged-address interaction analysis available at OSINT tier. No Etherscan watchlist flags on the Safe address. Rekt database shows no incidents flagging Ethena admin addresses.",
+          "factor_id": "RD-F-044",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3B0AAf6e6fCd4a7cEEf8c92C32DFeA9E64dC1862"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Core contracts are not deployed via governance-voted constructor args. EthenaMinting V2 (0xe3490...) verified on Etherscan. July 2024 V2 upgrade was publicly documented. No constructor arg discrepancy flagged in any audit report (Pashov May 2024, Code4rena Nov 2024).",
+          "factor_id": "RD-F-045",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "All four core contracts verified on Etherscan: USDe (0x4c9EDD...), EthenaMinting V2 (0xe3490...), StakedUSDeV2 (0x9D39A...), ENA (0x57e114...). Source verified with full ABI publicly accessible. Confirmed via Etherscan code tab fetches.",
+          "factor_id": "RD-F-046",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ENA token allocation: Core Contributors 30%, Investors significant %, Foundation, Ecosystem/Airdrops 30%. Gini coefficient not directly measured. Governance is non-binding Snapshot signal — concentration in ENA voting does not directly translate to protocol execution authority (multisig holds actual power). Risk Committee elections bi-annual.",
+          "factor_id": "RD-F-047",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena/tokenomics"
+            },
+            {
+              "source_type": "url",
+              "url": "https://gov.ethenafoundation.com/t/ethena-risk-committee-elections-fourth-term-results/750"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents three real-time price-feed sources for off-chain trading and mint/redeem validation: centralized exchanges, Pyth, and RedStone.",
+          "factor_id": "RD-F-048",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents centralized-exchange pricing together with Pyth and RedStone validation before mint and redeem acceptance, but does not publish an asset-by-asset primary/secondary/fallback role matrix.",
+          "factor_id": "RD-F-049",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation identifies direct dependencies on centralized derivatives venues, off-exchange-settlement custody providers, and external real-time price feeds; loss of those services can impair trading or mint/redeem workflows.",
+          "factor_id": "RD-F-050",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/backing-asset-custody"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly describes multiple price-feed inputs, but the available documentation does not specify a verified operational fallback sequence for a primary oracle failure.",
+          "factor_id": "RD-F-051",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest evidence gap; no score retained without a public fallback specification.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena states that unavailable off-exchange-settlement functionality can impede trading workflows and availability of mint/redeem functionality, while its price-feed documentation establishes a direct dependency on external data sources.",
+          "factor_id": "RD-F-052",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/backing-custody-and-security/overview/off-exchange-settlement-in-detail"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents off-chain centralized-exchange, Pyth, and RedStone price feeds for its mint/redeem workflow; no public material identifies a single DEX spot-pool oracle in that workflow.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": "No applicable single-pool spot oracle was identified from the public architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No DEX-TWAP oracle is identified in Ethena's documented mint/redeem price-feed architecture.",
+          "factor_id": "RD-F-054",
+          "gap_reason": null,
+          "notes": "TWAP-duration measurement is inapplicable to the documented architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No DEX-TWAP pool is identified in Ethena's documented mint/redeem price-feed architecture.",
+          "factor_id": "RD-F-055",
+          "gap_reason": null,
+          "notes": "DEX-pool-depth measurement is inapplicable to the documented architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents centralized-exchange pricing with Pyth and RedStone validation rather than a single DEX-pool oracle.",
+          "factor_id": "RD-F-056",
+          "gap_reason": null,
+          "notes": "The single-pool-oracle test is inapplicable to the documented architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation establishes multi-source off-chain price validation but does not publish a verified on-chain price-deviation circuit-breaker configuration for the approved Ethereum surface.",
+          "factor_id": "RD-F-057",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest configuration-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A public, current maximum-deviation threshold in basis points was not identified for Ethena's documented off-chain price-validation workflow.",
+          "factor_id": "RD-F-058",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest configuration-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation describes real-time off-chain price feeds but does not provide a verifiable deployed oracle-read maximum-age check for the approved Ethereum surface.",
+          "factor_id": "RD-F-059",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Ethena configuration was identified that establishes Chainlink aggregator min/max bounds used in an execution-critical oracle path.",
+          "factor_id": "RD-F-060",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest configuration-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents a delta-neutral synthetic-dollar workflow using backing assets and offsetting derivatives positions, not LP-token balanceOf pricing.",
+          "factor_id": "RD-F-061",
+          "gap_reason": null,
+          "notes": "No applicable LP-token pricing mechanism was identified in the public architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents its mint/redeem API infrastructure as hosted in one AWS Asia Pacific region; public documentation does not identify an independently redundant relayer or failover provider for that off-chain workflow.",
+          "factor_id": "RD-F-062",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/api-documentation/overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "DeFiLlama recorded Ethena TVL of $4.22B on 2026-07-24, down 13.09% from $4.86B 30 days earlier. The material negative 30-day trend supports a yellow assessment under the TVL trend factor.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not provide a reproducible address-level top-10 depositor calculation for Ethena TVL. Protocol-level integration or asset-concentration proxies cannot substitute for the rubric's wallet-share measurement.",
+          "factor_id": "RD-F-064",
+          "gap_reason": "protocol_opacity",
+          "notes": "A public, reproducible address-level top-10 depositor dataset is needed to assess this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly describes USDe's delta-neutral backing and its reserve fund, but the reviewed public sources do not publish reproducible on-chain 2% and 5% price-impact depth for each protocol-held asset. The required liquidity-depth measurement therefore remains unverified.",
+          "factor_id": "RD-F-065",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDe is a delta-neutral synthetic dollar issuance and redemption system, not a lending protocol with supplied and borrowed markets. A per-market utilization measurement is therefore not applicable.",
+          "factor_id": "RD-F-066",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena does not operate borrower and depositor markets in which bad debt can be socialized across lenders. The lending-specific historical-bad-debt metric is not applicable to the assessed USDe issuance surface.",
+          "factor_id": "RD-F-067",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The rubric's lending-collateral stress test uses a top-three collateral and liquidation-ratio model. USDe instead uses a delta-neutral hedge over backing assets; its documented risk is funding and hedge execution rather than a lending LTV liquidation cascade. This lending-specific measurement is not applicable.",
+          "factor_id": "RD-F-068",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/reserve-fund"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDe is documented as a fully backed delta-neutral synthetic dollar rather than a reflexively backed algorithmic stablecoin. Nonetheless, its mechanism depends on hedging and can face sustained negative funding costs; Ethena documents a reserve fund specifically to absorb those costs. This structural funding and execution dependency supports yellow rather than green.",
+          "factor_id": "RD-F-069",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/reserve-fund"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed sUSDe contract is an ERC-4626 staking vault; Ethena's USDe documentation describes issuance and redemption, not Compound V2 cToken markets. The empty Compound-style market precondition is not applicable.",
+          "factor_id": "RD-F-070",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/staking-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's documented USDe flow is issuance and redemption through approved counterparties, not the listing and borrow-enabling of lending markets. A seed-deposit requirement for a new lending market is not applicable.",
+          "factor_id": "RD-F-071",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed Ethena surface does not operate a lending-market listing mechanism. Governance over USDe backing does not constitute a lending-market listing threshold, so this factor is not applicable.",
+          "factor_id": "RD-F-072",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena does not run a borrower market or define protocol-level borrow caps. Any caps set by external lending venues for USDe or sUSDe are outside this protocol surface; the factor is not applicable.",
+          "factor_id": "RD-F-073",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public StakedUSDe source inherits OpenZeppelin ERC-4626 and uses a custom minimum-share check, but it does not implement the OpenZeppelin 4.9-and-later virtual-share offset pattern required by this factor. The separate minimum-share control reduces risk but does not satisfy the specified offset criterion.",
+          "factor_id": "RD-F-074",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public StakedUSDe source defines MIN_SHARES and calls _checkMinShares after deposits and withdrawals, reverting when a nonzero total supply is below that floor. This is a concrete first-depositor/share-inflation guard, supporting green for this separate control factor.",
+          "factor_id": "RD-F-075",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting records USDe and sUSDe launching on 2024-02-19. At the 2026-07-24 refresh date, Ethena has operated for more than 29 months, exceeding the v1.7 green age threshold.",
+          "factor_id": "RD-F-076",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://decrypt.co/224494/ethena-ena-usde-susde-launch"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public DefiLlama protocol record does not list a smart-contract exploit against Ethena. The April 2026 rsETH event was an external KelpDAO/LayerZero incident; Ethena's precautionary bridge pause did not involve a loss or exploit of Ethena contracts. No qualifying Ethena contract exploit was identified.",
+          "factor_id": "RD-F-077",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.ethenafoundation.com/t/ethena-s-march-and-april-2026-governance-update/791"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public incident record identifies no qualifying Ethena smart-contract exploits. The three-incident chronic-exploit threshold is therefore not met.",
+          "factor_id": "RD-F-078",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit was identified in the reviewed public record, so no same-root-cause recurrence is established.",
+          "factor_id": "RD-F-079",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit date was identified in the reviewed public record; the factor's clean-record green state applies.",
+          "factor_id": "RD-F-080",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit and corresponding response record was identified, so an exploit-response quality score cannot be measured.",
+          "factor_id": "RD-F-081",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a qualifying exploit and a verifiable response timeline; neither was identified in the reviewed public record.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit and related publication date was identified, so the 30-day post-mortem criterion cannot be measured.",
+          "factor_id": "RD-F-082",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a qualifying exploit and its post-mortem publication date; neither was identified in the reviewed public record.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit was identified, so post-exploit auditor re-engagement cannot be measured.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a qualifying exploit and an audit performed after that event; neither was identified in the reviewed public record.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The reviewed public DefiLlama daily series for the refresh window produced a trailing-90-day population coefficient of variation of approximately 0.162.",
+          "evidence_summary": "The trailing-90-day public DefiLlama TVL series yields a coefficient of variation of approximately 0.162, within the v1.7 yellow band of 0.15-0.35.",
+          "factor_id": "RD-F-084",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying Ethena smart-contract exploit with a public event-to-statement timeline was identified, so the incident-response-time metric cannot be measured.",
+          "factor_id": "RD-F-085",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a qualifying exploit transaction and a dated protocol response; neither was identified in the reviewed public record.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's public governance update records a precautionary LayerZero OFT bridge pause for USDe and sUSDe on April 19-20, 2026 during the rsETH incident. This is one documented pause activation in the trailing 12 months, so the factor is yellow.",
+          "factor_id": "RD-F-086",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.ethenafoundation.com/t/ethena-s-march-and-april-2026-governance-update/791"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's public governance update says the April 2026 LayerZero OFT bridge pause lasted April 19-20 before restoration. The documented pause was far shorter than seven consecutive days.",
+          "factor_id": "RD-F-087",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.ethenafoundation.com/t/ethena-s-march-and-april-2026-governance-update/791"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials identify current contracts but do not establish a complete trailing-12-month inventory of user-fund address migrations needed to distinguish a full redeployment from upgrades or routine contract operations.",
+          "factor_id": "RD-F-088",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete public before-and-after inventory of user-fund contract addresses and migration announcements is required for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Nexus Mutual's public product and capacity endpoints list a live Ethena USDe depeg cover product with finite capacity. That is active third-party cover, but it is narrow depeg cover and materially below Ethena's multi-billion-dollar TVL.",
+          "evidence_summary": "Active Nexus Mutual cover exists for Ethena USDe depeg risk, but its limited available capacity is not sufficient for the v1.7 green adequacy threshold relative to Ethena TVL.",
+          "factor_id": "RD-F-089",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ethena-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, reproducible cluster-and-transaction dataset was available to determine whether a recently mixer-funded wallet interacted with Ethena.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "requires_curator_input",
+          "notes": "This signal requires a current mixer attribution and protocol-interaction feed; no public HTTP(S) evidence substantiating either a positive or negative result was identified.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, reproducible transaction-pattern analysis was available to test for small-value partial-drain precursors against Ethena.",
+          "factor_id": "RD-F-091",
+          "gap_reason": "requires_curator_input",
+          "notes": "The factor requires transaction-level pattern matching against a known drain template; no public HTTP(S) evidence substantiates a current result.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public mempool baseline was available to determine whether an Ethena deployer wallet submitted an unusual current transaction sequence.",
+          "factor_id": "RD-F-092",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "The threshold depends on a live deployer-wallet mempool baseline, which was not available through a reproducible public HTTP(S) source.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public attacker-attribution and mempool dataset was available to test the five-times-baseline gas-price condition.",
+          "factor_id": "RD-F-093",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires both a labeled attacker wallet and a current priority-fee baseline; neither can be established from the reviewed public evidence.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public continuous deployment sweep or verified Ethena-specific exploit-bytecode template was available for this signal.",
+          "factor_id": "RD-F-094",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "A defensible result requires an indexed new-contract scan and a reviewed bytecode-similarity threshold.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public mempool or transaction-history pattern feed was available to test for a known Ethena exploit replay selector sequence.",
+          "factor_id": "RD-F-095",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "The required replay template and current call-pattern corpus were not publicly reproducible.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public high-value-user inventory and approval-monitoring feed was available to test this approval anomaly signal.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "requires_curator_input",
+          "notes": "The factor requires current attribution of high-value users and classification of newly approved counterparties.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public address-clustering analysis was available to determine whether identical-pattern Sybil transactions were currently surging.",
+          "factor_id": "RD-F-097",
+          "gap_reason": "requires_curator_input",
+          "notes": "The signal requires a time-windowed transaction-clustering methodology and a reproducible address corpus.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public time-series measurement was retained for the specified acute TVL-drain threshold at the refresh date.",
+          "factor_id": "RD-F-098",
+          "gap_reason": "external_api_blocked",
+          "notes": "A current verdict needs a timestamped TVL series and the rubric's defined comparison window; neither was independently verified in this pass.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No current public oracle-monitoring record was available to test the factor's defined deviation or staleness trigger for Ethena.",
+          "factor_id": "RD-F-099",
+          "gap_reason": "external_api_blocked",
+          "notes": "Contract documentation alone cannot substantiate a current oracle-anomaly result.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public transaction-level monitoring evidence was available to determine whether a flash-loan-triggered state-change pattern occurred at Ethena.",
+          "factor_id": "RD-F-100",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Ethena's documented permissioned mint/redeem design narrows the surface but does not prove absence of every relevant state-change pattern.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents a multisig-admin mint/redeem design rather than an on-chain Governor proxy-upgrade queue; the specified on-chain proposal signal is structurally mismatched.",
+          "factor_id": "RD-F-101",
+          "gap_reason": "not_applicable",
+          "notes": "Ethena's public mint/redeem documentation identifies multisig administration and role management; it does not identify a Governor proposal queue for this signal.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current mempool watchlist was available to identify abnormal privileged Ethena administration transactions.",
+          "factor_id": "RD-F-102",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Contract and role documentation cannot establish whether a current administration transaction is anomalous.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, current configuration history was independently verified for Ethena's cross-chain security-signing threshold signal.",
+          "factor_id": "RD-F-103",
+          "gap_reason": "requires_curator_input",
+          "notes": "A valid result requires an authoritative configuration history and an approved threshold-change baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public market-data snapshot was retained to test the rubric's current stablecoin depeg trigger.",
+          "factor_id": "RD-F-104",
+          "gap_reason": "external_api_blocked",
+          "notes": "A current result requires timestamped venue prices and liquidity data for the specified threshold window.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public historical DNS, certificate, and frontend-bundle monitoring record was available to assess a current Ethena frontend-integrity anomaly.",
+          "factor_id": "RD-F-105",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Public reporting of past incidents does not establish the current signal state without a defined monitoring baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public cross-chain event-monitoring dataset was available to test for anomalous Ethena bridge minting activity.",
+          "factor_id": "RD-F-106",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "A current verdict requires cross-chain message and supply reconciliation data for the relevant routes.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public evidence cannot establish signer geography, device, or session-fingerprint anomalies for Ethena's privileged operations.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "requires_curator_input",
+          "notes": "This signal requires private signer-telemetry or custody-provider data.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public repository-integrity feed was available to determine whether a current sensitive-branch or account anomaly occurred.",
+          "factor_id": "RD-F-108",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "A repository landing page does not substantiate absence of force-pushes, compromised accounts, or branch-protection events.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public monitoring dataset was available to quantify a current Ethena-targeted impersonation or social-sentiment anomaly.",
+          "factor_id": "RD-F-109",
+          "gap_reason": "requires_curator_input",
+          "notes": "Isolated public scam reports do not provide the rubric's defined current anomaly baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, reviewed proposal-to-execution dataset was available for Ethena's off-chain governance and multisig execution process.",
+          "factor_id": "RD-F-110",
+          "gap_reason": "requires_curator_input",
+          "notes": "Snapshot activity alone does not establish the defined pending-to-executed ratio across governance and execution systems.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public interviews identify Guy Young as Ethena's founder and CEO and describe his prior Cerberus Capital Management career. This establishes a real-name public accountability point for the founder, but the public materials reviewed do not establish an equally detailed roster for all privileged contributors.",
+          "factor_id": "RD-F-111",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://coinshares.com/insights/the-node/interview-guy-young-ethena-labs/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/podcast/empire/eb164a18-8c72-11f0-8c47-47bed4708bfa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly documents committee governance, external stakeholders in key controls, and multisig safeguards. Together with a named public CEO, this creates a meaningful accountability surface, though the reviewed materials do not name every privileged contributor or multisig signer.",
+          "factor_id": "RD-F-112",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public materials reviewed identify the founder's pre-Ethena finance career, but do not provide enough complete, attributable prior-protocol history for the privileged contributor set to adjudicate other-protocol involvement reliably.",
+          "factor_id": "RD-F-113",
+          "gap_reason": "protocol_opacity",
+          "notes": "A protocol-wide prior-project history cannot be established from the reviewed public materials; no score is inferred from an absence of search results.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public explorer records can identify individual deployment transactions, but the reviewed evidence does not establish a complete, attributable history for every privileged deployer wallet or support a clean-history conclusion.",
+          "factor_id": "RD-F-114",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete privileged-wallet inventory and reproducible cross-protocol attribution would be required to assess prior on-chain history without treating unlabeled activity as benign.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not provide a complete attributable team-and-deployer history sufficient to prove or rule out prior rug or exit-scam affiliation.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "protocol_opacity",
+          "notes": "No score is inferred from the absence of an identified adverse report; a complete identity and prior-project record is not public in the reviewed sources.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena maintains public GitHub repositories, but public repository pages do not map contributors to admin permissions or establish their tenure with authority over privileged changes. The relevant tenure signal remains incomplete.",
+          "factor_id": "RD-F-116",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ethena-labs/.github"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not establish an ENS or NameStone identity binding for the privileged deployer set. Explorer presence alone is not a substitute for a verified identity binding.",
+          "factor_id": "RD-F-117",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/overview/github-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not provide a complete mapping of team handles to prior projects, so handle reuse across failed or rugged projects cannot be assessed reliably.",
+          "factor_id": "RD-F-118",
+          "gap_reason": "protocol_opacity",
+          "notes": "No score is inferred from an absence of identified handle matches because the privileged-contributor handle set is not publicly complete.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository material reviewed does not link privileged contributors to a stated geography or provide a reliable timezone-to-identity map for commit analysis.",
+          "factor_id": "RD-F-119",
+          "gap_reason": "protocol_opacity",
+          "notes": "Commit timestamps without attributable contributor identities and a stated geographic baseline cannot support this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Guy Young has appeared in public long-form interviews, but this does not establish a protocol-wide assessment of video-off or voice-consistency indicators for privileged contributors.",
+          "factor_id": "RD-F-120",
+          "gap_reason": "protocol_opacity",
+          "notes": "The available public interview supports founder visibility only; it is insufficient to assess the entire privileged contributor set or infer the absence of a flag.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The founder has a substantial public footprint through named interviews and a documented pre-Ethena career. Public documentation does not provide comparable OSINT depth for the full privileged contributor set, producing a partial rather than comprehensive result.",
+          "factor_id": "RD-F-121",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://coinshares.com/insights/the-node/interview-guy-young-ethena-labs/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/podcast/empire/eb164a18-8c72-11f0-8c47-47bed4708bfa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials do not disclose a complete contributor-wallet set or payment routing, so payment to a DPRK-cluster wallet cannot be assessed from public evidence alone.",
+          "factor_id": "RD-F-122",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor would require attributable contributor wallet addresses and a reliable sanctions or cluster-analysis dataset; neither is established by the reviewed public material.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": "The public report describes bridge-restoration and security-configuration changes. The reviewed official governance material does not identify a contemporaneous matching decision, which is a documentation-gap signal rather than proof of improper action.",
+          "evidence_summary": "A public report describes Ethena's LayerZero bridge restoration and security-configuration changes. The reviewed official governance material does not document a matching contemporaneous decision; this supports a cautious documentation-gap finding, not an allegation of improper conduct.",
+          "factor_id": "RD-F-123",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.ethenafoundation.com/t/ethena-s-april-2025-governance-update/567"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.weex.com/news/detail/ethena-has-restored-the-layerzero-cross-chain-bridge-functionality-for-susde-and-usde-and-strengthened-security-configurations-698674"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not provide a complete, reproducible privileged-deployer funding trace covering the factor's 30-day window, so mixer funding cannot be adjudicated without treating missing labels as a clean result.",
+          "factor_id": "RD-F-124",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete attributable deployer inventory and transaction-level provenance analysis for the defined 30-day window is required; none was established in the reviewed public evidence.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public source supplies an attributable three-hop analysis from the privileged deployer set to a DPRK or Lazarus cluster. A clean or adverse result cannot be inferred from the absence of a published match.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "requires_curator_input",
+          "notes": "A documented wallet inventory and reproducible cluster-attribution evidence would be needed for this factor; the reviewed public sources do not establish either.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena is an original implementation. The delta-neutral synthetic-dollar architecture (basis trade via CEX shorts + OES custody) does not derive from any prior DeFi codebase. Confirmed by Code4rena contest README, all audit scopes, and Ethena documentation describing the novel architecture.",
+          "factor_id": "RD-F-126",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/how-usde-works"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork source exists. Ethena is an original codebase. This factor does not apply.",
+          "factor_id": "RD-F-127",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork source exists. This factor does not apply by construction.",
+          "factor_id": "RD-F-128",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream to diverge from. Ethena is an original codebase. This factor does not apply.",
+          "factor_id": "RD-F-129",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena is the origin (fork depth 0 by definition; no fork hops from any previously audited protocol). This factor does not apply.",
+          "factor_id": "RD-F-130",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Original codebase — no upstream audit coverage to inherit or retain. Fresh audits by 7 firms directly cover Ethena's own contracts.",
+          "factor_id": "RD-F-131",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Original codebase — no upstream to differ from. This factor does not apply.",
+          "factor_id": "RD-F-132",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin contracts are included as Foundry submodules (lib/openzeppelin-contracts and lib/openzeppelin-contracts-upgradeable confirmed in the Code4rena repo lib directory). Foundry submodules pin at a specific commit SHA when initialized via `forge install`. However, the exact OZ version or pinned SHA is not publicly disclosed (no accessible .gitmodules). Partial evidence of pinning via Foundry convention, but not independently confirmed. Unpinned version cannot be ruled out if `forge update` has been run post-initialization.",
+          "factor_id": "RD-F-133",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/tree/main/lib"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No malicious release incident affecting OpenZeppelin contracts, forge-std, or LayerZero OFT dependency in the trailing 90 days (as of 2026-04-28) is documented in public security advisories. No confirmed supply chain attack on Ethena's dependencies.",
+          "factor_id": "RD-F-134",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin version appears to be 4.x (compatible with Solidity 0.8.19 and draft-ERC20Permit import pattern visible in StakedUSDe). OZ 4.x is current-stable with no known CVEs affecting ERC-20/ERC-4626/Ownable2Step/AccessControl modules. Notably, Ethena's sUSDe does NOT use OZ 4.9's virtual share offset (_decimalsOffset()) — instead uses MIN_SHARES constant (1 ether) as first-depositor guard. This is a valid alternative mitigation for the ERC-4626 inflation attack, but the specific OZ submodule commit SHA is not publicly confirmed. The DoS vector via MIN_SHARES (Code4rena 2023 M-04) was Acknowledged but mitigated only by deployment practice.",
+          "factor_id": "RD-F-135",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public Ethena Labs organization page does not provide a public signed-release or bytecode-to-release-tag attestation for the deployed contracts reviewed. The release-provenance control therefore cannot be independently assessed from public material.",
+          "factor_id": "RD-F-136",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Core contracts (USDe, StakedUSDeV2, ENA) are non-upgradeable direct implementations — no proxy upgrade events possible. EthenaMinting V2 is also a direct implementation. 0 proxy upgrade events in trailing 90 days. Configuration changes execute as direct transactions, not contract upgrades.",
+          "factor_id": "RD-F-137",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, date-bounded change log sufficient to assess emergency hot-patch activity was located.",
+          "factor_id": "RD-F-138",
+          "gap_reason": "protocol_opacity",
+          "notes": "The public sources reviewed do not provide a complete, date-bounded deployment and emergency-change record for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #21.",
+          "evidence_summary": "Ethena audits page lists Pashov V2 May 23, 2024 for V2 contracts and separate USDTB audits in October 2024. Code4rena November 2024 scope was UStb/USDtb, not core USDe/sUSDe/EthenaMinting V2; OFT adapter coverage is not proven by the listed sources. Yellow remains.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": "Factual correction #21; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Code4rena November 2024 found 2 medium findings. SpicyMeatball mitigation review confirmed all mitigations implemented with no new issues. No evidence of known undeployed fixes in any audit or public source.",
+          "factor_id": "RD-F-140",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All core contracts verified on Etherscan with production-appropriate configurations. No test oracle, infinite allowance, or deployer-as-admin configurations. Multiple audit firms (Zellic, Quantstamp, Spearbit, Pashov, Code4rena) found no critical or high issues across all audits.",
+          "factor_id": "RD-F-141",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. All core contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA) are non-upgradeable direct implementations. No proxy upgrade pattern is used; no storage layout collision risk exists by construction.",
+          "factor_id": "RD-F-142",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable by construction — all core contracts use constructors (not initialize()), no proxy pattern, no OZ Initializable. Etherscan code fetch confirms no _disableInitializers() needed. Reinit vector does not exist.",
+          "factor_id": "RD-F-143",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public deployment provenance sufficient to assess factory or CREATE2 usage across all relevant contracts was located.",
+          "factor_id": "RD-F-144",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public sources reviewed do not establish complete deployment provenance for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No public reproducible-build or source-to-bytecode attestation sufficient to assess this factor was located.",
+          "factor_id": "RD-F-145",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public sources reviewed do not provide a reproducible-build or source-to-bytecode attestation for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Active development confirmed through April 2026 (ethena-minting-client, usdm-minting-client commits 2026-04-27). LayerZero OFT 18-chain deployment ongoing through 2025. April 2026: bridge suspended and restored with DVN upgrade (operational configuration change). Fresh attack surface from OFT adapter deployments exists.",
+          "factor_id": "RD-F-146",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.weex.com/news/detail/ethena-has-restored-the-layerzero-cross-chain-bridge-functionality-for-susde-and-usde-and-strengthened-security-configurations-698674"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly states that USDe cross-chain transfers rely on LayerZero's DVN-based messaging system, establishing a bridge-operated dependency. This does not expand the approved Task A deployment topology.",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena identifies LayerZero DVN-based messaging for USDe cross-chain transfers; this non-LayerZero validator-count factor is superseded by the LayerZero-specific DVN assessment in RD-F-179.",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": "Use RD-F-179 for the LayerZero-specific configuration assessment.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena identifies LayerZero DVN-based messaging for USDe cross-chain transfers; this non-LayerZero threshold factor is superseded by the LayerZero-specific DVN assessment in RD-F-179.",
+          "factor_id": "RD-F-149",
+          "gap_reason": null,
+          "notes": "Use RD-F-179 for the LayerZero-specific configuration assessment.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena confirms LayerZero DVN-based cross-chain messaging, but public documentation reviewed does not identify Ethena's selected DVNs or permit a verified co-hosting assessment.",
+          "factor_id": "RD-F-150",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public evidence establishes the dependency, not validator hosting independence.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge-verifier source was verified that permits an ecrecover zero-address handling assessment.",
+          "factor_id": "RD-F-151",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge message-verifier source was verified that permits a complete source-chain binding assessment.",
+          "factor_id": "RD-F-152",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge inbox source was verified that permits a nonce-consumption and replay-protection assessment.",
+          "factor_id": "RD-F-153",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge inbox source was verified that permits a default-Merkle-root acceptance assessment.",
+          "factor_id": "RD-F-154",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena confirms a LayerZero DVN-based cross-chain dependency, but no public, Ethena-specific validator-set rotation record was verified.",
+          "factor_id": "RD-F-155",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest configuration-history evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena confirms LayerZero DVN-based cross-chain messaging, but public documentation reviewed does not identify the selected DVNs or their key-custody arrangement.",
+          "factor_id": "RD-F-156",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public evidence establishes the dependency, not key-custody concentration.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, date-bounded bridge TVL and Ethena-specific validator-count data were verified that permit a defensible TVL-per-validator calculation.",
+          "factor_id": "RD-F-157",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest measurement-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current threat-actor cluster feed was available to determine whether a labeled attacker wallet touched Ethena in the required window.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "requires_curator_input",
+          "notes": "The factor requires a reviewed attacker-address set and transaction attribution for the current 30-day window.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public attacker-cluster and mempool dataset was available to identify low-gas failing reconnaissance transactions against Ethena.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "requires_curator_input",
+          "notes": "Both attacker attribution and a current transaction-failure corpus are required for this signal.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed dependency inventory and advisory correlation was available to determine whether a malicious dependency incident touched Ethena.",
+          "factor_id": "RD-F-160",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "A defensible result requires a pinned dependency inventory correlated with current public security advisories.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public domain-monitoring dataset was available to verify whether an Ethena typosquat was registered within the required 90-day window.",
+          "factor_id": "RD-F-161",
+          "gap_reason": "external_api_blocked",
+          "notes": "Historical scam reporting is insufficient to establish the factor's time-bounded registration condition.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public indexed deployment scan or Ethena-class exploit selector template was available to test this signal.",
+          "factor_id": "RD-F-162",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "The factor requires a specified selector template and a current all-deployment scan.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public peer-class incident corpus was available to calculate attacker reconnaissance time before a comparable strike.",
+          "factor_id": "RD-F-163",
+          "gap_reason": "requires_curator_input",
+          "notes": "The metric requires a defined peer set, attacker attribution, and event chronology.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public credential-dump or paste-site monitoring corpus was available to assess possible Ethena infrastructure credential exposure.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "requires_curator_input",
+          "notes": "The factor needs a vetted credential-leak feed and infrastructure matching process.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, reviewed social-channel administrator watchlist was available to assess a scam-coordinator flag for Ethena community channels.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "requires_curator_input",
+          "notes": "The factor requires an attributable administrator roster and a curated scam-coordinator watchlist.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public explorer labels the legacy address as Ethena Mint and Redeem V1 and reports zero ETH and zero-dollar token holdings at the refresh review. It therefore does not meet the material-value threshold for a deprecated surface.",
+          "evidence_summary": "The public explorer shows the legacy Ethena Mint and Redeem V1 address with zero displayed ETH and token-holding value, below the deprecated-surface material-value threshold.",
+          "factor_id": "RD-F-166",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2cc440b721d2cafd6d64908d6d8c4acc57f8afc3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No identified deprecated contract surfaces with material TVL. EthenaMinting V1 was superseded by V2 (July 2024). V1 contract address not publicly identified or holding significant value. No admin pause over deprecated surface with revertible pause state identified.",
+          "factor_id": "RD-F-167",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V1 replaced by V2 in July 2024. EthenaMinting uses EIP-712 order signing model (not blanket approve/allowance model) for the core mint/redeem flow. Stale allowances to V1 are therefore minimal by design. No confirmed stale approval issue identified.",
+          "factor_id": "RD-F-168",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "USDe: v0.8.19+commit.7dd6d404 (paris EVM, 20k optimizer runs). EthenaMinting V2: v0.8.20+commit.a1b79de6 (shanghai EVM, 20k optimizer runs). StakedUSDeV2: v0.8.19 (paris EVM). ENA: v0.8.20. Known bugs for 0.8.19/0.8.20: LostStorageArrayWriteOnSlotOverflow (Low, fixed 0.8.32), VerbatimInvalidDeduplication (Low, fixed 0.8.23), FullInlinerNonExpressionSplitArgumentEvaluationOrder (Low, fixed 0.8.21), MissingSideEffectsOnSelectorAccess (Low, fixed 0.8.21). High-severity TransientStorageClearingHelperCollision (affects 0.8.28-0.8.33 with viaIR) does NOT apply. All known bugs are Low severity and do not affect Ethena's usage patterns.",
+          "factor_id": "RD-F-170",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/solcbuginfo"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable by construction — Ethena is an original codebase with no audited-upstream to be similar to. No AI-copy risk pattern (high bytecode similarity to another protocol with behavior deviation) can apply. Code4rena and all 7 audit firms reviewed the code without flagging AI-copy patterns.",
+          "factor_id": "RD-F-171",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public evidence of AI-tool co-authorship (Copilot, ChatGPT Code Interpreter) in commits to critical contract files in the code-423n4/2023-10-ethena or ethena-labs repositories. No 'Co-authored-by: GitHub Copilot' or similar markers observed in available repo content. Main ethena-labs org repos are operational (minting clients, SDK) rather than core smart contracts.",
+          "factor_id": "RD-F-172",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public disclosure by Ethena Labs (blog, X/Twitter, documentation) mentioning AI-generated Solidity in security-critical paths has been found. The protocol uses a formal multi-firm audit process inconsistent with AI-generated code practices.",
+          "factor_id": "RD-F-173",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ethena-labs"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "All four core contracts use Solidity 0.8.19 or 0.8.20, both active/supported versions (not EOL). Foundry toolchain confirmed (foundry.toml present: optimizer=true, optimizer_runs=20000, evm_version=shanghai). forge-std is a development dependency, not a production dependency. No EOL Solidity version usage.",
+          "factor_id": "RD-F-174",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/code-423n4/2023-10-ethena/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena maintains a live, triaged public Immunefi bug-bounty program with a $3 million maximum smart-contract reward and published submission channel. This satisfies the disclosure-channel criterion.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "Ethena's public program is triaged by Immunefi and carries the Immunefi Standard Badge. Immunefi's public standard-program SLA table sets a 48-hour acknowledgment target for critical reports and 96 hours for high reports after escalation, while requiring projects to communicate before an SLA breach. These are platform-standard commitments rather than an Ethena-specific response policy.",
+          "evidence_summary": "Ethena's public Immunefi program is subject to published platform acknowledgment targets (48 hours for critical reports and 96 hours for high reports). The public SLA is meaningful but not Ethena-specific, so RD-F-176 is yellow under v1.7.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/information/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefisupport.zendesk.com/hc/en-us/articles/4415204381969-Service-Level-Agreements-SLAs-Notifications-"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's public program shows a disclosure route and known-issues policy, but public material cannot establish the handling of all private reports. The evidence is insufficient to determine whether Ethena previously received and ignored a disclosure before exploitation.",
+          "factor_id": "RD-F-177",
+          "gap_reason": "protocol_opacity",
+          "notes": "Private vulnerability-report history is not publicly observable from the reviewed sources.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "A refresh-date search of the public GitHub Advisory Database for Ethena returns no advisories. No CVE or GHSA identifier was identified for Ethena's core contracts.",
+          "factor_id": "RD-F-178",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/advisories?query=Ethena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents that USDe cross-chain transfers rely on LayerZero DVN-based messaging, but the reviewed public material does not disclose Ethena's current DVN count, threshold, or operator diversity.",
+          "factor_id": "RD-F-179",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public evidence establishes LayerZero DVN use; configuration details remain an evidence gap.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's public documentation describes off-chain price feeds, but no public evidence was identified that proves or disproves an immutable collateral-oracle address without an admin-replaceable wrapper.",
+          "factor_id": "RD-F-180",
+          "gap_reason": "protocol_opacity",
+          "notes": "Honest implementation-evidence gap.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena is documented as a synthetic-dollar mint/redeem system for approved, whitelisted mint users, not a lending protocol that permissionlessly lists collateral markets.",
+          "factor_id": "RD-F-181",
+          "gap_reason": null,
+          "notes": "The permissionless-pool lending-oracle test is inapplicable to Ethena's documented product model.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/usde-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, current multisig configuration-event history was independently verified for the defined threshold-reduction, timelock-removal, or signer-addition precursor.",
+          "factor_id": "RD-F-182",
+          "gap_reason": "requires_curator_input",
+          "notes": "A valid result requires an authoritative security-council event history and the rubric's fourteen-day event correlation.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "27 assets in scope per Immunefi. Core Ethereum mainnet contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA, USDeSilo, EthenaLPStaking, StakingRewardsDistributor) are in scope. The USDe OFT adapters deployed across 18 chains via LayerZero (including Arbitrum, Base, Optimism, Mantle, BNB Chain, Solana) are NOT listed in the Immunefi scope table. This represents a material bug bounty scope gap: OFT adapters hold bridged USDe value across 18 chains and are excluded from bounty coverage. Similar in pattern to the Kelp DAO precedent where the OFT adapter holding >$1B was excluded from the bounty.",
+          "factor_id": "RD-F-183",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://stabledash.com/news/2025-09-11-ethena-taps-layerzero-to-enable-one-click-usde-staking-across-18-blockchains"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not establish or rule out an Ethena-specific real-capital social-engineering persona. General ecosystem incident reporting cannot prove the absence of an Ethena-specific pattern.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "protocol_opacity",
+          "notes": "No reliable public evidence was found that identifies an Ethena-specific real-capital social-engineering persona, and absence cannot be scored as a clean result.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Positive mitigant confirmed. $10M/hour per-chain rate limit on LayerZero OFT transfers. Bridge successfully paused in April 2026 (demonstrating emergency pause capability). DVN upgraded from 2-of-2 to 4-of-4 before restoration. Meaningful outflow rate-limiting and chain-pause positive controls in place.",
+          "factor_id": "RD-F-185",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://stabledash.com/news/2025-09-11-ethena-taps-layerzero-to-enable-one-click-usde-staking-across-18-blockchains"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.weex.com/news/detail/ethena-has-restored-the-layerzero-cross-chain-bridge-functionality-for-susde-and-usde-and-strengthened-security-configurations-698674"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "display_name": "Ethena",
+        "family_slug": "ethena",
+        "primary_chain": "ethereum",
+        "primary_surface_slug": "default",
+        "protocol_type": "cdp"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "B",
+          "risk_score": 15.67,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "batch-7-2026-07-24-v1.7.0"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "green",
+          "10": "green",
+          "11": "gray",
+          "12": "green",
+          "13": "green",
+          "2": "yellow",
+          "3": "yellow",
+          "4": "yellow",
+          "5": "green",
+          "6": "gray",
+          "7": "yellow",
+          "8": "yellow",
+          "9": "green"
+        },
+        "category_severities": {
+          "1": 6.0606060606060606,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 11.11111111111111,
+          "2": 24.242424242424242,
+          "3": 26.666666666666668,
+          "4": 25.0,
+          "5": 10.0,
+          "6": 0.0,
+          "7": 33.33333333333333,
+          "8": 22.22222222222222,
+          "9": 8.333333333333332
+        },
+        "defillama_slug": "ethena-usde",
+        "description": "Delta-neutral synthetic dollar protocol issuing USDe backed by spot collateral + CEX short perp basis trade, with yield distributed to sUSDe (ERC-4626) holders",
+        "display_name": "Ethena",
+        "github_org": "ethena-labs",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_active_incident": false,
+        "has_bridge_surface": true,
+        "headline_grade": "B",
+        "homepage_url": "https://ethena.fi",
+        "is_a_bridge": false,
+        "is_published": true,
+        "launched_at": "2024-02-19",
+        "primary_chain": "ethereum",
+        "protocol_type": "cdp",
+        "risk_score": 15.67,
+        "rubric_version": "v1.7.0",
+        "slug": "ethena",
+        "status": "live",
+        "total_value_secured_usd": 3790619996
+      },
+      "surfaces": [
+        {
+          "display_name": "Ethena",
+          "is_primary": true,
+          "legacy_slug": "ethena",
+          "primary_chain": "ethereum",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
+  "risk_score": 15.67,
+  "rubric_version": "v1.7.0"
+}
