@@ -205,6 +205,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2 is a USDC bridge, so the exposure leg is structurally material. A public spot snapshot on 2026-07-24 showed USDC at $0.999579, but this factor requires a >2% deviation on at least two venues sustained for 30 minutes. The prepared evidence has no multi-venue, time-series monitor, so it cannot establish the live trigger state.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=usd"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Kelp's approved core surface is backed by ETH and liquid-staking tokens rather than a stablecoin dependency meeting the trigger.",

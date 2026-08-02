@@ -225,6 +225,33 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2 exposes locker-management and threshold-change logic, and its public documentation describes the validator-signature controls. The prepared evidence does not include a current locker set, current threshold, or event-monitoring baseline that would detect a reduction. The historical validator expansion is not evidence of a current threshold-reduction event.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Bridge2.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/bridge"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/@gwrx2005/cross-chain-transfer-mechanism-in-hyperliquid-architecture-and-proxy-design-b3179e636ec7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Published Safe thresholds and timelocks make the signal applicable, but no complete 14-day threshold, signer, and timelock event scan was available.",
           "gap_reason": "pipeline_unimplemented",
