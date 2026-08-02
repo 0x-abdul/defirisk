@@ -123,6 +123,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public StakedUSDe source defines MIN_SHARES and calls _checkMinShares after deposits and withdrawals, reverting when a nonzero total supply is below that floor. This is a concrete first-depositor/share-inflation guard, supporting green for this separate control factor.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The audit explains the 1-wei first mint plus direct-transfer donation scenario, recommends virtual shares or an initial mint, and records Kelp's choice of an initial mint immediately after deployment.",
           "evidence_summary": "Sigma Prime identified the first-minter donation/share-inflation pattern in Kelp's deposit pool. The report records Kelp's resolution as an initial mint immediately after deployment, which is an explicit first-depositor guard under RD-F-075.",
@@ -143,7 +162,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

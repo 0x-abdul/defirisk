@@ -123,6 +123,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "27 assets in scope per Immunefi. Core Ethereum mainnet contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA, USDeSilo, EthenaLPStaking, StakingRewardsDistributor) are in scope. The USDe OFT adapters deployed across 18 chains via LayerZero (including Arbitrum, Base, Optimism, Mantle, BNB Chain, Solana) are NOT listed in the Immunefi scope table. This represents a material bug bounty scope gap: OFT adapters hold bridged USDe value across 18 chains and are excluded from bounty coverage. Similar in pattern to the Kelp DAO precedent where the OFT adapter holding >$1B was excluded from the bounty.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://stabledash.com/news/2025-09-11-ethena-taps-layerzero-to-enable-one-click-usde-staking-across-18-blockchains"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",
@@ -163,7 +186,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

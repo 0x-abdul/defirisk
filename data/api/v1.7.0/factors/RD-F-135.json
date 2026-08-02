@@ -73,6 +73,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin version appears to be 4.x (compatible with Solidity 0.8.19 and draft-ERC20Permit import pattern visible in StakedUSDe). OZ 4.x is current-stable with no known CVEs affecting ERC-20/ERC-4626/Ownable2Step/AccessControl modules. Notably, Ethena's sUSDe does NOT use OZ 4.9's virtual share offset (_decimalsOffset()) — instead uses MIN_SHARES constant (1 ether) as first-depositor guard. This is a valid alternative mitigation for the ERC-4626 inflation attack, but the specific OZ submodule commit SHA is not publicly confirmed. The DoS vector via MIN_SHARES (Code4rena 2023 M-04) was Acknowledged but mitigated only by deployment practice.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The exact version is public and pinned. A current vulnerability-and-reachability review remains necessary before green.",
           "evidence_summary": "The repository vendors OpenZeppelin 4.9.3, but advisory reachability against deployed Kelp paths was not completed.",
@@ -93,7 +116,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

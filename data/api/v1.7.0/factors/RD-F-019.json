@@ -68,6 +68,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 uses OpenZeppelin ECDSA.recover() which internally validates that the returned address is not address(0). No raw ecrecover without zero-address guard found. OZ ECDSA library is the gold standard for this check.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime source scan is required.",
           "evidence_summary": "No exhaustive deployed-source result established whether all ecrecover returns are checked against address zero.",
@@ -88,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
