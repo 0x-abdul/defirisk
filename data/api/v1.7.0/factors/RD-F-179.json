@@ -156,6 +156,33 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero OFT DVN config post-SecurityUpgrade: 4-of-4 required DVNs (LayerZero 0x589d, Nethermind 0xa59B, Horizen 0x3802, Canary 0xa4fE) across 20 chains. No optional DVNs. Rate-limiters implemented: 20 weETH/4h (restricted, 11 chains: zkSync, Scroll, Blast, etc.), 2,000 weETH/4h (standard, 6 chains: Linea, Monad), 3,000–10,000 weETH/4h (high-throughput: Base, OP). PAUSER_ROLE emergency stop present. YELLOW rationale: (1) SecurityUpgrade.s.sol lives in archive/OFTSecurityUpgrade/ directory, meaning this was a historical upgrade — pre-upgrade DVN config (possibly weaker) was in production for an unknown period; (2) LayerZero Labs is one of the 4 required DVNs, meaning LayerZero Labs itself must validate messages — partial operator self-custody of validation. The F185 positive mitigant (rate limiter) is present.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/utils/L2Constants.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/PairwiseRateLimiter.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Historical 1-of-1 state cannot be projected to July 30. Current effective getConfig output and peer-active evidence are required for a graded current RD-F-179 conclusion.",

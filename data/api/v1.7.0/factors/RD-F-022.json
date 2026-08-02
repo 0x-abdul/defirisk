@@ -272,6 +272,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All sampled contracts with initialize() use the external initializer modifier: LiquidityPool (line 177), EETH (line 74), WeETH (line 64), EtherFiOracle, WithdrawRequestNFT, EtherFiAdmin, NodeOperatorManager, RoleRegistry, Liquifier. All constructors call _disableInitializers() to prevent implementation-level re-initialization. EtherFiNodesManager and StakingManager do not expose initialize() at all (use constructors). EtherFiNode uses a traditional constructor. Clean across all 12 sampled contracts — no one-tx exploit surface found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "LRTDepositPool and RSETH show the expected OpenZeppelin initialization controls. The score remains cautious until the complete current implementation set is verified.",
           "evidence_summary": "Public core implementations use initializer plus constructor _disableInitializers(), but every current implementation was not exhaustively matched.",

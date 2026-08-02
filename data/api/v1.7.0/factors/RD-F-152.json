@@ -153,6 +153,25 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 OFT standard binds each message to srcEid (endpoint ID per chain) by design. Cross-chain messages are chain-bound at the LayerZero protocol level. EtherfiOFTUpgradeable extends OFTUpgradeable which inherits LayerZero V2 per-path message routing. Arbitrum canonical: srcChainId enforced at L1 gateway level.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "LayerZero V2 packet/origin structures bind source endpoint ID and sender to the delivered message.",

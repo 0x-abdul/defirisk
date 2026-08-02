@@ -175,6 +175,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The .gitmodules file pins openzeppelin-contracts to branch v4.8.0 and openzeppelin-contracts-upgradeable to branch v4.8.2. The git tree confirms all 6 submodule dependencies are pinned to specific commit SHAs: forge-std (77041d2), OZ (0457042), OZ-upgradeable (f6c4c9c), solady (8583a6e), v3-core (e3589b1), v3-periphery (80f26c8). EigenLayer-contracts is commit-SHA pinned in the tree (via the submodule SHA mechanism) but not branch-constrained in .gitmodules — this is the correct posture for a dependency that undergoes active development. Build is reproducible at current commit. No ^ or ~ floating version references (Foundry uses git submodules, not npm packages).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/etherfi-protocol/smart-contracts/git/trees/HEAD?recursive=1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/.gitmodules"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The public repository contains the dependency code and fixed Git tree state; no root package manifest with caret or tilde security-library ranges exists.",
           "evidence_summary": "Security-critical OpenZeppelin dependencies are vendored at fixed repository revisions rather than declared through floating package ranges.",

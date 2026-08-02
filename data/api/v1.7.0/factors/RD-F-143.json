@@ -274,6 +274,37 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All core UUPS implementation contracts call _disableInitializers() in their constructor: LiquidityPool (confirmed), EETH/eETH (confirmed, line in constructor), weETH (confirmed line 56), EtherFiAdmin (confirmed), StakingManager (confirmed), EtherFiNodesManager (confirmed), WithdrawRequestNFT (confirmed line 104), EtherFiRedemptionManager (confirmed), RoleRegistry (confirmed). No reinitializable implementation found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiAdmin.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,

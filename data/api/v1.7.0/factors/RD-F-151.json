@@ -177,6 +177,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero OFT application contracts (EtherfiOFTUpgradeable, EtherFiOFTAdapterUpgradeable) do not implement ecrecover at the application layer. Cryptographic message authentication is handled by LayerZero V2 endpoint DVN infrastructure, not application-layer signature checks. No ecrecover call found in inspected source. Wormhole-class zero-address ecrecover vulnerability not present.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherFiOFTAdapterUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The standard DVN accepts only configured signers; the incident involved a valid signer attestation, not zero-address recovery.",

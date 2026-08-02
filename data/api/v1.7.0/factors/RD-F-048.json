@@ -235,6 +235,33 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core eETH accounting uses EtherFiOracle at 0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41, a committee-report oracle for validator accounting and eETH rebase. Liquifier uses a default 1:1 stETH conversion and can optionally quote the Curve stETH/ETH pool when its configuration enables that path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Kelp uses administrator-selected per-asset IPriceFetcher adapters, including a Chainlink wrapper and dedicated LST adapters.",
           "primary_chain": "ethereum",

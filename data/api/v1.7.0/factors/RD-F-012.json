@@ -200,6 +200,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found in sampled contracts. EtherFiNodesManager's forwardExternalCall() implements allowlist validation before execution. EtherFiNode uses LibCall.callContract() with hardcoded or manager-controlled targets. No user-supplied target delegatecall pattern observed across 12 sampled contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime source scan is required.",
           "evidence_summary": "No exhaustive deployed-source result established whether any delegatecall target is user-controlled.",

@@ -222,6 +222,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No fallback oracle exists for EtherFiOracle. If committee quorum is not reached, reports remain in pending ConsensusState with consensusReached = false; rebase does not execute. Protocol enters suspended state. Admin can call unpublishReport() for intervention. No automatic transition to a secondary oracle or last-known-price fallback. Liquifier fallback is the default 1:1 ratio when Curve path is disabled.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/oracle/interfaces/IEtherFiOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
