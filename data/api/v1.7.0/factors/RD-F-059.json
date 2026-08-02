@@ -110,6 +110,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle enforces _isFinalized() check (epoch+2 minimum before publication), preventing premature reports. No updatedAt > now - X staleness guard found on the LiquidityPool consumer side. Committee-based model assumes freshness via quorum liveness — if committee reports regularly, staleness is not a concern; if quorum fails, rebase halts (protocol suspended) rather than using a stale price. No consumer-side staleness rejection implemented.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The deployed ChainlinkPriceOracle proxy's reviewed implementation discards updatedAt from latestRoundData and performs no max-age check.",
@@ -135,7 +158,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

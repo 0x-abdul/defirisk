@@ -227,6 +227,33 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Hard dependencies: EigenLayer (EigenPod system for all ~$5.13B restaked ETH via EtherFiNodesManager calls to IDelegationManager and IEigenPod), SSV Network (DVT key splitting for ~6,500+ validators via StakingManager), Obol Network (DVT cohort first deployed Aug 2023). Soft dependencies: Lido stETH (Liquifier conversion path), Curve stETH/ETH pool (if quoteStEthWithCurve enabled), LayerZero endpoint infrastructure for cross-chain weETH. Any EigenLayer protocol failure directly affects ether.fi depositor ETH.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/staking/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/contracts-and-integrations/deployed-contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ssv.network/blog/technology/etherfi-integrates-ssv/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Load-bearing dependencies include price adapters, EigenLayer strategies, Kelp accounting contracts, and listed LayerZero/CCIP contracts; migration completion is unverified.",
           "primary_chain": "ethereum",
@@ -246,7 +273,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -296,6 +296,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core eETH accounting uses committee-based EtherFiOracle, not a DEX spot price. F053 critical pattern does not apply to the core rebase path. Liquifier optional Curve path (ICurvePoolQuoter1.get_dy) reads Curve stETH/ETH spot price with no TWAP when quoteStEthWithCurve = true, but this admin-toggled deposit conversion path does not drive liquidations or core accounting. Default is 1:1. Critical factor green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "No primary spot-DEX oracle path was identified; the published Chainlink wrapper reads latestRoundData.",
@@ -316,7 +339,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

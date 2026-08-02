@@ -1,0 +1,3519 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 7.246376811594203,
+    "10": 3.3333333333333335,
+    "11": 0.0,
+    "12": 8.333333333333332,
+    "13": 50.0,
+    "2": 13.333333333333334,
+    "3": 20.51282051282051,
+    "4": 0.0,
+    "5": 9.523809523809524,
+    "6": 0.0,
+    "7": 16.666666666666664,
+    "8": 11.11111111111111,
+    "9": 10.0
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": "0x308861A430be4cce5502d0A12724771Fc6DaF216",
+          "chain": "ethereum",
+          "deployed_at": "2023-05-02",
+          "display_name": "ether.fi (Ethereum)",
+          "tvs_share": 1.0,
+          "tvs_usd": 5126450602
+        },
+        {
+          "anchor_address": "0x35751007a407ca6FEFfE80b3cB397736D2cf4dbe",
+          "chain": "arbitrum",
+          "deployed_at": null,
+          "display_name": "ether.fi weETH (Arbitrum)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A",
+          "chain": "base",
+          "deployed_at": null,
+          "display_name": "ether.fi weETH (Base)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x1Bf74C010E6320bab11e2e5A532b5AC15e0b8aA6",
+          "chain": "linea",
+          "deployed_at": null,
+          "display_name": "ether.fi weETH (Linea)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x01f0a31698C4d065659b9bdC21B3610292a1c506",
+          "chain": "scroll",
+          "deployed_at": null,
+          "display_name": "ether.fi weETH (Scroll)",
+          "tvs_share": null,
+          "tvs_usd": null
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit directory includes Certora's 2026-06-28 '26Q2 Security Upgrade' report. Neither the directory nor the report's public HTML view supplies a deployed-bytecode-to-audited-commit mapping for all user-fund contracts, so audit scope alignment remains only partially verified.",
+          "factor_id": "RD-F-001",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/etherfi-protocol/smart-contracts/contents/audits?ref=master"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2026.06.28%20-%20Certora%20-%2026Q2%20Security%20Upgrade.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Certora's public 26Q2 Security Upgrade report is dated 2026-06-28, 26 days before this assessment. The public directory also includes the 2026-01-29 Core Contracts re-audit and the 2025-04-12 EigenLayer Slashing report. The June report's public listing confirms recency but does not by itself establish full deployed-contract scope.",
+          "factor_id": "RD-F-002",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2026.01.29%20-%20Certora%20-%20Reaudit%20Core%20Contracts.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2026.06.28%20-%20Certora%20-%2026Q2%20Security%20Upgrade.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Hats Finance (2023-12) reported one medium reentrancy finding in LiquidityPool requestWithdraw and 12 lows; the public report states the finding was remediated. Nethermind's NM-0217 report records two best-practice findings as fixed. Public access to the remaining PDF reports does not independently establish every historical remediation.",
+          "factor_id": "RD-F-003",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2023.12.20%20-%20Hats%20Finance.md"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/NM-0217%20-%20EtherFi%20Restaking%20Of%20stETH%20Holdings.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "8 distinct audit firms: CertiK (2023-02), Omniscia (2023-05), Nethermind (2023-07 + NM-0217x2), Solidified (2023-10), Hats Finance (2023-12), Zellic (2024-01, 2024-03), Decurity (2024-04), Halborn (2024-06, 2024-08), Paladin (2024-09), Certora (15 reports 2024-10 through 2026-03). Total 27+ engagements. Well above the 3-firm floor for this TVL tier ($5.1B).",
+          "factor_id": "RD-F-004",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Certora (Tier-1 FV specialist), Zellic (Tier-1 DeFi boutique), Nethermind (Tier-2 large firm) represent high-quality coverage. Halborn (Tier-2), Decurity (Tier-2 boutique), Paladin (Tier-2 boutique), Hats Finance (competitive audit platform), CertiK (Tier-2 large firm). Strong blend with Certora as dominant ongoing partner.",
+          "factor_id": "RD-F-005",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository has no releases, and the public audit directory does not provide an auditee commit or deployment transaction mapping. Exact audit-to-deployment lag therefore cannot be established from the available public evidence, despite the recent 2026-06-28 Certora report.",
+          "factor_id": "RD-F-006",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The public Immunefi ether.fi program advertises a smart-contract vulnerability bounty with a maximum $300,000 critical payout. Its publicly visible program page is the evidence for the program's availability and stated terms.",
+          "factor_id": "RD-F-007",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://immunefi.com/bug-bounty/etherfi/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-specific exploit or ignored-disclosure record was identified in the public Rekt News index during this review. Absence from that public index is limited evidence and does not prove that no incident or vulnerability has occurred.",
+          "factor_id": "RD-F-008",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://rekt.news"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit directory shows a continuing Certora series through the 2026-06-28 26Q2 Security Upgrade, following reports for core contracts, withdrawals, slashing, Pectra features, and adapters. The public repository also exposes Certora specifications. This supports an ongoing formal-verification practice, while each report's precise deployed scope must be assessed separately.",
+          "factor_id": "RD-F-009",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/certora"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No Slither/Mythril/Semgrep output publicly available. Hats Finance 2023-12 audit found 1 medium (reentrancy in LiquidityPool requestWithdraw, reportedly remediated) and 12 lows from manual review. Certora FV proofs cover declared invariants but do not replace static analysis tooling for all patterns. [?] needs tool run for definitive high-severity finding count.",
+          "factor_id": "RD-F-010",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2023.12.20%20-%20Hats%20Finance.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No selfdestruct opcode found in any of the 12 sampled production contracts (LiquidityPool, EETH, WeETH, EtherFiNodesManager, StakingManager, EtherFiNode, EtherFiOracle, WithdrawRequestNFT, EtherFiAdmin, Liquifier, MembershipManager, NodeOperatorManager). GitHub authenticated code search not available; exhaustive scan requires tool run, but no selfdestruct found in the most critical contracts.",
+          "factor_id": "RD-F-011",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found in sampled contracts. EtherFiNodesManager's forwardExternalCall() implements allowlist validation before execution. EtherFiNode uses LibCall.callContract() with hardcoded or manager-controlled targets. No user-supplied target delegatecall pattern observed across 12 sampled contracts.",
+          "factor_id": "RD-F-012",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary .call(user_target, user_data) pattern observed in sampled contracts. EtherFiNodesManager forwardExternalCall uses allowlist validation. EtherFiNode uses LibCall.callContract() with controlled targets. No user-supplied external call targets found in core contracts.",
+          "factor_id": "RD-F-013",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Hats Finance 2023-12 audit found reentrancy in LiquidityPool requestWithdraw (medium severity, reportedly remediated). Liquifier.sol uses nonReentrant on depositWithERC20() and unwrapL2Eth() but NOT on withdrawEther(), which makes an external call to the liquidity pool — a residual reentrancy surface. WithdrawRequestNFT uses checks-effects-interactions pattern correctly. Without full Slither run, exhaustive reentrancy coverage cannot be confirmed.",
+          "factor_id": "RD-F-014",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2023.12.20%20-%20Hats%20Finance.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "WithdrawRequestNFT (ERC-721) uses checks-effects-interactions pattern in _claimWithdraw — NFT burned and accounting updated before external liquidityPool.withdraw() call. No ERC-777 integration identified in core contracts. MembershipManager loyalty tier system uses no ERC-777 hooks.",
+          "factor_id": "RD-F-015",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/src/WithdrawRequestNFT.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No Slither output publicly available. Divide-before-multiply pattern requires Slither detector run on deployed source. Cannot assess without tool run. [?] needs tool run.",
+          "factor_id": "RD-F-016",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Core tokens (ETH, eETH, weETH) all use 18 decimals. Liquifier handles stETH (18 decimals) conversion. No mixed-decimal token math anomaly identified in sampled source. Certora FV reports for eETH share inflation and withdrawal fee cover core token math invariants.",
+          "factor_id": "RD-F-017",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2025.01.16%20-%20Certora%20-%20EETH%20share%20inflation%20by%20burn%20shares.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.8.x checked arithmetic prevents silent overflow/underflow. No signed-to-unsigned confusion pattern identified in sampled contracts. Certora FV arithmetic invariants provide additional assurance. Cannot confirm exhaustively without symbolic execution.",
+          "factor_id": "RD-F-018",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No ecrecover usage found in any of 9 sampled core contracts (LiquidityPool, EETH, WeETH, EtherFiNodesManager, StakingManager, EtherFiNode, EtherFiOracle, WithdrawRequestNFT). GitHub authenticated code search not available for exhaustive scan, but no ecrecover found in all critical-path contracts sampled.",
+          "factor_id": "RD-F-019",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No EIP-712 signed-message patterns found in sampled core contracts. Core deposit/withdrawal flow does not use off-chain signatures. Without tool run, cannot confirm all contracts, but no EIP-712 usage observed in critical-path contracts.",
+          "factor_id": "RD-F-020",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All sampled UUPS implementation contracts correctly implement _authorizeUpgrade(address) gated on roleRegistry.onlyProtocolUpgrader(msg.sender): LiquidityPool (line 572), EETH, WeETH (line 146), EtherFiOracle, WithdrawRequestNFT, EtherFiAdmin, NodeOperatorManager, RoleRegistry. No open or unchecked _authorizeUpgrade found across all sampled contracts.",
+          "factor_id": "RD-F-021",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All sampled contracts with initialize() use the external initializer modifier: LiquidityPool (line 177), EETH (line 74), WeETH (line 64), EtherFiOracle, WithdrawRequestNFT, EtherFiAdmin, NodeOperatorManager, RoleRegistry, Liquifier. All constructors call _disableInitializers() to prevent implementation-level re-initialization. EtherFiNodesManager and StakingManager do not expose initialize() at all (use constructors). EtherFiNode uses a traditional constructor. Clean across all 12 sampled contracts — no one-tx exploit surface found.",
+          "factor_id": "RD-F-022",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All sampled UUPS implementation contracts call _disableInitializers() in their constructor: LiquidityPool, EETH, WeETH, EtherFiOracle, WithdrawRequestNFT, EtherFiAdmin, StakingManager, NodeOperatorManager, MembershipManager, RoleRegistry (10 contracts confirmed). Standard OZ protection pattern correctly applied.",
+          "factor_id": "RD-F-023",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit directory records numerous engagements by multiple firms and a continuing Certora series through June 2026. This supports broad review activity, but public listings alone cannot prove that every deployed module is within a recent report's exact scope.",
+          "factor_id": "RD-F-024",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol-admin Safe at 0xcdd57D11476c22d265722F68390b036f3DA48c21 is currently a 6-of-10 Safe. The verified EtherFiTimelock exposes proposer, executor, and delay-controlled execution roles; no single EOA admin path was established from the public sources reviewed.",
+          "factor_id": "RD-F-025",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol-admin Safe is a Safe v1.3.0 with a 6-of-10 threshold. Its ten current owner addresses are published by the Safe Transaction Service; this supersedes the stale 4-of-7 configuration in the accepted baseline.",
+          "factor_id": "RD-F-026",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol-admin Safe currently requires 6 of 10 owners, not a single EOA signature. The public Safe record provides the current signer set and threshold; no single-signer admin path was identified in the reviewed admin/timelock sources.",
+          "factor_id": "RD-F-027",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Current Safe state corrected from stale 4-of-7 wording to 6-of-10: Safe API reports threshold=6, ten owners, nonce=177, and no modules. The threshold evidence is improved, but signer identity/distribution confidence remains insufficient for green because the public sources name the multisig committee role without identifying all signers. RD-F-028 remains yellow.",
+          "factor_id": "RD-F-028",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-transaction-mainnet.safe.global/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/gov/ether.fi-foundation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The Safe Transaction Service publishes ten owner addresses but no hosting or operational-location evidence. Public explorer records do not establish whether signers are co-hosted; this remains an evidence gap.",
+          "factor_id": "RD-F-029",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xcdd57D11476c22d265722F68390b036f3DA48c21"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Signer 0x9506429A exhibits hot-wallet behavioral pattern: funded by Kraken, 21 transactions, uses ENS, DeFi protocols, cross-chain bridging. At least 1 of 7 signers shows hot-wallet profile. Other 6 signers not fully analyzed.",
+          "factor_id": "RD-F-030",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9506429A421757711806c5cAF25ba1830E349B09"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No Security Council separate from the 4-of-7 Safe. EtherFiTimelock TIMELOCK_ADMIN_ROLE is zero address (renounced) — no one can unilaterally reduce multisig threshold or grant/revoke timelock roles without Safe approval.",
+          "factor_id": "RD-F-031",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "On-chain getMinDelay() = 3,600 seconds (1 hour). At $5.1B TVL this is materially below industry standard. Lido uses 24h, MakerDAO uses 48h, Compound uses 48h. A 1-hour window provides minimal user-exit protection if a malicious upgrade is proposed. Profile noted a potential '3-day operational policy' but on-chain minimum is the binding constraint.",
+          "factor_id": "RD-F-032",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrades require EtherFiTimelock (1h) + 4-of-7 Safe — timelocked. However: weETH.recoverETH(), weETH.recoverERC20(), weETH.recoverERC721() are callable by WEETH_OPERATING_ADMIN_ROLE WITHOUT timelock. EtherFiNodesManager.sweepFunds() callable by ETHERFI_NODES_MANAGER_ADMIN_ROLE WITHOUT timelock. Pause/unpause operations bypass timelock by design (PROTOCOL_PAUSER role).",
+          "factor_id": "RD-F-033",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "PROTOCOL_PAUSER role is distinct from PROTOCOL_UPGRADER role. EtherFiAdmin.pause() uses PROTOCOL_PAUSER. Upgrade authorization uses onlyProtocolUpgrader() via RoleRegistry. These are separate roles assignable to distinct addresses.",
+          "factor_id": "RD-F-034",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiAdmin.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "RoleRegistry implements RBAC with fine-grained role separation: PROTOCOL_UPGRADER, LIQUIDITY_POOL_ADMIN_ROLE (fee recipient), ETHERFI_ORACLE_EXECUTOR_ADMIN_ROLE (oracle config), and dozens of contract-specific roles. These are distinct and assignable to different addresses.",
+          "factor_id": "RD-F-035",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/RoleRegistry.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain Governor contract. ETHFI voting is off-chain Snapshot only (etherfi-dao.eth). Execution flows through 4-of-7 Safe + Timelock — no flash-loanable voting weight applies.",
+          "factor_id": "RD-F-036",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/gov/ether.fi-foundation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain Governor. Snapshot voting is advisory/off-chain. Flash-loan quorum attack inapplicable.",
+          "factor_id": "RD-F-037",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Timelock minimum delay is 1 hour — below 24h threshold. A colluding 4-of-7 Safe could execute a malicious upgrade in under 2 hours (Safe approval + Timelock delay). No separate voting period exists in the on-chain execution path.",
+          "factor_id": "RD-F-038",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain proposal executor contract. Execution flows: Safe → OZ TimelockController.execute() → target.call(). OZ TimelockController uses `call` (not `delegatecall`) on the target. No general-purpose arbitrary-target proposal executor with delegatecall found.",
+          "factor_id": "RD-F-039",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiTimelock.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No separate emergency-veto multisig identified distinct from the 4-of-7 Safe. The Safe serves both upgrade proposer and emergency-pause execution. No independent veto body with a separate key set exists to stop a malicious proposal before the 1-hour timelock expires.",
+          "factor_id": "RD-F-040",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/gov/ether.fi-foundation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "weETH.recoverETH() and weETH.recoverERC20() callable by WEETH_OPERATING_ADMIN_ROLE without timelock. EtherFiNodesManager.sweepFunds() callable by ETHERFI_NODES_MANAGER_ADMIN_ROLE without timelock. Treasury.withdraw() callable by owner (Ownable) without timelock. These are untimelocked fund-recovery paths. Not red because (a) OPERATING_ADMIN and NODES_MANAGER_ADMIN roles are likely multisig-held (pending confirmation), and (b) weETH recover functions are bounded to accidentally-sent tokens (eETH is explicitly excluded from recoverERC20 scope in the source).",
+          "factor_id": "RD-F-041",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6329004E903B7F420245E7aF3f355186f2432466"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ETHFI governance token has fixed supply (~1B tokens minted at deploy); no mint function post-deployment. eETH mintShares() is gated to onlyPoolContract (LiquidityPool contract address), not an admin EOA/multisig. weETH wrap() is user-callable but mints only proportional to eETH deposited — not admin-unlimited.",
+          "factor_id": "RD-F-042",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol launched May 2023. Current admin is the 4-of-7 Safe deployed February 16, 2024. Deployer (ether.fi: Deployer 5, 0x8d5aac5d...) is not current admin. Admin transfer occurred long before 7 days post-deploy.",
+          "factor_id": "RD-F-043",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xcdd57D11476c22d265722F68390b036f3DA48c21"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed. Requires Chainalysis/TRM-level cluster analysis against all 7 unlabeled signer addresses. Etherscan lookups insufficient for mixer/watchlist cross-referencing.",
+          "factor_id": "RD-F-044",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No Compound-style on-chain proposal system with constructor-arg verification. Governance is Snapshot + Safe — no constructor-arg proposal matching path.",
+          "factor_id": "RD-F-045",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "All major in-scope contracts verified on Etherscan with Exact Match. LiquidityPool (0x308861A4): verified. eETH (0x35fA1647): verified. weETH (0xCd5fE23C): verified, impl 0x2d10683E verified. EtherFiNodesManager (0x8B71140A): verified, impl 0x789CbBe0 verified (solc 0.8.27). EtherFiAdmin (0x0EF8fa47): verified. RoleRegistry proxy: verified, impl 0x3A75019F verified.",
+          "factor_id": "RD-F-046",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x789CbBe0739f1458905c9ca6d6e74f7997622a9b"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ETHFI fixed supply ~1B. Snapshot proposals require only 1M ETHFI approval threshold — very low relative to circulating supply, suggesting governance is dominated by large holders. No Gini coefficient computed (on-chain holder scan not performed). Off-chain Snapshot is advisory only; binding execution through Safe regardless.",
+          "factor_id": "RD-F-047",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://governance.ether.fi/t/ether-fi-governance-official-resources/2140"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Core eETH accounting uses EtherFiOracle at 0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41, a committee-report oracle for validator accounting and eETH rebase. Liquifier uses a default 1:1 stETH conversion and can optionally quote the Curve stETH/ETH pool when its configuration enables that path.",
+          "factor_id": "RD-F-048",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle is the sole Primary oracle for eETH rebase (validator balance, reward accounting, exit events). No secondary or fallback oracle documented. Liquifier uses an optional Curve pool spot price for stETH→eETH conversion when quoteStEthWithCurve flag is true; default is 1:1 (no oracle). Single-oracle architecture on the core rebase path.",
+          "factor_id": "RD-F-049",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/oracle/interfaces/IEtherFiOracle.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Hard dependencies: EigenLayer (EigenPod system for all ~$5.13B restaked ETH via EtherFiNodesManager calls to IDelegationManager and IEigenPod), SSV Network (DVT key splitting for ~6,500+ validators via StakingManager), Obol Network (DVT cohort first deployed Aug 2023). Soft dependencies: Lido stETH (Liquifier conversion path), Curve stETH/ETH pool (if quoteStEthWithCurve enabled), LayerZero endpoint infrastructure for cross-chain weETH. Any EigenLayer protocol failure directly affects ether.fi depositor ETH.",
+          "factor_id": "RD-F-050",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/staking/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/contracts-and-integrations/deployed-contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ssv.network/blog/technology/etherfi-integrates-ssv/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No fallback oracle exists for EtherFiOracle. If committee quorum is not reached, reports remain in pending ConsensusState with consensusReached = false; rebase does not execute. Protocol enters suspended state. Admin can call unpublishReport() for intervention. No automatic transition to a secondary oracle or last-known-price fallback. Liquifier fallback is the default 1:1 ratio when Curve path is disabled.",
+          "factor_id": "RD-F-051",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/oracle/interfaces/IEtherFiOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer failure/slashing: up to $5.13B TVL exposed; loss socialized across all depositors, no insurance fund documented. SSV failure: validator missed attestations, forced exits, beacon exit queue delay. EtherFiOracle quorum failure: eETH rebase halts completely. Lido stETH depeg: Liquifier 1:1 default overpays for stETH. LayerZero DVN compromise: unbacked weETH minted up to per-chain rate limit (20–10,000 weETH/4h).",
+          "factor_id": "RD-F-052",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/contracts-and-integrations/deployed-contracts"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Core eETH accounting uses committee-based EtherFiOracle, not a DEX spot price. F053 critical pattern does not apply to the core rebase path. Liquifier optional Curve path (ICurvePoolQuoter1.get_dy) reads Curve stETH/ETH spot price with no TWAP when quoteStEthWithCurve = true, but this admin-toggled deposit conversion path does not drive liquidations or core accounting. Default is 1:1. Critical factor green.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle uses committee consensus, not a TWAP window — N/A for the core rebase path. Liquifier Curve spot path has zero TWAP window when enabled (spot price, not time-averaged). The default 1:1 path has no TWAP concern. TWAP window = 0 minutes for the Curve spot path when active.",
+          "factor_id": "RD-F-054",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable to EtherFiOracle (committee-based, no pool). Curve stETH/ETH pool depth is historically large (~$100M+) but current depth not verified and the Liquifier Curve path is admin-toggled off by default. Cannot confirm current pool depth without on-chain data access.",
+          "factor_id": "RD-F-055",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle: N/A — committee-based consensus across multiple oracle members, not a single pool. Liquifier Curve path: reads single Curve stETH/ETH pool, no medianization across venues when active. Core accounting path (committee oracle) has inherent medianization via multi-member consensus.",
+          "factor_id": "RD-F-056",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No circuit breaker on EtherFiOracle output found. Reports are published when quorum reached; no automated halt on anomalous reward values. Liquifier implements _min(fairValue, marketValue) which prevents overvaluation but is not a price-deviation circuit breaker. LiquidityPool source review found no circuit breaker on oracle output.",
+          "factor_id": "RD-F-057",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No configured max-deviation threshold found on core oracle path. Circuit breaker not present (see F057); therefore no threshold to report. Cannot assess peripheral Chainlink feeds for sub-products which are out-of-scope.",
+          "factor_id": "RD-F-058",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle enforces _isFinalized() check (epoch+2 minimum before publication), preventing premature reports. No updatedAt > now - X staleness guard found on the LiquidityPool consumer side. Committee-based model assumes freshness via quorum liveness — if committee reports regularly, staleness is not a concern; if quorum fails, rebase halts (protocol suspended) rather than using a stale price. No consumer-side staleness rejection implemented.",
+          "factor_id": "RD-F-059",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed core eETH rebase path uses EtherFiOracle rather than a Chainlink price feed. No Chainlink minAnswer or maxAnswer configuration is identified in the scoped core contracts, so this factor is not applicable to that path.",
+          "factor_id": "RD-F-060",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Not found in core protocol path. LiquidityPool does not price assets via LP token balanceOf. Donation-manipulable LP pricing pattern not present.",
+          "factor_id": "RD-F-061",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiOracle uses committee-based quorum — multiple committee members serve as oracle reporters, providing redundancy. No single-keeper dependency. No Gelato or Chainlink Automation dependency found in core LRT path. Committee membership tracked via numActiveCommitteeMembers with quorum enforcement.",
+          "factor_id": "RD-F-062",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "DefiLlama reports ether.fi stake TVL of about $5.0bn in its public protocol data (accessed 2026-07-24). The available public time series shows a large, established ETH-restaking TVL base rather than a low-TVL protocol state.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ether.fi-stake"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public top-10 depositor-address calculation was established for the default ether.fi surface during this review. Protocol TVL alone does not establish depositor concentration, so this factor is not assessed.",
+          "factor_id": "RD-F-064",
+          "gap_reason": "requires_curator_input",
+          "notes": "A reproducible current on-chain top-10 depositor-address calculation is required before scoring this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible current public measurement of weETH liquidity depth at 2% and 5% price impact was established for this review. Protocol TVL is not a depth measurement, so this factor is not assessed.",
+          "factor_id": "RD-F-065",
+          "gap_reason": "requires_curator_input",
+          "notes": "A dated DEX-pool enumeration and reproducible 2%/5% price-impact calculation are required before scoring this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi's documented core product is ETH liquid restaking, not a lending market; utilization is therefore structurally inapplicable.",
+          "factor_id": "RD-F-066",
+          "gap_reason": null,
+          "notes": "RD-F-066 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi's documented core product is ETH liquid restaking, not a lending market with bad-debt socialization; this lending-only factor is inapplicable.",
+          "factor_id": "RD-F-067",
+          "gap_reason": null,
+          "notes": "RD-F-067 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi documents eETH and weETH as liquid-restaking tokens, not a lending or CDP product subject to collateral-ratio stress testing.",
+          "factor_id": "RD-F-068",
+          "gap_reason": null,
+          "notes": "RD-F-068 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi documents eETH and weETH as ETH liquid-restaking tokens, not an algorithmic or under-collateralized stablecoin design.",
+          "factor_id": "RD-F-069",
+          "gap_reason": null,
+          "notes": "RD-F-069 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi is not a Compound V2 fork with listed cToken markets. The v1.7.0 factor specifically tests a Compound-fork market with zero total supply and borrow, so it is structurally inapplicable.",
+          "factor_id": "RD-F-070",
+          "gap_reason": null,
+          "notes": "Critical RD-F-070 is Compound-fork-only under the v1.7.0 taxonomy; no critical red finding.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi's documented core product is ETH liquid restaking rather than a lending protocol that lists borrowable markets.",
+          "factor_id": "RD-F-071",
+          "gap_reason": null,
+          "notes": "RD-F-071 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi's documented core product is ETH liquid restaking rather than a lending protocol that lists borrowable markets.",
+          "factor_id": "RD-F-072",
+          "gap_reason": null,
+          "notes": "RD-F-072 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi's documented core product is ETH liquid restaking rather than a lending protocol with asset-level borrow caps.",
+          "factor_id": "RD-F-073",
+          "gap_reason": null,
+          "notes": "RD-F-073 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The ERC-4626 virtual-share-offset factor is lending-only in v1.7.0 and does not apply to ether.fi's documented eETH/weETH liquid-restaking token design.",
+          "factor_id": "RD-F-074",
+          "gap_reason": null,
+          "notes": "RD-F-074 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The lending-vault first-depositor guard factor is inapplicable to ether.fi's documented ETH liquid-restaking product.",
+          "factor_id": "RD-F-075",
+          "gap_reason": null,
+          "notes": "RD-F-075 is lending-only under the v1.7.0 taxonomy.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The Ether.fi Nodes Manager was created on Ethereum in 2023; it remains active on the public explorer. At the 2026-07-24 assessment date, this operating history is well above the 365-day green threshold.",
+          "factor_id": "RD-F-076",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public incident sources reviewed identify a 2024 Mode bridge-configuration incident with funds recovered, not a protocol exploit. No protocol-level exploit was identified in the reviewed public records; the public REKT leaderboard also contains no ether.fi entry.",
+          "factor_id": "RD-F-077",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/postmortems"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/leaderboard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public incident sources identify no protocol-level exploits, so the count is below three and the chronic-exploit flag does not trigger.",
+          "factor_id": "RD-F-078",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/postmortems"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/leaderboard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit or repeat root-cause cluster was identified in the reviewed public incident records.",
+          "factor_id": "RD-F-079",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/postmortems"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/leaderboard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit date was identified in the reviewed public incident records; under the factor definition, no incident corresponds to the green state.",
+          "factor_id": "RD-F-080",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/postmortems"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/leaderboard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit was identified, so a post-exploit response score cannot be measured. The public Mode incident record is operational context, not evidence for this exploit-specific measure.",
+          "factor_id": "RD-F-081",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a most-recent exploit and its response record; none was identified in reviewed public sources.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit was identified, so there is no exploit-specific 30-day post-mortem window to measure.",
+          "factor_id": "RD-F-082",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a most-recent exploit and publication date; none was identified in reviewed public sources.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit was identified, so the required post-exploit auditor re-engagement cannot be measured.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a most-recent exploit and an audit performed after that event; none was identified in reviewed public sources.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Using the public DefiLlama daily series for 2026-04-25 through 2026-07-24 (91 observations), mean TVL was approximately $3.60B and population standard deviation approximately $0.95B, producing CoV 0.263.",
+          "evidence_summary": "The trailing-90-day public DefiLlama TVL series yields a coefficient of variation of 0.263, within the v1.7 yellow band of 0.15-0.35.",
+          "factor_id": "RD-F-084",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ether.fi-stake"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit was identified, so the exploit-transaction-to-team-statement interval cannot be measured.",
+          "factor_id": "RD-F-085",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor is exploit-specific; no qualifying exploit transaction and statement pair was identified in reviewed public sources.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public material confirms that ether.fi components can be paused, but the reviewed public sources do not provide a complete trailing-12-month pause-event inventory or reasons for each activation.",
+          "factor_id": "RD-F-086",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete on-chain pause-event inventory is required to count activations and assess their reasons.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public sources do not provide the complete pause/unpause event pairs needed to establish maximum consecutive pause duration in the trailing 12 months.",
+          "factor_id": "RD-F-087",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete on-chain pause/unpause event inventory is required to measure the seven-day condition.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials identify historical architecture changes but do not establish a complete trailing-12-month inventory of user-fund contract address migrations needed to score this factor.",
+          "factor_id": "RD-F-088",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete on-chain comparison of prior and current user-fund contracts, together with migration announcements, is required to distinguish a full redeployment from proxy upgrades.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Nexus Mutual announced on 2026-07-17 that ether.fi selected it for ETH slashing cover up to 15,000 ETH. This is active third-party cover, but its stated cap is materially below the protocol's multi-billion-dollar TVL, so it does not meet the green adequacy threshold.",
+          "evidence_summary": "ether.fi has active Nexus Mutual ETH slashing cover up to 15,000 ETH; the coverage is meaningful but below the v1.7 green adequacy threshold relative to current TVL.",
+          "factor_id": "RD-F-089",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/ether.fi-stake"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Current mixer-to-core-contract interaction cannot be established from a point-in-time public review.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires current transaction tracing and public cluster attribution at the review time.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public mempool or transaction dataset establishes the current partial-drain test-transaction signal.",
+          "factor_id": "RD-F-091",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires continuous transaction monitoring and a defined withdrawal baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A current unusual deployer-wallet mempool pattern cannot be determined from the prepared static evidence.",
+          "factor_id": "RD-F-092",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires live mempool observation and a dated deployer activity baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public, reproducible attribution feed establishes whether attacker-class wallets currently show abnormal gas-price willingness.",
+          "factor_id": "RD-F-093",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires live mempool data and attributable attacker-wallet labels.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No current public bytecode-monitoring result ties a newly deployed contract to a relevant exploit template.",
+          "factor_id": "RD-F-094",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined exploit-template corpus and dated chain-wide bytecode monitoring.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No current public selector-monitoring result establishes a known-exploit replay against ether.fi.",
+          "factor_id": "RD-F-095",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a versioned exploit-selector corpus and live transaction monitoring.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No public monitoring dataset establishes a current large ERC-20 approval from a defined ether.fi whale to an unverified contract.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires defined whale cohorts, approval telemetry, and contract-verification classification.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible current transaction cohort establishes or rules out an identical-pattern sybil surge.",
+          "factor_id": "RD-F-097",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires live event clustering and a protocol-specific baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The prepared evidence does not provide an hour-granular, dated TVL observation needed to assess the stated drain threshold.",
+          "factor_id": "RD-F-098",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires an hour-granular TVL source and an explicit comparison window.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No dated public observation compares the protocol-relevant oracle value with an independent secondary source at the required threshold.",
+          "factor_id": "RD-F-099",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined oracle pair and time-aligned observations.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No current public transaction analysis establishes a flash loan above the factor threshold targeting ether.fi protocol tokens.",
+          "factor_id": "RD-F-100",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires live transaction traces, USD pricing at execution, and a defined target-token set.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The prepared evidence does not provide a dated governance queue analysis sufficient to classify a currently large proposal.",
+          "factor_id": "RD-F-101",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires current proposal and execution data plus the rubric's size threshold.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public contract pages identify relevant administration contracts but do not establish a current admin or upgrade transaction in the mempool.",
+          "factor_id": "RD-F-102",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires live mempool monitoring of verified privileged calls.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The official multichain documentation confirms a bridge surface, but the prepared evidence does not establish a current signer-set change proposal or execution.",
+          "factor_id": "RD-F-103",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires current LayerZero configuration and governance-event monitoring across supported deployments.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed core eETH/weETH staking surface is ETH-denominated rather than a stablecoin shared-LP venue, so the stablecoin-depeg signal is structurally mismatched.",
+          "factor_id": "RD-F-104",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The official website establishes the primary web presence but does not provide historical DNS, CDN, or bundle-hash telemetry needed to assess current drift.",
+          "factor_id": "RD-F-105",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a dated DNS and frontend-hash baseline with continuous observation.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Official documentation confirms a multichain bridge surface but no current public reconciliation establishes or rules out an unverified mint pattern.",
+          "factor_id": "RD-F-106",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires source/destination supply reconciliation and trusted message-delivery telemetry.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Admin EOA signing geography or device changes are not publicly observable from the prepared evidence.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires authenticated signing-provider or operations telemetry.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository is observable, but no audit-log evidence establishes whether a sensitive branch has been force-pushed during the review window.",
+          "factor_id": "RD-F-108",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires Git hosting audit logs or a preserved commit-ref monitoring baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public reports can document individual impersonation sites, but the prepared evidence does not establish a time-bounded current social-media impersonation spike.",
+          "factor_id": "RD-F-109",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires defined social-platform telemetry and a recent baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public Snapshot space is available, but the prepared evidence does not calculate a dated pending-to-executed proposal ratio against a defined normal range.",
+          "factor_id": "RD-F-110",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a reproducible proposal-state snapshot and protocol-specific baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public conference and media records identify Mike Silagadze by name as ether.fi's co-founder and CEO. The publicly visible leadership identity surface is real-name rather than anonymous.",
+          "factor_id": "RD-F-111",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2026/01/04/neobanks-will-fuel-ethereum-s-2026-growth-says-ether-fi-ceo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Mike Silagadze has independently verifiable public accountability trails through a named ETHDenver speaker profile and repeated named CoinDesk coverage as ether.fi CEO.",
+          "factor_id": "RD-F-112",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/podcasts/markets-daily/best-of-consensus-hong-kong-ethereum-s-path-forward-with-etherfi-ceo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public sources identify Silagadze as a former Top Hat founder/CEO and ether.fi co-founder/CEO. This supports a documented prior operating history, but does not establish a complete history for every contributor.",
+          "factor_id": "RD-F-113",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/price/eeth"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Public explorer records expose the observed ether.fi deployer addresses and transaction history, but this pass does not establish a complete prior-deployment or adverse-label history for every associated deployer.",
+          "factor_id": "RD-F-114",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete deployer-to-prior-rug attribution set is not available from the reviewed public explorer pages alone.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf8a86ea1ac39ec529814c377bd484387d395421e"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfa371b6fdcb18d65e88c4c785d61801e176a9ae7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public leadership sources identify ether.fi's CEO, but they cannot establish or exclude prior rug or exit-scam affiliations across all team members without a verified person-to-incident corpus.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "requires_curator_input",
+          "notes": "Do not treat the absence of a result in general public searches as proof of no affiliation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://www.ether.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public smart-contract repository exposes commits, but it does not by itself link the author of the latest admin-permissioned change to an attributable contributor-tenure record.",
+          "factor_id": "RD-F-116",
+          "gap_reason": "requires_curator_input",
+          "notes": "Admin-event-to-commit attribution and contributor-tenure calculation require a verified reconciliation not supplied by the public repository view alone.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/commits/master/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan displays the ENS name etherfi-deployer.eth for an observed deployer address. The public record anchors the address to an ether.fi-associated name, but does not identify a natural person.",
+          "factor_id": "RD-F-117",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfa371b6fdcb18d65e88c4c785d61801e176a9ae7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public leadership and protocol channels are visible, but this pass cannot establish or exclude cross-project handle reuse and aliases for every privileged contributor.",
+          "factor_id": "RD-F-118",
+          "gap_reason": "requires_curator_input",
+          "notes": "Handle-to-person and handle-to-incident attribution requires a curated identity corpus.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://www.ether.fi/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository exposes individual commit timestamps, but this pass does not derive and verify a complete commit-hour distribution against a stated team geography.",
+          "factor_id": "RD-F-119",
+          "gap_reason": "requires_curator_input",
+          "notes": "A reproducible timezone-distribution analysis and confirmed contributor geography are required for a directional score.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/commits/master/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Named public speaking and podcast appearances demonstrate a visible spokesperson, but they cannot establish or exclude a broader video-off or voice/timezone-consistency pattern for the whole privileged team.",
+          "factor_id": "RD-F-120",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires a curated comparison of public appearances and stated identities rather than an inference from isolated appearances.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/podcasts/markets-daily/best-of-consensus-hong-kong-ethereum-s-path-forward-with-etherfi-ceo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public records provide substantial evidence for Mike Silagadze's identity and operating history, but the rubric's contributor-wide 1–5 OSINT-depth score requires a complete attributed contributor roster and curator scoring.",
+          "factor_id": "RD-F-121",
+          "gap_reason": "requires_curator_input",
+          "notes": "Do not extrapolate a founder's public record into a contributor-wide OSINT score.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2026/01/04/neobanks-will-fuel-ethereum-s-2026-growth-says-ether-fi-ceo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public on-chain addresses can be inspected, but the reviewed sources do not provide a complete map from protocol payments to contributor wallets or a provider-grade DPRK-cluster graph.",
+          "factor_id": "RD-F-122",
+          "gap_reason": "requires_curator_input",
+          "notes": "Contributor payment-wallet attribution and three-hop cluster screening require a curated address set and cluster provider evidence.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6329004E903B7F420245E7aF3f355186f2432466"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/north-korea-sanctions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public explorer and governance-forum surfaces exist, but this pass does not establish a complete recent ACL/admin-event inventory and a corresponding issue, PR, or forum reconciliation.",
+          "factor_id": "RD-F-123",
+          "gap_reason": "requires_curator_input",
+          "notes": "No adverse conclusion is made without a complete event-to-public-discussion reconciliation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://governance.ether.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public explorer records identify observed deployer funding and transaction history, but they do not provide the provider-grade mixer-cluster screening needed to clear or confirm the 30-day pre-deploy condition.",
+          "factor_id": "RD-F-124",
+          "gap_reason": "requires_curator_input",
+          "notes": "A dated 30-day funding-path analysis with verified mixer labels is required for a directional critical-factor score.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf8a86ea1ac39ec529814c377bd484387d395421e"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfa371b6fdcb18d65e88c4c785d61801e176a9ae7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public sources expose observed deployer addresses and the OFAC DPRK sanctions program, but do not provide a verified three-hop cluster graph linking or clearing those addresses.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "requires_curator_input",
+          "notes": "No DPRK/Lazarus linkage is asserted; a provider-labeled or primary-attribution graph is required for a directional critical-factor score.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xf8a86ea1ac39ec529814c377bd484387d395421e"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information/north-korea-sanctions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi is an original protocol. The GitHub repo has no fork relationship in its metadata (it shows 51 forks of ether.fi's code, but is not itself a fork). README describes a novel per-node EigenPod proxy architecture. No protocol predates ether.fi at mainnet scale with this architecture.",
+          "factor_id": "RD-F-126",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is an original codebase, not a fork. No upstream exists to publish patches.",
+          "factor_id": "RD-F-127",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is an original codebase. No upstream fork disclosure applies.",
+          "factor_id": "RD-F-128",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is an original codebase. Code divergence from an upstream cannot be computed.",
+          "factor_id": "RD-F-129",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is an original codebase. Fork depth = 0 (not a fork at all).",
+          "factor_id": "RD-F-130",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is not a fork. Upstream audit coverage inheritance does not apply.",
+          "factor_id": "RD-F-131",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is not a fork. No upstream audited-defaults to deviate from.",
+          "factor_id": "RD-F-132",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The .gitmodules file pins openzeppelin-contracts to branch v4.8.0 and openzeppelin-contracts-upgradeable to branch v4.8.2. The git tree confirms all 6 submodule dependencies are pinned to specific commit SHAs: forge-std (77041d2), OZ (0457042), OZ-upgradeable (f6c4c9c), solady (8583a6e), v3-core (e3589b1), v3-periphery (80f26c8). EigenLayer-contracts is commit-SHA pinned in the tree (via the submodule SHA mechanism) but not branch-constrained in .gitmodules — this is the correct posture for a dependency that undergoes active development. Build is reproducible at current commit. No ^ or ~ floating version references (Foundry uses git submodules, not npm packages).",
+          "factor_id": "RD-F-133",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/etherfi-protocol/smart-contracts/git/trees/HEAD?recursive=1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/.gitmodules"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No malicious-release incident found for any of the 6 GitHub-hosted git submodule dependencies (forge-std, OZ contracts, OZ upgradeable, solady, v3-core, v3-periphery, eigenlayer-contracts) in trailing 90 days as of 2026-04-28. These are GitHub-hosted git submodules (not npm registry packages), which significantly reduces supply-chain attack surface.",
+          "factor_id": "RD-F-134",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/etherfi-protocol/smart-contracts/git/trees/HEAD?recursive=1"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OZ v4.8.0 (contracts) and v4.8.2 (upgradeable): no critical CVEs in these versions; v4.8.2 is above the v4.8.1 security patch threshold. Solady commit 8583a6e: no specific CVE found. EigenLayer-contracts dependency: EigenLayer underwent significant slashing upgrade in 2025; the pinned SHA's compatibility with the deployed EigenLayer system is covered by the Certora 2025-04-12 EigenLayer Slashing FV report. The OZ v4.8.x versions do not include v5.x virtual share inflation protection (irrelevant as eETH/weETH are not ERC-4626). The residual risk is the EigenLayer dependency — any critical vulnerability in EigenLayer's deployed contracts (which ether.fi calls via EigenPod interfaces) would directly affect ether.fi.",
+          "factor_id": "RD-F-135",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/.gitmodules"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2025.04.12%20-%20Certora%20-%20EigenLayer%20Slashing.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No formally signed release-tag → deployed bytecode mapping found in the GitHub repo. Commits present but no signed release artifacts or formal reproducibility attestation published. Certora uses a fork of the repo but public bytecode-matching documentation not found.",
+          "factor_id": "RD-F-136",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade cadence is approximately monthly across the protocol suite. In the last 90 days (Feb–Apr 2026): EtherFiNodesManager upgraded 2026-02-02; Priority Queue contracts deployed Mar 2026. In last 12 months: weETH upgraded twice (Mar and Aug 2025), EtherFiAdmin upgraded twice (Mar and Aug 2025), EtherFiNodesManager upgraded Feb 2026. High but manageable upgrade frequency; each change is audited by Certora.",
+          "factor_id": "RD-F-137",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No evidence of hot-patch deploys bypassing timelock in last 30 days. EtherFiTimelock shows only 2 total transactions; most recent ~5 days before assessment. Priority Queue deployment (Mar 2026) used standard safe+timelock path. No bypass events found.",
+          "factor_id": "RD-F-138",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Post-audit-change evidence refreshed: EtherFiNodesManager proxy 0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F currently resolves through the EIP-1967 implementation slot to 0x789CbBe0739f1458905c9ca6d6e74f7997622a9b. The official audit directory shows January 2026 and March 2026 reports, including the 2026-03-05 Certora Priority Queue audit, but no clearly named February NodesManager implementation audit was found. RD-F-139 remains yellow.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2026.03.05%20-%20Certora%20-%20Priority%20Queue.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No specific open fix-merged-not-deployed gap identified. Priority Queue audit (2026-03-05) is post-deployment and shows an active audit → deploy cycle. No obviously undeployed security PR identified in recent commits.",
+          "factor_id": "RD-F-140",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No test-mode artifacts found. All contracts use RoleRegistry with production RBAC. LiquidityPool uses IRoleRegistry for all admin paths. No test oracle, infinite allowance, or admin=deployer remnants observed in source.",
+          "factor_id": "RD-F-141",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "UUPS upgrades performed multiple times across major contracts (weETH: 4 upgrades, EtherFiAdmin: 5 upgrades, EtherFiNodesManager: multiple). OZ upgrades plugin presumably used internally but no public storage layout collision report found. Cannot confirm absence of collision risk externally.",
+          "factor_id": "RD-F-142",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All core UUPS implementation contracts call _disableInitializers() in their constructor: LiquidityPool (confirmed), EETH/eETH (confirmed, line in constructor), weETH (confirmed line 56), EtherFiAdmin (confirmed), StakingManager (confirmed), EtherFiNodesManager (confirmed), WithdrawRequestNFT (confirmed line 104), EtherFiRedemptionManager (confirmed), RoleRegistry (confirmed). No reinitializable implementation found.",
+          "factor_id": "RD-F-143",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiAdmin.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No CREATE2 factory redeployment pattern identified for core protocol contracts. Standard deployer EOA deployment pattern observed.",
+          "factor_id": "RD-F-144",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Foundry build system with pinned solc versions (0.8.13, 0.8.27) and 1500 optimizer runs. Bytecode should be reproducible in theory. No formal reproducibility attestation or verification artifact published. Gray pending curator verification.",
+          "factor_id": "RD-F-145",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Priority Queue suite deployed ~March 2026: EtherFiRedemptionManager (0xdadef1ff...), PriorityWithdrawalQueue, and UUPSProxy contracts are new surface. Certora Priority Queue audit dated 2026-03-05 covers this deployment. New attack surface is now live and recently audited.",
+          "factor_id": "RD-F-146",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2026.03.05%20-%20Certora%20-%20Priority%20Queue.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Confirmed bridge surface: weETH bridged across 20+ chains. Two architectures: (1) LayerZero OFT (EtherFiOFTAdapterUpgradeable on Ethereum, EtherfiOFTUpgradeable on L2s) for Base, Linea, Scroll, BNB, Optimism, zkSync, Swell, Avalanche, Blast, Berachain, Monad, HyperEVM, and others. (2) Arbitrum canonical bridge (StandardArbERC20, ClonableBeaconProxy pattern) for Arbitrum One.",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/getting-started/multichain-ecosystem"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero path: 4 required DVNs per SecurityUpgrade.s.sol: LayerZero (0x589dEDbD617e0CBcB916A9223F4d1300c294236b), Nethermind (0xa59BA433ac34D2927232918Ef5B2eaAfcF130BA5), Horizen (0x380275805876Ff19055EA900CDb2B46a94ecF20D), Canary (0xa4fE5A5B9A846458a70Cd0748228aED3bF65c2cd). Applied to all 20 configured chains. Arbitrum canonical: Arbitrum validator set (not protocol-controlled).",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/utils/L2Constants.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero OFT: 4-of-4 required DVN threshold (all 4 must validate). requiredDVNCount: 4, optionalDVNCount: 0, optionalDVNThreshold: 0. Maximum strictness — no optional DVN bypass. Kelp DAO 1/1 catastrophic edge case does not apply. Arbitrum canonical: optimistic fraud proof mechanism (7-day challenge window).",
+          "factor_id": "RD-F-149",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "4 DVNs are distinct organizations: LayerZero Labs (protocol team), Nethermind (UK security/infrastructure firm), Horizen (decentralized protocol), Canary (independent validator). No evidence of shared ASN/datacenter. OSINT inference only — not verified via infrastructure network scan.",
+          "factor_id": "RD-F-150",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/utils/L2Constants.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero OFT application contracts (EtherfiOFTUpgradeable, EtherFiOFTAdapterUpgradeable) do not implement ecrecover at the application layer. Cryptographic message authentication is handled by LayerZero V2 endpoint DVN infrastructure, not application-layer signature checks. No ecrecover call found in inspected source. Wormhole-class zero-address ecrecover vulnerability not present.",
+          "factor_id": "RD-F-151",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherFiOFTAdapterUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 OFT standard binds each message to srcEid (endpoint ID per chain) by design. Cross-chain messages are chain-bound at the LayerZero protocol level. EtherfiOFTUpgradeable extends OFTUpgradeable which inherits LayerZero V2 per-path message routing. Arbitrum canonical: srcChainId enforced at L1 gateway level.",
+          "factor_id": "RD-F-152",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 endpoint handles replay protection via ordered-message delivery semantics per OApp path. Application-level nonce tracking not required under V2 ordered delivery. Arbitrum canonical: sequence-numbered messages, replay-protected at gateway level.",
+          "factor_id": "RD-F-153",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero V2 OFT does not use Merkle roots as message authentication. Authentication is DVN-threshold-based (4-of-4 required). The Nomad $190M bug class (default bytes32(0) root accepted as valid) is architecturally inapplicable to this DVN-based pattern. No Merkle root acceptance pattern found in EtherfiOFTUpgradeable or EtherFiOFTAdapterUpgradeable.",
+          "factor_id": "RD-F-154",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "SecurityUpgrade.s.sol represents the post-upgrade 4-DVN config. The upgrade script exists in archive/OFTSecurityUpgrade/ subdirectory, indicating a prior DVN configuration was changed. Rotation date not verified from available sources. No governance forum post on DVN rotation found.",
+          "factor_id": "RD-F-155",
+          "gap_reason": "protocol_opacity",
+          "notes": "A public, dated execution record for the latest production DVN-set rotation was not located during this review.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "4 DVNs are 4 distinct organizations: LayerZero Labs, Nethermind, Horizen, Canary. No single custodian holds >30% of the DVN set (each organization is 25% = 1-of-4). No shared custody pattern identified. Each entity manages its own signing infrastructure independently.",
+          "factor_id": "RD-F-156",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/utils/L2Constants.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A reproducible cross-chain weETH supply reconciliation and resulting concentration per DVN were not established in this review. The cited public protocol endpoint reports aggregate protocol TVL, not a DVN-level cross-chain allocation, so this factor remains not assessed.",
+          "factor_id": "RD-F-157",
+          "gap_reason": "requires_curator_input",
+          "notes": "Do not infer bridge TVL from protocol-wide TVL; a reproducible dated multi-chain token-supply reconciliation is required.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "No public attribution record in the prepared evidence establishes whether a known threat-actor cluster has touched ether.fi contracts.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires current, attributable cluster labels and contract-interaction tracing.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public dataset identifies attacker-attributed low-gas failing probes against ether.fi contracts.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires attacker labels, failure traces, and a defined gas-comparison baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public source repositories identify dependencies but do not establish a current malicious-dependency incident affecting their resolved releases.",
+          "factor_id": "RD-F-160",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a resolved dependency lockfile or release inventory and a dated advisory correlation.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Historical impersonation reports do not establish a domain registration within the rubric's current monitoring window.",
+          "factor_id": "RD-F-161",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires dated domain-registration monitoring and a defined typosquat corpus.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No current public chain-wide scan in the prepared evidence establishes a known exploit-template selector deployment targeting ether.fi.",
+          "factor_id": "RD-F-162",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a versioned selector corpus, deployment scan, and target attribution.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The prepared evidence does not provide a verified peer-class incident dataset from which to calculate attacker reconnaissance time.",
+          "factor_id": "RD-F-163",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires a dated, sourced peer-incident cohort and a defined reconnaissance-time methodology.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public search corpus establishes whether protocol credentials appear on paste or leak sites.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires a documented search corpus and continuous leak-monitoring coverage.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public intelligence record in the prepared evidence links an ether.fi social-channel operator to a scam-coordinator flag.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires attributable channel-operator identities and a public or licensed scam-intelligence feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi documentation says the legacy T-NFT and B-NFT mechanics were retired with the LiquidityPool migration. The public material reviewed does not establish current asset balances for those legacy contracts, so the $1,000/$100,000 thresholds cannot be applied.",
+          "factor_id": "RD-F-166",
+          "gap_reason": "requires_curator_input",
+          "notes": "Current public on-chain balance values for the identified legacy contracts are required to determine whether residual value is negligible, between thresholds, or material.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No deprecated contract surfaces identified in core scope. All UUPS upgrades maintain same proxy address with new implementations; deprecated implementations are unreachable. No admin retains pause over a deprecated surface.",
+          "factor_id": "RD-F-167",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No deprecated router or protocol contracts identified in core scope. All UUPS upgrades maintain same proxy addresses (existing user approvals remain valid and are not stale on a deprecated surface). No deprecated router found.",
+          "factor_id": "RD-F-168",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Deployed bytecode for core contracts (LiquidityPool, eETH, weETH, EtherFiNodesManager) is compiled with Solidity 0.8.13 (confirmed via Etherscan verified source metadata). Solidity 0.8.13 carries the StorageWriteRemovalBeforeConditionalTermination bug (medium/high severity), affecting versions 0.8.13-0.8.16, fixed in 0.8.17. The bug triggers when Yul optimizer is enabled and code contains storage writes before functions calling return(...) or stop() in inline assembly. The foundry.toml configures 0.8.27 (no known bugs, clean), suggesting newer contracts are compiled with 0.8.27 but legacy proxy implementations have not been recompiled. Yellow rather than red because: (a) the bug requires specific inline-assembly patterns that may not be present in ether.fi's contract code, and (b) Certora FV provides compensating assurance on core invariants.",
+          "factor_id": "RD-F-170",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/solcbuginfo"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable — ether.fi is an original codebase, not an AI-assisted copy of an audited upstream. Bytecode similarity to audited-upstream-with-behavior-deviation does not apply to original protocols.",
+          "factor_id": "RD-F-171",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No AI-tool co-authorship markers (Co-authored-by: GitHub Copilot or similar) found in the 10 most recent commits sampled (2026-03-16 through earlier). Primary committers are pankajjagtapp and seongyun-ko with standard commit messages. GitHub authenticated code search required for exhaustive historical scan.",
+          "factor_id": "RD-F-172",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public blog post, tweet, or documentation from the ether.fi team discloses AI-generated Solidity in security-critical paths. Technical documentation and audit disclosures make no such claim. No relevant OSINT found.",
+          "factor_id": "RD-F-173",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Deployed contracts use Solidity 0.8.13 — not an EOL version. Solidity Foundation considers 0.8.x active/supported. OpenZeppelin v4.8.x is still maintained. No EOL Solidity version (0.4.x, 0.5.x, 0.6.x) detected. The 0.8.13 version is below current 0.8.27 recommended but is within the supported range.",
+          "factor_id": "RD-F-174",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/solcbuginfo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi maintains a public, triaged Immunefi program. It was updated on 2026-07-22, accepts bug submissions, and lists a maximum smart-contract bounty of $500,000.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "The current public Immunefi program documents submission, triage, reward, and responsible-publication terms but does not publish an acknowledgment-time SLA, triage deadline, or maximum response timeline.",
+          "evidence_summary": "ether.fi has an active Immunefi program but no public acknowledgment-time SLA; this meets the v1.7 red condition for a disclosure program without a published SLA.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-level exploit was identified in the reviewed public records, and private disclosure history is not publicly observable. The available public material is insufficient to determine whether a prior disclosure was known and ignored.",
+          "factor_id": "RD-F-177",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/postmortems"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "A GitHub Advisory Database search for ether.fi returns no results, but the public record does not establish that ether.fi core contracts are comprehensively registered with advisory systems; absence of results is therefore not proof of no advisory.",
+          "factor_id": "RD-F-178",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/advisories?query=ether.fi"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero OFT DVN config post-SecurityUpgrade: 4-of-4 required DVNs (LayerZero 0x589d, Nethermind 0xa59B, Horizen 0x3802, Canary 0xa4fE) across 20 chains. No optional DVNs. Rate-limiters implemented: 20 weETH/4h (restricted, 11 chains: zkSync, Scroll, Blast, etc.), 2,000 weETH/4h (standard, 6 chains: Linea, Monad), 3,000–10,000 weETH/4h (high-throughput: Base, OP). PAUSER_ROLE emergency stop present. YELLOW rationale: (1) SecurityUpgrade.s.sol lives in archive/OFTSecurityUpgrade/ directory, meaning this was a historical upgrade — pre-upgrade DVN config (possibly weaker) was in production for an unknown period; (2) LayerZero Labs is one of the 4 required DVNs, meaning LayerZero Labs itself must validate messages — partial operator self-custody of validation. The F185 positive mitigant (rate limiter) is present.",
+          "factor_id": "RD-F-179",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/utils/L2Constants.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/PairwiseRateLimiter.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[★ F180 CRITICAL-CANDIDATE — green, not triggered] EtherFiOracle at 0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41 is a UUPS upgradeable proxy. Oracle address is admin-replaceable via RoleRegistry (0x62247D29B4B9BECf4BB73E0c722cf6445cfC7cE9) and EtherFiTimelock. Not an immutable oracle address. The F180 failure mode does not apply. No Chainlink address marked immutable found in core accounting path.",
+          "factor_id": "RD-F-180",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x62247D29B4B9BECf4BB73E0c722cf6445cfC7cE9"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ether.fi is an LRT protocol, not a lending protocol. No market-listing mechanism exists. No permissionless collateral acceptance. No isolation-tier config. F181 failure mode (permissionless DEX pool → fake token collateral accepted as lending collateral) does not apply by protocol-type construction.",
+          "factor_id": "RD-F-181",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Public contract pages alone do not establish a current security-council threshold reduction event or the current Safe owner and threshold state.",
+          "factor_id": "RD-F-182",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires current Safe configuration and privileged-event monitoring.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public Immunefi page establishes an active ether.fi program and a $300,000 maximum critical payout, but its accessible view does not provide a complete, independently checkable asset list. Coverage of weETH OFT adapters therefore remains unverified from public evidence.",
+          "factor_id": "RD-F-183",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2024.09.30%20-%20Paladin_EtherFi_OFT_Adapter_Migration.pdf"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/etherfi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public sources identify ether.fi leadership, but do not establish or exclude the curator-defined ≥$1M real-capital social-engineering persona condition for any contributor or external integrator.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "requires_curator_input",
+          "notes": "This factor requires attributed capital-flow and persona evidence; absence of a public report is not a negative-clearance finding.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ethdenver.com/speakers/mike-silagadze/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://www.ether.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EtherFiRedemptionManager implements a configurable per-window outflow rate limiter (setCapacity, setRefillRatePerSecond, setLowWatermarkInBpsOfTvl admin functions). No chain-pause capability exists (Ethereum mainnet). Rate limiter deployed and configurable by ETHERFI_REDEMPTION_MANAGER_ADMIN_ROLE. Certora Priority Queue audit (2026-03-05) covers this contract.",
+          "factor_id": "RD-F-185",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xdadef1ffbfeaab4f68a9fd181395f68b4e4e7ae0"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiRedemptionManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "description": "Liquid restaking protocol on Ethereum; users deposit ETH to receive eETH (rebasing) or weETH (wrapped non-rebasing), with underlying ETH natively restaked on EigenLayer via per-node EigenPod architecture and DVT via SSV/Obol.",
+        "display_name": "ether.fi",
+        "family_slug": "ether-fi",
+        "homepage_url": "https://www.ether.fi/",
+        "primary_chain": "ethereum",
+        "primary_surface_slug": "default",
+        "protocol_type": "lrt"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "B",
+          "risk_score": 13.4,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "batch-7-2026-07-24-v1.7.0"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "green",
+          "10": "green",
+          "11": "gray",
+          "12": "green",
+          "13": "red",
+          "2": "green",
+          "3": "yellow",
+          "4": "green",
+          "5": "green",
+          "6": "gray",
+          "7": "green",
+          "8": "green",
+          "9": "green"
+        },
+        "category_severities": {
+          "1": 7.246376811594203,
+          "10": 3.3333333333333335,
+          "11": 0.0,
+          "12": 8.333333333333332,
+          "13": 50.0,
+          "2": 13.333333333333334,
+          "3": 20.51282051282051,
+          "4": 0.0,
+          "5": 9.523809523809524,
+          "6": 0.0,
+          "7": 16.666666666666664,
+          "8": 11.11111111111111,
+          "9": 10.0
+        },
+        "defillama_slug": "ether.fi-stake",
+        "description": "Liquid restaking protocol on Ethereum; users deposit ETH to receive eETH (rebasing) or weETH (wrapped non-rebasing), with underlying ETH natively restaked on EigenLayer via per-node EigenPod architecture and DVT via SSV/Obol.",
+        "display_name": "ether.fi",
+        "github_org": "etherfi-protocol",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_active_incident": false,
+        "has_bridge_surface": true,
+        "headline_grade": "B",
+        "homepage_url": "https://www.ether.fi/",
+        "is_a_bridge": false,
+        "is_published": true,
+        "launched_at": "2023-05-02",
+        "primary_chain": "ethereum",
+        "protocol_type": "lrt",
+        "risk_score": 13.4,
+        "rubric_version": "v1.7.0",
+        "slug": "ether-fi",
+        "status": "live",
+        "total_value_secured_usd": 5126450602
+      },
+      "surfaces": [
+        {
+          "display_name": "ether.fi",
+          "is_primary": true,
+          "legacy_slug": "ether-fi",
+          "primary_chain": "ethereum",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
+  "risk_score": 13.4,
+  "rubric_version": "v1.7.0"
+}

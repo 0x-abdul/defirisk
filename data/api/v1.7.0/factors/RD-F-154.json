@@ -75,6 +75,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero V2 OFT does not use Merkle roots as message authentication. Authentication is DVN-threshold-based (4-of-4 required). The Nomad $190M bug class (default bytes32(0) root accepted as valid) is architecturally inapplicable to this DVN-based pattern. No Merkle root acceptance pattern found in EtherfiOFTUpgradeable or EtherFiOFTAdapterUpgradeable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The LayerZero path verifies non-empty payload hashes rather than accepting a default Merkle root.",
@@ -95,7 +118,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

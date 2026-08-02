@@ -84,6 +84,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Hats Finance 2023-12 audit found reentrancy in LiquidityPool requestWithdraw (medium severity, reportedly remediated). Liquifier.sol uses nonReentrant on depositWithERC20() and unwrapL2Eth() but NOT on withdrawEther(), which makes an external call to the liquidity pool — a residual reentrancy surface. WithdrawRequestNFT uses checks-effects-interactions pattern correctly. Without full Slither run, exhaustive reentrancy coverage cannot be confirmed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2023.12.20%20-%20Hats%20Finance.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Deposit, swap, and transfer paths in the current public LRTDepositPool source use the guard. This is not an exhaustive assessment of every deployed implementation.",
           "evidence_summary": "The core deposit implementation applies nonReentrant to externally calling state-changing paths, but full deployed-contract coverage was not proven.",
@@ -104,7 +127,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

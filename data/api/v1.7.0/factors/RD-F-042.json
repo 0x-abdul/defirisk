@@ -120,6 +120,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ETHFI governance token has fixed supply (~1B tokens minted at deploy); no mint function post-deployment. eETH mintShares() is gated to onlyPoolContract (LiquidityPool contract address), not an admin EOA/multisig. weETH wrap() is user-callable but mints only proportional to eETH deposited — not admin-unlimited.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -142,7 +165,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
