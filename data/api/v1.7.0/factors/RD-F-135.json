@@ -196,6 +196,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OZ v4.8.0 (contracts) and v4.8.2 (upgradeable): no critical CVEs in these versions; v4.8.2 is above the v4.8.1 security patch threshold. Solady commit 8583a6e: no specific CVE found. EigenLayer-contracts dependency: EigenLayer underwent significant slashing upgrade in 2025; the pinned SHA's compatibility with the deployed EigenLayer system is covered by the Certora 2025-04-12 EigenLayer Slashing FV report. The OZ v4.8.x versions do not include v5.x virtual share inflation protection (irrelevant as eETH/weETH are not ERC-4626). The residual risk is the EigenLayer dependency — any critical vulnerability in EigenLayer's deployed contracts (which ether.fi calls via EigenPod interfaces) would directly affect ether.fi.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/smart-contracts/master/.gitmodules"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2025.04.12%20-%20Certora%20-%20EigenLayer%20Slashing.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The exact version is public and pinned. A current vulnerability-and-reachability review remains necessary before green.",
           "evidence_summary": "The repository vendors OpenZeppelin 4.9.3, but advisory reachability against deployed Kelp paths was not completed.",

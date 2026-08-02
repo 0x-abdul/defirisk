@@ -218,6 +218,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrades require EtherFiTimelock (1h) + 4-of-7 Safe — timelocked. However: weETH.recoverETH(), weETH.recoverERC20(), weETH.recoverERC721() are callable by WEETH_OPERATING_ADMIN_ROLE WITHOUT timelock. EtherFiNodesManager.sweepFunds() callable by ETHERFI_NODES_MANAGER_ADMIN_ROLE WITHOUT timelock. Pause/unpause operations bypass timelock by design (PROTOCOL_PAUSER role).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiNodesManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/WeETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,

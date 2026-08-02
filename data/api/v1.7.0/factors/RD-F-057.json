@@ -208,6 +208,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No circuit breaker on EtherFiOracle output found. Reports are published when quorum reached; no automated halt on anomalous reward values. Liquifier implements _min(fairValue, marketValue) which prevents overvaluation but is not a price-deviation circuit breaker. LiquidityPool source review found no circuit breaker on oracle output.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "LRTOracle applies a configurable percentage limit, restricts excessive upside updates, and pauses on excessive downside.",
