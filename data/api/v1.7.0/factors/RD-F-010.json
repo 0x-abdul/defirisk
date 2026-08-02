@@ -133,6 +133,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No tool run executed per methodology (published analysis only). Olympix comparison study on EigenLayer found: (a) abi.encodePacked concerns in EigenPodManager.sol and DelayedWithdrawalRouter.sol; (b) locked Ether risk in DelayedWithdrawalRouter.sol (deprecated contract). Slither produced high false-positive rate on reentrancy due to correctly-implemented nonReentrant guards. No confirmed true-positive high-severity static analysis finding on current deployed bytecode. Marked gray — programmatic tool run on current bytecode is required for definitive assessment.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://olympix.security/blog/comparing-olympix-and-slither-on-the-eigen-layer-code-base"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A programmatic run against matched deployed source is required.",
           "evidence_summary": "The repository documents Aderyn usage, but no reproducible current deployed-source high-severity count was published.",
@@ -154,6 +173,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

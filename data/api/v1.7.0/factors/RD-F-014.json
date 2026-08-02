@@ -149,6 +149,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Confirmed: StrategyManager uses ReentrancyGuardUpgradeable with nonReentrant on queueWithdrawal and depositIntoStrategyWithSignature. DelegationManager has nonReentrant on queueWithdrawals. EigenPodManager has nonReentrant on createPod and recordBeaconChainETHBalanceUpdate. Olympix analysis confirmed these as correctly implemented. StrategyBase functions only callable via StrategyManager, blocking cross-contract reentrancy.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://olympix.security/blog/comparing-olympix-and-slither-on-the-eigen-layer-code-base"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5d25eef8cfedaa47d31fe2346726de1c21e342fb"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Deposit, swap, and transfer paths in the current public LRTDepositPool source use the guard. This is not an exhaustive assessment of every deployed implementation.",
           "evidence_summary": "The core deposit implementation applies nonReentrant to externally calling state-changing paths, but full deployed-contract coverage was not proven.",
@@ -170,6 +193,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

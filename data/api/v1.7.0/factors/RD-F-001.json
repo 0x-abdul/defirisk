@@ -895,6 +895,41 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer publishes a substantial audit archive, including the May 2026 Certora review of the v1.13.0 redistribution-slash-delay change. However, the public current-deployment table identifies Ethereum core release v1.12.0 while the audit archive alone does not establish a bytecode-to-audited-commit match for every currently deployed core implementation. The audit program is broad, but the current full-scope match is not independently demonstrated; scored yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/competitions/e7af4986-183d-4764-8bd2-1d6b47f87d99"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/sigp/public-audits/blob/master/reports/eigenlayer/Sigma_Prime_Layr_Labs_EigenLayer_Slashing_Security_Assessment_Report_v2_0.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official audit index lists repeated reviews and the address book identifies current contracts. This pass did not prove byte-for-byte parity between every report scope and every current implementation, so it does not assert a mismatch.",
           "evidence_summary": "Public audits and verified source exist, but audit-commit-to-current-runtime parity was not reconstructed across the full Ethereum contract set.",
@@ -921,6 +956,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

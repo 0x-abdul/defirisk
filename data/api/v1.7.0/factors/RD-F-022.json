@@ -218,6 +218,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Confirmed: EigenPod constructor calls _disableInitializers() after setting immutable variables (ethPOS, eigenPodManager). StrategyManager implementation confirmed to include _disableInitializers() in constructor. This is the standard OZ v4.9.0 pattern. No published audit finding identifies an unguarded public initialize on any implementation contract across 22+ audit engagements.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/pods/EigenPod.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5d25eef8cfedaa47d31fe2346726de1c21e342fb"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "LRTDepositPool and RSETH show the expected OpenZeppelin initialization controls. The score remains cautious until the complete current implementation set is verified.",
           "evidence_summary": "Public core implementations use initializer plus constructor _disableInitializers(), but every current implementation was not exhaustively matched.",
@@ -244,6 +267,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

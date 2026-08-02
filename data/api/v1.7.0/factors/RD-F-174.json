@@ -151,6 +151,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current build configuration specifies Solidity 0.8.30 and OpenZeppelin 4.9.0. Solidity 0.8.30 remains publicly released, but OpenZeppelin's current release stream is 5.x and the repository does not publish a support-lifecycle assurance for the retained 4.9.0 dependency line. Yellow for an older dependency line without a demonstrated support commitment.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ethereum/solidity/releases"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/foundry.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The source tree consistently uses pragma Solidity 0.8.27 and the build config pins the same version.",
           "evidence_summary": "The current public build pins Solidity 0.8.27, an active 0.8.x compiler line rather than an EOL major line.",
@@ -177,6 +204,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -188,6 +188,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program page (404) and docs page (403) inaccessible as of 2026-04-28 — live scope cannot be verified. August 2025 EigenPods Immunefi disclosure was handled effectively, confirming core TVL-bearing EigenPod contracts are in scope. No evidence of scope exclusion on highest-TVL contracts (StrategyManager, DelegationManager, EigenPodManager). However, the $8.89B TVL vs $2M max bounty ceiling (confirmed 2023) creates a significant economic mismatch — the bounty cap is 0.02% of TVL, well below the 1% standard for large protocols. Scored yellow for the bounty cap-to-TVL mismatch and inability to verify current live scope.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.eigencloud.xyz/eigenlayer-stage-1-mainnet-launch/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",
@@ -229,6 +252,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

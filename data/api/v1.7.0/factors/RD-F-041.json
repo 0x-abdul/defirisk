@@ -191,6 +191,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed core-contract sources expose user withdrawal flows rather than an identified administrator rescue or emergency-withdraw function. The published governance architecture documents emergency pause authority, not a fund-extraction authority, for the Pauser.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/src/contracts/core/DelegationManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/src/contracts/core/StrategyManager.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "LRTWithdrawalManager.emergencyWithdrawFromAave is directly PAUSER_ROLE-gated without a timelock, but withdrawn assets return to the protocol contract rather than an arbitrary recipient.",
@@ -213,6 +240,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

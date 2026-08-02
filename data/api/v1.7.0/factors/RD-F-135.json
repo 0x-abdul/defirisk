@@ -150,6 +150,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin v4.9.0 (the pinned version) has two known advisories: (1) GHSA-g4vp-m682-qqmp — Governor proposal frontrunning in v4.9.0 only, fixed in v4.9.1; (2) ERC2771Context _msgSender returns address(0) for calldata < 20 bytes (v4.0.0–v4.9.2), fixed in v4.9.3. Neither advisory is applicable to EigenLayer's current usage pattern (EigenLayer uses TimelockController not OZ Governor; does not use ERC2771Context). However, the pin is not patched to v4.9.1 or v4.9.3 — future code additions could inherit these patterns. Scored yellow for the unpatched library version, not red, given current inapplicability.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/advisories/GHSA-g4vp-m682-qqmp"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The exact version is public and pinned. A current vulnerability-and-reachability review remains necessary before green.",
           "evidence_summary": "The repository vendors OpenZeppelin 4.9.3, but advisory reachability against deployed Kelp paths was not completed.",
@@ -171,6 +194,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

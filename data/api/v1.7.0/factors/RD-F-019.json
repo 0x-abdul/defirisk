@@ -133,6 +133,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Code4rena 2023 identified signature replay issue in depositIntoStrategyWithSignature (issue #363) — addressed in post-contest fixes. Subsequent Sigma Prime and Certora audits (post-2023) did not identify unguarded ecrecover returns as open findings. Certora Merkle engagement (Jul 2025) covered Merkle proof verification domain.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-04-eigenlayer-findings/issues/363"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime source scan is required.",
           "evidence_summary": "No exhaustive deployed-source result established whether all ecrecover returns are checked against address zero.",
@@ -154,6 +173,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

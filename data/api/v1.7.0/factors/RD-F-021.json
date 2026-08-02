@@ -134,6 +134,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer uses Transparent Upgradeable Proxy (TUP) pattern, not UUPS. Under TUP, upgrades are controlled by the Proxy Admin contract (0x8b9566AdA63B64d1E1dcF1418b43fd1433b72444), not via _authorizeUpgrade(). This factor is N/A for TUP architecture. Upgrade admin posture belongs to Cat 2.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8b9566AdA63B64d1E1dcF1418b43fd1433b72444"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official address book names ProxyAdmin contracts and owners rather than UUPS administration.",
           "evidence_summary": "The approved core deployment uses ProxyAdmin and transparent proxy administration, so the UUPS-specific _authorizeUpgrade gate is structurally moot.",
@@ -150,6 +169,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

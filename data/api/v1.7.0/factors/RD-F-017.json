@@ -120,6 +120,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer strategies handle multiple LSTs with potentially differing decimal precision. StrategyBase handles per-strategy asset accounting. No published audit finding confirms a mixed-decimals scaling vulnerability across the 4-firm audit program. Assessment is green with [?] confidence pending tool run.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The report notes a shared minimum deposit amount across tokens with different prices and other oracle boundary concerns. This is partial adverse evidence, not proof of a deployed exploit.",
           "evidence_summary": "Bailsec identified token-amount and price-boundary concerns, while full deployed mixed-decimal normalization analysis remains incomplete.",
@@ -141,6 +160,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-02T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
