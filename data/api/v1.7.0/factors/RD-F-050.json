@@ -226,6 +226,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation identifies the CEX/Hyperliquid-spot oracle inputs and the Arbitrum Bridge2 path. These dependencies are materially documented, but the bridge and USDC settlement route remain non-redundant access and settlement dependencies; the full impact map is therefore not green under v1.7.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/oracle"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Load-bearing dependencies include price adapters, EigenLayer strategies, Kelp accounting contracts, and listed LayerZero/CCIP contracts; migration completion is unverified.",
@@ -246,7 +269,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

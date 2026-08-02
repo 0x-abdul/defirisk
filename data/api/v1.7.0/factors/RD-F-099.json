@@ -748,6 +748,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Hyperliquid uses a fully custom internal L1 oracle: stake-weighted median of 8 CEX spot feeds (Binance weight-3, OKX weight-2, Bybit weight-2, Kraken weight-1, Kucoin weight-1, Gate IO weight-1, MEXC weight-1, Hyperliquid spot weight-1). Oracle is embedded in the closed-source L1 binary — no on-chain EVM oracle contract exists to monitor for deviation. Bridge2 does not use any oracle. The JELLY incident (March 2025) demonstrated real oracle-path vulnerability via CEX price manipulation (Bybit weight-2 manipulated), but the EVM-side oracle deviation signal infrastructure is structurally non-applicable to this L1-native oracle. Structural gray: signal cannot be wired to HyperCore oracle via EVM tooling.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/hypercore/oracle"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/@cryptorescuesquad/oracle-manipulation-a-case-study-on-jelly-jelly-f359d5a7eb02"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Synchronized primary and secondary observations for every Kelp-used oracle asset were unavailable.",
@@ -763,7 +786,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

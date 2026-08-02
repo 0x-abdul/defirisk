@@ -814,6 +814,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2 surface: 3 audits (Cyfrin Mar 2023, Zellic Aug 2023, Zellic Nov 2023); last commit d7e66aa7 2023-11-28 'address audit comments'; no on-chain upgrades detected post-Nov 2023, so Bridge2 bytecode plausibly matches audited code. L1 surface: HyperCore binary has zero audits and is closed-source. At the protocol level the dominant TVL-bearing operational surface is categorically unaudited, constituting a material scope mismatch.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/audits"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://reports.zellic.io/publications/hyperliquid-259"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/hyperliquid-dex/contracts/commits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official audit index lists repeated reviews and the address book identifies current contracts. This pass did not prove byte-for-byte parity between every report scope and every current implementation, so it does not assert a mismatch.",
           "evidence_summary": "Public audits and verified source exist, but audit-commit-to-current-runtime parity was not reconstructed across the full Ethereum contract set.",
@@ -839,7 +866,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
