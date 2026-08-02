@@ -60,6 +60,33 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The WormholeAdapter.sol does NOT implement a deliveries mapping or nonce-consumed check. The deliveryHash parameter in receiveWormholeMessages() is commented out and unused: bytes32 /* deliveryHash */. Wormhole's documentation states replay protection must be enforced by the receiving contract. Redeliveries can be requested by anyone. If a message is replayed, WormholeAdapter would process it twice unless the underlying message handler has its own deduplication. Gateway.sol failedMessages mapping is retry logic, not deduplication.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/products/messaging/reference/relayer-contract/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/core/messaging/Gateway.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "LayerZero V2 tracks origin nonce and clears delivered payload state, providing replay rejection.",
@@ -80,7 +107,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

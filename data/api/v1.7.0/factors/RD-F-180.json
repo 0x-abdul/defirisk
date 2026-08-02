@@ -152,6 +152,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 red->yellow with immutable-component caveat preserved.",
+          "evidence_summary": "SimplePriceManager.navUpdater is immutable, so green is not supported. Red overstates the replacement gap because NAVManager.setNAVHook, updateHoldingValuation, and OracleValuation.updateFeeder provide admin/configuration paths around valuation and NAV. Yellow: partial/heavier replacement exists, but no clean timelocked oracle setter was proven.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/NAVManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Authorized roles can replace both each asset adapter and each Chainlink feed without a full protocol upgrade.",
           "primary_chain": "ethereum",
@@ -171,7 +198,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -57,6 +57,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Root contract constructor args (escrow=0x0000000005F458Fd6ba9EEb5f365D83b7dA913dD, delay=172800) confirmed on-chain. CP141 governance proposal approved V3 development but does not specify constructor-level deployment parameters. Sherlock Feb 2026 deployment verification audit covers bytecode reproducibility but specific constructor arg verification not publicly extractable. Yellow: parameters consistent but no canonical governance-proposal-to-constructor-arg match document found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.centrifuge.io/t/cp141-initiate-the-development-of-centrifuge-v3-a-multi-chain-evm-based-protocol/6734"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "No public launch governance proposal was identified against which every deployed constructor argument can be compared.",
@@ -78,7 +105,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
