@@ -78,6 +78,114 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The reviewed architecture uses Bitcoin UTXO spending paths and covenant signatures, not a Merkle-root inbox or a root-acceptance mapping. The bytes32(0) bridge-root pattern is structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/specifications/bitcoin_staking_scripts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GREEN — not applicable. Centrifuge uses Wormhole Automatic Relayer model, not a Merkle-root-based inbox. WormholeAdapter.sol has no root-acceptance check. Nomad-class bytes32(0) bug pattern does not exist in this architecture.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed DeBridgeGate path verifies threshold validator signatures for submissions rather than accepting a Merkle root. The default-zero-root acceptance pattern is not present in this signature-based execution path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge inbox source was verified that permits a default-Merkle-root acceptance assessment.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero V2 OFT does not use Merkle roots as message authentication. Authentication is DVN-threshold-based (4-of-4 required). The Nomad $190M bug class (default bytes32(0) root accepted as valid) is architecturally inapplicable to this DVN-based pattern. No Merkle root acceptance pattern found in EtherfiOFTUpgradeable or EtherFiOFTAdapterUpgradeable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain/blob/master/scripts/SecurityUpgrade.s.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Not applicable: Bridge2 verifies validator signatures and uses pending withdrawal/validator-set state; it does not use a Merkle-root inbox acceptance mechanism.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -115,6 +223,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -59,6 +59,114 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No EVM admin wallet exists. Covenant committee members hold Bitcoin Schnorr keys — their interaction history on Bitcoin is not equivalent to EVM wallet transaction history. Babylon Foundation holds BABY tokens in Cosmos SDK accounts, not monitorable EVM addresses. No Chainalysis-style feed data available for Bitcoin Schnorr keys or Cosmos-native accounts. Structural data gap for non-EVM architecture.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public watchlist cross-match establishes whether the effective admin wallets interacted with mixer, sanction-listed, or curator-watchlist addresses. Explorer history alone is insufficient to substantiate a green result, so this condition is not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x7270b20603fbb3df0921381670fbd62b9991ada4"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public threat-intelligence dataset is available in the retained evidence to assess interactions between Safe signers and flagged addresses.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public flagged-address screening result was available for the privileged signers or administrators.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Dev Multisig 0x3B0AAf... is a Gnosis Safe proxy — no individual signer-level flagged-address interaction analysis available at OSINT tier. No Etherscan watchlist flags on the Safe address. Rekt database shows no incidents flagging Ethena admin addresses.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3B0AAf6e6fCd4a7cEEf8c92C32DFeA9E64dC1862"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed. Requires Chainalysis/TRM-level cluster analysis against all 7 unlabeled signer addresses. Etherscan lookups insufficient for mixer/watchlist cross-referencing.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public Bridge2 contract record identifies the bridge contract, but the effective proxy-admin address is not disclosed in the public material reviewed. Its transaction counterparties therefore cannot be assessed.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "arbitrum",
@@ -98,6 +206,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

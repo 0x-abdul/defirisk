@@ -125,6 +125,115 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. RD-F-075 assesses first-depositor or share-inflation protection in a vault. Babylon's BTC stakes are individually created Taproot outputs with defined spending paths, not deposits into a share-minting vault.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public documentation establishes that Centrifuge can deploy ERC-4626 and ERC-7540 vaults, but does not establish a first-depositor guard across every live vault implementation.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. The documented model has no pooled share-vault or cToken market; therefore the first-depositor and share-inflation guard assessed by this factor does not apply.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.debridge.com/home/welcome"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "StrategyBase adds virtual share and balance offsets to its deposit calculation and rejects a zero-share mint. These controls mitigate the first-depositor/share-inflation pattern for the applicable strategy accounting.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/strategies/StrategyBase.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public StakedUSDe source defines MIN_SHARES and calls _checkMinShares after deposits and withdrawals, reverting when a nonzero total supply is below that floor. This is a concrete first-depositor/share-inflation guard, supporting green for this separate control factor.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The lending-vault first-depositor guard factor is inapplicable to ether.fi's documented ETH liquid-restaking product.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Gray. Hyperliquid's public vault documentation says depositors share vault profits and losses, and its legacy vault-leader documentation specifies a 100-USDC vault-creation deposit. It does not publish the initialization or share-accounting formula for HLP or all native vaults, so the first-depositor/share-inflation guard cannot be verified.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "arbitrum",
@@ -167,6 +276,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

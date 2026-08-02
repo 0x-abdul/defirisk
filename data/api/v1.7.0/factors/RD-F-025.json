@@ -81,6 +81,136 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Dual-layer governance: (a) BABY governance via Cosmos SDK x/gov — DAO model with 3-day voting period, 33.4% quorum, >50% threshold; no single admin key; (b) Bitcoin-layer: covenant committee 6-of-9 federated multisig for BTC unbonding co-signing. All software upgrades require on-chain governance vote (MsgSoftwareUpgrade). V2 upgrade (Jun 2025) and V4 upgrade (Nov 2025) both went through governance proposals confirmed by on-chain voting.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-genesis-v2-upgrade"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge documents Root as the immutable administrator of protocol contracts, with privileged escalation subject to a 48-hour delay and governance actions mediated by separate Safe-controlled guardians. The effective custody model is multisig plus timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "5-of-8 Gnosis Safe multisig controls upgrades and all admin roles on Ethereum. No timelock. Classification: multisig (without timelock).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x6bec1faF33183e1Bc316984202eCc09d46AC92D5/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current technical architecture documents four governance multisigs. The Protocol Council executes queued upgrades through the primary timelock, and no single EOA is documented in that upgrade route.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents a protocol multisig and a separate Dev Multisig; the public contract and documentation reviewed do not establish an on-chain timelock for the relevant admin path. The documented multisig architecture leaves meaningful key-management risk.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3B0AAf6e6fCd4a7cEEf8c92C32DFeA9E64dC1862"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol-admin Safe at 0xcdd57D11476c22d265722F68390b036f3DA48c21 is currently a 6-of-10 Safe. The verified EtherFiTimelock exposes proposer, executor, and delay-controlled execution roles; no single EOA admin path was established from the public sources reviewed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Bridge2 proxy admin is a Hyper Foundation multisig (undisclosed address, threshold unknown). L1 critical operations require 2/3 stake-weighted cold-validator quorum. Operational parameters controlled by Hyperliquid Labs via closed-source L1 binary. Classification: multisig without timelock on upgrades. Admin type is multisig but transparency is low.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -124,6 +254,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

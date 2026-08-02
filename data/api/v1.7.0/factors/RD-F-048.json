@@ -118,6 +118,152 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Public review of Babylon's staking architecture and protocol source found no external price-feed integration: the BTC staking design uses native Bitcoin scripts and Babylon Genesis coordinates staking state rather than valuing collateral through an oracle. No asset/market requiring a price oracle was identified.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Two distinct oracle patterns are present: (1) a permissioned NAV path via SimplePriceManager (immutable navUpdater) and OracleValuation (per-pool feeder mapping); and (2) IdentityValuation's fixed 1.0 stablecoin valuation. The cited V3 pricing contracts do not show a Chainlink aggregation path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/IdentityValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed DMP execution path validates cross-chain messages with validator signatures, rather than consuming a price feed. FeeProxy performs fee-token conversion; it is not a collateral or bridge-price oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/periphery/FeeProxy.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer's assessed core uses no asset-price oracle provider. EigenPod consumes Ethereum's EIP-4788 beacon-roots system contract to verify beacon-chain proofs; this is a consensus-state primitive rather than a Chainlink, Pyth, RedStone, or DEX price feed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/pods/EigenPod.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://eips.ethereum.org/EIPS/eip-4788"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena documents three real-time price-feed sources for off-chain trading and mint/redeem validation: centralized exchanges, Pyth, and RedStone.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core eETH accounting uses EtherFiOracle at 0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41, a committee-report oracle for validator accounting and eETH rebase. Liquifier uses a default 1:1 stETH conversion and can optionally quote the Curve stETH/ETH pool when its configuration enables that path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/ether.fi-whitepaper/technical-documentation"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Hyperliquid documents a validator-computed weighted median of eight CEX and Hyperliquid spot mid prices. This is an in-house oracle built from spot venues rather than a documented Chainlink, Pyth, or RedStone feed, so it does not meet v1.7's established-aggregator standard.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -155,6 +301,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

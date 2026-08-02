@@ -118,6 +118,122 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon's reviewed core staking architecture has no price-oracle read, so an in-protocol price-deviation circuit breaker is inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No circuit breaker exists on price deviation in SimplePriceManager or OracleValuation. No max-deviation check between successive oracle updates is implemented. A malicious or erroneous NAV submission would be accepted without challenge.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No price oracle, so no price-deviation circuit breaker needed. Bridge has blockSubmission() admin function and excess confirmations (10/12) for large transfers as functional analog.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://debridge.com/learn/blog/10-strategies-for-cross-chain-security/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: EigenLayer's assessed core has no price-oracle circuit to suspend on a price deviation; EigenPod verifies consensus proofs instead.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation establishes multi-source off-chain price validation but does not publish a verified on-chain price-deviation circuit-breaker configuration for the approved Ethereum surface.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No circuit breaker on EtherFiOracle output found. Reports are published when quorum reached; no automated halt on anomalous reward values. Liquifier implements _min(fairValue, marketValue) which prevents overvaluation but is not a price-deviation circuit breaker. LiquidityPool source review found no circuit breaker on oracle output.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/core/LiquidityPool.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/deposits/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No automatic oracle circuit breaker is documented. During the March 2025 JELLY event, validators reached consensus to delist and settle the market after the price move, which evidences manual intervention rather than a documented automatic deviation halt.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -159,6 +275,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

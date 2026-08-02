@@ -103,6 +103,123 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. ERC-20 approvals and router patterns are EVM concepts. BABY is a native Cosmos denomination (ubbn), not an ERC-20. No EVM-style approve/transferFrom allowances exist. No deprecated router contracts on bbn-1 identified. Structurally inapplicable to this architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/baby_tokenomics/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge documents Tinlake as legacy Ethereum deployments, but the reviewed public material does not provide a reproducible count or value distribution of active user allowances to a deprecated router. Stale-approval exposure is not assessed.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/legacy/tinlake/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/tinlake-pools-mainnet"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public deprecation notice identifies an approved router as deprecated, so stale approvals on a deprecated router are not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No deprecated router is identified in the documented core governance architecture; this stale-approval factor is not applicable to the reviewed surface.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V1 replaced by V2 in July 2024. EthenaMinting uses EIP-712 order signing model (not blanket approve/allowance model) for the core mint/redeem flow. Stale allowances to V1 are therefore minimal by design. No confirmed stale approval issue identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No deprecated router or protocol contracts identified in core scope. All UUPS upgrades maintain same proxy addresses (existing user approvals remain valid and are not stale on a deprecated surface). No deprecated router found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x308861A430be4cce5502d0A12724771Fc6DaF216"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No deprecated router identified for Bridge2. The bridge is a single-contract USDC transfer model — no router approval pattern exists. Not applicable.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -142,6 +259,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

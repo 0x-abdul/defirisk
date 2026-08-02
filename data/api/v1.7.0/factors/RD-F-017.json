@@ -65,6 +65,128 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon documents BABY as 6-decimal ubbn and uses BTC-side satoshis, but no public static-analysis result or audit assertion verifies all cross-denomination arithmetic paths. The architecture does not itself prove the absence of a mixed-decimals defect.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/baby_tokenomics/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V3/V3.1 ERC-7540 vaults handle tokenized RWA assets in stable currencies (USDC 6 decimals, DAI 18 decimals). Multiple audit engagements reviewed multi-token arithmetic. Code4rena 2023 noted rounding issues in maxDeposit/maxMint (medium severity, resolved). Centrifuge's hub-and-spoke design propagates pricing from hub with explicit decimal normalization expected in NAVManager. Static analysis not run locally.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "deBridge/DLN is primarily a bridge protocol, not a lending protocol with cross-asset arithmetic. DLN source/destination deal with token amounts specified by the maker — cross-decimal arithmetic risk is lower than in DEX/lending protocols. No obvious multi-token decimal normalization issue found in manual inspection of DlnSource.sol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer strategies handle multiple LSTs with potentially differing decimal precision. StrategyBase handles per-strategy asset accounting. No published audit finding confirms a mixed-decimals scaling vulnerability across the 4-firm audit program. Assessment is green with [?] confidence pending tool run.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EthenaMinting V2 uses allowlisted collateral assets. Price validation applies Chainlink oracle feeds (standard 8-decimal). Pashov V2 audit and Code4rena found no mixed-decimals vulnerability. No confirmed instance of this pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://596495599-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsBsPyff5ft3inFy9jyjt%2Fuploads%2FJHbdthPqKCPoZFzrpryW%2Fv2-audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core tokens (ETH, eETH, weETH) all use 18 decimals. Liquifier handles stETH (18 decimals) conversion. No mixed-decimal token math anomaly identified in sampled source. Certora FV reports for eETH share inflation and withdrawal fee cover core token math invariants.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2025.01.16%20-%20Certora%20-%20EETH%20share%20inflation%20by%20burn%20shares.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/LiquidityPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Bridge2 handles a single token (USDC, 6 decimals) with no cross-token arithmetic. No mixed-decimals risk.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -103,6 +225,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

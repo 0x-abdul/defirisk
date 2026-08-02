@@ -117,6 +117,113 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Babylon documents a Covenant Committee and governance-mediated network changes, but no public real-time configuration-diff or proposal alert establishes a current threshold reduction or comparable governance weakening event.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/developers/bitcoin_staking/networks/mainnet/covenant_committee/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Directly applicable. Guardian Safe 0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD (Ethereum) and 0x427A1ce127b1775e4Cbd4F58ad468B9F832eA7e9 (Base) are the Security Council equivalent. Yellow because baseline signer count/threshold unverified (safe_api_gap) — signal cannot be calibrated without getOwners()/getThreshold(). No threshold reduction event found in 39-transaction history.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No registered Security-Council multisig monitor establishes whether a threshold reduction, timelock removal, or correlated signer event occurred.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The emergency Pauser Multisig is documented as a 1-of-8 control that can pause EigenLayer functionality. This concentrated emergency authority makes threshold or signer-change monitoring consequential.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public, current multisig configuration-event history was independently verified for the defined threshold-reduction, timelock-removal, or signer-addition precursor.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public contract pages alone do not establish a current security-council threshold reduction event or the current Safe owner and threshold state.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
@@ -171,6 +278,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

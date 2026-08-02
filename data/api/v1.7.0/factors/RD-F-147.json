@@ -68,6 +68,123 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon coordinates Bitcoin and Babylon Genesis through the Vigilante components, and its staking state is represented on both networks. This is a cross-chain coordination surface even though the documented design uses native BTC staking rather than wrapped-asset custody.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/vigilantes/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Yes. Centrifuge V3 uses Wormhole's Automatic Relayer as the exclusive cross-chain messaging layer across a 9-chain hub-and-spoke deployment. The Gateway contract routes all investment requests, share price updates, and redemption confirmations through the WormholeAdapter.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://centrifuge.io/blog/centrifuge-v3-multichain-launch"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Yes. deBridge documents DMP as its cross-chain messaging protocol and DLN as a cross-chain value-transfer infrastructure built on DMP. This assessment preserves the approved default surface and deployment roster.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://debridge.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge or cross-chain message path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly states that USDe cross-chain transfers rely on LayerZero's DVN-based messaging system, establishing a bridge-operated dependency. This does not expand the approved Task A deployment topology.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Confirmed bridge surface: weETH bridged across 20+ chains. Two architectures: (1) LayerZero OFT (EtherFiOFTAdapterUpgradeable on Ethereum, EtherfiOFTUpgradeable on L2s) for Base, Linea, Scroll, BNB, Optimism, zkSync, Swell, Avalanche, Blast, Berachain, Monad, HyperEVM, and others. (2) Arbitrum canonical bridge (StandardArbERC20, ClonableBeaconProxy pattern) for Arbitrum One.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://etherfi.gitbook.io/etherfi/getting-started/multichain-ecosystem"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/weETH-cross-chain"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Bridge2 is the documented native Arbitrum-to-Hyperliquid bridge for USDC deposits and withdrawals, so the bridge-specific category applies.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -105,6 +222,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

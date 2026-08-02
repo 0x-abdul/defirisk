@@ -123,6 +123,136 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon documents a 10 billion initial BABY supply, 5.5% annual inflation, and on-chain governance. These materials establish a governed inflation model, but do not independently establish an admin-callable unlimited mint function or its cap semantics; the critical unlimited-mint condition is therefore not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/baby_tokenomics/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CFG ERC-20 (0xcccCCCcCCC33D538DBC2EE4fEab0a7A1FF4e8A94) has mint(address to, uint256 value) callable by ward-authorized addresses. No hard supply cap in the contract; mint is bounded only by the ward access control system. Annual inflation is governed off-chain (3% protocol parameter, not a contract-enforced cap).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0xcccccccccc33d538dbc2ee4feab0a7a1ff4e8a94"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DBR token (0xfbe0b87c9b01cc30145ebd7cc65fcddbd7dcc061) has no mint function; fixed supply of 1B tokens all minted at deployment. No other protocol-issued mintable token with unlimited cap found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0xfbe0b87c9b01cc30145ebd7cc65fcddbd7dcc061"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The ELIP process explicitly treats modifications to bEIGEN minting rights as governance actions, and the BackingEigen source exposes an isMinter-gated mint path. This leaves a governed expandable-mint surface rather than establishing an unbounded single-admin mint.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/elip-process"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/src/contracts/token/BackingEigen.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "USDe mint() restricted to designated minter address (EthenaMinting contract); owner can change minter but EthenaMinting enforces per-block limits. ENA: 10% annual supply cap, 365-day MINT_WAIT_PERIOD enforced in contract. No unbounded admin mint path exists on either token.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.mexc.com/price/ENA/tokenomics"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ETHFI governance token has fixed supply (~1B tokens minted at deploy); no mint function post-deployment. eETH mintShares() is gated to onlyPoolContract (LiquidityPool contract address), not an admin EOA/multisig. weETH wrap() is user-callable but mints only proportional to eETH deposited — not admin-unlimited.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EETH.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No mint function exists on Bridge2 or any identified Hyperliquid EVM contract. Bridge2 handles USDC transfers only. HYPE token has a fixed genesis allocation with no admin-callable ongoing mint mechanism in publicly available code.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -162,6 +292,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

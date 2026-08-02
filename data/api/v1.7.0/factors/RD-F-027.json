@@ -464,6 +464,132 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No single EOA or private key holds unilateral chain upgrade authority. Babylon Genesis software upgrades require on-chain BABY governance vote (MsgSoftwareUpgrade). V2 upgrade (proposal Jun 12, 2025 → activation Jun 16) and V4 upgrade (Proposal #18, Nov 2025) both confirmed as governance-voted. No Cosmos SDK crisis module sudo-admin key identified. Babylon Foundation holds significant BABY supply but cannot unilaterally execute upgrades.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://polkachu.com/gov_proposals/6618"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The published guardian architecture routes administrative access through Safe-controlled guardian contracts and Root; Centrifuge documents a 48-hour delay for privilege escalation. The reviewed public architecture does not show a single EOA holding the effective upgrade or admin role.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin role held by 5-of-8 Gnosis Safe multisig (0x6bec1faF33183e1Bc316984202eCc09d46AC92D5). Not an EOA.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x6bec1faF33183e1Bc316984202eCc09d46AC92D5/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current governance documentation assigns upgrade proposal and execution roles to the Operations and Protocol Council multisigs and routes queued safety-critical upgrades through the primary timelock. It does not document a single-EOA upgrade administrator.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No single EOA admin. USDe owner = Dev Multisig 5-of-11 (0x3B0AAf...). EthenaMinting limits managed by Dev Multisig per docs. Deployer (0x8de54b1...) transferred admin to multisig before/at launch.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The protocol-admin Safe currently requires 6 of 10 owners, not a single EOA signature. The public Safe record provides the current signer set and threshold; no single-signer admin path was identified in the reviewed admin/timelock sources.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xcdd57D11476c22d265722F68390b036f3DA48c21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Bridge2 proxy admin is Hyper Foundation multisig, not a single EOA. L1 critical ops require 2/3 cold-validator quorum. No evidence of solo EOA holding admin rights. Not a single-EOA pattern.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -507,6 +633,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

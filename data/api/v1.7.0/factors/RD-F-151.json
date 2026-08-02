@@ -79,6 +79,130 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The reviewed cross-chain path is built from Bitcoin scripts, covenant public keys, and Babylon Genesis coordination rather than an EVM bridge verifier. An Ethereum ecrecover return-address check is structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/specifications/bitcoin_staking_scripts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 yellow->green narrowly. This does not clear broader Wormhole dependency risk.",
+          "evidence_summary": "Centrifuge's WormholeAdapter does not call ecrecover; it checks the Wormhole relayer and registered source address. Wormhole EVM verification rejects zero-address ecrecover results, satisfying RD-F-151's zero-address signature-check pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/Messages.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/security/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SignatureVerifier recovers a signer with ecrecover and checks membership through OraclesManager. The reviewed source does not show a separate explicit recovered-address != address(0) check before that lookup; it also does not establish that address(0) is an enabled validator. Yellow reflects the missing hardening check without asserting exploitation.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/debridge-finance/debridge-contracts-v1/main/contracts/transfers/OraclesManager.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfE7De3c1e1BD252C67667B56347cABFC6df08dF4"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/debridge-finance/debridge-contracts-v1/main/contracts/transfers/SignatureVerifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public, Ethena-specific bridge-verifier source was verified that permits an ecrecover zero-address handling assessment.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — green] LayerZero OFT application contracts (EtherfiOFTUpgradeable, EtherFiOFTAdapterUpgradeable) do not implement ecrecover at the application layer. Cryptographic message authentication is handled by LayerZero V2 endpoint DVN infrastructure, not application-layer signature checks. No ecrecover call found in inspected source. Wormhole-class zero-address ecrecover vulnerability not present.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherFiOFTAdapterUpgradeable.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public Signature.sol implementation rejects a recovered zero address before accepting a signature, covering Bridge2's signature-verification path.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -120,6 +244,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

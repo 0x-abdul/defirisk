@@ -87,6 +87,114 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Babylon's documented architecture uses Bitcoin scripts and a Cosmos SDK chain rather than an EVM deployer account. An ENS or NameStone binding to an EVM deployer is structurally inapplicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/architecture/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No verified deployer-name binding was established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Public Ethereum activity identifies a debridgefinance.eth recipient in the protocol's historical transaction graph, but the reviewed deployer address was not independently established as directly reverse-resolved to that name.",
+          "evidence_summary": "An indirect ENS-associated infrastructure signal exists; direct deployer-to-name binding was not demonstrated.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x609ef19a09385ad022a973b6dd98868a56d3354c0cff07eddefb4599327adf44"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xd6f0dabbbccd143f7d526a82ca176b5395ccc844"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No verified deployer-name binding was established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not establish an ENS or NameStone identity binding for the privileged deployer set. Explorer presence alone is not a substitute for a verified identity binding.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/overview/github-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan displays the ENS name etherfi-deployer.eth for an observed deployer address. The public record anchors the address to an ether.fi-associated name, but does not identify a natural person.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfa371b6fdcb18d65e88c4c785d61801e176a9ae7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
@@ -127,6 +235,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

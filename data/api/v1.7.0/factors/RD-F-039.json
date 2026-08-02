@@ -89,6 +89,127 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Cosmos SDK governance executes typed Protobuf messages through the module router (MsgUpdateParams, MsgSoftwareUpgrade, etc.). No EVM-style delegatecall or arbitrary call(target, calldata) in governance execution. Each proposal type maps to a typed handler routed to the relevant module keeper. No user-supplied target address, no delegatecall attack surface in Cosmos SDK governance architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain governor; no governance proposal execution contract. All protocol changes are executed via Root's scheduleRely/executeScheduledRely — a specific structured call, not an arbitrary delegatecall with proposal-supplied target. This pattern eliminates the classic governance-executor attack vector.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "deBridge DAO staking/on-chain proposals are described as upcoming. Current protocol control is manual multisig execution, so the RD-F-039 proposal-supplied call/delegatecall surface is absent. Multisig custody/admin execution risk belongs to adjacent admin-key and timelock factors, not this proposal-executor factor.",
+          "evidence_summary": "No current on-chain arbitrary proposal executor is identified; DAO staking/on-chain proposals are described as upcoming and current protocol control is manual multisig execution.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://debridge.com/support/how-does-dao-staking-work/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/multisig-evm-transactions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public governance documentation describes a multisig-and-timelock process but does not provide sufficient contract-level executor analysis to establish target restrictions, arbitrary-call reachability, or all safeguards under the v1.7.0 calibration.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Ethena documentation states that fully on-chain governance is not practical or viable at present and links governance to the forum and Snapshot. No verified on-chain proposal executor accepting proposal-supplied arbitrary call/delegatecall targets was identified.",
+          "evidence_summary": "Ethena governance uses forum/Snapshot signaling and manual multisig/admin execution rather than an on-chain proposal executor. No proposal-supplied arbitrary call/delegatecall target path was identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://snapshot.org/#/ethenagovernance.eth"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-overview/governance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain proposal executor contract. Execution flows: Safe → OZ TimelockController.execute() → target.call(). OZ TimelockController uses `call` (not `delegatecall`) on the target. No general-purpose arbitrary-target proposal executor with delegatecall found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/EtherFiTimelock.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No on-chain governor or proposal execution contract exists. HIPs are stake-weighted validator declarations, not smart-contract proposal payloads with delegatecall execution. Bridge2 contains no proposal execution path. Not applicable for this architecture.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -132,6 +253,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -86,6 +86,140 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "EVM-style reentrancy (callback-based re-entry before state commit) does not apply to Cosmos SDK Go execution model (atomic transaction processing, state commits after full handler completion) or CosmWasm (VM-level reentrancy guard in reply pattern). Factor as defined is structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/x/finality/keeper/msg_server.go"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3.1 implements custom reentrancy protection via ReentrancyProtection.sol using transient storage. The protected() modifier tracks caller; nested calls from same sender permitted, reentrant calls from different senders rejected. Gateway.sol prevents reentrant batch creation. V3.1 changelog notes reentrancy fixes. Deployed V3.1 uses 0.8.26 (unaffected by 0.8.28 transient-storage bug).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/core/messaging/Gateway.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/ReentrancyProtection.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeBridgeGate.sol: `send()` and `sendMessage()` carry `nonReentrant` modifier. DlnSource/DlnDestination inherit `ReentrancyGuardUpgradeable` and critical state-mutating functions are guarded. CallProxy is called only from within guarded DeBridgeGate functions. No reentrancy finding identified in manual inspection.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/contracts/DLN/DlnBase.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Confirmed: StrategyManager uses ReentrancyGuardUpgradeable with nonReentrant on queueWithdrawal and depositIntoStrategyWithSignature. DelegationManager has nonReentrant on queueWithdrawals. EigenPodManager has nonReentrant on createPod and recordBeaconChainETHBalanceUpdate. Olympix analysis confirmed these as correctly implemented. StrategyBase functions only callable via StrategyManager, blocking cross-contract reentrancy.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://olympix.security/blog/comparing-olympix-and-slither-on-the-eigen-layer-code-base"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x5d25eef8cfedaa47d31fe2346726de1c21e342fb"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "StakedUSDe implements OpenZeppelin ReentrancyGuard on transferInRewards(), _deposit(), _withdraw(). EthenaMinting V2 implements nonReentrant on mint(), redeem(), transferToCustody(). USDe has no external calls in critical paths requiring reentrancy guard.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/StakedUSDe.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Hats Finance 2023-12 audit found reentrancy in LiquidityPool requestWithdraw (medium severity, reportedly remediated). Liquifier.sol uses nonReentrant on depositWithERC20() and unwrapL2Eth() but NOT on withdrawEther(), which makes an external call to the liquidity pool — a residual reentrancy surface. WithdrawRequestNFT uses checks-effects-interactions pattern correctly. Without full Slither run, exhaustive reentrancy coverage cannot be confirmed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/audits/2023.12.20%20-%20Hats%20Finance.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/Liquifier.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Bridge2 imports OZ ReentrancyGuard. The nonReentrant modifier is applied to batchedRequestWithdrawals(), batchedFinalizeWithdrawals(), and batchedDepositWithPermit() — all three externally-calling state-mutating functions.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -124,6 +258,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -154,6 +154,126 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No price-oracle address or oracle-binding mechanism was identified in the reviewed native-Bitcoin core staking path. Because the protocol does not consume a collateral price oracle, immutable-oracle-address risk is inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 red->yellow with immutable-component caveat preserved.",
+          "evidence_summary": "SimplePriceManager.navUpdater is immutable, so green is not supported. Red overstates the replacement gap because NAVManager.setNAVHook, updateHoldingValuation, and OracleValuation.updateFeeder provide admin/configuration paths around valuation and NAV. Yellow: partial/heavier replacement exists, but no clean timelocked oracle setter was proven.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/NAVManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed execution path uses a validator-signature verifier rather than a lending price-oracle address. DeBridgeGate exposes an admin-controlled signature-verifier update, but this is not a collateral-price oracle dependency; this factor is green for the bridge's non-lending oracle model.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the assessed core has no external asset-price oracle address whose replacement would be required after an asset depeg. EigenPod's EIP-4788 address is Ethereum consensus infrastructure used for beacon-root proof verification, not a vendor price oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena's public documentation describes off-chain price feeds, but no public evidence was identified that proves or disproves an immutable collateral-oracle address without an admin-replaceable wrapper.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ F180 CRITICAL-CANDIDATE — green, not triggered] EtherFiOracle at 0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41 is a UUPS upgradeable proxy. Oracle address is admin-replaceable via RoleRegistry (0x62247D29B4B9BECf4BB73E0c722cf6445cfC7cE9) and EtherFiTimelock. Not an immutable oracle address. The F180 failure mode does not apply. No Chainlink address marked immutable found in core accounting path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x57AaF0004C716388B21795431CD7D5f9D3Bb6a41"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x62247D29B4B9BECf4BB73E0c722cf6445cfC7cE9"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Hyperliquid documents an in-house validator oracle in HyperCore. Its public node repository distributes signed visor and node binaries rather than exposing the oracle implementation or an admin-replaceable oracle-address setter; the public materials provide no operational path to substitute the embedded oracle without a software upgrade and validator adoption.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -195,6 +315,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -106,6 +106,140 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora, TLA+, Kani, Coq) has been applied to Babylon's custom modules (x/btcstaking, x/finality, EOTS) from publicly available sources. Informal Systems uses formal analysis techniques but their V2 audit was a security audit, not a machine-verified FV proof engagement. Novel cryptographic primitives (EOTS, covenant committee Schnorr multisig) would benefit most from FV. No Certora/Kani proofs publicly available.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Recon Pro conducted invariant testing of ERC-7540 implementation (Foundry-based fuzz + Medusa). foundry.toml includes SMT model checker profile with CHC engine. No Certora/Kani/Halmos formal verification specification files found. Invariant testing present but no full formal verification proof coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/offerijns/status/1786079932294091029"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora, Kani, Halmos) found in debridge-contracts-v1 or dln-contracts repos. No FV specification files found. Entirely absent.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer's public audit archive records repeated Certora formal-verification engagements across M4/PEPE, duration vaults, incentive council, slashing, MOOCOW, multichain, Merkle, Hourglass, and the May 2026 v1.13.0 redistribution-slash-delay change. The published archive demonstrates recurring formal-methods coverage across material protocol releases; green retained.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/reports/eignelayer-security-report"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/the-electra-upgrade"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora, Halmos, Kani) has been published for Ethena contracts. Chaos Labs provided economic risk analysis only (not FV). No FV coverage found in any of the 13 audit engagements.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit directory shows a continuing Certora series through the 2026-06-28 26Q2 Security Upgrade, following reports for core contracts, withdrawals, slashing, Pectra features, and adapters. The public repository also exposes Certora specifications. This supports an ongoing formal-verification practice, while each report's precise deployed scope must be assessed separately.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/tree/master/certora"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No formal verification (Certora, Halmos, Kani, or equivalent) has been applied to Bridge2 or any Hyperliquid contract. No FV report referenced in the audit docs or GitHub. Web search found no Certora/Halmos/Mythril application to Hyperliquid.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "arbitrum",
@@ -144,6 +278,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -1391,6 +1391,136 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Public audit reports provide engagement dates, but no public release/build manifest maps the current v4.3.0 Genesis deployment to those audited commits. A reliable audit-end-to-deployment interval cannot be calculated for the active code.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/security/audit_reports/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit index records V3.1 reviews in October-December 2025 and a February 2026 deployment verification. This supports close review activity around the V3.1 release, but the public records reviewed do not provide a complete deploy-transaction-to-audited-commit chronology for every current contract.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For DLN EVM Upgrades: Halborn signed off 2024-12-30. DlnSource impl `0x322B481` deployed (as upgrade target) 2025-12-08 — that is 343 days after the audit. DlnDestination impl `0xE540eb6` deployed 2026-02-13 — 410 days after. These exceed the ≤60-day green threshold significantly and exceed the ≤180-day yellow threshold, pointing to red for the gap. For DeBridgeGate (2022 audit to 2022 deploy), gap was within normal range. Overall driven by DLN implementations: red threshold breached.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "M1 mainnet: ConsenSys Diligence ended April 2023, launch June 2023 (~60 days). V1.0.0 Slashing: last audit (Cantina) completed March 2025, slashing launched April 17 2025 (~45 days). All major deployments within the 60-day acceptable window.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.eigencloud.xyz/eigenlayer-stage-1-mainnet-launch/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.eigencloud.xyz/slashing-goes-live/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V1 contracts: multiple audits Oct-Nov 2023, mainnet launch Feb 19 2024 — approximately 90-120 days post-audit. V2: Pashov audit May 23 2024, V2 deployed July 8 2024 — 46 days. Both within acceptable range. 46 days for V2 is slightly tight but not a red flag given prior extensive V1 coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/minting-usde/mint-and-redeem-contract-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository has no releases, and the public audit directory does not provide an auditee commit or deployment transaction mapping. Exact audit-to-deployment lag therefore cannot be established from the available public evidence, despite the recent 2026-06-28 Certora report.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Cyfrin engagement: Mar 10–24, 2023; Bridge v1 predecessor deployed March 2023. Zellic Nov 2023 patch review followed by 'address audit comments' commit d7e66aa7 Nov 28, 2023 — suggesting same-week deploy. The final Bridge2 deployment for the Nov 2023 version appears within days of audit sign-off. No >60-day drift detected for Bridge2 EVM surface.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -1433,6 +1563,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

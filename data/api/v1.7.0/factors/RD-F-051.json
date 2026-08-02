@@ -123,6 +123,131 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "This factor concerns the failure behavior of a price oracle. Babylon's reviewed native-Bitcoin staking path does not consume a price oracle, so no oracle fallback path applies.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No fallback mechanism exists. OracleValuation.sol reverts with PriceNotSet() if feeder has not set a price. SimplePriceManager has no fallback path if navUpdater fails to submit. No last-known-price reuse, no secondary source, no pause-on-failure trigger implemented in either contract. Oracle unavailability causes a hard revert for affected pool operations.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DMP does not depend on a price oracle. Its documented execution path requires a minimum validator-signature threshold; if that threshold is unavailable, a message is not executed rather than falling back to a secondary oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.debridge.com/dmp-details/dmp/protocol-overview"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/OraclesManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenPod's beacon-root proof path has no protocol-controlled fallback if the EIP-4788 lookup cannot return a matching root. EIP-4788 retains 8,191 roots and specifies a reverting get path for an invalid or unmatched timestamp. Yellow: this is a bounded proof-flow liveness risk rather than an asset-price-oracle failure.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/pods/EigenPod.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://eips.ethereum.org/EIPS/eip-4788"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena publicly describes multiple price-feed inputs, but the available documentation does not specify a verified operational fallback sequence for a primary oracle failure.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No fallback oracle exists for EtherFiOracle. If committee quorum is not reached, reports remain in pending ConsensusState with consensusReached = false; rebase does not execute. Protocol enters suspended state. Admin can call unpublishReport() for intervention. No automatic transition to a secondary oracle or last-known-price fallback. Liquifier fallback is the default 1:1 ratio when Curve path is disabled.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "ether.fi",
+          "protocol_slug": "ether-fi",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://etherscan.io/address/0x5eefE6f65a280a6f1eb1fdff36ab9e2af6f38462#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/etherfi-protocol/smart-contracts/blob/master/src/oracle/interfaces/IEtherFiOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The oracle documentation describes weighted-median inputs but does not document an automatic secondary feed, a pause-on-source-failure policy, or a bounded last-known-price path. Multiple venue inputs provide partial resilience, but the fallback behavior itself is not fully specified.",
           "gap_reason": null,
           "primary_chain": "arbitrum",
@@ -160,6 +285,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
