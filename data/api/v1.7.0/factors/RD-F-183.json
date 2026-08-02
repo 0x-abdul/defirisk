@@ -257,6 +257,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The bug bounty program is self-hosted and describes scope as 'any bug that would cause an outage or logical error on nodes or API servers.' The scope does NOT explicitly enumerate Bridge2 or any Solidity contract addresses as in-scope. The L1 binary is mentioned via 'nodes' reference. $3.26B of USDC lives in Bridge2 but the bounty scope is framed around L1 node/API behavior, creating ambiguity over whether Bridge2 smart contract bugs are explicitly in scope. No Immunefi page with contract addresses to confirm.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/bug-bounty-program"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Immunefi lists ten named core smart contracts plus a generic restaking target, but not the official OFTAdapter address 0x85d4...8Ef3. Immunefi's scope policy states that reports concerning an omitted asset are out of scope under a rules-based program. The adapter held 116,723 rsETH immediately before the exploit, far exceeding the methodology's $10M quantitative threshold. LayerZero and Aave incident reports bind the consequential exposure to this adapter while identifying the actual root cause as poisoned LayerZero RPC responses/DVN attestation combined with the Kelp route's application-configured 1-of-1 DVN stack; this row does not claim an OFTAdapter code vulnerability.",
           "evidence_summary": "The rules-defined bounty scope omits the official rsETH OFTAdapter despite exposure above the $10M threshold; the incident arose from compromised LayerZero RPC/DVN infrastructure plus Kelp's 1-of-1 configuration, not adapter code.",

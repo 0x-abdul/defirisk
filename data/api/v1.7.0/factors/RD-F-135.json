@@ -219,6 +219,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2 uses OpenZeppelin contracts but the exact OZ version cannot be determined (no manifest file). The use of 'draft-ERC20Permit' import suggests an OZ version from the 2021–2022 era (draft-ERC20Permit was later promoted to non-draft in OZ 4.9+). Earlier OZ versions may carry advisory-level issues. Without a confirmed version, a definitive assessment is not possible.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/hyperliquid-dex/contracts/master/Bridge2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The exact version is public and pinned. A current vulnerability-and-reachability review remains necessary before green.",
           "evidence_summary": "The repository vendors OpenZeppelin 4.9.3, but advisory reachability against deployed Kelp paths was not completed.",

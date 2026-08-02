@@ -190,6 +190,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2.sol uses a constructor but does NOT call _disableInitializers(). Since Bridge2 does not use an initializer pattern (uses a real constructor), the OZ guidance is not structurally required — the constructor IS the initialization. However, defense-in-depth practice would still apply _disableInitializers() to prevent any future confusion. Slightly below best practice for a proxy-wrapped contract.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/hyperliquid-dex/contracts/master/Bridge2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Both the deposit pool and rsETH token current source use the OpenZeppelin implementation-lock pattern.",
           "evidence_summary": "Inspected public core implementations call _disableInitializers() in constructors, but full current implementation coverage was not reconstructed.",

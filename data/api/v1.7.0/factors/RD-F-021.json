@@ -195,6 +195,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2 does NOT use UUPS proxy pattern. The AdminUpgradeabilityProxy pattern is used — upgrade authorization is via the proxy admin (Foundation multisig), not UUPS internal gate. Factor is N/A for the transparent/admin proxy pattern in use.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/hyperliquid-dex/contracts/master/Bridge2.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/@gwrx2005/cross-chain-transfer-mechanism-in-hyperliquid-architecture-and-proxy-design-b3179e636ec7"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The official address book names ProxyAdmin contracts and owners rather than UUPS administration.",
           "evidence_summary": "The approved core deployment uses ProxyAdmin and transparent proxy administration, so the UUPS-specific _authorizeUpgrade gate is structurally moot.",
