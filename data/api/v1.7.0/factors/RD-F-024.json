@@ -114,6 +114,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer's beacon chain proof verification (EigenPod) is exceptionally complex. Hexens found a critical Merkle bit-length validation gap (EIG-10) in the nested Merkle tree system. Certora found a critical validator hazard in checkpoint/Electra interaction. Both were pre-exploitation findings — demonstrating the complexity has strained audit coverage at least twice. AllocationManager was split into two contracts for size (v1.9.0). However, 22 audit engagements across 4 firms over 3 years provides adequate coverage-per-complexity ratio overall.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/the-electra-upgrade"
+            },
+            {
+              "source_type": "url",
+              "url": "https://hexens.io/blog/critical-eigenpods-bug"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A reproducible analyzer run and declared threshold are required.",
           "evidence_summary": "No published cyclomatic-complexity or LOC-per-audit-day measurement was located for the current deployed contract set.",
@@ -134,7 +157,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
