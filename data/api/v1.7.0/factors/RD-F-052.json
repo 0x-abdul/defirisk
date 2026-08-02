@@ -230,6 +230,25 @@
         },
         {
           "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "navUpdater compromised/unavailable: SimplePriceManager cannot update share prices → investment/redemption transactions priced at stale/wrong values, no recovery without contract upgrade. OracleValuation feeder offline: getPrice() reverts → pool operations halt. Wormhole relayer offline: cross-chain price propagation stops. USDC blacklist on Escrow: investors cannot deposit/withdraw → funds locked.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Oracle failure blocks price updates; EigenLayer failure impairs delegated assets; verifier failure can release unbacked rsETH.",
           "primary_chain": "ethereum",

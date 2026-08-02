@@ -126,6 +126,25 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Signal requires live mempool monitoring for priority-fee anomalies (≥5× EMA baseline) from wallets interacting with Centrifuge contracts. Centrifuge's ERC-7540 asynchronous vault architecture substantially reduces MEV/frontrun surface — redemptions settle over multi-day epochs, not single-block atomic transactions. No live mempool feed available for static assessment.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/developer/protocol/overview/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "No identified current attacker wallet and live priority-fee EMA were available for the five-times-gas threshold.",

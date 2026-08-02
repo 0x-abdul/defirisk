@@ -87,6 +87,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EIP712Lib.sol confirmed to include block.chainid in domain separator calculation. ERC20.sol DOMAIN_SEPARATOR() recalculates if block.chainid changes post-deploy (fork protection). Code4rena Sept 2023 identified DOMAIN_SEPARATOR caching issue as medium finding — subsequently fixed and verified in Oct 2023 Spearbit/Cantina post-fix audit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/ERC20.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/libraries/EIP712Lib.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime signing-path inventory is required.",
           "evidence_summary": "No exhaustive deployed signing-path review established whether every EIP-712 domain includes chainId.",

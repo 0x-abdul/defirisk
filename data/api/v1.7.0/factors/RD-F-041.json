@@ -141,6 +141,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Evidence-only update for #14.",
+          "evidence_summary": "The public TokenRecoverer implementation exposes authorized recovery and temporarily grants itself permissions through Root to perform the recovery. Because the public sources do not establish that every recovery authorization is delayed, this remains a yellow rescue-path control finding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/TokenRecoverer.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
           "evidence_summary": "LRTWithdrawalManager.emergencyWithdrawFromAave is directly PAUSER_ROLE-gated without a timelock, but withdrawn assets return to the protocol contract rather than an arbitrary recipient.",

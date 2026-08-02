@@ -96,6 +96,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 yellow->green narrowly. This does not clear broader Wormhole dependency risk.",
+          "evidence_summary": "Centrifuge's WormholeAdapter does not call ecrecover; it checks the Wormhole relayer and registered source address. Wormhole EVM verification rejects zero-address ecrecover results, satisfying RD-F-151's zero-address signature-check pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/Messages.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/security/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The standard DVN accepts only configured signers; the incident involved a valid signer attestation, not zero-address recovery.",
           "primary_chain": "ethereum",
