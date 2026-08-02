@@ -98,6 +98,94 @@
         {
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "bbn-1 parameters publish nine covenant keys and a 6-of-9 quorum. A six-signature threshold is not a low-threshold multisig relative to the nine-key set; Babylon Labs' three-key organizational concentration is a separate co-hosting/custody concern assessed under RD-F-029.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/babylonlabs-io/networks/main/bbn-1/covenant-committee/covenant-committee.json"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/babylonlabs-io/networks/main/bbn-1/parameters/global-params.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Evidence-only update for #14.",
+          "evidence_summary": "Centrifuge documents that the guardians are controlled by separate Safe multisigs, but the reviewed public material does not establish a current peer-cohort threshold benchmark for this protocol's TVL. Low-threshold risk is therefore not assessed from the available evidence.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "5-of-8 meets quantitative peer norm for a bridge. All 8 signer EOAs are anonymous with no public attestation linking addresses to named team members, reducing effective trust below nominal 5-of-8.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x6bec1faF33183e1Bc316984202eCc09d46AC92D5/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/multisig-evm-transactions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The documented 3-of-6 Operations, 3-of-5 Protocol Council, and 1-of-8 Pauser configurations create material privileged-role concentration. The 9-of-13 Community Multisig is broader but does not remove the lower-threshold control paths.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": "Evidence-only update for #21.",
           "evidence_summary": "Ethena documents a protocol multisig with a high nominal signature threshold, while the public Dev Multisig record identifies a separate 5-of-11 operational Safe. The separate public descriptions do not establish a single, independently attributable signer posture for all privileged paths; yellow remains.",
           "gap_reason": null,
@@ -143,6 +231,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -219,6 +219,106 @@
         {
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub lists signed v4.3.1 as the latest July 21, 2026 release, while Babylon's audit documentation and OpenZeppelin's April 2026 research establish public review activity. The reviewed public material does not link the latest released or running code to a post-change audit scope, nor does it independently prove that a material unaudited release is live; yellow records that unresolved coverage gap.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/releases"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/security/audit_reports/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/state-changes-at-the-boundary-lessons-from-security-research-on-babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge publishes an audit archive and public source, but the reviewed materials do not provide a complete deployed-bytecode diff against every post-audit change. Post-audit unaudited changes are not assessed.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://audits.sherlock.xyz/contests/1028"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-01-yAudit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DlnSource upgraded Sep 2025, Dec 2025. DlnDestination upgraded Feb 2026. Most recent Halborn EVM audit is Dec 30, 2024. Feb 2026 DlnDestination upgrade has no confirmed audit coverage. Yellow (not red) given deBridge's strong Halborn delta-audit cadence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe7351fd770a37282b91d153ee690b63579d6dd7f#events"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer publicly documented an August 2025 EigenPods emergency patch following an Immunefi disclosure and published the corresponding v1.6.1 release. This demonstrates a material post-audit change path; the refresh did not verify audit coverage for every affected deployment, so the concern remains yellow rather than a confirmed red finding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/releases/tag/v1.6.1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": "Evidence-only update for #21.",
           "evidence_summary": "Ethena audits page lists Pashov V2 May 23, 2024 for V2 contracts and separate USDTB audits in October 2024. Code4rena November 2024 scope was UStb/USDtb, not core USDe/sUSDe/EthenaMinting V2; OFT adapter coverage is not proven by the listed sources. Yellow remains.",
           "gap_reason": null,
@@ -263,6 +363,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

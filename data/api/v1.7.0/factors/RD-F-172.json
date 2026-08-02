@@ -81,6 +81,90 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Public commit-message searches cannot reliably establish whether AI tools co-authored security-critical code. No positive disclosure was located, but absence of a commit-message marker is not sufficient to score green.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/search?q=AI+copilot+GPT+codex&type=commits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts/search?q=AI+copilot+GPT&type=commits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public commit history can show individual commit metadata, but the available evidence does not provide a complete, independently verified attribution audit for AI assistance across security-critical code changes.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Inspected commit history for debridge-contracts-v1 (last commit 2024-10-23, by `merrymari`/`artyukh`) and dln-contracts (last commit 2024-06-04, by `artyukh`). No `Co-authored-by: GitHub Copilot` or `Co-authored-by: ChatGPT` trailers found in visible commit messages. No AI tool co-authorship metadata in inspected commits.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/commits/main"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository provides code and history, but it does not establish whether AI tools contributed to security-critical code. Absence of a co-authorship disclosure is not evidence of absence; gray pending an independently verifiable development-process disclosure or audit attribution.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No public evidence of AI-tool co-authorship (Copilot, ChatGPT Code Interpreter) in commits to critical contract files in the code-423n4/2023-10-ethena or ethena-labs repositories. No 'Co-authored-by: GitHub Copilot' or similar markers observed in available repo content. Main ethena-labs org repos are operational (minting clients, SDK) rather than core smart contracts.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -123,6 +207,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -118,6 +118,81 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "All role types (upgrade, fee parameters, oracle config) are governed by the same BABY governance module — no separate role holders. Oracle is not applicable (no price oracle in core protocol). Upgrade role = governance. Fee parameters changed via governance (Proposal #8 reduced unbonding fees). Role separation is structurally absent in a pure on-chain governance model without granular role contracts. Not a data gap — structural architecture of Cosmos SDK x/gov.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge documents separate ProtocolGuardian and OpsGuardian responsibilities, but the reviewed public material does not establish the complete current assignment of upgrade, fee-collection, and oracle-configuration roles. Full three-way role separation is not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/protocol/overview/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade, fee, and oracle roles are distinct contract constants, but the available public evidence places the three controls under the same 5-of-8 multisig.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Published governance documentation establishes separation for the principal upgrade and pause roles but does not fully map every fee- or parameter-setting permission required to assess complete upgrade/fee/oracle separation.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No upgrade function exists (non-upgradeable contracts). Roles are separated at contract level: MINTER_ROLE, REDEEMER_ROLE, GATEKEEPER_ROLE distinct from DEFAULT_ADMIN_ROLE. However, Dev Multisig holds owner/admin over all contracts simultaneously — single Safe controls all levers including minter assignment, collateral config, role grants.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -161,6 +236,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

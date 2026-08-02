@@ -126,6 +126,82 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. RD-F-073 assesses whether a lending asset's borrow cap is robust to oracle manipulation. Babylon's documented core uses BTC staking scripts and Cosmos SDK coordination, without a borrow-cap or lending-oracle surface.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/architecture/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Centrifuge documents pool valuation and asset price-oracle functions for tokenized products, rather than per-asset lending borrow caps tied to oracle-pool depth.",
+          "evidence_summary": "Not applicable: Centrifuge does not expose a protocol-wide lending borrow-cap system to evaluate against oracle-pool manipulation depth.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/developer/protocol/guides/create-a-pool/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. deBridge’s documented execution model does not create lending borrow positions or per-asset lending borrow caps; an oracle-manipulation-proof lending borrow-cap test does not apply.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.debridge.com/home/welcome"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer does not provide borrowing markets or protocol borrow caps. An oracle-manipulation-proof borrow-cap assessment is not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigencloud.xyz/products/eigenlayer/restakers/concepts/overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Ethena does not run a borrower market or define protocol-level borrow caps. Any caps set by external lending venues for USDe or sUSDe are outside this protocol surface; the factor is not applicable.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -158,6 +234,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

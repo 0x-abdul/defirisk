@@ -70,6 +70,89 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Signed/unsigned confusion is a Solidity-specific class of vulnerability (implicit type conversions). Babylon Genesis chain uses Go (strict explicit conversion required) and Cosmos SDK math.Int wrapper for token amounts. CosmWasm contracts use Rust (strict type system, no implicit conversions). The vulnerability class does not exist in this toolchain. Structural N/A by non-Solidity substrate.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.8.26 (deployed) and 0.8.28 (repo) both provide built-in overflow/underflow revert protection eliminating classic signed/unsigned arithmetic confusion. Auth.sol contains no arithmetic. Gateway.sol uses uint128 for gas limits with bounded addition guarded by maxBatchGasLimit() check. No signed/unsigned confusion finding raised in any of 22+ audit engagements.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-01-yAudit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No signed/unsigned arithmetic confusion found in manual inspection. Contracts use uint256 consistently for token amounts and fees. No evidence from Halborn audits of such findings (no audit post-mortem documents this class).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published audit finding identifies signed/unsigned arithmetic confusion. Solidity 0.8.x default overflow protection; unchecked blocks used explicitly where intended. Certora formal verification would detect type-confusion arithmetic via invariant proofs.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Solidity 0.8.19/0.8.20 with default overflow protection (SafeMath built-in). No signed/unsigned confusion vulnerability documented in any audit. Pashov Oct 2024 (USDtb scope) found L-03 EIP712 type mismatch uint128/uint120 in UStbMinting, but this is the USDtb sub-product and is out of core USDe scope.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -108,6 +191,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

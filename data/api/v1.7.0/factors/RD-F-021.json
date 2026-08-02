@@ -75,6 +75,86 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "UUPS (EIP-1822) is an EVM proxy upgrade pattern. Babylon has no EVM contracts. Chain upgrades on Genesis proceed via Cosmos SDK x/gov software upgrade proposals — a governance vote is required before the upgrade handler executes. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — Centrifuge V3/V3.1 does not use UUPS or any proxy upgrade pattern. All contracts use constructor-based initialization. The protocol's immutable core design explicitly avoids proxy upgrades. No _authorizeUpgrade function needed or present. Contract changes are deployed as new instances.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/offerijns/status/1976400242175267245"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "deBridge does NOT use UUPS pattern. DeBridgeGate, DlnSource, DlnDestination, and CrosschainForwarder all use EIP-1967 TransparentUpgradeableProxy pattern with a separate ProxyAdmin contract. `_authorizeUpgrade` is irrelevant. N-A for UUPS-specific check; upgrade path is governed by the ProxyAdmin (5-of-8 multisig per profile).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x43dE2d77BF8027e25dBD179B491e8d64f38398aA"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer uses Transparent Upgradeable Proxy (TUP) pattern, not UUPS. Under TUP, upgrades are controlled by the Proxy Admin contract (0x8b9566AdA63B64d1E1dcF1418b43fd1433b72444), not via _authorizeUpgrade(). This factor is N/A for TUP architecture. Upgrade admin posture belongs to Cat 2.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8b9566AdA63B64d1E1dcF1418b43fd1433b72444"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "None of the core Ethena contracts use UUPS or any proxy pattern. USDe, EthenaMinting V2, StakedUSDeV2 are all direct non-upgradeable implementations. UUPS _authorizeUpgrade gate factor is not applicable. USDtb (sub-product) uses upgradeable pattern but is out of core scope.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -108,6 +188,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

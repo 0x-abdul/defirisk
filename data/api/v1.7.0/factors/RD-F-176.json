@@ -124,6 +124,94 @@
         {
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SECURITY.md explicitly states: 'We will confirm receipt of your report within 48 hours.' This is a published SLA under the 72-hour green threshold. However, no public record exists of this SLA being tested and verified under a real-world disclosure scenario (OZ 2026 disclosure was actioned but no timestamps published). Yellow = SLA stated but not verified through prior instances.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/state-changes-at-the-boundary-lessons-from-security-research-on-babylon"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/SECURITY.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "72-hour acknowledgement SLA is publicly stated per centrifuge.io/security. However: (a) Cantina bounty program does not state a specific Centrifuge SLA — it says researchers should report within 24 hours which is a researcher SLA, not a team-response SLA; (b) no evidence found of SLA being honored or tested in a documented public case; (c) legacy bounty SLA ($50K DAI max) is not aligned with current Cantina $250K program.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/6cc9d51a-ac1e-4385-a88a-a3924e40c00e"
+            },
+            {
+              "source_type": "url",
+              "url": "https://centrifuge.io/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The retained public Immunefi program information provides the disclosure channel but does not state a public acknowledgement SLA. Under v1.7, no published SLA is red.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/debridge/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer has a public disclosure channel, but its public GitHub security-policy page reports that no SECURITY.md is configured. The reviewed public evidence does not establish a published acknowledgment-time SLA.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/security/policy"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": "Ethena's public program is triaged by Immunefi and carries the Immunefi Standard Badge. Immunefi's public standard-program SLA table sets a 48-hour acknowledgment target for critical reports and 96 hours for high reports after escalation, while requiring projects to communicate before an SLA breach. These are platform-standard commitments rather than an Ethena-specific response policy.",
           "evidence_summary": "Ethena's public Immunefi program is subject to published platform acknowledgment targets (48 hours for critical reports and 96 hours for high reports). The public SLA is meaningful but not Ethena-specific, so RD-F-176 is yellow under v1.7.",
           "gap_reason": null,
@@ -167,6 +255,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

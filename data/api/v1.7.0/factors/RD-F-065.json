@@ -125,6 +125,81 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon's protocol-held BTC is locked in staking-script outputs rather than a protocol-native DEX pool. The public specification requires an on-demand unbonding transaction and a covenant-threshold signing path; no independently verifiable 2%/5% liquidity-depth metric is published for the staked BTC. This is a yellow exit-liquidity evidence and process constraint.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/architecture/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No reproducible public measurement of 2% and 5% on-chain price-impact depth across Centrifuge's protocol-held assets is available.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "deBridge documents on-demand solver liquidity and no shared liquidity pools. It does not publish a current, independently verifiable 2% or 5% executable-depth measurement for the assets and routes relevant to this factor.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.debridge.com/home/welcome"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer is a restaking system, not a DEX, AMM, or order-book venue. It does not quote 2% or 5% per-asset trade-slippage depth, so this trading-venue liquidity metric is not applicable to the core protocol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigencloud.xyz/products/eigenlayer/restakers/concepts/overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Ethena publicly describes USDe's delta-neutral backing and its reserve fund, but the reviewed public sources do not publish reproducible on-chain 2% and 5% price-impact depth for each protocol-held asset. The required liquidity-depth measurement therefore remains unverified.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "ethereum",
@@ -167,6 +242,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -80,6 +80,77 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The public go.mod and go.sum provide dependency pinning and checksums, but no authoritative, exhaustive public incident feed was located that can prove the absence of a malicious dependency release across the full dependency graph during the trailing 90 days.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.sum"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public, protocol-specific dependency-advisory inventory was available that could establish the trailing-period supply-chain incident status for Centrifuge's deployed contract dependency set.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No malicious-release advisory identified for OpenZeppelin contracts (the primary dependency), Hardhat, or ethers.js in the trailing 90 days as of 2026-04-26. No npm security advisory flagged for any deBridge dependency packages in standard advisory feeds.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin, forge-std, and ds-test have not had malicious-release incidents in the trailing 90 days as of 2026-04-28. No GitHub security advisory flagging for these dependencies in this window. zeus-templates (Layr-Labs internal) has no malicious release history.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No malicious release incident affecting OpenZeppelin contracts, forge-std, or LayerZero OFT dependency in the trailing 90 days (as of 2026-04-28) is documented in public security advisories. No confirmed supply chain attack on Ethena's dependencies.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -118,6 +189,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

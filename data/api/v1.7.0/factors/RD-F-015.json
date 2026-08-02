@@ -70,6 +70,89 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "ERC-777/ERC-1155/ERC-721 token standards do not exist in Cosmos SDK / CosmWasm ecosystem. BABY token is a native Cosmos denomination (ubbn). BTC is not tokenized. Factor structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3/V3.1 uses ERC-20 tokens (USDC, stablecoins) and SafeTransferLib for all token interactions. No ERC-777 tokensReceived, ERC-1155 onReceived, or ERC-721 onReceived hooks integrated. RestrictionManager implements ERC-1404 (transfer restrictions without external callbacks). AsyncVault.sol uses SafeTransferLib.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4737C3f62Cc265e786b280153fC666cEA2fBc0c0#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/vaults/AsyncVault.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No ERC-777 tokensReceived, ERC-1155 onReceived, or ERC-721 onReceived integration found in core contracts. DeBridgeGate handles standard ERC-20 and native ETH transfers only. No hook-based token integration identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer accepts LST tokens (standard ERC-20, no ERC-777 callbacks). EIGEN and bEIGEN tokens are standard ERC-20. Protocol does not integrate ERC-777, ERC-1155, or ERC-721 hooks in its core deposit/withdrawal flow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/README.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Protocol does not integrate ERC-777 or ERC-1155 token standards. Collateral for minting is limited to allowlisted assets (stablecoins, LSTs — all standard ERC-20s). USDe itself is ERC-20 without hooks. No ERC-777 callback integration surface identified.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -108,6 +191,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

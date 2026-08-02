@@ -209,6 +209,94 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Public documentation permits a bounded breakage assessment: a Vigilante outage can delay Bitcoin/Genesis synchronization, while a covenant-quorum outage can prevent protocol-compliant staking signatures. Babylon documents that a dishonest covenant supermajority cannot steal BTC, but it can refuse co-signatures. These are material liveness impairments, so the dependency impact is partially adverse rather than gracefully degraded.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/vigilantes/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/covenant_emulator/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "navUpdater compromised/unavailable: SimplePriceManager cannot update share prices → investment/redemption transactions priced at stale/wrong values, no recovery without contract upgrade. OracleValuation feeder offline: getPrice() reverts → pool operations halt. Wormhole relayer offline: cross-chain price propagation stops. USDC blacklist on Escrow: investors cannot deposit/withdraw → funds locked.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A validator-signature or SignatureVerifier failure can prevent DMP message execution, while compromise of the signing threshold is the material bridge-security dependency. The public documentation describes signatures as retrievable by any claimant/keeper and does not describe a price-oracle fallback.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.debridge.com/dmp-details/dmp/protocol-overview"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A failure or incompatible change in the Ethereum beacon-root interface would prevent EigenPod from validating the affected proof submissions until a compatible path is available. The assessed consequence is native-restaking proof-flow liveness, not an immediate price misvaluation. Yellow reflects the absence of an in-protocol alternative source for that consensus data.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/pods/EigenPod.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://eips.ethereum.org/EIPS/eip-4788"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Ethena states that unavailable off-exchange-settlement functionality can impede trading workflows and availability of mint/redeem functionality, while its price-feed documentation establishes a direct dependency on external data sources.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -250,6 +338,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
