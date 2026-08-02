@@ -190,6 +190,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Signature.sol recoverSigner() function explicitly calls ecrecover(digest, sig.v, bytes32(sig.r), bytes32(sig.s)) and then checks require(signerRecovered != address(0), 'Invalid signature, recovered the zero address'). Zero-address guard is present.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/hyperliquid-dex/contracts/master/Signature.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "A matched-runtime source scan is required.",
           "evidence_summary": "No exhaustive deployed-source result established whether all ecrecover returns are checked against address zero.",

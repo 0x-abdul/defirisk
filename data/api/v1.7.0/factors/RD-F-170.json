@@ -297,6 +297,29 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge2.sol declares pragma solidity ^0.8.9. The ^ range pragma means the actual compiled version was selected by the build toolchain and could be anywhere from 0.8.9 to the latest 0.8.x at time of compilation. Arbiscan returned 403 during assessment — exact compiled version unconfirmed. Solidity 0.8.28–0.8.33 contains a high-severity TransientStorageClearingHelperCollision bug; Bridge2 does NOT use transient storage (no TSTORE/TLOAD), so this known bug is not applicable. Most critical known bugs in 0.8.9+ range are not applicable to Bridge2's simple storage pattern, but the exact version is not confirmed.",
+          "gap_reason": null,
+          "primary_chain": "arbitrum",
+          "protocol_name": "Hyperliquid",
+          "protocol_slug": "hyperliquid",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://arbiscan.io/address/0x2df1c51e09aecf9cacb7bc98cb1742757f163dF7"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/hyperliquid-dex/contracts/master/Bridge2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Foundry configuration pins solc 0.8.27, optimizer enabled, 4,000 runs, and Cancun EVM.",
