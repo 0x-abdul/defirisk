@@ -59,6 +59,104 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. Cosmos SDK uses module-keyed key/value store (IAVL tree), not EIP-1967 proxy storage slots. No Solidity storage layouts or slot assignment conflicts exist. Module upgrades use Cosmos SDK RegisterMigration and ConsensusVersion patterns, not EVM storage slot migration. The EVM storage-layout collision risk class is architecturally absent.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3 uses immutable-core architecture with no proxy for core contracts (Root, Gateway, PoolManager, InvestmentManager are all deployed as non-upgradeable monolith contracts). Storage layout collision risk is definitionally N/A. The ward-based upgrade pattern (deploy new contract, re-wire ward permissions) avoids storage layout collision by design.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/protocol/overview/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x09ab10a9c3E6Eac1d18270a2322B6113F4C7f5E8"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade events are public, but no public storage-layout comparison artifact establishes whether those upgrades were collision-safe.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xeF4fB24aD0916217251F553c0596F8Edc630EB66#events"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer's public release history documents repeated core-contract upgrades. Because upgradeable implementations can carry storage-layout risk across changes, and no complete independent storage-layout review was provided for this refresh, the risk remains yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. All core contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA) are non-upgradeable direct implementations. No proxy upgrade pattern is used; no storage layout collision risk exists by construction.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "UUPS upgrades performed multiple times across major contracts (weETH: 4 upgrades, EtherFiAdmin: 5 upgrades, EtherFiNodesManager: multiple). OZ upgrades plugin presumably used internally but no public storage layout collision report found. Cannot confirm absence of collision risk externally.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "ethereum",
@@ -98,6 +196,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

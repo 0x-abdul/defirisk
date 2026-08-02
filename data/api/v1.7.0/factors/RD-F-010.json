@@ -70,6 +70,113 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Primary codebase is Go (Genesis chain) and Rust (CosmWasm contracts). Standard DeFi static analyzers (Slither, Mythril) do not apply. Go-specific tools (staticcheck, gosec) and Rust tools (cargo-audit) are standard CI but no published automated tool-run output found for Babylon's custom modules. Zellic and Coinspect audits performed manual security review as substitute. Tool run not performed in this assessment.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Foundry configuration exposes fuzzing and invariant-test profiles, and Centrifuge publishes multiple audit reports. Public evidence reviewed does not include a complete current static-analysis result set or independently establish the disposition of every finding for the live surface; yellow reflects that gap.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/8c15e83a-08fc-48b9-8cc1-4f9ca76bb064"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril output found in the debridge-security repo or any public analysis post. Static analysis was not run programmatically for this assessment. The DLN EVM audit (Halborn 2024-12-30) and prior audits would capture some of these findings; audit PDFs not machine-parseable here. Notable structural patterns reviewed manually: CallProxy uses `.call()` with user-controlled receiver and data (no allowlist); SignatureVerifier uses `ecrecover` without explicit address(0) guard; ...",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No tool run executed per methodology (published analysis only). Olympix comparison study on EigenLayer found: (a) abi.encodePacked concerns in EigenPodManager.sol and DelayedWithdrawalRouter.sol; (b) locked Ether risk in DelayedWithdrawalRouter.sol (deprecated contract). Slither produced high false-positive rate on reentrancy due to correctly-implemented nonReentrant guards. No confirmed true-positive high-severity static analysis finding on current deployed bytecode. Marked gray — programmatic tool run on current bytecode is required for definitive assessment.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://olympix.security/blog/comparing-olympix-and-slither-on-the-eigen-layer-code-base"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public Slither/Mythril/Semgrep run output published for Ethena deployed bytecode. Code4rena 2023 (competitive audit included automated tool use) found 0 high-severity findings and 4 mediums. Code4rena 2024 invitational found 0 high-severity findings and 2 mediums. True-positive high-severity count from systematic static analysis is not independently verifiable. Marked yellow as a programmatic gap, not because findings were identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No Slither/Mythril/Semgrep output publicly available. Hats Finance 2023-12 audit found 1 medium (reentrancy in LiquidityPool requestWithdraw, reportedly remediated) and 12 lows from manual review. Certora FV proofs cover declared invariants but do not replace static analysis tooling for all patterns. [?] needs tool run for definitive high-severity finding count.",
           "gap_reason": "protocol_opacity",
           "primary_chain": "ethereum",
@@ -108,6 +215,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

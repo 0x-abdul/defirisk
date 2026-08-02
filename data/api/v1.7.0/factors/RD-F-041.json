@@ -124,6 +124,121 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. Bitcoin staking UTXOs can move only through their defined timelock, unbonding, and slashing script paths; this assessed surface does not expose an EVM-style admin rescue or emergencyWithdraw function.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Evidence-only update for #14.",
+          "evidence_summary": "The public TokenRecoverer implementation exposes authorized recovery and temporarily grants itself permissions through Root to perform the recovery. Because the public sources do not establish that every recovery authorization is delayed, this remains a yellow rescue-path control finding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/TokenRecoverer.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Evidence updated for #72: CrosschainForwarder / DeBridgeRouter exposes rescueFunds(address,address,uint256), so prior wording that no rescue function was found in any core contract was too broad. Reviewed fee-withdraw paths are fee-only, and the evidence does not establish a core bridge full-drain rescue path; yellow remains.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3c857eD51c8a2747ee8c6f30edda5ea0d487cc64#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/debridge-finance/debridge-contracts-v1/main/contracts/transfers/DeBridgeGate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/debridge-finance/dln-contracts/main/contracts/DLN/DlnSource.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed core-contract sources expose user withdrawal flows rather than an identified administrator rescue or emergency-withdraw function. The published governance architecture documents emergency pause authority, not a fund-extraction authority, for the Pauser.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/src/contracts/core/DelegationManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/src/contracts/core/StrategyManager.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Evidence-only update for #21.",
+          "evidence_summary": "Ethena staking docs confirm rescueTokens excludes USDe, while restricted sUSDe redistribution is compliance/legal framed and limited to sUSDe. Yellow remains because admin-controlled bounded fund movement exists without a fully verified timelock path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/staking-usde/staking-key-functions"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "weETH.recoverETH() and weETH.recoverERC20() callable by WEETH_OPERATING_ADMIN_ROLE without timelock. EtherFiNodesManager.sweepFunds() callable by ETHERFI_NODES_MANAGER_ADMIN_ROLE without timelock. Treasury.withdraw() callable by owner (Ownable) without timelock. These are untimelocked fund-recovery paths. Not red because (a) OPERATING_ADMIN and NODES_MANAGER_ADMIN roles are likely multisig-held (pending confirmation), and (b) weETH recover functions are bounded to accidentally-sent tokens (eETH is explicitly excluded from recoverERC20 scope in the source).",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -171,6 +286,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

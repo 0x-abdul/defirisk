@@ -64,6 +64,101 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Cosmos SDK governance has NoWithVeto — if ≥33.4% of voting power votes NoWithVeto, proposal is rejected and deposit burned. This is an embedded veto mechanism within the voting period. However, there is no separate veto-only multisig entity. Effective veto requires organizing 33.4% of bonded BABY within 3 days. Foundation + investors hold ~66.5% of total supply; with first cliff passed (April 2026), insider concentration could theoretically pass or veto any proposal. Community veto depends on insider non-participation.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ProtocolGuardian (4-of-8) can pause the protocol instantly without timelock in emergency. This IS the emergency-response multisig. Zodiac Delay 24h applies to non-emergency actions through Guardian, but pause itself is immediate.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No veto/cancel mechanism against multisig actions. GOVMONITORING_ROLE can pause protocol as partial brake but cannot cancel a malicious multisig upgrade.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Community Multisig is documented as a 9-of-13 emergency backstop that can immediately execute time-critical upgrades or replace the timelock on private-key compromise. This is a documented emergency-veto/override control.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GATEKEEPER_ROLE holders (Ethena staff + external market makers/exchanges, ≥3 EOAs) can pause mint/redeem in EthenaMinting. Meaningful emergency halt capability. However, no formal veto multisig for governance proposals (because governance is off-chain). Specific gatekeeper addresses not published.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions/matrix-of-multisig-and-timelocks"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No separate emergency-veto multisig identified distinct from the 4-of-7 Safe. The Safe serves both upgrade proposer and emergency-pause execution. No independent veto body with a separate key set exists to stop a malicious proposal before the 1-hour timelock expires.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -103,6 +198,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

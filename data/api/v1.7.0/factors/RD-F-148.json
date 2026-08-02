@@ -82,6 +82,104 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Babylon's Phase-1 public launch documentation identifies a 6-of-9 covenant committee, including three Babylon Labs keys. That is a small signer set for a material BTC staking surface. Current public documentation confirms the committee's multisig role but does not provide a complete independently verifiable current signer roster, so this is assessed yellow rather than assuming a larger current set.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/developers/bitcoin_staking/networks/mainnet/covenant_committee/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole Guardian set: 19 guardians. Quorum: 13-of-19 (two-thirds supermajority). PoA network of established validator companies. 19 guardians is the full set for mainnet. F179 (LayerZero DVN) is N/A — Centrifuge V3 does not use LayerZero.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DMP's documented execution model uses 12 validator signature checks for a normal submission, while DLN uses permissionless solvers rather than a validator committee. A fixed 12-validator committee remains a material trust concentration for the messaging bridge.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.li.fi/debridge-a-deep-dive-88750ede08bf"
+            },
+            {
+              "source_type": "url",
+              "url": "https://debridge.com/learn/blog/10-strategies-for-cross-chain-security/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethena identifies LayerZero DVN-based messaging for USDe cross-chain transfers; this non-LayerZero validator-count factor is superseded by the LayerZero-specific DVN assessment in RD-F-179.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/ena"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
@@ -133,6 +231,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

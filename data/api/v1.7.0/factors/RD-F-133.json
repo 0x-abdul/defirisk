@@ -70,6 +70,113 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "go.mod pins exact versions for all critical dependencies: Cosmos SDK v0.53.5, CometBFT v0.38.22, CosmWasm/wasmd v0.60.5, IBC-Go v10.5.0, btcd v0.24.2. go.sum provides cryptographic hashes for all 1,629 dependency entries. cosmos-bsn-contracts Cargo.lock pins all Rust dependencies to exact versions (cosmwasm-std 2.2.2, bitcoin 0.32.6, k256). No floating/unpinned version ranges observed.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts/blob/main/Cargo.lock"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.mod"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.sum"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "centrifuge/protocol repo uses Foundry with soldeer for dependency management. foundry.toml shows auto_detect_remappings = false and specific lib paths. soldeer.lock file not found at root (404) suggesting it may be elsewhere or dependencies pinned via git submodule SHAs. No npm-style unpinned dependencies found in smart contract repos. Marking yellow for incomplete evidence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "`debridge-contracts-v1/package.json`: `\"@openzeppelin/contracts\": \"^4.3.2\"` and `\"@openzeppelin/contracts-upgradeable\": \"^4.3.2\"` — both use caret ranges (semi-unpinned). `dln-contracts/package.json`: `\"@openzeppelin/contracts-upgradeable\": \"^4.7.3\"` — also caret-ranged. Caret allows minor/patch updates within major version, which is generally acceptable for OZ but technically unpinned. The deployed bytecode (Etherscan-verified) shows compiled artifacts, so the caret range is only a concern f...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/package.json"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/dln-contracts/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer's .gitmodules lists openzeppelin-contracts-v4.9.0 and openzeppelin-contracts-upgradeable-v4.9.0 as named submodules with version encoded in the path name. However, no explicit commit SHA is pinned for any submodule (OZ, ds-test, forge-std, zeus-templates). The OZ version is anchored by path naming convention only — not cryptographic SHA pinning. This is a mild dependency management gap applicable even to original protocols.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Layr-Labs/eigenlayer-contracts/main/.gitmodules"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin contracts are included as Foundry submodules (lib/openzeppelin-contracts and lib/openzeppelin-contracts-upgradeable confirmed in the Code4rena repo lib directory). Foundry submodules pin at a specific commit SHA when initialized via `forge install`. However, the exact OZ version or pinned SHA is not publicly disclosed (no accessible .gitmodules). Partial evidence of pinning via Foundry convention, but not independently confirmed. Unpinned version cannot be ruled out if `forge update` has been run post-initialization.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2023-10-ethena/tree/main/lib"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The .gitmodules file pins openzeppelin-contracts to branch v4.8.0 and openzeppelin-contracts-upgradeable to branch v4.8.2. The git tree confirms all 6 submodule dependencies are pinned to specific commit SHAs: forge-std (77041d2), OZ (0457042), OZ-upgradeable (f6c4c9c), solady (8583a6e), v3-core (e3589b1), v3-periphery (80f26c8). EigenLayer-contracts is commit-SHA pinned in the tree (via the submodule SHA mechanism) but not branch-constrained in .gitmodules — this is the correct posture for a dependency that undergoes active development. Build is reproducible at current commit. No ^ or ~ floating version references (Foundry uses git submodules, not npm packages).",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -112,6 +219,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

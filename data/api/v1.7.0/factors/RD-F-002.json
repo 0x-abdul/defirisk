@@ -186,6 +186,117 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The newest publicly accessible full-scope audit evidence is the Informal Systems Genesis V2 report from June 2025, approximately 13 months before this assessment. Babylon's public changelog shows later v4.2.x and v4.3.0 fixes, while referenced V4 audit reports are not publicly available for scope comparison. This exceeds the 12-month recency boundary for a high-value live protocol.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/releases"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/assets/files/informal_system_genesis_v2_audit_2025_06.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge's public audit index lists a February 2026 Sherlock V3.1 deployment verification and later April 2026 Onchain PM security reviews. The public index does not itself map each later review to every current deployment, so recency is positive but complete current-surface coverage is not independently established here.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-01-yAudit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent EVM audit: 2024-12-30 (Halborn DLN EVM Upgrades) — 117 days before assessment date 2026-04-26. Last Solana audit: Halborn DLN Solana Contracts, 2024-11-15 — 162 days before assessment. Both within the ≤365-day green threshold. However, the deployed implementations are newer than the audit date (see RD-F-001).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public archive includes a May 2026 Certora review for the v1.13.0 redistribution-slash-delay change and a February 2026 Sigma Prime Rewards v2.2 review. Those named engagements do not by themselves establish a recent full-scope review of all currently deployed Ethereum core contracts (including DelegationManager, EigenPodManager, and AllocationManager). Rolling audit activity is current, but broad core coverage remains partial; scored yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/sigp/public-audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent audit covering core USDe contracts is Pashov V2 (May 23 2024), covering EthenaMinting V2 and StakedUSDeV2. As of 2026-04-28 this is approximately 706 days (~23 months). ENA audited by Pashov Sep 2 2024 (~600 days). No audit has been published for any post-July 2024 changes. Core architecture is unchanged since V2 deploy, reducing drift risk, but 23-month recency gap is notable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://596495599-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FsBsPyff5ft3inFy9jyjt%2Fuploads%2FJHbdthPqKCPoZFzrpryW%2Fv2-audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Certora's public 26Q2 Security Upgrade report is dated 2026-06-28, 26 days before this assessment. The public directory also includes the 2026-01-29 Core Contracts re-audit and the 2025-04-12 EigenLayer Slashing report. The June report's public listing confirms recency but does not by itself establish full deployed-contract scope.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -228,6 +339,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

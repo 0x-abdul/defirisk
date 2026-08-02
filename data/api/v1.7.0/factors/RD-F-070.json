@@ -155,6 +155,105 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. RD-F-070 concerns a listed Compound V2-style lending market with zero supply and zero borrow. Babylon's documented staking transaction locks BTC in a Taproot output and its coordination layer is a Cosmos SDK chain; no cToken lending market is part of this protocol surface.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/architecture/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Centrifuge documents ERC-4626 and ERC-7540 vault implementations. It does not document Compound V2 cToken markets with a collateral-factor-enabled empty-market state.",
+          "evidence_summary": "Not applicable: the empty cToken market test is specific to Compound V2-fork lending markets and does not map to Centrifuge's vault architecture.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/developer/protocol/overview/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. deBridge documents per-order, non-custodial cross-chain execution with no shared liquidity pools, not Compound-style cToken markets or share-based vault markets susceptible to empty-market initialization.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.debridge.com/home/welcome"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "StrategyBase uses virtual share and virtual balance offsets expressly to mitigate the common share-inflation attack. Its deposit calculation also rejects a zero-share result. The applicable share-accounting implementation is therefore protected against the empty-vault inflation pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/strategies/StrategyBase.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed sUSDe contract is an ERC-4626 staking vault; Ethena's USDe documentation describes issuance and redemption, not Compound V2 cToken markets. The empty Compound-style market precondition is not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/staking-usde"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "ether.fi is not a Compound V2 fork with listed cToken markets. The v1.7.0 factor specifically tests a Compound-fork market with zero total supply and borrow, so it is structurally inapplicable.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -187,6 +286,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

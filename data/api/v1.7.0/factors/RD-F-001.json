@@ -816,6 +816,157 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon's public audit index lists Phase-1, Genesis, V2, and V4 engagements, and the public repository lists v4.3.0 as latest. However, no public artifact binds the running Genesis-chain binary or v4.3.0 source commit to a specific audited commit/build. Audit-to-deployment parity is therefore unverified.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/security/audit_reports/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/pull/1911"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/pull/584"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.openzeppelin.com/news/state-changes-at-the-boundary-lessons-from-security-research-on-babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit index lists Sherlock's February 2026 V3.1 deployment verification, and the reviewed Root address has verified source on Etherscan. Those records support the reviewed Root mapping, but do not independently establish an audit-to-bytecode mapping for every live contract in the surface.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent EVM audit: Halborn \"DLN EVM Upgrades\" dated 2024-12-30 (PDF: `DLN-EVM_Upgrades_SSC.pdf` in debridge-security repo). DlnSource proxy at `0xeF4fB24...` was upgraded to impl `0x322B481...` (solc 0.8.28) on 2025-12-08 (tx `0x25b203...`). DlnDestination proxy at `0xe7351fd...` was upgraded to impl `0xE540eb6...` (solc 0.8.28) on 2026-02-13 (tx `0xf18791...`). These deployed implementations post-date the last confirmed EVM audit by 5–14 months. No subsequent audit PDF found in debridge-...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe7351fd770a37282b91d153ee690b63579d6dd7f"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xeF4fB24aD0916217251F553c0596F8Edc630EB66"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EigenLayer publishes a substantial audit archive, including the May 2026 Certora review of the v1.13.0 redistribution-slash-delay change. However, the public current-deployment table identifies Ethereum core release v1.12.0 while the audit archive alone does not establish a bytecode-to-audited-commit match for every currently deployed core implementation. The audit program is broad, but the current full-scope match is not independently demonstrated; scored yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/competitions/e7af4986-183d-4764-8bd2-1d6b47f87d99"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/tree/main/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/sigp/public-audits/blob/master/reports/eigenlayer/Sigma_Prime_Layr_Labs_EigenLayer_Slashing_Security_Assessment_Report_v2_0.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "13 distinct audit engagements across 7 firms covering core USDe contracts. V2 contracts (EthenaMinting V2, StakedUSDeV2) audited by Pashov (May 23 2024) prior to V2 deploy (July 8 2024). Etherscan verified source on all four core contracts. All audits completed pre-deploy per official docs. No critical or high findings across any engagement. Commit SHA not publicly disclosed, so bytecode-to-commit match is medium confidence, but no evidence of scope mismatch.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-10-ethena"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/resources/audits"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x9D39A5DE30e57443BfF2A8307A4256c8797A3497#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public audit directory includes Certora's 2026-06-28 '26Q2 Security Upgrade' report. Neither the directory nor the report's public HTML view supplies a deployed-bytecode-to-audited-commit mapping for all user-fund contracts, so audit scope alignment remains only partially verified.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -871,6 +1022,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

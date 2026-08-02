@@ -226,6 +226,117 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The documented dependency map includes Bitcoin consensus and the Babylon Genesis chain, Vigilante infrastructure for Bitcoin/Genesis synchronization, and the covenant committee for protocol-compliant staking transactions. The public materials describe these dependencies, but do not publish a complete operator inventory or all operational dependency relationships; the dependency graph is therefore only partially documented.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/vigilantes/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/covenant_emulator/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Hard dependencies: (1) Wormhole Automatic Relayer — exclusive cross-chain messaging. (2) USDC (Circle) — primary investment currency for most pools. Soft dependencies: (3) Pool-level originators (off-chain) — submit NAV. (4) Gnosis Safe (Guardian) — emergency actions. No Aave, Uniswap, or other DeFi protocol dependency in the core path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://centrifuge.io/blog/centrifuge-v3-multichain-launch"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DMP relies on DeBridgeGate, SignatureVerifier, OraclesManager, off-chain validator signatures, and an arbitrary claimant/keeper; the protocol documentation also describes DLN as a zero-TVL liquidity network. FeeProxy is limited to fee-token conversion. No price-oracle dependency was identified in these reviewed execution paths.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.debridge.com/dmp-details/dmp/protocol-overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed core depends on Ethereum consensus data through EIP-4788 for EigenPod proof verification and accepts ERC-20 restaking strategies. It does not call a DeFi price oracle. Yellow reflects the material liveness dependency on Ethereum beacon-root availability for native-restaking proof flows.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Layr-Labs/eigenlayer-contracts/blob/main/src/contracts/pods/EigenPod.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://eips.ethereum.org/EIPS/eip-4788"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation identifies direct dependencies on centralized derivatives venues, off-exchange-settlement custody providers, and external real-time price feeds; loss of those services can impair trading or mint/redeem workflows.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/backing-asset-custody"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ethena.fi/solution-design/use-of-oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "hybrid",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
@@ -274,6 +385,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

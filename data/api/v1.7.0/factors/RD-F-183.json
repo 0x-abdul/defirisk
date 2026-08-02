@@ -125,6 +125,117 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Immunefi program explicitly excludes 'centralization risks' and 'covenant committee compromise scenarios' from scope. The covenant committee (6-of-9 federated multisig) co-signs all BTC unbonding transactions and is the primary security primitive protecting $4.16B in staked BTC. Its explicit exclusion from bug bounty scope creates a meaningful protection gap for the protocol's highest-value surface. cosmos-bsn-contracts not clearly enumerated as in-scope assets.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/babylon-labs/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Cantina bug bounty ($250K max critical) active since July 17 2025 for Centrifuge V3.1. The Cantina scope page does not identify specific highest-TVL contracts as explicitly out of scope beyond 'spamming through vaults' exclusion. V3.1 protocol broadly in scope. Full contract-level in/out-of-scope details not enumerable from available page content.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/6cc9d51a-ac1e-4385-a88a-a3924e40c00e"
+            },
+            {
+              "source_type": "url",
+              "url": "https://hackenproof.com/public-bug-bounty-list/centrifuge-bug-bounty-program"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program lists 90 assets in scope across Ethereum, BNB Chain, Polygon, Arbitrum, Avalanche, Fantom, Heco. Specific contract enumeration in scope not confirmed from Immunefi page (API returned truncated data). The DeBridgeGate proxy (0x43dE...) is the highest-TVL contract on the protocol (~$6.26M aggregate as of 2026-05-07, DefiLlama; down from a ~$200M peak in 2022–2023) and is the core subject of the entire protocol; DLN is 0-TVL by architecture so DeBridgeGate is necessarily the largest TVL surface regardless of magnitude. No explicit exclusion of DeBridgeGate or DLN contracts identified from the Immunefi page content. DLN contracts (DlnSource, DlnDestination) are cross-chain bridging infrastructure and the unconfirmed scope is the basis for yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "deBridge",
+          "protocol_slug": "debridge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/debridge"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/debridge/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program page (404) and docs page (403) inaccessible as of 2026-04-28 — live scope cannot be verified. August 2025 EigenPods Immunefi disclosure was handled effectively, confirming core TVL-bearing EigenPod contracts are in scope. No evidence of scope exclusion on highest-TVL contracts (StrategyManager, DelegationManager, EigenPodManager). However, the $8.89B TVL vs $2M max bounty ceiling (confirmed 2023) creates a significant economic mismatch — the bounty cap is 0.02% of TVL, well below the 1% standard for large protocols. Scored yellow for the bounty cap-to-TVL mismatch and inability to verify current live scope.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "EigenLayer",
+          "protocol_slug": "eigenlayer",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.eigencloud.xyz/eigenlayer-stage-1-mainnet-launch/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.eigenlayer.xyz/t/eigenpods-bug-fix-completed-august-29-2025/14713"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "27 assets in scope per Immunefi. Core Ethereum mainnet contracts (USDe, EthenaMinting V2, StakedUSDeV2, ENA, USDeSilo, EthenaLPStaking, StakingRewardsDistributor) are in scope. The USDe OFT adapters deployed across 18 chains via LayerZero (including Arbitrum, Base, Optimism, Mantle, BNB Chain, Solana) are NOT listed in the Immunefi scope table. This represents a material bug bounty scope gap: OFT adapters hold bridged USDe value across 18 chains and are excluded from bounty coverage. Similar in pattern to the Kelp DAO precedent where the OFT adapter holding >$1B was excluded from the bounty.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Ethena",
+          "protocol_slug": "ethena",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://stabledash.com/news/2025-09-11-ethena-taps-layerzero-to-enable-one-click-usde-staking-across-18-blockchains"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ethena/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public Immunefi page establishes an active ether.fi program and a $300,000 maximum critical payout, but its accessible view does not provide a complete, independently checkable asset list. Coverage of weETH OFT adapters therefore remains unverified from public evidence.",
           "gap_reason": null,
           "primary_chain": "ethereum",
@@ -187,6 +298,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-01T00:00:00Z",
+  "generated_at": "2026-08-03T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
