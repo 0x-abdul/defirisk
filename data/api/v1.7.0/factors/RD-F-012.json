@@ -91,6 +91,25 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "EVM delegatecall opcode does not exist in Go (Cosmos SDK) or Rust (CosmWasm) execution contexts. Factor is structurally inapplicable. The analogous CosmWasm SubMsg pattern uses typed Rust messages, not arbitrary calldata. No evidence of uncontrolled SubMsg with user-supplied contract addresses in cosmos-bsn-contracts.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x/btcstaking"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No delegatecall with user-controlled target found across any inspected Centrifuge V3/V3.1 contract. Gateway.sol uses typed external interface calls. WormholeAdapter.sol calls immutable relayer address. Auth.sol and Root.sol use only standard external calls. No delegatecall pattern identified in any of 22+ audit engagements.",
           "gap_reason": null,
           "primary_chain": "ethereum",

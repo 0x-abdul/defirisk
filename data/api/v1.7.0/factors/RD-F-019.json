@@ -70,6 +70,25 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "ecrecover is an EVM precompile for ECDSA signature recovery. Babylon uses Schnorr signatures (BIP-340) for Bitcoin operations, Cosmos SDK amino/protobuf signing for Genesis chain, and EOTS for finality provider double-sign detection. No ecrecover usage exists in this non-EVM architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "SignatureLib.isValidSignature() guards against address(0) via require(signer != address(0), InvalidSigner()) before ecrecover is called. ERC20.sol permit function delegates to SignatureLib. No other ecrecover usage found. Code4rena 2023 flagged domain-separator caching (separate issue, resolved); no ecrecover zero-return finding in any audit.",
           "gap_reason": null,
           "primary_chain": "ethereum",

@@ -59,6 +59,25 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. Cosmos SDK uses module-keyed key/value store (IAVL tree), not EIP-1967 proxy storage slots. No Solidity storage layouts or slot assignment conflicts exist. Module upgrades use Cosmos SDK RegisterMigration and ConsensusVersion patterns, not EVM storage slot migration. The EVM storage-layout collision risk class is architecturally absent.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Centrifuge V3 uses immutable-core architecture with no proxy for core contracts (Root, Gateway, PoolManager, InvestmentManager are all deployed as non-upgradeable monolith contracts). Storage layout collision risk is definitionally N/A. The ward-based upgrade pattern (deploy new contract, re-wire ward permissions) avoids storage layout collision by design.",
           "gap_reason": null,
           "primary_chain": "ethereum",

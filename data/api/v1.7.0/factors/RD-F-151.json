@@ -78,6 +78,25 @@
         {
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed cross-chain path is built from Bitcoin scripts, covenant public keys, and Babylon Genesis coordination rather than an EVM bridge verifier. An Ethereum ecrecover return-address check is structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/specifications/bitcoin_staking_scripts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": "Second review approved #14 yellow->green narrowly. This does not clear broader Wormhole dependency risk.",
           "evidence_summary": "Centrifuge's WormholeAdapter does not call ecrecover; it checks the Wormhole relayer and registered source address. Wormhole EVM verification rejects zero-address ecrecover results, satisfying RD-F-151's zero-address signature-check pattern.",
           "gap_reason": null,
