@@ -128,6 +128,33 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Babylon's public go.mod specifies Go 1.25.8. Go's release archive lists newer 1.25.10 and 1.26.4 releases. No public evidence here establishes a directly applicable compiler defect, but the maintained source is multiple patches behind its stated Go series; this supports yellow rather than green.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://go.dev/dl/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts/blob/main/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.mod"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "Foundry configuration pins solc 0.8.27, optimizer enabled, 4,000 runs, and Cancun EVM.",
           "evidence_summary": "The current repository pins Solidity 0.8.27 with optimizer settings; no protocol-specific known-compiler-bug reachability was identified.",
@@ -148,7 +175,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-31T00:00:00Z",
-  "generated_at": "2026-07-30T22:10:00Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-01T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
