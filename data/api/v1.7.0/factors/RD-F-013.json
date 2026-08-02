@@ -86,6 +86,47 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "EVM arbitrary .call(target, data) pattern does not exist in Go/Rust contexts. Cosmos SDK uses MsgServer interfaces for inter-module calls. CosmWasm uses typed Rust enum messages. Babylon's Genesis chain has permissioned CosmWasm deployment (not permissionless), further limiting arbitrary contract invocation surfaces.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary call with user-controlled target and data found in Centrifuge V3/V3.1. Gateway.sol withBatch() calls msg.sender.call{value}(data) but target is always msg.sender (self-callback, not arbitrary), protected by lockCallback() verification. VaultRouter.sol calls typed vault interfaces. No unfiltered arbitrary-call external target found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/core/messaging/Gateway.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/vaults/VaultRouter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "CallProxy.sol implements `call()` and `callERC20()` which accept user-supplied `_receiver` (target address) and `_data` (calldata) with no target allowlist beyond an `isContract()` check. These functions are restricted to `DEBRIDGE_GATE_ROLE` callers only, so direct user access is gated. However, the DeBridgeGate's `claim()` function passes user-decoded `_autoParams.data` directly to CallProxy — meaning the ultimate target and calldata are user-controlled, albeit routed through an ACL-control...",
           "gap_reason": null,
           "primary_chain": "ethereum",

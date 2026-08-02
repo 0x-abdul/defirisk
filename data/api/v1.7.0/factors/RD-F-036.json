@@ -93,6 +93,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Cosmos SDK x/gov uses bonded BABY (delegated to validators) as voting power, not spot token balance. Tokens must be bonded (staked/delegated) for voting power — requires the staking bonding period. Liquid BABY cannot be flash-loaned into governance voting weight in a single transaction. Voting power is determined by bonded delegation state at proposal creation block. No flash-loan vector identified in this architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.cosmos.network/main/modules/gov"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 yellow->gray. Admin centralization belongs under governance/admin factors, not RD-F-036.",
+          "evidence_summary": "Centrifuge has no active on-chain voting execution path for CFG governance. Active DAO governance is paused under Centrifuge Network Foundation supervision, and reinstatement requires a forum process plus a 7-day Snapshot vote. RD-F-036 is structurally inapplicable to flash-loanable on-chain voting.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/getting-started/cfg-governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public DAO-staking material describes on-chain governance as upcoming; no current token-voting executor is evidenced for the approved surface.",
           "gap_reason": "not_applicable",
           "primary_chain": "ethereum",

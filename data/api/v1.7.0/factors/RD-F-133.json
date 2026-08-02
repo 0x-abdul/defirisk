@@ -70,6 +70,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "go.mod pins exact versions for all critical dependencies: Cosmos SDK v0.53.5, CometBFT v0.38.22, CosmWasm/wasmd v0.60.5, IBC-Go v10.5.0, btcd v0.24.2. go.sum provides cryptographic hashes for all 1,629 dependency entries. cosmos-bsn-contracts Cargo.lock pins all Rust dependencies to exact versions (cosmwasm-std 2.2.2, bitcoin 0.32.6, k256). No floating/unpinned version ranges observed.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts/blob/main/Cargo.lock"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.mod"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.sum"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "centrifuge/protocol repo uses Foundry with soldeer for dependency management. foundry.toml shows auto_detect_remappings = false and specific lib paths. soldeer.lock file not found at root (404) suggesting it may be elsewhere or dependencies pinned via git submodule SHAs. No npm-style unpinned dependencies found in smart contract repos. Marking yellow for incomplete evidence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "`debridge-contracts-v1/package.json`: `\"@openzeppelin/contracts\": \"^4.3.2\"` and `\"@openzeppelin/contracts-upgradeable\": \"^4.3.2\"` — both use caret ranges (semi-unpinned). `dln-contracts/package.json`: `\"@openzeppelin/contracts-upgradeable\": \"^4.7.3\"` — also caret-ranged. Caret allows minor/patch updates within major version, which is generally acceptable for OZ but technically unpinned. The deployed bytecode (Etherscan-verified) shows compiled artifacts, so the caret range is only a concern f...",
           "gap_reason": null,
           "primary_chain": "ethereum",

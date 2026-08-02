@@ -75,6 +75,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "UUPS (EIP-1822) is an EVM proxy upgrade pattern. Babylon has no EVM contracts. Chain upgrades on Genesis proceed via Cosmos SDK x/gov software upgrade proposals — a governance vote is required before the upgrade handler executes. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — Centrifuge V3/V3.1 does not use UUPS or any proxy upgrade pattern. All contracts use constructor-based initialization. The protocol's immutable core design explicitly avoids proxy upgrades. No _authorizeUpgrade function needed or present. Contract changes are deployed as new instances.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/offerijns/status/1976400242175267245"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "deBridge does NOT use UUPS pattern. DeBridgeGate, DlnSource, DlnDestination, and CrosschainForwarder all use EIP-1967 TransparentUpgradeableProxy pattern with a separate ProxyAdmin contract. `_authorizeUpgrade` is irrelevant. N-A for UUPS-specific check; upgrade path is governed by the ProxyAdmin (5-of-8 multisig per profile).",
           "gap_reason": null,
           "primary_chain": "ethereum",

@@ -431,6 +431,44 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No public Babylon-specific flash-loan event feed or protocol-token flash-loan venue was identified that could establish whether a loan above the rubric threshold is currently targeting Babylon.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/babylon-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No for primary attack vector. Centrifuge governance uses off-chain OpenSquare voting — flash loans cannot achieve voting quorum (token snapshotted off-chain). No on-chain Governor contract susceptible to flash-loan quorum manipulation. ERC-7540 async vault is not flash-loanable by design. No flash-loan interactions detected.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/getting-started/cfg-governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No public flash-loan event monitor establishes whether a current loan above the v1.7.0 threshold targets a relevant deBridge asset path.",
           "gap_reason": "pipeline_unimplemented",
           "primary_chain": "ethereum",

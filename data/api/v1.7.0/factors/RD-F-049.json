@@ -118,6 +118,44 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No price-oracle provider or priced market was identified in the reviewed core staking architecture, so there are no primary, secondary, or fallback oracle roles to assign.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "NAV/share-price: SimplePriceManager is Primary; no Secondary or Fallback. RWA holding valuations: OracleValuation is Primary; no Fallback (reverts on PriceNotSet). Stablecoins: IdentityValuation is Primary (hardcoded 1.0); no fallback needed but peg assumption is implicit risk.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No price oracle is used per bridged asset in the reviewed DMP execution path. Validators provide message-validity signatures; FeeProxy's swap logic is auxiliary fee-token conversion rather than collateral pricing.",
           "gap_reason": null,
           "primary_chain": "ethereum",

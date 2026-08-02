@@ -154,6 +154,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Vigilantes are documented as decentralized, without centralized coordination, and operators can run the program. The public material does not enumerate a live independent operator set or prove operational redundancy at the assessment date, leaving a liveness-redundancy gap.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/vigilantes/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/vigilantes/installation_guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole Automatic Relayer is the sole cross-chain messaging provider in V3. V2 used a multi-adapter model (LayerZero, Wormhole, Chainlink, Axelar). V3 consolidates to Wormhole exclusively. No fallback messaging provider is configured. If Wormhole relayer is unavailable, share prices cannot propagate from hub to spoke chains, halting cross-chain operations.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://centrifuge.io/blog/centrifuge-v3-multichain-launch"
+            },
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/blog/centrifuge-completes-v3-migration-delivering-unified-multichain-rwa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DMP: permissionless keeper role -- any user can collect validator signatures from Arweave and submit to DeBridgeGate, providing redundancy. No Chainlink Automation or Gelato dependency. DLN: multiple competing solvers (permissionless).",
           "gap_reason": null,
           "primary_chain": "ethereum",

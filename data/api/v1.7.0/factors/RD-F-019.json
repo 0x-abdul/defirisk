@@ -70,6 +70,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "ecrecover is an EVM precompile for ECDSA signature recovery. Babylon uses Schnorr signatures (BIP-340) for Bitcoin operations, Cosmos SDK amino/protobuf signing for Genesis chain, and EOTS for finality provider double-sign detection. No ecrecover usage exists in this non-EVM architecture.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SignatureLib.isValidSignature() guards against address(0) via require(signer != address(0), InvalidSigner()) before ecrecover is called. ERC20.sol permit function delegates to SignatureLib. No other ecrecover usage found. Code4rena 2023 flagged domain-separator caching (separate issue, resolved); no ecrecover zero-return finding in any audit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/ERC20.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/libraries/SignatureLib.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "SignatureVerifier.sol uses `ecrecover(_submissionId.getUnsignedMsg(), v, r, s)` and then checks `if (getOracleInfo[oracle].isValid)` without an explicit `oracle != address(0)` guard before the validity check. If address(0) were ever registered as a valid oracle (unlikely in a correctly-operated system, but a residual risk), invalid signatures would produce a false positive. The `submissionId` includes chainId-specific data making cross-chain replay moot, but the zero-address check is absent. ...",
           "gap_reason": null,
           "primary_chain": "ethereum",

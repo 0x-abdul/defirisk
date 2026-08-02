@@ -59,6 +59,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "The July 21, 2026 v4.3.1 release tag is signed and publishes platform binaries with SHA-256 checksums. That supports release provenance, but public evidence reviewed does not bind the currently running Babylon Genesis binary to that tag or independently compare its runtime artifact with the release commit.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge publishes its protocol source and deployment-review material, but the reviewed public evidence does not establish that the deployed runtime bytecode corresponds to a signed release tag. This provenance test is not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The public debridge-contracts-v1 and dln-contracts repositories do not provide a signed release-tag or signed release-artifact process.",
           "gap_reason": null,
           "primary_chain": "ethereum",

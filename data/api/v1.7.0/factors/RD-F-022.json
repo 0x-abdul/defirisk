@@ -151,6 +151,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Cosmos SDK modules use InitGenesis() for initial state setup, callable only at chain genesis block. CosmWasm contracts use instantiate() enforced as single-call by the CosmWasm VM. No Solidity initialize() pattern exists in this architecture. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://github.com/babylonlabs-io/babylon/tree/main/x/btcstaking"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3/V3.1 uses no upgradeable proxy pattern. All contracts use standard constructors (e.g., constructor(uint256 _delay, address deployer) Auth(deployer)). No initialize() function found in Root.sol, Gateway.sol, InvestmentManager, PoolManager, or WormholeAdapter. The MakerDAO-inspired ward pattern is constructor-initialized.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/Auth.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DeBridgeGate impl (0x797161): `constructor() initializer {}` — constructor marks itself as initializer using OZ ≤4.5 pattern, preventing direct re-initialization; `initialize()` also carries `initializer` modifier. DlnBase.sol (parent of DlnSource and DlnDestination): `constructor() { _disableInitializers(); }` — best-practice OZ ≥4.6 pattern. DlnSource.sol `initialize()`: `public initializer`. DlnDestination.sol `initialize()`: `public initializer`. CrosschainForwarder impl: `initializer` mo...",
           "gap_reason": null,
           "primary_chain": "ethereum",

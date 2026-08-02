@@ -154,6 +154,56 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No price-oracle address or oracle-binding mechanism was identified in the reviewed native-Bitcoin core staking path. Because the protocol does not consume a collateral price oracle, immutable-oracle-address risk is inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Second review approved #14 red->yellow with immutable-component caveat preserved.",
+          "evidence_summary": "SimplePriceManager.navUpdater is immutable, so green is not supported. Red overstates the replacement gap because NAVManager.setNAVHook, updateHoldingValuation, and OracleValuation.updateFeeder provide admin/configuration paths around valuation and NAV. Yellow: partial/heavier replacement exists, but no clean timelocked oracle setter was proven.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/NAVManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The reviewed execution path uses a validator-signature verifier rather than a lending price-oracle address. DeBridgeGate exposes an admin-controlled signature-verifier update, but this is not a collateral-price oracle dependency; this factor is green for the bridge's non-lending oracle model.",
           "gap_reason": null,
           "primary_chain": "ethereum",

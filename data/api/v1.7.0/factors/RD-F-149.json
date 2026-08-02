@@ -90,6 +90,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Official launch documentation specifies a 6-of-9 covenant threshold. This is a BFT-style quorum, but Babylon Labs held three of the documented nine keys, and the current public materials do not independently establish the present signer distribution; the threshold/concentration position is therefore yellow.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/specifications/bitcoin_staking_scripts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "13-of-19 (68%) supermajority required for VAA validity. Above 2/3 threshold. For governance actions, Wormhole requires two-thirds supermajority. The 13-of-19 threshold means 7 guardians would need to be compromised to forge a message. Threshold is reasonable but PoA not trustless.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DMP normal: 8 of 12 (67% threshold). High-value/high-volume: 10 of 12 (83%). OraclesManager enforces minConfirmations >= oracleAddresses.length/2 + 1 (strict majority). Compromise of 8 validators enables drain.",
           "gap_reason": null,
           "primary_chain": "ethereum",

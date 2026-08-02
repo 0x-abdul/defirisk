@@ -64,6 +64,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "RD-F-157 measures TVL locked in a bridge contract divided by that bridge's validator count. Babylon's documented design uses native Bitcoin staking and self-custodial Bitcoin-script spending conditions, while the covenant committee enforces protocol-compliant staking rules and cannot steal staker BTC. No bridge contract or bridge-specific locked-value numerator was identified; the protocol-wide TVL dashboard is not scope-equivalent evidence for this factor. The bridge-TVL-per-validator metric is therefore inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/operators/covenant_emulator/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge TVL ~$1.9B (DeFiLlama, Apr 2026). Wormhole guardian count: 19. TVL per guardian: $1,900M / 19 = ~$100M. Taxonomy threshold: green < $50M/validator; yellow $50M-$200M/validator; red > $200M/validator. $100M falls firmly in yellow band. Wormhole transmits messages only — assets remain in Escrow on each chain; risk is message forgery causing accounting corruption rather than direct asset exfiltration.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/centrifuge"
+            },
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Not assessed: a current public endpoint alone cannot substantiate a reproducible TVL-per-validator value for the assessment date, and no reviewed immutable public snapshot was available for this calculation.",
           "gap_reason": "external_api_blocked",
           "primary_chain": "ethereum",

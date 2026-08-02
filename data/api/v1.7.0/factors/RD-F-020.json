@@ -70,6 +70,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "EIP-712 is an Ethereum structured-data signing standard. Babylon does not use EIP-712 anywhere. Bitcoin-side signing uses Taproot (BIP-341). Genesis chain uses Cosmos SDK SIGN_MODE_DIRECT which includes chain-ID (bbn-1) in the SignDoc by construction. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EIP712Lib.sol confirmed to include block.chainid in domain separator calculation. ERC20.sol DOMAIN_SEPARATOR() recalculates if block.chainid changes post-deploy (fork protection). Code4rena Sept 2023 identified DOMAIN_SEPARATOR caching issue as medium finding — subsequently fixed and verified in Oct 2023 Spearbit/Cantina post-fix audit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/ERC20.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/libraries/EIP712Lib.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "SignatureVerifier uses `SignatureUtil.getUnsignedMsg()` which produces `keccak256(abi.encodePacked(\"\\x19Ethereum Signed Message:\\n32\", _submissionId))` — EIP-191 format, not EIP-712 structured data. No domain separator with chainId is used in the signing layer. However, the submissionId itself is constructed from `abi.encodePacked(SUBMISSION_PREFIX, debridgeId, getChainId(), chainIdTo, amount, receiver, nonce)` — chain information is embedded in the signed payload itself. Cross-chain replay i...",
           "gap_reason": null,
           "primary_chain": "ethereum",

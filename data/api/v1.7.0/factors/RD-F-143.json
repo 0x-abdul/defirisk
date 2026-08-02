@@ -162,6 +162,44 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "_disableInitializers() is an OpenZeppelin Solidity pattern for EIP-1967 proxied contracts. Cosmos SDK modules use Go constructors and module genesis init functions, which are one-time operations at chain genesis — not re-callable via a separate initializer function. No proxy pattern, no delegatecall, no Solidity initializer exists in Cosmos SDK. The concept of proxy re-initialization is architecturally absent.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge V3 does NOT use the proxy/implementation pattern for core contracts. There are no upgradeable proxies in the core architecture. _disableInitializers() is irrelevant to this architecture. N/A — gray, not a risk. Immutable core architecture makes this factor inapplicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The reviewed DlnSource and DlnDestination implementations inherit DlnBase, whose constructor calls _disableInitializers(); DeBridgeGate uses a constructor initializer pattern. Yellow remains because the review does not clear every scored implementation surface.",
           "gap_reason": null,
           "primary_chain": "ethereum",

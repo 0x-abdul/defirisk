@@ -75,6 +75,39 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "OZ _disableInitializers() is an EVM Solidity pattern for upgradeable proxy impl contracts. Babylon has no EVM contracts. Cosmos SDK genesis initialization is structurally protected at the framework level. CosmWasm initialization semantics are enforced at VM level. Structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — _disableInitializers() is an OpenZeppelin pattern for upgradeable proxy implementations. Centrifuge does not use proxy contracts or OZ Initializable. All contracts use standard constructors. The _disableInitializers() pattern is not applicable to this immutable-core architecture.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DlnBase.sol (parent of DlnSource and DlnDestination): `constructor() { _disableInitializers(); }` — correctly calls `_disableInitializers()` in parent constructor, which propagates protection to both DlnSource and DlnDestination. DeBridgeGate impl uses the older `constructor() initializer {}` pattern (equivalent protection for OZ 4.x). CrosschainForwarder implementation at 0x3c857eD... (sol 0.8.28): no `_disableInitializers()` in constructor per inspection — uses `initializer` modifier on `in...",
           "gap_reason": null,
           "primary_chain": "ethereum",

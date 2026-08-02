@@ -75,6 +75,56 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "CometBFT GHSA-h598-3g3g-c67c: patched in v4.2.5 (current v4.2.7 is patched). Babylon also issued 4 own GHSAs in 2025-2026 (vote extension, BIP-322 sig, nil pointer, AfterBtcDelegationUnbonded hook) — all patched in v4.1.0–v4.2.0. cosmwasm-std RUSTSEC-2024-0338 (arithmetic overflow in pow/neg): affects <2.0.2; Cargo.lock pins 2.2.2 (patched). RUSTSEC-2024-0361 (gas mispricing, affects <2.1.3): 2.2.2 is patched. No open critical library vulnerabilities in current deployed versions, but the volume of self-issued GHSAs in 2025-2026 indicates active vulnerability surface in the chain modules.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/CHANGELOG.md"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rustsec.org/advisories/RUSTSEC-2024-0338.html"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rustsec.org/advisories/RUSTSEC-2024-0361.html"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository shows custom Auth and reentrancy components, but the available public configuration does not establish a complete, locked dependency-resolution inventory for the deployed surface. Yellow reflects partial visibility rather than a verified absence of vulnerable dependencies.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/Auth.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/misc/ReentrancyProtection.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "debridge-contracts-v1: OZ `^4.3.2` deployed as OZ 4.x. Known GHSA for OZ 4.3.2-range: GHSA-5vp3-v4hc-gx76 (UUPSUpgradeable uninitialized impl) — fixed IN 4.3.2, so pinned at ≥4.3.2 means fix is included. GHSA-4h98-2769-gh6h (ECDSA malleability) affects <4.7.3 — deBridge-contracts-v1 uses OZ 4.3.2+ range, potentially below 4.7.3. However DeBridgeGate does NOT use ECDSA library directly (uses ecrecover in SignatureVerifier without OZ ECDSA library), so this advisory may not apply. dln-contracts...",
           "gap_reason": null,
           "primary_chain": "ethereum",

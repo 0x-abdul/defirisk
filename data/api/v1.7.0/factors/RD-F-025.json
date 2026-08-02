@@ -81,6 +81,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Dual-layer governance: (a) BABY governance via Cosmos SDK x/gov — DAO model with 3-day voting period, 33.4% quorum, >50% threshold; no single admin key; (b) Bitcoin-layer: covenant committee 6-of-9 federated multisig for BTC unbonding co-signing. All software upgrades require on-chain governance vote (MsgSoftwareUpgrade). V2 upgrade (Jun 2025) and V4 upgrade (Nov 2025) both went through governance proposals confirmed by on-chain voting.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-genesis-v2-upgrade"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge documents Root as the immutable administrator of protocol contracts, with privileged escalation subject to a 48-hour delay and governance actions mediated by separate Safe-controlled guardians. The effective custody model is multisig plus timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "5-of-8 Gnosis Safe multisig controls upgrades and all admin roles on Ethereum. No timelock. Classification: multisig (without timelock).",
           "gap_reason": null,
           "primary_chain": "ethereum",

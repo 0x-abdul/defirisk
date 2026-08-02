@@ -130,6 +130,60 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon's public go.mod specifies Go 1.25.8. Go's release archive lists newer 1.25.10 and 1.26.4 releases. No public evidence here establishes a directly applicable compiler defect, but the maintained source is multiple patches behind its stated Go series; this supports yellow rather than green.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://go.dev/dl/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/cosmos-bsn-contracts/blob/main/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.mod"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed Root source is verified on Etherscan and the public Foundry configuration sets Solidity 0.8.28, including an explicit via-IR profile. The project should continue to track Solidity advisories and deployment-specific compiler settings; the public materials reviewed do not prove that all deployed builds avoid every configuration-sensitive compiler issue.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DeBridgeGate impl (0x797161): `v0.8.17+commit.8df45f5f` — 0.8.17 fixed the StorageWriteRemoval optimizer bug introduced in 0.8.13; no active known bugs at 0.8.17 per solc bugs.json. DlnSource impl (0x322B481): `v0.8.28+commit.7893614a`. DlnDestination impl (0xE540eb6): `v0.8.28+commit.7893614a`. CrosschainForwarder impl (0x3c857eD): `v0.8.28+commit.7893614a`. Solc 0.8.28 has a known bug: TransientStorageClearingHelperCollisionBug (HIGH severity, fixed in 0.8.34, affects contracts using `--via...",
           "gap_reason": null,
           "primary_chain": "ethereum",

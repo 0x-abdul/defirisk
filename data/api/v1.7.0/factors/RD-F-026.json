@@ -59,6 +59,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "BABY governance is stake-weighted and the Bitcoin-side covenant committee has nine published public keys with a 6-of-9 quorum. The published committee mapping assigns three keys to Babylon Labs and the other six to named external organizations. The role count and threshold are not low-threshold multisig posture; organizational concentration is assessed separately under RD-F-029.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/babylonlabs-io/networks/main/bbn-1/parameters/global-params.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Centrifuge publicly identifies separate ProtocolGuardian and OpsGuardian contracts, each controlled by a distinct Safe multisig. The reviewed Safe Transaction Service endpoint reports the Ethereum Protocol Safe as 4-of-8; the configuration is recorded as required=4, total=8.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.centrifuge.io/developer/security/guardian/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Ethereum is confirmed as a 5-of-8 Safe through the Safe API. Threshold and owner data for the other approved deployments are not publicly confirmed by that API.",
           "gap_reason": null,
           "primary_chain": "ethereum",

@@ -110,6 +110,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon proposals are publicly reviewable, but no computed trailing-30-day baseline of pending versus executed proposals was available to determine whether the current ratio is anomalous.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.mintscan.io/babylon/proposals"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Signal requires an on-chain governor contract to track ProposalCreated/ProposalQueued event ratios. Centrifuge has no deployed on-chain EVM Governor — governance is fully off-chain via OpenSquare. Signal structurally inapplicable until on-chain governor is deployed. No anomalous proposal volume on governance forum.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.centrifuge.io/t/cp149-migration-of-centrifuge-governance-token-cfg-to-evm/6810"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.centrifuge.io/getting-started/cfg-governance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No on-chain governance proposal-state system is evidenced for the approved deBridge surface, so a pending-to-executed proposal ratio cannot be measured.",
           "gap_reason": "not_applicable",
           "primary_chain": "ethereum",

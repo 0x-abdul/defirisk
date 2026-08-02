@@ -124,6 +124,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Not applicable. Bitcoin staking UTXOs can move only through their defined timelock, unbonding, and slashing script paths; this assessed surface does not expose an EVM-style admin rescue or emergencyWithdraw function.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/docs/staking-script.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Evidence-only update for #14.",
+          "evidence_summary": "The public TokenRecoverer implementation exposes authorized recovery and temporarily grants itself permissions through Root to perform the recovery. Because the public sources do not establish that every recovery authorization is delayed, this remains a yellow rescue-path control finding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/Root.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/admin/TokenRecoverer.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "Evidence updated for #72: CrosschainForwarder / DeBridgeRouter exposes rescueFunds(address,address,uint256), so prior wording that no rescue function was found in any core contract was too broad. Reviewed fee-withdraw paths are fee-only, and the evidence does not establish a core bridge full-drain rescue path; yellow remains.",
           "gap_reason": null,
           "primary_chain": "ethereum",

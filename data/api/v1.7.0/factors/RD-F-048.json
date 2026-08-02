@@ -118,6 +118,56 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Public review of Babylon's staking architecture and protocol source found no external price-feed integration: the BTC staking design uses native Bitcoin scripts and Babylon Genesis coordinates staking state rather than valuing collateral through an oracle. No asset/market requiring a price oracle was identified.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/overview/bitcoin_staking/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Two distinct oracle patterns are present: (1) a permissioned NAV path via SimplePriceManager (immutable navUpdater) and OracleValuation (per-pool feeder mapping); and (2) IdentityValuation's fixed 1.0 stablecoin valuation. The cited V3 pricing contracts do not show a Chainlink aggregation path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/IdentityValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/valuations/OracleValuation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/src/managers/hub/SimplePriceManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "The reviewed DMP execution path validates cross-chain messages with validator signatures, rather than consuming a price feed. FeeProxy performs fee-token conversion; it is not a collateral or bridge-price oracle.",
           "gap_reason": null,
           "primary_chain": "ethereum",

@@ -65,6 +65,44 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Babylon documents BABY as 6-decimal ubbn and uses BTC-side satoshis, but no public static-analysis result or audit assertion verifies all cross-denomination arithmetic paths. The architecture does not itself prove the absence of a mixed-decimals defect.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/baby_tokenomics/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V3/V3.1 ERC-7540 vaults handle tokenized RWA assets in stable currencies (USDC 6 decimals, DAI 18 decimals). Multiple audit engagements reviewed multi-token arithmetic. Code4rena 2023 noted rounding issues in maxDeposit/maxMint (medium severity, resolved). Centrifuge's hub-and-spoke design propagates pricing from hub with explicit decimal normalization expected in NAVManager. Static analysis not run locally.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-centrifuge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "deBridge/DLN is primarily a bridge protocol, not a lending protocol with cross-asset arithmetic. DLN source/destination deal with token amounts specified by the maker — cross-decimal arithmetic risk is lower than in DEX/lending protocols. No obvious multi-token decimal normalization issue found in manual inspection of DlnSource.sol.",
           "gap_reason": null,
           "primary_chain": "ethereum",

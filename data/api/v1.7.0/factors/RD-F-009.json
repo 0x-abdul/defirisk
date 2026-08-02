@@ -106,6 +106,48 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora, TLA+, Kani, Coq) has been applied to Babylon's custom modules (x/btcstaking, x/finality, EOTS) from publicly available sources. Informal Systems uses formal analysis techniques but their V2 audit was a security audit, not a machine-verified FV proof engagement. Novel cryptographic primitives (EOTS, covenant committee Schnorr multisig) would benefit most from FV. No Certora/Kani proofs publicly available.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Recon Pro conducted invariant testing of ERC-7540 implementation (Foundry-based fuzz + Medusa). foundry.toml includes SMT model checker profile with CHC engine. No Certora/Kani/Halmos formal verification specification files found. Invariant testing present but no full formal verification proof coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/offerijns/status/1786079932294091029"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/centrifuge/protocol/blob/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "No formal verification (Certora, Kani, Halmos) found in debridge-contracts-v1 or dln-contracts repos. No FV specification files found. Entirely absent.",
           "gap_reason": null,
           "primary_chain": "ethereum",

@@ -225,6 +225,52 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Etherscan/Sourcify is EVM-specific and structurally inapplicable. Babylon Genesis is Cosmos SDK — all source code is public Go on GitHub (https://github.com/babylonlabs-io/babylon). Audited by Coinspect, Zellic, Informal Systems, Oak Security, Halborn (multiple public PDFs available). CosmWasm contracts are public Rust (cosmos-bsn-contracts repo). No closed-source binary for core modules. Protocol was not deployed with hidden contracts. Equivalent of 'verified source' is fully met.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.babylonlabs.io/guides/security/audit_reports/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All core V3 contracts verified on Etherscan with full Solidity source. Root, Guardian, InvestmentManager, PoolManager, Gateway, Escrow, CentrifugeRouter all verified. CFG ERC-20 token verified. BSL-1.1 applies to GitHub source, but deployed bytecode ABI is public.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0xcccccccccc33d538dbc2ee4feab0a7a1ff4e8a94"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "All core contracts verified on Etherscan: DeBridgeGate proxy + impl, DlnSource proxy + impl, DlnDestination proxy + impl, CrosschainForwarder. Source code publicly readable.",
           "gap_reason": null,
           "primary_chain": "ethereum",

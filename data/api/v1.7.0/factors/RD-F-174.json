@@ -80,6 +80,56 @@
           "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
+          "evidence_summary": "Go 1.25.x: not EOL (Go supports current + one prior major version; 1.26 is current, 1.25 is in maintenance with security support). Rust edition 2021: active support. CometBFT v0.38.22: actively patched (security releases through 2026). Cosmos SDK v0.53.5: actively maintained. CosmWasm/wasmd v0.60.5: maintained CosmWasm v2 series. No EOL toolchain or compiler version in the dependency chain.",
+          "gap_reason": null,
+          "primary_chain": "bitcoin",
+          "protocol_name": "Babylon Protocol",
+          "protocol_slug": "babylon-protocol",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/releases"
+            },
+            {
+              "source_type": "url",
+              "url": "https://go.dev/dl/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/babylonlabs-io/babylon/blob/main/go.mod"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Deployed contracts use Solidity 0.8.26 (released November 2023) — not EOL. Development repo targets 0.8.28 (released October 2024) — not EOL (current latest 0.8.34 as of February 2026). Solidity 0.8.x is actively maintained. No deployment artifact using a version prior to 0.8.24 identified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Centrifuge",
+          "protocol_slug": "centrifuge",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
           "evidence_summary": "DeBridgeGate (0.8.17), DlnSource/DlnDestination (0.8.28), CrosschainForwarder (0.8.28): all are within the currently supported Solidity 0.8.x release line. Current latest is 0.8.35+ (as of 2026); 0.8.17 is not EOL (0.8.x is actively maintained as a minor version stream). Solidity 0.6.11 is listed in debridge-contracts-v1 hardhat.config.ts as an override for legacy dependencies — this is potentially EOL but appears to be test/mock contracts, not production bridge contracts.",
           "gap_reason": null,
           "primary_chain": "ethereum",
