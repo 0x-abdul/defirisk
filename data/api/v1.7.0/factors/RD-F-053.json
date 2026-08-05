@@ -437,6 +437,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Kamino documents Scope as the price feed used for Lend position health and states that Scope combines multiple oracle sources with TWAP/EWMA smoothing and price-band validation. The documented reserve inputs are Scope, Pyth, and Switchboard rather than a raw single-pool spot source.",
+          "evidence_summary": "The documented Lend oracle design uses aggregated providers and Scope safeguards rather than a raw single-pool spot oracle.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "No primary spot-DEX oracle path was identified; the published Chainlink wrapper reads latestRoundData.",
           "primary_chain": "ethereum",
@@ -457,6 +480,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

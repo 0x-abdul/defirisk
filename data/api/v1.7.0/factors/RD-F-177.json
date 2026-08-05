@@ -295,6 +295,26 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Certora states the precision issue was not exploitable under then-current Solana conditions and that Kamino implemented a remediation. This supports the absence of an identified ignored disclosure, while not treating the near miss as an exploit incident.",
+          "evidence_summary": "No public evidence was identified that Kamino Lend ignored a known vulnerability disclosure before an exploit; Certora reports the identified precision issue was addressed before exploitation.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "BGD's February 20, 2025 analysis observed Kelp using LayerZero's DVN and recommended expansion. The Unichain 1-of-1 configuration was installed April 2, 2025. Kelp owned that configuration choice; the forged attestation itself arose from LayerZero's later RPC compromise.",
           "evidence_summary": "BGD publicly recommended expanding beyond LayerZero's sole DVN in February 2025; Kelp later installed the exploited route as 1-of-1.",
@@ -326,6 +346,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

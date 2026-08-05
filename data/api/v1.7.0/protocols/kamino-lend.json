@@ -1,0 +1,3172 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 25.0,
+    "10": 0.0,
+    "11": 0.0,
+    "12": 33.33333333333333,
+    "13": 25.0,
+    "2": 25.0,
+    "3": 27.27272727272727,
+    "4": 29.629629629629626,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 12.5,
+    "8": 16.666666666666664,
+    "9": 33.33333333333333
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": "SLendK7ySfcEzyaFqy93gDnD3RtrpXJcnRwb6zFHJSh",
+          "chain": "Solana",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Public release and verifiable-build material supports active coverage, but an exact deployed-bytecode-to-audit-commit match is not publicly established.",
+          "factor_id": "RD-F-001",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/fuzzing"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino's May 2026 v1.23.0 release declares OtterSec and Certora coverage, but the public release alone does not establish a dateable full audit of the currently deployed program.",
+          "factor_id": "RD-F-002",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "A disclosed precision-loss issue has a documented remediation, but public evidence does not establish resolution status for every historical finding.",
+          "factor_id": "RD-F-003",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Public documentation and the audit repository show multiple independent reviews of Kamino Lend, exceeding the audit-count threshold.",
+          "factor_id": "RD-F-004",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Multiple established specialist firms publicly reviewed Kamino components, including Kamino Lend.",
+          "factor_id": "RD-F-005",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Version-labelled reports and a current release audit declaration show a review cadence, but the exact current audit-to-deploy interval is not established.",
+          "factor_id": "RD-F-006",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino has a public Immunefi smart-contract bug bounty program with critical and high impacts covered.",
+          "factor_id": "RD-F-007",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Public bounty terms are available, but disclosure-handling outcomes cannot be comprehensively established from the reviewed public evidence.",
+          "factor_id": "RD-F-008",
+          "gap_reason": "requires_curator_input",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Formal verification publicly covers key solvency and share-value invariants, but comprehensive critical-path coverage is not quantified.",
+          "factor_id": "RD-F-009",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/formal-verification"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Solana-native fuzzing and security analysis are publicly documented, but a current static-analyzer high-severity count is not publicly established.",
+          "factor_id": "RD-F-010",
+          "gap_reason": "requires_curator_input",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/fuzzing"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "SELFDESTRUCT is an EVM opcode and Kamino Lend is a Solana Rust/Anchor program.",
+          "factor_id": "RD-F-011",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "delegatecall is an EVM opcode and does not apply to the Solana program model.",
+          "factor_id": "RD-F-012",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "The EVM arbitrary-call pattern is not the Solana CPI execution model assessed for Kamino Lend.",
+          "factor_id": "RD-F-013",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "The EVM external-callback reentrancy-guard pattern is not directly applicable to this Solana program.",
+          "factor_id": "RD-F-014",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "ERC token callback-hook standards are EVM-specific and do not apply to Kamino Lend's SPL-token substrate.",
+          "factor_id": "RD-F-015",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "A divide-before-multiply-style precision issue has a documented fix, while current deployed arithmetic-path coverage is not fully bound publicly.",
+          "factor_id": "RD-F-016",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Public formal-verification and fuzzing material supports arithmetic controls, but full current mixed-decimal coverage is not established.",
+          "factor_id": "RD-F-017",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/formal-verification"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/fuzzing"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Rust controls and checked-arithmetic configuration are public, but exhaustive current signed/unsigned-path coverage is not established.",
+          "factor_id": "RD-F-018",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kamino-Finance/klend/master/programs/klend/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "ecrecover is an EVM primitive and does not apply to this Solana program.",
+          "factor_id": "RD-F-019",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "EIP-712 domain separators are EVM-specific and not used by Kamino Lend.",
+          "factor_id": "RD-F-020",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "UUPS authorization is an EVM proxy pattern and not Kamino Lend's Solana upgrade model.",
+          "factor_id": "RD-F-021",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "The EVM implementation-initializer pattern does not apply to Kamino Lend's Anchor account model.",
+          "factor_id": "RD-F-022",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "OpenZeppelin _disableInitializers is an EVM proxy control and does not apply to Kamino Lend.",
+          "factor_id": "RD-F-023",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "Review depth is substantial, but public evidence does not quantify current code complexity against audit coverage.",
+          "factor_id": "RD-F-024",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Squads identifies Kamino as a protocol using Squads for program management, which is a multisig workflow. The public material reviewed does not expose the current program authority account, threshold, or a Kamino-specific timelock.",
+          "factor_id": "RD-F-025",
+          "gap_reason": null,
+          "notes": "Multisig workflow is public; its current on-chain configuration was not independently verified.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current Kamino-specific M/N signer configuration was located. Squads documents the multisig model, but the reviewed Kamino and Squads material does not enumerate Kamino's members or threshold.",
+          "factor_id": "RD-F-026",
+          "gap_reason": "protocol_opacity",
+          "notes": "Do not infer M/N from a generic Squads integration.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public Squads material associates Kamino with a multisig program-management workflow. It does not provide a current account-level authority proof, so this is not treated as proof of a fully characterized admin configuration.",
+          "factor_id": "RD-F-027",
+          "gap_reason": null,
+          "notes": "No claim is made about a single EOA or exact signer set beyond the published multisig workflow.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public sources do not disclose Kamino's current signer count, threshold, or a threshold-to-TVL relationship. A low-threshold finding cannot be supported from that absence.",
+          "factor_id": "RD-F-028",
+          "gap_reason": "protocol_opacity",
+          "notes": "Replaces the legacy unverified signer-count assertion.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public signer list or custody/hosting attribution was located for Kamino's program-management multisig workflow, so co-hosting cannot be assessed.",
+          "factor_id": "RD-F-029",
+          "gap_reason": "protocol_opacity",
+          "notes": "No co-hosting claim inferred from missing disclosure.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Kamino signer-address list or wallet-security attestation was located; hot-wallet use cannot be assessed.",
+          "factor_id": "RD-F-030",
+          "gap_reason": "protocol_opacity",
+          "notes": "No adverse hot-wallet inference from non-disclosure.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Kamino-specific signer membership history was located in the reviewed sources, so rotation recency cannot be assessed.",
+          "factor_id": "RD-F-031",
+          "gap_reason": "protocol_opacity",
+          "notes": "Generic Squads capabilities are not evidence of Kamino rotation practice.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No current Kamino-specific upgrade timelock duration or enforcement configuration was found in the reviewed public material. The absence of a published configuration is not evidence of a zero-hour delay.",
+          "factor_id": "RD-F-032",
+          "gap_reason": "protocol_opacity",
+          "notes": "Replaces the legacy zero-hour assertion.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Kamino's public source includes privileged lending-market and reserve-configuration update handlers, but the reviewed public material does not establish a complete action inventory or a Kamino-specific timelock policy for each action.",
+          "factor_id": "RD-F-033",
+          "gap_reason": "protocol_opacity",
+          "notes": "Do not convert missing timelock proof into a zero-timelock finding.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/programs/klend/src/handlers/handler_update_lending_market.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/programs/klend/src/handlers/handler_update_reserve_config.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The current releases refer to an emergency council, but the reviewed public material does not establish its current address or prove it is distinct from the upgrade authority.",
+          "factor_id": "RD-F-034",
+          "gap_reason": "protocol_opacity",
+          "notes": "Role naming alone is not evidence of address-level separation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases/tag/release/v1.23.0"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public source exposes privileged lending-market and reserve configuration paths, but it does not provide a current address-level map proving separation among upgrade, fee, and oracle authorities.",
+          "factor_id": "RD-F-035",
+          "gap_reason": "protocol_opacity",
+          "notes": "No role-separation conclusion is inferred from handler names.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/programs/klend/src/handlers/handler_update_lending_market.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/programs/klend/src/handlers/handler_update_reserve_config.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No token-voting governor controlling the Kamino Lend program was identified in the reviewed public Lend source and governance material.",
+          "factor_id": "RD-F-036",
+          "gap_reason": null,
+          "notes": "Not applicable to the reviewed program-admin path.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No token-voting governor controlling the Kamino Lend program was identified in the reviewed public Lend source and governance material.",
+          "factor_id": "RD-F-037",
+          "gap_reason": null,
+          "notes": "Not applicable to the reviewed program-admin path.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No token-governor proposal executor controlling the Kamino Lend program was identified in the reviewed public material.",
+          "factor_id": "RD-F-038",
+          "gap_reason": null,
+          "notes": "Not applicable to the reviewed program-admin path; no multisig execution-delay claim is made.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "delegatecall is an EVM execution primitive and is not part of the Rust/Anchor Solana program reviewed here.",
+          "factor_id": "RD-F-039",
+          "gap_reason": null,
+          "notes": "Not applicable to the Solana program architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current Kamino-specific emergency-veto configuration was located. The reviewed sources neither establish nor rule out a veto authority.",
+          "factor_id": "RD-F-040",
+          "gap_reason": "protocol_opacity",
+          "notes": "Replaces the legacy absence-based adverse assertion.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases/tag/release/v1.23.0"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Kamino's v1.23.0 release states that additional configuration items can be updated by the emergency council. The reviewed material does not establish a timelock for those powers or an unrestricted asset-rescue path.",
+          "factor_id": "RD-F-041",
+          "gap_reason": null,
+          "notes": "Privileged emergency configuration is publicly documented; scope and delay remain only partially evidenced.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases/tag/release/v1.23.0"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/programs/klend/src/handlers/handler_update_reserve_config.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed Kamino Lend program is a lending program; no administrative unlimited token-mint function was identified in its public source.",
+          "factor_id": "RD-F-042",
+          "gap_reason": null,
+          "notes": "Not applicable to this Lend program scope; this does not assess separate token programs.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed sources do not establish the current deployed program authority or its relationship to the original deployer after seven days.",
+          "factor_id": "RD-F-043",
+          "gap_reason": "protocol_opacity",
+          "notes": "No positive conclusion is inferred from protocol age or use of Squads tooling.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Kamino signer-address list was located, so address-level sanctions, exploit, or other flagged-address interaction screening cannot be performed.",
+          "factor_id": "RD-F-044",
+          "gap_reason": "protocol_opacity",
+          "notes": "No flagged-address conclusion is inferred.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EVM constructor arguments and governance-proposal matching do not apply to the reviewed Solana Rust/Anchor program architecture.",
+          "factor_id": "RD-F-045",
+          "gap_reason": null,
+          "notes": "Not applicable to this Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Kamino publishes the Lend program source and documents the mainnet program ID. Etherscan/Sourcify are EVM services and do not verify this Solana program.",
+          "factor_id": "RD-F-046",
+          "gap_reason": null,
+          "notes": "Public source availability and program identification provide the applicable transparency signal.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current KMNO holder-distribution analysis or Gini calculation was located in the reviewed material.",
+          "factor_id": "RD-F-047",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "No governance-token concentration conclusion is inferred.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://gov.kamino.finance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents Scope as its oracle aggregator and documents per-reserve Scope, Pyth, and Switchboard configuration fields. Its security documentation lists Chainlink, Pyth, Switchboard, and Redstone in the broader oracle stack. The reviewed public material does not enumerate the live provider assignment for every reserve.",
+          "evidence_summary": "Established providers and Scope aggregation are documented, but the current provider map is not publicly enumerated per reserve.",
+          "factor_id": "RD-F-048",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's reserve-parameter documentation confirms that Scope, Pyth, and Switchboard inputs are configured per reserve. The reviewed public sources do not establish a primary, secondary, or fallback ordering for each currently live reserve.",
+          "evidence_summary": "Per-reserve provider roles are configurable but not publicly enumerated.",
+          "factor_id": "RD-F-049",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino states that Scope is the price feed used by Lend for position-health calculations. Its documentation identifies Scope, Pyth, and Switchboard as reserve oracle inputs and describes multiple oracle providers and fallbacks. The reviewed public material does not provide a complete dependency-by-dependency failure-impact assessment.",
+          "evidence_summary": "Scope is a critical price-feed dependency for Lend; multiple upstream providers are documented, but the full dependency graph and failure impact are incomplete.",
+          "factor_id": "RD-F-050",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/build/tutorials/borrow/multiply-deposit-kswap"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents automatic Scope fallback when a provider is stale or deviates, and documents that Scope is the price feed used for Lend position health. The reviewed sources do not establish the actual fallback configuration for every live reserve.",
+          "evidence_summary": "Automatic fallback is documented, but reserve-specific fallback coverage is not publicly established.",
+          "factor_id": "RD-F-051",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/infrastructure"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino identifies Scope as the price feed used in Lend position-health calculations and documents fallback and monitoring controls around its oracle infrastructure. A Scope or common-provider failure can impair price-gated lending operations; the public materials do not provide a complete per-dependency breakage matrix.",
+          "evidence_summary": "Price-feed dependency failure can partially impair core lending operations; the public breakage analysis is incomplete.",
+          "factor_id": "RD-F-052",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/build/tutorials/borrow/multiply-deposit-kswap"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/infrastructure"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents Scope as the price feed used for Lend position health and states that Scope combines multiple oracle sources with TWAP/EWMA smoothing and price-band validation. The documented reserve inputs are Scope, Pyth, and Switchboard rather than a raw single-pool spot source.",
+          "evidence_summary": "The documented Lend oracle design uses aggregated providers and Scope safeguards rather than a raw single-pool spot oracle.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": "Current per-reserve mappings were not independently enumerated.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Scope supports TWAP/EWMA smoothing, and Scope releases document 8-hour, 24-hour, and 7-day TWAP additions. The reviewed public sources do not reveal which TWAP window, if any, is configured for each live reserve.",
+          "evidence_summary": "TWAP capability is documented; live per-reserve window duration is not publicly established.",
+          "factor_id": "RD-F-054",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/scope/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents aggregated Scope/Pyth/Switchboard price inputs rather than a single DEX pool as the general Lend configuration. The reviewed sources do not publish pool-depth measurements for any DEX-derived reserve oracle.",
+          "evidence_summary": "No public pool-depth dataset was reviewed for any DEX-derived reserve oracle.",
+          "factor_id": "RD-F-055",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino describes Scope as combining multiple sources for manipulation-resistant pricing and identifies Scope, Pyth, and Switchboard as reserve oracle inputs. The public documentation does not prove multi-venue composition for every individual live reserve.",
+          "evidence_summary": "Multi-source aggregation is documented, but reserve-by-reserve medianisation cannot be confirmed from the reviewed public sources.",
+          "factor_id": "RD-F-056",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/glossary"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents price-band validation in Scope and exposes maxDivergenceBps as a per-reserve setting that rejects divergent oracle sources. The actual configured thresholds are not documented for every reserve.",
+          "evidence_summary": "A divergence circuit-breaker mechanism exists, but live threshold calibration is not publicly established.",
+          "factor_id": "RD-F-057",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents maxDivergenceBps as a per-reserve value from 0 to 10,000 that rejects divergent oracle sources. The reviewed sources do not expose current values or volatility calibration for the live reserves.",
+          "evidence_summary": "The threshold field exists, but specific current values are not publicly established.",
+          "factor_id": "RD-F-058",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents maxAgeSecs as a per-reserve maximum acceptable oracle-price age and documents proactive refresh controls. The reviewed sources do not provide the live maxAge values for every reserve or prove their asset-specific calibration.",
+          "evidence_summary": "Staleness controls are documented, but complete live threshold coverage is not publicly established.",
+          "factor_id": "RD-F-059",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/market-config-reference"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino Lend is a Solana lending program. The EVM Chainlink AggregatorV3 minAnswer/maxAnswer configuration pattern is not applicable to this Solana deployment.",
+          "evidence_summary": "Not applicable — the assessed deployment is Solana, not an EVM Chainlink AggregatorV3 consumer.",
+          "factor_id": "RD-F-060",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "The reviewed public reserve documentation identifies Scope, Pyth, and Switchboard configuration inputs but does not provide sufficient current implementation evidence to establish whether any active LP valuation is derived from balanceOf-based accounting.",
+          "evidence_summary": "Current LP pricing implementation could not be confirmed from the reviewed public materials.",
+          "factor_id": "RD-F-061",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents multiple independent oracle crankers for Scope updates and a permissionless liquidation system with multiple independent bots. It states that failure of one cranker does not halt price-feed liveness.",
+          "evidence_summary": "Critical oracle-update and liquidation functions have documented redundant or permissionless execution paths.",
+          "factor_id": "RD-F-062",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/infrastructure"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "programmatic",
+          "evidence_detail": "DeFiLlama reports $1.046B TVL and a 2.9% 30-day decline. This is above the $100M threshold and the decline is below the rubric's >20% yellow threshold. The June Kamino risk report separately records orderly month-end deleveraging, with total supply down 14.4% to $2.29B.",
+          "evidence_summary": "TVL $1.046B; 30-day change -2.9%, so the protocol remains above the scale threshold with a stable trend.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/kamino-lend"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's June public risk report says transaction volume is concentrated in $100K-plus and $1M-plus transfers, and describes the book as driven by a small number of large depositors and borrowers. It does not publish a reproducible top-10 depositor percentage, so concentration cannot be quantified to the rubric threshold.",
+          "evidence_summary": "Public reporting evidences a large-account-driven book, but does not disclose a top-10 depositor share; quantitative concentration remains unassessed.",
+          "factor_id": "RD-F-064",
+          "gap_reason": null,
+          "notes": "A reproducible Solana reserve-account holder analysis is required to quantify the top-10 share.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's June report models on-chain SOL-to-USDC exit depth: $10.6M is available at 2% impact and $31.5M at 5%. Modeled SOL liquidation sell pressure is $0.3M at a 10% drop, $1.6M at 20%, and $6.8M at 30%, remaining within 2% depth through that range; at 40% the $20.3M modeled sale breaches 2% depth but remains within 5% depth. The report also says JLP and BTC-wrapper collateral contributed 48% of June cascade seizures, so the SOL result does not establish equivalent depth for every collateral asset.",
+          "evidence_summary": "Published SOL exit-depth analysis supports ordinary-to-30% shock liquidation capacity, but deeper shocks and non-SOL collateral retain liquidity risk.",
+          "factor_id": "RD-F-065",
+          "gap_reason": null,
+          "notes": "Public evidence is asset-specific to SOL; no equivalent 2%/5% depth analysis was found for every accepted collateral asset.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "June's public report records aggregate stablecoin utilization of 65.8%, but 40% of stablecoin reserve supply was in reserves above 90% utilization. Prime USDC was 95.3%, OnRe USDC 94.9%, Ethena PYUSD 93.0%, and JLP USDC 92.3%. This leaves limited lender headroom in markets where looping demand is concentrated.",
+          "evidence_summary": "Aggregate utilization eased to 65.8%, but several main looping reserves ended June above 90% utilization and near capacity.",
+          "factor_id": "RD-F-066",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "During the June SOL drawdown, the report records 48,905 liquidation events and $5.77M collateral seized. It describes partial deleveraging, with liquidations subsiding after SOL stabilized; it does not report realized bad debt. This is positive incident evidence, but the assessment does not independently prove the absence of all historical bad debt or exploits.",
+          "evidence_summary": "A June liquidation cascade resolved through partial liquidations without reported realized bad debt; full historical incident absence is not independently established here.",
+          "factor_id": "RD-F-067",
+          "gap_reason": null,
+          "notes": "The public monthly report supports the observed June event only; it is not a comprehensive external incident database.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's June published stress test estimates $0 potential bad debt at a 10% drop, $6.5M at 20%, $26.5M at 30%, $53.6M at 40%, and $132.2M at 60%. It is a protocol-published model rather than an independent curator simulation, but it supplies reproducible scenario outputs and identifies a material deep-tail loss path.",
+          "evidence_summary": "Published stress tests show no modeled bad debt at -10% but $26.5M at -30% and increasing deep-tail exposure; no independent curator simulation was run.",
+          "factor_id": "RD-F-068",
+          "gap_reason": null,
+          "notes": "Assessment relies on Kamino's public stress-test model; an independent simulation was not available.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino describes K-Lend as a peer-to-pool borrowing primitive matching borrowers and lenders. It does not present itself as an algorithmic or under-collateralized stablecoin issuer, so the stablecoin-design factor is not applicable.",
+          "evidence_summary": "Kamino Lend is a peer-to-pool lending protocol, not an algorithmic stablecoin issuer.",
+          "factor_id": "RD-F-069",
+          "gap_reason": null,
+          "notes": "Not applicable — the protocol does not issue an algorithmic stablecoin.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/kamino-lend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "The public klend repository is a Solana/Rust program rather than a Compound V2 Solidity fork. The Compound V2 empty cToken-market pattern is therefore not applicable to this architecture. Certora's public analysis documents an analogous precision-loss issue in Kamino's lending accounting and its remediation, which should remain covered by architecture-specific controls rather than this Compound-specific factor.",
+          "evidence_summary": "Kamino is a Solana/Rust lending program, not a Compound V2 fork; the Compound empty-market pattern is not applicable.",
+          "factor_id": "RD-F-070",
+          "gap_reason": "not_applicable",
+          "notes": "Not applicable to the specific Compound V2 empty-market pattern; analogous Solana accounting risks are architecture-specific.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public curator documentation describes market creation, reserve addition, and configuration of LTVs, liquidation thresholds, rate curves, and oracles. It does not publish a universal minimum seed-deposit requirement for a newly initialized reserve. The applicable initialization guardrail cannot therefore be verified from public evidence.",
+          "evidence_summary": "Public market documentation confirms reserve setup steps but does not disclose a minimum seed-deposit policy.",
+          "factor_id": "RD-F-071",
+          "gap_reason": null,
+          "notes": "Minimum seed-deposit requirement was not verified in public documentation.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public curator documentation permits a curator to create an isolated lending market with its own risk parameters and then add reserves with configured LTVs, liquidation thresholds, rate curves, and oracles. This is a lower listing barrier than a centrally approved, fixed market roster. The public documentation does not establish a universal pre-launch approval threshold for every curator-created market.",
+          "evidence_summary": "Curators can create isolated markets and configure risk parameters; the public evidence does not establish a uniform high-approval listing threshold.",
+          "factor_id": "RD-F-072",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public documentation confirms reserve-level configuration of LTVs, liquidation thresholds, rate curves, and oracles. The reviewed public material does not expose each borrow cap together with the oracle-pool-depth calculation required to establish the rubric's manipulation-resistance criterion. Controls exist, but the required cap-versus-depth evidence is incomplete.",
+          "evidence_summary": "Reserve risk parameters are publicly documented, but borrow-cap sizing versus oracle liquidity is not publicly verifiable.",
+          "factor_id": "RD-F-073",
+          "gap_reason": null,
+          "notes": "No public per-asset borrow-cap-to-oracle-depth calculation was found.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public klend codebase is a Solana/Rust program. ERC-4626 and OpenZeppelin virtual-share offsets are Solidity/EVM mechanisms and do not apply to this deployment architecture.",
+          "evidence_summary": "Solana/Rust architecture; ERC-4626 virtual-share offset is not applicable.",
+          "factor_id": "RD-F-074",
+          "gap_reason": null,
+          "notes": "Not applicable — no EVM ERC-4626 vault architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": "The first-depositor/share-inflation criterion is written for ERC-4626 or equivalent vault share-accounting patterns. Kamino's public klend repository is a Solana/Rust lending program, not an ERC-4626 vault. Certora's published work shows that a separate Kamino precision-loss concern was identified and remediated, but that does not make the ERC-4626 criterion applicable.",
+          "evidence_summary": "ERC-4626 first-depositor/share-inflation criterion is not applicable to Kamino's Solana lending architecture.",
+          "factor_id": "RD-F-075",
+          "gap_reason": null,
+          "notes": "Not applicable to the strict ERC-4626 factor; separate Solana accounting controls remain relevant elsewhere.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The public DeFiLlama protocol record reports listedAt 1699615528, corresponding to 2023-11-10.",
+          "evidence_summary": "DeFiLlama lists Kamino Lend at 2023-11-10; it has been live for more than 12 months.",
+          "factor_id": "RD-F-076",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "docs",
+              "url": "https://api.llama.fi/protocol/kamino-lend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's June risk report attributes 47,478 events to a June 3-6 SOL-driven cascade of small partial liquidations and says the mechanism was routine. Certora's 2025 precision finding was non-exploitable and patched; it is not an exploit incident.",
+          "evidence_summary": "No confirmed exploit of Kamino Lend was identified. The June 2026 liquidation cascade was orderly partial liquidation during a SOL drawdown, not an exploit.",
+          "factor_id": "RD-F-077",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The June 2026 liquidation cascade is operational market stress, not an exploit; it does not contribute to the incident count.",
+          "evidence_summary": "No confirmed Kamino Lend exploit was identified, so the three-incident chronic threshold is not met.",
+          "factor_id": "RD-F-078",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public June operational report documents partial liquidations during a market drawdown rather than a vulnerability incident, so it is not repeat-exploit evidence.",
+          "evidence_summary": "No confirmed exploit recurrence or same-root-cause repeat was identified for Kamino Lend.",
+          "factor_id": "RD-F-079",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The June 2026 cascade was a documented partial-liquidation response to SOL price movement, not a hack incident.",
+          "evidence_summary": "No confirmed exploit has been identified; there is no last-exploit date to report.",
+          "factor_id": "RD-F-080",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Certora describes a non-exploitable precision issue that Kamino addressed proactively; that is a positive near-miss response, but not a post-exploit response score.",
+          "evidence_summary": "Gray: there is no confirmed exploit for which post-exploit response can be assessed.",
+          "factor_id": "RD-F-081",
+          "gap_reason": "requires_curator_input",
+          "notes": "No exploit response exists to score.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Certora's public 2025 report concerns a non-exploitable issue caught before loss, rather than an incident post-mortem.",
+          "evidence_summary": "Gray: no confirmed exploit exists for a 30-day post-mortem assessment.",
+          "factor_id": "RD-F-082",
+          "gap_reason": "requires_curator_input",
+          "notes": "No exploit occurred, so no exploit post-mortem is applicable.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Certora documents formal verification that identified a non-exploitable precision issue and its remediation, but it is not an auditor re-engagement after an exploit.",
+          "evidence_summary": "Gray: no confirmed exploit has triggered a required re-audit assessment.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "requires_curator_input",
+          "notes": "No exploit occurred, so a post-exploit re-audit cannot be assessed.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Computed from the public DeFiLlama protocol time series on 2026-07-24: 90 observations, mean TVL $1.217B, population standard deviation $169.9M, CoV 0.1397. June's -14.4% supply contraction occurred during orderly SOL-driven deleveraging and does not alter the 90-day calculation.",
+          "evidence_summary": "DeFiLlama's trailing 90 daily Kamino Lend TVL observations produce a coefficient of variation of 0.1397, below the 0.15 green threshold.",
+          "factor_id": "RD-F-084",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The June cascade was a normal partial-liquidation mechanism during a SOL drawdown, not an incident requiring an exploit response.",
+          "evidence_summary": "Gray: no confirmed exploit exists from which to calculate first-response time.",
+          "factor_id": "RD-F-085",
+          "gap_reason": "requires_curator_input",
+          "notes": "No confirmed exploit response time can be measured.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "governance_post",
+              "url": "https://gov.kamino.finance/t/kamino-lend-monthly-risk-insights-june-2026/882"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The GitHub deployment record identifies the mainnet program. A complete answer requires Solana-native event/log interpretation for the assessed interval; no claim of zero pause activations is made.",
+          "evidence_summary": "Gray: the public mainnet KLend program is identifiable, but available public documentation does not establish a complete trailing-12-month pause-activation history.",
+          "factor_id": "RD-F-086",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete trailing-12-month Solana program-log review was not publicly established in this assessment.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/README.md"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solscan.io/account/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public deployment record permits program identification but does not itself enumerate pause start/end events or establish that no pause exceeded seven days.",
+          "evidence_summary": "Gray: no verified complete on-chain pause-duration dataset was available for the KLend program.",
+          "factor_id": "RD-F-087",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete trailing-12-month pause-duration event history was not publicly established in this assessment.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/README.md"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solscan.io/account/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public repository identifies a stable mainnet program ID and its releases show continuing versioned development. This assessment found no announced retirement-and-redeployment of a user-fund-holding core address in the trailing year.",
+          "evidence_summary": "No public full migration to a new Kamino Lend mainnet program address was identified in the trailing year; the public deployment record continues to identify KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD as mainnet.",
+          "factor_id": "RD-F-088",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/README.md"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not independently establish active Kamino Lend insurance coverage or the capacity required for a color score.",
+          "factor_id": "RD-F-089",
+          "gap_reason": "external_api_blocked",
+          "notes": "The public provider endpoints could not be independently verified to establish active Kamino coverage or its capacity against the rubric threshold.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "A current assessment requires wallet-cluster attribution and program-interaction monitoring; neither is established by the public sources reviewed.",
+          "evidence_summary": "Current mixer-to-protocol interaction cannot be verified from a public, reproducible Solana cluster-label feed.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires a public, reproducible cluster-label and transaction-monitoring data source; no absence-of-interaction conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Incident history alone cannot establish the current precursor signal state.",
+          "evidence_summary": "No public real-time transaction monitor establishes whether partial-drain probe transactions currently target Kamino.",
+          "factor_id": "RD-F-091",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined Solana transaction monitor and a public, reproducible detection record; no no-signal conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public repository describes the lending program as a Solana deployment; it does not prove present deployer-wallet activity or its absence.",
+          "evidence_summary": "The protocol's public repository identifies Solana program IDs, but no public monitoring record establishes current deployer-wallet queue activity.",
+          "factor_id": "RD-F-092",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires a verified deployer identity and a defined Solana transaction-queue monitor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "A Solana adaptation would need an explicit priority-fee-per-compute-unit threshold and current telemetry.",
+          "evidence_summary": "The EVM gas-price threshold does not directly map to Solana, and no approved Solana priority-fee threshold or monitor is available.",
+          "factor_id": "RD-F-093",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Not scored because the required Solana-specific signal definition and monitoring input are unavailable.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "The public code repository confirms a Solana lending program but does not establish a live similarity scan or template match state.",
+          "evidence_summary": "No public, reproducible bytecode-similarity monitor ties newly deployed Solana programs to a Kamino exploit template.",
+          "factor_id": "RD-F-094",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined SBF/Anchor similarity corpus and monitoring output; no absence-of-template conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "The EVM function-selector signal requires a Solana-specific equivalent and current transaction monitoring.",
+          "evidence_summary": "No approved Solana instruction-discriminator replay monitor is available for this protocol.",
+          "factor_id": "RD-F-095",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined discriminator template and public monitoring result; no no-replay conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "A Solana equivalent would require account-level delegate monitoring and a defined whale threshold.",
+          "evidence_summary": "ERC-20 approval telemetry is not directly applicable to Solana, and no approved SPL delegate-authority monitor is available.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Not scored because the Solana adaptation and monitoring input are unavailable.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "A signal determination requires a fixed baseline, address clustering method, and live transaction stream.",
+          "evidence_summary": "No public, reproducible transaction-pattern monitor establishes the current sybil-surge state for Kamino.",
+          "factor_id": "RD-F-097",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined Solana transaction-pattern monitor; no absence-of-surge conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Historical or daily TVL information cannot by itself establish the specified sub-hour anomaly condition.",
+          "evidence_summary": "A current sub-hour TVL-drop determination requires a fixed real-time baseline and source snapshot, neither of which is preserved in the candidate evidence.",
+          "factor_id": "RD-F-098",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a timestamped real-time TVL monitor with the rubric threshold; no current anomaly conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Protocol architecture does not substitute for current primary-versus-secondary price observations.",
+          "evidence_summary": "Kamino documents lending-market oracle configuration, but no public current price-comparison feed establishes whether the deviation threshold is met.",
+          "factor_id": "RD-F-099",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a timestamped public oracle-comparison feed and defined threshold; no no-deviation conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The protocol's lending documentation does not prove the present transaction-level signal state.",
+          "evidence_summary": "No public real-time monitor establishes whether a qualifying flash-loan pattern currently targets Kamino assets.",
+          "factor_id": "RD-F-100",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a Solana transaction monitor and an approved equivalent threshold; no structural absence claim is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "A forum listing cannot establish the absence of a large queued governance action.",
+          "evidence_summary": "Kamino's public forum shows governance and risk discussions, but it does not provide a complete executable-governance queue for threshold monitoring.",
+          "factor_id": "RD-F-101",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires an authoritative governance and Squads transaction queue with a defined large-proposal threshold.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Repository activity and public documentation do not establish the Solana pending-transaction state.",
+          "evidence_summary": "No public real-time monitor establishes whether an administrative or program-upgrade transaction is currently pending.",
+          "factor_id": "RD-F-102",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a verified authority and Solana transaction-queue monitor; no no-upgrade conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Bridge signer-set monitoring is structurally inapplicable to the approved single Solana lending surface.",
+          "evidence_summary": "Kamino's public documentation and repository describe a Solana lending protocol; no approved bridge surface is in this protocol's preserved topology.",
+          "factor_id": "RD-F-103",
+          "gap_reason": null,
+          "notes": "No bridge surface is within the approved topology.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "A current depeg determination requires a specified venue, price source, and threshold observation.",
+          "evidence_summary": "No timestamped public shared-LP price monitor establishes whether a qualifying stablecoin depeg is currently active.",
+          "factor_id": "RD-F-104",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a public real-time price monitor for the relevant shared-LP exposure; no no-depeg conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Current endpoint availability does not establish the absence of configuration or content drift.",
+          "evidence_summary": "Kamino maintains public web and documentation endpoints, but no approved historical DNS, CDN, or frontend-hash baseline is available for drift assessment.",
+          "factor_id": "RD-F-105",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a retained public baseline and timestamped DNS/CDN/frontend-hash monitor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "The factor applies to cross-chain bridge minting rather than the approved Solana lending surface.",
+          "evidence_summary": "No approved bridge surface is in Kamino's preserved topology, so bridge mint monitoring is structurally inapplicable.",
+          "factor_id": "RD-F-106",
+          "gap_reason": null,
+          "notes": "No bridge surface is within the approved topology.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Off-chain signer device and location observations cannot be inferred from public protocol documentation or transaction history.",
+          "evidence_summary": "No public device or geography telemetry is available for privileged Kamino signers.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires consented signer telemetry; no signer geography or device claim is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Repository visibility cannot establish whether a force-push signal has occurred.",
+          "evidence_summary": "Kamino's public GitHub repository is accessible, but no event baseline or authoritative force-push monitor is supplied for the sensitive branches.",
+          "factor_id": "RD-F-108",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires protected-branch scope and a public event/audit source; no no-force-push conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Public protocol channels alone do not support a conclusion about coordinated social-media scam activity.",
+          "evidence_summary": "No reproducible public scam-intelligence feed or incident threshold establishes the current impersonation-spike state.",
+          "factor_id": "RD-F-109",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires an approved public scam-intelligence feed and defined spike threshold; no no-scam conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "programmatic",
+          "evidence_detail": "A reliable calculation requires authoritative proposal and execution records plus an established baseline.",
+          "evidence_summary": "Kamino's public forum does not provide a complete pending-versus-executed governance dataset for ratio analysis.",
+          "factor_id": "RD-F-110",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires an authoritative governance/Squads data source and a defined ratio baseline.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public profiles identify multiple Kamino leaders by real name and describe prior professional roles, meeting the doxxed-team threshold.",
+          "factor_id": "RD-F-111",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solanacompass.com/projects/Kamino_Finance"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://uk.linkedin.com/in/marius-george-ciubotariu-743b9319"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Named leadership has multiple independently verifiable public accountability trails, including professional profiles and recorded public discussion.",
+          "factor_id": "RD-F-112",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://blockworks.co/podcast/lightspeed/ce7f3ebc-aa99-11ee-a0cd-1f6b9c8e03d1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solanacompass.com/projects/Kamino_Finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting links named Kamino leaders to prior, identifiable protocol and technology organizations; this pass found no public evidence of an adverse prior-protocol affiliation.",
+          "factor_id": "RD-F-113",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solanacompass.com/projects/Kamino_Finance"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.coindesk.com/business/2022/09/08/hubble-protocol-raises-5m-to-expand-solana-based-defi-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No attributable deployer identity or complete public prior-deployment history was established for the Solana program in this pass.",
+          "factor_id": "RD-F-114",
+          "gap_reason": "protocol_opacity",
+          "notes": "The public repository confirms a Solana implementation but does not establish an attributable deployer history sufficient for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The named-team evidence is insufficient to independently clear prior rug or exit-scam affiliations under the v1.7 evidence contract.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "requires_curator_input",
+          "notes": "No provider-grade adverse-affiliation corpus or attributable-wallet/team screen was publicly verifiable in this pass.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository shows continuing releases and named public commit authors, but the permissioned author for the relevant administrative change and tenure threshold were not established.",
+          "factor_id": "RD-F-116",
+          "notes": "Conservative yellow: public GitHub history does not identify the author of each privileged production change or prove the required tenure.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/commits/master/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ENS and NameStone bindings are Ethereum-specific; the reviewed Kamino Lend implementation is Solana-native.",
+          "factor_id": "RD-F-117",
+          "notes": "Structurally inapplicable to the reviewed Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No repeatable public handle-history corpus was available to determine whether team handles were reused across failed or rugged projects.",
+          "factor_id": "RD-F-118",
+          "gap_reason": "requires_curator_input",
+          "notes": "Identity sources alone do not support a negative handle-reuse conclusion.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Public commits show an active contributor set, but this pass did not establish a reproducible commit-hour analysis tied to stated team geography.",
+          "factor_id": "RD-F-119",
+          "notes": "Conservative yellow pending a reproducible author/timezone analysis.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/commits/master/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Named Kamino participants appear in recorded public discussion, providing direct public video/audio identity evidence.",
+          "factor_id": "RD-F-120",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://blockworks.co/podcast/lightspeed/ce7f3ebc-aa99-11ee-a0cd-1f6b9c8e03d1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=wq3dyBicNRg"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lead-team identities have multiple public professional and media attestations, providing a deep, independently checkable OSINT surface.",
+          "factor_id": "RD-F-121",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://uk.linkedin.com/in/marius-george-ciubotariu-743b9319"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://solanacompass.com/projects/Kamino_Finance"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://blockworks.co/podcast/lightspeed/ce7f3ebc-aa99-11ee-a0cd-1f6b9c8e03d1"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public sources reviewed do not identify contributor payment wallets or provide a verifiable payment-flow analysis to DPRK-linked clusters.",
+          "factor_id": "RD-F-122",
+          "gap_reason": "protocol_opacity",
+          "notes": "Contributor payment wallets and a provider-grade cluster graph were not publicly available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A public release documents emergency-council permission changes and attached audits, but this pass did not establish a complete preceding governance or PR discussion record for each material administrative change.",
+          "factor_id": "RD-F-123",
+          "notes": "No critical red: the observed release is public and audit-backed; yellow retains the gap in independently reconciling every administrative change to prior discussion.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases/tag/release/v1.23.0"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No attributable deployer wallet and no public, provider-grade 30-day mixer screen were established for the Solana program.",
+          "factor_id": "RD-F-124",
+          "gap_reason": "protocol_opacity",
+          "notes": "The factor cannot be green-cleared from the absence of an EVM-style deployer; no attributable wallet or equivalent mixer analysis was publicly verified.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No attributable deployer or signer wallet set and no public provider-grade three-hop DPRK/Lazarus graph were established.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "protocol_opacity",
+          "notes": "No DPRK/Lazarus attribution was found, but absence of an attribution is not a verified three-hop clean result. No escalation is triggered.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino Lend's public Rust/Anchor repository is an original Solana lending implementation; no upstream code fork is identified in the public project materials.",
+          "factor_id": "RD-F-126",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream fork is identified, so there is no upstream patch stream to compare.",
+          "factor_id": "RD-F-127",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream fork is identified, so upstream-disclosure propagation is not applicable.",
+          "factor_id": "RD-F-128",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream fork is identified, so upstream divergence cannot be measured.",
+          "factor_id": "RD-F-129",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream fork is identified, so fork depth is not applicable.",
+          "factor_id": "RD-F-130",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream audit coverage is inherited because no upstream fork is identified.",
+          "factor_id": "RD-F-131",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "No upstream parameter set exists because no upstream fork is identified.",
+          "factor_id": "RD-F-132",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "Several critical dependencies use mutable Git branch references rather than immutable commit pins.",
+          "factor_id": "RD-F-133",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kamino-Finance/klend/master/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kamino-Finance/klend/master/programs/klend/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "Dependency sources are public, but a complete current malicious-release assessment is not established from the reviewed public evidence.",
+          "factor_id": "RD-F-134",
+          "gap_reason": "requires_curator_input",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_summary": "Public dependency versions are identifiable, but current known-vulnerability status is not fully established from the reviewed evidence.",
+          "factor_id": "RD-F-135",
+          "gap_reason": "requires_curator_input",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Kamino-Finance/klend/master/programs/klend/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository publishes releases and signed GitHub release commits, but the reviewed material does not prove the deployed program bytecode matches a specific signed release tag.",
+          "factor_id": "RD-F-136",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Signed release commits are not a deployed-bytecode attestation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public release list shows four releases in May 2026 (v1.20.0 through v1.23.0), within the trailing 90-day window ending 2026-07-24.",
+          "factor_id": "RD-F-137",
+          "gap_reason": null,
+          "notes": "Four public releases fall in the relevant 90-day window.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Recent public releases exist, but the reviewed material does not establish production deployment timestamps, an emergency-hot-patch classification, or a Kamino-specific upgrade timelock.",
+          "factor_id": "RD-F-138",
+          "gap_reason": "protocol_opacity",
+          "notes": "No hot-patch-without-timelock conclusion is inferred.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            },
+            {
+              "source_type": "url",
+              "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Recent releases state audit coverage by OtterSec and Certora, but public evidence reviewed does not establish that the current deployed ProgramData artifact exactly matches an audited release artifact.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": "Audit labels support partial assurance but not a deployed-artifact equivalence claim.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public current mapping from security fixes to deployed ProgramData versions was located; a fix-merged-but-not-deployed gap cannot be confirmed or ruled out.",
+          "factor_id": "RD-F-140",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "No positive conclusion is inferred from absence of an identified gap.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not establish the current deployed program configuration or rule out test-mode parameters in that deployment.",
+          "factor_id": "RD-F-141",
+          "gap_reason": "protocol_opacity",
+          "notes": "Repository source alone is not a deployed-configuration attestation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EVM proxy storage-layout collisions are not applicable to the reviewed Solana program architecture, which is implemented in Rust/Anchor.",
+          "factor_id": "RD-F-142",
+          "gap_reason": null,
+          "notes": "Not applicable to this Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The OpenZeppelin EVM initializer pattern is not applicable to the reviewed Rust/Anchor Solana program.",
+          "factor_id": "RD-F-143",
+          "gap_reason": null,
+          "notes": "Not applicable to this Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "CREATE2 same-address redeployment is an EVM concern and is not applicable to the reviewed Solana program.",
+          "factor_id": "RD-F-144",
+          "gap_reason": null,
+          "notes": "Not applicable to this Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Kamino publishes Rust/Anchor source, a locked dependency set, and a Rust toolchain file, but no public proof was located that reproduces the current deployed program bytecode from a declared release.",
+          "factor_id": "RD-F-145",
+          "gap_reason": null,
+          "notes": "Public build inputs provide partial reproducibility evidence; deployed-bytecode equivalence remains unverified.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public releases and repository document an upgradeable mainnet program ID, but the reviewed material does not provide a complete current inventory of newly deployed program addresses in the last 30 days.",
+          "factor_id": "RD-F-146",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "No conclusion about new deployments is inferred from release activity alone.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-149",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-150",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-151",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-152",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-153",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-154",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-155",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-156",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no bridge surface is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no bridge surface assessed.",
+          "factor_id": "RD-F-157",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "Ambient ecosystem reporting cannot establish protocol-specific wallet interaction.",
+          "evidence_summary": "No public, reproducible threat-actor cluster attribution feed establishes whether a known malicious cluster has touched Kamino.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires an attributable public threat-intelligence and transaction-cluster source; no attacker-contact conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "hybrid",
+          "evidence_detail": "The signal requires a defined attacker cohort, transaction failure classifier, and live Solana data.",
+          "evidence_summary": "No public, reproducible monitor identifies low-cost failing reconnaissance transactions against Kamino.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a public transaction-pattern monitor and attacker attribution source; no probe conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Repository security-advisory status is not a complete dependency compromise assessment.",
+          "evidence_summary": "The public Kamino repository identifies its codebase, but no dependency-integrity feed establishes whether a malicious dependency incident affects the current dependency graph.",
+          "factor_id": "RD-F-160",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a resolved dependency graph and current public advisory/integrity feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "The presence of official domains does not establish the absence of typosquats.",
+          "evidence_summary": "No reproducible public domain-monitoring feed establishes whether a newly registered Kamino impersonator domain meets the factor threshold.",
+          "factor_id": "RD-F-161",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires an approved public domain-watch feed and threshold definition; no no-typosquat conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "Known incident history or public repository data does not establish the current template-deployment state.",
+          "evidence_summary": "No public, reproducible Solana exploit-template deployment monitor is available for this protocol.",
+          "factor_id": "RD-F-162",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a defined Solana template corpus and public deployment monitor; no no-template conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "v1.7 measures a peer-class benchmark, not a Kamino-specific incident; calculating it requires a defined lending-class sample and documented precursor/strike timestamps. The rubric’s curator hack-DB source cannot be used in a public-safe candidate.",
+          "evidence_summary": "No independently verifiable public multi-incident dataset establishes the average attacker reconnaissance interval for Kamino’s lending peer class.",
+          "factor_id": "RD-F-163",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires a public, reproducible peer-class dataset and method; no peer-risk inference is scored as a current protocol signal.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "Code-hosting and disclosure-channel information cannot establish the absence of leaked credentials.",
+          "evidence_summary": "No reproducible public credential-leak monitoring source establishes whether Kamino credentials or infrastructure secrets are exposed.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires an approved public credential-leak source and verified asset scope; no no-leak conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": "Official public-channel presence does not establish the absence of coordination or compromise indicators.",
+          "evidence_summary": "No reproducible public scam-coordinator attribution feed establishes whether an official Kamino social channel is flagged.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires verified official-channel identities and an approved public attribution feed; no no-flag conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public KLend repository identifies the current mainnet deployment and continuing releases. This review found no public sunsetting announcement for a Kamino Lend core contract that retained material value; no deprecated-contract register was therefore identified to evidence a red or yellow condition.",
+          "evidence_summary": "No publicly announced deprecated Kamino Lend core contract or incomplete user-fund migration was identified.",
+          "factor_id": "RD-F-166",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/blob/master/README.md"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not provide a complete inventory of deprecated Kamino Lend programs, their value, pause state, and current admin reversibility.",
+          "factor_id": "RD-F-167",
+          "gap_reason": "protocol_opacity",
+          "notes": "No positive conclusion is inferred from no identified legacy program.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ERC-20 router allowances are not the approval model for this Solana lending program; no applicable deprecated EVM router was identified in scope.",
+          "factor_id": "RD-F-168",
+          "gap_reason": null,
+          "notes": "Not applicable to this Solana program.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino Lend does not use solc; Solidity compiler known-bug exposure is not applicable.",
+          "factor_id": "RD-F-170",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_summary": "No audited upstream codebase is identified for a bytecode-similarity comparison.",
+          "factor_id": "RD-F-171",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_summary": "No AI co-authorship marker was found in the reviewed public history, but full critical-code provenance is not established.",
+          "factor_id": "RD-F-172",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino Lend is not a Solidity codebase, so this Solidity-specific disclosure factor is not applicable.",
+          "factor_id": "RD-F-173",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_summary": "Kamino Lend has no Solidity dependency tree, so this Solidity-version factor is not applicable.",
+          "factor_id": "RD-F-174",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "The public program has been live since 2025-10-06 and lists KLend among in-scope assets, providing a public submission channel and managed triage.",
+          "evidence_summary": "Kamino operates a live Immunefi program, triaged by Immunefi, with KLend - Kamino Lending Program explicitly in smart-contract scope.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "Under v1.7.0, an equivalent program without a public acknowledgment SLA is red. The reviewed Immunefi page documents the live program, rewards, and triage but does not state a Kamino-specific acknowledgment-time SLA, defined triage window, and maximum response timeline.",
+          "evidence_summary": "Red: Kamino has a public Immunefi program, but its public program information does not publish the required acknowledgment SLA and response timeline.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": "The public program provides bounty and triage information but no Kamino-published acknowledgment SLA of 72 hours or less, triage window, and maximum response timeline was identified.",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "Certora states the precision issue was not exploitable under then-current Solana conditions and that Kamino implemented a remediation. This supports the absence of an identified ignored disclosure, while not treating the near miss as an exploit incident.",
+          "evidence_summary": "No public evidence was identified that Kamino Lend ignored a known vulnerability disclosure before an exploit; Certora reports the identified precision issue was addressed before exploitation.",
+          "factor_id": "RD-F-177",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "No open GHSA was identified for the public core KLend repository. This is a repository-scoped public-advisory finding, not a claim that all vulnerability databases have exhaustive Solana coverage.",
+          "evidence_summary": "The public GitHub Security Advisories page for Kamino-Finance/klend reports no published security advisories.",
+          "factor_id": "RD-F-178",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend/security/advisories"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Not applicable — Kamino Lend is a Solana lending program and no LayerZero OFT bridge adapter is in scope for this assessment.",
+          "evidence_summary": "Not applicable — no LayerZero OFT bridge adapter assessed.",
+          "factor_id": "RD-F-179",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino documents that reserve configurations can be retrieved and updated through its manager tooling. The reviewed public documentation does not establish a governance timelock or a documented change ceremony for every oracle replacement path.",
+          "evidence_summary": "Oracle configuration is mutable, but the full governance-controlled replacement procedure is not publicly established.",
+          "factor_id": "RD-F-180",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/build/cli/market-operations"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Kamino's public API lists markets and distinguishes curated markets, while the documentation describes market-specific risk parameters and Scope/Pyth/Switchboard reserve oracle inputs. The reviewed sources do not establish whether any live reserve accepts a raw spot price from a permissionlessly created DEX pool, or prove all three required liquidity, token-age, and TWAP controls.",
+          "evidence_summary": "Permissionless-pool oracle acceptance controls cannot be confirmed from the reviewed public materials.",
+          "factor_id": "RD-F-181",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.kamino.finance/v2/kamino-market"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": "Current or historical signer and threshold configuration cannot be inferred from general integration material.",
+          "evidence_summary": "No public, verified historical threshold record is available to determine whether Kamino's security-council or multisig threshold was reduced.",
+          "factor_id": "RD-F-182",
+          "gap_reason": "requires_curator_input",
+          "notes": "Requires a verified authority account, historical threshold record, and reduction event definition; no signer or threshold claim is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_summary": "The public Immunefi terms describe impact treatment, but the reviewed public material does not enumerate the highest-value Kamino Lend program in scope or out of scope.",
+          "factor_id": "RD-F-183",
+          "gap_reason": "requires_curator_input",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/kamino/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "This pass did not identify public evidence sufficient to confirm or rule out a real-capital social-engineering persona associated with Kamino Lend.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "requires_curator_input",
+          "notes": "No attributable contributor/deposit dataset or public incident evidence meeting the factor threshold was available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Kamino Lend's documented borrow/lend product scope does not describe a bridge component, so bridge rate-limiter and chain-pause mitigants are not applicable to this assessment scope.",
+          "factor_id": "RD-F-185",
+          "gap_reason": null,
+          "notes": "Not applicable to the documented Kamino Lend borrow/lend surface.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://kamino.com/docs/products/borrow-lend"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "display_name": "Kamino Lend",
+        "family_slug": "kamino-lend",
+        "primary_chain": "solana",
+        "primary_surface_slug": "default",
+        "protocol_type": "lending"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "C",
+          "risk_score": 21.98,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "2026-07-24T00:00:00Z"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "yellow",
+          "10": "gray",
+          "11": "gray",
+          "12": "yellow",
+          "13": "yellow",
+          "2": "yellow",
+          "3": "yellow",
+          "4": "yellow",
+          "5": "green",
+          "6": "gray",
+          "7": "green",
+          "8": "green",
+          "9": "yellow"
+        },
+        "category_severities": {
+          "1": 25.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 33.33333333333333,
+          "13": 25.0,
+          "2": 25.0,
+          "3": 27.27272727272727,
+          "4": 29.629629629629626,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 12.5,
+          "8": 16.666666666666664,
+          "9": 33.33333333333333
+        },
+        "defillama_slug": "kamino-lend",
+        "display_name": "Kamino Lend",
+        "github_org": "https://github.com/Kamino-Finance",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_bridge_surface": false,
+        "headline_grade": "C",
+        "is_a_bridge": false,
+        "is_published": true,
+        "primary_chain": "solana",
+        "protocol_type": "lending",
+        "risk_score": 21.98,
+        "rubric_version": "v1.7.0",
+        "slug": "kamino-lend",
+        "status": "live"
+      },
+      "surfaces": [
+        {
+          "display_name": "Kamino Lend",
+          "is_primary": true,
+          "legacy_slug": "kamino-lend",
+          "primary_chain": "solana",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
+  "risk_score": 21.98,
+  "rubric_version": "v1.7.0"
+}

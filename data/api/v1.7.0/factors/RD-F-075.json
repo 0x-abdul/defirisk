@@ -255,6 +255,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "The first-depositor/share-inflation criterion is written for ERC-4626 or equivalent vault share-accounting patterns. Kamino's public klend repository is a Solana/Rust lending program, not an ERC-4626 vault. Certora's published work shows that a separate Kamino precision-loss concern was identified and remediated, but that does not make the ERC-4626 criterion applicable.",
+          "evidence_summary": "ERC-4626 first-depositor/share-inflation criterion is not applicable to Kamino's Solana lending architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": "The audit explains the 1-wei first mint plus direct-transfer donation scenario, recommends virtual shares or an initial mint, and records Kelp's choice of an initial mint immediately after deployment.",
           "evidence_summary": "Sigma Prime identified the first-minter donation/share-inflation pattern in Kelp's deposit pool. The report records Kelp's resolution as an initial mint immediately after deployment, which is an explicit first-depositor guard under RD-F-075.",
@@ -276,6 +299,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

@@ -238,6 +238,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Kamino's public API lists markets and distinguishes curated markets, while the documentation describes market-specific risk parameters and Scope/Pyth/Switchboard reserve oracle inputs. The reviewed sources do not establish whether any live reserve accepts a raw spot price from a permissionlessly created DEX pool, or prove all three required liquidity, token-age, and TWAP controls.",
+          "evidence_summary": "Permissionless-pool oracle acceptance controls cannot be confirmed from the reviewed public materials.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.kamino.finance/v2/kamino-market"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/curators/markets/reserve-parameters"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Kelp is an LRT, not a lending protocol accepting permissionless DEX pools as collateral-price sources.",
           "gap_reason": "not_applicable",
@@ -253,6 +276,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

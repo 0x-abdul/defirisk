@@ -290,6 +290,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "The public klend repository is a Solana/Rust program rather than a Compound V2 Solidity fork. The Compound V2 empty cToken-market pattern is therefore not applicable to this architecture. Certora's public analysis documents an analogous precision-loss issue in Kamino's lending accounting and its remediation, which should remain covered by architecture-specific controls rather than this Compound-specific factor.",
+          "evidence_summary": "Kamino is a Solana/Rust lending program, not a Compound V2 fork; the Compound empty-market pattern is not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Kamino-Finance/klend"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.certora.com/blog/securing-kamino-lending"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "RD-F-070 is scoped to an empty Compound V2-fork cToken market with zero supply and borrow. Kelp DAO is a liquid-restaking deposit/mint system and exposes no Kelp-owned cToken borrowing market under the approved surface, so this critical factor is not applicable.",
           "gap_reason": "not_applicable",
@@ -305,6 +328,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
