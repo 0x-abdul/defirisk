@@ -279,11 +279,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "LBTC uses 8 decimals; most EVM DeFi integrations use 18 decimals. Cross-decimal arithmetic risk exists in StakeAndBake, iDepositor, and PMM contracts where LBTC interacts with 18-decimal tokens. No published audit flags this as unresolved in the EVM layer. Cannot confirm safe normalization without source inspection of all arithmetic paths. Marked gray — needs curator review of cross-decimal math paths.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

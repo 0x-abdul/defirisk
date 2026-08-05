@@ -392,11 +392,42 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All examined implementation contracts properly protect initialize(): (1) Consortium.sol — constructor() { _disableInitializers(); } AND function initialize(address _owner) external initializer; (2) BridgeV2.sol — constructor() { _disableInitializers(); } AND function initialize(address owner_, IMailbox mailbox_) external initializer; (3) NativeLBTC.sol — constructor() { _disableInitializers(); } AND function initialize(...) external initializer; (4) StakedLBTC.sol — constructor() { _disableInitializers(); } AND function initialize(address treasury, address initialOwner, uint48 initialOwnerDelay) external initializer. BasculeV2.sol uses a standard constructor (non-proxied) — no initialize() function, N/A for that contract. No unprotected initialize() found across reviewed contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/NativeLBTC.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

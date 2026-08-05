@@ -267,11 +267,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Mailbox/GMP path: inbound messages validated against $.inboundMessagePath[payload.msgPath] which encodes remote mailbox + chain; srcChainId is implicitly bound via path ID (path-based srcChainId binding). BridgeV2: chainId extracted via $.mailbox.getInboundMessagePath(payload.msgPath); rate limits keyed by (sourceChain, token) pair. CCIP path: sourceChainSelector is native to Chainlink's Any2EVMMessage struct; received by Lombard's TokenPool via CCIP's structured message format. All three active bridge paths bind messages to their source chain identifier.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

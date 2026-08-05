@@ -275,11 +275,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "BridgeV2: payloadSpent[payload.id] mapping prevents double-spend; reverts with BridgeV2_PayloadSpent() on replay attempt. Mailbox: deliveredPayload[payloadHash] mapping prevents re-delivery of the same payload. CCIP: Chainlink's own sequence number infrastructure handles replay prevention at the protocol layer independently of Lombard's source. All active bridge paths implement replay protection through payload-hash or sequence tracking.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

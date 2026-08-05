@@ -282,11 +282,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "NativeLBTC and StakedLBTC inherit from BaseLBTC which uses OZ's ERC20PermitUpgradeable (EIP-2612). OZ's EIP-712 implementation includes chainId in the domain separator by default. No cross-chain replay risk from missing chainId in domain separator as OZ 5.0.2 always includes chainId. Cross-chain message replay for bridge operations is handled at the BridgeV2/Consortium layer via separate message binding (not EIP-712). Confidence medium — domain separator not directly inspected but OZ standard implementation is well-established.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/NativeLBTC.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

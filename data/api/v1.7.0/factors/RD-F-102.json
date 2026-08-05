@@ -288,11 +288,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin/upgrade tx in mempool | Applicable: Yes (CRITICAL CONCERN) | Deployer EOA 0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079 is LombardTimeLock Proposer; 3-of-5 GnosisSafe 0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892 is Proposer+Executor. LombardTimeLock minDelay = 3600 seconds (1 hour). Most recent Ethereum upgrade: 2026-04-24. The 1-hour timelock means admin-tx-in-mempool detection would give users at most 60 minutes to act after a Timelock scheduling event -- dangerously short at $1.07B TVL. This signal is highly applicable but its utility is structurally impaired by the 1h delay. v1 phase-2 signal requiring mempool listener. Not currently firing (no pending upgrade tx as of 2026-05-05). Hexagate provides some coverage for upgrade/admin patterns. Yellow because structural risk is high even when signal is not currently firing.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }

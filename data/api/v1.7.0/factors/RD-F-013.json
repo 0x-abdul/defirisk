@@ -289,11 +289,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary call with user-controlled target found in examined contracts. BridgeV2.sol routes calls through defined interfaces (Hyperlane Mailbox, CCIP Router) which are admin-configured trusted addresses, not user-supplied. The GMP/AssetRouter integration uses a defined Mailbox address (0x964677F337d6528d659b1892D0045B8B27183fc0). No evidence of fully user-controlled call target. Confidence medium — peripheral contracts not fully inspected.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:40:40Z",
+  "generated_at": "2026-08-05T13:47:37Z",
   "rubric_version": "v1.7.0"
 }
