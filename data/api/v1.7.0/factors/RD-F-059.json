@@ -242,6 +242,25 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "StakePoolRate accepts updates only within allowedUpdateStaleness and getRate only while the last update is within allowedRateStaleness; stale reads revert. The documented mirror therefore fails closed rather than serving an old rate.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Jito",
+          "protocol_slug": "jito",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/jito-foundation/jitosol-wormhole-updater"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The deployed ChainlinkPriceOracle proxy's reviewed implementation discards updatedAt from latestRoundData and performs no max-age check.",
           "primary_chain": "ethereum",
@@ -267,6 +286,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
