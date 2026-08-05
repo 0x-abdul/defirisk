@@ -363,11 +363,46 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Three compiler versions: (1) 0.4.24 — ExpExponentCleanup bug (medium/high, fixed 0.4.25) applies; limited practical risk given usage pattern (SafeMath, no dynamic non-literal small-type exponents identified). (2) 0.8.9 — no current known high-severity bugs per Etherscan bug list. (3) 0.8.25 — not affected by TransientStorageClearingHelperCollision (affects 0.8.28-0.8.33). Legacy 0.4.24 creates yellow signal; new code is clean.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.soliditylang.org/en/v0.4.25/bugs.html"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xFdDf38947aFB03C621C71b06C9C70bce73f12999#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/solcbuginfo"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

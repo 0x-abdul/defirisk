@@ -494,11 +494,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "stETH impl 0x6ca84080381e43938476814be61b779a8bb6a600: getSharesByPooledEth confirmed uses internal state variables only. StakingRouter source confirmed no external price oracle calls. AccountingOracle reports validator balances — not a price feed. Factor definition (spot DEX pool with no TWAP) is architecturally inapplicable.",
+          "evidence_summary": "[★ CRITICAL] No DEX spot price oracle used anywhere in Lido core protocol. stETH/ETH rate is internal accounting (totalPooledEth/totalShares). No slot0(), getReserves(), or DEX pool read exists in core contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/StakingRouter.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600#code"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

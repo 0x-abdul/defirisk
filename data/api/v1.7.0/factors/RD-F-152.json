@@ -248,11 +248,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Wormhole VAA structure includes chain ID as part of the message. NTT EndpointManager validates source-chain identity. L1ERC20ExtendedTokensBridge: onlyFromCrossDomainAccount(L2_TOKEN_BRIDGE) — only accepts messages from designated L2 bridge.",
+          "evidence_summary": "Wormhole VAAs include srcChainId. CrossDomainMessenger enforces per-chain isolation via onlyFromCrossDomainAccount. Chain binding enforced at infrastructure level.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/lido-l2-with-steth/blob/main/contracts/optimism/L1ERC20ExtendedTokensBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

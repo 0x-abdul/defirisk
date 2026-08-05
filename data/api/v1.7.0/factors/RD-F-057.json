@@ -315,11 +315,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "AccountingOracle does not report a price that can 'deviate' from a reference — it reports validator balances. The deviation-check concept maps awkwardly to this oracle architecture. No automated circuit breaker exists. GateSeal is manual (committee-triggered). Yellow reflects absence of automation, not a critical defect given the oracle's nature.",
+          "evidence_summary": "No automated circuit breaker on oracle price deviation. GateSeal Committee (3-of-6) provides manual emergency pause for ValidatorsExitBusOracle and Withdrawal Queue but this is not automatic.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

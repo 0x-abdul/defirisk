@@ -355,11 +355,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "LidoLocator exposes oracle-related constructor-set immutable addresses. The public deployment and upgrade documentation shows replacement is an upgrade/deployment operation, rather than a simple immediate oracle-address setter.",
+          "evidence_summary": "LidoLocator uses public immutable constructor-set addresses, including oracle-related addresses such as accountingOracle and validatorsExitBusOracle. Replacement mitigation is DAO/proxy replacement or deploying a new locator configuration, not an immediate oracle setter. RD-F-180 remains yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/docs/upgrade-deploy.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/deployment/lido-v3-02-mainnet/deployed-mainnet.json"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/LidoLocator.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

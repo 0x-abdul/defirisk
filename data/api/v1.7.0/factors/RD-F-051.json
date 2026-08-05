@@ -325,11 +325,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Protocol docs: 'Oracle daemons could stop pushing their reports for extended periods of time in case of no finality on the Ethereum Consensus Layer. This would ultimately result in no oracle reports and no stETH rebases for this whole period.' GateSeal provides emergency pause but not automatic fallback.",
+          "evidence_summary": "No fallback oracle. If oracle committee fails quorum, stETH rebase halts for the frame. Docs explicitly state daemons may stop reporting during ETH consensus non-finality. No automatic secondary source or last-known-price fallback.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/accounting-oracle"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

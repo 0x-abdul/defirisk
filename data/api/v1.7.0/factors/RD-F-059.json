@@ -303,11 +303,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "HashConsensus/BaseOracle: 'if (_getTime() > deadline) revert ProcessingDeadlineMissed(deadline)' — prevents late submissions. However if oracle committee simply doesn't submit (below quorum), there is no on-chain mechanism that rejects use of a stale stETH rate. The stETH ratio remains at the last reported value indefinitely until the next successful oracle report.",
+          "evidence_summary": "Frame-based deadline enforcement exists (StaleReport() reverts late submissions) but there is no consumer-side staleness rejection if reporting simply lags — stETH ratio just doesn't update. No maxStaleness check on oracle output consumption.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/oracle/BaseOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }
