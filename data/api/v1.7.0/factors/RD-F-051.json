@@ -288,6 +288,28 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Kamino documents automatic Scope fallback when a provider is stale or deviates, and documents that Scope is the price feed used for Lend position health. The reviewed sources do not establish the actual fallback configuration for every live reserve.",
+          "evidence_summary": "Automatic fallback is documented, but reserve-specific fallback coverage is not publicly established.",
+          "primary_chain": "solana",
+          "protocol_name": "Kamino Lend",
+          "protocol_slug": "kamino-lend",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/infrastructure"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://kamino.com/docs/security/index"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "Adapter failure reverts price reads; admins can replace adapters, while aggregate threshold logic pauses rather than selecting a secondary price.",
           "primary_chain": "ethereum",
@@ -308,6 +330,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T08:59:12Z",
+  "generated_at": "2026-08-05T13:23:01Z",
   "rubric_version": "v1.7.0"
 }
