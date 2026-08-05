@@ -304,11 +304,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[PD-042 rescore 2026-05-12, v1.7.0+] Forcible seize / burn / retrieve-token paths are the defining feature of a regulated tokenized RWA, REQUIRED by KYC, sanctions, and court-order compliance regimes. Treating them as a rug-risk signal misframes the protocol type. Scored not_applicable per PD-042 (Cat 2 RWA-issuer subset).\n\nORIGINAL EVIDENCE (preserved from v1.6.0 grading): [CRITICAL] ousgInstantManager.sol exposes retrieveTokens(address token, address to) callable by DEFAULT_ADMIN_ROLE with no timelock. USDY InstantManager has the same pattern. Management multisig (4/7) can drain contract balances in one transaction. RWAHub.sol confirms no timelock on any admin functions.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ondo Finance",
+          "protocol_slug": "ondo-finance",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/RWAHub.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

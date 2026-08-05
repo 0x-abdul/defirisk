@@ -282,11 +282,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[PD-042 rescore 2026-05-12, v1.7.0+] Timelock on admin actions is incompatible with the regulatory response model: the issuer must be able to act immediately on court-ordered freeze, sanctions compliance, or fund-rules changes. Scored not_applicable per PD-042 (Cat 2 RWA-issuer subset). Residual operational risk of key compromise is captured by multisig-coverage factors (yellow rather than N/A).\n\nORIGINAL EVIDENCE (preserved from v1.6.0 grading): Layer A: No timelock on mint, pause, retrieveTokens, setOracle, or upgrade for OUSG/USDY/InstantManager contracts. The dominant $3.5B+ TVL operates with no timelock protection. Layer B (Flux Finance): 24h timelock only.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Ondo Finance",
+          "protocol_slug": "ondo-finance",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/RWAHub.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
