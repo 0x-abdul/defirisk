@@ -248,11 +248,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Partially accepts issue #49 RD-F-039. The delegatecall evidence is removed as executor-risk evidence because state changes revert. The implementation is narrow: it does not make a broader claim that every possible execution surface has been exhaustively re-reviewed.",
+          "evidence_summary": "ActionMiscV3.simulate(address,bytes) performs target.delegatecall(data) and immediately reverts with SimulationResults(success,result). It is a reverting simulation helper, not evidence of governance proposal execution. No separate on-chain governance executor risk was established in this correction packet, so RD-F-039 is gray under the active rubric.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/pendle-finance/pendle-core-v2-public/main/contracts/router/ActionMiscV3.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/pendle-finance/pendle-core-v2-public/main/deployments/1-core.json"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

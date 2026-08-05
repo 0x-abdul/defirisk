@@ -339,11 +339,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "VotingEscrowPendleMainchain uses initializer modifier in constructor. Market Factory V3 uses BoringOwnableUpgradeable with Initializable. Router action contracts are diamond facets with no separate initialize() needed. No evidence of unprotected public initialize() on any live implementation. Tree inspection found only PendleCrossChainOracleBaseApp_Init.sol with initialize in name (cross-chain helper, not core market).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1A6fCc85557BC4fB7B534ed835a03EF056552D52#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/pendle-finance/pendle-core-v2-public/blob/main/contracts/LiquidityMining/VotingEscrow/VotingEscrowPendleMainchain.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

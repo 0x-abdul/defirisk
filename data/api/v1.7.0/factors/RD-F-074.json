@@ -282,11 +282,31 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Pendle core market accounting uses its own SY exchange-rate utility and LP market math rather than an ERC-4626 vault implementation. The source-reviewed core package does not establish Pendle-operated ERC-4626 vaults within this approved surface.",
+          "evidence_summary": "Not applicable: Pendle core market accounting is not an ERC-4626 vault implementation, so the OpenZeppelin ERC-4626 virtual-offset version test does not apply.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/pendle-finance/pendle-core-v2-public/main/contracts/core/StandardizedYield/SYUtils.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
