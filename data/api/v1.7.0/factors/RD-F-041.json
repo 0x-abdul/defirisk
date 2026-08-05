@@ -350,11 +350,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "GateSeal pause authority remains relevant to pause/governance factors, but RD-F-041 is the narrower rescue/emergencyWithdraw path. The checked Lido core path does not expose that fund-drain primitive.",
+          "evidence_summary": "GateSeal is a one-time pause/seal mechanism rather than a rescue or emergencyWithdraw fund-drain path. Lido.sol explicitly disables Aragon token recovery by reverting transferToVault(). No admin-callable core stETH rescue/emergencyWithdraw drain path was found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/gate-seals/blob/main/contracts/GateSeal.vy"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/token-guides/steth-superuser-functions/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

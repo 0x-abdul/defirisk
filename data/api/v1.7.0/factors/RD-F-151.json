@@ -276,11 +276,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "The reviewed Wormhole NTT verifier delegates VAA verification to Wormhole, whose Messages contract rejects a recovered zero address. Lido's OP-style bridge path separately restricts calls to the CrossDomainMessenger.",
+          "evidence_summary": "Checked Lido bridge paths do not expose an unguarded ecrecover pattern. The Wormhole NTT path delegates VAA verification to parseAndVerifyVM, and Wormhole Messages.sol rejects ecrecover results equal to address(0). Native OP-style L2 bridge authorization uses CrossDomainMessenger.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/lido-l2/blob/master/contracts/optimism/CrossDomainEnabled.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/Messages.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiver.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

@@ -341,11 +341,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "stETH implementation at 0x6ca84080381e43938476814be61b779a8bb6a600 confirmed: no external feed calls, all accounting via internal totalPooledEth/totalShares ratio updated by AccountingOracle committee reports. StakingRouter source also confirmed no external price oracle calls.",
+          "evidence_summary": "Lido's core oracle uses AccountingOracle and HashConsensus with a 5-of-9 committee quorum to report consensus- and execution-layer state. The reviewed core path does not use a third-party price-feed or DEX-TWAP oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/accounting-oracle"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600#code"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:23:01Z",
+  "generated_at": "2026-08-05T13:40:40Z",
   "rubric_version": "v1.7.0"
 }

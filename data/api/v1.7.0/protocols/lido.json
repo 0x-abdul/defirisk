@@ -1,0 +1,3824 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 11.11111111111111,
+    "10": 8.333333333333332,
+    "11": 16.666666666666664,
+    "12": 44.44444444444444,
+    "13": 25.0,
+    "2": 6.349206349206349,
+    "3": 20.0,
+    "4": 0.0,
+    "5": 33.33333333333333,
+    "6": 2.380952380952381,
+    "7": 16.666666666666664,
+    "8": 11.11111111111111,
+    "9": 12.82051282051282
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+          "chain": "ethereum",
+          "deployed_at": "2020-12-18",
+          "display_name": "Lido (Ethereum)",
+          "tvs_share": 0.9998,
+          "tvs_usd": 21384626005
+        },
+        {
+          "anchor_address": "0x5979D7b546E38E414F7E9822514be443A4800529",
+          "chain": "arbitrum",
+          "deployed_at": null,
+          "display_name": "Lido wstETH (Arbitrum)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb",
+          "chain": "optimism",
+          "deployed_at": null,
+          "display_name": "Lido wstETH (Optimism)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452",
+          "chain": "base",
+          "deployed_at": null,
+          "display_name": "Lido wstETH (Base)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x703b52F2b28fEbcB60E1372858AF5b18849FE867",
+          "chain": "zksync",
+          "deployed_at": null,
+          "display_name": "Lido wstETH (zkSync)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": "0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD",
+          "chain": "polygon",
+          "deployed_at": null,
+          "display_name": "Lido wstETH (Polygon PoS)",
+          "tvs_share": null,
+          "tvs_usd": null
+        },
+        {
+          "anchor_address": null,
+          "chain": "solana",
+          "deployed_at": null,
+          "display_name": "Lido (Solana — stSOL, legacy)",
+          "tvs_share": 0.0002,
+          "tvs_usd": 4144080
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": "The March 2026 MixBytes V3 report states that its LazyOracle and VaultHub implementation bytecode matched the audited commit and documents replacement of the earlier v3.0.2 VaultHub implementation. The public packet does not provide an equivalent end-to-end bytecode-to-audit mapping for every legacy, user-fund-bearing Lido contract, so the all-contract green threshold is not demonstrated.",
+          "evidence_summary": "Public V3 evidence verifies the March 2026 LazyOracle and VaultHub implementation mapping to audited code, but a complete deployed-bytecode-to-audit mapping for every legacy Lido user-fund contract is not public. Yellow.",
+          "factor_id": "RD-F-001",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/lidofinance/audits/blob/main/Certora%20Lido%20V3%20Smart%20Contracts%20Security%20Assessment%20Report%20fix%20review%2003-26.pdf"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/lidofinance/audits/blob/main/Consensys%20Diligence%20Lido%20V3%20Security%20Audit%20-%2011-2025.pdf"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/deployment/lido-v3-02-mainnet/package.json"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/lidofinance/audits/blob/main/MixBytes%20Lido%20v3%20Security%20Audit%20Report%2003-26.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's public audit index records March 2026 V3 reviews and April 2026 CircuitBreaker reviews; the most recent V3 review is well within the v1.7 365-day green recency threshold as of 2026-07-24.",
+          "factor_id": "RD-F-002",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's public audit index reports the Certora V3 audit's 7 critical and 14 high findings as fixed, but it also records acknowledged medium and lower-severity findings. Public evidence does not independently prove resolution status for every acknowledged finding; yellow.",
+          "factor_id": "RD-F-003",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2025-07-lido-finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://diligence.security/audits/2025/08/lido-v3/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "14 distinct audit firms across protocol lifetime: Sigma Prime, Quantstamp, MixBytes, Oxorio, ChainSecurity, Statemind, Hexens, Certora, Pessimistic, Ackee Blockchain, OpenZeppelin, Runtime Verification, Composable Security, Consensys Diligence. 7 firms on V3 alone. Exceptional audit depth.",
+          "factor_id": "RD-F-004",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Tier-1 firms: Certora, OpenZeppelin, Consensys Diligence, ChainSecurity. Tier-1/2: Sigma Prime, Runtime Verification, Ackee Blockchain, Statemind, MixBytes. All firm tiers represented. No unknown or unranked firms.",
+          "factor_id": "RD-F-005",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V2 core: ~30-40 days audit-to-deploy delta. V3: Diligence fix-review Nov 2025, Phase 1 deploy Jan 2026 (~60+ days). Certora V3 FV completed 2026-01-10, Phase 2 deploy 2026-01-29 (~19 days). Temporal compression on FV relative to deploy for V3.",
+          "factor_id": "RD-F-006",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Certora/SecurityReports"
+            },
+            {
+              "source_type": "url",
+              "url": "https://hackmd.io/@lido/SyagEmMwo"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/387769/lido-stvaults-mainnet"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi lists Lido's active program with a $2,000,000 maximum critical smart-contract reward, 10% affected-funds calculation, and 29 assets in scope as of its June 2026 update. Green.",
+          "factor_id": "RD-F-007",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/audit-competition/lido-v3-bug-bounty-competition/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lido/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public bounty and audit materials establish an active disclosure channel and extensive audit history, but they do not independently document disposition timing for all vulnerability reports. The ignored-disclosure criterion cannot be verified from public evidence.",
+          "factor_id": "RD-F-008",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/loe-rocklogic-gmbh-slashing-incident/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/bugbounty/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido publishes multiple formal-verification engagements, including a 2026 CircuitBreaker review reporting 38 of 41 properties verified. The public materials do not establish that at least 80% of protocol-wide critical invariants are covered; yellow for substantial but partial coverage.",
+          "factor_id": "RD-F-009",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Certora/SecurityReports"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.certora.com/reports/lido-v2"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril/Semgrep tool output found. Extensive manual audit coverage (14 firms) functions as superset. Code4rena 2025-07: 0 high/medium on 30 contracts. Cannot enumerate raw tool findings without tool run. Needs tool run for programmatic verification.",
+          "factor_id": "RD-F-010",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2025-07-lido-finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Source inspection of Lido.sol (0.4.24), VaultHub.sol and StakingVault.sol (0.8.25): no selfdestruct usage found. OssifiableProxy pattern does not include selfdestruct. No audit finding mentioning selfdestruct in accessible summaries.",
+          "factor_id": "RD-F-011",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/VaultHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found in Lido.sol, VaultHub.sol, or StakingVault.sol source inspection. OssifiableProxy uses delegatecall only to admin-set implementation. Aragon AppProxyUpgradeable delegates to Aragon-governed implementation.",
+          "factor_id": "RD-F-012",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/StakingVault.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/VaultHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "External calls in Lido.sol use locator-resolved trusted contract addresses (stakingRouter.deposit() etc.), not user-controlled targets. No arbitrary call(target, data) pattern found in source inspection or audit summaries for core contracts.",
+          "factor_id": "RD-F-013",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://diligence.security/audits/2025/08/lido-v3/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido.sol documents CEI pattern ('firstly update the local state to prevent reentrancy') but lacks explicit nonReentrant modifier (Aragon-era contracts predate common OZ ReentrancyGuard). No reentrancy finding at high severity in any accessible audit summary for core contracts. Cannot verify V3 reentrancy posture without tool run.",
+          "factor_id": "RD-F-014",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "stETH and wstETH are ERC-20. Withdrawal Queue is ERC-721. No ERC-777 integration. ERC-721 hooks in Withdrawal Queue audited by Certora, Hexens, Statemind. No hook-reentrancy finding in accessible summaries.",
+          "factor_id": "RD-F-015",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither output available for programmatic detection. Extensive manual audit coverage by 14 firms covers this ground. Needs tool run for programmatic verification.",
+          "factor_id": "RD-F-016",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "stETH and wstETH both 18 decimals; oracle reporting in Gwei precision (consistent with Beacon Chain). No mixed-decimals issue found in any audit summary. Statemind, MixBytes, Certora audited math logic.",
+          "factor_id": "RD-F-017",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido.sol (0.4.24) uses SafeMath library for arithmetic. Solidity 0.8.x contracts have built-in overflow protection. No signed/unsigned confusion finding in any audit summary for core contracts.",
+          "factor_id": "RD-F-018",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "stETH uses EIP-712 permit via StETHPermit; OZ 3.4.0 ECDSA library includes ecrecover zero-return check. No ecrecover zero-return bypass finding in any audit summary for Lido core contracts.",
+          "factor_id": "RD-F-019",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "stETH EIP-712 domain separator verified by Sigma Prime, ChainSecurity, and Certora in V2 audits. V3 contracts on OZ 5.2.0 use standard EIP-712 with chainId. No missing-chainId finding in any accessible audit summary.",
+          "factor_id": "RD-F-020",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's deployed contracts use Aragon and OssifiableProxy upgrade patterns rather than UUPS. The UUPS authorization factor is not applicable.",
+          "factor_id": "RD-F-021",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xFdDf38947aFB03C621C71b06C9C70bce73f12999#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories/GHSA-5vp3-v4hc-gx76"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido.sol (0.4.24): initialize() uses Aragon onlyInit modifier (equivalent to OZ initializer). VaultHub (0.8.25): initialize() has OZ initializer modifier, constructor calls _disableInitializers(). StakingVault (0.8.25): initialize() has OZ initializer modifier, constructor calls _disableInitializers(). All implementations properly guarded against unprotected re-initialization.",
+          "factor_id": "RD-F-022",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/StakingVault.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/VaultHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "VaultHub constructor (line 314): calls _disableInitializers(). StakingVault constructor: calls _disableInitializers(). Legacy Lido.sol uses Aragon onlyInit pattern (functionally equivalent). OssifiableProxy is the proxy itself, not the implementation.",
+          "factor_id": "RD-F-023",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/StakingVault.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.25/vaults/VaultHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V2 audit scope: ~5,000 nSLOC, 7 firms. V3: ~15,000 LoC, 7+ firms. Consensys Diligence noted 'high complexity' and 'new vulnerabilities still being identified at end of audit' — honest acknowledgment, not a failure. Audit coverage depth is exceptional relative to complexity, but complexity is genuinely elevated for V3.",
+          "factor_id": "RD-F-024",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://diligence.security/audits/2025/08/lido-v3/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://hackmd.io/@lido/SyagEmMwo"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/audit-competition/lido-v3-bug-bounty-competition/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Full DAO + timelock custody type. Aragon LDO voting → EmergencyProtectedTimelock (3-day min) → AdminExecutor. No single EOA or low-threshold multisig controls protocol upgrades.",
+          "factor_id": "RD-F-025",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade control is full DAO governance (5% quorum + 50% support), not a threshold multisig. Committee multisigs are delegated operational scope: GateSeal 3/6, LEGO 4/8, Treasury 4/7, BORG 5/9, Emergency Activation 4/7, Emergency Execution 5/7.",
+          "factor_id": "RD-F-026",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-dual-governance-emergency-committee/10049"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No single admin EOA. Deployer 0x55bc991b2edf3ddb4c520b222be4f378418ff0fa relinquished control at launch (December 2020). All admin routes through Aragon DAO + EmergencyProtectedTimelock.",
+          "factor_id": "RD-F-027",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All committee multisigs have appropriate thresholds relative to TVL ($21.4B): GateSeal 3/6 (emergency pause only, 14-day cap), LEGO 4/8 (grants only), Treasury 4/7, BORG 5/9, Emergency Activation 4/7, Emergency Execution 5/7. None control protocol upgrades directly.",
+          "factor_id": "RD-F-028",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-dual-governance-emergency-committee/10049"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Signer co-hosting not assessable via WebFetch. Emergency committee signers span Certora, MixBytes, Ackee, SEAL, Lido DAO tech — diverse org affiliations suggest distributed custody but ASN/custodian analysis not performed.",
+          "factor_id": "RD-F-029",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-dual-governance-emergency-committee/10049"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Hot-wallet heuristic not assessable within budget. Admin path is the Aragon Agent (a contract), not a personal EOA. Committee signer wallet behavior pattern analysis not conducted.",
+          "factor_id": "RD-F-030",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/guides/protocol-levers/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No recent concerning signer-set changes. GateSeal last transaction 2024-04-23. No threshold reduction events analogous to Drift precursor pattern identified.",
+          "factor_id": "RD-F-031",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x8772E3a2D86B9347A2688f9bc1808A6d8917760C"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "EmergencyProtectedTimelock: MIN_EXECUTION_DELAY=259,200s (3 days), afterSubmitDelay=259,200s, afterScheduleDelay=86,400s. Total minimum: 4 days. Dual Governance can extend to 45+ days.",
+          "factor_id": "RD-F-032",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrades and oracle changes timelocked. GateSeal pause (3/6 multisig) is timelock-exempt for emergency pause (14-day cap, no drain vector). LDO mint via governance is timelocked. Not all actions timelocked.",
+          "factor_id": "RD-F-033",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/token-guides/steth-superuser-functions/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GateSeal Committee (3/6 multisig) is the pause-keeper, distinct from the Aragon DAO which is the upgrader. Emergency committees (4/7 and 5/7) are additional distinct actors for DG emergency mode.",
+          "factor_id": "RD-F-034",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-dual-governance-emergency-committee/10049"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade role: DAO governance → AdminExecutor. Fee distribution: StakingRouter (DAO-controlled). Oracle: AccountingOracle/ValidatorsExitBusOracle committee (separate). Treasury: Aragon Agent. GateSeal: separate committee. Multiple roles are distinct.",
+          "factor_id": "RD-F-035",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/token-guides/steth-superuser-functions/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Aragon Voting App uses balanceOfAt(voter, snapshotBlock) at vote creation. LDO MiniMeToken has checkpoint support. Flash loans acquired after snapshot have zero voting power for in-progress votes. Explicitly confirmed flash-loan resistant by Lido contributors.",
+          "factor_id": "RD-F-036",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blockworks.com/news/lido-dao-dual-governance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/aragon-apps/blob/8c46da8704d0011c42ece2896dbf4aeee069b84a/apps/voting/contracts/Voting.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Snapshot block mechanism defeats flash loan vote manipulation. 5% quorum = 50M LDO of 1B total supply — not achievable via single flash loan. Double protection from historical snapshot + high quorum.",
+          "factor_id": "RD-F-037",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/token/0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Minimum execution delay is 3+1=4 days through EmergencyProtectedTimelock. Not below 24h. Dual Governance can extend to 45+ days.",
+          "factor_id": "RD-F-038",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Aragon CallsScript executor uses call() (not delegatecall). Uses blacklist approach, not positive allowlist — any non-blacklisted address can be targeted by passed proposals. No delegatecall vector. Practical attack requires 5% quorum + 50% support + 5-day vote + 4-day timelock + Dual Governance opposition window.",
+          "factor_id": "RD-F-039",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/checking-aragon-vote/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/aragon/aragonOS/blob/master/contracts/evmscript/executors/CallsScript.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GateSeal Committee (3/6) can pause contracts pre-execution. Emergency Activation (4/7) can block DG execution. Dual Governance stETH escrow gives all stETH holders proportional veto-extension power. Tiebreaker Core breaks deadlocks.",
+          "factor_id": "RD-F-040",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-dual-governance-emergency-committee/10049"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "GateSeal pause authority remains relevant to pause/governance factors, but RD-F-041 is the narrower rescue/emergencyWithdraw path. The checked Lido core path does not expose that fund-drain primitive.",
+          "evidence_summary": "GateSeal is a one-time pause/seal mechanism rather than a rescue or emergencyWithdraw fund-drain path. Lido.sol explicitly disables Aragon token recovery by reverting transferToVault(). No admin-callable core stETH rescue/emergencyWithdraw drain path was found.",
+          "factor_id": "RD-F-041",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/gate-seals/blob/main/contracts/GateSeal.vy"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/token-guides/steth-superuser-functions/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LDO MiniMeToken has generateTokens() with no hard supply cap. Controller = Aragon Agent (DAO-governed + timelocked post-July 2025). Practical mint requires full DAO governance process. stETH minting is demand-driven, not admin-callable with unlimited supply.",
+          "factor_id": "RD-F-042",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/token/0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol live since December 2020 (>5 years). Deployer 0x55bc991b2edf3ddb4c520b222be4f378418ff0fa (Lido: Deployer 1) transferred control to Aragon DAO at launch. No deployer EOA retains admin rights in 2026.",
+          "factor_id": "RD-F-043",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Admin paths route through Aragon Agent (a contract). No single admin EOA whose wallet interactions can be assessed. Chainalysis-style feed not available.",
+          "factor_id": "RD-F-044",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x3e40D73EB977Dc6a537aF587D48316feE66E9C8c"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V3 deployed via DAO votes; deployed-mainnet.json in repo maps contracts. Certora fix review (03-2026) confirmed no discrepancy. Specific constructor-arg cross-referencing not performed within budget.",
+          "factor_id": "RD-F-045",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/deployed-mainnet.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All core contracts verified on Etherscan: stETH proxy, implementation, Aragon Agent, EmergencyProtectedTimelock, Withdrawal Queue. ZKsync bridge was verified before pause. No unverified production contracts found.",
+          "factor_id": "RD-F-046",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "63,361 LDO holders; only 6 delegates with >1M LDO each per Lido scorecard. High concentration typical for governance tokens at this scale. 5% quorum = 50M LDO from 1B total supply. Gini not precisely computed.",
+          "factor_id": "RD-F-047",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/token/0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/scorecard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": "stETH implementation at 0x6ca84080381e43938476814be61b779a8bb6a600 confirmed: no external feed calls, all accounting via internal totalPooledEth/totalShares ratio updated by AccountingOracle committee reports. StakingRouter source also confirmed no external price oracle calls.",
+          "evidence_summary": "Lido's core oracle uses AccountingOracle and HashConsensus with a 5-of-9 committee quorum to report consensus- and execution-layer state. The reviewed core path does not use a third-party price-feed or DEX-TWAP oracle.",
+          "factor_id": "RD-F-048",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/accounting-oracle"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Docs confirm: 'Oracle daemons could stop pushing their reports for extended periods of time in case of no finality on the Ethereum Consensus Layer.' No fallback oracle by design. Yellow because no fallback documented or implemented.",
+          "evidence_summary": "AccountingOracle = Primary for stETH rebase; ValidatorsExitBusOracle = Primary for exit requests. No secondary or fallback oracle. If committee fails quorum, rebase halts and exit processing stalls.",
+          "factor_id": "RD-F-049",
+          "gap_reason": null,
+          "notes": "Single-path oracle design — no fallback. Yellow reflects absence of secondary source, not a defect per se for a Beacon Chain reporting oracle.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/accounting-oracle"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/validators-exit-bus-oracle"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "stETH implementation confirmed no external protocol calls. StakingRouter confirmed no external price oracle calls. Dependency is entirely internal or infrastructure-level (Beacon Chain). No third-party DeFi protocol dependency in the core stETH accounting path.",
+          "evidence_summary": "Core dependencies mapped: Ethereum Beacon Chain Deposit Contract (0x00000000219ab540356cBB839Cbe05303d7705Fa), Ethereum Consensus Layer finality, 9-member oracle committee, Aragon DAO + Dual Governance. No Aave/Uniswap protocol-level dependency in core stETH mechanics.",
+          "factor_id": "RD-F-050",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/holders/lido-oracle/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/StakingRouter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "Protocol docs: 'Oracle daemons could stop pushing their reports for extended periods of time in case of no finality on the Ethereum Consensus Layer. This would ultimately result in no oracle reports and no stETH rebases for this whole period.' GateSeal provides emergency pause but not automatic fallback.",
+          "evidence_summary": "No fallback oracle. If oracle committee fails quorum, stETH rebase halts for the frame. Docs explicitly state daemons may stop reporting during ETH consensus non-finality. No automatic secondary source or last-known-price fallback.",
+          "factor_id": "RD-F-051",
+          "gap_reason": null,
+          "notes": "Yellow is appropriate: absence of fallback is a known architectural choice for a Beacon Chain reporting system, but it is a risk factor — prolonged ETH non-finality has occurred historically.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/accounting-oracle"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "The public oracle manual identifies the execution and consensus layer nodes, Keys API, off-chain daemon, HashConsensus, AccountingOracle, and ValidatorsExitBusOracle as operational dependencies. No dedicated public dependency-failure analysis was identified.",
+          "evidence_summary": "Partial breakage analysis: oracle offline halts rebase; Beacon Chain non-finality halts oracle + exits; DAO capture enables false oracle committee changes. No formal published breakage-analysis documentation found.",
+          "factor_id": "RD-F-052",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/guides/oracle-operator-manual/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": "stETH impl 0x6ca84080381e43938476814be61b779a8bb6a600: getSharesByPooledEth confirmed uses internal state variables only. StakingRouter source confirmed no external price oracle calls. AccountingOracle reports validator balances — not a price feed. Factor definition (spot DEX pool with no TWAP) is architecturally inapplicable.",
+          "evidence_summary": "[★ CRITICAL] No DEX spot price oracle used anywhere in Lido core protocol. stETH/ETH rate is internal accounting (totalPooledEth/totalShares). No slot0(), getReserves(), or DEX pool read exists in core contracts.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": "GREEN with high confidence. Lido's oracle is fundamentally different from the DEX-spot pattern this factor targets.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/StakingRouter.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido does not use any DEX TWAP oracle. N/A.",
+          "factor_id": "RD-F-054",
+          "gap_reason": null,
+          "notes": "Protocol uses committee-based consensus oracle for Beacon Chain reporting. TWAP factor not applicable.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido does not use any DEX pool for pricing. N/A.",
+          "factor_id": "RD-F-055",
+          "gap_reason": null,
+          "notes": "No DEX pool oracle used.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido uses committee consensus oracle, not a DEX pool oracle. N/A.",
+          "factor_id": "RD-F-056",
+          "gap_reason": null,
+          "notes": "Single-venue vs medianization distinction not applicable to a committee oracle.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": "AccountingOracle does not report a price that can 'deviate' from a reference — it reports validator balances. The deviation-check concept maps awkwardly to this oracle architecture. No automated circuit breaker exists. GateSeal is manual (committee-triggered). Yellow reflects absence of automation, not a critical defect given the oracle's nature.",
+          "evidence_summary": "No automated circuit breaker on oracle price deviation. GateSeal Committee (3-of-6) provides manual emergency pause for ValidatorsExitBusOracle and Withdrawal Queue but this is not automatic.",
+          "factor_id": "RD-F-057",
+          "gap_reason": null,
+          "notes": "Yellow per scoring discipline: circuit breaker absent, but the oracle architecture (Beacon Chain balance reporting) means price-deviation checks are not directly applicable. Logging as yellow rather than red per methodology template: 'protocol halts or reverts if oracle-reported price deviates > X% from a reference' — the oracle does not report a price against which to measure deviation.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No circuit breaker configured (see F057). N/A.",
+          "factor_id": "RD-F-058",
+          "gap_reason": null,
+          "notes": "Conditional on F057 — no circuit breaker present.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": "HashConsensus/BaseOracle: 'if (_getTime() > deadline) revert ProcessingDeadlineMissed(deadline)' — prevents late submissions. However if oracle committee simply doesn't submit (below quorum), there is no on-chain mechanism that rejects use of a stale stETH rate. The stETH ratio remains at the last reported value indefinitely until the next successful oracle report.",
+          "evidence_summary": "Frame-based deadline enforcement exists (StaleReport() reverts late submissions) but there is no consumer-side staleness rejection if reporting simply lags — stETH ratio just doesn't update. No maxStaleness check on oracle output consumption.",
+          "factor_id": "RD-F-059",
+          "gap_reason": null,
+          "notes": "Yellow: submission deadline exists, but no on-chain staleness guard on the consumer side. For Lido's architecture this is by design — there is no oracle consumer that could reject the stale rate.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/oracle/BaseOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido does not use Chainlink aggregators in its core protocol. N/A.",
+          "factor_id": "RD-F-060",
+          "gap_reason": null,
+          "notes": "No Chainlink feed usage in Lido core.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido does not derive prices from LP token balances. stETH/wstETH ratio is internal share accounting. N/A.",
+          "factor_id": "RD-F-061",
+          "gap_reason": null,
+          "notes": "Not applicable to LST issuance protocol with internal accounting.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Oracle operator manual: '9 participants with quorum of 5.' Fast-Lane mechanism distributes reporting responsibility. DSM uses 4-of-6 guardians independently. No single-keeper point of failure in the oracle/keeper layer.",
+          "evidence_summary": "Oracle committee has 9 independent members with 5-of-9 quorum (4-node fault tolerance). Deposit Security Module uses separate 4-of-6 guardian committee. No single-keeper dependency.",
+          "factor_id": "RD-F-062",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/deposit-security-module"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/guides/oracle-operator-manual/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "DefiLlama displayed $17.655B TVL on 2026-07-24, with $17.651B on Ethereum and 30-day TVL growth of 17.7%. Its methodology identifies the TVL as staked tokens, which are ETH-backed liquid-staking positions.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed measure is top-10 depositor-wallet share. Public sources reviewed provide protocol-level and chain-level TVL, but not a verifiable mapping from Lido deposits to a top-10 depositor-wallet share. Chain concentration and downstream wstETH collateral use are not substitutes for this measure.",
+          "factor_id": "RD-F-064",
+          "gap_reason": "protocol_opacity",
+          "notes": "Not assessed: no independently verifiable public top-10 depositor-wallet concentration dataset was available at review time; no estimate or proxy score is used.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's June 2026 public stress analysis reports that, during the April KelpDAO event, Curve main-pool VWAP bottomed near 0.9941 ETH per stETH and returned near parity by May 20. For $1M fixed-sell wstETH quotes, median impact was -1.6 bps across 236 observations; the stress-window median was -5.0 bps and the worst 7-day average was -15.9 bps. Liquidity remained functional, though stress increased execution cost.",
+          "factor_id": "RD-F-065",
+          "gap_reason": null,
+          "notes": "The observed $1M quote series is a direct public execution-depth measure, not an extrapolated claim about liquidation of all downstream wstETH collateral.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/steth-liquidity-held-ground-during-stress-event/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Lido issues liquid-staking tokens representing deposited ETH and associated staking rewards/penalties; it does not operate borrower/supplier lending markets with utilization rates.",
+          "factor_id": "RD-F-066",
+          "gap_reason": "not_applicable",
+          "notes": "Lending-market utilization is structurally absent.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido has no lending debt book. The directly comparable economic loss events documented by Lido were node-operator slashings: RockLogic affected 11 validators, and the Launchnodes event affected 20 validators with projected penalties and missed rewards of 28.677 ETH; Launchnodes reported compensation for stakers. These events do not evidence protocol bad debt.",
+          "factor_id": "RD-F-067",
+          "gap_reason": null,
+          "notes": "For this liquid-staking protocol, validator slashing is the closest economic-loss analogue; operational incident frequency is also assessed separately under Category 5.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/loe-rocklogic-gmbh-slashing-incident/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/post-mortem-launchnodes-slashing-incident/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: stETH represents ETH withdrawable from Lido rather than a CDP or lending position with a collateralization ratio.",
+          "factor_id": "RD-F-068",
+          "gap_reason": "not_applicable",
+          "notes": "No lending/CDP collateralization parameter exists.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: stETH and wstETH are liquid-staking token forms representing deposited ETH and its staking rewards/penalties, not an algorithmic or under-collateralized stablecoin.",
+          "factor_id": "RD-F-069",
+          "gap_reason": "not_applicable",
+          "notes": "Stablecoin-design mechanism is absent.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No empty cToken-style lending market exists. Lido's wstETH is a wrapper whose balance represents a share of the stETH total supply; wrapping locks stETH and mints wstETH according to the share bookkeeping formula, while unwrapping burns wstETH and releases stETH. This is not a cToken market with a zero-supply exchange-rate state.",
+          "factor_id": "RD-F-070",
+          "gap_reason": null,
+          "notes": "Critical factor reviewed against the actual wstETH share wrapper; no cToken-style market or empty-market exchange-rate mechanism was identified.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Lido's liquid-staking issuance and wrapper design do not create new lending markets for depositor-funded market seeding.",
+          "factor_id": "RD-F-071",
+          "gap_reason": "not_applicable",
+          "notes": "No lending-market listing mechanism exists.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Lido has no lending-market listing process, so a market-listing governance threshold is not an economic control of this protocol.",
+          "factor_id": "RD-F-072",
+          "gap_reason": "not_applicable",
+          "notes": "No lending-market listing mechanism exists.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Lido does not operate borrower positions or per-asset borrowing limits. Its token documentation describes liquid staking and withdrawals rather than lending markets.",
+          "factor_id": "RD-F-073",
+          "gap_reason": "not_applicable",
+          "notes": "No borrowing or borrow-cap mechanism exists.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's wstETH is an ERC-20 wrapper for stETH, not an ERC-4626 vault. The documented wrapper has a fixed conversion relationship to stETH at any moment and uses explicit wrap/mint and unwrap/burn mechanics; ERC-4626 virtual-share-offset requirements do not apply.",
+          "factor_id": "RD-F-074",
+          "gap_reason": null,
+          "notes": "The factor was reviewed against wstETH's actual share-wrapper mechanics rather than assumed inapplicable solely because Lido is not a lending protocol.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's wstETH documentation specifies that it represents a share of stETH total supply and can be converted to stETH at the same rate for everyone at a given time. Wraps lock stETH and mint wstETH; unwraps burn wstETH and unlock stETH. This wrapper design does not expose a first-depositor share-inflation pool.",
+          "factor_id": "RD-F-075",
+          "gap_reason": null,
+          "notes": "Reviewed as a share-accounting mechanism; no donation-driven empty-pool conversion rule was identified in the documented wrapper mechanics.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/lido-tokens-integration-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's Ethereum stETH contract has been live since December 2020. It is well beyond the v1.7 green threshold of 365 days, and no evidence reviewed shows a recent full replacement of the core stETH surface.",
+          "factor_id": "RD-F-076",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public record contains node-operator and oracle-key incidents, but no confirmed protocol smart-contract exploit or user-fund drain. Those operational events are not counted as protocol exploits under this factor's definition.",
+          "factor_id": "RD-F-077",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/disclosures/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No confirmed protocol exploit was identified in the reviewed public incident record, so the three-incident chronic-exploit threshold is not met.",
+          "factor_id": "RD-F-078",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/disclosures/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No same-root-cause repeat protocol exploit was identified. Documented RockLogic and Launchnodes events were distinct node-operator operational failures rather than repeat protocol-code exploits.",
+          "factor_id": "RD-F-079",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/loe-rocklogic-gmbh-slashing-incident/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/post-mortem-launchnodes-slashing-incident/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No confirmed protocol-code exploit was identified in the reviewed public record; therefore there is no recent exploit date to place inside the 365-day risk window.",
+          "factor_id": "RD-F-080",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/disclosures/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "For the May 2025 Chorus One oracle-key compromise, Lido kept the protocol operational, checked the other oracle participants, and executed the key rotation. The final post-mortem was not published until August, so the otherwise strong containment response is scored yellow rather than green.",
+          "factor_id": "RD-F-081",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The May 2025 Chorus One incident thread records that its full post-mortem was published on August 25, more than 90 days after the incident. That exceeds the v1.7 red threshold for this factor.",
+          "factor_id": "RD-F-082",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Independent post-incident audit scope for the affected Chorus One key-management controls could not be verified from the public record.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "protocol_opacity",
+          "notes": "The public incident record establishes containment and a later post-mortem, but does not establish an independent re-audit of the affected operator-key security controls with a verifiable scope.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public DeFiLlama Lido daily TVL series for the 91 observations ending 2026-07-24 has a calculated coefficient of variation of approximately 0.131, below the v1.7 green threshold of 0.15.",
+          "factor_id": "RD-F-084",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The Chorus One oracle key was compromised overnight on May 10, 2025; the public Lido incident post is timestamped May 11 at 09:56 UTC. The documented public acknowledgment is therefore beyond the four-hour red threshold.",
+          "factor_id": "RD-F-085",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido precautionarily paused deposits on its wstETH zkSync L1 bridge in March 2026 after an Immunefi-reported refund-path weakness. The bulletin identifies the reason and says withdrawals and transfers remained operational; one documented precautionary pause is yellow.",
+          "factor_id": "RD-F-086",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/security-bulletin-batched-immunefi-reported-weakness-disclosure-march-2026-funds-not-at-risk/11342"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The duration of all relevant pauses in the trailing twelve months could not be fully verified from public records.",
+          "factor_id": "RD-F-087",
+          "gap_reason": "protocol_opacity",
+          "notes": "The public bulletin confirms a March 2026 bridge-deposit pause but does not provide a complete, independently verifiable pause-duration ledger through the assessment date.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A complete public trailing-year record of full core address migrations was not available for verification.",
+          "factor_id": "RD-F-088",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public deployment documentation identifies current contracts but does not provide a complete, verifiable trailing-year migration ledger sufficient to prove or rule out every full user-fund address migration.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Nexus Mutual's Lido product page and current Cover schedule show Lido is coverable through a live cover offering, so the prior no-coverage conclusion is not supportable. Public pages do not disclose aggregate Lido cover or demonstrate coverage at or above 5% of TVL; score yellow.",
+          "factor_id": "RD-F-089",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://app.nexusmutual.io/cover/product/130"
+            },
+            {
+              "source_type": "url",
+              "url": "https://nexusmutual.io/cover"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No confirmed Tornado Cash → Lido protocol interaction in trailing 30 days from public OSINT. May 2025 Chorus One oracle attacker wallet is highest-priority unresolved check; public label: no mixer attribution found. Requires Chainalysis/TRM licensed feed for definitive check on oracle-wallet attacker identity.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "external_api_blocked",
+          "notes": "T-09 v1 phase-2 signal; tier-C (advisory only). Applicable to Lido. Requires licensed attribution feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2025/05/12/ethereum-staking-giant-lido-loses-just-14-eth-in-hacking-attempt"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No small-value drain pattern preceding a larger drain detected on stETH, Withdrawal Queue, or Staking Router contracts. No Rekt incidents. No pre-strike test-tx patterns identified in public OSINT.",
+          "factor_id": "RD-F-091",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Pattern not evidenced.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lido"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-on-ethereum-node-operator-numic-security-incident-disclosure-may-21-2024/7536"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Primary deployer 0x55bc991b2edf3ddb4c520b222be4f378418ff0fa is from December 2020 and effectively dormant for routine operations. Contract deployments at V3 scale route through DAO governance and timelocked execution via AdminExecutor. Deployer EOA is not the active admin path post-V2. Structural N/A for mature protocol governance model.",
+          "factor_id": "RD-F-092",
+          "gap_reason": "protocol_opacity",
+          "notes": "v1-deferred signal. Gray by construction — deployer is dormant, admin actions go through governance.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x55bc991b2edf3ddb4c520b222be4f378418ff0fa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No observed priority-fee ≥5x EMA baseline from threat-actor-labeled wallets on Lido core contracts. No Rekt incidents. Lido's committee oracle is not susceptible to single-block gas-racing manipulation.",
+          "factor_id": "RD-F-093",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green by absence of evidence and architectural constraints.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public reports of clone bytecode deployments targeting Lido's core contract patterns. Lido is original (not a fork); its contract architecture is unique and not a common exploit-template target class in the hack database.",
+          "factor_id": "RD-F-094",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green by absence of evidence.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No known exploit-template selector patterns documented for Lido's Aragon proxy + committee oracle architecture. Hack database: no Lido entries. Not a Compound-fork or Uniswap-fork class protocol.",
+          "factor_id": "RD-F-095",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "User-level signal. stETH approvals to unverified contracts is a user risk, not a protocol-level signal detectable at the Lido protocol page level. Lido is not a lending protocol with user-facing approval hooks in its core contracts.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "protocol_opacity",
+          "notes": "v1-deferred signal. Gray — user-level scope, not protocol-level.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/contracts/lido/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No sybil transaction pattern detected on Lido core contracts. CSM has stake-bonding requirements that gate sybil registration. Core stETH staking has no sybil surface (permissionless). No incidents in hack database.",
+          "factor_id": "RD-F-097",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "TVL $21.39B as of 2026-04-28. 30d change: +17.29%. 1d change: -0.73%. No anomalous 1h drop event. Kelp DAO April 2026 contagion triggered sector-wide TVL decline — Lido EarnETH vault paused but core stETH pool TVL not drained. Sector-suppression condition applies to April 2026 event.",
+          "factor_id": "RD-F-098",
+          "gap_reason": null,
+          "notes": "T-09 v1 launch signal; tier-A. Would not fire today. Signal applicable and well-monitored via DeFiLlama.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lido"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.cryptotimes.io/2026/04/24/lido-proposes-2500-steth-to-help-aave-after-kelpdao-exploit/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's AccountingOracle is a committee oracle, not Chainlink. The analogous deviation check is stETH/ETH exchange rate vs Curve pool spot price. Currently within ~0.2% of peg. Structural yellow: Curve stETH/ETH liquidity declined from ~$800M to ~$274M post-Shapella, raising peg sensitivity. May 2025 Chorus One oracle key compromise demonstrated oracle is a targeted attack surface (5-of-9 quorum held). Signal requires custom implementation for committee oracle vs Curve spot comparison.",
+          "factor_id": "RD-F-099",
+          "gap_reason": null,
+          "notes": "T-09 v1 phase-2 signal; tier-B. Yellow: not firing today but elevated structural sensitivity due to Curve pool thinning + oracle compromise history.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.bitget.com/academy/steth-lido-guide"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2025/05/12/ethereum-staking-giant-lido-loses-just-14-eth-in-hacking-attempt"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.dlnews.com/articles/defi/low-lido-steth-staked-ethereum-liquidity-could-cause-depeg/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's core stETH contract is not a lending protocol. Committee oracle is not susceptible to single-block flash-loan manipulation. stETH can be flash-loaned from Aave but for attacks on third-party protocols, not Lido's own contracts. No flash loan events targeting Lido core oracle or governance contracts detected.",
+          "factor_id": "RD-F-100",
+          "gap_reason": null,
+          "notes": "T-09 v1 phase-2 signal; tier-B. Limited applicability for Lido core. Green.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.fxstreet.com/cryptocurrencies/news/wise-lending-market-exploited-for-177-eth-in-a-flash-loan-attack-202401130252"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Aragon Voting App active. EmergencyProtectedTimelock min 3-day delay. Dual Governance adds 5-45 day veto window. April 2026 governance activity was benign Lido/Aave recovery proposal. No malicious-pattern proposals (admin role change, delegatecall to non-allowlisted target, flash-loan-feasible proposer weight) detected. Dual Governance substantially raises bar for flash-loan governance attacks.",
+          "factor_id": "RD-F-101",
+          "gap_reason": null,
+          "notes": "T-09 v1 launch signal; tier-B. Green today. Dual Governance is a structural improvement to governance attack resistance.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blockworks.com/news/lido-dao-dual-governance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://cryptorank.io/news/feed/b7f5c-lido-activates-dual-governance-to-stop-hostile-takeovers-and-protect-ethereum-stakers"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.cryptotimes.io/2026/04/24/lido-proposes-2500-steth-to-help-aave-after-kelpdao-exploit/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No publicly confirmed anomalous admin or upgrade transaction was identified in the review. Lido documents the Emergency Protected Timelock and a permanent CircuitBreaker emergency-pause layer; the latter is the successor to expiring GateSeal instances. The 2025 Chorus One oracle rotation followed the DAO emergency process.",
+          "factor_id": "RD-F-102",
+          "gap_reason": null,
+          "notes": "T-09 v1 phase-2 signal; tier-B. Green today. Note: GateSeal pause tx pattern needs suppression rule.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/contracts/circuit-breaker/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido publicly documents Wormhole and Axelar wstETH bridge endpoint components and emergency brakes. No signer-set change event was confirmed by the reviewed public materials. Separately documented LayerZero wstETH support is a monitoring input only; it does not alter this assessment's approved seven-deployment topology.",
+          "factor_id": "RD-F-103",
+          "gap_reason": null,
+          "notes": "T-09 v1 launch signal; tier-A. Green today. Advisory: non-canonical LZ OFT monitoring gap.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/multisigs/emergency-brakes/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's core protocol does not hold stablecoin collateral. stETH is an LST, not a stablecoin. Stablecoin depeg signal definition requires stablecoin in protocol dependency graph with ≥5% TVL exposure. Lido EarnETH vault (separate product) had rsETH exposure but rsETH is an LST not a stablecoin. Not applicable under strict signal definition for core stETH protocol.",
+          "factor_id": "RD-F-104",
+          "gap_reason": "not_applicable",
+          "notes": "T-09 v1 launch signal; tier-B. Gray — signal not applicable to Lido core LST architecture by definition.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "lido.fi and stake.lido.fi are high-value targets for frontend compromise (Curve-class attack). No confirmed DNS/frontend drift event in 2024-2026 from public OSINT. No public IPFS content hash baseline for lido.fi. External monitoring stack required for live signal. Cannot confirm or deny from static OSINT assessment.",
+          "factor_id": "RD-F-105",
+          "gap_reason": "external_api_blocked",
+          "notes": "T-09 v1 phase-2 signal; tier-A. Gray — external monitoring infrastructure required.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2025/05/14/the-protocol-lido-avoids-major-hack"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's public deployment and emergency-brakes documentation identifies Wormhole and Axelar bridge components for wstETH and their pause controls. No public report of an unverified-mint event was identified in the review. Public LayerZero wstETH support is noted as a monitoring input only and does not change the approved deployment topology.",
+          "factor_id": "RD-F-106",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green for canonical bridges. Non-canonical LZ OFT risk noted as advisory.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/multisigs/emergency-brakes/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "This signal is not directly observable from public static material. Lido documents DAO governance through Dual Governance and the Emergency Protected Timelock, while its emergency controls are committee-based rather than a single public admin EOA. New-device or geography telemetry is unavailable publicly.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "protocol_opacity",
+          "notes": "v1-deferred signal. Gray — structural N/A for multisig/timelock-only admin architecture.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/protocol-levers/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "lidofinance/core GitHub repo active (last commit 2026-04-28). No public reports of unauthorized force-push or sensitive-branch push. Live GitHub API monitoring required for signal; cannot confirm or deny from static OSINT.",
+          "factor_id": "RD-F-108",
+          "gap_reason": "external_api_blocked",
+          "notes": "v1-deferred signal. Gray — live GitHub monitoring required.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No confirmed scam-spike event above background level. Background level of social impersonation (fake Lido X accounts, Discord scam bots) is elevated as a persistent condition for top-20 DeFi brands. Social-media monitoring vendor required for spike-above-baseline detection.",
+          "factor_id": "RD-F-109",
+          "gap_reason": "external_api_blocked",
+          "notes": "v1-deferred signal. Gray — social monitoring stack required.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://discord.gg/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Aragon Voting App governance appears normally paced as of 2026-04-28. April 2026 emergency Kelp DAO response proposal and May 2025 Chorus One oracle rotation both executed smoothly through standard governance. No backlog of unusually stalled proposals detected.",
+          "factor_id": "RD-F-110",
+          "gap_reason": null,
+          "notes": "v1-deferred signal. Green.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Official Lido governance material identifies Vasiliy Shapovalov and Konstantin Lomashuk as founding members. Lido later identifies Shapovalov as Executive Director of the Lido Labs Foundation and lists both figures on its public LidoConnect programme. This meets the real-name, publicly attributable core-member threshold.",
+          "factor_id": "RD-F-111",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/rcc-2-july-1-2022-september-30-2022-budget-request/2729"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/recap-lido-q3-2025-tokenholder-update/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lidoconnect-2023-recap/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Official Lido sources provide multiple public accountability trails for Shapovalov and Lomashuk, including governance attribution, leadership disclosure, proposal authorship, and conference appearances. Available public material does not establish three qualifying trails for a majority of the complete core-contributor set.",
+          "factor_id": "RD-F-112",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/lips/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/rcc-2-july-1-2022-september-30-2022-budget-request/2729"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lidoconnect-2023-recap/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Official Lido sources establish named founding and governance roles, but available public material does not establish two audited, non-exploited prior protocols for each core member. No verified rug-affiliation evidence appears in the cited sources.",
+          "factor_id": "RD-F-113",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/rcc-2-july-1-2022-september-30-2022-budget-request/2729"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/lips/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan labels the stETH deployer as Lido: Deployer 1, shows a five-year transaction history, and records Binance 2 as its funder. The address also carries the lido.banteg.eth ENS name. This public record supports a long-lived, identifiable development history rather than a fresh or rug-linked deployer.",
+          "factor_id": "RD-F-114",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x55bc991b2edf3ddb4c520b222be4f378418ff0fa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The cited public materials do not supply a comprehensive, attributable cross-database review of every core member, signer, handle, and wallet against public rug datasets.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "requires_curator_input",
+          "notes": "not_assessed: Public Lido sources identify core figures, but do not constitute a complete verified rug-affiliation database search across all team members and privileged signers.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public core repository establishes an inspectable engineering record, but it does not identify the most recent admin-permissioned code change or verify its author's first-contribution date. The required tenure measurement remains unresolved.",
+          "factor_id": "RD-F-116",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The stETH deployer has the reverse ENS name lido.banteg.eth. The banteg GitHub profile is a long-lived public developer identity associated with Yearn and numerous public repositories, and its Lido-vault repository documents a Lido stETH integration. This provides a verifiable identity anchor for the deployer name.",
+          "factor_id": "RD-F-117",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x55bc991b2edf3ddb4c520b222be4f378418ff0fa"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/banteg"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/banteg/lido-vault"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The cited public materials do not provide an archival alias-database or historical social-account comparison sufficient to assess handle reuse across all relevant contributors.",
+          "factor_id": "RD-F-118",
+          "gap_reason": "requires_curator_input",
+          "notes": "not_assessed: Establishing or excluding historical alias reuse requires an archival cross-platform review beyond the evidence gathered here.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's core repository is public, but the reviewed GitHub surface does not provide a verified contributor-geography registry or a completed commit-hour analysis for the latest relevant contributors.",
+          "factor_id": "RD-F-119",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's public LidoConnect programme lists presentations and panels featuring Vasiliy and Konstantin, and Lido's 2025 Tokenholder Update includes a recorded leadership session. These public appearances support a positive but not complete team-wide video/voice assessment.",
+          "factor_id": "RD-F-120",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lidoconnect-2023-recap/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/recap-lido-q3-2025-tokenholder-update/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Official material shows multiple independent public trails for named Lido contributors, including governance authorship, executive disclosure, and conference participation. Available material does not establish a per-contributor team average sufficient for the highest OSINT-depth disposition.",
+          "factor_id": "RD-F-121",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/lips/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/recap-lido-q3-2025-tokenholder-update/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lidoconnect-2023-recap/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido documents DAO-based governance and public governance activity, but the cited public sources do not map all contributor payment recipients or provide the current DPRK cluster data required for a three-hop payroll-routing determination.",
+          "factor_id": "RD-F-122",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/lido-dao/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/goose-2025-eggs-2025-final-report/11304"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public governance posts document planned Dual Governance and EmergencyProtectedTimelock changes, but do not provide an exhaustive trailing-90-day reconciliation of all on-chain ACL or rescue events against the public discussion record.",
+          "factor_id": "RD-F-123",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/dual-governance-security-upgrade-plan-ragequit-eth-withdrawal-delay-fix/10543"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/lip-28-dual-governance/10032"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan identifies Lido: Deployer 1, shows Binance 2 as its funder, and records its first transaction in the protocol-launch period. The public explorer record contains no direct mixer-to-deployer funding event in the 30-day window; the visible first-hop funding is an identified exchange address.",
+          "factor_id": "RD-F-124",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x55bc991b2edf3ddb4c520b222be4f378418ff0fa"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The cited public materials do not provide a current DPRK/Lazarus cluster feed and complete three-hop transaction trace for the deployer addresses.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "requires_curator_input",
+          "notes": "not_assessed: This critical factor requires a current attribution feed and a reproducible three-hop trace; an explorer label alone is insufficient to establish either a clean or adverse result.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido is an original protocol with no upstream fork. lidofinance/core README and profile §5 confirm no fork relationship.",
+          "factor_id": "RD-F-126",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork.",
+          "factor_id": "RD-F-127",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork.",
+          "factor_id": "RD-F-128",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork.",
+          "factor_id": "RD-F-129",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — original protocol, fork depth = 0.",
+          "factor_id": "RD-F-130",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork.",
+          "factor_id": "RD-F-131",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork.",
+          "factor_id": "RD-F-132",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "forge-std submodule in .gitmodules lacks pinned commit SHA (test tooling dependency, low production risk). OZ production libraries pinned exactly in package.json: @openzeppelin/contracts@3.4.0, @openzeppelin/contracts-v4.4@4.4.1, @openzeppelin/contracts-v5.2@5.2.0. Security-critical production libs are pinned; test tooling is not.",
+          "factor_id": "RD-F-133",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/.gitmodules"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No malicious-release incident affecting @openzeppelin/contracts (3.4.0, 4.4.1, 5.2.0) or forge-std in the past 90 days found in any public security advisory or GitHub advisory database.",
+          "factor_id": "RD-F-134",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OZ 3.4.0: UUPS vulnerability (GHSA-5vp3-v4hc-gx76) affects 4.1.0-4.3.2 only — not 3.4.0. TimelockController CVE-2021-39168 affects 3.x but Lido does NOT use OZ TimelockController (uses Aragon ACL + custom EmergencyProtectedTimelock). OZ 5.2.0: no current critical advisories. Net: no currently-applicable critical CVE for Lido's actual usage pattern.",
+          "factor_id": "RD-F-135",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories/GHSA-5vp3-v4hc-gx76"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/advisories/GHSA-vrw4-w73r-6mm8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V3.0.2 (April 23, 2026) is current release. deployed-mainnet.json in repo maps addresses. Certora and MixBytes fix reviews (03-2026) confirmed deployed code matches audited code.",
+          "factor_id": "RD-F-136",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "~4 major upgrades in trailing 9 months (V3 stVaults Jan 2026, CSM v2 Oct 2025, Triggerable Withdrawals Jul 2025, Dual Governance Jul 2025). Active upgrade cadence for V3 launch cycle. All went through DAO vote + timelock.",
+          "factor_id": "RD-F-137",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lido-v3-is-live-modular-infrastructure-for-a-new-paradigm-of-ethereum-staking/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/387769/lido-stvaults-mainnet"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No evidence of timelock-bypassing hot-patches. ZKsync bridge vulnerability (March 2026) followed: pause → audit → DAO vote for fix deployment. No untimelocked deployments identified.",
+          "factor_id": "RD-F-138",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/LidoFinance/status/2028803376306336068"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V3 audited by Certora, MixBytes, Consensys Diligence (12-2025) with fix reviews (01-2026, 03-2026). CSM v2 audited (09-2025). DG hotfix reviewed (Certora 08-2025). ZKsync bridge fix audited before re-deployment. No unreviewed post-audit code changes found.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No fix-merged-but-not-deployed gap identified. ZKsync bridge fix workflow was: pause → fix prepared → audit → governance vote → deploy. Certora fix reviews confirm fixes deployed.",
+          "factor_id": "RD-F-140",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/LidoFinance/status/2028803376306336068"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No test-mode parameters in production. EmergencyProtectedTimelock uses production delay values (259200s, 86400s). Admin is full DAO governance, not deployer EOA.",
+          "factor_id": "RD-F-141",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xCE0425301C85c5Ea2A0873A2dEe44d78E02D2316"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/deployed-mainnet.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido uses Aragon AppProxyUpgradeable pattern, pre-dating OZ upgrades plugin. No OZ upgrades plugin collision confirmation found. However, Certora formal verification (V3) would likely detect storage collisions. Aragon's fixed storage layout reduces risk for the proxy layer.",
+          "factor_id": "RD-F-142",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "stETH implementation uses initialize() without _disableInitializers() in constructor. Aragon kernel's ACL provides partial mitigation (initialize() is access-controlled). The canonical OZ protection guard is absent. Risk is partially mitigated by Aragon permission model but not eliminated by standard OZ mechanism.",
+          "factor_id": "RD-F-143",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido uses Aragon AppProxyUpgradeable + OssifiableProxy patterns, not CREATE2 with redeployability. No evidence of same-address CREATE2 redeploy capability.",
+          "factor_id": "RD-F-144",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x889edC2eDab5f40e902b864aD4d7AdE8E412F9B1"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Hardhat + Foundry build tools present. viaIR enabled introduces some non-determinism risk but 6+ independent auditors have verified code — reproducibility is implicit requirement of audit attestation.",
+          "factor_id": "RD-F-145",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "V3 stVaults launched January 30, 2026. Certora fix review deployed March 2026. Multiple new contracts deployed in trailing 90 days as part of V3 launch. Active deployment cadence.",
+          "factor_id": "RD-F-146",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.lido.fi/lido-v3-is-live-modular-infrastructure-for-a-new-paradigm-of-ethereum-staking/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "programmatic",
+          "evidence_detail": "Lido's deployed-contract documentation lists active cross-chain token deployments. The public Wormhole/Axelar proposal documents the NTT bridge design for wstETH on BNB Chain and Avalanche.",
+          "evidence_summary": "Lido has active bridge surface: canonical Wormhole+Axelar NTT bridge to BNB/Avalanche (DAO-approved Jan 2024), native L2 bridges to Optimism/Arbitrum/Base/zkSync/Polygon, and unauthorized LayerZero OFT on BNB/Avalanche/Scroll (not DAO-controlled).",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/wormhole-x-axelar-lido-bridge-implementation-for-wsteth-on-bnb-chain/6012"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Wormhole docs: 19 Guardians. Joint bridge proposal: 2-of-2 threshold. For BNB/Avalanche wstETH minting, both Wormhole VAA and Axelar attestation are required. This is a defense-in-depth design. Green because validator count exceeds the threshold (19 for Wormhole; >100 for Axelar).",
+          "evidence_summary": "Wormhole canonical bridge: 19 Guardians (13-of-19 quorum). Axelar: PoS validator set (>100 validators). Native L2 bridges delegate to each chain's own infrastructure. 2-of-2 threshold means both Wormhole and Axelar must be simultaneously compromised for exploit.",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/wormhole-x-axelar-lido-bridge-implementation-for-wsteth-on-bnb-chain/6012"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Wormhole requires 13 of 19 Guardians for VAA validity. Axelar requires PoS majority. EndpointManager requires 2-of-2 (both attestations) before any mint/burn. This multi-vendor 2-of-2 design exceeds simple majority requirement.",
+          "evidence_summary": "Wormhole: 13-of-19 Guardian super-majority (>67%). Joint 2-of-2 threshold (both Wormhole AND Axelar must attest). Threshold design is strong — simultaneous compromise of both required for exploit.",
+          "factor_id": "RD-F-149",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/wormhole-x-axelar-lido-bridge-implementation-for-wsteth-on-bnb-chain/6012"
+            },
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Wormhole Guardians are publicly named organizations (Jump, Certus One, etc.) with independent infrastructure. Axelar PoS validator set is public and diverse. Native L2 bridges delegate to chain infrastructure.",
+          "evidence_summary": "Wormhole's 19 Guardians operated by separate named organizations. Axelar PoS validators are geographically distributed. No evidence of majority co-hosting.",
+          "factor_id": "RD-F-150",
+          "gap_reason": null,
+          "notes": "Medium confidence — based on public declarations. Infrastructure-level OSINT (ASN analysis) not performed in this assessment.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "The reviewed Wormhole NTT verifier delegates VAA verification to Wormhole, whose Messages contract rejects a recovered zero address. Lido's OP-style bridge path separately restricts calls to the CrossDomainMessenger.",
+          "evidence_summary": "Checked Lido bridge paths do not expose an unguarded ecrecover pattern. The Wormhole NTT path delegates VAA verification to parseAndVerifyVM, and Wormhole Messages.sol rejects ecrecover results equal to address(0). Native OP-style L2 bridge authorization uses CrossDomainMessenger.",
+          "factor_id": "RD-F-151",
+          "gap_reason": null,
+          "notes": "This assessment is limited to the zero-address ecrecover pattern; other bridge trust assumptions are assessed separately.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/lido-l2/blob/master/contracts/optimism/CrossDomainEnabled.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/Messages.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiver.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Wormhole VAA structure includes chain ID as part of the message. NTT EndpointManager validates source-chain identity. L1ERC20ExtendedTokensBridge: onlyFromCrossDomainAccount(L2_TOKEN_BRIDGE) — only accepts messages from designated L2 bridge.",
+          "evidence_summary": "Wormhole VAAs include srcChainId. CrossDomainMessenger enforces per-chain isolation via onlyFromCrossDomainAccount. Chain binding enforced at infrastructure level.",
+          "factor_id": "RD-F-152",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/lido-l2-with-steth/blob/main/contracts/optimism/L1ERC20ExtendedTokensBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "WormholeTransceiverState.sol: 'mapping(bytes32 => bool) storage' for consumed VAAs. isVAAConsumed(vm.hash) checked before processing. Joint bridge proposal: 'Replay protection is implemented both by Endpoint contracts (Wormhole & Axelar message replay protection) and the EndpointManager contract.'",
+          "evidence_summary": "Wormhole NTT uses consumed-VAA hash tracking (_consumedVAAs mapping). isVAAConsumed(vm.hash) check before processing; TransferAlreadyCompleted on replay. NTT EndpointManager provides additional replay protection. Native L2 bridges delegate to chain-level CrossDomainMessenger replay protection.",
+          "factor_id": "RD-F-153",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/wormhole-x-axelar-lido-bridge-implementation-for-wsteth-on-bnb-chain/6012"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiverState.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "Lido's canonical bridges: (1) Wormhole NTT — VAA hash consumed-mapping, no Merkle root inbox; (2) Axelar — PoS attestation; (3) CrossDomainMessenger — state-root proofs by chain infrastructure. The Nomad bug class (bytes32(0) = valid Merkle root) requires a specific Merkle-root-acceptance inbox pattern. Lido's bridges do not have this architecture.",
+          "evidence_summary": "[★ CRITICAL] Not applicable to Lido's bridge architecture. Wormhole uses consumed-VAA hash tracking (not Merkle roots). Native L2 bridges use CrossDomainMessenger state-root proofs managed by L2 chain. Nomad-class bytes32(0) root vulnerability requires a Merkle inbox pattern not present in Lido's bridges.",
+          "factor_id": "RD-F-154",
+          "gap_reason": null,
+          "notes": "GREEN with high confidence. bytes32(0) Merkle root vulnerability is architecturally non-applicable.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiverState.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Did not enumerate specific rotation timestamps. Wormhole Guardian set publicly documented with named organizations. Axelar PoS continuous rotation. Yellow due to lack of specific enumeration rather than evidence of staleness.",
+          "evidence_summary": "Wormhole Guardian set is publicly maintained. Axelar PoS validators rotate continuously. No specific rotation event enumerated. Assessed as actively maintained.",
+          "factor_id": "RD-F-155",
+          "gap_reason": null,
+          "notes": "Low confidence: this review did not enumerate dated Guardian-set rotation events.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": "Based on public documentation of Wormhole Guardian identities. No concentration finding.",
+          "evidence_summary": "Wormhole 19 Guardians: publicly named diverse organizations. Axelar: diverse PoS validator set. No single custodian >30%.",
+          "factor_id": "RD-F-156",
+          "gap_reason": null,
+          "notes": "Medium confidence — infrastructure OSINT not performed.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The public Lido TVL page reports protocol-level TVL but does not separately enumerate TVL secured by the Wormhole/Axelar bridge. A per-validator TVL ratio therefore cannot be computed from the cited public source.",
+          "evidence_summary": "Public protocol-level TVL is available, but bridge-specific TVL and a bridge-validator TVL ratio are not separately enumerated in the cited source.",
+          "factor_id": "RD-F-157",
+          "gap_reason": null,
+          "notes": "Yellow due to data gap. Recommend DeFiLlama bridge-specific TVL query.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No confirmed DPRK/Lazarus cluster touch of Lido core contracts from public OSINT. Kelp DAO exploit (April 2026, UNC4736/Lazarus) had downstream Lido EarnETH vault effect but attacker wallets did not interact with Lido core contracts. Requires Chainalysis/TRM licensed feed for definitive check.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "external_api_blocked",
+          "notes": "T-09 v1 phase-2 signal; tier-C. Not_assessed — requires licensed TI feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.upi.com/Top_News/World-News/2026/04/22/KelpDAO-LayerZero-North-Korea-crypto-hack-theft-Lazarus-Group/6151776848419/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://yellow.com/research/lazarus-kelp-hack-north-korea-crypto-heists"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No failing/low-gas tx pattern from labeled threat-actor wallets on Lido core contracts detected in public OSINT. Requires mempool monitoring + cluster feed for live detection.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "external_api_blocked",
+          "notes": "v1-deferred Cat 11 signal. Not_assessed — requires licensed feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No active public GitHub Security Advisory identifying a malicious release in the reviewed Lido core dependency surface was found as of 2026-07-24. This is distinct from ordinary dependency vulnerability management, which is assessed in the static code and lineage categories.",
+          "factor_id": "RD-F-160",
+          "gap_reason": null,
+          "notes": "Cat 11 factor. Green — no malicious-release advisory active for Lido deps.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido is a top-20 DeFi brand by TVL ($21.4B) and recognition — persistent elevated typosquat domain registration risk. No confirmed typosquat domain registration within 90 days found via web search OSINT. WHOIS monitoring not accessible via web search; requires DomainTools API or similar. Elevated structural concern, specific 90-day registration not confirmed or denied.",
+          "factor_id": "RD-F-161",
+          "gap_reason": null,
+          "notes": "Cat 11 factor. Yellow — elevated structural risk for top-20 DeFi brand; definitive assessment requires DomainTools/WHOIS monitoring API.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.darktrace.com/blog/vigilance-in-action-monitoring-typosquatting-domains"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No exploit-template deployments targeting Lido's contract class found in hack database or public OSINT. Lido is original (not a fork); no common exploit-template class for Aragon proxy + committee oracle architecture. Hack DB: rekt.incidents empty for Lido.",
+          "factor_id": "RD-F-162",
+          "gap_reason": null,
+          "notes": "Cat 11 factor. Green.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "For oracle-compromise class (Chorus One May 2025, Numic May 2024): attack timeline is weeks-to-months of off-chain social engineering or credential-gathering, not observable on-chain until the attack occurs. The USPD 78-day on-chain reconnaissance pattern is more applicable to bridge/lending protocols. For governance-attack class, Lido's Dual Governance 5-45 day veto window substantially extends the detection window. Yellow: reconnaissance window exists but is off-chain in nature, making it harder to detect via on-chain signals.",
+          "factor_id": "RD-F-163",
+          "gap_reason": null,
+          "notes": "Cat 11 factor. Yellow — off-chain reconnaissance pathway demonstrated by two incidents.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/lido-on-ethereum-node-operator-numic-security-incident-disclosure-may-21-2024/7536"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Chorus One oracle hot wallet compromise (May 2025) attributed to probable private key leak from a previously-used hot wallet — demonstrates credential-leak pathway exists for oracle operators. Cannot assess paste/credential dump sites from public web search; requires Leaked Credentials / Intelx / specialized feed. Marked NOT ASSESSED.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "external_api_blocked",
+          "notes": "Cat 11 factor. Not_assessed — requires specialized credential monitoring feed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2025/05/12/ethereum-staking-giant-lido-loses-just-14-eth-in-hacking-attempt"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No publicly verifiable evidence identified a Lido Discord or Telegram administrator as a scam coordinator. The public official community channel confirms the relevant surface, but a definitive coordinator-attribution assessment requires a specialized public threat-intelligence feed.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "requires_curator_input",
+          "notes": "Cat 11 factor. Not_assessed — requires a specialized public social-threat-intelligence feed for reliable coordinator attribution.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://discord.gg/lido"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's support guidance says the Solana service is closed but users may still unstake stSOL. The current approximately $9.698M stSOL market capitalization represents residual claims on Solido-managed stake: Solido's withdrawal design burns stSOL and splits Solido-managed active stake accounts to users. This remaining withdrawal-asset exposure is well above the $100K red threshold.",
+          "factor_id": "RD-F-166",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://help.lido.fi/en/articles/8484136-lido-on-solana-sunset"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://chorusone.github.io/solido/internals/withdrawals/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coingecko.com/en/coins/lido-staked-sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No officially deprecated contract surface with retained admin pause authority identified. stSOL (Solana) sunset has no retained Ethereum-side admin. No deprecated-but-pauseable contract found.",
+          "factor_id": "RD-F-167",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No stale user approvals on deprecated router contracts identified. Lido does not have a deprecated router contract with outstanding approvals at material scale.",
+          "factor_id": "RD-F-168",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Three compiler versions: (1) 0.4.24 — ExpExponentCleanup bug (medium/high, fixed 0.4.25) applies; limited practical risk given usage pattern (SafeMath, no dynamic non-literal small-type exponents identified). (2) 0.8.9 — no current known high-severity bugs per Etherscan bug list. (3) 0.8.25 — not affected by TransientStorageClearingHelperCollision (affects 0.8.28-0.8.33). Legacy 0.4.24 creates yellow signal; new code is clean.",
+          "factor_id": "RD-F-170",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.soliditylang.org/en/v0.4.25/bugs.html"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xFdDf38947aFB03C621C71b06C9C70bce73f12999#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/solcbuginfo"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido is presented as an original codebase and no audited upstream comparator is identified in its public repository. Bytecode-similarity comparison cannot be performed.",
+          "factor_id": "RD-F-171",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Review of recent lidofinance/core commit history (fetched 2026-04-28): no commit messages mentioning AI tool co-authorship (Copilot, ChatGPT, etc.). Recent commits include dependency updates, circuit breaker fixes, and feature PRs. Absence of positive signal; undisclosed usage cannot be ruled out.",
+          "factor_id": "RD-F-172",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public Lido statement located in the reviewed security documentation establishes whether AI-generated Solidity was used in security-critical production paths. The absence of disclosure does not affirmatively establish a green result.",
+          "factor_id": "RD-F-173",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://lido.fi/scorecard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido documents that the original live stETH contract uses Solidity 0.4.24, an end-of-life compiler family. Its separate Solidity 0.8.9 EIP-712 helper supplies chain-id support only and does not modernize the legacy core; the EOL compiler remains on a core user-fund contract. Red under v1.7.",
+          "factor_id": "RD-F-174",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/contracts/eip712-steth/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0x6ca84080381e43938476814be61b779a8bb6a600#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/address/0xFdDf38947aFB03C621C71b06C9C70bce73f12999#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido maintains a live Immunefi program with a $2M maximum bounty, updated June 2026. Its March 2026 bulletin documents recently triaged and mitigated Immunefi reports, demonstrating active use of the disclosure channel.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lido/information/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/security-bulletin-batched-immunefi-reported-weakness-disclosure-march-2026-funds-not-at-risk/11342"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido publishes an Immunefi disclosure program, but its public bug-bounty documentation does not state an acknowledgment SLA, triage window, or maximum response timeline. Under v1.7, a disclosure channel without a published SLA is red.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/bugbounty/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public record reviewed shows Lido ignoring a reported vulnerability before later exploitation. In March 2026, Lido reported that three Immunefi findings were confirmed, triaged, and mitigated within hours and were not exploited.",
+          "factor_id": "RD-F-177",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/security-bulletin-batched-immunefi-reported-weakness-disclosure-march-2026-funds-not-at-risk/11342"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/security/disclosures/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public GitHub Security Advisories page for Lido's core repository states that there are no published advisories. No open CVE or GHSA affecting the reviewed core repository was identified; score green under the v1.7 definition.",
+          "factor_id": "RD-F-178",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/security/advisories"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": "The cited Ethereum adapter has a CROSS_CHAIN_CONTROLLER address that differs from Lido's documented governance addresses. The Lido research forum records the ownership-acceptance discussion. The public sources reviewed do not establish the active DVN count, threshold, or operator diversity for this OFT path.",
+          "evidence_summary": "LayerZero wstETH OFT (ETH: 0x742650E0441Be8503682965d601AD0Ba1fB54411) is NOT under Lido DAO governance — DAO voted 81% for Wormhole+Axelar, 5% for LayerZero (Jan 2024). OFT remains operational under LayerZero Labs control. DVN config unverifiable due to non-governance status. Ongoing operation under Lido branding without DAO control is the primary risk.",
+          "factor_id": "RD-F-179",
+          "gap_reason": null,
+          "notes": "Yellow because the active DVN configuration is not established by the cited public sources; this is not a finding that a 1-of-1 configuration is present.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cryptobriefing.com/lido-dao-chooses-wormhole-axelar-bridge-wsteth-on-bnb/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x742650E0441Be8503682965d601AD0Ba1fB54411#code"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/layerzero-implementation-for-wsteth-on-bnb-chain-and-ownership-acceptance-by-lido-dao/6093"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/259467/layerzero-introduces-omnichain-token-to-move-lidos-wsteth-across-avalanche-bnb-chain-and-scroll"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": "LidoLocator exposes oracle-related constructor-set immutable addresses. The public deployment and upgrade documentation shows replacement is an upgrade/deployment operation, rather than a simple immediate oracle-address setter.",
+          "evidence_summary": "LidoLocator uses public immutable constructor-set addresses, including oracle-related addresses such as accountingOracle and validatorsExitBusOracle. Replacement mitigation is DAO/proxy replacement or deploying a new locator configuration, not an immediate oracle setter. RD-F-180 remains yellow.",
+          "factor_id": "RD-F-180",
+          "gap_reason": null,
+          "notes": "Yellow: the addresses are immutable in the locator; replacement relies on the documented governance-controlled deployment or upgrade path.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/docs/upgrade-deploy.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/deployment/lido-v3-02-mainnet/deployed-mainnet.json"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/LidoLocator.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lido is not a lending protocol. It does not accept spot prices from permissionlessly-created DEX pools. N/A.",
+          "factor_id": "RD-F-181",
+          "gap_reason": null,
+          "notes": "Not applicable to LST issuance protocol.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's current public documentation describes Dual Governance, an Emergency Protected Timelock, and committee-operated emergency controls. No public disclosure of a security-council threshold reduction, timelock removal, or linked signer addition was identified in the review. The signal remains applicable and should monitor those events continuously.",
+          "factor_id": "RD-F-182",
+          "gap_reason": null,
+          "notes": "Batch-24 RD-F-182; Cat 6B (exploit-in-progress class). T-09 v1.1 candidate. Green today — highest-priority signal to wire for Lido specifically.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/protocol-levers/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/guides/dg-guide/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi's active June 2026 scope lists 29 assets, but its publicly rendered inventory does not provide a complete machine-readable mapping from every 2026 V3 highest-TVL implementation to the permanent program. Yellow for scope ambiguity.",
+          "factor_id": "RD-F-183",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/bugbounty/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/audit-competition/lido-v3-bug-bounty-competition/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lido/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The cited public materials do not establish an attributed contributor or external-integrator persona with a verified $1M-plus deposit pattern and evidence that the capital was used to build social-engineering credibility.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "requires_curator_input",
+          "notes": "not_assessed: The factor requires attributable identity and timeline analysis that cannot be inferred from public protocol governance material alone.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GateSeal mechanism provides a protocol-level pause (not a per-window rate-limiter). No explicit per-window outflow rate-limiter confirmed on canonical wstETH bridge contracts (Wormhole+Axelar on L2s). Partial credit for GateSeal pause as a positive mitigant for core protocol operations.",
+          "factor_id": "RD-F-185",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/deployed-contracts/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "description": "Ethereum liquid staking protocol issuing rebasing stETH and wrapped wstETH; largest single DeFi protocol by TVL; governed by Aragon-based LDO DAO with Dual Governance stETH-holder veto overlay (live July 2025).",
+        "display_name": "Lido",
+        "family_slug": "lido",
+        "homepage_url": "https://lido.fi",
+        "primary_chain": "ethereum",
+        "primary_surface_slug": "default",
+        "protocol_type": "lst"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "B",
+          "risk_score": 16.08,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "2026-07-24"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "green",
+          "10": "green",
+          "11": "green",
+          "12": "yellow",
+          "13": "yellow",
+          "2": "green",
+          "3": "yellow",
+          "4": "green",
+          "5": "yellow",
+          "6": "green",
+          "7": "green",
+          "8": "green",
+          "9": "green"
+        },
+        "category_severities": {
+          "1": 11.11111111111111,
+          "10": 8.333333333333332,
+          "11": 16.666666666666664,
+          "12": 44.44444444444444,
+          "13": 25.0,
+          "2": 6.349206349206349,
+          "3": 20.0,
+          "4": 0.0,
+          "5": 33.33333333333333,
+          "6": 2.380952380952381,
+          "7": 16.666666666666664,
+          "8": 11.11111111111111,
+          "9": 12.82051282051282
+        },
+        "defillama_slug": "lido",
+        "description": "Ethereum liquid staking protocol issuing rebasing stETH and wrapped wstETH; largest single DeFi protocol by TVL; governed by Aragon-based LDO DAO with Dual Governance stETH-holder veto overlay (live July 2025).",
+        "display_name": "Lido",
+        "github_org": "lidofinance",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_active_incident": false,
+        "has_bridge_surface": true,
+        "headline_grade": "B",
+        "homepage_url": "https://lido.fi",
+        "is_a_bridge": false,
+        "is_published": true,
+        "launched_at": "2020-12-18",
+        "primary_chain": "ethereum",
+        "protocol_type": "lst",
+        "risk_score": 16.08,
+        "rubric_version": "v1.7.0",
+        "slug": "lido",
+        "status": "live",
+        "total_value_secured_usd": 21388816125
+      },
+      "surfaces": [
+        {
+          "display_name": "Lido",
+          "is_primary": true,
+          "legacy_slug": "lido",
+          "primary_chain": "ethereum",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-05T13:40:40Z",
+  "risk_score": 16.08,
+  "rubric_version": "v1.7.0"
+}
