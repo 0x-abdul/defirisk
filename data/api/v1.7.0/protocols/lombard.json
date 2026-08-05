@@ -1,0 +1,3686 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 14.035087719298245,
+    "10": 12.121212121212121,
+    "11": 0.0,
+    "12": 0.0,
+    "13": 44.44444444444444,
+    "2": 33.33333333333333,
+    "3": 17.94871794871795,
+    "4": 0.0,
+    "5": 25.0,
+    "6": 16.666666666666664,
+    "7": 13.333333333333334,
+    "8": 11.11111111111111,
+    "9": 33.33333333333333
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": null,
+          "chain": "base",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        },
+        {
+          "anchor_address": null,
+          "chain": "bitcoin",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        },
+        {
+          "anchor_address": null,
+          "chain": "bsc",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        },
+        {
+          "anchor_address": null,
+          "chain": "ethereum",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's public audit directory lists multiple 2026 engagements but expressly says some contracts changed after audit. The published material does not map every active deployed implementation to an audited commit, so audit-scope matching cannot be established green; no material mismatch is publicly verified. Yellow.",
+          "factor_id": "RD-F-001",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/docs/audit"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The official EVM audit directory lists a 2026-07-07 OpenZeppelin Mint Limits review covering BaseLBTC, BridgeTokenAdapter, NativeLBTC, StakedLBTC, and RateLimitsV2—17 days before this assessment. Its listed scope is recent deployed-security-critical functionality, meeting the recency threshold. Green.",
+          "factor_id": "RD-F-002",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/docs/audit"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/docs/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OZ V2 audit (Nov-Dec 2024): 39 total findings, 32 resolved, 3 partially resolved. Two high-severity findings remain partially resolved: (1) Sanctioned Address Checks — bridge and unstake strategies lacked sanction checks, team deferred full implementation pending future economic incentive mechanisms; (2) Unstake Payment Reuse — single BTC tx could satisfy multiple unstake payloads, team deferred fix. Both partially-resolved highs relate to the Golang Lombard Ledger layer (not EVM smart contracts directly). All OZ V2 EVM-layer findings appear resolved. Veridise V1 and V2: 0 findings each, so no unverifiable resolutions there. Halborn V1/V1.5/V2 reports not individually reviewed for resolution status but no post-audit finding regression reported in subsequent audits.",
+          "factor_id": "RD-F-003",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/security-consortium-smart-contracts-2024-12-18/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The official EVM audit directory lists publicly accessible work by at least five independent firms—Halborn, Veridise, OpenZeppelin, Sherlock, and ABDK—across core, bridge, yield, strategy, and mint-limit modules. This is well above the multi-firm threshold. Green.",
+          "factor_id": "RD-F-004",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ackee.xyz/blog/lombard-liquid-bitcoin-audit-summary/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/docs/audit"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/learn/security/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin is a confirmed Tier-1 audit firm (on the enumerated Tier-1 list per methodology). Lombard has 5 OZ engagements spanning 2024-2026 covering EVM contracts including the most recent multipauser audit (April 2026). Veridise, Halborn, Sherlock, and ABDK are established Tier-2 firms with public track records and indexed audit histories. Green threshold: at least one Tier-1 audit of deployed code — confirmed via OZ.",
+          "factor_id": "RD-F-005",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/docs/audit/OZ_multipauser_04_26.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Most recent audit-to-deploy gap: Sherlock multipauser sign-off 2026-04-01, OZ multipauser sign-off 2026-04-09, on-chain upgrade 2026-04-24. Gaps of 23 days (Sherlock) and 15 days (OZ) — both well within the ≤60-day green threshold. All other audits in the history also appear to have been deployed within the green window given the active development cadence and close audit follow-up timing.",
+          "factor_id": "RD-F-006",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/docs/audit/Sherlock_multipauser_bridge_04_26.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi lists an active, triaged Lombard program since 2024-09-04, updated 2026-07-15, with a $250,000 maximum smart-contract reward and 53 assets in scope. The $250,000 maximum remains below the $500,000 green threshold, so yellow.",
+          "factor_id": "RD-F-007",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public Lombard transparency and Immunefi materials establish a current disclosure channel, but they do not establish whether any prior vulnerability report was ignored before an exploit. No public incident/disclosure record supporting either conclusion was located. Gray rather than inferring a clean history from absence of evidence.",
+          "factor_id": "RD-F-008",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora Prover, Kani, Halmos, or equivalent) has been performed on any Lombard EVM contracts. None of the 12+ audit reports in the GitHub directory reference formal verification. Veridise audits use static analysis and manual code review, not FV. OZ audits use Slither-family tooling and manual review. No Certora specification files found in the evm-smart-contracts repository. Per methodology: red = 0% formal verification coverage. No critical invariants formally specified or proved.",
+          "factor_id": "RD-F-009",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/lbtc-2024-08-21/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril/Semgrep run output exists for Lombard EVM contracts. Using published audit findings as proxy. Veridise V1 (0 findings), Veridise V2 (0 findings), OZ V2 (8 high across both Golang and EVM layers, 6 fully resolved, 2 partially resolved — but partially-resolved items are Golang/Ledger layer, not EVM). The Ackee Solana audit found 1 high ('Possible unauthorized LBTC minting') — acknowledged/fixed per audit summary. No active unresolved high-severity EVM finding identified from published audits. Cannot definitively count Slither findings without a tool run — scored yellow because audit evidence is secondary proxy.",
+          "factor_id": "RD-F-010",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://ackee.xyz/blog/lombard-liquid-bitcoin-audit-summary/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/security-consortium-smart-contracts-2024-12-18/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither suicidal detector output available. Local tool run not performed per dry-run methodology. Factory directory exists in repo (CREATE3-based deployment) but factory source was not retrieved. Post-Cancun EIP-6780 limits SELFDESTRUCT to same-transaction deployments, reducing risk, but deployed contracts target Paris EVM version (pre-Cancun behavior applies to legacy deployments). No audit finding flags SELFDESTRUCT in non-admin paths. Marked gray — needs tool run.",
+          "factor_id": "RD-F-011",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No delegatecall with user-controlled target found in examined contracts. TransparentUpgradeableProxy uses delegatecall internally but target is admin-controlled (ProxyAdmin / TimelockController). Consortium.sol: no delegatecall. BridgeV2.sol: no delegatecall found. NativeLBTC.sol: standard ERC-20 operations, no delegatecall. Full repository scan was not performed — confidence medium because peripheral contracts (PMM, StakeAndBake, GMP) were not exhaustively reviewed.",
+          "factor_id": "RD-F-012",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary call with user-controlled target found in examined contracts. BridgeV2.sol routes calls through defined interfaces (Hyperlane Mailbox, CCIP Router) which are admin-configured trusted addresses, not user-supplied. The GMP/AssetRouter integration uses a defined Mailbox address (0x964677F337d6528d659b1892D0045B8B27183fc0). No evidence of fully user-controlled call target. Confidence medium — peripheral contracts not fully inspected.",
+          "factor_id": "RD-F-013",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "BridgeV2.sol imports ReentrancyGuardUpgradeable and applies the nonReentrant modifier to deposit() (multiple overloads) and handlePayload() — the most external-call-heavy functions. BaseLBTC.sol also inherits ReentrancyGuardUpgradeable. Core bridge and minting functions are guarded. No reentrancy finding in any published audit (Veridise 0 findings; OZ findings were governance/logic, not reentrancy). Peripheral contracts (PMM, StakeAndBake, iDepositor) not fully inspected.",
+          "factor_id": "RD-F-014",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/security-consortium-smart-contracts-2024-12-18/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LBTC is an ERC-20 token (8 decimals). No ERC-777, ERC-1155, or ERC-721 integration detected in core token contracts. StakeAndBake/iDepositor may interact with NFT staking position tokens for Babylon integration but no evidence of unguarded callback paths in EVM contracts. No audit finding flags this pattern.",
+          "factor_id": "RD-F-015",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither divide-before-multiply detector output available. Tool run not performed. LBTC uses 8 decimals (BTC-matched) creating potential mixed-decimal arithmetic with 18-decimal EVM ecosystem tokens. Veridise V2 found 0 findings (suggests no divide-before-multiply in scope), but the exact Slither output is not published. Marked gray — needs tool run.",
+          "factor_id": "RD-F-016",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/security-consortium-smart-contracts-2024-12-18/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LBTC uses 8 decimals; most EVM DeFi integrations use 18 decimals. Cross-decimal arithmetic risk exists in StakeAndBake, iDepositor, and PMM contracts where LBTC interacts with 18-decimal tokens. No published audit flags this as unresolved in the EVM layer. Cannot confirm safe normalization without source inspection of all arithmetic paths. Marked gray — needs curator review of cross-decimal math paths.",
+          "factor_id": "RD-F-017",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public static-analysis, symbolic-execution, or audit evidence establishes whether deployed Lombard contracts contain signed/unsigned arithmetic confusion.",
+          "factor_id": "RD-F-018",
+          "gap_reason": "requires_curator_input",
+          "notes": "Not assessed: the available public materials do not provide a tool result or sufficiently complete deployed-code assessment for this factor; no local tool run is permitted in this refresh pass.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub search for 'ecrecover' in evm-smart-contracts returns 0 results — no direct ecrecover calls in the codebase. Consortium.sol uses OpenZeppelin ECDSA.tryRecover() which handles zero-address returns internally and is a safe wrapper. BridgeV2.sol uses no ecrecover. No raw ecrecover call exists to create a zero-address bypass risk.",
+          "factor_id": "RD-F-019",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/search?q=ecrecover"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "NativeLBTC and StakedLBTC inherit from BaseLBTC which uses OZ's ERC20PermitUpgradeable (EIP-2612). OZ's EIP-712 implementation includes chainId in the domain separator by default. No cross-chain replay risk from missing chainId in domain separator as OZ 5.0.2 always includes chainId. Cross-chain message replay for bridge operations is handled at the BridgeV2/Consortium layer via separate message binding (not EIP-712). Confidence medium — domain separator not directly inspected but OZ standard implementation is well-established.",
+          "factor_id": "RD-F-020",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/NativeLBTC.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard uses TransparentUpgradeableProxy pattern (not UUPS) for all proxy contracts: LBTC, Consortium, BridgeV2. With Transparent proxy, the upgrade path is via the ProxyAdmin calling upgradeToAndCall() — there is no _authorizeUpgrade() function to protect. The UUPS authorization check factor is N/A for Transparent proxy pattern.",
+          "factor_id": "RD-F-021",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x451c54981C7DA5d95901b770C540547cF5FE0A2D"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "All examined implementation contracts properly protect initialize(): (1) Consortium.sol — constructor() { _disableInitializers(); } AND function initialize(address _owner) external initializer; (2) BridgeV2.sol — constructor() { _disableInitializers(); } AND function initialize(address owner_, IMailbox mailbox_) external initializer; (3) NativeLBTC.sol — constructor() { _disableInitializers(); } AND function initialize(...) external initializer; (4) StakedLBTC.sol — constructor() { _disableInitializers(); } AND function initialize(address treasury, address initialOwner, uint48 initialOwnerDelay) external initializer. BasculeV2.sol uses a standard constructor (non-proxied) — no initialize() function, N/A for that contract. No unprotected initialize() found across reviewed contracts.",
+          "factor_id": "RD-F-022",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/NativeLBTC.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "_disableInitializers() confirmed present in constructors of all proxied implementation contracts: Consortium.sol, BridgeV2.sol, NativeLBTC.sol, StakedLBTC.sol. BasculeV2.sol uses standard constructor (not proxied) — N/A for that contract. Not confirmed for all peripheral contracts (PMM, factory, StakeAndBake) but core proxied contracts all comply. Confidence high for core contracts.",
+          "factor_id": "RD-F-023",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/NativeLBTC.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "14+ audit engagements across 7 firms covering every major contract module: V1 core (Halborn 13-day, Veridise 9-day), V2 full stack (OZ 32-day Golang+EVM, Veridise 65-day EVM only, Halborn V2), Yield Bearing (OZ + Sherlock), StakeAndBake (ABDK), BridgeV2/BTC.b (OZ), Multipauser (OZ + Sherlock). Each successive audit targeted a specific feature set rather than the entire codebase, keeping scope focused and audit depth appropriate. OZ V2 at 32 days covering the most complex release (39 findings identified) demonstrates adequate depth. No indication of audit-complexity ratio exceeding reasonable bounds.",
+          "factor_id": "RD-F-024",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/docs/audit"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Current Lombard documentation states that critical operations require signatures from at least 10 of 14 Consortium members. It does not publish an on-chain mapping from that policy to the reviewed upgrade-admin contracts or identify each role holder, so effective upgrade custody cannot be verified from the available public documentation.",
+          "factor_id": "RD-F-025",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents a 10-of-14 threshold for critical Consortium operations. The documentation does not establish that a particular Safe is the current upgrade authority, so an upgrade-multisig M/N configuration and its adequacy cannot be independently assessed.",
+          "factor_id": "RD-F-026",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public documentation describes a 10-of-14 Consortium approval policy for critical operations, but does not publish a complete current on-chain role map for production admin paths. A single-admin EOA path therefore cannot be confirmed or ruled out from the available public evidence.",
+          "factor_id": "RD-F-027",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/governance/the-liquid-bitcoin-foundation"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not establish an upgrade Safe, its signer threshold, or its relationship to the production admin path. Low-threshold upgrade-multisig exposure cannot be independently assessed.",
+          "factor_id": "RD-F-028",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lombard"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/governance/the-liquid-bitcoin-foundation"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not identify the signers for the production upgrade authority. Signer co-hosting cannot be independently assessed.",
+          "factor_id": "RD-F-029",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not identify the signers for the production upgrade authority. Hot-wallet signing posture cannot be independently assessed.",
+          "factor_id": "RD-F-030",
+          "gap_reason": "protocol_opacity",
+          "notes": "No current public source identifies the production upgrade signers or their hot-wallet posture; revisit if Lombard publishes a role map.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not identify the production upgrade signer set or its change history. Signer rotation recency cannot be independently assessed.",
+          "factor_id": "RD-F-031",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's current documentation describes the Consortium threshold for critical operations but does not publish a current on-chain upgrade timelock address or minimum delay. The duration applicable to upgrades is therefore not independently established.",
+          "factor_id": "RD-F-032",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The available current documentation does not map sensitive production actions to an on-chain timelock or state which actions, if any, bypass it. Timelock coverage cannot be assessed from public documentation alone.",
+          "factor_id": "RD-F-033",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Current public documentation does not identify the holders of pause and upgrade authority or demonstrate that they are distinct. Role separation is not independently verifiable from the available evidence.",
+          "factor_id": "RD-F-034",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xc750eCAC7250E0D18ecE2C7a5F130E3A765dc260#readContract"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Current public documentation does not publish a complete current assignment of upgrade, fee, and oracle administration roles. Separation of those authorities cannot be independently assessed.",
+          "factor_id": "RD-F-035",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents 10-of-14 signatures for critical Consortium operations and separately discloses that governance characteristics may evolve. It does not provide sufficient current public evidence to determine whether any token-voting execution path is live and flash-loanable.",
+          "factor_id": "RD-F-036",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/governance/the-liquid-bitcoin-foundation"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0xf0DB65D17e30a966C2ae6A21f6BBA71cea6e9754"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents a 10-of-14 Consortium threshold for critical operations, but the available public documentation does not establish the full current set of governance execution paths. Whether any quorum can be obtained through borrowed token voting is not independently assessable.",
+          "factor_id": "RD-F-037",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current documentation does not identify a proposal execution mechanism or publish its delay. A sub-24-hour proposal-execution delay cannot be confirmed.",
+          "factor_id": "RD-F-038",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x70e7eb22979240dd2d86009d353e90e9ea597d47069a6e81214461e51f6c6ce4"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public materials reviewed do not publish a current on-chain proposal executor, its target restrictions, or an equivalent role map. Arbitrary proposal execution cannot be assessed.",
+          "factor_id": "RD-F-039",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Current public documentation does not identify a dedicated emergency-veto mechanism or its on-chain authority. The presence and independence of a veto control cannot be assessed.",
+          "factor_id": "RD-F-040",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public materials reviewed do not establish the current access control or timelock status of rescue functions. Whether a rescue path can bypass a timelock cannot be independently assessed.",
+          "factor_id": "RD-F-041",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents that critical operations require signatures from at least 10 of 14 Consortium members. It does not publish the current on-chain mint authority, any supply cap, or a contract-to-Consortium role binding, so unlimited admin minting cannot be independently assessed.",
+          "factor_id": "RD-F-042",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8B84306f72007F36F2618A5634494"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The current public documentation does not identify the current production admin, deployer, or role-transfer history. A continuing deployer-admin relationship cannot be confirmed or ruled out.",
+          "factor_id": "RD-F-043",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Because the current public documentation does not identify the production admin wallet or provide a complete role map, the relevant administrator's exposure to flagged addresses cannot be assessed.",
+          "factor_id": "RD-F-044",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The public materials reviewed do not publish a current proposal-to-deployment process or proposal payloads. Constructor-argument consistency against governance approval cannot be independently assessed.",
+          "factor_id": "RD-F-045",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not provide a complete, versioned inventory linking every production contract in scope to verified explorer source. The absence of unverified production contracts cannot be independently assessed.",
+          "factor_id": "RD-F-046",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's current documentation identifies 14 independent institutional Consortium members and requires at least 10 signatures for critical operations. It does not map the named institutions to current on-chain signing keys or provide a token-holder distribution suitable for a Gini calculation. Governance concentration is therefore only partially transparent.",
+          "factor_id": "RD-F-047",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0xf0DB65D17e30a966C2ae6A21f6BBA71cea6e9754"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents Chainlink and RedStone price/Proof-of-Reserve infrastructure across supported networks, including its own EVM PoR contract and RedStone PoR contracts. The LBTC fundamental rate is an on-chain consortium-authorized exchange-rate oracle. The documented provider set is not a spot-DEX oracle path. Green: the public provider and contract documentation identifies established, independently verifiable oracle infrastructure.",
+          "factor_id": "RD-F-048",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/oracles"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard publicly lists Chainlink and RedStone oracle/PoR deployments, but does not publicly designate a primary, secondary, or fallback order for each price feed. The StakedLBTCOracle accepts a consortium-proof-authorized exchange-rate update and its reviewed code exposes no secondary oracle. Yellow: provider roles and failover ordering are not fully disclosed.",
+          "factor_id": "RD-F-049",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/oracles"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/PoR/PoR.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public documentation identifies direct dependencies on Babylon for Bitcoin staking; Cubist's CubeSigner and Bascule verification layer for key management and independent deposit/redemption checks; Chainlink CCIP for EVM/Solana bridge infrastructure; IBC for Cosmos routes; oracle/data providers; and relayer infrastructure. Failure of Babylon, Bascule/CubeSigner, a bridge provider, or relayer can impair staking, mint/redeem, transfer, or price-data functions. Yellow: several critical dependency classes remain externally operated, with Bascule operated by Cubist.",
+          "factor_id": "RD-F-050",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cubist.dev/blog/introducing-the-bascule-drawbridge-for-bitcoin-bridge-security"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/lombard-chainlink-and-symbiotic-launch-first-of-its-kind-cryptoeconomic-guarantee-layer-for-cross-chain-lbtc-transfers/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/bridging"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The StakedLBTCOracle submits a ratio only after Consortium proof verification and exposes no secondary-oracle or last-known-price fallback in the reviewed source. Lombard documents PoR attestation updates every 10 minutes, but does not disclose a stale-feed fallback policy. Yellow: failure behavior is therefore revert/no declared fallback rather than a documented graceful-degradation path.",
+          "factor_id": "RD-F-051",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/PoR/PoR.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Babylon unavailability can impair Bitcoin staking and yield operations. Bascule or CubeSigner disruption can impair the independent verification/key-management stages required for minting, redemption, and payouts. A CCIP, IBC, relayer, or oracle/provider failure can delay or prevent the affected cross-chain or price-data function. Lombard documents dual verification for bridge transfers and a Bascule second check for mint/redemption flows, but its risk disclosure confirms that third-party failures can cause service disruption or asset loss. Yellow: material failure modes and mitigations are documented, while several dependencies remain external.",
+          "factor_id": "RD-F-052",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cubist.dev/blog/introducing-the-bascule-drawbridge-for-bitcoin-bridge-security"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — GREEN] No DEX spot price oracle found in any Lombard source file. LBTC minting/burning is Consortium-authorized, not price-oracle gated. BTC/USD from Chainlink is a push oracle with no DEX component. StakedLBTCOracle derives LBTC/BTC exchange rate from Consortium-signed ratio, not DEX. No slot0(), getReserves(), or equivalent DEX price read found in contracts/LBTC/, contracts/PoR/, or contracts/bridge/ directories. Source inspection of all oracle-related contract directories confirms absence of any spot DEX oracle dependency.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/LBTC"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/PoR"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — Lombard Finance does not use DEX TWAP oracles. Source inspection of all oracle-related contracts found no OracleLibrary.consult() or equivalent TWAP call. All price feeds are Chainlink/RedStone push oracles. Factor does not apply to this protocol type.",
+          "factor_id": "RD-F-054",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/LBTC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — Lombard Finance does not use DEX pool oracles. No pool TVL measurement required. Source inspection confirms Chainlink/RedStone push oracles only. Factor does not apply to this protocol type.",
+          "factor_id": "RD-F-055",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/LBTC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard does not use DEX pool oracle; single-pool oracle concern does not apply. For Chainlink BTC/USD (0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c): multi-source aggregation is inherent to Chainlink's AggregatorV3 design (multiple independent node operators; medianized). Not a single-pool oracle. No DEX oracle of any kind found in Lombard source. Green: Chainlink's multi-node aggregation design inherently meets the no-single-pool criterion.",
+          "factor_id": "RD-F-056",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "StakedLBTCOracle validates each rate update against a ratio-change threshold and reverts TooBigRatioChange when the permitted interval-adjusted deviation is exceeded. No general cross-oracle price-deviation breaker was identified in the reviewed Lombard source. Yellow: the LBTC-rate control is present, while broader price-feed circuit breaking is not publicly established.",
+          "factor_id": "RD-F-057",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "StakedLBTCOracle initializes ratioThreshold to 0.1% and computes the permitted ratio change from that threshold and the switch interval. That 10-bps default is well below the rubric's 2,000-bps green bound. Green: the documented on-chain LBTC-rate deviation limit is conservative.",
+          "factor_id": "RD-F-058",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed StakedLBTCOracle exposes a switch-time model for the current or previous ratio but no explicit maximum-age rejection for stale oracle data. Lombard documents ten-minute PoR publication cadence, not a contract-enforced stale-read threshold. Yellow: an explicit updatedAt/maxStaleness guard was not established.",
+          "factor_id": "RD-F-059",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents a Chainlink price-feed deployment but the reviewed public materials do not establish the bound configuration of the underlying Chainlink aggregator for the relevant feed. Gray: minAnswer/maxAnswer configuration could not be independently verified from the public evidence reviewed.",
+          "factor_id": "RD-F-060",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard does not use LP token balanceOf for pricing. LBTC/BTC exchange rate is derived from Consortium-published ratio via StakedLBTCOracle. No balanceOf call found in any price calculation path in the LBTC/ directory or oracle contracts. Donation-manipulation via LP token balanceOf is not applicable to this protocol's price mechanism.",
+          "factor_id": "RD-F-061",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/LBTC"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Bascule is an independent verification layer operated by Cubist and must validate deposits before minting; its failure can therefore impair the mint path. Lombard's documentation also identifies trustless relayer infrastructure, while CCIP uses independent node operators and a Risk Management Network. Yellow: the public architecture still identifies a material single-operator Bascule dependency, with no public failover arrangement established.",
+          "factor_id": "RD-F-062",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bascule/Bascule.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://cubist.dev/blog/introducing-the-bascule-drawbridge-for-bitcoin-bridge-security"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The current snapshot replaces the older cached figure. The large BTC allocation reflects the protocol's BTC liquid-staking design rather than a diverse lending collateral book.",
+          "evidence_summary": "DefiLlama reported $768.06m TVL for Lombard on 2026-07-24, with Bitcoin $744.75m (about 97%), Ethereum $19.85m, and Base $3.44m. The reported 30-day change was -2.4%; TVL remains substantially above the rubric floor.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lombard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public measurement of the top-ten depositor share of Lombard's protocol TVL was available for this refresh.",
+          "factor_id": "RD-F-064",
+          "gap_reason": "protocol_opacity",
+          "notes": "LBTC token-holder concentration and chain-level TVL are not a verified measurement of the rubric's top-ten depositor-address share, particularly because the principal backing is Bitcoin custody/staking. The prior secondary-source estimate was not retained.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents that secondary-market LBTC prices can deviate from redemption value during an unstaking period of up to ten days, but no reproducible 2%/5%-price-impact liquidity-depth measurement was available for this refresh.",
+          "factor_id": "RD-F-065",
+          "gap_reason": "protocol_opacity",
+          "notes": "Do not infer a numeric depth score from protocol TVL or qualitative redemption-risk disclosures. A public DEX pool-depth measurement at the specified price impacts is required.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard is a BTC liquid-staking protocol rather than a lending protocol with borrow/supply markets.",
+          "factor_id": "RD-F-066",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-066 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard has no lending markets whose bad debt could be socialized among protocol lenders or borrowers.",
+          "factor_id": "RD-F-067",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-067 is lending-only under v1.7.0; slashing and backing risks are assessed in their applicable domains, not as lending bad debt.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard is not a lending protocol with a net-collateralization ratio under a lending stress scenario.",
+          "factor_id": "RD-F-068",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-068 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's LBTC is a BTC liquid-staking token, not a lending-protocol stablecoin design.",
+          "factor_id": "RD-F-069",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-069 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard is not a Compound V2 fork and does not operate cToken-style lending markets; the critical empty-market condition is outside this protocol's architecture.",
+          "factor_id": "RD-F-070",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-070 is Compound-fork-only under v1.7.0. This is a structural applicability ruling, not a green security finding.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard does not list or borrow-enable lending markets.",
+          "factor_id": "RD-F-071",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-071 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard does not have a lending-market listing governance path.",
+          "factor_id": "RD-F-072",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-072 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard does not set per-asset lending borrow caps.",
+          "factor_id": "RD-F-073",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-073 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed Lombard surface is a BTC liquid-staking token, not a lending ERC-4626 vault market.",
+          "factor_id": "RD-F-074",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-074 is lending-only under v1.7.0; a separate product's vault implementation is not substituted for this scoped protocol factor.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The assessed Lombard surface has no lending-vault first-depositor market mechanism.",
+          "factor_id": "RD-F-075",
+          "gap_reason": "not_applicable",
+          "notes": "RD-F-075 is lending-only under v1.7.0.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public mainnet launch announcement establishes LBTC's August 2024 launch, and the listed Ethereum Consortium contract was deployed in May 2024. Either public deployment date exceeds the 365-day green threshold at this refresh.",
+          "factor_id": "RD-F-076",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/lombard-launches-private-beta-on-mainnet/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xed6D647E2F81E5262101aFf72c4A7bcDcfd780e0"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's risks page, last updated 2026-05-28, says that as of that documentation date it had not experienced a security incident resulting in loss of user funds. That is a dated protocol statement, not an independently complete incident registry through this refresh date.",
+          "factor_id": "RD-F-077",
+          "gap_reason": null,
+          "notes": "The score reflects the dated, loss-focused scope of the public statement; it does not assert that no incident of any kind occurred after the documentation date.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The dated risks disclosure reports no security incident causing user-fund loss, so it supplies no evidence of the three exploits required for the chronic flag. Its scope and date do not establish a complete incident count through this refresh.",
+          "factor_id": "RD-F-078",
+          "gap_reason": null,
+          "notes": "A current, independently comprehensive incident corpus was not available in the permitted public evidence for this review.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The public risks disclosure contains no reported loss-of-user-funds incident from which a repeated root cause can be established. It is a dated disclosure rather than a complete incident register, so repeated-root-cause status remains only partially evidenced.",
+          "factor_id": "RD-F-079",
+          "gap_reason": null,
+          "notes": "No public evidence reviewed establishes two Lombard exploits sharing a root cause.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No last-exploit date is published in the current public risks or troubleshooting documentation. The risks page's dated statement is limited to incidents resulting in loss of user funds and cannot determine a precise days-since-last-exploit value.",
+          "factor_id": "RD-F-080",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public, timestamped qualifying incident was identified in the reviewed sources.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying exploit post-mortem or response record is linked by Lombard's current risks and troubleshooting documentation. The dated statement of no user-fund-loss incident does not support a response-quality score for a last incident.",
+          "factor_id": "RD-F-081",
+          "gap_reason": "protocol_opacity",
+          "notes": "A response score would require a verified qualifying incident and its public response record.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No qualifying exploit and no post-mortem publication date are established in the reviewed public documentation. The available dated incident statement is insufficient to test the 30-day post-mortem condition.",
+          "factor_id": "RD-F-082",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public timestamp pair for an incident and a corresponding post-mortem was identified.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents several audit partners and a current bug bounty, but the reviewed public sources do not identify a qualifying exploit followed by a targeted re-audit. Proactive audits cannot be represented as a post-exploit re-engagement.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public incident-to-re-audit linkage was identified.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "DefiLlama reports current Lombard TVL and a 30-day change, but the reviewed public page does not provide an independently reproducible 90-day daily series from which to calculate the required coefficient of variation.",
+          "factor_id": "RD-F-084",
+          "gap_reason": "protocol_opacity",
+          "notes": "A point-in-time TVL or 30-day percentage is not a substitute for the rubric's 90-day daily CoV calculation.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lombard"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public risks and troubleshooting pages do not identify a qualifying exploit, a first official statement, or timestamps needed to measure incident-response minutes.",
+          "factor_id": "RD-F-085",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public timestamp pair for a qualifying incident and an official response was identified.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard documents pausable functions and live bridge support, but the reviewed public pages do not publish a complete, dated activation history for all emergency pauses during the trailing 12 months.",
+          "factor_id": "RD-F-086",
+          "gap_reason": "protocol_opacity",
+          "notes": "A current architecture description is not evidence of the number or reason for historical pause activations.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The current documentation confirms that contracts are pausable and that bridge transfers have support procedures, but it does not supply public start/end timestamps for any protocol pause. The >7-day condition cannot be determined from the reviewed evidence.",
+          "factor_id": "RD-F-087",
+          "gap_reason": "protocol_opacity",
+          "notes": "No verified pause interval was identified in the reviewed public sources.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/troubleshooting"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's current smart-contract inventory identifies active deployments but does not publish a complete one-year retirement and replacement history. The reviewed public evidence cannot establish whether a prior address set was retired following a redeployment.",
+          "factor_id": "RD-F-088",
+          "gap_reason": "protocol_opacity",
+          "notes": "The current contract list is not a complete historical redeployment register.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed Lombard risk and bug-bounty pages describe audits, monitoring, and a bounty program, but they do not identify active protocol-level exploit insurance or document its absence. A bug bounty is not insurance, and the public evidence does not support a colored insurance-coverage finding.",
+          "factor_id": "RD-F-089",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public insurer cover record or Lombard insurance policy was identified in the reviewed sources.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Mixer withdrawal -> protocol interaction | Applicable: Yes. The reviewed public material describes Lombard's security architecture but does not provide a current, queryable mixer-withdrawal-to-contract interaction feed or a completed public address-cluster scan. Gray: the live signal cannot be determined from the evidence reviewed.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/sanctions-and-risk-monitoring"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Partial-drain test transactions | Applicable: Yes for minting and bridge paths. No repeatable public transaction-pattern analysis over a current assessment window was available, so this assessment cannot determine whether the pre-strike threshold is met. Gray: live precursor state is unverified.",
+          "factor_id": "RD-F-091",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Unusual mempool pattern from deployer wallet | Applicable: Yes. The reviewed public documentation confirms an actively maintained cross-chain architecture, but no reproducible current mempool baseline or deployer-wallet sequence analysis was available. Gray: the live anomaly threshold cannot be determined from the evidence reviewed.",
+          "factor_id": "RD-F-092",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Abnormal gas-price willingness | Applicable: Yes in principle | Mempool monitoring not configured for this assessment. No anomalous gas-price patterns from attacker-labeled wallets identified from public sources. v2-deferred signal. Not assessable from static public data. Signal requires mempool stream with per-block gas analysis.",
+          "factor_id": "RD-F-093",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a live mempool stream and per-block priority-fee analysis; no independently verifiable public evidence was established.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "New contract with similar bytecode to exploit template | Applicable: Partial (multi-bridge architecture) | No exploit-template similarity index maintained for LRT/BTC-restaking class. No known exploit template exists for this protocol class (zero incidents). v2-deferred signal. Not assessable.",
+          "factor_id": "RD-F-094",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "No independently verifiable public exploit-template bytecode index or protocol-class similarity scan was available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Known-exploit function-selector replay | Applicable: Partial (bridge contracts) | No prior Lombard exploit exists to seed replay template. Selector-pattern index for LRT/BTC-restaking class not maintained. v2-deferred signal. Not assessable.",
+          "factor_id": "RD-F-095",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "No independently verifiable public selector-template index or current protocol-targeted replay scan was available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "New ERC-20 approval to unverified contract from whale | Applicable: User-level signal | User-level signal moved to consumer app scope per T-09. Not assessable at protocol level in T-10 static assessment. v2-deferred.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a current depositor/approval dataset and verified-contract classification; no independently verifiable public assessment was established.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Sybil surge of identical-pattern transactions | Applicable: Partial | No sybil surge pattern identified on Lombard EVM contracts from public data. Clustering algorithm not deployed for this assessment. v2-deferred signal. Not assessable.",
+          "factor_id": "RD-F-097",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": "Requires a current transaction-clustering analysis; no independently verifiable public sybil-pattern assessment was established.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "TVL anomaly (severe drop) | Applicable: Yes. Lombard documents Proof of Reserves attestations every 10 minutes across native-BTC reserves and token supply, but this assessment did not obtain a public one-hour TVL series or alert log. It cannot establish whether the anomaly threshold is currently met. Gray: live TVL/anomaly state is not independently verifiable from the reviewed public evidence.",
+          "factor_id": "RD-F-098",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Oracle price deviation | Applicable: Yes. Lombard publishes Chainlink and RedStone LBTC price-feed and Proof-of-Reserve addresses, but the reviewed public material does not provide a contemporaneous primary-versus-secondary deviation calculation or alert log. Gray: no defensible current deviation determination from the public evidence reviewed.",
+          "factor_id": "RD-F-099",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/oracles"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flash loan targeting protocol | Applicable: Limited. Lombard's documented Consortium authorization model is not an on-chain token-voting governor, but a current public transaction analysis was not performed to determine whether a >$10M flash loan targeted LBTC or a related liquidity venue. Gray: live signal state unverified.",
+          "factor_id": "RD-F-100",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/governance/the-liquid-bitcoin-foundation"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Large governance proposal queued | Applicable: No | No on-chain Governor contract exists. Lombard uses Consortium + LombardTimeLock (0x055E84e7FE8955E2781010B866f10Ef6E1E77e59) directly. No ProposalCreated/ProposalQueued events possible. Signal cannot attach to this governance model. Monitoring would need to be adapted to TimelockController CallScheduled events instead. v1 launch signal but N/A for consortium-governed protocol.",
+          "factor_id": "RD-F-101",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Admin/upgrade tx in mempool | Applicable: Yes (CRITICAL CONCERN) | Deployer EOA 0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079 is LombardTimeLock Proposer; 3-of-5 GnosisSafe 0x251a604E8E8f6906d60f8dedC5aAeb8CD38F4892 is Proposer+Executor. LombardTimeLock minDelay = 3600 seconds (1 hour). Most recent Ethereum upgrade: 2026-04-24. The 1-hour timelock means admin-tx-in-mempool detection would give users at most 60 minutes to act after a Timelock scheduling event -- dangerously short at $1.07B TVL. This signal is highly applicable but its utility is structurally impaired by the 1h delay. v1 phase-2 signal requiring mempool listener. Not currently firing (no pending upgrade tx as of 2026-05-05). Hexagate provides some coverage for upgrade/admin patterns. Yellow because structural risk is high even when signal is not currently firing.",
+          "factor_id": "RD-F-102",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge signer-set change | Applicable: Yes. Current Lombard documentation describes Chainlink CCIP for EVM/Solana, IBC for Cosmos routes, and a native Consortium bridge for selected routes; it no longer supports the prior LayerZero/Hyperlane stack description. The Security Consortium is documented at 10-of-14. No public, transaction-level change feed was reviewed to determine a current signer-set change. Gray: architecture confirmed, live change state unverified.",
+          "factor_id": "RD-F-103",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Stablecoin depeg | Applicable: No | LBTC is 1:1 backed by native BTC, not any stablecoin. No stablecoin constitutes >5% of TVL. Bitcoin TVL is 97.28% of total. LBTC/BTC peg depends on Babylon staking redemption mechanics, not stablecoin stability. Signal N/A for this protocol design. Would not fire.",
+          "factor_id": "RD-F-104",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "DNS/frontend hash drift | Applicable: Yes. The official web and documentation domains are publicly reachable, but no prior published bundle hash, DNS baseline, or current change-alert feed was reviewed. Gray: the drift predicate cannot be determined from a point-in-time public page check.",
+          "factor_id": "RD-F-105",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.pcrisk.com/removal-guides/33880-lombard-bard-staking-scam"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Cross-chain bridge unverified mint pattern | Applicable: Yes. Lombard's current documentation describes a dual-verification model in which bridge infrastructure and the Security Consortium both approve transfers, plus burn-and-mint accounting. This is a documented preventive control, but this assessment did not perform a transaction-level source/destination correlation scan. Gray: the live unverified-mint signal cannot be conclusively assessed from the reviewed public documentation.",
+          "factor_id": "RD-F-106",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Admin EOA signing from new geography/device | Applicable: Yes in principle | Off-chain signing telemetry not available (requires team opt-in; practically always gray). Consortium uses CubeSigner HSMs (positive architectural mitigant -- signing physically constrained to hardware). Deployer EOA and 3-of-5 Safe use standard EOA signing. v2-deferred. Not assessable without telemetry.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "external_api_blocked",
+          "notes": "Requires private device/geography signing telemetry; no independently verifiable public evidence was available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub force-push to sensitive branch | Applicable: Yes. Lombard maintains a public smart-contract repository, but a repository page alone does not provide a complete, independently verifiable force-push or actor-attribution history for protected branches. Gray: current signal state not established from reviewed public evidence.",
+          "factor_id": "RD-F-108",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Social-media impersonation scam spike | Applicable: Yes. The reviewed public material identifies official social surfaces, but the legacy evidence concerns web domains rather than a dated count of impersonating social-media accounts. No current, independently verifiable account-spike measurement was established. Not assessed rather than treating domain reports as a social-account signal.",
+          "factor_id": "RD-F-109",
+          "gap_reason": "external_api_blocked",
+          "notes": "No current public, independently verifiable measurement of impersonating social-media accounts was established.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Unusual pending/executed proposal ratio | Applicable: No | No on-chain Governor contract. No proposal queue. BARD token governance is off-chain/Liquid Bitcoin Foundation with no on-chain proposal history. Signal cannot attach to this governance model. N/A.",
+          "factor_id": "RD-F-110",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public speaker and interview listings identify Jacob Phillips as a Lombard co-founder and Head of Strategy. This establishes a public identity trail for a senior leader, although it does not establish the identity of every contributor.",
+          "factor_id": "RD-F-111",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/speaker/jacob-phillips"
+            },
+            {
+              "source_type": "url",
+              "url": "https://consensus-hongkong2025.coindesk.com/agenda/speaker/-jacob-phillips"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Jacob Phillips has multiple independent public identity trails, including a speaker profile and recorded interview. Lombard also maintains public source repositories, but the GitHub organization does not expose its member roster.",
+          "factor_id": "RD-F-112",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/speaker/jacob-phillips"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public project material does not provide a complete, independently verifiable roster of team members and their prior protocol roles. No comprehensive prior-involvement conclusion is made.",
+          "factor_id": "RD-F-113",
+          "gap_reason": "requires_curator_input",
+          "notes": "A complete identity-to-prior-protocol-role mapping is not published in the sources reviewed; absence of a public allegation is not evidence of no prior involvement.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The accepted deployer address is publicly labeled by Etherscan as Lombard: Deployer and its history shows contract deployments associated with Lombard. The reviewed address page does not show a prior-rug label.",
+          "factor_id": "RD-F-114",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6Bf1c36Ccbb59eAf8415301a0Cec73C344A079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public Lombard repository and Immunefi program establish current project operations but do not provide sufficient, independently verifiable evidence to determine whether every team member has, or has not, been affiliated with a prior rug or exit scam.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "requires_curator_input",
+          "notes": "This negative-affiliation check needs a complete verified team roster and attributable adverse-history evidence; neither is established by the public project materials reviewed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public commit history shows recurring work by pseudonymous GitHub accounts, while the organization does not publish a member roster. The tenure of the author of the most recent admin-permissioned change cannot be verified from these public pages.",
+          "factor_id": "RD-F-116",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/commits/main"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/orgs/lombard-finance/people"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The Lombard-labeled deployer address does not display an ENS name on its Etherscan page. The protocol label identifies a role, not a verified individual identity binding.",
+          "factor_id": "RD-F-117",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6Bf1c36Ccbb59eAf8415301a0Cec73C344A079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public identity material consistently identifies Jacob Phillips with Lombard. No handle-reuse allegation for a failed or rugged project is substantiated by the cited sources.",
+          "factor_id": "RD-F-118",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://x.com/JacobPPhillips"
+            },
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/speaker/jacob-phillips"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Recent public commits show active contributors, but a full commit-time distribution tied to verified contributor geography was not produced. The available evidence is insufficient for a stronger timezone-consistency conclusion.",
+          "factor_id": "RD-F-119",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Jacob Phillips is listed as an in-person conference speaker and appears in a recorded public interview. The reviewed material provides no video-off or voice-consistency concern for that senior leader.",
+          "factor_id": "RD-F-120",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://consensus-hongkong2025.coindesk.com/agenda/speaker/-jacob-phillips"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=W7Hwnkrwf60"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public speaker and biography material provides substantial OSINT depth for Jacob Phillips, but the organization does not publish a full engineering and contributor roster. The visible senior-leadership evidence supports a positive assessment with roster-coverage limits.",
+          "factor_id": "RD-F-121",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blockworks.co/speaker/jacob-phillips"
+            },
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/jacob-phillips"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard publishes consortium members and maintains an active Immunefi program, but public materials do not identify contributor payment wallets or provide the cluster analysis needed to determine whether any payment routed within three hops of a known DPRK cluster.",
+          "factor_id": "RD-F-122",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public sources identify a timelock and public code activity, but do not provide a complete event-to-discussion comparison for every admin-rescue or ACL change. No unannounced critical change is asserted from this incomplete record.",
+          "factor_id": "RD-F-123",
+          "gap_reason": "requires_curator_input",
+          "notes": "Critical factor: an assessment requires a reproducible comparison of privileged on-chain events with their public issue, pull-request, or governance discussion records.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The Lombard-labeled deployer is publicly visible, but this pass does not include a reproducible 30-day pre-deployment funding trace with authoritative mixer labels. No clean-funding or mixer-proximity conclusion is asserted.",
+          "factor_id": "RD-F-124",
+          "gap_reason": "requires_curator_input",
+          "notes": "Critical factor: a score needs a dated funding trace and authoritative mixer attribution for the accepted deployer address.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public Lombard sources identify the project and its public code, but do not establish a complete three-hop transaction graph from the accepted deployer or privileged wallets to an authoritative DPRK or Lazarus label. No adverse attribution or clean-path conclusion is asserted.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "requires_curator_input",
+          "notes": "Critical factor: a disposition requires reproducible privileged-wallet and authoritative cluster-attribution analysis. The reviewed public materials are insufficient for either a red attribution or a clean-path finding.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public evm-smart-contracts repository is not identified by GitHub as a fork of an upstream protocol. Its OpenZeppelin use is a library dependency rather than a protocol-fork relationship. Fork-lineage measurement is not applicable.",
+          "factor_id": "RD-F-126",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. No upstream to track for unmerged patches.",
+          "factor_id": "RD-F-127",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. No upstream vulnerability disclosures to track.",
+          "factor_id": "RD-F-128",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. Code divergence from upstream is not a meaningful metric for original implementations.",
+          "factor_id": "RD-F-129",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. Fork depth = 0 by definition (original implementation).",
+          "factor_id": "RD-F-130",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. It has its own independent comprehensive audit history across 7 firms. The question of whether a fork retains upstream audit coverage is N/A.",
+          "factor_id": "RD-F-131",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol is not a fork. Different economic parameters vs upstream is N/A.",
+          "factor_id": "RD-F-132",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin contracts and contracts-upgradeable both pinned at exact version 5.0.2 in package.json with a resolutions override. Chainlink contracts-ccip pinned at exact version 1.6.1. These are the most security-critical dependencies. LayerZero packages use caret (^) range specifiers: @layerzerolabs/lz-evm-protocol-v2: ^3.0.7, @layerzerolabs/oft-evm: ^0.1.0, @layerzerolabs/lz-evm-messagelib-v2: ^3.0.9 — minor/patch versions may float. Per methodology: yellow = minor libs unpinned but OZ and Solady pinned. LayerZero is a significant protocol dependency (though routes are currently paused) but not the core cryptographic primitive that OZ is.",
+          "factor_id": "RD-F-133",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "No GitHub Security Advisory (GHSA) or npm audit advisory flagging a malicious release in the last 90 days for: OpenZeppelin contracts 5.0.2, OpenZeppelin contracts-upgradeable 5.0.2, @chainlink/contracts-ccip 1.6.1, or the LayerZero packages used. No active malicious-release incident affecting Lombard's dependency tree identified as of 2026-05-05.",
+          "factor_id": "RD-F-134",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/advisories"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "OpenZeppelin 5.0.2 (released February 2024): no known high/critical CVE or GHSA advisory as of 2026-05-05. This version introduced EIP-7201 namespaced storage (preventing storage collisions), virtual shares for ERC-4626, and other security improvements over 4.x. No regression vulnerability reported in the 5.0.x series. Chainlink CCIP 1.6.1: no known high/critical advisory. LayerZero ^3.0.x packages: no known malicious-release advisory.",
+          "factor_id": "RD-F-135",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository and audit materials do not establish a signed release-tag to deployed-bytecode correspondence for the reviewed production surface. Reproducible release provenance is therefore only partially evidenced.",
+          "factor_id": "RD-F-136",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not provide a current upgrade-event register covering the review window. Upgrade frequency cannot be independently assessed.",
+          "factor_id": "RD-F-137",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494#events"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Current public documentation does not provide a verifiable current upgrade-event register or a binding timelock path. Whether recent hot patches bypassed the intended control path cannot be independently assessed.",
+          "factor_id": "RD-F-138",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x70e7eb22979240dd2d86009d353e90e9ea597d47069a6e81214461e51f6c6ce4"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The official Lombard audit directory and docs show multiple audits, including newer 2026 reports, but the audit directory also warns some contracts changed after audit. This improves evidence quality but does not prove complete current scope coverage, so yellow is retained.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public materials do not provide a verifiable mapping from each security-fix commit to its production deployment. A merged-but-not-deployed fix gap cannot be independently assessed.",
+          "factor_id": "RD-F-140",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Current public documentation does not establish the production deployer's permissions, proxy-admin status, or any deployed test-mode parameter. This factor cannot be independently assessed.",
+          "factor_id": "RD-F-141",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not provide the complete implementation-upgrade sequence and storage-layout validation records. Storage-layout collision risk across upgrades cannot be independently assessed.",
+          "factor_id": "RD-F-142",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494#events"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/lombard-audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A public source file contains initializer-locking code, but the available current public documentation does not bind that source file to every deployed implementation in scope. Reinitialization exposure cannot be independently assessed.",
+          "factor_id": "RD-F-143",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8B84306f72007F36F2618A5634494"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/contracts/LBTC/NativeLBTC.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/contracts/LBTC/StakedLBTC.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not provide a complete deployment-factory inventory for the reviewed production surface. Same-address redeployment exposure cannot be independently assessed.",
+          "factor_id": "RD-F-144",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository does not provide documented instructions that reproduce the reviewed deployed bytecode from a signed release. Bytecode reproducibility is only partially evidenced.",
+          "factor_id": "RD-F-145",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not provide a current deployment-event register for the review window. Recent new-contract deployment exposure cannot be independently assessed.",
+          "factor_id": "RD-F-146",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3F6BF1C36CcBb59eAF8415301a0ceC73c344a079"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Bridge surface confirmed. Lombard documents a dual-verification bridge architecture: Chainlink CCIP is the external bridge for EVM-compatible chains and Solana, IBC serves Cosmos routes, and a native Consortium bridge is used for select routes. Bridge transfers are therefore in scope for category 10.",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard publicly documents 14 independent institutional Consortium members and a 10-of-14 cryptographic threshold for critical operations. The native bridge relies on that Consortium; CCIP also supplies its own independent bridge validation. Fourteen signers satisfies the rubric's green validator-count band.",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The documented Consortium threshold is 10-of-14, a two-thirds supermajority. The public verifier stores a weighted validator set and rejects a proof below its weight threshold. CCIP bridge transfers require an independent CCIP approval plus Consortium co-signature. Green: the native bridge threshold exceeds a simple majority.",
+          "factor_id": "RD-F-149",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The 14 documented Consortium members span crypto institutions, market makers, mining pools, institutional validators, and security/research firms. This supports organizational diversity, but no public ASN, datacenter, or signer-custodian inventory establishes infrastructure separation. Yellow: co-hosting cannot be independently ruled out from public evidence.",
+          "factor_id": "RD-F-150",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[CRITICAL — GREEN] The native bridge Consortium verifier uses OpenZeppelin ECDSA.tryRecover and explicitly continues unless RecoverError.NoError is returned; a recovered address must also match the configured validator. The reviewed native bridge code contains no raw unchecked ecrecover result. Lombard documents CCIP as the external bridge validation layer. No unchecked zero-address recovery was found in the native verifier.",
+          "factor_id": "RD-F-151",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/adapters/TokenPool.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Mailbox/GMP path: inbound messages validated against $.inboundMessagePath[payload.msgPath] which encodes remote mailbox + chain; srcChainId is implicitly bound via path ID (path-based srcChainId binding). BridgeV2: chainId extracted via $.mailbox.getInboundMessagePath(payload.msgPath); rate limits keyed by (sourceChain, token) pair. CCIP path: sourceChainSelector is native to Chainlink's Any2EVMMessage struct; received by Lombard's TokenPool via CCIP's structured message format. All three active bridge paths bind messages to their source chain identifier.",
+          "factor_id": "RD-F-152",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "BridgeV2: payloadSpent[payload.id] mapping prevents double-spend; reverts with BridgeV2_PayloadSpent() on replay attempt. Mailbox: deliveredPayload[payloadHash] mapping prevents re-delivery of the same payload. CCIP: Chainlink's own sequence number infrastructure handles replay prevention at the protocol layer independently of Lombard's source. All active bridge paths implement replay protection through payload-hash or sequence tracking.",
+          "factor_id": "RD-F-153",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "[CRITICAL — GREEN] The native BridgeV2 rejects zero chain IDs, token identifiers, bridge paths, senders, and recipients at configuration and message-processing boundaries. Mailbox rejects zero chain/mailbox values when paths are enabled and zero recipients on sends. Inbound messages are admitted through enabled paths and Consortium proof verification; no default bytes32(0) proof root was found accepted as valid in the reviewed native bridge path.",
+          "factor_id": "RD-F-154",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's current public membership page identifies a 14-member Consortium, and the public verifier includes a ValidatorSetUpdated event for validator-set changes. This pass did not establish the timestamp of the latest emitted on-chain rotation event. Yellow: the current membership is public, but rotation recency remains unverified.",
+          "factor_id": "RD-F-155",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Cubist is one of the 14 documented Consortium members and supplies the CubeSigner HSM-based key-management system used by the Consortium. The public materials do not disclose whether more than 30% of bridge-validator signing keys are held by one custodian. Yellow: the shared key-management dependency warrants caution, but the >30% key-custody threshold is not publicly verifiable.",
+          "factor_id": "RD-F-156",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cubist.dev/blog/introducing-the-bascule-drawbridge-for-bitcoin-bridge-security"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "DefiLlama reports $767.94M total value locked, including $744.75M on Bitcoin. With 14 documented Consortium members, the total-TVL exposure is approximately $54.85M per member ($767.94M / 14). This is in the rubric's yellow concentration band above the $50M green threshold.",
+          "factor_id": "RD-F-157",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/lombard"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Known-threat-actor wallet cluster has touched protocol | Applicable: Yes. Lombard's public architecture confirms a cross-chain protocol with CCIP, IBC, and selected native Consortium routes, but no public threat-actor cluster feed or exhaustive contract-interaction index was reviewed. The prior LayerZero-based sector comparison is not retained because it conflicts with current bridge documentation. Gray: no public basis to conclusively determine a direct cluster touch in the current assessment window.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Attacker wallet pre-strike probe | Applicable: Yes | Requires CTI feed and mempool monitoring. No pre-strike probe transactions from CTI-flagged addresses on Lombard contracts identified from public data. Hexagate provides real-time mempool monitoring as part of threat prevention platform but specific pre-strike probe pattern detection not independently confirmed for this signal. Not assessable without licensed CTI feed confirmation.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub malicious-dependency incident | Applicable: Yes. Lombard's public repository confirms an open-source dependency surface, but no complete, current dependency lockfile audit and advisory-to-version comparison was independently established in this assessment. Gray: no defensible conclusion about a malicious-release incident affecting all consumed dependencies.",
+          "factor_id": "RD-F-160",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol-impersonator domain registered (typosquat) | Applicable: Yes. Public scam-removal pages describe impersonating domains, but do not establish a verifiable registration date within the rubric's required 90-day window. The assessed predicate therefore cannot be determined from the reviewed public evidence; the existence of older scam domains is not treated as a current 90-day registration finding.",
+          "factor_id": "RD-F-161",
+          "gap_reason": "external_api_blocked",
+          "notes": "No independently verifiable public registration-date source was available for the 90-day predicate.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Known-exploit-template selector deployed | Applicable: Partial for bridge contracts. Current Lombard documentation identifies CCIP, IBC, and selected native Consortium routes; it does not support the former LayerZero/Hyperlane framing. No public selector-template index or on-chain scan was available for this protocol class. Gray: the signal cannot be assessed conclusively from public evidence.",
+          "factor_id": "RD-F-162",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Avg attacker reconnaissance time for peer-class protocols | Applicable: Yes. A current, public hack-database sample sufficient to calculate an average for Lombard's BTC-restaking/cross-chain peer class was not established in this assessment. The prior LayerZero-specific comparison is not retained after the bridge-stack documentation update. The factor is not assessed because no defensible public average was established.",
+          "factor_id": "RD-F-163",
+          "gap_reason": "external_api_blocked",
+          "notes": "No current, independently verifiable public hack-database sample sufficient to calculate a peer-class reconnaissance average was available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Leaked credential on paste/sentry site | Applicable: Yes. No public paste-site or credential dump referencing Lombard infrastructure was identified in the reviewed public material. No independently verifiable public credential-monitoring index was available to establish the live leak predicate, so the signal remains gray.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Protocol social channel has scam-coordinator flag | Applicable: Yes. Official documentation identifies Lombard community channels, but no public scam-coordinator watchlist or independently verifiable administrator-flag dataset was available for this assessment. The signal's required predicate cannot be established from the reviewed public evidence.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The current public smart-contract inventory lists active contracts, but does not provide a complete official deprecation register or balances for every historical contract. The red condition of an officially deprecated surface retaining material value is not established by the reviewed evidence.",
+          "factor_id": "RD-F-166",
+          "gap_reason": "protocol_opacity",
+          "notes": "No official deprecation-and-material-balance pair was identified; absence cannot be fully proven from the current inventory alone.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not identify deprecated contract surfaces, their balances, or reversible admin pause controls. Deprecated-surface admin exposure cannot be independently assessed.",
+          "factor_id": "RD-F-167",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494#events"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/scope/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not identify deprecated routers or quantify surviving user approvals. Stale-approval exposure cannot be independently assessed.",
+          "factor_id": "RD-F-168",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494#events"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Primary EVM contracts compiled with Solidity v0.8.24+commit.e11b9ed9 (BridgeV2 implementation, BasculeV2, StakedLBTC). LBTC proxy implementation 0x072072317469ebb6c340a47e41561c9c3b782bd9 compiled with v0.8.20+commit.a1b79de6. Hardhat.config.ts specifies solidity: '0.8.24' as the project-wide compiler. Both 0.8.20 and 0.8.24 are not on the official Solidity known-bug list for high/critical issues relevant to upgradeable token contracts. The reviewed public EVM source and configuration do not indicate Vyper usage. EVM version target: Paris (pre-Cancun) per Etherscan bytecode metadata.",
+          "factor_id": "RD-F-170",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x451c54981C7DA5d95901b770C540547cF5FE0A2D"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/hardhat.config.ts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard Finance is an original implementation with no audited upstream to compare against for behavioral deviation analysis. The bytecode similarity to audited upstream factor presupposes a fork relationship. Since Lombard is not a fork (RD-F-126 N/A), this factor is N/A by the same determination.",
+          "factor_id": "RD-F-171",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "The current public commit history shows July 2026 mint-limit, RateLimitsV2, deployment, strategy, and audit-report work. The reviewed visible commit metadata contains no Copilot, ChatGPT, or other AI-tool co-authorship trailer for this recent security-relevant work. This is a limited public-metadata check, but no affirmative AI co-authorship signal was found. Green.",
+          "factor_id": "RD-F-172",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public disclosure of AI-generated Solidity in security-critical paths found on Lombard blog, docs, or X/Twitter. Security blog post (https://www.lombard.finance/blog/lbtc-security-and-transparency/) discusses audit firms, Bascule Drawbridge, and PoR oracle with no mention of AI code generation. Docs security section mentions 6 audit firms but no AI disclosure. Confidence medium — absence of disclosure is not the same as confirmed absence of AI tools.",
+          "factor_id": "RD-F-173",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/audits"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/lbtc-security-and-transparency/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Deployed contracts use Solidity 0.8.20 and 0.8.24. Both versions are within the actively maintained Solidity 0.8.x series. The latest Solidity 0.8.x release is 0.8.28 (as of early 2026); 0.8.20 and 0.8.24 are older but not EOL — Solidity maintains backward compatibility within the 0.8.x series and has not announced an EOL policy for 0.8.20. No EOL Solidity version in use for any core contract. No Vyper usage detected.",
+          "factor_id": "RD-F-174",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x072072317469ebb6c340a47e41561c9c3b782bd9"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/hardhat.config.ts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard publishes an Immunefi bug bounty with explicit submission instructions, reward tiers, and listed contracts in scope. This is a public security-disclosure channel.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's public bug-bounty documentation specifies reporting through Immunefi, scope, and reward requirements, but publishes no acknowledgment-time or remediation-time SLA. The policy page was last updated 2026-05-28.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public risks and disclosure-policy pages do not document a vulnerability report that Lombard ignored before an exploit. They are not a complete history of all reports, so an affirmative clean-history finding is not supported.",
+          "factor_id": "RD-F-177",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public ignored-disclosure record was identified, but the available sources cannot prove that none exists.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/risks"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "Neither Lombard's main EVM nor SVM repository publishes a GitHub Security Advisory. Those repository pages do not independently establish the absence of every possible CVE or third-party advisory, so coverage is partial.",
+          "factor_id": "RD-F-178",
+          "gap_reason": null,
+          "notes": "The review confirms no published GHSA in the two main public repositories; no broader CVE registry result is represented here.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/security/advisories"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/sol-svm-contracts/security/advisories"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository contains an LBTCOFTAdapter, but Lombard's current bridging documentation describes CCIP, IBC, and a native Consortium bridge and does not disclose a deployed LayerZero DVN set, threshold, or operator diversity. Gray: no public configuration was found to adjudicate the LayerZero-specific DVN control.",
+          "factor_id": "RD-F-179",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/oft/LBTCOFTAdapter.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/bridging-architecture"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The StakedLBTCOracle exposes an owner-gated changeConsortium(address) function, so its consortium oracle reference is replaceable rather than immutable. Lombard documents two-step upgrades with timelocks for its smart-contract safety controls. Green: the reviewed oracle dependency is administratively replaceable, not permanently pinned.",
+          "factor_id": "RD-F-180",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/transparency/smart-contracts"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x055E84e7FE8955E2781010B866f10Ef6E1E77e59"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/lombard-finance/evm-smart-contracts/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Lombard's documented protocol is a Bitcoin staking/restaking and tokenized-Bitcoin system, not a lending market that accepts permissionlessly created DEX-pool spot prices as collateral-oracle inputs.",
+          "factor_id": "RD-F-181",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/technical-documentation/protocol-architecture/lbtc-design"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Security-Council threshold reduction (RT) | Applicable: Yes. Current Lombard documentation states that critical operations require 10 of 14 Consortium signatures. It establishes the current documented threshold but does not provide a public, real-time event feed sufficient to determine whether a threshold reduction, timelock removal, or new signer event occurred in the required 14-day window. Gray: threshold posture documented; live trigger state unverified.",
+          "factor_id": "RD-F-182",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/consortium-members"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's docs identify LBTC, Consortium Governance, and the Proxy Upgrade Timelock as bounty-covered; Immunefi reports 53 scoped assets. However, the reviewed public sources do not provide an asset-by-asset mapping that verifies every current high-value cross-chain and bridge contract is in scope. This is a bounded coverage uncertainty, so yellow.",
+          "factor_id": "RD-F-183",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/learn/security/bug-bounty"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard's public Immunefi program documents its security-reporting and KYC process, but it does not provide verifiable contributor payment or deposit-attribution evidence for the social-engineering persona predicate in this factor. The factor is therefore not assessed.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "requires_curator_input",
+          "notes": "Public project material does not provide the identity-attribution and capital-flow evidence required by this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/lombard-finance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "hybrid",
+          "evidence_detail": null,
+          "evidence_summary": "The available current public documentation does not publish a current deployed rate-limit configuration or an on-chain chain-pause authority. Bridge rate-limiter and chain-pause mitigation cannot be independently assessed.",
+          "factor_id": "RD-F-185",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lombard.finance/use/bridging"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.lombard.finance/blog/lbtc-security-and-transparency/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "display_name": "Lombard Finance",
+        "family_slug": "lombard",
+        "primary_chain": "ethereum",
+        "primary_surface_slug": "default",
+        "protocol_type": "btc_restaking"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "B",
+          "risk_score": 18.76,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "2026-07-24"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "green",
+          "10": "green",
+          "11": "gray",
+          "12": "green",
+          "13": "yellow",
+          "2": "yellow",
+          "3": "green",
+          "4": "green",
+          "5": "yellow",
+          "6": "green",
+          "7": "green",
+          "8": "green",
+          "9": "yellow"
+        },
+        "category_severities": {
+          "1": 14.035087719298245,
+          "10": 12.121212121212121,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 44.44444444444444,
+          "2": 33.33333333333333,
+          "3": 17.94871794871795,
+          "4": 0.0,
+          "5": 25.0,
+          "6": 16.666666666666664,
+          "7": 13.333333333333334,
+          "8": 11.11111111111111,
+          "9": 33.33333333333333
+        },
+        "display_name": "Lombard Finance",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_bridge_surface": true,
+        "headline_grade": "B",
+        "is_a_bridge": false,
+        "is_published": true,
+        "primary_chain": "ethereum",
+        "protocol_type": "btc_restaking",
+        "risk_score": 18.76,
+        "rubric_version": "v1.7.0",
+        "slug": "lombard"
+      },
+      "surfaces": [
+        {
+          "display_name": "Lombard Finance",
+          "is_primary": true,
+          "legacy_slug": "lombard",
+          "primary_chain": "ethereum",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
+  "risk_score": 18.76,
+  "rubric_version": "v1.7.0"
+}

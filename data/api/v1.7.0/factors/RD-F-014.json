@@ -253,11 +253,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "BridgeV2.sol imports ReentrancyGuardUpgradeable and applies the nonReentrant modifier to deposit() (multiple overloads) and handlePayload() — the most external-call-heavy functions. BaseLBTC.sol also inherits ReentrancyGuardUpgradeable. Core bridge and minting functions are guarded. No reentrancy finding in any published audit (Veridise 0 findings; OZ findings were governance/logic, not reentrancy). Peripheral contracts (PMM, StakeAndBake, iDepositor) not fully inspected.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/BridgeV2.sol"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://veridise.com/audits-archive/company/lombard-finance/security-consortium-smart-contracts-2024-12-18/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

@@ -239,11 +239,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[CRITICAL — GREEN] The native bridge Consortium verifier uses OpenZeppelin ECDSA.tryRecover and explicitly continues unless RecoverError.NoError is returned; a recovered address must also match the configured validator. The reviewed native bridge code contains no raw unchecked ecrecover result. Lombard documents CCIP as the external bridge validation layer. No unchecked zero-address recovery was found in the native verifier.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/consortium/Consortium.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/gmp/Mailbox.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/bridge/adapters/TokenPool.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

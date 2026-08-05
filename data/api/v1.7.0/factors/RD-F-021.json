@@ -229,11 +229,34 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Lombard uses TransparentUpgradeableProxy pattern (not UUPS) for all proxy contracts: LBTC, Consortium, BridgeV2. With Transparent proxy, the upgrade path is via the ProxyAdmin calling upgradeToAndCall() — there is no _authorizeUpgrade() function to protect. The UUPS authorization check factor is N/A for Transparent proxy pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x451c54981C7DA5d95901b770C540547cF5FE0A2D"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8236a87084f8b84306f72007f36f2618a5634494"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

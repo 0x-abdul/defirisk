@@ -452,11 +452,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — GREEN] No DEX spot price oracle found in any Lombard source file. LBTC minting/burning is Consortium-authorized, not price-oracle gated. BTC/USD from Chainlink is a push oracle with no DEX component. StakedLBTCOracle derives LBTC/BTC exchange rate from Consortium-signed ratio, not DEX. No slot0(), getReserves(), or equivalent DEX price read found in contracts/LBTC/, contracts/PoR/, or contracts/bridge/ directories. Source inspection of all oracle-related contract directories confirms absence of any spot DEX oracle dependency.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lombard Finance",
+          "protocol_slug": "lombard",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/LBTC"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/tree/main/contracts/PoR"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lombard-finance/evm-smart-contracts/blob/main/contracts/LBTC/StakedLBTCOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
