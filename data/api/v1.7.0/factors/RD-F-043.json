@@ -436,11 +436,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Accepts issue #49 RD-F-043. Current ownership is Safe-controlled, not deployer-EOA controlled. The transfer timing does not satisfy the active-rubric green threshold.",
+          "evidence_summary": "[CRITICAL] The current-admin-still-deployer evidence is stale. ProxyAdmin 0xA28c08f165116587D4F3E708743B4dEe155c5E64 now resolves to Safe 0x8119EC16F0573B7dAc7C0CB94EB504FB32456ee1, and the ownership transfer tx 0x998141bf... executed on 2024-03-27. Because the transfer was not evidenced within the initial 7-day window, the corrected score is yellow rather than green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x998141bfdfbb8b30ccd1f5c84d947855212f91806c0bd4acd5b08077d687748d"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xA28c08f165116587D4F3E708743B4dEe155c5E64"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x8119EC16F0573B7dAc7C0CB94EB504FB32456ee1/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:52:00Z",
+  "generated_at": "2026-08-05T17:43:14Z",
   "rubric_version": "v1.7.0"
 }

@@ -360,11 +360,31 @@
           "score": "not_assessed",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "MarketMathCore sets MINIMUM_LIQUIDITY to 10^3. On the zero-total-LP branch, addLiquidityCore allocates that amount to protocol reserve and gives the initial provider the remainder, then adds both to total LP. This is an implemented dead-share-style first-depositor guard for the core AMM LP accounting.",
+          "evidence_summary": "Green: Pendle core LP accounting reserves MINIMUM_LIQUIDITY (10^3) when total LP is zero, preventing the first provider from owning the entire initial LP supply.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/pendle-finance/pendle-core-v2-public/main/contracts/core/Market/MarketMathCore.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:52:00Z",
+  "generated_at": "2026-08-05T17:43:14Z",
   "rubric_version": "v1.7.0"
 }

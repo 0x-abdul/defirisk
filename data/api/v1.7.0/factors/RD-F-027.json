@@ -739,11 +739,38 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Accepts issue #49 RD-F-027. The old single-EOA current-owner evidence is stale. Green is not implemented because direct ProxyAdmin upgrade authority remains owner-gated without a verified >=24h timelock.",
+          "evidence_summary": "[CRITICAL] Current ProxyAdmin owner is no longer the deployer EOA. The deployment JSON identifies ProxyAdmin 0xA28c08f165116587D4F3E708743B4dEe155c5E64; live owner() resolves to Safe 0x8119EC16F0573B7dAc7C0CB94EB504FB32456ee1, and Safe API reports threshold 3 with 5 owners. No >=24h timelock was evidenced, so the correct score is yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/pendle-finance/pendle-core-v2-public/main/deployments/1-core.json"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xA28c08f165116587D4F3E708743B4dEe155c5E64"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0x8119EC16F0573B7dAc7C0CB94EB504FB32456ee1/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:52:00Z",
+  "generated_at": "2026-08-05T17:43:14Z",
   "rubric_version": "v1.7.0"
 }
