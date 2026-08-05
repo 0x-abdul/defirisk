@@ -1,0 +1,3858 @@
+{
+  "cap_applied": "none",
+  "cap_reason": null,
+  "category_severities": {
+    "1": 13.043478260869565,
+    "10": 11.11111111111111,
+    "11": 0.0,
+    "12": 6.666666666666667,
+    "13": 33.33333333333333,
+    "2": 17.647058823529413,
+    "3": 24.242424242424242,
+    "4": 8.333333333333332,
+    "5": 16.666666666666664,
+    "6": 0.0,
+    "7": 8.333333333333332,
+    "8": 23.333333333333332,
+    "9": 7.4074074074074066
+  },
+  "data": {
+    "protocol_data": {
+      "deployments": [
+        {
+          "anchor_address": "0xA21Ed4C3122fc51c6D6Db0d668D968C3B3f689CB",
+          "chain": "bnb",
+          "deployed_at": null,
+          "deployment_key": "primary",
+          "display_name": "Ondo Finance (BNB Chain — GMTokenManager)",
+          "surface_slug": "default",
+          "tvs_share": 0.0907,
+          "tvs_usd": 323000000
+        },
+        {
+          "anchor_address": "0xA21Ed4C3122fc51c6D6Db0d668D968C3B3f689CB",
+          "chain": "bsc",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        },
+        {
+          "anchor_address": "0x1B19C19393e2d034D8Ff31ff34c81252FcBbee92",
+          "chain": "ethereum",
+          "deployed_at": "2023-01-26",
+          "deployment_key": "primary",
+          "display_name": "Ondo Finance (Ethereum — OUSG Token)",
+          "surface_slug": "default",
+          "tvs_share": 0.5881,
+          "tvs_usd": 2093960000
+        },
+        {
+          "anchor_address": "0xbA11C5effA33c4D6F8f593CFA394241CfE925811",
+          "chain": "polygon",
+          "deployment_key": "primary",
+          "surface_slug": "default"
+        },
+        {
+          "anchor_address": "A1KLoBrKBde8Ty9qtNQUtq3C2ortoC3u7twggz7sEto6",
+          "chain": "solana",
+          "deployed_at": null,
+          "deployment_key": "primary",
+          "display_name": "Ondo Finance (Solana — USDY SPL mint)",
+          "surface_slug": "default",
+          "tvs_share": null,
+          "tvs_usd": null
+        }
+      ],
+      "factor_scores": [
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #17.",
+          "evidence_summary": "Code4rena 2023 and 2024 reports do include public commit references, so the stale 'no public commit SHA' wording should be removed. Yellow remains because mixed audit traceability persists, especially for Flux/legacy surfaces and full live-bytecode matching.",
+          "factor_id": "RD-F-001",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The official audit index lists a March 2025 Spearbit review for Ondo Funds/USDY and a February 2026 Cantina review for Ondo Stocks. The public record does not establish audit-to-live-bytecode coverage across every approved deployment, and the current in-scope codebase has materially mixed audit dates. Yellow reflects that mixed, incompletely mapped coverage rather than treating the newest product audit as coverage for all deployed code.",
+          "factor_id": "RD-F-002",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/audits"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No high/critical finding on live code marked resolved without on-chain proof; however, older Code4rena fixes (Jan 2023) lack verifiable commit SHAs making independent fix-commit confirmation infeasible.",
+          "factor_id": "RD-F-003",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Minimum 6 distinct auditing entities for OUSG/USDY (Code4rena x3, Zokyo, Cyfrin, Halborn, Spearbit/Cantina); 12 distinct firms across all active Ondo products. Far exceeds green threshold of >=2 distinct firms.",
+          "factor_id": "RD-F-004",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Spearbit (via Cantina, March 2025) is Tier-1; Zellic (Dec 2025, GM Solana) is Tier-1. At least one Tier-1 firm has audited deployed code within the last 12 months.",
+          "factor_id": "RD-F-005",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://docs-v2-git-prod-ondo-docs.vercel.app/pdf/GM-Solana-Zellic-12-29-2025.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Spearbit March 2025 signed off 2025-03-16; specific deploy timestamps for the audited contracts not independently retrieved. Gap cannot be confirmed within 60-day green threshold due to missing deploy timestamps.",
+          "factor_id": "RD-F-006",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi Ondo Finance: active, max payout $1,000,000 (88 assets in scope). Immunefi Flux Finance: active, max payout $550,000. Both exceed $500K green threshold.",
+          "factor_id": "RD-F-007",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/fluxfinance/information/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ondofinance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No Ondo Finance exploit or ignored-disclosure incident was identified in the reviewed public incident and protocol records. The result is limited to publicly reported incidents; it does not assert that undisclosed events cannot exist.",
+          "factor_id": "RD-F-008",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public post-mortem or documented ignored disclosure was located. Public absence alone cannot prove that no prior disclosure was mishandled, so this remains an evidence-gap disposition rather than a positive finding.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/ondo-finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://rekt.news"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No Certora, Halmos, or Kani formal verification found in public Ondo or Flux Finance documentation, GitHub repos, or audit reports. Protocol has not declared a published critical-invariant set.",
+          "factor_id": "RD-F-009",
+          "gap_reason": "protocol_opacity",
+          "notes": "No published formal-verification artifact or declared critical-invariant set was located in the reviewed public materials. This is distinct from a red finding of omitted verification against a published invariant set.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/flux-finance/contracts"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril output. Published audits found Highs: C4 Jan 2023 (1H), C4 Apr 2024 (1H); all appear remediated. No independent tool run performed; yellow because confirmed Highs existed and tool-run verification absent.",
+          "factor_id": "RD-F-010",
+          "gap_reason": null,
+          "notes": "[?] needs tool run — independent Slither/Mythril/Semgrep not performed; relying on published competitive audit findings as proxy.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-ondo/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No SELFDESTRUCT findings in any reviewed audit (6+ contests). USDY.sol source confirms no selfdestruct. Flux Finance follows Compound v2 patterns which do not use selfdestruct in core lending logic.",
+          "factor_id": "RD-F-011",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/usdy/USDY.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No user-controlled delegatecall findings in any reviewed audit. Flux Finance Unitroller uses delegatecall only for standard proxy implementation routing, not user-controlled.",
+          "factor_id": "RD-F-012",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x95Af143a021DF745bc78e845b54591C53a8B3A51"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary external call with user-controlled target/data findings in any reviewed audit. OUSG/USDY routes through RWAHub/manager contracts with defined interfaces.",
+          "factor_id": "RD-F-013",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reentrancy findings across 6+ audit contests. OZ upgradeable patterns include ReentrancyGuardUpgradeable where applicable. No reentrancy exploit has occurred.",
+          "factor_id": "RD-F-014",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG, USDY, fOUSG, fUSDC are standard ERC-20 tokens. No ERC-777/1155/721 callback integration found in any reviewed audit or source inspection.",
+          "factor_id": "RD-F-015",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x96F6eF951840721AdBF46Ac996b59E0235CB985C"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No divide-before-multiply finding in any reviewed audit. No published Slither output available. Yellow — cannot confirm absence without independent tool run.",
+          "factor_id": "RD-F-016",
+          "gap_reason": null,
+          "notes": "[?] needs tool run",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Code4rena Apr 2024 H-01: OUSGInstantManager calculates OUSG to mint based on USDC quantity (6 decimals) without checking USDC's current price — a cross-decimal pricing assumption bug. Classified High severity, marked resolved.",
+          "factor_id": "RD-F-017",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No signed/unsigned arithmetic confusion findings in any reviewed audit or Spearbit 2025 review.",
+          "factor_id": "RD-F-018",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Code4rena Jan 2023 M-04 flagged KYCRegistry signature replay (replay attack, not zero-address return). No ecrecover zero-address unchecked finding in any audit. GovernorBravo follows well-audited Compound v2 pattern.",
+          "factor_id": "RD-F-019",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No chainId-absent domain separator finding in any audit. Code4rena Jan 2023 M-04 (signature replay) was general replay protection; no specific EIP-712 chainId-absent finding.",
+          "factor_id": "RD-F-020",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG and USDY use EIP-1967 Transparent Proxy (not UUPS). Flux Finance Unitroller uses Compound v2 proxy pattern. No UUPS pattern on core contracts — factor not applicable as a risk vector.",
+          "factor_id": "RD-F-021",
+          "gap_reason": null,
+          "notes": "Not applicable path: neither OUSG/USDY nor Flux Finance uses UUPS; scored green per N-A path in methodology.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x96F6eF951840721AdBF46Ac996b59E0235CB985C"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDY.sol uses OZ `initializer` modifier on initialize() and calls `_disableInitializers()` in constructor (confirmed via GitHub). OUSG implementation confirms OZ Initializable pattern. No unprotected initialize() found on live implementations.",
+          "factor_id": "RD-F-022",
+          "gap_reason": null,
+          "notes": "Critical factor: green — no unprotected initialize() found; properly protected on all inspected live implementations.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-ondo/"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1CEB44b6E515ABF009e0CCb6DDAfd723886CF3Ff"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/usdy/USDY.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDY.sol constructor confirmed to call `_disableInitializers()` (GitHub source). OUSG implementation consistent with OZ upgradeable pattern. Flux Finance cToken contracts (Solidity 0.5.17) are not upgradeable proxies and not subject to this check.",
+          "factor_id": "RD-F-023",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1CEB44b6E515ABF009e0CCb6DDAfd723886CF3Ff"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/usdy/USDY.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No single holistic full-codebase audit exists post-Jan 2023; coverage is product-by-product and incremental. C4 Jan 2023 covered 4,365 LOC; subsequent audits are targeted. Multi-audit approach partially compensates.",
+          "factor_id": "RD-F-024",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-09-ondo/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Layer A uses 4/7 Gnosis Safe multisig (0xAEd4caF2E535D964165B4392342F71bac77e8367). Layer B uses DAO + Timelock. No single EOA admin.",
+          "factor_id": "RD-F-025",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Management Multisig: 4/7. Treasury Multisig: 4/7. Flux Timelock admin (0x118919e891D0205A7492650AD32E727617FA9452) is a GnosisSafeProxy but threshold/owners not confirmed (Safe API 403).",
+          "factor_id": "RD-F-026",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x118919e891D0205A7492650AD32E727617FA9452"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x677FD4Ed8aE623f2f625DEB2D64F2070E46cA1A1"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No single EOA holds admin on either governance layer. Management multisig is 4/7 Safe; Flux Finance uses DAO + Timelock.",
+          "factor_id": "RD-F-027",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #17.",
+          "evidence_summary": "Management Safe is 4-of-7. This is not red, but signer identities remain unattested and the TVL tier argues against green.",
+          "factor_id": "RD-F-028",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global/v1/chains/1/safes/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — signer identities are not publicly known; co-hosting analysis cannot be performed.",
+          "factor_id": "RD-F-029",
+          "gap_reason": "requires_curator_input",
+          "notes": "No independently verifiable public source ties the Safe owners to hosting or operational infrastructure; a signer-attribution review is required.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — requires on-chain behavioral heuristics per signer address.",
+          "factor_id": "RD-F-030",
+          "gap_reason": "requires_curator_input",
+          "notes": "A responsible hot-wallet determination requires wallet-behavior analysis beyond the publicly attributable governance record.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Management multisig created Dec 21, 2022; most recent activity Feb 2026. No signer-set change events detected. 7 signers appear unchanged since creation.",
+          "factor_id": "RD-F-031",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Layer A (OUSG/USDY): no timelock on upgrades — ProxyAdmin (0xBA80Aa44cC25E85CC30359150dfB1C7D041CF6d5) is standard Ownable, upgrades execute immediately. Layer B (Flux Finance): 86,400 seconds = 24 hours timelock.",
+          "factor_id": "RD-F-032",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xBA80Aa44cC25E85CC30359150dfB1C7D041CF6d5"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "[PD-042 rescore 2026-05-12, v1.7.0+] Timelock on admin actions is incompatible with the regulatory response model: the issuer must be able to act immediately on court-ordered freeze, sanctions compliance, or fund-rules changes. Scored not_applicable per PD-042 (Cat 2 RWA-issuer subset). Residual operational risk of key compromise is captured by multisig-coverage factors (yellow rather than N/A).\n\nORIGINAL EVIDENCE (preserved from v1.6.0 grading): Layer A: No timelock on mint, pause, retrieveTokens, setOracle, or upgrade for OUSG/USDY/InstantManager contracts. The dominant $3.5B+ TVL operates with no timelock protection. Layer B (Flux Finance): 24h timelock only.",
+          "factor_id": "RD-F-033",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/RWAHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "PAUSER_ROLE is a distinct named role from DEFAULT_ADMIN_ROLE in AccessControl, but the management multisig holds DEFAULT_ADMIN_ROLE and can reassign any role — functional separation is limited. No separate guardian confirmed for Flux Finance.",
+          "factor_id": "RD-F-034",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "CONFIGURER_ROLE, PAUSER_ROLE, DEFAULT_ADMIN_ROLE are named distinctly in AccessControl, but all ultimately controlled by the management multisig which holds DEFAULT_ADMIN_ROLE and can reassign any role.",
+          "factor_id": "RD-F-035",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ONDO token uses Compound-style getPriorVotes(address, blockNumber) with block-number checkpoints. Voting power sampled at a prior block. Flash loans cannot inflate voting weight at proposal creation block.",
+          "factor_id": "RD-F-036",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ONDO uses block-number checkpoints — flash loan attack blocked. Quorum of 1,000,000 ONDO is low but requires large holder coordination, not a flash loan.",
+          "factor_id": "RD-F-037",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.foundation/ondo-dao"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance minimum execution time = voting period (3 days) + timelock (1 day) = 4 days minimum. Not less than 24 hours.",
+          "factor_id": "RD-F-038",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.foundation/ondo-dao"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #17.",
+          "evidence_summary": "Compound-style Timelock executeTransaction uses target.call{value: value}(callData), not delegatecall. Yellow remains for residual unrestricted-target call risk because no target allowlist is present.",
+          "factor_id": "RD-F-039",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/compound-finance/compound-protocol/blob/master/contracts/Timelock.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No emergency-veto multisig identified for Flux Finance governance. Docs mention DAO 'might elect committees or multisigs' for emergencies but no dedicated veto structure confirmed.",
+          "factor_id": "RD-F-040",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.fluxfinance.com/governance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.foundation/ondo-dao"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "[PD-042 rescore 2026-05-12, v1.7.0+] Forcible seize / burn / retrieve-token paths are the defining feature of a regulated tokenized RWA, REQUIRED by KYC, sanctions, and court-order compliance regimes. Treating them as a rug-risk signal misframes the protocol type. Scored not_applicable per PD-042 (Cat 2 RWA-issuer subset).\n\nORIGINAL EVIDENCE (preserved from v1.6.0 grading): [CRITICAL] ousgInstantManager.sol exposes retrieveTokens(address token, address to) callable by DEFAULT_ADMIN_ROLE with no timelock. USDY InstantManager has the same pattern. Management multisig (4/7) can drain contract balances in one transaction. RWAHub.sol confirms no timelock on any admin functions.",
+          "factor_id": "RD-F-041",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/code-423n4/2024-03-ondo-finance/blob/main/contracts/ousg/ousgInstantManager.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/RWAHub.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": "Evidence-only update for #17.",
+          "evidence_summary": "OUSG and USDY minting remains role-gated but uncapped on-chain. Real-world collateral discipline is an off-chain/operational mitigation, not a contract-level supply cap, so yellow remains.",
+          "factor_id": "RD-F-042",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1CEB44b6E515ABF009e0CCb6DDAfd723886CF3Ff#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/contracts/usdy/USDY.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Management multisig deployed Dec 21, 2022 — before OUSG mainnet launch Jan 26, 2023. Admin was multisig from day 1 of the live product.",
+          "factor_id": "RD-F-043",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — requires Chainalysis-style feed against management and treasury multisig signer addresses.",
+          "factor_id": "RD-F-044",
+          "gap_reason": "requires_curator_input",
+          "notes": "Flagged-address attribution for management and treasury Safe signers cannot be established from independently verifiable public evidence alone.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — Flux Finance FIP-00 genesis proposal describes economic parameters but constructor arguments for deployed contracts were not cross-verified.",
+          "factor_id": "RD-F-045",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.fluxfinance.com/t/fip-00-genesis-governance-proposal/31"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "All key Ethereum contracts verified on Etherscan with public ABIs: OUSG token, USDY token, GovernorBravoDelegator, Timelock, Flux Comptroller, fOUSG, fUSDC.",
+          "factor_id": "RD-F-046",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x95Af143a021DF745bc78e845b54591C53a8B3A51"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x96F6eF951840721AdBF46Ac996b59E0235CB985C"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not fully assessed. Proposal threshold 100M ONDO (2.05% of circulating — very high). Quorum 1M ONDO (0.02% of circulating — very low). Gini coefficient not computed.",
+          "factor_id": "RD-F-047",
+          "gap_reason": "pipeline_unimplemented",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.foundation/ondo-dao"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.foundation/ondo-token"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials identify a dedicated USDY redemption-price oracle and a distinct Flux oracle with hardcoded, custom-RWA, and Chainlink types. The multi-product RWA design relies on centralized price publication rather than one uniform market-data stack.",
+          "factor_id": "RD-F-048",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.ondo.finance/pdf/Ondo-NetherMind-Audit-April-2023.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public USDY material identifies one redemption-price oracle and the public code describes one paired RWA oracle per Pricer. A secondary price source for the active USDY path is not documented; Flux has a distinct configurable oracle design.",
+          "factor_id": "RD-F-049",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Publicly evidenced dependencies are the USDY price-oracle contract, Chainalysis sanctions-list integration in the public USDY code, and LayerZero messaging for USDY and Ondo Stocks. Off-chain custody and NAV operations are outside this RWA rubric assessment.",
+          "factor_id": "RD-F-050",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The active USDY oracle exposes a pause state and public materials do not document a second oracle that takes over on failure. The current instant manager uses a configured oracle for subscribe/redeem calculations, creating a price-path liveness dependency.",
+          "factor_id": "RD-F-051",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa0219aa5b31e65bc920b5b6dfb8edf0988121de0"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/developer-guides/usdy-instant-manager-integration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A paused or unavailable USDY redemption-price oracle can interrupt the public instant subscribe/redeem flow, while a LayerZero/DVN outage can interrupt bridge transfers. Evidence supports availability risk, not a quantified loss-at-risk or custody claim.",
+          "factor_id": "RD-F-052",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/developer-guides/usdy-instant-manager-integration"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The USDY redemption-price oracle is a dedicated RWADynamicOracle and public USDY code describes a Pricer/RWA-oracle interface; neither is a spot DEX-pool price read. Flux's documented oracle types are hardcoded, custom-RWA, and Chainlink. The critical spot-DEX/no-TWAP failure mode is not evidenced.",
+          "factor_id": "RD-F-053",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa0219aa5b31e65bc920b5b6dfb8edf0988121de0"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.ondo.finance/pdf/Ondo-NetherMind-Audit-April-2023.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the reviewed USDY and Flux public oracle descriptions do not use a DEX TWAP path.",
+          "factor_id": "RD-F-054",
+          "gap_reason": "not_applicable",
+          "notes": "No DEX-TWAP oracle was identified in the reviewed product paths.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: no reviewed oracle path is a DEX-pool price calculation.",
+          "factor_id": "RD-F-055",
+          "gap_reason": "not_applicable",
+          "notes": "The assessed price paths are dedicated RWA/Chainlink paths.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: medianization across DEX pools is not part of the reviewed USDY or Flux oracle paths.",
+          "factor_id": "RD-F-056",
+          "gap_reason": "not_applicable",
+          "notes": "Centralized RWA-price and Chainlink risks are assessed under other oracle factors.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The verified USDY oracle exposes an administrative pause, but the reviewed public material does not demonstrate an automatic price-deviation circuit breaker for the active USDY price path.",
+          "factor_id": "RD-F-057",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa0219aa5b31e65bc920b5b6dfb8edf0988121de0"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: a DEX-price deviation threshold is structurally mismatched to the reviewed USDY time-range price oracle.",
+          "factor_id": "RD-F-058",
+          "gap_reason": "not_applicable",
+          "notes": "Public evidence supports an administrative pause, not a DEX-deviation circuit breaker.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The verified USDY oracle exposes getPriceData with a timestamp and administrative range-setting, but public documentation does not establish an enforced consumer freshness threshold for the active instant manager. This is a bounded stale-data concern.",
+          "factor_id": "RD-F-059",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa0219aa5b31e65bc920b5b6dfb8edf0988121de0"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/developer-guides/usdy-instant-manager-integration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public Flux audit documents configurable Chainlink/RWA oracle types and a maximum-delay check for the fToken path, but it does not establish the active deployment's lower/upper price-bound handling.",
+          "factor_id": "RD-F-060",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public evidence does not establish the active Flux deployment's price-bound configuration.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the reviewed USDY and Flux public oracle descriptions do not price LP tokens from AMM balances.",
+          "factor_id": "RD-F-061",
+          "gap_reason": "not_applicable",
+          "notes": "No LP-token pricing path was identified.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public USDY repository states that transfer checks call the sanctions-list contract and identifies Chainalysis as that list. The active instant flow also depends on its configured price oracle; public evidence does not establish redundant fallbacks.",
+          "factor_id": "RD-F-062",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/developer-guides/usdy-instant-manager-integration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "DeFiLlama's public protocol endpoint reported $3.524B total TVL on 2026-07-24, versus $3.583B thirty daily observations earlier (-1.63%). The reported chain distribution is led by Ethereum ($1.903B), with material Stellar, BSC, XRPL and Solana positions. This records the observed aggregate, not a reserve-quality assessment.",
+          "factor_id": "RD-F-063",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "A current top-10 depositor share cannot be derived from the public aggregate TVL metric because Ondo spans several issuers, products and chains. Public address documentation identifies separate OUSG and USDY deployments, but a cross-chain holder aggregation was not independently reproducible for this refresh.",
+          "factor_id": "RD-F-064",
+          "gap_reason": "protocol_opacity",
+          "notes": "Gray records the public-evidence gap; it does not infer concentration from issuer eligibility or aggregate TVL.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Major issuer-product liquidity is provided through documented mint/redemption routes rather than a single DEX depth measure. OUSG instant redemptions have a $50M global 24-hour limit, are subject to service-partner availability, and larger requests follow the non-instant route. A comparable 2%/5% on-chain depth measurement across all major products was not publicly established.",
+          "factor_id": "RD-F-065",
+          "gap_reason": "protocol_opacity",
+          "notes": "Gray is limited to the unavailable rubric depth metric; it does not evaluate redemption operations or fund liquidity.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/qualified-access-products/ousg/instant-limits"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/qualified-access-products/ousg/overview"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "This factor applies to Flux Finance, Ondo's Compound-V2-fork lending protocol, not to issuer TVL. Flux documents that supply and borrow rates vary with market utilization, but the reviewed public documentation does not provide a current per-market utilization snapshot for all active markets.",
+          "factor_id": "RD-F-066",
+          "gap_reason": "protocol_opacity",
+          "notes": "Gray records missing current utilization data rather than extrapolating it from Ondo issuer TVL.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/lending"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux documents that extreme volatility can create bad debt and that market reserves are used first; it does not publish a complete, independently verifiable historical bad-debt event register. No score is assigned from an absence-of-search-results claim.",
+          "factor_id": "RD-F-067",
+          "gap_reason": "requires_curator_input",
+          "notes": "Not assessed: a complete documented event count and loss total were not established from public evidence during this refresh.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux is documented as overcollateralized and liquidates accounts when aggregate collateral-factor liquidity is negative. It also requires KYC/whitelisting to liquidate OUSG collateral. The reviewed public material does not provide a reproducible curator stress calculation proving net collateralization remains at least 110%, so the stress result is conditional.",
+          "factor_id": "RD-F-068",
+          "gap_reason": null,
+          "notes": "This scores the disclosed liquidation and permission constraint; it does not assess OUSG fund assets or redemption terms.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/liquidations"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/borrowing"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo's public documentation describes USDY as a tokenized note linked to US Treasuries and bank-demand deposits, while Flux is an overcollateralized lending protocol. Neither product is described as an algorithmic stablecoin design. This classification does not assess reserve sufficiency, custody, or legal terms.",
+          "factor_id": "RD-F-069",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/trust-and-security"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/borrowing"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux is a Compound V2 fork and publicly lists five Ethereum fToken markets. A current on-chain read of totalSupply and totalBorrows for every listed market was not independently completed in this refresh, so the required zero-supply-and-zero-borrow test is not asserted.",
+          "factor_id": "RD-F-070",
+          "gap_reason": "requires_curator_input",
+          "notes": "Not assessed. This is the critical empty-market check; no inference is made from historical balances or the existence of listed markets.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux documentation establishes that market parameters are governed through Ondo DAO proposals, but the reviewed public documentation and public repository did not establish a code or governance rule requiring a defined seed deposit before a new market is borrow-enabled.",
+          "factor_id": "RD-F-071",
+          "gap_reason": "requires_curator_input",
+          "notes": "Not assessed rather than inferring the presence or absence of a safeguard from governance thresholds alone.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux economic parameters and upgrades are governed through on-chain Ondo DAO proposals. The documented proposal threshold is 100,000,000 ONDO, with a 1,000,000 ONDO quorum, three-day voting period and one-day timelock. This is a high-threshold, governance-gated market-parameter path rather than permissionless listing.",
+          "factor_id": "RD-F-072",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/governance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux documents a $1 upper bound for stablecoin oracle prices as a mitigation against external oracle manipulation. The reviewed public materials do not provide the per-asset borrow-cap and oracle-depth calculations required by this factor, including for the OUSG oracle path.",
+          "factor_id": "RD-F-073",
+          "gap_reason": "protocol_opacity",
+          "notes": "Gray records an incomplete proof of the factor's required per-asset cap relation, not a finding that a price manipulation is present.",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/liquidations"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed products use issuer-administered token and redemption contracts, and Flux fTokens are documented as Compound-V2 cToken forks. The public product documentation does not identify an ERC-4626 vault in the covered architecture, so the OpenZeppelin virtual-share-offset test is structurally mismatched.",
+          "factor_id": "RD-F-074",
+          "gap_reason": "not_applicable",
+          "notes": "Not applicable: no covered ERC-4626 vault is established by the reviewed public architecture.",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/protocol/lending"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/general-access-products/usdy/basics"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 4,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The first-depositor/share-inflation guard requires a current code and market-state review for the Flux Compound-V2-fork fTokens. Public documentation confirms that fTokens are Compound-V2 cToken forks, but it does not establish the applicable guard or every market's deployment state.",
+          "factor_id": "RD-F-075",
+          "gap_reason": "requires_curator_input",
+          "notes": "Not assessed: no affirmative or adverse guard claim is made without a complete public code and market-state verification.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The public address inventory identifies active OUSG and USDY contracts, but does not supply the earliest creation transaction for every currently live contract.",
+          "evidence_summary": "The earliest live-contract deployment date was not independently established from a public creation transaction. This factor remains unassessed rather than inferring age from product announcements.",
+          "factor_id": "RD-F-076",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "A 2022 vulnerability disclosure states that no user funds were at risk and that the issue was remediated; it is not an exploitation incident. A complete public incident database result for the protocol was not independently available.",
+          "evidence_summary": "No verified exploitation count can be established from the reviewed public material. The documented 2022 vulnerability was remediated before user funds were at risk, so it is not counted as an exploit.",
+          "factor_id": "RD-F-077",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The available public disclosure documents a remediated vulnerability, not an exploit, but does not provide a complete incident database record.",
+          "evidence_summary": "The chronic-exploit threshold cannot be verified without a complete, independently checked incident record.",
+          "factor_id": "RD-F-078",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The reviewed disclosure describes one remediated vulnerability and supplies no classified exploit series.",
+          "evidence_summary": "A repeat root-cause pattern cannot be classified from the independently verified public record.",
+          "factor_id": "RD-F-079",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The available disclosure confirms that its 2022 issue was remediated before user funds were at risk, but it cannot establish the complete incident timeline.",
+          "evidence_summary": "Days since the last exploit cannot be calculated from a complete independently verified exploit history.",
+          "factor_id": "RD-F-080",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "No exploited Ondo incident was established in the public material reviewed for this specialist pass.",
+          "evidence_summary": "Not applicable: no verified exploit incident is available to score a post-exploit response.",
+          "factor_id": "RD-F-081",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "No exploited Ondo incident was established in the public material reviewed for this specialist pass.",
+          "evidence_summary": "Not applicable: no verified exploit incident is available for a post-mortem timeliness assessment.",
+          "factor_id": "RD-F-082",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "No exploited Ondo incident was established in the public material reviewed for this specialist pass.",
+          "evidence_summary": "Not applicable: no verified exploit incident is available to assess post-incident auditor re-engagement.",
+          "factor_id": "RD-F-083",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "programmatic",
+          "evidence_detail": "The public DeFiLlama protocol endpoint returned 90 daily TVL observations from 2026-04-27 through 2026-07-24. Their mean was $3.646B and population standard deviation was $125.547M, for a coefficient of variation of 0.0344.",
+          "evidence_summary": "Trailing 90-day TVL coefficient of variation is 0.0344, below the 0.15 stability threshold.",
+          "factor_id": "RD-F-084",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://api.llama.fi/protocol/ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "No exploited Ondo incident was established in the public material reviewed for this specialist pass.",
+          "evidence_summary": "Not applicable: no verified exploit provides an incident-to-statement interval to measure.",
+          "factor_id": "RD-F-085",
+          "gap_reason": "not_applicable",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Ondo's April 2026 security post states that it paused USDY where appropriate while responding to the Drift Protocol attack. The post supplies a documented reason but does not identify additional Ondo pauses in the period.",
+          "evidence_summary": "One documented pause activation in the trailing year: USDY was paused where appropriate during the April 2026 Drift response.",
+          "factor_id": "RD-F-086",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The documented April 2026 USDY pause does not state its duration, and no complete public pause-event duration record was identified.",
+          "evidence_summary": "Whether any pause lasted more than seven consecutive days cannot be determined from the public documentation reviewed.",
+          "factor_id": "RD-F-087",
+          "gap_reason": "protocol_opacity",
+          "notes": "The public statement confirms a targeted pause but omits duration, so a no-long-pause conclusion would be unsupported.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "The official address inventory labels the listed legacy OUSG contracts as deprecated on dates through 2025-04-07 and lists the current contract set separately. No documented full protocol redeployment falls within the trailing twelve months.",
+          "evidence_summary": "No full redeployment to a new address set was identified in the trailing twelve months; the disclosed legacy migrations predate the window.",
+          "factor_id": "RD-F-088",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "No independently verifiable, public policy or provider record establishing active Ondo-specific cover and its scope was identified in this pass.",
+          "evidence_summary": "Insurance coverage cannot be assessed from independently verifiable public evidence; absence of a discovered provider listing is not treated as proof of no coverage.",
+          "factor_id": "RD-F-089",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public coverage record with a verifiable scope and cover size was available for this factor.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public contract documentation describes permissioned RWA subscription and redemption flows alongside transferable USDY and Flux-facing exposure. No public real-time precursor feed establishes a current signal for this mixed surface.",
+          "factor_id": "RD-F-090",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable to Flux Finance lending markets. OUSG/USDY redemptions are permissioned (T+0 via InstantManager; T+2 standard) and don't match attacker partial-drain pattern.",
+          "factor_id": "RD-F-091",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1B19C19393e2d034D8Ff31ff34c81252FcBbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable — deployer `0xe2d0f9dcc81267c36a47d9e26adf479501124bbe` and \"Deployer 3\" (referenced in multisig executions) are the relevant addresses.",
+          "factor_id": "RD-F-092",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1B19C19393e2d034D8Ff31ff34c81252FcBbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x677FD4Ed8aE623f2f625DEB2D64F2070E46cA1A1"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable to Ethereum mainnet contracts. No signals in public data.",
+          "factor_id": "RD-F-093",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo publishes the RWAHub contract architecture, which identifies a plausible impersonation target. Public materials do not provide a real-time impersonator-contract alert stream for this factor.",
+          "factor_id": "RD-F-094",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable to Flux Finance (Compound v2 fork — known exploit templates exist for Compound v2 empty-market attacks).",
+          "factor_id": "RD-F-095",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The published USDY contract architecture includes token transfer restrictions and approvals. Public materials do not provide a live approval-abuse telemetry feed for this factor.",
+          "factor_id": "RD-F-096",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable to USDY minting if KYC gate is bypassed or to Flux Finance borrowing.",
+          "factor_id": "RD-F-097",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1B19C19393e2d034D8Ff31ff34c81252FcBbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Yes — with calibration. RWA subscription/redemption-driven TVL means batch-redemption days can produce 5–10% drops. Threshold should be >25–30% in 1h for protocol-stress (vs 30% standard).",
+          "factor_id": "RD-F-098",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/ondo-finance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDY instant subscriptions and redemptions use a published price-oracle path. Public documentation does not establish a protocol-wide, real-time oracle-deviation alert feed that covers every Ondo product surface.",
+          "factor_id": "RD-F-099",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/developer-guides/usdy-instant-manager-integration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Limited applicability to OUSG/USDY (permissioned minting). Applies to Flux Finance.",
+          "factor_id": "RD-F-100",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x677FD4Ed8aE623f2f625DEB2D64F2070E46cA1A1"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applies to Flux Finance GovernorBravo only. OUSG/USDY not covered — corporate multisig control.",
+          "factor_id": "RD-F-101",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x336505EC1BcC1A020EeDe459f57581725D23465A"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Yes — management multisig admin transactions for OUSG/USDY proxy contracts; timelock for Flux Finance.",
+          "factor_id": "RD-F-102",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2c5898da4DF1d45EAb2B7B192a361C3b9EB18d9c"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public address documentation identifies Ondo contracts, but no public product-specific source was found that establishes a current cross-chain signer or validator configuration suitable for a configuration-change alert.",
+          "factor_id": "RD-F-103",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Limited — OUSG/USDY backed by T-bills, not stablecoins. Flux Finance USDC dependency exists.",
+          "factor_id": "RD-F-104",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/ondo-finance"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Yes — ondo.finance, docs.ondo.finance.",
+          "factor_id": "RD-F-105",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public Ondo materials document USDY contracts and product addresses, but they do not establish a current cross-chain transfer activity feed that would support this real-time signal.",
+          "factor_id": "RD-F-106",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The published RWAHub design describes a trusted account setting price identifiers. Public materials do not disclose off-chain signing telemetry for this factor.",
+          "factor_id": "RD-F-107",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable — ondoprotocol/usdy repo. Last commit June 2024 (10+ months stale).",
+          "factor_id": "RD-F-108",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Applicable — \"Ondo Finance\" is a high-profile brand.",
+          "factor_id": "RD-F-109",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance publishes governance documentation, but no public event stream establishes a current governance execution anomaly for this real-time signal.",
+          "factor_id": "RD-F-110",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo's public team page identifies named leaders and shows their photos, including founder Nathan Allman, CEO Ian De Bode, and adviser Justin Schmidt. This provides a public real-name accountability surface for senior leadership.",
+          "factor_id": "RD-F-111",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/team"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.bloomberg.com/news/articles/2023-03-23/goldman-ex-head-of-digital-assets-justin-schmidt-joins-defi-s-ondo-finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/markets/2025/12/08/ondo-token-gains-as-sec-ends-investigation-into-rwa-tokenization-platform"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/nathanlallman/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Nathan Allman: keynote speaker Consensus 2025, Solana Accelerate 2025, Chainlink SmartCon 2025, CNBC, Bloomberg, CoinDesk, Thinking Crypto podcast, X @nathanlallman. Justin Schmidt: LinkedIn, Bloomberg Law feature. 5+ verifiable public trails per senior executive.",
+          "factor_id": "RD-F-112",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://consensus2025.coindesk.com/agenda/speaker/-nathan-allman"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.thinkingcrypto.com/ondo-finance-is-leading-the-tokenization-surge-with-nathan-allman/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=5sNksjTBNWI"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/OndoFinance/status/1922605101388017896"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public leadership biographies identify senior personnel, but the available sources do not provide a comprehensive, independently auditable history of all prior protocol affiliations for the current team.",
+          "factor_id": "RD-F-113",
+          "gap_reason": "requires_curator_input",
+          "notes": "Public biographies are not a complete adverse-affiliation registry for every current team member.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/nathan-allman"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/justinschmidt"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.rootdata.com/member/Nathan%20Allman?k=OTA4Mw%3D%3D"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer-A (0xe2d0f9dcc81267c36a47d9e26adf479501124bbe): first tx April 13, 2022; 23 total tx; all Ondo-related; Etherscan labeled 'Ondo Finance: Deployer'. Deployer-B (0x8cc5e5E8e2ea561db672f8eb1191336bd5c11bc7): funded by 'Ondo Finance Whitehat' wallet; 514 tx; all Ondo-related. No pre-Ondo activity indicating repurposed attacker wallet.",
+          "factor_id": "RD-F-114",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8cc5e5E8e2ea561db672f8eb1191336bd5c11bc7"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe2d0f9dcc81267c36a47d9e26adf479501124bbe"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Available public protocol-level material does not establish a complete, person-by-person adverse-affiliation history for the current team.",
+          "factor_id": "RD-F-115",
+          "gap_reason": "requires_curator_input",
+          "notes": "No public, comprehensive identity-to-adverse-affiliation registry was available for the named leadership set.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defi-planet.com/2025/04/ondo-finance-faces-scrutiny-amid-allegations-of-artificially-inflated-tvl-following-mantra-scandal/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/markets/2025/12/08/ondo-token-gains-as-sec-ends-investigation-into-rwa-tokenization-platform"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "GitHub ondoprotocol org members list is private (0 public members). Cannot directly verify tenure of admin-PR authors. ondoprotocol/usdy last commit June 12, 2024 — no fresh-contributor admin change event identified. Circumstantial: team operational since 2021 implies seasoned tenure.",
+          "factor_id": "RD-F-116",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/orgs/ondoprotocol/people"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan publicly labels the deployer as Ondo Finance: Deployer, but the reviewed public explorer record does not establish a deployer-bound ENS or NameStone identity.",
+          "factor_id": "RD-F-117",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe2d0f9dcc81267c36a47d9e26adf479501124bbe"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public leadership profiles identify named personnel, but they do not provide a complete cross-platform handle history suitable for determining reuse across failed or rugged projects.",
+          "factor_id": "RD-F-118",
+          "gap_reason": "requires_curator_input",
+          "notes": "A comprehensive handle-to-project attribution set was not publicly available.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/nathan-allman"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/nathanlallman/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository exposes commit history but does not publicly attribute repository contributors to a verified stated geography; a consistency determination cannot be made from the available evidence.",
+          "factor_id": "RD-F-119",
+          "gap_reason": "protocol_opacity",
+          "notes": "Public GitHub data did not establish both attributable contributors and verified stated locations for the required comparison.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/orgs/ondoprotocol/people"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/nathanlallman/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Nathan Allman: confirmed multiple on-camera video appearances — Consensus 2025 stage, Solana Accelerate 2025 keynote, Chainlink SmartCon 2025 (YouTube), CNBC, Bloomberg, Thinking Crypto podcast. Justin Schmidt: LinkedIn photo, Bloomberg profile photo. No curator reports of video-off or voice inconsistency.",
+          "factor_id": "RD-F-120",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://consensus2025.coindesk.com/agenda/speaker/-nathan-allman"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.thinkingcrypto.com/ondo-finance-is-leading-the-tokenization-surge-with-nathan-allman/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=5sNksjTBNWI"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Nathan Allman 5/5: LinkedIn, conference speaker bios, Twitter/X, Bloomberg/CNBC, IQ.wiki, ZoomInfo, Consensus 2025, podcasts. Justin Schmidt 5/5: LinkedIn, Bloomberg feature, MIT profile, The Org. Ian De Bode 4/5: Blockworks, The Org. Among the most deeply documented DeFi leadership teams assessed.",
+          "factor_id": "RD-F-121",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/nathan-allman"
+            },
+            {
+              "source_type": "url",
+              "url": "https://theorg.com/org/ondo-finance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.zoominfo.com/p/Nathan-Allman/2675605287"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials identify organizational controls but do not identify team payment wallets or provide a reproducible contributor-wallet cluster trace.",
+          "factor_id": "RD-F-122",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public mapping from contributors to payment wallets was available for a three-hop DPRK-cluster analysis.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.finance/trust-and-security"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.chainalysis.com/blog/ofac-sanctions/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No newly verified acute admin-rescue or ACL change was found, while the public forum, governance, and repository surfaces do not document the corporate Layer A signer/admin-change process. Retain a yellow transparency concern rather than infer a critical red event.",
+          "factor_id": "RD-F-123",
+          "gap_reason": null,
+          "notes": "No acute admin-rescue or ACL event is asserted by this row.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://forum.fluxfinance.com/"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://www.tally.xyz/gov/ondo-dao/proposals"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/ondoprotocol/usdy/issues?state=open&per_page=5"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public transaction list for the Etherscan-labeled Ondo deployer shows initial funding activity on April 13, 2022 and an Ondo contract creation on April 28, 2022. The reviewed direct transaction record does not identify a mixer-funded deployment event within the factor's 30-day window.",
+          "factor_id": "RD-F-124",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x8cc5e5E8e2ea561db672f8eb1191336bd5c11bc7"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xAEd4caF2E535D964165B4392342F71bac77e8367"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xe2d0f9dcc81267c36a47d9e26adf479501124bbe"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public deployer record identifies the address and its direct transaction history, but the available sources do not provide a reproducible three-hop cluster trace or a provider attribution resolving DPRK/Lazarus proximity.",
+          "factor_id": "RD-F-125",
+          "gap_reason": "requires_curator_input",
+          "notes": "A public three-hop trace or provider-labeled cluster attribution was not available; no DPRK conclusion is made.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://decrypt.co/364872/layerzero-pins-292m-kelpdao-bridge-hack-on-north-koreas-lazarus-group"
+            },
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.chainalysis.com/blog/kelpdao-bridge-exploit-april-2026/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/markets/2025/12/08/ondo-token-gains-as-sec-ends-investigation-into-rwa-tokenization-platform"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance: explicitly documented Compound v2 fork; upstream commit SHAs identified (cToken: a3214f6, other: 3affca8). GovernorBravoDelegator: Compound Governor Bravo fork. OUSG/USDY: original design. Upstream clearly identified.",
+          "factor_id": "RD-F-126",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.foundation/ondo-dao"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/flux-finance/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": "Second review approved #17 red->yellow. Do not claim the patch is confirmed merged.",
+          "evidence_summary": "The red threshold for a high/critical unmerged upstream patch or current-window same-pattern sibling exploit is not met. Evidence supports unresolved Medium-severity Compound-v2 first-deposit/donation-class uncertainty, so yellow is appropriate.",
+          "factor_id": "RD-F-127",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No active Compound v2 core vulnerability disclosures in the last 90 days (Jan 31 – April 28, 2026). Sonne Finance (May 2024) and Onyx Protocol (Oct 2023) exploits are outside the 90-day window.",
+          "factor_id": "RD-F-128",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.comp.xyz/t/hundred-finance-exploit-and-compound-v2/4266"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance diverges from Compound v2 in KYC/sanctions checks on all critical token functions, custom OndoPriceOracle, modified seize share (2.8% to 1.75%/0%), modified blocksPerYear. Core economic logic retained. Estimated 15-25% LOC divergence.",
+          "factor_id": "RD-F-129",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/flux-finance/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance: direct fork of Compound v2 (depth = 1). Compound v2 audited by Trail of Bits and OpenZeppelin, formally verified by Certora. GovernorBravoDelegator: direct fork of Compound Governor Bravo (depth = 1). OUSG/USDY: original design.",
+          "factor_id": "RD-F-130",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/trust-and-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Compound v2 upstream: Trail of Bits + OpenZeppelin audits + Certora FV (inherited). Flux Finance delta-audit: Code4rena January 2023. C4 Jan 2023 M-02 (donation vulnerability) resolution status unconfirmed. Delta-audit is 39 months old.",
+          "factor_id": "RD-F-131",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/trust-and-security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance modifies protocol seize share (2.8% to 1.75%/0%), blocksPerYear in JumpRateModelV2, and governance-set collateral factors/borrow caps differ from Compound v2 defaults. Covered by the 39-month-old delta-audit.",
+          "factor_id": "RD-F-132",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/flux-finance/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "ondoprotocol/usdy package.json: \"@openzeppelin/contracts\": \"^4.8.3\" — caret constraint allows minor/patch updates within OZ major version 4. OZ contracts are security-critical; this is NOT an exact-version pin. Red per methodology.",
+          "factor_id": "RD-F-133",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No npm/PyPI malicious-release advisory found for OpenZeppelin, hardhat, ethers.js, or other Ondo protocol dependencies in the last 90 days (Jan 31 – April 28, 2026).",
+          "factor_id": "RD-F-134",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/advisories?query=ondoprotocol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 8,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OZ 4.8.x has no current critical or high GHSA advisories as of April 2026. Flux Finance cToken contracts use Solidity 0.5.17 with Compound v2 vendored dependencies; no active GHSA for Compound v2 core contracts.",
+          "factor_id": "RD-F-135",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/blob/main/package.json"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — ondoprotocol/usdy repo has no confirmed signed release tags that can be compared against deployed bytecode.",
+          "factor_id": "RD-F-136",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG proxy last upgrade Feb 2023; USDY proxy last upgrade Jul 2023. No proxy upgrades in last 90 days for primary token contracts.",
+          "factor_id": "RD-F-137",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x96F6eF951840721AdBF46Ac996b59E0235CB985C"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No proxy upgrades detected for OUSG or USDY tokens in last 30 days. No hot-patches detected in assessment window.",
+          "factor_id": "RD-F-138",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x96F6eF951840721AdBF46Ac996b59E0235CB985C"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/token/0x1b19c19393e2d034d8ff31ff34c81252fcbbee92"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "24+ audit engagements across 8 firms with recent coverage: Halborn (Feb 2025) and Spearbit/Cantina (Mar 2025) for OUSG/USDY Ethereum core. Proxy upgrades are covered by subsequent audits. No evidence of deployed changes without re-audit.",
+          "factor_id": "RD-F-139",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/portfolio/fb329103-8bd1-45ac-91d8-4f75e1abf812"
+            },
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.finance/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — requires comparing GitHub merged PRs against deployed bytecode. Cannot confirm without bytecode diff tooling.",
+          "factor_id": "RD-F-140",
+          "gap_reason": "requires_curator_input",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No audit finding flagged test-mode parameters. Code4rena Jan 2023, Sep 2023, Apr 2024 and Cyfrin Apr 2024 audits found no test-mode config in deployed code.",
+          "factor_id": "RD-F-141",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-01-ondo/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-09-ondo/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2024-03-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — limited upgrade history (one upgrade each for OUSG and USDY) reduces collision risk, but no OZ upgrades plugin report found.",
+          "factor_id": "RD-F-142",
+          "gap_reason": "requires_curator_input",
+          "notes": "A storage-layout compatibility determination requires a verified implementation-to-implementation upgrade diff or equivalent layout report, which is not publicly available here.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": "Second review approved #17 yellow->green narrowly. Scope to verified current OUSG/USDY/rOUSG/GMTokenManager surfaces.",
+          "evidence_summary": "Verified current OUSG/USDY/rOUSG implementations include _disableInitializers() constructors or constructor-based/no-initialize architecture. This satisfies RD-F-143 for the checked current implementations.",
+          "factor_id": "RD-F-143",
+          "gap_reason": null,
+          "notes": "Factual correction #17; decision posted 2026-06-24; second-review applied where required.",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0xA21Ed4C3122fc51c6D6Db0d668D968C3B3f689CB#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1CEB44b6E515ABF009e0CCb6DDAfd723886CF3Ff#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/ondoprotocol/usdy/main/contracts/usdy/USDY.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/code-423n4/2024-03-ondo-finance/main/contracts/ousg/rOUSG.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No CREATE2 factory use identified in reviewed contracts. Standard deploy pattern used.",
+          "factor_id": "RD-F-144",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1B19C19393e2d034D8Ff31ff34c81252FcBbee92"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x93358db73B6cd4b98D89c8F5f230E81a95c2643a"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed — Foundry and Hardhat configs present in repo but no published build artifacts found for bytecode verification.",
+          "factor_id": "RD-F-145",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "USDY InstantManager deployed approximately 140 days ago. Global Markets contracts recently deployed. Multiple ongoing deployments across non-EVM chains. Continuous attack surface expansion.",
+          "factor_id": "RD-F-146",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa42613C243b67BF6194Ac327795b926B4b491f15"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo publicly documents a LayerZero OFT bridge for USDY and Ondo Stocks, with current USDY transfers across Arbitrum, BNB Chain, Ethereum, Mantle, Sei, and Solana. The official address registry identifies OFT adapters.",
+          "factor_id": "RD-F-147",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Current official Ondo documentation names three DVN providers for the OFT bridge: Canary, LayerZero Labs, and Ondo. The documentation identifies provider count but does not by itself establish a required/optional quorum.",
+          "factor_id": "RD-F-148",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero supports required and optional DVNs with per-pathway X-of-Y-of-N configuration, but Ondo's current public bridge page does not disclose which listed DVNs are required or the optional threshold. The prior four-of-four claim is stale.",
+          "factor_id": "RD-F-149",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public current per-pathway ULN configuration or threshold was located; provider names alone do not prove a quorum.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo documents Canary, LayerZero Labs, and Ondo DVNs as independent verification mechanisms, but the reviewed public materials do not establish their infrastructure ownership, operational independence, or per-pathway quorum. Diversity is partial rather than fully evidenced.",
+          "factor_id": "RD-F-150",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 documents DVN payload-hash attestations in the receive library and ULN-configuration enforcement before endpoint delivery. The reviewed public architecture does not evidence an application-level unchecked ecrecover path in the Ondo OFT adapter.",
+          "factor_id": "RD-F-151",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/protocol/message-receive-library"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 packet headers include source/destination endpoint IDs and sender/receiver details; receive verification is tied to the application's ULN configuration. Ondo's bridge uses the LayerZero OFT standard, supporting source-path binding.",
+          "factor_id": "RD-F-152",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/protocol/message-receive-library"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2 documents sequential per-channel nonces and GUIDs derived from nonce, source/destination chains, and participating contracts as replay protection. Ondo's bridge uses the OFT standard on that endpoint architecture.",
+          "factor_id": "RD-F-153",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/glossary"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "LayerZero V2's documented receive flow verifies a packet header and payload hash through configured DVNs, rather than accepting a Merkle root as message authorization. The reviewed architecture does not evidence a Nomad-style default-zero-root acceptance path.",
+          "factor_id": "RD-F-154",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/protocol/message-receive-library"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Official current bridge documentation lists the current DVN providers but does not provide a dated configuration history for individual pathways. A recent validator-set expansion or removal cannot be concluded from the available public evidence.",
+          "factor_id": "RD-F-155",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public dated per-pathway DVN configuration history was located.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The current bridge page identifies an Ondo-operated DVN alongside Canary and LayerZero Labs DVNs. Public materials reviewed do not establish key custody, shared infrastructure, or the exact quorum; concentration cannot be confirmed green.",
+          "factor_id": "RD-F-156",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Current public bridge documentation provides pathway rate limits but not a current per-pathway bridged-balance breakdown or a verified target quorum. A reliable value-per-validator calculation is not available from the reviewed public evidence.",
+          "factor_id": "RD-F-157",
+          "gap_reason": "protocol_opacity",
+          "notes": "No public current per-pathway balance and quorum pair was located.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo publicly states that it is expanding real-time monitoring, but no independently verifiable public threat-actor clustering feed can establish this protocol-specific 30-day interaction signal.",
+          "factor_id": "RD-F-158",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The public contract-address catalogue establishes the monitored surface, but a historical low-gas failed-transaction probe determination requires a live mempool and wallet-clustering feed.",
+          "factor_id": "RD-F-159",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo's public USDY repository establishes a published dependency surface, but a protocol-specific malicious-dependency incident determination requires current dependency-resolution and advisory data not exposed by the repository alone.",
+          "factor_id": "RD-F-160",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo's official web properties identify the protected brand surface, but a typosquat-registration determination requires continuous domain-monitoring data that is not publicly available here.",
+          "factor_id": "RD-F-161",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Flux Finance documentation establishes a lending-product monitoring surface, but no independently verifiable public selector-matching feed establishes or rules out this protocol-specific signal.",
+          "factor_id": "RD-F-162",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.fluxfinance.com/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-specific, independently verifiable public dataset was identified that can calculate attacker reconnaissance time for Ondo's peer class under the v1.7 definition.",
+          "factor_id": "RD-F-163",
+          "gap_reason": "requires_curator_input",
+          "notes": "A peer-class incident dataset and reproducible calculation method are required before this duration can be assessed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo's public security materials describe monitoring investment, but public materials do not provide a complete credential-leak telemetry source that can establish this signal.",
+          "factor_id": "RD-F-164",
+          "gap_reason": "external_api_blocked",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 11,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No protocol-controlled, independently verifiable public social-channel monitoring dataset was identified that can establish a scam-coordinator flag under the v1.7 definition.",
+          "factor_id": "RD-F-165",
+          "gap_reason": "requires_curator_input",
+          "notes": "A verified roster of official social channels and monitored coordinator signals is required before this factor can be assessed.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 5,
+          "collection_mode": "manual",
+          "evidence_detail": "Ondo identifies the OUSG InstantManager as deprecated. Its public explorer page shows $0.06 of token holdings, while several other listed legacy addresses show zero ETH and zero-dollar portfolio value. The reviewed legacy set therefore does not establish an exact zero balance across all deprecated contracts.",
+          "evidence_summary": "Deprecated-contract inventory contains residual but immaterial value: the reviewed OUSG InstantManager holds $0.06, well below $100K.",
+          "factor_id": "RD-F-166",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/addresses"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2826989983e3a66F0622132D019c2Ae173eb6A43"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 2,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG Manager legacy (0xF16c188c2D411627d39655A60409eC6707D3d5e8) labeled 'legacy' but showed transaction activity as recently as April 2024. Management multisig still holds admin roles, extending admin scope into a potentially superseded contract.",
+          "factor_id": "RD-F-167",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xF16c188c2D411627d39655A60409eC6707D3d5e8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG Manager legacy (0xF16c188c2D411627d39655A60409eC6707D3d5e8) labeled legacy but active through April 2024. Extent of outstanding user allowances to this contract not confirmed. Stale approvals may persist.",
+          "factor_id": "RD-F-168",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xF16c188c2D411627d39655A60409eC6707D3d5e8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "programmatic",
+          "evidence_detail": null,
+          "evidence_summary": "OUSG impl and USDY: v0.8.16+commit.07a7930e. Flux Finance Comptroller, fOUSG, GovernorBravo: v0.5.17+commit.d19bba13. No critical/high compiler bugs applicable to these contract patterns in either version.",
+          "factor_id": "RD-F-170",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x95Af143a021DF745bc78e845b54591C53a8B3A51"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1CEB44b6E515ABF009e0CCb6DDAfd723886CF3Ff"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1dD7950c266fB1be96180a8FDb0591F70200E018"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Not risk-bearing for OUSG/USDY (original design). For Flux Finance: KYC additions are additive guards on existing functions, not state-mutation reordering. No audit flagged state-mutation ordering anomalies.",
+          "factor_id": "RD-F-171",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/flux-finance/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "ondoprotocol/usdy commits (last commit Aug 10, 2023, SHA 3912ca0698c2992e4db997d0855e62588c44e2c0): human authors 'tom2o17' and 'Ali Azam'; no AI co-authored-by trailer visible. No Copilot or ChatGPT Code Interpreter co-authorship metadata found.",
+          "factor_id": "RD-F-172",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/ondoprotocol/usdy/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No public disclosure from Ondo Finance team of AI-generated Solidity in production security-critical contracts. Searched Ondo blog and docs.",
+          "factor_id": "RD-F-173",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 12,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.8.16 (OUSG/USDY): active 0.8.x stable branch. Solidity 0.5.17 (Flux Finance): outside actively maintained track; receives no new updates. No specific unpatched critical bug known for 0.5.17 in its deployed context.",
+          "factor_id": "RD-F-174",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x95Af143a021DF745bc78e845b54591C53a8B3A51"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/ethereum/solidity/releases"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "Immunefi lists Ondo Finance as live since 2023-03-07, last updated 2026-02-06, with a submission route, 88 assets in scope, and a $1M maximum bounty. The public page does not provide an individual report-response record within the last twelve months.",
+          "evidence_summary": "A public disclosure channel exists through Ondo's live Immunefi program, but public active-monitoring response evidence was not identified.",
+          "factor_id": "RD-F-175",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ondofinance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "The live public Immunefi program provides scope, rewards, KYC, proof-of-concept, and publication terms but no public acknowledgment-time SLA.",
+          "evidence_summary": "No public vulnerability-disclosure acknowledgment SLA was found on Ondo's active Immunefi program.",
+          "factor_id": "RD-F-176",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ondofinance/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "manual",
+          "evidence_detail": "iosiro reports that its January 2022 high-risk disclosure was remediated on the day of disclosure, before user funds were at risk, and describes Ondo's fast response.",
+          "evidence_summary": "No known ignored disclosure was identified; the publicly documented high-risk disclosure was remediated promptly before user funds were at risk.",
+          "factor_id": "RD-F-177",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 13,
+          "collection_mode": "programmatic",
+          "evidence_detail": "A public GitHub Advisory Database search for Ondo reports zero advisories, and the public NVD CVE API keyword search for Ondo Finance reports zero results.",
+          "evidence_summary": "No CVE or GitHub Security Advisory was returned for Ondo Finance by the queried public advisory indexes.",
+          "factor_id": "RD-F-178",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/advisories?query=Ondo"
+            },
+            {
+              "source_type": "url",
+              "url": "https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=Ondo%20Finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 10,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo documents three named DVNs and LayerZero uses configurable per-pathway X-of-Y-of-N security stacks. The current public evidence does not disclose Ondo's effective required/optional configuration, so the security floor is only partially evidenced.",
+          "factor_id": "RD-F-179",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.layerzero.network/v2/concepts/modular-security/security-stack-dvns"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "The verified current USDY InstantManager ABI exposes setOndoOracle(address), emits OndoOracleSet, and exposes CONFIGURER_ROLE. The active USDY oracle is not immutable, so the critical immutable-oracle failure mode is not evidenced.",
+          "factor_id": "RD-F-180",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa42613c243b67bf6194ac327795b926b4b491f15"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 3,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "No reviewed public path permits arbitrary users to list collateral with an arbitrary oracle. The RWA price path is administrator-configured and Flux oracle types are governance/configuration controlled; the permissionless fake-pool oracle pattern is not evidenced.",
+          "factor_id": "RD-F-181",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xa42613c243b67bf6194ac327795b926b4b491f15"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://docs.ondo.finance/pdf/Ondo-NetherMind-Audit-April-2023.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 6,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo publicly describes ongoing real-time monitoring and its administrative-security posture, but public material does not provide a complete signer-set and timelock-change alert history for this factor.",
+          "factor_id": "RD-F-182",
+          "gap_reason": "protocol_opacity",
+          "notes": null,
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ondo.finance/blog/ondo-security-philosophy"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 1,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi Ondo Finance: $1M max, 88 assets in scope. Full in-scope contract list not confirmed from public page. OUSG proxy (~$2B TVL) explicit in-scope status unverified. Yellow — large program but highest-TVL contract coverage not independently confirmed.",
+          "factor_id": "RD-F-183",
+          "gap_reason": null,
+          "notes": "The publicly visible program summary establishes the maximum payout and total assets in scope, but the reviewed public page did not establish an exhaustive contract-by-contract mapping for the approved deployments.",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/ondofinance/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 7,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "Ondo documents eligibility and customer-due-diligence controls for its products, but public sources do not establish whether any persona used deposits of $1M or more to build credibility with the protocol.",
+          "factor_id": "RD-F-184",
+          "gap_reason": "requires_curator_input",
+          "notes": "Public product eligibility documentation cannot substantiate the absence of the specified social-engineering pattern.",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.finance/trust-and-security"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.iosiro.com/blog/high-risk-vulnerability-disclosed-to-ondo-finance"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "category_id": 9,
+          "collection_mode": "manual",
+          "evidence_detail": null,
+          "evidence_summary": "[POSITIVE MITIGANT] Ondo Bridge (LayerZero OFT) has documented rate-limiter: 450,000 USDY/day per EVM pathway, 250,000 USDY/day per Solana pathway. Emergency pause controlled by Ondo-controlled multisig.",
+          "factor_id": "RD-F-185",
+          "gap_reason": null,
+          "notes": null,
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.ondo.finance/tools/ondo-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ],
+      "family": {
+        "display_name": "Ondo Finance",
+        "family_slug": "ondo-finance",
+        "primary_chain": "ethereum",
+        "primary_surface_slug": "default",
+        "protocol_type": "rwa"
+      },
+      "grade_history": [
+        {
+          "cap_applied": "none",
+          "critical_count": 0,
+          "grade_letter": "B",
+          "risk_score": 15.01,
+          "rubric_version": "v1.7.0",
+          "snapshot_date": "2026-07-24",
+          "snapshot_version": "2026-07-24"
+        }
+      ],
+      "protocol": {
+        "cap_applied": "none",
+        "cap_reason": null,
+        "category_lights": {
+          "1": "green",
+          "10": "green",
+          "11": "gray",
+          "12": "green",
+          "13": "yellow",
+          "2": "green",
+          "3": "yellow",
+          "4": "green",
+          "5": "green",
+          "6": "green",
+          "7": "green",
+          "8": "yellow",
+          "9": "green"
+        },
+        "category_severities": {
+          "1": 13.043478260869565,
+          "10": 11.11111111111111,
+          "11": 0.0,
+          "12": 6.666666666666667,
+          "13": 33.33333333333333,
+          "2": 17.647058823529413,
+          "3": 24.242424242424242,
+          "4": 8.333333333333332,
+          "5": 16.666666666666664,
+          "6": 0.0,
+          "7": 8.333333333333332,
+          "8": 23.333333333333332,
+          "9": 7.4074074074074066
+        },
+        "defillama_slug": "ondo-finance",
+        "description": "Multi-product RWA tokenization platform: OUSG (tokenized US Treasuries for accredited investors), USDY (yield note for non-US non-accredited), Ondo Global Markets (tokenized US equities/ETFs, launched Sept 2025), and Flux Finance (Compound v2-fork lending accepting OUSG as collateral).",
+        "display_name": "Ondo Finance",
+        "github_org": "ondoprotocol",
+        "graded_at": "2026-07-24T00:00:00Z",
+        "has_active_incident": false,
+        "has_bridge_surface": false,
+        "headline_grade": "B",
+        "homepage_url": "https://ondo.finance",
+        "is_a_bridge": false,
+        "is_published": true,
+        "launched_at": "2023-01-26",
+        "primary_chain": "ethereum",
+        "protocol_type": "rwa",
+        "risk_score": 15.01,
+        "rubric_version": "v1.7.0",
+        "slug": "ondo-finance",
+        "status": "live",
+        "total_value_secured_usd": 3560000000
+      },
+      "surfaces": [
+        {
+          "display_name": "Ondo Finance",
+          "is_primary": true,
+          "legacy_slug": "ondo-finance",
+          "primary_chain": "ethereum",
+          "status": "active",
+          "surface_slug": "default"
+        }
+      ]
+    }
+  },
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-05T13:52:00Z",
+  "risk_score": 15.01,
+  "rubric_version": "v1.7.0"
+}
