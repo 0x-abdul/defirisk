@@ -253,11 +253,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Lido.sol documents CEI pattern ('firstly update the local state to prevent reentrancy') but lacks explicit nonReentrant modifier (Aragon-era contracts predate common OZ ReentrancyGuard). No reentrancy finding at high severity in any accessible audit summary for core contracts. Cannot verify V3 reentrancy posture without tool run.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://docs.lido.fi/security/audits/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.4.24/Lido.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

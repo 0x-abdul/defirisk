@@ -215,11 +215,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "WormholeTransceiverState.sol: 'mapping(bytes32 => bool) storage' for consumed VAAs. isVAAConsumed(vm.hash) checked before processing. Joint bridge proposal: 'Replay protection is implemented both by Endpoint contracts (Wormhole & Axelar message replay protection) and the EndpointManager contract.'",
+          "evidence_summary": "Wormhole NTT uses consumed-VAA hash tracking (_consumedVAAs mapping). isVAAConsumed(vm.hash) check before processing; TransferAlreadyCompleted on replay. NTT EndpointManager provides additional replay protection. Native L2 bridges delegate to chain-level CrossDomainMessenger replay protection.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://research.lido.fi/t/wormhole-x-axelar-lido-bridge-implementation-for-wsteth-on-bnb-chain/6012"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiverState.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

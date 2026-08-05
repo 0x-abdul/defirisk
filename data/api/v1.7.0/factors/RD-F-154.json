@@ -218,11 +218,30 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Lido's canonical bridges: (1) Wormhole NTT — VAA hash consumed-mapping, no Merkle root inbox; (2) Axelar — PoS attestation; (3) CrossDomainMessenger — state-root proofs by chain infrastructure. The Nomad bug class (bytes32(0) = valid Merkle root) requires a specific Merkle-root-acceptance inbox pattern. Lido's bridges do not have this architecture.",
+          "evidence_summary": "[★ CRITICAL] Not applicable to Lido's bridge architecture. Wormhole uses consumed-VAA hash tracking (not Merkle roots). Native L2 bridges use CrossDomainMessenger state-root proofs managed by L2 chain. Nomad-class bytes32(0) root vulnerability requires a Merkle inbox pattern not present in Lido's bridges.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/native-token-transfers/blob/main/evm/src/Transceiver/WormholeTransceiver/WormholeTransceiverState.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

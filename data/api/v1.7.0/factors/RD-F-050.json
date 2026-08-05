@@ -403,11 +403,34 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "stETH implementation confirmed no external protocol calls. StakingRouter confirmed no external price oracle calls. Dependency is entirely internal or infrastructure-level (Beacon Chain). No third-party DeFi protocol dependency in the core stETH accounting path.",
+          "evidence_summary": "Core dependencies mapped: Ethereum Beacon Chain Deposit Contract (0x00000000219ab540356cBB839Cbe05303d7705Fa), Ethereum Consensus Layer finality, 9-member oracle committee, Aragon DAO + Dual Governance. No Aave/Uniswap protocol-level dependency in core stETH mechanics.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.lido.fi/holders/lido-oracle/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/lidofinance/core/blob/master/contracts/0.8.9/StakingRouter.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

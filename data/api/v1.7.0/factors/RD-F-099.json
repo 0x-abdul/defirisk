@@ -880,11 +880,42 @@
           "score": "not_assessed",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Lido's AccountingOracle is a committee oracle, not Chainlink. The analogous deviation check is stETH/ETH exchange rate vs Curve pool spot price. Currently within ~0.2% of peg. Structural yellow: Curve stETH/ETH liquidity declined from ~$800M to ~$274M post-Shapella, raising peg sensitivity. May 2025 Chorus One oracle key compromise demonstrated oracle is a targeted attack surface (5-of-9 quorum held). Signal requires custom implementation for committee oracle vs Curve spot comparison.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Lido",
+          "protocol_slug": "lido",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.bitget.com/academy/steth-lido-guide"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.coindesk.com/tech/2025/05/12/ethereum-staking-giant-lido-loses-just-14-eth-in-hacking-attempt"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.dlnews.com/articles/defi/low-lido-steth-staked-ethereum-liquidity-could-cause-depeg/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
