@@ -224,6 +224,29 @@
         },
         {
           "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Wormhole EVM core implementation rejects ecrecover results equal to address(0) during signature verification. The documented Jito query mirror relies on that Wormhole guardian-verification path, so the critical zero-address-signature bug class is not present in the referenced implementation.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Jito",
+          "protocol_slug": "jito",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/Messages.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/jito-foundation/jitosol-wormhole-updater"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_summary": "The standard DVN accepts only configured signers; the incident involved a valid signer attestation, not zero-address recovery.",
           "primary_chain": "ethereum",
@@ -244,6 +267,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }

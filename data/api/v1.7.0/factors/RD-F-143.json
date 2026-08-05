@@ -328,6 +328,25 @@
           "surface_slug": "default"
         },
         {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] Not applicable. Jito uses Solana BPF/Anchor programs, not EVM proxy contracts. The _disableInitializers() OpenZeppelin pattern does not apply. Anchor's #[account(init)] constraint prevents double-initialization of data accounts. The EVM reinitializer attack vector (proxy takeover via re-init) does not exist in the Solana program model.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Jito",
+          "protocol_slug": "jito",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://solana.com/docs/programs/deploying"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
           "collection_mode": "programmatic",
           "data_as_of": "2026-07-30T14:26:52Z",
           "evidence_detail": null,
@@ -351,6 +370,6 @@
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-03T00:00:00Z",
+  "generated_at": "2026-08-05T08:59:12Z",
   "rubric_version": "v1.7.0"
 }
