@@ -359,11 +359,36 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "The public market API returned 58 unexpired markets on 2026-07-24 with approximately $134.5M aggregate displayed liquidity; the ten largest accounted for about $79.1M. The largest individual markets ranged from about $4.5M to $20.5M. Public data does not provide the rubric's 2%/5% trade-depth measurements, so this remains a conservative market-liquidity assessment rather than a borrow-cap calculation.",
+          "evidence_summary": "Yellow: liquidity is maturity- and market-dependent. The public API showed 58 unexpired markets with about $134.5M displayed liquidity, concentrated in a small set of markets; individual leading markets ranged from about $4.5M to $20.5M.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Pendle Finance",
+          "protocol_slug": "pendle",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://api-v2.pendle.finance/core/v1/1/markets?limit=100&skip=0"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "docs",
+              "url": "https://docs.pendle.finance/pendle-v2/ProtocolMechanics/Mechanisms/Incentives"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
   },
   "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T13:52:00Z",
+  "generated_at": "2026-08-05T17:43:14Z",
   "rubric_version": "v1.7.0"
 }
