@@ -20,105 +20,10 @@
         "scoring_methodology": "**What this measures**\nThis episodic signal fires when a domain that is a typosquat or visual lookalike of the protocol's official domain has been registered within the trailing 90 days. Typosquat detection covers common substitution patterns (transposed characters, homoglyph substitutions, TLD variants, subdomain spoofing) against a monitored list of known protocol domains. Detection uses domain monitoring feeds (e.g., DNSTwist-class analysis) run at configurable intervals against the protocol's official domain. Category 11 context: typosquat domains are the infrastructure layer for phishing attacks targeting protocol users — they precede attacks by days to weeks.\n\n**Why it matters**\nTyposquat domains targeting DeFi protocols are documented across five in-sample hack precedents in the T-01 database. The Curve Finance DNS hijack ($575K, 2022) showed that frontend attacks can be executed via legitimate-looking domains. Badger DAO's Cloudflare compromise exploited user trust in the official frontend. Protocol-impersonator domains targeting users of high-TVL protocols typically serve fake wallet-connection prompts, seed-phrase phishing, or malicious approval requests. A newly registered lookalike domain is often registered one to four weeks before a phishing campaign launches, providing an actionable lead time.\n\n**Green / Yellow / Red**\nGreen is the baseline when no typosquat domains matching the protocol's official domain patterns have been registered in the trailing 90 days per the domain monitoring feed. Yellow fires when a domain with moderate similarity (e.g., protocol-app.xyz vs protocolapp.xyz) is registered — could be a legitimate user registering a fan site or a minor variant. Red fires when a high-similarity typosquat (e.g., prrotocol.app, pr0tocol.finance) targeting the protocol's exact brand is registered within the trailing 90 days.\n\n**Common gray cases**\nGray applies when the domain monitoring feed has incomplete TLD coverage, or when the protocol operates without a traditional domain (e.g., IPFS-only frontend with ENS access), making typosquat detection inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": [
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No repeatable public registration feed was available to determine whether a Jito typosquat was registered within the factor's 90-day window.",
-          "gap_reason": "pipeline_unimplemented",
-          "primary_chain": "solana",
-          "protocol_name": "Jito",
-          "protocol_slug": "jito",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": "The presence of official domains does not establish the absence of typosquats.",
-          "evidence_summary": "No reproducible public domain-monitoring feed establishes whether a newly registered Kamino impersonator domain meets the factor threshold.",
-          "gap_reason": "pipeline_unimplemented",
-          "primary_chain": "solana",
-          "protocol_name": "Kamino Lend",
-          "protocol_slug": "kamino-lend",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Lido is a top-20 DeFi brand by TVL ($21.4B) and recognition — persistent elevated typosquat domain registration risk. No confirmed typosquat domain registration within 90 days found via web search OSINT. WHOIS monitoring not accessible via web search; requires DomainTools API or similar. Elevated structural concern, specific 90-day registration not confirmed or denied.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lido",
-          "protocol_slug": "lido",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://www.darktrace.com/blog/vigilance-in-action-monitoring-typosquatting-domains"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Protocol-impersonator domain registered (typosquat) | Applicable: Yes. Public scam-removal pages describe impersonating domains, but do not establish a verifiable registration date within the rubric's required 90-day window. The assessed predicate therefore cannot be determined from the reviewed public evidence; the existence of older scam domains is not treated as a current 90-day registration finding.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Lombard Finance",
-          "protocol_slug": "lombard",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Ondo's official web properties identify the protected brand surface, but a typosquat-registration determination requires continuous domain-monitoring data that is not publicly available here.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ondo Finance",
-          "protocol_slug": "ondo-finance",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://ondo.finance/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "programmatic",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The typosquat trigger requires a current domain-monitoring feed and verified registration date within the rubric window.",
-          "gap_reason": "pipeline_unimplemented",
-          "primary_chain": "ethereum",
-          "protocol_name": "Pendle Finance",
-          "protocol_slug": "pendle",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        }
-      ]
+      "scored_protocols": []
     }
   },
   "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-06T11:18:13Z",
   "rubric_version": "v1.7.0"
 }

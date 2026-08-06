@@ -20,98 +20,10 @@
         "scoring_methodology": "**What this measures**\nThis factor records the number of fork hops between the assessed protocol and an originally-audited base protocol. A direct fork of Compound Finance has a fork depth of 1. A fork of a Compound fork has a fork depth of 2. Each additional hop potentially dilutes the audit coverage assurance and introduces new parameter divergences at each layer. The data source is a curator-maintained lineage map cross-referenced with bytecode similarity analysis.\n\n**Why it matters**\nFork-of-fork deployments compound the audit coverage risk at each layer. A third-generation fork (depth 3) may carry bugs introduced at the second-generation level that were never audited, combined with parameter changes introduced at the third level that diverge from both the first and second generation audits. The BSC DeFi ecosystem during 2021-2022 was dominated by second- and third-generation forks where an already-dangerous pattern (unaudited BSC fork of an audited Ethereum protocol) was further forked without any additional review. AutoShark was a fork of PancakeBunny which was itself a yield aggregator inspired by Yearn -- two hops from the original audited design, with vulnerabilities introduced at each layer.\n\n**Green / Yellow / Red**\nGreen: fork depth of 0 (original code) or 1 (direct fork with independent audit of the fork itself). Yellow: fork depth of 2, where the protocol can demonstrate that the intermediate fork's changes were reviewed. Red: fork depth of 3 or more, or fork depth of 2 without any audit of the intermediate changes.\n\n**Common gray cases**\nFork depth is gray when the lineage cannot be reliably traced due to undisclosed or multiple overlapping upstream sources.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural modifier on the overall Cat 8 lineage assessment."
       },
       "linked_hacks": [],
-      "scored_protocols": [
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The approved JitoSOL stake-pool surface is not a fork, so fork-generation depth is not applicable.",
-          "gap_reason": null,
-          "primary_chain": "solana",
-          "protocol_name": "Jito",
-          "protocol_slug": "jito",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_summary": "No upstream fork is identified, so fork depth is not applicable.",
-          "primary_chain": "solana",
-          "protocol_name": "Kamino Lend",
-          "protocol_slug": "kamino-lend",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "N/A — original protocol, fork depth = 0.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lido",
-          "protocol_slug": "lido",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Protocol is not a fork. Fork depth = 0 by definition (original implementation).",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lombard Finance",
-          "protocol_slug": "lombard",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Flux Finance: direct fork of Compound v2 (depth = 1). Compound v2 audited by Trail of Bits and OpenZeppelin, formally verified by Certora. GovernorBravoDelegator: direct fork of Compound Governor Bravo (depth = 1). OUSG/USDY: original design.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ondo Finance",
-          "protocol_slug": "ondo-finance",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.fluxfinance.com/trust-and-security"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "N/A — depth is 0 (original protocol, not a fork).",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Pendle Finance",
-          "protocol_slug": "pendle",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        }
-      ]
+      "scored_protocols": []
     }
   },
   "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-06T11:18:13Z",
   "rubric_version": "v1.7.0"
 }

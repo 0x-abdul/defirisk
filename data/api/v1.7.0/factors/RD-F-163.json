@@ -20,104 +20,10 @@
         "scoring_methodology": "**What this measures**\nThis static factor records the average number of days of documented reconnaissance activity — on-chain probing, test transactions, mixer wallet preparation — by attacker-labeled wallets before executing a strike on peer-class protocols in the hack database. The value is derived from curator analysis of the hack database and is protocol-class-specific: lending protocols, bridge protocols, and DEXes each have documented reconnaissance lead times. Output is a days-value benchmark for the class, updated when new post-mortem evidence expands the database. Category 11 context: the reconnaissance window benchmark tells curators how much advance warning time is theoretically available and frames the urgency of real-time signal response.\n\n**Why it matters**\nThe T-01 synthesis documents the detection window distribution across 37 hacks: High detectability hacks had reconnaissance windows up to 12 days (Badger DAO's malicious approvals), Medium detectability hacks typically had hours to days of pre-exploit on-chain activity, and Low/None detectability hacks had zero advance signal. For the lending protocol class, oracle manipulation setup is typically executed within the same transaction or within minutes, while governance attack preparation can span 24 hours or more. Bridge exploits involving social engineering (DPRK implant class) have the longest reconnaissance windows — months to years. The benchmark informs alert threshold calibration for Cat 6 signals for this protocol class.\n\n**Green / Yellow / Red**\nGreen is informational — a longer reconnaissance window benchmark is more favorable as it provides more actionable alert time. Yellow applies when the benchmark for the class is less than 24 hours — most signals will fire during or after the exploit. Red applies when the class benchmark is under one hour — Cat 6 signals become primarily exploit-in-progress rather than precursor alerts.\n\n**Common gray cases**\nGray applies when the hack database has insufficient examples of the specific protocol class to compute a reliable benchmark (fewer than three in-sample exploits), or when the protocol combines multiple classes making the applicable benchmark ambiguous.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": [
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "A representative, sourced peer-class dataset was not available to calculate an average attacker reconnaissance duration for Solana liquid-staking protocols.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "solana",
-          "protocol_name": "Jito",
-          "protocol_slug": "jito",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": "v1.7 measures a peer-class benchmark, not a Kamino-specific incident; calculating it requires a defined lending-class sample and documented precursor/strike timestamps. The rubric’s curator hack-DB source cannot be used in a public-safe candidate.",
-          "evidence_summary": "No independently verifiable public multi-incident dataset establishes the average attacker reconnaissance interval for Kamino’s lending peer class.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "solana",
-          "protocol_name": "Kamino Lend",
-          "protocol_slug": "kamino-lend",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "For oracle-compromise class (Chorus One May 2025, Numic May 2024): attack timeline is weeks-to-months of off-chain social engineering or credential-gathering, not observable on-chain until the attack occurs. The USPD 78-day on-chain reconnaissance pattern is more applicable to bridge/lending protocols. For governance-attack class, Lido's Dual Governance 5-45 day veto window substantially extends the detection window. Yellow: reconnaissance window exists but is off-chain in nature, making it harder to detect via on-chain signals.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lido",
-          "protocol_slug": "lido",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://research.lido.fi/t/emergency-rotation-of-compromised-chorus-one-oracle/10037"
-            },
-            {
-              "source_type": "url",
-              "url": "https://research.lido.fi/t/lido-on-ethereum-node-operator-numic-security-incident-disclosure-may-21-2024/7536"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Avg attacker reconnaissance time for peer-class protocols | Applicable: Yes. A current, public hack-database sample sufficient to calculate an average for Lombard's BTC-restaking/cross-chain peer class was not established in this assessment. The prior LayerZero-specific comparison is not retained after the bridge-stack documentation update. The factor is not assessed because no defensible public average was established.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Lombard Finance",
-          "protocol_slug": "lombard",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No protocol-specific, independently verifiable public dataset was identified that can calculate attacker reconnaissance time for Ondo's peer class under the v1.7 definition.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ondo Finance",
-          "protocol_slug": "ondo-finance",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Reconnaissance-time estimation requires a labelled peer-protocol incident corpus and attributed attacker-wallet histories.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Pendle Finance",
-          "protocol_slug": "pendle",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        }
-      ]
+      "scored_protocols": []
     }
   },
   "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-06T11:18:13Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,105 +20,10 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when a wallet in the threat-actor cluster sends low-gas or deliberately failing transactions to the monitored protocol — a pattern consistent with pre-strike testing of contract state, function reverts, and gas estimation for exploit transaction sizing. Detection requires mempool monitoring combined with threat-actor cluster cross-referencing. Low-gas failing transactions are identified as transactions with a gas limit below the expected minimum for the called function. Category 11 context: mempool probing is a documented reconnaissance behavior where the attacker tests the vulnerable state before committing full capital to the exploit.\n\n**Why it matters**\nRadiant Capital II ($53M) includes the clearest example: a failed exploit attempt occurred six days before the successful attack, and the preparation window was ignored. The Deus DAO 2 oracle pre-poisoning transaction (four minutes before the main attack) represents a different variant of pre-strike testing. The T-01 synthesis identifies three in-sample hack precedents for this pattern. Failing transactions sent by threat-actor cluster addresses are among the highest-specificity signals available — legitimate users do not intentionally send failing transactions — but the signal requires both mempool access and a current threat-actor cluster, making it PH curation.\n\n**Green / Yellow / Red**\nGreen is the baseline when no threat-actor cluster addresses are sending failing transactions to the protocol in the current mempool observation window. Yellow fires when low-gas failing transactions are detected from an unclassified address at a rate inconsistent with normal testing patterns — possibly a researcher or arbitrageur probing for MEV. Red fires when a confirmed threat-actor cluster address sends one or more low-gas failing transactions to a protocol contract, particularly if the function being probed corresponds to a known vulnerability class for this protocol architecture.\n\n**Common gray cases**\nGray applies when mempool observation is not available for the protocol's chain (private mempools, some L2 sequencers), or when the threat-actor cluster lacks an entry for the specific address pattern observed.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": [
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No public threat-actor cluster and Solana failed-transaction monitoring feed was available to assess pre-strike probing.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "solana",
-          "protocol_name": "Jito",
-          "protocol_slug": "jito",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": "The signal requires a defined attacker cohort, transaction failure classifier, and live Solana data.",
-          "evidence_summary": "No public, reproducible monitor identifies low-cost failing reconnaissance transactions against Kamino.",
-          "gap_reason": "pipeline_unimplemented",
-          "primary_chain": "solana",
-          "protocol_name": "Kamino Lend",
-          "protocol_slug": "kamino-lend",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No failing/low-gas tx pattern from labeled threat-actor wallets on Lido core contracts detected in public OSINT. Requires mempool monitoring + cluster feed for live detection.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Lido",
-          "protocol_slug": "lido",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Attacker wallet pre-strike probe | Applicable: Yes | Requires CTI feed and mempool monitoring. No pre-strike probe transactions from CTI-flagged addresses on Lombard contracts identified from public data. Hexagate provides real-time mempool monitoring as part of threat prevention platform but specific pre-strike probe pattern detection not independently confirmed for this signal. Not assessable without licensed CTI feed confirmation.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Lombard Finance",
-          "protocol_slug": "lombard",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://www.lombard.finance/blog/how-top-security-experts-safeguard-the-lbtc-ecosystem/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public contract-address catalogue establishes the monitored surface, but a historical low-gas failed-transaction probe determination requires a live mempool and wallet-clustering feed.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ondo Finance",
-          "protocol_slug": "ondo-finance",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.ondo.finance/addresses"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Mempool probes by an attributed threat actor require live mempool data and a current threat-actor wallet cluster.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Pendle Finance",
-          "protocol_slug": "pendle",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        }
-      ]
+      "scored_protocols": []
     }
   },
   "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-06T11:18:13Z",
   "rubric_version": "v1.7.0"
 }

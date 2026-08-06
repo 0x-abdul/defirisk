@@ -20,98 +20,10 @@
         "scoring_methodology": "**What this measures**\nThis factor records the percentage of lines changed between this fork's deployed code and the stated upstream source at the fork point, computed via git diff against the upstream repository at the reference commit. A high divergence percentage indicates that the fork has evolved substantially beyond the audited upstream, potentially introducing novel vulnerabilities that the upstream's audit does not cover. The data source is the protocol's public repository combined with bytecode diffing against the upstream.\n\n**Why it matters**\nFork divergence is a proxy for how much 'new surface' has been added beyond the audited upstream code. A fork that has diverged 80% from Compound Finance is essentially a new protocol in a Compound wrapper -- the upstream's audit provides minimal assurance for the diverged portions. The sweet spot of fork risk is high divergence without corresponding audit coverage of the diverged code: the team gets the credibility signal of forking from a well-known protocol while deploying substantial novel code that has not been independently reviewed. Governance fork parameter changes are one of the most common forms of divergence; Curio ($16M, 2024) exploited a MakerDAO fork where voting power privilege logic had been modified without independent parameter review.\n\n**Green / Yellow / Red**\nGreen: code divergence from upstream is below 20% and the diverged portion has been independently audited or is limited to configuration parameters. Yellow: divergence is 20% to 60%; a delta-audit covers the changed portions. Red: divergence exceeds 60% with no audit of the diverged code, or divergence is in security-critical functions (access control, oracle integration, liquidation logic) without independent review.\n\n**Common gray cases**\nThis factor is gray when the protocol does not publish source code, when the upstream commit reference is not stated, or when the fork is of a non-public upstream that cannot be compared.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural input that feeds the RD-F-131 audit coverage assessment."
       },
       "linked_hacks": [],
-      "scored_protocols": [
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The approved JitoSOL stake-pool surface is the canonical SPL program, not a Jito fork with measurable divergence from an upstream fork point.",
-          "gap_reason": null,
-          "primary_chain": "solana",
-          "protocol_name": "Jito",
-          "protocol_slug": "jito",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_summary": "No upstream fork is identified, so upstream divergence cannot be measured.",
-          "primary_chain": "solana",
-          "protocol_name": "Kamino Lend",
-          "protocol_slug": "kamino-lend",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "N/A — no upstream fork.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lido",
-          "protocol_slug": "lido",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Protocol is not a fork. Code divergence from upstream is not a meaningful metric for original implementations.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Lombard Finance",
-          "protocol_slug": "lombard",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Flux Finance diverges from Compound v2 in KYC/sanctions checks on all critical token functions, custom OndoPriceOracle, modified seize share (2.8% to 1.75%/0%), modified blocksPerYear. Core economic logic retained. Estimated 15-25% LOC divergence.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ondo Finance",
-          "protocol_slug": "ondo-finance",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/flux-finance/contracts"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "N/A — no upstream to diverge from.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Pendle Finance",
-          "protocol_slug": "pendle",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        }
-      ]
+      "scored_protocols": []
     }
   },
   "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-06T11:18:13Z",
   "rubric_version": "v1.7.0"
 }
