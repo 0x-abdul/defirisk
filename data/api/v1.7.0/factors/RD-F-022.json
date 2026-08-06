@@ -31,10 +31,149 @@
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No unprotected initialize() found. CTFExchange V1/V2 use constructors (non-upgradeable). pUSD implementation has initialize(address) with initializer modifier AND _disableInitializers() in constructor. No F022 vulnerability present.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/CTFExchange.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium uses Rust/Anchor on Solana — the OZ initializer modifier pattern does not exist. Anchor enforces initialization through account struct constraints (Signer<'info>, seeds, init). CPMM initialize requires creator Signer. Standard AMM v4 process_initialize2 checks is_signer explicitly. No open unguarded initialization vector found. EVM attack vector eliminated by architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm/blob/master/program/src/processor.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/blob/master/programs/cp-swap/src/lib.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No unguarded public initialize() found. Core contracts use constructor injection (no initialize() at all). RocketMinipoolDelegate's initialise() is protected by custom onlyUninitialised modifier: require(storageState == StorageState.Uninitialised) — equivalent to OZ initializer. Saturn One RocketMegapoolDelegate and RocketMegapoolFactory use constructor-based initialization with no initialize() function.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolDelegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/minipool/RocketMinipoolDelegate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SynapseBridge.initialize() is declared external initializer in the public source, so RD-F-022's unguarded-initialize condition is not met. The missing _disableInitializers() fact belongs under RD-F-143; it should not keep RD-F-022 yellow when initialize() itself has the one-time-call guard. Score moves to green for the initializer-modifier check.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/synapsecns/synapse-contracts/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core Pool VToken.sol initialize() is public with admin check inside body (ensureAdmin(msg.sender)) and state guard (accrualBlockNumber==0), but no OZ initializer modifier. Isolated Pools VToken.sol correctly uses initializer modifier + _disableInitializers() in constructor. The Core Pool pattern is weaker than OZ standard but the combined admin+state guards prevent the one-tx unauthorized re-init exploit. Yellow (not red) because the state guard effectively prevents unauthorized re-initialization post-deploy.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/VToken.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VTokens/VToken.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "`Implementation.sol`: `function initialize() initializer public virtual` — the custom `initializer` modifier checks `!isInitialized(ERC1967Upgrade._getImplementation())` before permitting initialization, storing a flag by implementation address. This effectively prevents re-initialization of any given implementation. `BridgeImplementation.sol` uses the same pattern. The 2022 Immunefi issue ($10M payout) was NOT a missing modifier — it was that the implementation's initialized flag had been cl...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/bug-fix-reviews/wormhole-uninitialized-proxy-bugfix-review/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

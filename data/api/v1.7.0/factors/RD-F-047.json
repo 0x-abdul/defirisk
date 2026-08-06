@@ -20,10 +20,119 @@
         "scoring_methodology": "**What this measures**\nThis factor computes the Gini coefficient of governance token holdings across the top-N holders — producing a concentration measure between 0 (perfectly equal distribution) and 1 (fully concentrated in one address). The assessment reads on-chain token holder distributions for the governance token and applies the Gini formula, displayed alongside the protocol's current quorum threshold to provide context on whether a small number of whales can unilaterally control governance outcomes.\n\n**Why it matters**\nHighly concentrated governance token distributions are a prerequisite for governance attacks by large holders without requiring flash loans. When the top five holders collectively control more than 50% of the voting supply, any two or three of them can pass a proposal unilaterally. This factor surfaces the structural power distribution within a protocol's governance, which is orthogonal to the attack surface factors (RD-F-036, RD-F-037) but relevant for assessing governance capture risk from large holders. It is a display field rather than a critical factor — concentration alone is not sufficient for a D or F grade — but it informs the holistic governance picture.\n\n**Green / Yellow / Red**\nGreen is assigned when the Gini coefficient of voting token distribution is below 0.6 and no single address controls more than 20% of voting supply. Yellow covers Gini 0.6–0.8 or single-address control of 20–40%. Red is assigned when a single address or a clearly coordinated group controls more than 40% of voting supply, enabling unilateral governance outcomes.\n\n**Common gray cases**\nThis factor is grayed when the governance token is vote-locked (non-transferable), where the standard holder scan does not accurately represent voting power, or when governance is off-chain and token distribution is not directly linked to proposal authority.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No governance token exists. No voting power distribution. Not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain governor. RAY token exists but there is no governance voting contract weighing token holdings. Governance power concentration analysis is not applicable without a voting contract.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Gini coefficient for pDAO voting power = 0.695 (borderline, just below 0.7 yellow threshold). Top 10 wallets control 53.1% of voting power. Largest single holder: 8.4% voting influence. Nakamoto coefficient: 10. Square-root modifier on staked RPL reduces concentration vs raw token holdings. Governance analysis from DAO forum (September 2025).",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/rocket-pool-governance-data-analysis-power-distribution-review/3845"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "~3,041 SYN holders (CertiK Skynet). Cortex DAO: 550K CX proposal threshold is very high relative to circulating supply. Governance power is concentrated.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://skynet.certik.com/projects/synapseprotocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A community governance post reports 745,057 delegated XVS against a documented 600,000-XVS quorum, a material concentration signal. However, no holder-scan Gini calculation or independent attribution of the delegate was completed, so the score is yellow rather than red.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/GovernorBravoDelegate.sol"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/call-to-restore-governance-integrity-pause-delegation-from-0x6027-to-venus-labs-and-return-the-bootstrapped-xvs/5489"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No holder-distribution or voting-power concentration calculation was completed for the current W governance system.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

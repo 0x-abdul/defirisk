@@ -111,10 +111,161 @@
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core settlement depends on the UMA adapter and Gnosis Conditional Token Framework; pUSD collateral depends on listed Polygon contracts. Price markets also use Chainlink, and the user-facing bridge is operated by a provider.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/bridge/deposit"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/bridge/status"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public source and documentation identify AMM v4, CPMM, CLMM, and Stable AMM as Solana pool programs. AMM v4 retains legacy OpenBook account state but its integration is deactivated; CPMM has no OpenBook requirement. No external price-oracle dependency is evidenced in the scoped public program manifests.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://raydium.medium.com/detailed-post-mortem-and-next-steps-d6d6dd461c3e"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Dependencies enumerated: (1) oDAO committee for Beacon chain balance reporting — critical, non-redundant, enables rETH:ETH rate; (2) oDAO committee for RPL/ETH price — critical, non-redundant, enables collateral validation; (3) Ethereum Beacon Deposit Contract (0x00000000219ab540356cBB839Cbe05303d7705Fa) for new validator registrations — moderate, existing validators unaffected; (4) RocketStorage registry for all contract address resolution — critical but immutable, not upgradeable. No external DeFi protocol dependencies in core contracts. oDAO's off-chain RPL price source is 1inch (off-chain only; no on-chain 1inch call). Single non-redundant oDAO dependency for both critical price paths = yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/deposit/RocketDepositPool.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The legacy bridge uses configured pool routing and a validator role; Synapse Intent Network documents a Guard role for dispute handling. These dependencies concentrate operational availability and authorization rather than introducing a price-oracle path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/contracts/bridge/BridgeConfigV3.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus documents Chainlink, RedStone, Pyth and Binance as ResilientOracle price-feed providers, with dedicated correlated-token adapters for LSTs/LRTs. The XVS bridge contract independently establishes a LayerZero OFT dependency for the governance-token bridge. These public sources support the disclosed oracle and bridge dependencies; they do not establish an exhaustive dependency inventory.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/risk/resilient-price-oracle"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/token-bridge/main/contracts/Bridge/BaseXVSProxyOFT.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The documented critical dependency path is Core Contract message publication and verification, the Guardian Network?s VAA attestation, and a destination-chain submitter/relayer. NTT deployments may additionally use configured transceivers and rate limits. No price-feed dependency is documented for Core Bridge verification.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/relayers/relayer/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/token-transfers/native-token-transfers/configuration/rate-limiting/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

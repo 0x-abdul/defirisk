@@ -20,10 +20,141 @@
         "scoring_methodology": "**What this measures**\nThis factor records the categorical type of custody arrangement holding the protocol's most privileged admin role: one of EOA, multisig, multisig-plus-timelock, full DAO-plus-timelock, or immutable (no admin). The value is determined by an on-chain read of the owner, admin, or ProxyAdmin slot on every major deployed contract. The result is a single categorical label that anchors the full governance & admin section — it is the baseline posture description from which more specific factors (RD-F-027 through RD-F-047) derive their context.\n\n**Why it matters**\nAdmin key custody type is the foundational governance signal — before assessing threshold sizes, timelock durations, or role separation, a depositor needs to know what class of mechanism holds ultimate control. The evidence base shows that every off-chain key compromise incident in the dataset was possible only because the exploited admin role was held by a custody type that could be compromised with a single key or a small coordinated set of keys. Immutable protocols cannot be upgraded by anyone and occupy a different risk category entirely; DAO-plus-timelock protocols have the highest structural resistance to unilateral action; EOA protocols have the lowest. This factor drives the display value on the protocol card and informs which sub-factors are applicable.\n\n**Green / Yellow / Red**\nGreen is assigned when the highest-privilege admin role is held by a multisig-plus-timelock or full DAO-plus-timelock, with the timelock meeting the minimum duration threshold assessed under RD-F-032. Yellow covers a multisig without timelock or a DAO without timelock. Red is assigned when the admin role is held by a single EOA (which also triggers RD-F-027), or when no admin role can be identified from on-chain data (opacity, not immutability).\n\n**Common gray cases**\nThis factor is grayed only when proxy architecture obscures the admin slot entirely and no published documentation identifies the governance type — an uncommon state for any protocol with material TVL.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V2 admin is a Gnosis Safe multisig (0x3dce0a29139a851da1dfca56af8e8a6440b4d952) — multisig without timelock. pUSD owner transferred post-deploy to undisclosed address. No DAO, no timelock controller.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952"
+            },
+            {
+              "source_type": "transaction",
+              "url": "https://polygonscan.com/tx/0xd313453c195344b3eea2d91343fb840e51130ba5562fb9c9eda83fd0f82c6c97"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Multisig+timelock for program upgrades. Squads V4 3/4 upgrade multisig (FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK) with 24h timelock. Treasury multisig 3/5 (GThUX1Atko4tqhN2NaiTazWSeFWMuiUvfFnyJyUghFMJ). All signers use air-gapped devices with hardware key + TOTP authentication.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin key custody type: post-Oct 2025 (after permanent guardian disablement), Rocket Pool operates as a fully on-chain DAO + timelock system. The pDAO uses RPL-staked voting power with square-root modifier; mandatory 1-week vote delay + 1-week upgrade delay (RPIP-60). Standard protocol parameter changes route exclusively through this on-chain governance path. The Security Council retains pause-only powers; it cannot upgrade or change parameters unilaterally. Effective custodianship classification: DAO+timelock.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-60"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/protocol-development-roadmap-update-aug-sept-oct/3810"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin path: 2/3 proxy admin Safe + 2-of-6 DAO safes + 180s timelock. No HSM requirement confirmed. Multiple privileged roles but no single-EOA path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://l2beat.com/bridges/projects/synapse"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Full DAO+Timelock. Governance flows GovernorBravoDelegator (on-chain vote) to one of three Timelocks (Critical 1h, FastTrack 6h, Normal 2d). AccessControlManager provides granular per-function permissions. No single admin EOA in the governance execution path.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x213c446ec11e45b15a6E29C1C1b402B8897f606d#readContract"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x2d56DC077072B53571b8252008C60e945108c75a#readContract"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396#readContract"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole documents a 19-member Guardian network and standard 13-of-19 VAA quorum; this is not a single-key administrator.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

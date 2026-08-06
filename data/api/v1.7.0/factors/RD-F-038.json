@@ -41,10 +41,123 @@
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No governance proposals, no voting period, no execution delay mechanism. Not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No proposal execution mechanism (no on-chain governor). The 24h timelock applies to program upgrades specifically, not to governance proposal execution in the Compound Governor sense. Not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Total delay from proposal creation to execution: ~2 weeks. Vote delay (voteDelayTime) = 1 week. Upgrade execution delay (RPIP-60) = 1 week. Total >= 336 hours, well above both the 48h green threshold and the 24h safe-harbor. Security Council veto requires 33% quorum during this window.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-60"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsProposals.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "After Snapshot vote: multisig executes manually with 3-minute timelock. Near-zero effective delay between governance approval and execution of sensitive protocol changes.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x647489df0673e17db3163c47d5233ebb6f5cac70"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Critical VIP total time: 6h voting + 1h timelock = 7 hours. This is below the 24-hour red threshold. Fast-track VIP: 24h + 6h = 30 hours (yellow range). Normal VIP: 24h + 48h = 72h (green). The Critical VIP path — which can execute any VIP classified as critical — provides only 7 hours for the community to detect and respond.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x213c446ec11e45b15a6E29C1C1b402B8897f606d#readContract"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/governance/decentralization"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "MultiGov uses a timelock component, but the currently deployed execution delay was not independently resolved for this time-threshold factor.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

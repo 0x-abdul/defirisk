@@ -20,10 +20,126 @@
         "scoring_methodology": "**What this measures**\nThis factor calculates the number of days between today and the most recent recorded hack incident for this protocol. When a protocol is under an active incident (confirmed drain with ongoing post-mortem), the value is set to zero. The field is computed continuously from the hacks database and is display-only; it does not directly trigger a rubric color but informs curator judgment on the freshness of the risk profile and the post-exploit response scoring window.\n\n**Why it matters**\nTime elapsed since last exploit has a nuanced relationship with current risk. In the short term (fewer than ninety days), a recently exploited protocol is at elevated risk of a follow-on attack: six of the dataset's repeat exploits occurred within twelve months, and in one case (Deus DAO) the attacker bypassed the post-hack fix in just forty days. In the medium term (ninety to three hundred sixty-five days), risk may be lower if a verified re-audit was conducted and the patch is confirmed on-chain. Beyond twelve months without another incident, the exploit-recency signal fades and other factors (audit coverage, multisig posture) dominate. The field is most useful as a temporal qualifier on the exploit count rather than a standalone risk signal.\n\n**Green / Yellow / Red**\nThis factor is display-only and contributes no direct rubric color. It is shown on the protocol detail page as a time-since counter and informs the curator when setting the post-exploit response score (RD-F-081) and the auditor-re-engagement flag (RD-F-083).\n\n**Common gray cases**\nProtocols with multiple incidents record the most recent one. If a protocol was exploited and subsequently fully wound down and relaunched under the same branding, curator must determine whether the clock resets (new protocol entity) or continues (same team, same codebase lineage).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The latest confirmed user-fund security incident was reported on June 25–26, 2026, less than 90 days before the July 24 refresh date; this is in the red recency band.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The most recent confirmed exploit was reported June 10, 2026. It affected inactive, retired AMM V3 pools rather than current mainnet programs; nevertheless it is the latest Raydium protocol-history incident. At the July 24, 2026 refresh date, approximately 44 days have elapsed, within the <90-day red recency band.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The 2022 public post-mortem states that the protocol continued running and was unaffected by the oDAO account incident. The reviewed public material does not provide a complete dated record from which to calculate a protocol-exploit interval.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/post-mortem-security-incident-26-05/701"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The most recent documented incident reviewed occurred in November 2021, over four years before the 2026-07-24 refresh date.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://medium.com/synapse-protocol/11-06-2021-post-mortem-of-synapse-metapool-exploit-3003b4df4ef4"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The most recent verified exploit was the BNB Chain THE donation attack on 2026-03-15. At the 2026-07-24 refresh date, it was 131 days ago: outside the under-90-day red band and within the 90-364-day yellow band.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/the-market-incident-post-mortem/5712"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The last confirmed exploit in the reviewed public record is February 2022, leaving more than four years since that incident at this refresh date.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.halborn.com/blog/post/explained-the-wormhole-hack-february-2022"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

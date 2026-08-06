@@ -41,10 +41,127 @@
           "root_cause": "Compound V2 / Aave V2 empty-market rounding error — new USDC market with totalSupply = 0"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] No governance token, no on-chain Governor, no Snapshot. Polymarket is operated by Blockratize Inc. (Delaware C-corp). Flash-loanable voting is not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain Governor contract. No Realms-based governance. No token-weighted voting contract. Governance is pseudonymous team via Squads multisig. Discourse forum is advisory only. Flash-loanable voting weight attack surface does not exist for Raydium's governance architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pDAO voting power is anchored to staked RPL at a specific past block via merkle tree snapshot. RocketDAOProtocolVerifier uses block-level checkpointing. Vote weight = staked RPL at proposal creation block, not current liquid balanceOf. Staking RPL itself requires multi-block commitment. Flash loans cannot manipulate checkpoint-time balances.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolVerifier.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/upgrades/houston/participate"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Synapse's official DAO documentation identifies Snapshot as the platform for official votes. Snapshot voting power is taken at the proposal snapshot state, so tokens acquired after that state do not count. The public record therefore does not support same-transaction flash-loan voting weight for this factor; score is green.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.snapshot.box/user-guides/create.md"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.synapseprotocol.com/docs/About/DAO"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GovernorBravoDelegate uses xvsVault.getPriorVotes(voter, proposal.startBlock) for voting weight — checkpointed balance at proposal-start block. XVS token implements checkpoints mapping and getPriorVotes. Flash-loan attack on voting not possible: staked vault balance cannot be flash-borrowed and the checkpoint is historical.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/GovernorBravoDelegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "MultiGov source imports checkpoint-based voting components, but the deployed W-token governance configuration and any lock/cooldown were not independently established.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,127 @@
         "scoring_methodology": "**What this measures**\nThis factor records the specific circuit-breaker threshold configured for oracle price deviation, expressed in basis points (bps). This field is only populated when RD-F-057 confirms a circuit breaker exists; the value is read directly from on-chain configuration or governance parameters.\n\n**Why it matters**\nThe presence of a circuit breaker (RD-F-057) is necessary but not sufficient — the threshold calibration determines whether it provides meaningful protection. A 10,000 bps (100%) threshold circuit breaker is nearly useless for assets that can be moved 50x via flash loans. Conversely, an excessively tight threshold (10–20 bps) on a volatile asset may trigger false positives during normal market conditions, causing unnecessary protocol pauses. The threshold must be calibrated to the asset's natural volatility and the minimum manipulation cost given available liquidity, creating a per-asset configuration requirement that curators must verify against oracle pool depth (RD-F-055).\n\n**Green / Yellow / Red**\nGreen is scored when the threshold is within the range of 200–2000 bps (2–20%) and is documented as calibrated to the asset's historical volatility profile. Yellow is scored when the threshold exists but is either too wide (over 2000 bps for stable assets) or too narrow (under 100 bps for volatile assets). Red is scored when no threshold is configured (i.e., circuit breaker field is N/A because RD-F-057 is red).\n\n**Common gray cases**\nGray is applied when the threshold is set dynamically by an off-chain keeper and the current value cannot be read from a public on-chain configuration.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public source establishes a Polymarket-specific maximum-deviation threshold for the Chainlink price-market path.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Raydium documentation describes curve-based pool pricing and no documented protocol-wide external-price maximum-deviation threshold. Yellow reflects the documented-control gap, while external-oracle thresholding is structurally inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/products/routing/math"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/protocol-overview/versions-and-migration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For rETH:ETH: 200 bps (2%) per-update cap on rETH rate change via RPIP-61 / RocketDAOProtocolSettingsNetwork.getMaxRethDelta() = 0.02 ether. Floor is 100 bps (1%). This is a per-update movement cap, not an absolute deviation band from a reference price. For RPL/ETH: no deviation threshold configured — unconstrained. Within taxonomy threshold for rETH (≤2000 bps = green) but RPL has none, and the rETH cap is per-update not absolute. Overall yellow due to RPL gap.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsNetwork.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No price oracle, no deviation threshold.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "BoundValidator upper/lower anchor ratios are configurable per asset via governance. Example from docs: BNB uses 0.99 - 1.01 (+/-1%). Exact configured bps for all assets not confirmed. THE attack bypassed BoundValidator by sustaining buy pressure until both feeds converged within bands. Post-2026 proposals tighten maxStalePeriod (74 slots) but don't directly recalibrate BoundValidator bands for illiquid assets.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/oracle-configuration-update/5716"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/risk/resilient-price-oracle"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No security-critical price-deviation circuit breaker or associated basis-point threshold is documented for the Core Bridge price path, because that path does not use a price oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

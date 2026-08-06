@@ -671,10 +671,223 @@
           "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V2 audited March 2026 (Cantina + Quantstamp); post-audit commits exist through April 13, 2026 before April 28, 2026 deployment. No signed release tag links audit commit SHA to deployed bytecode. Post-audit commits appear non-logic-critical (docs only); Solidity bumped 0.8.33 to 0.8.34 during audit window. CTF Exchange V1 had post-audit ERC-1271 logic addition (October 2025) after ChainSecurity 2022 audit — V1 now sunset.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/tree/main/audits"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/tree/main/audits"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium audit-scope traceability remains yellow. Public CLMM master history includes activity through commit f68fd42 on 2026-06-24, CPMM has a 2026-06-12 master commit 78f254e, and the official audit repository includes the Sec3 Q2 2026 CLMM audit folder with limit-order/dynamic-fee coverage. A June 2026 report describes an exploit of the retired AMM v3 program; that report does not establish an audit-to-bytecode mapping for the current programs. Public sources still do not provide a clean deployed Solana bytecode-to-audit-commit mapping for all current user-fund programs, so neither green nor a material current-program mismatch/red is supported.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "reference": "CLMM 2026-06-24 commit after stale a5a46ff baseline.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-clmm/commit/f68fd4286821905b5d1f8a8762f0c51a7f33c578"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm/commits/master/"
+            },
+            {
+              "reference": "CPMM 2026-06-12 commit after the prior baseline.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/commit/78f254e1023751e706df7dc15c453fc3e046697c"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit/Sec3%20Q2%202026"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Evidence updated for #77: official Saturn audit/verification evidence is available, including v1.4 release/tag verification and listed Saturn audit sources. Yellow remains because the audit commits differ from the verification/release commits, and exact audit-commit-to-deployed-bytecode mapping remains incomplete.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://rocketpool.net/protocol/security"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/releases/tag/v1.4"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/verifying-1-4-contract-upgrade/3890"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/verify-1.4"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Only known audit is CertiK Nerve Finance (Mar-Apr 2021), pre-rebrand and pre-proxy. Currently deployed impl 0x31fe...d0d is the 25th iteration — none of the 24 post-audit upgrades have been reviewed. Sanguine monorepo (FastBridge, SIN) also entirely unaudited.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://skynet.certik.com/projects/synapseprotocol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://halborn.com/explained-the-synapse-and-nerve-bridge-hacks-november-2021/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/synapse-protocol/11-06-2021-post-mortem-of-synapse-metapool-exploit-3003b4df4ef4"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "48+ audit reports across 11 firms cover the protocol broadly, but the Code4rena 2023 M-10 finding (exchange-rate manipulation via donation) was dismissed without remediation and subsequently exploited in Feb 2025 and March 2026. The dismissed finding represents a scope mismatch in effect — the audited-but-dismissed pattern allowed a live exploit on deployed bytecode. Newest features (Flash Loan, E-Mode) have recent audit coverage but deployed bytecode commit-hash match is unverified.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-05-venus"
+            },
+            {
+              "source_type": "url",
+              "url": "https://community.venus.io/t/the-market-incident-post-mortem/5712"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Ethereum Core and Token Bridge contract addresses are listed in official Wormhole docs, and the Ethereum Core proxy, Token Bridge proxy, and their current implementations are Etherscan verified. The Token Bridge implementation 0x381752f5458282d317d12c30d2bd4d6e1fd8841e has been active since the 2023-10-17 proxy upgrade. Public audit evidence includes later 2024-2025 NTT, MultiGov, Sui NTT, and Token2022 reports, but no reviewed public source directly maps the active post-upgrade Ethereum Token Bridge implementation to a WTT/Token Bridge-specific audit or commit-to-bytecode match. Yellow remains appropriate because deployed-source verification is strong while audit-to-bytecode traceability for the current core Ethereum Token Bridge surface is unresolved.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/wormhole-docs/main/.snippets/text/products/reference/contract-addresses/core-contracts.md"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/wormhole-docs/main/.snippets/text/products/reference/contract-addresses/token-bridge.md"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3c3d457f1522D3540AB3325Aa5f1864E34cBA9D0#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x381752f5458282d317d12c30d2bd4d6e1fd8841e#code"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x3ee18B2214AFF97000D974cf647E7C347E8fa585#code"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/reference/contract-addresses/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole-audits"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/security/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

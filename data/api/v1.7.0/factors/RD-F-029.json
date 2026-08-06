@@ -20,10 +20,119 @@
         "scoring_methodology": "**What this measures**\nThis factor assesses whether the signers of a protocol's governance multisig are co-hosted — sharing the same autonomous system number, data center, cloud provider, or custodian. The assessment combines on-chain address analysis (network fingerprints from signing transactions) with OSINT on the addresses' activity patterns. Co-hosting means that a single infrastructure compromise could simultaneously expose multiple signer keys, collapsing the effective threshold.\n\n**Why it matters**\nThe security guarantee of a 3-of-5 multisig depends entirely on the independence of the five signing parties. If three of those signers operate on the same cloud infrastructure or with the same custodian, a single breach of that provider collapses the 3-of-5 to a practical 0-of-2 recovery problem. The evidence base includes cases where hardware co-location with a compromised vendor reduced an apparently robust multisig to a single-point-of-failure. This factor is particularly relevant for protocols that disclose their signer list publicly — the co-hosting analysis can then be performed at the address level using on-chain transaction metadata.\n\n**Green / Yellow / Red**\nGreen is assigned when signers are demonstrably distributed across different cloud providers or custody solutions and no co-hosting signals appear in on-chain data. Yellow covers cases where partial co-hosting is suspected but unconfirmed, or where signer distribution is not publicly verifiable. Red is assigned when on-chain or OSINT evidence confirms that a quorum-forming set of signers share the same infrastructure or custodian.\n\n**Common gray cases**\nThis factor is grayed when the signer list is not public and on-chain inference is inconclusive — a common state for protocols that do not publish their multisig composition.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "4 EOA signers identified but no ASN/data-center/custodian analysis possible from on-chain data. Co-hosting cannot be confirmed or denied.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iter.ca/post/polymarket-trust/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Docs state air-gapped cold devices with physically removed network cards for each signer. Sequential signing prevents conflicting parallel signatures. However, signer identities are pseudonymous and ASN-level co-hosting verification is not possible via OSINT. Cannot confirm geographic or custodial separation of the 4 upgrade multisig signers.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current public material does not establish network or custodian independence for every oDAO member. Rocket Pool's 2022 incident post-mortem records that two oDAO nodes were operated by the Rocket Pool team, showing that organizational concentration has existed within the committee. The protocol's 51% consensus limited that incident's protocol impact, but current co-hosting cannot be ruled out from public evidence.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/guides/odao/overview"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Signer identities not public; co-hosting unassessable without private data.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Safe Transaction Service exposes the guardian’s six owners and 3-of-6 threshold, but no independent custody, ASN, or signer-identity analysis was completed. Co-hosting is therefore not assessed.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global/v1/chains/56/safes/0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Guardian set is public, but co-hosting and common-custody relationships were not independently established.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

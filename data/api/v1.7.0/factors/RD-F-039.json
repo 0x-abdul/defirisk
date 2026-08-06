@@ -41,10 +41,135 @@
           "root_cause": "Evil Contract — Delegatecall Storage Collision"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] No governance executor, no proposal payload mechanism, no delegatecall in proposal path. Not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana programs do not use delegatecall. No on-chain proposal execution path with arbitrary call/delegatecall. Squads executes BPF upgrade transactions via BPFLoaderUpgradeable, not arbitrary proposal payloads with target allowlists. EVM-specific attack vector does not apply.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pDAO proposal execution targets a single hardcoded contract: getContractAddress('rocketDAOProtocolProposals'). This is an effective target allowlist of one permitted contract. No user-supplied delegatecall target. RocketDAOProtocolProposals contract exposes only governance settings, treasury, and Security Council management functions — all restricted by onlyExecutingContracts() modifier.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolProposal.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolProposals.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No on-chain Governor or proposal executor. Governance is Snapshot off-chain; execution is manual multisig. No delegatecall-in-proposal path exists.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Governor Bravo accepts proposal-supplied target/value/signature/calldata arrays and dispatches them to a route-specific timelock. Timelock.executeTransaction uses target.call.value(value)(callData) without an allowlist. Venus documents a Critical VIP as six hours of voting plus a one-hour timelock; the Governor’s guardian can cancel before execution and vote weight is checkpointed. The unrestricted call path combined with the seven-hour Critical route meets the v1.7 red calibration’s short-review-window condition. This does not rely on the unrelated 2025 social-engineering incident as a governance-executor near miss.",
+          "evidence_summary": "Governor proposals supply arbitrary targets and calldata to Timelock.call without an allowlist; a Critical VIP can complete six hours of voting plus a one-hour timelock. The short execution window makes this unrestricted executor path red under v1.7.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x213c446ec11e45b15a6E29C1C1b402B8897f606d"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/GovernorBravoDelegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/Timelock.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/governance/decentralization"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Execution type: proposal-supplied call arrays via GovernorTimelockControl; no delegatecall was identified in the inspected HubGovernor path. Safeguards shown in source include voting delay, voting period, proposal threshold, quorum, and timelock integration. Deployed parameter values, direct treasury paths, and attack history were not independently established.",
+          "evidence_summary": "MultiGov accepts proposal-supplied targets, values, and calldatas and routes execution through GovernorTimelockControl; source also shows proposal-threshold and voting-period controls. A strict target allowlist was not verified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/HubGovernor.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/SpokeMessageExecutor.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -941,10 +941,127 @@
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens (0x4D97DCd9...) is the Gnosis CTF open-standard contract deployed verbatim on Polygon. Polymarket docs: 'CTF is an open standard developed by Gnosis.' CTF Exchange V1/V2, NegRiskAdapter, UMA CTF Adapter are original Polymarket development. Upstream clearly identified for the CTF layer.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4D97DCd97eC945f40cF65F87097ACe5EA0476045#code"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/developers/CTF/overview"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/gnosis/conditional-tokens-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not a fork. Raydium is an original Solana AMM built from scratch in Rust. No upstream fork attribution in any repo README. Conceptual math inspiration from Uniswap v3 CLMM does not constitute code fork.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an original protocol — not a fork of any upstream protocol. Designed from scratch beginning in 2016. No fork attribution in GitHub README or protocol docs. All Cat 8 fork-lineage factors (F126–F132) are not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Direct fork of Saddle Finance MetaSwap (Curve MetaPool re-implementation). Source of Nov 2021 $8.2M-at-risk exploit. Never audited under Synapse branding.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/synapse-protocol-rekt/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Isolated Pools README explicitly states: 'Compound Fork Commit: https://github.com/compound-finance/compound-protocol/tree/a3214f67b73310d547e00fc578e8355911c9d376'. Core Pool is documented Compound v2 fork from November 2020. Fork lineage confirmed with specific upstream commit SHA.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/README.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole is NOT a fork. It is an original implementation created as a Solana-Ethereum bridge collaboration between Certus One and Solana Foundation, announced October 8, 2020. GitHub history and README confirm original authorship. No fork declaration, no bytecode-similarity match to a prior protocol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

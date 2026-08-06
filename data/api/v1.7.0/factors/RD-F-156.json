@@ -20,10 +20,110 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether more than 30% of bridge validators share a single key custodian — defined as a single cloud key management service, hardware vendor, or institutional custody provider holding keys on behalf of multiple validators. OSINT and bridge documentation are the primary assessment methods. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCustodian concentration means that a single compromise event — a cloud KMS breach, a hardware wallet vendor supply-chain attack, or an institutional custody failure — can simultaneously compromise multiple validator keys. This converts a k-of-M multisig into a 1-of-1 institutional-custodian attack surface in the worst case. The T-01 evidence base links shared-custodian patterns to approximately 2 protocols in the hack database. Harmony Bridge's signer-set compromise was facilitated in part by operational proximity among the five signers, reducing the effective independence of each key.\n\n**Green / Yellow / Red**\nGreen is scored when no single custodian holds keys for more than 20% of the validator set and custody diversity is documented. Yellow is scored when a single custodian controls 20–30% of the validator set or when custody information is partially undocumented. Red is scored when a single custodian controls more than 30% of the validator set, or when a quorum of validators share a single custodian.\n\n**Common gray cases**\nGray is applied when custody arrangements cannot be determined from public documentation and OSINT cannot confidently identify custodian relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials do not disclose bridge-validator key-custody distribution.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No bridge validators. Not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge validators to assess key custody. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "RFQ Guard: 100% single-entity (Synapse Labs). Legacy NODEGROUP_ROLE: validator identities and key custody not publicly disclosed — co-custody cannot be assessed.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.synapseprotocol.com/docs/RFQ/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Single DVN operated by LayerZero Labs = 100% key custody under one operator. Exceeds the >30% threshold trivially. This is a structural feature of the single-DVN configuration, not a multi-validator co-custody arrangement. Partially mitigated by rate limiter and mint caps.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/technical-reference/reference-technical-articles/xvs-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public documentation identifies a 19-member Guardian set but does not provide independently verifiable custody, key-management, or beneficial-control information sufficient to determine whether one custodian controls more than 30% of keys.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,141 @@
         "scoring_methodology": "**What this measures**\nThis factor flags whether the protocol's deployed code or its key dependencies use an end-of-life (EOL) Solidity version -- defined as a version no longer receiving any security patches from the Solidity team. EOL status is determined by the official Solidity changelog and is updated on a semi-annual cadence. The factor covers both the protocol's own contracts and the shared library versions (OpenZeppelin, Solady) where the library was compiled with an EOL version.\n\n**Why it matters**\nEnd-of-life compiler versions accumulate known vulnerabilities without patches, creating a growing gap between the deployed code's security properties and the current state of compiler knowledge. Unlike active versions where bugs are reported and patched, EOL versions have no patch pathway: a discovered vulnerability in an EOL version will never be fixed, and protocols using that version must migrate their entire codebase to receive the fix. The migration cost is exactly the risk that leads to extended use of EOL versions, creating a compounding risk: the longer the protocol stays on EOL, the more known-but-unpatched compiler bugs accumulate. This factor is forward-looking -- it flags exposure before a specific compiler bug is exploited rather than after.\n\n**Green / Yellow / Red**\nGreen: all deployed contracts use a Solidity version that is currently supported and receiving security patches, with no EOL versions in the dependency tree. Yellow: deployed contracts use a Solidity version that is in the final six months of active support (approaching EOL) but has no currently-known critical bugs. Red: any deployed contract uses an EOL Solidity version with no active patching, or any shared library dependency was compiled with an EOL version that affects the protocol's deployed bytecode.\n\n**Common gray cases**\nProtocols that use a pinned older version for reproducibility reasons but have documented, audited evidence of compatibility with a patched newer version may be treated as yellow rather than red; curator must verify that the documented upgrade path has been implemented or has a firm timeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens (0x4D97DCd9...) uses Solidity 0.5.10 — EOL. This is a frozen deployed contract not receiving updates; the core V2 system uses Solidity 0.8.34 (current stable). The V2 dependency tree (solady, forge-std) uses only current/supported versions. Yellow for EOL Solidity in the frozen dependency.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4D97DCd97eC945f40cF65F87097ACe5EA0476045#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rust 1.81.0 is a current stable release (released Sep 2024, within active support window as of Apr 2026). Solidity EOL check N/A (not a Solidity protocol). No EOL compiler version in use.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.7.6 (released December 16, 2020) is the compiler for all core protocol contracts including rETH, RocketStorage, RocketBase, and all pre-Saturn One contracts. Solidity only provides security fixes to the latest release branch (0.8.x series); version 0.7.x is de facto EOL — no new security patches are applied. 0.7.6 is over 5 years old at assessment date. Saturn One contracts use 0.8.30 (current/supported). Core protocol TVL-bearing contracts are on an unsupported EOL compiler version.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blog.soliditylang.org/2020/12/16/solidity-0.7.6-release-announcement/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/hardhat-common.config.js"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xae78736cd615f374d3085123a210448e74fc6393#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.6.12 is ~8 years old and significantly superseded. Modern safety improvements (0.8.x checked arithmetic, custom errors, immutable keyword) unavailable to legacy bridge contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity 0.5.16 and 0.5.17 are EOL (Solidity active support is 0.8.x series). Used for legacy contracts in production since 2020. No high-severity known bugs apply to these versions for Venus's usage patterns. Primary risk is forward-compat (new EIP support, compiler warnings) rather than current live vulnerability. Yellow for the EOL compiler status despite no active bug risk.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/venus-protocol/main/hardhat.config.ts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solidity public documentation and the public EVM source establish a legacy 0.8.x compiler context. Yellow reflects that old compiler surface without asserting that the compiler is formally end-of-life.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.soliditylang.org/en/latest/bugs.html"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

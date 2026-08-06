@@ -111,10 +111,149 @@
           "root_cause": "Debt accounting manipulation via rounding bug + public `resolveReserve` function + custom \"evil spell\"; insider knowledge of unannounced sUSD pool required"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "UMA-resolution failure or dispute delays market resolution and redemption; failure of the listed CTF/collateral contracts affects position settlement. Bridge-service failures can delay funding, while price-market resolution depends on Chainlink's integration.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/bridge/status"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium documents that AMM v4 swaps continue on the curve without active OpenBook liquidity sharing, while CPMM and CLMM are separate pool programs. An OpenBook outage is therefore not an oracle-failure path for current AMM v4 swaps.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/protocol-overview/versions-and-migration"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "oDAO balance failure: rETH:ETH rate freezes; staking rewards stop accruing; users can redeem at stale rate — not immediately harmful but damages LST peg mechanics. oDAO collusion (>51%): rate manipulation capped at 2%/update by RPIP-61 but no cap across successive updates — slow drain risk across multiple intervals. oDAO RPL price failure: incorrect node operator collateral validation (incorrect liquidations or under-collateralized operations). Beacon Deposit Contract failure: new validator registrations halt, existing TVL unaffected. RocketStorage corruption: full system halt. Partial analysis covering major deps without a single formal breakage document = yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-61"
+            },
+            {
+              "source_type": "url",
+              "url": "https://saturn.rocketpool.net/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AMM pool exploit -> mintAndSwap/withdrawAndRemove unsafe (historical Nov 2021 precedent, $8.2M at risk). 2/3 validators compromised -> legacy bridge drained. Guard absent -> RFQ fraud undetected. Pool config wrong -> routing failure.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/synapse-protocol-rekt/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Individual oracle failure for major assets (BTC, ETH) is absorbed by 3-tier fallback. Full oracle freeze requires all three tiers to fail simultaneously. Demonstrated breakage: (a) LUNA 2022  -  Chainlink paused feed, stale price exploited for $11M bad debt before maxStalePeriod triggered revert; (b) THE 2026  -  multi-source convergence after 37-min sustained manipulation, $3.7M loss. Thin-liquidity collateral oracles remain the primary residual breakage vector.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blocksec.com/blog/venus-thena-donation-attack"
+            },
+            {
+              "source_type": "url",
+              "url": "https://therecord.media/collapse-of-luna-cryptocurrency-leads-to-11-million-exploit-on-venus-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "If Core Contract verification or Guardian quorum is unavailable, messages cannot be authenticated and cross-chain delivery halts. A relayer outage affects delivery availability, but another actor can submit the publicly available signed VAA. This separates the critical Guardian/Core dependency from the less concentrated delivery dependency.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/relayers/relayer/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

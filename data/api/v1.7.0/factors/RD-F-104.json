@@ -20,10 +20,103 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when a stablecoin in the protocol's dependency graph depegs by more than 2% from its target peg on a venue that shares liquidity with the monitored protocol. A stablecoin is considered in-dependency-graph if it serves as collateral, underlies an LP token used by the protocol, or acts as an oracle reference asset. Depeg detection is via continuous DEX subgraph and price feed monitoring. Category 6 context: stablecoin depegs in shared-liquidity venues propagate systemic risk to all protocols relying on those stablecoins as collateral or oracle references.\n\n**Why it matters**\nThe LUNA/UST collapse ($40B+ ecosystem loss, May 2022) demonstrated that stablecoin depeg events have rapid cascading effects across protocols using UST as collateral or reference. Mirror Protocol ($92M) shows the direct dataset example: the LUNA depeg oracle inconsistency was a detectable signal during the exploit. More broadly, any protocol using a yield-bearing stablecoin (e.g., USD0++, xUSD, USDX in the 2025–2026 immutable-oracle cluster) as collateral faces systemic exposure when that stablecoin depegs and the oracle cannot reprice due to immutability. A 2% depeg on a shared-liquidity venue provides approximately 60–120 seconds of warning time before liquidation cascades begin.\n\n**Green / Yellow / Red**\nGreen is the baseline when all stablecoins in the dependency graph are within 0.5% of peg across all monitored venues. Yellow fires when a depeg of 0.5–2% is detected — elevated but potentially within normal market volatility for some stablecoins. Red fires when any dependency-graph stablecoin depegs more than 2% on a venue with shared LP, triggering immediate elevated-risk alerting.\n\n**Common gray cases**\nGray applies when the protocol's stablecoin dependency graph is not fully mappable from on-chain data alone, or when the depeg is occurring on a venue with no shared liquidity and the systemic risk is limited.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pUSD is documented as a USDC-backed collateral token, but the factor requires a current cross-venue stablecoin-depeg observation; no public current multi-venue measurement was established.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public 2026-07-24 stablecoin-price observation was collected for the factor's shared-LP depeg threshold.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an ETH liquid-staking protocol; its rETH and RPL assets are not stablecoins.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No current shared-LP venue price comparison was established for stablecoins in Synapse liquidity paths.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus Core Pool holds USDT (Chainlink 900s heartbeat 0x1B9...320), USDC (Chainlink 900s 0x51597...163), and BUSD. No active stablecoin depeg >2% as of 2026-04-28. The 2022 LUNA/UST collapse caused $11-14M bad debt via Chainlink LUNA/USD feed pause — oracle staleness variant of depeg risk, not a current exposure. Current USDT and USDC pegs stable per Chainlink.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0xB97Ad0E74fa7d920791E90258A6E2085088b4320"
+            },
+            {
+              "source_type": "url",
+              "url": "https://therecord.media/collapse-of-luna-cryptocurrency-leads-to-11-million-exploit-on-venus-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_summary": "Not assessed: no independently verifiable public, protocol-specific monitoring dataset was obtained for the required observation window.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

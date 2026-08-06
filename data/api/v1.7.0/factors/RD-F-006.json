@@ -1301,10 +1301,129 @@
           "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V2: audited March 2026, deployed on-chain 2026-03-31 — gap ≤31 days (within 60-day green threshold). V1 deployed post-audit within reasonable window in 2022.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Kudelski Q2 2021 at launch. CLMM OtterSec Q3 2022 concurrent with CLMM deployment. CPMM MadShield Q1 2024 concurrent with CPMM deployment (Jan 2024). Sec3 Q2 2026 concurrent with CLMM feature deployment. No material audit-to-deploy gap detected.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Saturn One: all three audit firms completed before Feb 18, 2026 launch — gap approximately 2–4 weeks (green). Houston: Consensys Diligence completed December 1, 2023; Houston launched May 6, 2024 — 156 days gap (red threshold). Sigma Prime Houston hotfix March 2024 to May 2024 launch is ~50 days (yellow-green). The 156-day Consensys Diligence to Houston launch gap drives overall yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://diligence.security/audits/2023/12/rocket-pool-houston/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/rocket-pool/rocket-pool-houston-launch-b056ca1a6c10"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "~60 months since last audit. Far exceeds 24-month yellow threshold.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://skynet.certik.com/projects/synapseprotocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Pattern of multi-firm concurrent auditing before VIP deployment. Flash loan: Certik Oct 2025, Hashdit Oct 2025, Quantstamp Dec 2025. Specific deploy tx timestamps per audit component not independently verified via Etherscan; deploy-to-audit gap could exceed 60 days for some components. Conservative yellow due to unverified timestamps.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public dated reports show audits for later Wormhole components. Exact deploy-to-audit timing for every critical deployment is not consistently established in the public record, so yellow is retained.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole-audits"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

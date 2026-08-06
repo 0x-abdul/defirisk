@@ -20,10 +20,117 @@
         "scoring_methodology": "**What this measures**\n\nThis factor assesses the LayerZero OFT (Omnichain Fungible Token) adapter's DVN (Decentralized Verifier Network) configuration: how many DVNs are required to attest a cross-chain message, what threshold of those DVNs must agree (k-of-N), and whether the listed DVN operators are independent entities or the same operator running multiple endpoints. Cat 10 applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A. The 1-of-1 DVN configuration is the catastrophic edge — a single DVN can unilaterally attest to a forged inbound message and trigger an unbacked mint on the destination chain.\n\n**Why it matters**\n\nLayerZero OFT is now the dominant cross-chain token-bridging primitive on EVM L2s, but its security guarantees are a function of how the OFT adapter is configured by the deploying protocol — not an intrinsic property of LayerZero itself. A 1/1 DVN configuration means there is no honest-majority assumption: a single compromised, captured, or buggy DVN can forge an `lzReceive` payload and the destination chain will accept the mint as legitimate. Threshold without operator diversity is similarly weak: 2-of-3 DVNs all run by the same operator collapses to single-operator trust at validator level, even though the on-chain config looks redundant.\n\n**Green / Yellow / Red**\n\nGreen is ≥3 independent DVN operators with threshold ≥2 — a meaningful k-of-N attestation set. Yellow is 2 DVNs with threshold 2, or any threshold-2 configuration where operators are not fully independent. Red is the 1/1 configuration: a single DVN with threshold 1, where any single attestation suffices to mint on the destination chain.\n\n**Common gray cases**\n\nThe protocol does not deploy a LayerZero OFT adapter at all (factor is N/A). On-chain DVN registry reads are inconclusive when the adapter uses a custom DVN list that is not standard-registered, requiring source inspection.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The most-cited industry incident is **Kelp DAO** (Apr 2026, $292M loss), where a 1-of-1 DVN configuration on the rsETH OFT adapter allowed a single forged message to mint unbacked rsETH on a destination chain. Aave governance forum publicly flagged the 1/1 DVN risk approximately 15 months prior to the exploit, making this a structural risk that was visible on-chain and publicly debated long before failure."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Polymarket bridge documentation does not identify LayerZero OFT use, DVNs, or a DVN threshold for the provider-operated bridge.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "NOT_APPLICABLE. Raydium's approved protocol scope has no cross-chain bridge surface or LayerZero OFT integration, so this LayerZero-specific bridge factor is structurally inapplicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed Rocket Pool core protocol has no protocol-operated LayerZero OFT endpoint or DVN configuration. This bridge-specific configuration factor is not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Synapse Protocol is not a LayerZero OApp and does not use LayerZero OFT adapters. Confirmed by profile and source inspection.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SINGLE DEFAULT DVN (1/1 configuration). Venus XVS bridge uses OFT V2 (BaseOFTV2 from @layerzerolabs/solidity-examples v2). DVN configuration not overridden in contract  -  uses default LayerZero DVN. Venus docs explicitly confirm: 'Bridge relies on a single relayer, the default by LayerZero.' Operator diversity = 0 (single operator = LayerZero Labs). This matches the Kelp DAO 1/1 DVN pattern (Kelp DAO $292M Apr 2026). Mitigants: (a) bridge guards XVS governance token only, not $1.26B lending TVL; (b) BaseXVSProxyOFT rate-limiter (per-tx + daily caps + per-chain mint cap); (c) emergency wallet authorization via VIP in DVN downtime. YELLOW (not RED) because bridge is governance-token-only and rate limiters provide containment. Would be RED if this were the primary lending TVL bridge.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/token-bridge/main/contracts/Bridge/BaseXVSProxyOFT.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/technical-reference/reference-technical-articles/xvs-bridge"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0xf8F46791E3dB29a029Ec6c9d946226f3c613e854"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "This factor is specific to LayerZero OFT DVN configuration. Wormhole documents its own Guardian/VAA verification architecture; no LayerZero OFT DVN configuration is part of the reviewed Core Bridge path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

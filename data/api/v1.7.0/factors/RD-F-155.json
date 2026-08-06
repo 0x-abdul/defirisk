@@ -20,10 +20,109 @@
         "scoring_methodology": "**What this measures**\nThis factor records the number of months since the bridge's validator set was last changed — including additions, removals, and key rotations. The value is derived from bridge contract events and protocol governance records. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nA validator set that has not rotated for an extended period increases the risk that compromised keys are retained without detection. Key rotation is a standard operational security practice for high-value custody systems: it limits the window of exposure if a signing key is exfiltrated and ensures that long-dormant keys do not accumulate undetected privilege. Radiant Capital II ($53M, 2024) involved a suspected nation-state compromise of signing hardware that may have involved extended reconnaissance; a shorter key-rotation cycle would have limited the window. Conversely, overly frequent rotation without ceremony is also a concern — it may indicate operational instability or governance attacks.\n\n**Green / Yellow / Red**\nGreen is scored when the validator set has been rotated or reviewed within the past 12 months with documented ceremony and the rotation policy is publicly stated. Yellow is scored when the last rotation was 12–24 months ago or the rotation policy is undocumented. Red is scored when the validator set has not changed for over 24 months or has never been rotated since bridge deployment.\n\n**Common gray cases**\nGray is applied when bridge contract events cannot be fully decoded to identify signer-set changes, or when the bridge uses an off-chain governance process that is not mirrored on-chain.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials do not disclose bridge-validator rotation dates or a rotation policy.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No bridge validator set. Not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge validator set to rotate. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "NODEGROUP_ROLE rotation history not queried from Etherscan events within budget. RFQ Guard rotation: no history found, sole Guard = Synapse Labs.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Single DVN configuration means no validator-set rotation exists  -  there is only one validator (LayerZero Labs default DVN). The concept of a signer-set change does not apply. Venus governance can update trustedRemote configuration via VIP, but that is an OApp routing config change, not a validator-set rotation.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/technical-reference/reference-technical-articles/xvs-bridge"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Core Contract reference describes indexed Guardian sets and expiry after replacement, but the reviewed documentation does not provide a complete dated rotation history sufficient to assess rotation recency. No freshness conclusion is made.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-solana/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

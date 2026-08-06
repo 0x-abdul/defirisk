@@ -61,10 +61,137 @@
           "root_cause": "Uninitialized Pool Re-initialization (Missing initialized = true)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "V2 is a modular mixin architecture (~12 mixin files). Two audit firms (Cantina + Quantstamp) both reviewed V2 in March 2026. Audit duration not determinable from PDF (binary). The parallel two-firm audit approach mitigates single-firm coverage gaps. Marking yellow due to inability to verify LOC/audit-day ratio.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/tree/main/src/exchange/mixins"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "3 audit firms cover Standard AMM v4 (Kudelski, OtterSec, MadShield). 2 cover CLMM (OtterSec, Sec3). 2 cover CPMM (MadShield, Sec3). Coverage appears proportionate to complexity. LOC-per-audit-day not derivable from binary PDF. Marked yellow due to inability to compute precise metric.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Large codebase (20+ contracts, 48.7% Solidity per GitHub statistics). Houston Consensys Diligence engagement was explicitly time-boxed at 2x10 person-days with recommended follow-up — indicating audit scope was narrow relative to codebase size. Saturn One complexity (megapools, 4 ETH bonding, express/standard queues, RPL fee switch) is high; three firms engaged. No LOC/nSLOC count publicly available to compute exact ratio.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://diligence.security/audits/2023/12/rocket-pool-houston/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Three parallel bridge models (legacy MPC, SIN, RFQ) across two monorepos plus Saddle-fork AMM. Zero audit coverage for current architecture. High complexity with no audit coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/sanguine"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "56+ audit reports from 11 firms for main repo, 18+ for isolated-pools. Multiple firms auditing the same components simultaneously provides cross-validation. The density of audit coverage relative to codebase complexity is exceptional for a lending protocol.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public reference repository, security documentation, and audit repository evidence a multi-language implementation and broad third-party review record. Green is limited to publicly documented coverage breadth.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/security/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole-audits"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

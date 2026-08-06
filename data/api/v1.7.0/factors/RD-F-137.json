@@ -20,10 +20,123 @@
         "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct contract upgrades executed for the protocol's core contracts in the trailing 90-day window. The count is derived from on-chain Upgraded events emitted by UUPS or transparent proxy contracts, or equivalent upgrade-execution events for other proxy patterns. High upgrade frequency is a proxy for ongoing development activity on production contracts — an elevated surface area for post-audit code changes.\n\n**Why it matters**\nUpgrade frequency is an operational hygiene indicator: protocols that upgrade frequently are making ongoing changes to live production code, each of which represents a potential introduction of unreviewed vulnerability. A protocol that upgrades its core lending contracts six times in 90 days has introduced six windows during which post-audit changes may be unreviewed (assessed separately under RD-F-139). High upgrade frequency also signals that the codebase is not in a stabilized state, which correlates with lower battle-test confidence. This factor is displayed as a count rather than a pass/fail to give context to the RD-F-139 assessment.\n\n**Green / Yellow / Red**\nGreen is assigned when the upgrade count is 0 or 1 in the trailing 90 days, indicating a stable deployed codebase. Yellow covers 2–4 upgrades in 90 days with all changes documented via release notes or governance proposals. Red is assigned when 5 or more upgrades have been executed in the trailing 90 days, or when upgrades are occurring without publicly documented justification.\n\n**Common gray cases**\nThis factor is grayed when the protocol uses immutable (non-upgradeable) contracts, where an upgrade count of zero is structural rather than behavioral.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTFExchange V2 is not a proxy — no upgrade path. pUSD CollateralToken (UUPS) was newly deployed in the 90-day window (initial deploy, not an upgrade). No Upgraded events. V1 is not a proxy.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Active development cadence. In trailing 90 days: CLMM anchor upgrade Dec 2025; CPMM anchor upgrade + audit fix Nov-Dec 2025. AMM V4 last commit Sept 2025. Roughly 1-3 upgrades per 90 days across programs. Moderate frequency reflecting an active protocol with ongoing feature development.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/raydium-io/raydium-clmm/commits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/raydium-io/raydium-cp-swap/commits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The available public announcement confirms Saturn 1 launched on 18 February 2026, but it does not provide a complete on-chain upgrade-event inventory for the trailing 90 days ending on this refresh date. The prior May 2026 window is stale. This factor is not assessed rather than projecting an old count forward.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-55"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/Rocket_Pool/status/2023913306499784898"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "25 upgrades in ~60 months (~1.2 per 90 days). High upgrade frequency for a Solidity 0.6.12 contract without modern upgrade tooling.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2796317b0ff8538f253012862c06787adfb8ceb1"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public audit-directory entries demonstrate active development but do not establish the count of deployed upgrades during the trailing 90 days. The upgrade-frequency metric is therefore not assessed rather than inferred from audit volume.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No complete trailing-90-day upgrade-event inventory was independently established across the approved protocol surface.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

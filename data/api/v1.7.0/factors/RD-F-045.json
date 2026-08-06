@@ -20,10 +20,119 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the constructor arguments of the deployed contract match the arguments stated in any governance proposal or documentation that authorized the deployment. The assessment compares the on-chain constructor calldata from the deploy transaction against the proposal text, audit report, or governance vote that described the intended deployment parameters.\n\n**Why it matters**\nSilent deviations between what governance approved and what was actually deployed are a category of insider or deployment-process attack. A proposer who controls both the deployment and the proposal wording can submit a governance vote describing deployment parameters that differ from the bytecode actually deployed. Auditors typically review the described parameters against the source code; they do not independently verify that the deployed bytecode's constructor arguments match the governance proposal wording. This gap creates a window for concealed parameter changes that alter protocol behavior without triggering alarm.\n\n**Green / Yellow / Red**\nGreen is assigned when constructor arguments in the deploy transaction are verified to match the governance proposal or documentation describing the deployment, with on-chain proof available. Yellow covers cases where a partial match is established but one or more parameters cannot be confirmed against proposal text. Red is assigned when a material discrepancy exists between deployed constructor arguments and the governance proposal, or when no proposal exists for a material parameter configuration.\n\n**Common gray cases**\nThis factor is grayed when the protocol deployed before any governance proposal mechanism existed, or when constructor args are not human-readable without ABI decoding and the source ABI is unavailable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No governance proposal mechanism exists. Deploy was a unilateral team decision with no public governance proposal to cross-check constructor args against. Args are verifiable on-chain but no reference document exists.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://polygonscan.com/tx/0xd313453c195344b3eea2d91343fb840e51130ba5562fb9c9eda83fd0f82c6c97"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana programs do not use Ethereum-style constructor arguments. BPF Loader deployments have no constructor arg verification analog. Not applicable to Solana deployment model.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Major upgrades (Houston, Saturn One) accompanied by RPIP specification documents with expected parameters. Community members performed upgrade verification (dao.rocketpool.net/t/verifying-1-4-contract-upgrade/3890). No documented mismatch between proposed and deployed constructor arguments. Three-firm audit process for Saturn One included parameter review.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/verifying-1-4-contract-upgrade/3890"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-55"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No upgrade proposals with constructor args found. 25 upgrades are undocumented. Not assessable within budget.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GovernorBravo, all three Timelocks have verifiable constructor args on BscScan matching documented governance topology. Delays confirmed: Critical=3600s, FastTrack=21600s, Normal=172800s. No evidence of silent deviation in observable governance contracts.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x213c446ec11e45b15a6E29C1C1b402B8897f606d#readContract"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core Bridge governance uses signed VAAs rather than published EVM governor proposals with constructor-argument disclosures.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

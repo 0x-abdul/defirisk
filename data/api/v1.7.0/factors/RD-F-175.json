@@ -20,10 +20,143 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether the protocol publishes a publicly accessible security disclosure channel — a dedicated security email address (security@domain), an Immunefi bug bounty page, an in-house disclosure program with documented submission instructions, or an equivalent mechanism that a security researcher could use to report a vulnerability. Measurement is programmatic via Immunefi API and web scrape of the protocol's documentation and security pages. Category 13 context: a disclosure channel is the baseline prerequisite for responsible vulnerability reporting; without one, security researchers have no legitimate path to report findings and may choose to exploit or publicly disclose instead.\n\n**Why it matters**\nAmong the protocols in the T-01 hack database without a bug bounty program — bEarn, Cashio, Badger, Atomic Wallet, Alpha Finance, Curio, Deus DAO 2, and 23 others — the absence of a disclosure channel meant that researchers discovering vulnerabilities had no incentive or mechanism to report them. The Elephant Money case is particularly instructive: Solidity Finance identified the flash-loan manipulation vulnerability during the audit but failed to communicate it — in part because there was no structured disclosure channel for the finding to be escalated through. Atomic Wallet ($100M, 2023) ignored a Least Authority security report in 2022 that described the vulnerability class — the absence of a functional disclosure process meant the finding was filed and forgotten.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol publishes a functional security disclosure channel with clear submission instructions and a documented response commitment (Immunefi listing, security@ address with public acknowledgment SLA, or equivalent). Yellow applies when a disclosure mechanism exists but is informal or partially documented — for instance, a Discord DM instruction without a formal bug bounty program or documented response process. Red is scored when the protocol has no discoverable security disclosure channel and the curator's research finds no mechanism for a researcher to submit a vulnerability report.\n\n**Common gray cases**\nGray applies when a disclosure channel appears to exist based on documentation but the curator cannot verify whether it is actively monitored (e.g., a security email address with no confirmed recent responses).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket operates a live Cantina-triaged public bug bounty with defined severity criteria, scope, and rewards up to $5 million. Its documentation directs security reports to that program.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/ff945ca2-2a6e-4b83-b1b6-7a0cd3b94bea"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium publishes both an Immunefi bug-bounty program and a security email submission channel. The Immunefi listing was updated July 9, 2026, lists 74 scoped assets and a $505K maximum bounty, supporting active monitoring.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/raydium/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/SECURITY.md"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool maintains a live Immunefi bug-bounty program with a $150,000 maximum reward, published scope, and a March 2026 update. This verifies a disclosure channel, while the reviewed material does not demonstrate a separate public monitoring or response service level.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/rocketpool/information/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Synapse maintains a public Immunefi bug-bounty program, providing a publicly designated vulnerability-disclosure channel.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/synapse/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus's public README directs security concerns to Telegram administrators and its security page says it offers a bug bounty. These statements establish a public route, but do not publish a scoped intake, reward terms, safe-harbor, or dedicated security contact. Score: yellow.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/links/security-and-audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole provides a public vulnerability-disclosure channel through its SECURITY.md and Immunefi bug-bounty program.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/blob/main/SECURITY.md"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/wormhole/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

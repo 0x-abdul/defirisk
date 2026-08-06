@@ -61,10 +61,119 @@
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No AddedOwner/ChangedThreshold events visible in accessible Polygonscan history for Safe 0x3dce0a29. Threshold reduction (DPRK-precursor pattern) not observed. Rated yellow due to incomplete event history visibility, not confirmed green.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952#events"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public post-mortem documents the 2022 migration away from a single admin key, but the available public sources do not establish a complete subsequent signer-rotation or threshold-change history for the current Squads authorities.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://raydium.medium.com/detailed-post-mortem-and-next-steps-d6d6dd461c3e"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Signer rotation recency: the deployer EOA was the RocketStorage guardian from launch (2021-11-09) until permanent disablement in the Aug-Oct 2025 period. Permanent disablement of an admin role is the strongest possible rotation event — the role no longer exists rather than being held by a different signer. The 3-year public process (RPIP-14 -> RPIP-33 -> Houston -> Aug-Oct 2025 disablement) is the rotation event. No formal multisig now holds the role, so further rotation is unnecessary.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-33"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/protocol-development-roadmap-update-aug-sept-oct/3810"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Safe address history shows the CortexDAO multisig was deployed in June 2022. No public signer-rotation evidence was identified in the reviewed address history; by the 2026-07-24 assessment date, that is roughly four years without a confirmed rotation.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x2A208EC9144e6380016aD51a529B354aE1dD5D7d"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Safe owner set is publicly resolvable, but the latest AddedOwner, RemovedOwner, or ChangedThreshold event was not independently established. The factor is not assessed.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current Guardian model is documented, but the latest signer-rotation event was not independently determined.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

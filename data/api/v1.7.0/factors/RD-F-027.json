@@ -411,10 +411,149 @@
           "root_cause": "Infinite Mint — Blacksmith Farming Contract Withdrawal Bug"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] Admin is Gnosis Safe 0x3dce0a29 (not EOA). Deploy-factory contract was deployer. No single EOA holds admin role.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952"
+            },
+            {
+              "source_type": "transaction",
+              "url": "https://polygonscan.com/tx/0xd313453c195344b3eea2d91343fb840e51130ba5562fb9c9eda83fd0f82c6c97"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Post-Dec 2022 incident: admin migrated from single EOA (HggGrUeg4ReGvpPMLJMFKV69NTXL1r4wQ9Pk9Ljutwyv, exploited) to Squads V4 3/4 multisig. Current admin is not a single EOA. The December 2022 exploit was caused by the single-EOA admin pattern; this was fully remediated.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            },
+            {
+              "source_type": "url",
+              "url": "https://raydium.medium.com/detailed-post-mortem-and-next-steps-d6d6dd461c3e"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[STAR CRITICAL] No single admin EOA. The deployer EOA 0x0ccf14983364a7735d369879603930afe10df21e was the RocketStorage guardian during bootstrap (2021-11-09 launch through Oct 2025), but the guardian role was PERMANENTLY DISABLED in the Aug-Oct 2025 period per the Protocol Development Roadmap Update (Oct 24, 2025): \"we permanently disabled the protocol DAO guardian, completing the transition to full decentralised governance\". The disablement was the culmination of a 3-year public process: RPIP-14 (2022), RPIP-33 (2023), Houston upgrade (May 2024 — established Security Council and on-chain pDAO), and the Aug-Oct 2025 final disablement. As of profile date 2026-05-04, no EOA holds privileged unilateral protocol control. Earlier HackMD/Prisma analysis cited as red was authored prior to the Oct 2025 disablement.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-14"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-33"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/protocol-development-roadmap-update-aug-sept-oct/3810"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer EOA 0x235AF07E renounced all roles Jan-May 2022 (~11 months post-launch). Deployer dormant since. No single-EOA admin path remains.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x235AF07E770f474d24f5bf73074735892371b40D"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GovernorBravo admin is 0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B — confirmed GnosisSafeProxy (not an EOA). Normal Timelock admin transferred from deployer (AcceptAdmin event block 17924603, May 2022) to 0xeAEb3137...9886fCfcb. No current EOA holds primary admin role.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0x939bD8d64c0A9583A7Dcea9933f7b21697ab6396#events"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core governance packets must verify against the current Guardian set; Wormhole documents the standard 13-of-19 VAA requirement.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/wormhole/main/ethereum/contracts/Governance.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

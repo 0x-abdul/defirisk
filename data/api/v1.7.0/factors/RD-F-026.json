@@ -20,10 +20,137 @@
         "scoring_methodology": "**What this measures**\nThis factor counts the number of distinct addresses that hold any admin role across the protocol's deployed contract system — including owner, ProxyAdmin, upgrader, pauser, minter, fee collector, oracle setter, and any other role with elevated permissions. The count is produced by an on-chain sweep of AccessControl role members and owner slots across all contracts associated with the protocol.\n\n**Why it matters**\nThe count of distinct admin addresses sets the floor for understanding the protocol's attack surface. A protocol with a single admin address is maximally centralized; one with twenty role-separated addresses across multiple independent parties has a dramatically larger attacker burden. The evidence base shows that protocols with very small admin address counts — particularly those where count equals one — are over-represented in the off-chain key compromise cluster. The count alone is not graded as critical (role separation and threshold are assessed separately), but it is a required display field that contextualizes every other governance signal.\n\n**Green / Yellow / Red**\nGreen is assigned when three or more distinct addresses hold clearly-separated roles (upgrader, pauser, oracle setter, and fee collector are held by different addresses or multisigs). Yellow covers cases where two to three addresses hold the full role set, or where the count is high but roles overlap significantly. Red is assigned when a single address holds all elevated roles, regardless of whether that address is an EOA or a multisig — single-address role concentration is the underlying condition for RD-F-027.\n\n**Common gray cases**\nThis factor is grayed when on-chain AccessControl events are absent and source inspection is required but unavailable within the assessment window, or when a protocol uses factory-deployed contracts where role inheritance is unclear.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "2-of-4 Gnosis Safe confirmed via third-party analysis. Four EOA signers: 0xd4848efd…, 0xf65df17d…, 0x80AbC332…, 0x00447a08…. Safe API unavailable (403/422); confirmed via iter.ca analysis.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952"
+            },
+            {
+              "source_type": "url",
+              "url": "https://iter.ca/post/polymarket-trust/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Program Upgrade Multisig: 3/4 threshold (Squads V4 address FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK). Treasury Multisig: 3/5 threshold. Both confirmed by official docs.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Upgrade multisig signer config: post-Oct 2025 guardian disablement, there is no single admin EOA. pDAO governance (RPL-staked voting, square-root modifier) is the upgrade path with 1-week vote delay + 1-week upgrade delay. The oDAO (18 members, 51% quorum = 10/18) handles oracle reporting and registers approved contract addresses in RocketStorage post-pDAO-vote — this is committee governance, not a Safe-style multisig. The pDAO Security Council holds pause-only powers, also a committee not a Safe. No 1-of-1 EOA controls the protocol. The 10/18 oDAO threshold for committee-style oracle/upgrade-execution is acceptable for an 18-member committee.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/protocol-development-roadmap-update-aug-sept-oct/3810"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/guides/odao/overview.html"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "5+ distinct privileged address classes: proxy admin 2/3 Safe, GOVERNANCE_ROLE (Executor 2), NODEGROUP_ROLE (MPC validators, count unconfirmed), DEFAULT_ADMIN_ROLE, CortexDAO multisigs.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus publishes three BNB Chain guardian roles; the pause/resume guardian is a Safe. The public Safe Transaction Service endpoint reports 3 owners required from 6 for 0x1C2C…AA6B. That is a meaningful but relatively low threshold for a protocol with about $1.22B TVL, so the score is yellow.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/deployed-contracts/governance"
+            },
+            {
+              "source_type": "url",
+              "url": "https://safe-client.safe.global/v1/chains/56/safes/0x1C2CAc6ec528c20800B2fe734820D87b581eAA6B"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The documented Guardian network has 19 members and a 13-of-19 signing quorum, rather than one admin address.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

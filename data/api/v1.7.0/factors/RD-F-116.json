@@ -20,10 +20,120 @@
         "scoring_methodology": "**What this measures**\nThis factor measures the tenure — in days since first contribution — of the author of the most recent admin-permissioned code change. A short-tenured contributor being granted admin-level merge or deploy authority is a structural insider-risk signal, particularly when the contributor's identity is not otherwise verifiable. Measurement is programmatic via GitHub API: the factor queries the merge timestamp of the most recent commit touching admin-role or upgrade-path code and compares it to the author's first contribution date in the repository. Category 7 context: DPRK insider-implant attacks specifically exploit short-tenured developers being granted premature admin access.\n\n**Why it matters**\nThe Drift Protocol incident (April 2026) exemplifies the risk: UNC4736 (DPRK-attributed) infiltrated the team by posing as an external integrator, built real-capital credibility over six months, and was ultimately granted sufficient access to influence the Security Council threshold reduction that preceded the $285M exploit. Short-tenured contributor access is not inherently malicious — legitimate security researchers are onboarded quickly — but it creates a window where the contributor's intent cannot be verified through track record. Protocols with documented insider attribution consistently show short-tenure → admin-access patterns.\n\n**Green / Yellow / Red**\nGreen is scored when the most recent admin-permissioned PR author has a contribution history of at least 180 days in the repository, or is a verified external audit firm contributor. Yellow applies when the author's tenure is 30–180 days with verifiable identity. Red is scored when the most recent admin-permissioned change was authored by a contributor with fewer than 30 days of repository history and no verifiable external identity.\n\n**Common gray cases**\nGray is assigned when the repository does not clearly distinguish admin-path code from general code changes, when the repo is private, or when the most recent admin change is more than 12 months old and assessing tenure at that historical point is impractical.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium documents multisig-controlled upgrades, and the public repository shows contributor activity, but the available materials do not map individual contributors to every admin-permissioned change.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/raydium-io/raydium-amm/commits?per_page=20"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool's public GitHub organization hosts its contracts and production code, and its official repositories show continuing activity. Public repository pages do not establish which contributor held admin permission for each sensitive pull request or that every such contributor had long tenure. Gray for the factor-specific tenure test.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository records project commits, but this pass could not link an admin-permissioned change to a named contributor and verifiable employment tenure.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public VenusProtocol repository shows a long-lived public codebase and commit history. It does not establish the tenure of the contributor on the most recent admin-permissioned change, nor associate that contributor with privileged access. Gray: public repository activity exists, but the factor-specific tenure evidence is incomplete.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository demonstrates ongoing development but does not identify the author of the most recent admin-permissioned change or establish that author's prior contribution tenure.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

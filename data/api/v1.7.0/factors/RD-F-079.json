@@ -151,10 +151,147 @@
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public incident reporting does not substantiate a repeated exploit with the same root cause: the June 2026 event was a vendor-injected frontend script, while earlier reports concerned authentication-provider and phishing vectors.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/383711/polymarket-third-party-vulnerability-hack"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The two confirmed incidents have distinct reported causes: a compromised pool-owner key in 2022 and insufficient LP-mint validation in legacy AMM V3 in 2026. No same-root-cause repeat is evidenced.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/raydium-rekt/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The 2022 post-mortem attributes the documented incident to compromised workstation access and unencrypted SSH keys, while stating the protocol was unaffected. A single public incident record cannot establish or exclude repeated protocol-exploit root causes.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/post-mortem-security-incident-26-05/701"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public incident record identifies one Saddle Metapool implementation issue and does not establish a second incident with the same root-cause cluster.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://medium.com/synapse-protocol/11-06-2021-post-mortem-of-synapse-metapool-exploit-3003b4df4ef4"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The February 2025 ZKSync event and March 2026 THE event both used donation-driven vToken exchange-rate manipulation. The 2026 post-mortem and patch proposal identify the same direct-transfer/supply-cap-bypass weakness, supporting a repeated-root-cause red finding.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/post-mortem-wusdm-donation-attack-on-venus-zksync/5004"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/multi-chain-patch-fix-for-the-market-donation-attack/5718"
+            },
+            {
+              "source_type": "url",
+              "url": "https://code4rena.com/reports/2023-05-venus"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public evidence documents the 2022 Solana sysvar-validation exploit and a distinct, responsibly disclosed EVM proxy initialization issue; it does not establish a repeated exploit of the same root cause.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.halborn.com/blog/post/explained-the-wormhole-hack-february-2022"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://medium.com/immunefi/wormhole-uninitialized-proxy-bugfix-review-90250c41a43a"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

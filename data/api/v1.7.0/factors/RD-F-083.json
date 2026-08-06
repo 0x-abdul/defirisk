@@ -20,10 +20,138 @@
         "scoring_methodology": "**What this measures**\nThis factor is a Boolean recording whether a reputable auditor performed a re-audit or formal incident review after the most recent exploit. Re-engagement must be from a firm of comparable or higher tier than the original auditor and must cover at minimum the affected contracts and any related functions. An informal code review by the team's own developers does not satisfy this criterion.\n\n**Why it matters**\nRe-audit after an exploit is the strongest available signal that a protocol is treating the root cause as systemic rather than treating the specific attack vector as isolated. In the dataset, protocols that re-engaged auditors after incidents showed materially lower rates of same-root-cause recurrence. Conversely, protocols that did not re-engage auditors -- or that re-engaged auditors for only a narrow slice of the affected code -- were disproportionately represented in the same-root-cause repeat-exploit cluster. Euler Finance ($197M, 2023) and Sherlock's $4.5M insurance claim acknowledging the missed donateToReserves function highlight that re-audit does not guarantee correctness, but its absence is a reliable negative signal.\n\n**Green / Yellow / Red**\nGreen: re-audit completed by a reputable firm after the most recent exploit, covering all affected contracts, with findings published or attested on-chain. Yellow: re-audit completed but with a scope narrower than the affected surface, or by a lower-tier firm than the original audit. Red: no re-audit after most recent exploit; or re-audit conducted but findings not published.\n\n**Common gray cases**\nBug-bounty payouts from whitehats following an incident are not equivalent to a formal re-audit unless the bounty submission prompted a full scope review. Curator must verify that the re-audit scope covered the actual exploit path, not merely the patched function.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public materials verify March 2026 audits of CTF Exchange V2, which predate the June frontend incident. They do not establish an auditor re-engagement after that incident, so this factor remains an evidence-state gap.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "After the June 2026 retired AMM V3 incident, Raydium stated that current mainnet programs were undergoing a separate security review. The reviewed materials do not establish the scope, completion, or applicability of any external review to the retired V3 surface, so the rubric outcome cannot be determined.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public incident record concerns compromised oDAO node accounts and says the protocol was unaffected. It does not create a protocol-exploit trigger from which to assess post-exploit auditor re-engagement.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/post-mortem-security-incident-26-05/701"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The post-mortem committed to future continuous audits, but the reviewed public incident material does not independently establish a completed post-incident re-audit or incident review.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus stated that a complete core-pool re-audit is planned, but reviewed public materials do not establish a reputable post-incident re-audit or incident review as completed by 2026-07-24. Yellow reflects a stated commitment without completed-audit evidence.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/multi-chain-patch-fix-for-the-market-donation-attack/5718"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/tree/main/audits"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole's public security material and audit repository show multiple independent audit engagements after the February 2022 incident, including 2022 and later reviews.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/security/"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole-audits"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

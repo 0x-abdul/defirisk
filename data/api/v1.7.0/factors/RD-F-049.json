@@ -20,10 +20,136 @@
         "scoring_methodology": "**What this measures**\nThis factor documents, for each oracle provider in use, whether it serves as the Primary, Secondary, or Fallback source for each asset or market. The role assignment is derived from on-chain reads of the protocol's price-fetch logic. This follows an analogous schema to DeFiLlama's oracle categorisation approach.\n\n**Why it matters**\nKnowing which oracle is primary versus fallback determines the actual risk exposure if a provider fails. A protocol that lists Chainlink as a secondary source but reads an in-house spot feed as primary has the same structural risk as a protocol with no Chainlink integration at all. Curators have found in prior assessments that protocols frequently document their \"best\" oracle in marketing materials while the actual on-chain feed prioritisation is different — role assignment per asset catches this discrepancy. Without understanding the primary/fallback structure, downstream factors such as RD-F-051 (fallback behaviour on failure) and RD-F-057 (circuit breaker) cannot be accurately scored.\n\n**Green / Yellow / Red**\nGreen is scored when primary, secondary, and fallback roles are explicitly documented in source code comments or governance documentation and confirmed on-chain. Yellow is scored when roles can be inferred from on-chain call ordering but are not explicitly documented, or when some markets lack a secondary or fallback assignment. Red is scored when the primary/fallback structure cannot be determined or when all markets share a single provider with no fallback assignment.\n\n**Common gray cases**\nGray is applied when the feed call graph is multi-hop or involves conditional logic that cannot be resolved without dynamic execution tracing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "UMA is the published decentralized, permissionless resolver for event outcomes; Chainlink Data Streams support the published price-market path. Public materials do not establish a single common fallback across both paths.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            },
+            {
+              "source_type": "url",
+              "url": "https://chain.link/article/what-are-prediction-markets"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No external oracle serves any asset. Each pool model is self-pricing from reserves. OpenBook serves as a secondary CLOB liquidity venue for Standard AMM v4, not as a price oracle.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For rETH:ETH rate: oDAO committee is sole primary oracle via RocketNetworkBalances; no secondary or fallback oracle exists. For RPL/ETH price: oDAO committee is sole primary via RocketNetworkPrices; no fallback. Consensus threshold = 51% of oDAO members (getNodeConsensusThreshold() = 0.51 ether). Single-path oracle for both critical assets with no documented fallback = yellow per taxonomy ('primary only with no fallback documented').",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsNetwork.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No oracle providers identified. No asset/market uses Primary/Secondary/Fallback external oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ResilientOracle supports MAIN, PIVOT and FALLBACK roles, and Venus publishes role assignments by market. BNB is listed with RedStone main, Chainlink pivot and Binance fallback; SXP is listed as paused with Chainlink only. The role roster is therefore explicit but not uniformly three-source across all markets, and configuration can be changed through Venus governance.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/risk/resilient-price-oracle"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/ResilientOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The Guardian Network is the protocol?s cross-chain attestation layer: Guardians observe source-chain messages and sign VAAs; destination contracts verify those signatures. It is not an asset-price oracle with per-asset primary/fallback roles.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

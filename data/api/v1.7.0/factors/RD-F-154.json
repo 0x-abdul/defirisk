@@ -20,10 +20,114 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether a bridge inbox or Merkle proof verifier accepts the 32-byte default value (`bytes32(0)`) as a valid committed root. A correctly implemented verifier initialises its accepted-root mapping to a non-default sentinel and admits only roots that have passed through the validator submission and timing queue. Static analysis of the bridge inbox contract is the primary assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nThe Nomad bridge $190M hack of August 2022 is the definitive instance of this failure mode. A routine upgrade inadvertently initialised the `confirmAt` mapping such that `bytes32(0)` was treated as a valid committed root, allowing any caller to submit a Merkle proof against the zero root and immediately pass verification — requiring zero cryptographic knowledge of the validator set. The attack required no exploiter sophistication; it was replicated by hundreds of independent copycats within hours of the first drain. Default-value trust is a recurring class of smart contract bugs where uninitialised or zero-default state transitions from \"unset\" to \"implicitly valid,\" and bridges are especially exposed because the proof-submission path is permissionless by design.\n\n**Green / Yellow / Red**\nGreen is scored when the verifier explicitly rejects `bytes32(0)` and only admits roots that passed through the submission and timing queue. Yellow is scored when the check exists in production code but a prior upgrade or migration introduced a window during which zero roots were transiently valid. Red is scored when `bytes32(0)` is accepted as a valid root in the current deployed code.\n\n**Common gray cases**\nGray is applied when the bridge uses a closed-source or partially-verified verifier module and the root-acceptance logic cannot be confirmed through static analysis.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. Accepting the default zero value as a valid Merkle root entirely nullifies the bridge's proof system, enabling permissionless, unauthenticated asset extraction — as demonstrated by the $190M Nomad exploit."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Bridge API materials do not disclose root-validation logic required to assess acceptance of a default zero root.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] NOT_APPLICABLE. No Merkle root bridge pattern. Raydium is Solana-only with no cross-chain message inbox. The Nomad $190M bug class (bytes32(0) accepted as valid root) does not apply.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — bridge-only] Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge inbox; bytes32(0) root acceptance pattern is irrelevant. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "NOT APPLICABLE — Synapse does not use a Merkle root acceptance model. Legacy bridge uses kappa mapping. RFQ uses keccak256(request) direct tx hash. SIN uses optimistic proof/dispute. No committedRoot-style mapping exists. Nomad-class exploit inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[[critical] CRITICAL] Not applicable. Venus XVS bridge uses LayerZero OFT V2 message passing, not a Merkle root-based inbox. No acceptRoot(), prove(), or Merkle tree acceptance logic exists in XVSProxyOFTSrc or BaseXVSProxyOFT source code. The Nomad $190M bug class (default bytes32(0) accepted as valid root) is structurally inapplicable to LayerZero OFT V2 architecture.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/token-bridge/main/contracts/Bridge/BaseXVSProxyOFT.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed Wormhole message model authenticates a signed VAA; it is not a Merkle-root acceptance model with a stored default root. The bytes32(0)-root pattern is therefore not applicable to this bridge design.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

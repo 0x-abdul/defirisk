@@ -20,10 +20,140 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol's admin role holds the ability to call a mint() function on the protocol's token with no enforced supply cap — meaning the admin can issue an arbitrary quantity of tokens at will. Static analysis of the token contract determines whether a mint function exists with admin or owner access control and no explicit maximum supply check. The critical condition is not the existence of mint itself but the absence of any on-chain ceiling on the quantity that can be minted in a single administrative transaction.\n\n**Why it matters**\nUnlimited admin mint is a structural rug-pull vector that bypasses all smart contract code quality safeguards. An attacker who gains admin credentials — through key compromise, insider action, or a governance takeover — can immediately mint tokens in unlimited quantities, sell them into available liquidity pools, and drain collateral or liquidity from the protocol without triggering any code-level protection. The T-01 dataset documents approximately eight in-sample hacks linked to this pattern. Several Solana protocol exploits (Gala Games, $21.8M in 2024) proceeded via unauthorized exercise of an admin mint function after key compromise. The pattern is particularly dangerous in protocols where the minted token is also accepted as collateral or provides governance voting power, as the attacker can simultaneously drain liquidity and claim governance control.\n\n**Green / Yellow / Red**\nGreen is assigned when no admin-callable mint function exists on live token contracts, or when mint is subject to a hard-coded supply cap enforced on-chain with no admin override. Yellow covers cases where mint is gated behind a timelock of at least 24 hours, or where the supply cap can only be increased via governance with a meaningful quorum requirement. Red is assigned when an admin or owner role can call mint() with no supply ceiling, no timelock, and no additional social check — including cases where the cap is stored in an admin-modifiable state variable.\n\n**Common gray cases**\nThis factor is grayed when the token contract source is unverified and bytecode-level analysis is inconclusive, or when the protocol uses a complex multi-token architecture where mint authority is distributed across non-obvious contract relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. Unlimited admin mint is a latent total-loss vector: any key compromise event converts it into an instantaneous and irreversible dilution or drain of all user positions."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] pUSD CollateralToken has mint() gated to MINTER_ROLE (not directly admin). Owner can grant MINTER_ROLE without timelock. No supply cap in contract. Two-step uncapped inflation path (addMinter + mint). Owner identity not publicly disclosed. No timelock intermediates any step.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium is a DEX. LP tokens are minted by AMM PDA authority (programmatic, not admin-callable). RAY token mint authority is separate from AMM admin controls. No admin-callable mint function with unlimited supply cap found in AMM, CLMM, or CPMM programs.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/src/state.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Evidence updated for #77: RPL inflationMintTokens() is externally callable and mints calculated inflation to the rewards pool. The rate is read from DAO protocol inflation settings; settings updates are restricted to DAO protocol proposals and include a per-change increase guard. No hard max supply cap exists, but this is not direct admin-callable unlimited mint authority.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsInflation.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRPL.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Red remains based on the bridge mint authority path: SynapseBridge exposes NODEGROUP_ROLE-gated mint() / mintAndSwap() flows that call mint on IERC20Mintable tokens for which the bridge has minter access, and the bridge source does not enforce a hard supply cap in that path. The evidence is narrowed to that live bridge mint surface; this row no longer relies on SYN circulating supply versus a stated cap, nor on unverified claims that Bridge or Cortex Safes hold SYN MINTER_ROLE.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://l2beat.com/bridges/projects/synapse"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/synapsecns/synapse-contracts/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "VAI.sol has unlimited mint(address usr, uint256 wad) gated by auth modifier (wards[msg.sender] == 1). No supply cap on VAI. VAI minting authorization requires governance VIP to add new wards (Normal Timelock, 48h delay). XVS has fixed 30M supply, no mint. Yellow: VAI is uncapped but mint authorization is governance-timelocked — not single-EOA accessible.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VAI/VAI.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No complete deployed W-token and NTT minter-role analysis was completed to establish or rule out an unlimited-mint authority.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-06T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
