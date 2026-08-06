@@ -23,179 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "All AIP deployments go through the proposals-reports repo with Certora security review and calldata verification. No known deviation between proposal calldata and deployment args. 470+ proposals logged with reviews.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "github",
-              "url": "https://github.com/aave-dao/aave-proposals-reports"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Constructor arguments were not matched to governance proposals across deployments.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Cosmos SDK upgrades use on-chain MsgSoftwareUpgrade proposals with declared upgrade height and plan JSON. V2 (Jun 12 proposal → Jun 16 activation) and V4 (Proposal #18, Nov 2025) both had on-chain proposals. However, independent verification of upgrade-plan-declared-binary vs. actually-deployed binary not performed at this tier. The Cosmos SDK upgrade mechanism is inherently transparent (on-chain proposal with version string), but binary hash attestation was not independently verified.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "governance_post",
-              "url": "https://polkachu.com/gov_proposals/6618"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Root contract constructor args (escrow=0x0000000005F458Fd6ba9EEb5f365D83b7dA913dD, delay=172800) confirmed on-chain. CP141 governance proposal approved V3 development but does not specify constructor-level deployment parameters. Sherlock Feb 2026 deployment verification audit covers bytecode reproducibility but specific constructor arg verification not publicly extractable. Yellow: parameters consistent but no canonical governance-proposal-to-constructor-arg match document found.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/centrifuge/protocol/blob/main/docs/audits/2026-02-Sherlock-deployment.pdf"
-            },
-            {
-              "source_type": "governance_post",
-              "url": "https://gov.centrifuge.io/t/cp141-initiate-the-development-of-centrifuge-v3-a-multi-chain-evm-based-protocol/6734"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC#code"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public DAO-staking material describes on-chain governance as upcoming; no original governance proposal is evidenced for the approved surface.",
-          "gap_reason": "not_applicable",
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://debridge.com/support/how-does-dao-staking-work/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "ELIP materials document proposal review and execution, but this refresh did not independently compare deployed constructor arguments against each approved proposal.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Core contracts are not deployed via governance-voted constructor args. EthenaMinting V2 (0xe3490...) verified on Etherscan. July 2024 V2 upgrade was publicly documented. No constructor arg discrepancy flagged in any audit report (Pashov May 2024, Code4rena Nov 2024).",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "audit_report",
-              "url": "https://code4rena.com/reports/2024-11-ethena-labs"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xe3490297a08d6fC8Da46Edb7B6142E4F461b62D3"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No Compound-style on-chain proposal system with constructor-arg verification. Governance is Snapshot + Safe — no constructor-arg proposal matching path.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Bridge2 constructor args (initial hot/cold validator addresses, USDC address, dispute period, block duration, locker threshold) reviewed by Cyfrin March 2023 audit and Zellic August 2023 audit. No governance proposal voted on constructor args (pre-DAO era deployment). No evidence of silent arg deviation.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "audit_report",
-              "url": "https://github.com/Cyfrin/cyfrin-audit-reports/blob/main/reports/2023-04-11-cyfrin-hyperliquid-dex-report.pdf"
-            },
-            {
-              "source_type": "audit_report",
-              "url": "https://github.com/Zellic/publications/blob/master/Hyperliquid%20-%20Zellic%20Audit%20Report.pdf"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Solana programs do not use EVM-style constructor args. Deployment configurations set via admin instructions post-deploy. JIP proposals describe intended parameters but on-chain verification of all parameters against all proposals not assessable from available evidence.",
@@ -228,26 +55,6 @@
             {
               "source_type": "github",
               "url": "https://github.com/Kamino-Finance/klend"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "No public launch governance proposal was identified against which every deployed constructor argument can be compared.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "github",
-              "url": "https://github.com/Kelp-DAO/LRT-rsETH"
             }
           ],
           "surface_slug": "default"
@@ -335,7 +142,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

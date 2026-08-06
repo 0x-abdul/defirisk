@@ -54,180 +54,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "All signers are named individuals from institutional organizations with public track records. Per-signer on-chain hot-wallet heuristic assessment not performed (requires PH tooling). Scored yellow due to incomplete automated verification rather than evidence of hot-wallet use.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "governance_post",
-              "url": "https://governance.aave.com/t/arfc-renewal-of-aave-guardian-2024/17523"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Hot-wallet versus hardware custody cannot be reliably inferred.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Covenant committee signers hold compressed Schnorr public keys for Bitcoin co-signing — these are offline keys for a federated signing service, not EVM hot wallets. On-chain behavioral heuristics (nonce velocity, gas jitter) are inapplicable to Bitcoin Schnorr keys. BABY governance is DAO-level; individual validator signing behavior for governance is not equivalent to multisig hot-wallet risk. Insufficient data to assess; structurally different from EVM hot-wallet pattern.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/babylonlabs-io/covenant-emulator"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Centrifuge identifies the guardians as Safe-controlled and third-party verified, but public transaction pages alone do not establish whether a signer is a hot wallet or has hardware-signing controls. The hot-wallet condition is not assessed from the reviewed public evidence.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x4d47a7a89478745200Bd51c26bA87664538Df541"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xc4576CE4603552c5BeAa056c449b0795D48fcf92"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Public transaction history does not establish whether the Safe signers are hot-wallet operators.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public architecture identifies privileged multisigs but does not establish whether their signers use hot wallets. No signer-operation study was available for this refresh.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Docs state all multisig keys are cold wallets. Cannot independently verify signing device types via on-chain heuristics at OSINT tier. Documented claim accepted at low confidence.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Signer 0x9506429A exhibits hot-wallet behavioral pattern: funded by Kraken, 21 transactions, uses ENS, DeFi protocols, cross-chain bridging. At least 1 of 7 signers shows hot-wallet profile. Other 6 signers not fully analyzed.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x9506429A421757711806c5cAF25ba1830E349B09"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Hyperliquid's hot validator set signs withdrawals with online keys by design - hot-wallet usage is structural, not incidental. Cold-wallet set holds administrative override keys. The hot/cold split is the architecture; persistent hot-key signing creates ongoing compromise risk at ~$3.58B Arbitrum Bridge2 TVL (2026-05-07).",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Bridge2.sol"
-            },
-            {
-              "source_type": "url",
-              "url": "https://api.llama.fi/protocol/hyperliquid"
-            },
-            {
-              "source_type": "url",
-              "url": "https://www.quillaudits.com/blog/blockchain/hyperliquid-security-beyond-orderbooks"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Signer addresses not publicly disclosed. Cannot assess hot-wallet behavior. Data gap.",
@@ -260,26 +86,6 @@
             {
               "source_type": "url",
               "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "The Safe records establish signer addresses but do not establish whether any signer uses a hot wallet or hardware-backed custody.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "url",
-              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xCbcdd778AA25476F203814214dD3E9b9c46829A1/"
             }
           ],
           "surface_slug": "default"
@@ -353,7 +159,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

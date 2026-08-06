@@ -23,180 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Governance Guardian signers are from 9 distinct independent organizations across multiple DeFi ecosystems (Zapper, Paraswap, Standard Crypto, DeFi Saver, Balancer, Chainlink, Lido, Certora, independent DeFi contributor). Co-hosting is highly unlikely.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "governance_post",
-              "url": "https://governance.aave.com/t/arfc-renewal-of-aave-guardian-2024/17523"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Signer custody or hosting concentration is not publicly established.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Covenant committee: 7 distinct organizations. Babylon Labs holds 3/9 keys — organizational co-hosting risk within Babylon Labs is inherent. Other 6 keys distributed across 6 independent organizations (AltLayer, CoinSummer, Cubist, Informal Systems, RockX, Zellic). ASN-level infrastructure data for Bitcoin Schnorr key custodians not available. Partial independence confirmed by organizational diversity; within-org co-hosting for Babylon Labs 3 keys is a yellow finding.",
-          "gap_reason": null,
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://babylonlabs.io/blog/babylon-bitcoin-staking-mainnet-launch-phase-1"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "8 Guardian Safe signer addresses confirmed via Safe API (nonce=44, threshold=4/8). Signer identities are NOT publicly attested — docs state third-party signers from Cantina but no individual names or on-chain attestations exist. Co-hosting/ASN analysis is impossible without public identity. Cannot infer from available public OSINT.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://docs.centrifuge.io/developer/security/guardian/"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD"
-            },
-            {
-              "source_type": "url",
-              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xD9D30ab47c0f096b0AA67e9B8B1624504a63e7FD/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No public evidence reliably attributes the eight Safe signers to independent hosting providers or custodians.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The technical architecture identifies the 3-of-6 Operations Multisig as operated by Eigen Labs. This creates an organizational concentration signal for that privileged role; physical signing-infrastructure co-hosting is not established.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Docs claim geographic distribution and custody diversity (internal + external stakeholders including market makers and exchanges). Cannot independently verify ASN/custodian co-hosting at OSINT tier. Green claim in docs is plausible but unverified.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The Safe Transaction Service publishes ten owner addresses but no hosting or operational-location evidence. Public explorer records do not establish whether signers are co-hosted; this remains an evidence gap.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xcdd57D11476c22d265722F68390b036f3DA48c21"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Initial 4-validator set was entirely Hyperliquid Labs team members — maximum co-hosting. Post-expansion, independent analysis (Jan 2025) suggests 7 of 11 independent validators have questionable independence. No public key-custody attestations from validators. Closed-source node software prevents external validation.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://blockworks.com/news/hyperliquid-security-fuels-decentralization-concerns"
-            },
-            {
-              "source_type": "url",
-              "url": "https://x.com/Tiza4ThePeople/status/1876677814683926951"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Signer identities and addresses not publicly disclosed. Cannot assess co-hosting. Data gap.",
@@ -229,26 +55,6 @@
             {
               "source_type": "url",
               "url": "https://squads.xyz/blog/solana-multisig-program-upgrades-management"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "Safe owner addresses are public, but their common custodian, hosting, and organizational-control relationships are not publicly attested.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "url",
-              "url": "https://api.safe.global/tx-service/eth/api/v1/safes/0xb9577E83a6d9A6DE35047aa066E3758221FE0DA2/"
             }
           ],
           "surface_slug": "default"
@@ -327,7 +133,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

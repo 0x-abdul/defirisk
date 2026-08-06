@@ -23,176 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Implementation-level upgrades are infrequent (v3.6.0 was Jan 2025; last full implementation upgrade). Market-parameter updates via AIPs are frequent but do not constitute code upgrades. Low upgrade frequency for core protocol.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "github",
-              "url": "https://github.com/aave-dao/aave-proposals-reports"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Complete upgrade-event count for all canonical deployments was not reproduced.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public release list shows ongoing code releases, including v4.3.1 on July 21, 2026, but release publication does not establish the count of Babylon Genesis upgrades actually activated on-chain in the trailing 90 days. A public on-chain upgrade-event history was not independently verified for this review.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/babylonlabs-io/babylon/releases"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Centrifuge documents an immutable Root and public guardian architecture, but the reviewed evidence does not provide a complete cross-chain, trailing-90-day upgrade-event inventory. Upgrade frequency is not assessed.",
-          "gap_reason": "pipeline_unimplemented",
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x0C1fDfd6a1331a875EA013F3897fc8a76ada5DfC"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "DlnSource had 3 upgrades in ~145 days (Jul 16, Sep 15, Dec 8 2025). DlnDestination had 1 upgrade (Feb 13, 2026). DeBridgeGate impl stable >90d. DlnSource frequency is elevated (3 upgrades in 5 months).",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xe7351fd770a37282b91d153ee690b63579d6dd7f#events"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xeF4fB24aD0916217251F553c0596F8Edc630EB66#events"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No complete current 90-day on-chain upgrade inventory was reviewed.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "programmatic",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Core contracts (USDe, StakedUSDeV2, ENA) are non-upgradeable direct implementations — no proxy upgrade events possible. EthenaMinting V2 is also a direct implementation. 0 proxy upgrade events in trailing 90 days. Configuration changes execute as direct transactions, not contract upgrades.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "programmatic",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Upgrade cadence is approximately monthly across the protocol suite. In the last 90 days (Feb–Apr 2026): EtherFiNodesManager upgraded 2026-02-02; Priority Queue contracts deployed Mar 2026. In last 12 months: weETH upgraded twice (Mar and Aug 2025), EtherFiAdmin upgraded twice (Mar and Aug 2025), EtherFiNodesManager upgraded Feb 2026. High but manageable upgrade frequency; each change is audited by Certora.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public Bridge2 contract record and repository identify the bridge, but the public material reviewed does not establish a complete, independently verifiable count of proxy upgrades in the trailing 90 days. No upgrade-frequency count is asserted.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://arbiscan.io/address/0x2df1c51e09aecf9cacb7bc98cb1742757f163df7"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Public JIP and repository material confirms historical StakeNet and TipRouter development, but it does not provide a complete on-chain upgrade-event inventory for the trailing 90-day window. Current upgrade frequency is not established from the reviewed public evidence.",
@@ -229,26 +59,6 @@
             {
               "source_type": "github",
               "url": "https://github.com/Kamino-Finance/klend/releases"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "The current official upgrade log records the latest core upgrade on 2026-01-24, so it documents zero core upgrades in the trailing 90 days.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "docs",
-              "url": "https://kerneldao.gitbook.io/kernel/getting-started/kelp/smart-contracts/upgrades"
             }
           ],
           "surface_slug": "default"
@@ -340,7 +150,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

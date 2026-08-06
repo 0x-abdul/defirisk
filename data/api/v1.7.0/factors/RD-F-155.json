@@ -23,177 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "a.DI bridge adapter set is controlled by CrossChainController owner (Aave Governance). Adapter addition/removal requires governance proposal + timelock. Specific timing of most recent adapter-set change not confirmed from public sources — on-chain event log inspection of CrossChainController required. CCIP DON rotation is managed by Chainlink independently.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "docs",
-              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure/blob/main/docs/overview.md"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_summary": "No complete, time-bounded public record maps recent changes across UMA voting and the separately advertised CCTP/OFT route dependencies. The OFT audit establishes the integration but not a current DVN configuration history. Absence of an announcement is not evidence that no relevant change occurred.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "docs",
-              "url": "https://docs.across.to/introduction/security"
-            },
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "docs",
-              "url": "https://docs.across.to/introduction/features"
-            },
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "audit_report",
-              "url": "https://www.openzeppelin.com/news/across-protocol-oft-integration-differential-audit"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Public documentation says changing the covenant committee requires governance, but no dated public rotation or complete signer-set history sufficient to measure recency was located. Rotation recency is therefore not independently assessable.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.babylonlabs.io/operators/covenant_emulator/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Wormhole guardian set has been stable for extended periods. The 19 guardians are institutional and rotation is infrequent. No recent guardian set change publicly reported as of profile date. Centrifuge has no control over the Wormhole guardian set — Wormhole protocol governance decision. Rotation events not tracked in available data.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://wormhole.com/docs/protocol/infrastructure/guardians/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Not assessed: public materials establish governance-elected validators and an on-chain validator-management contract, but do not provide a reviewed, dated validator-rotation history sufficient to determine recency.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.debridge.com/dmp-details/dmp/protocol-overview"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Ethena confirms a LayerZero DVN-based cross-chain dependency, but no public, Ethena-specific validator-set rotation record was verified.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "SecurityUpgrade.s.sol represents the post-upgrade 4-DVN config. The upgrade script exists in archive/OFTSecurityUpgrade/ subdirectory, indicating a prior DVN configuration was changed. Rotation date not verified from available sources. No governance forum post on DVN rotation found.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Bridge2 supports validator-set updates, but the public sources reviewed do not provide a dated, complete history of the current set's last rotation or a published rotation policy. Rotation recency cannot be determined from the available public evidence.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Bridge2.sol"
-            },
-            {
-              "source_type": "docs",
-              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/validators/running-a-validator"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Wormhole documents the current 19-guardian configuration, but the reviewed public sources do not provide a verifiable rotation-event history or a recency measure for guardian-set changes. This factor is not assessed.",
@@ -223,31 +52,6 @@
           "scope_level": "surface",
           "score": "not_applicable",
           "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": "The historical 2-of-2 to 1-of-1 change is documented. A planned CCIP migration is not proof of execution. A verified rotation within 12 months would be green under the methodology.",
-          "evidence_summary": "Current executed validator-set rotation time and active-route state were not established.",
-          "gap_reason": "external_api_blocked",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "url",
-              "url": "https://decrypt.co/366903/kelp-layerzero-292-million-hack-plans-move-chainlink"
-            },
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "audit_report",
-              "url": "https://layerzero.network/publications/kelpdao-incident-report.pdf"
-            }
-          ],
           "surface_slug": "default"
         },
         {
@@ -324,7 +128,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }
