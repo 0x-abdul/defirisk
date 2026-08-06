@@ -23,182 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Governance Guardian (0xCe52ab41C40575B072A18C9700091Ccbe4A06710, 5-of-9) holds the cancel role on the Governance Core. It can veto malicious proposals before execution within the 1-day Lvl1 window.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "url",
-              "url": "https://aave.com/docs/ecosystem/governance"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The DAO Safe can intervene, but a distinct emergency veto body was not demonstrated.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.across.to/user-docs/governance/proposals-and-voting"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Cosmos SDK governance has NoWithVeto — if ≥33.4% of voting power votes NoWithVeto, proposal is rejected and deposit burned. This is an embedded veto mechanism within the voting period. However, there is no separate veto-only multisig entity. Effective veto requires organizing 33.4% of bonded BABY within 3 days. Foundation + investors hold ~66.5% of total supply; with first cliff passed (April 2026), insider concentration could theoretically pass or veto any proposal. Community veto depends on insider non-participation.",
-          "gap_reason": null,
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "ProtocolGuardian (4-of-8) can pause the protocol instantly without timelock in emergency. This IS the emergency-response multisig. Zodiac Delay 24h applies to non-emergency actions through Guardian, but pause itself is immediate.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://docs.centrifuge.io/developer/security/guardian/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No veto/cancel mechanism against multisig actions. GOVMONITORING_ROLE can pause protocol as partial brake but cannot cancel a malicious multisig upgrade.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x797161bcc625155d2302251404ccb93c2632658e#code"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The Community Multisig is documented as a 9-of-13 emergency backstop that can immediately execute time-critical upgrades or replace the timelock on private-key compromise. This is a documented emergency-veto/override control.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "GATEKEEPER_ROLE holders (Ethena staff + external market makers/exchanges, ≥3 EOAs) can pause mint/redeem in EthenaMinting. Meaningful emergency halt capability. However, no formal veto multisig for governance proposals (because governance is off-chain). Specific gatekeeper addresses not published.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.ethena.fi/solution-design/key-trust-assumptions/matrix-of-multisig-and-timelocks"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No separate emergency-veto multisig identified distinct from the 4-of-7 Safe. The Safe serves both upgrade proposer and emergency-pause execution. No independent veto body with a separate key set exists to stop a malicious proposal before the 1-hour timelock expires.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://etherfi.gitbook.io/gov/ether.fi-foundation"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Lockers set (2-of-5) can pause bridge functioning as circuit-breaker. Cold validator quorum provides second tier for parameter changes. However, neither Lockers nor cold validators can veto a Foundation proxy admin upgrade or a governance HIP. No veto mechanism against upgrade decisions.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Bridge2.sol"
-            },
-            {
-              "source_type": "url",
-              "url": "https://www.quillaudits.com/blog/blockchain/hyperliquid-security-beyond-orderbooks"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Security Council (4-of-7 per JIP-19) holds emergency veto authority over JIPs and can implement emergency proposals bypassing ordinary DAO procedures. Veto right on JIPs violating Constitution/Bylaws. Emergency-veto multisig exists.",
@@ -239,26 +63,6 @@
             {
               "source_type": "github",
               "url": "https://github.com/Kamino-Finance/klend/releases/tag/release/v1.23.0"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "A dedicated 1-of-5 Pauser Safe can stop core contracts, but the public record does not show a distinct veto role that can cancel every queued upgrade.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "github",
-              "url": "https://github.com/Kelp-DAO/LRT-rsETH#pauser-safes"
             }
           ],
           "surface_slug": "default"
@@ -354,7 +158,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

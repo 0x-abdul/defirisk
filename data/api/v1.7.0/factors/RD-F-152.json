@@ -23,179 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "a.DI CrossChainController binds messages to source chain context through the envelope structure (sender, origin chain, destination chain). Per-chain adapter registry and confirmation-counting are chain-scoped. Cross-chain replay would require the same message to be valid on a different chain, which the chain-scoped design prevents.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "docs",
-              "url": "https://github.com/bgd-labs/aave-delivery-infrastructure/blob/main/docs/overview.md"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_summary": "The assessed signature paths bind messages to typed domains and chain-specific deposit data, while settlement leaves are scoped by the bridge's cross-chain structures. A historical cross-chain signature inconsistency was identified in audit and repaired.",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "audit_report",
-              "url": "https://www.openzeppelin.com/news/uma-across-v2-audit"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The documented cross-chain coordination path is bound to Bitcoin and Babylon Genesis: Vigilantes relay between those named networks and staking transactions include the BTC network as a protocol field. No generic shared-signer message path lacking origin binding was identified.",
-          "gap_reason": null,
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.babylonlabs.io/operators/vigilantes/"
-            },
-            {
-              "source_type": "docs",
-              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/specifications/staking_transactions/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Wormhole VAAs include emitterChainId in the message structure. WormholeAdapter.sol validates sourceWormholeId in receiveWormholeMessages() against the configured source.wormholeId for each Centrifuge chain. Per-chain separation is enforced through the sources mapping.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://wormhole.com/docs/protocol/infrastructure/vaas/"
-            },
-            {
-              "source_type": "github",
-              "url": "https://github.com/centrifuge/protocol/blob/main/src/adapters/WormholeAdapter.sol"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "DeBridgeGate constructs a submission identifier that includes the source-chain identifier and destination-chain identifier with the transfer parameters and nonce, binding a claim to its chain context.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/debridge-finance/debridge-contracts-v1/blob/main/contracts/transfers/DeBridgeGate.sol"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Not applicable: the assessed EigenLayer core surface has no protocol-operated bridge.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No public, Ethena-specific bridge message-verifier source was verified that permits a complete source-chain binding assessment.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "LayerZero V2 OFT standard binds each message to srcEid (endpoint ID per chain) by design. Cross-chain messages are chain-bound at the LayerZero protocol level. EtherfiOFTUpgradeable extends OFTUpgradeable which inherits LayerZero V2 per-path message routing. Arbitrum canonical: srcChainId enforced at L1 gateway level.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://raw.githubusercontent.com/etherfi-protocol/weETH-cross-chain/master/contracts/EtherfiOFTUpgradeable.sol"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Bridge2 signs messages using a domain separator that includes the Arbitrum chain id. The documented bridge is specifically Arbitrum-to-Hyperliquid, but public source does not expose a generic source-chain-id field for every L1 message path; the evidence supports partial rather than full generic chain-binding assurance.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Signature.sol"
-            },
-            {
-              "source_type": "docs",
-              "url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/bridge2"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "StakePoolRate validates that each query response is for Solana and for the configured stake-pool account. This binds the documented cross-chain rate input to its expected source chain and account.",
@@ -229,24 +56,6 @@
           "scope_level": "surface",
           "score": "not_applicable",
           "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_summary": "LayerZero V2 packet/origin structures bind source endpoint ID and sender to the delivered message.",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "docs",
-              "url": "https://docs.layerzero.network/v2/concepts/protocol/packet"
-            }
-          ],
           "surface_slug": "default"
         },
         {
@@ -336,7 +145,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

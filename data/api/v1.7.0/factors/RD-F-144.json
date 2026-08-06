@@ -23,171 +23,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Aave v3 uses transparent proxy pattern, not CREATE2 factory redeployments to the same address. No CREATE2 redeployment risk identified.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "github",
-              "url": "https://github.com/aave-dao/aave-v3-origin"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "CREATE2 and redeployment semantics were not evaluated across factories.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "CREATE2 is an EVM opcode. Cosmos SDK and Bitcoin do not use CREATE2. CosmWasm contract deployment uses code IDs and instantiation, not CREATE2 patterns. No same-address redeploy risk exists in this architecture.",
-          "gap_reason": null,
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/babylonlabs-io/babylon"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Centrifuge documents a multichain deployment architecture, but the reviewed public evidence does not establish every factory's selfdestruct and redeployment behavior. Same-address redeployment risk is not assessed.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://docs.centrifuge.io/user/concepts/multi-chain/"
-            },
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x6f9dba3D3A3ab083BcA60Ef82784cf12A6eC24b8"
-            },
-            {
-              "source_type": "github",
-              "url": "https://github.com/centrifuge/liquidity-pools/blob/main/deployments/mainnet/ethereum-mainnet.json"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No CREATE2 factory with selfdestruct-redeploy pattern identified. Standard TransparentUpgradeableProxy pattern used.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x43dE2d77BF8027e25dBD179B491e8d64f38398aA"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No complete deployed-factory and bytecode review was available to rule out CREATE2-based same-address redeployment across the protocol surface.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No public deployment provenance sufficient to assess factory or CREATE2 usage across all relevant contracts was located.",
-          "gap_reason": "protocol_opacity",
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "not_assessed",
-          "sources": [],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No CREATE2 factory redeployment pattern identified for core protocol contracts. Standard deployer EOA deployment pattern observed.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x8B71140AD2e5d1E7018d2a7f8a288BD3CD38916F"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Bridge2 is a standard deployment (not CREATE2). No evidence of CREATE2 factory in Hyperliquid's EVM contracts.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/hyperliquid-dex/contracts/blob/master/Bridge2.sol"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "Not applicable. Solana programs use BPFLoaderUpgradeable, not CREATE2. Program IDs are stable; upgrade authority controls bytecode at same program ID. Permissionless redeploy to same address is not possible — requires upgrade authority (Squads multisig) approval.",
@@ -220,26 +55,6 @@
             {
               "source_type": "github",
               "url": "https://github.com/Kamino-Finance/klend"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "A CREATE3 factory is published, but its exact use and same-address redeployment constraints for the approved Ethereum core were not fully established.",
-          "gap_reason": "requires_curator_input",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "gray",
-          "sources": [
-            {
-              "retrieved_at": "2026-07-30",
-              "source_type": "github",
-              "url": "https://github.com/Kelp-DAO/LRT-rsETH/blob/main/contracts/utils/CREATE3Factory.sol"
             }
           ],
           "surface_slug": "default"
@@ -327,7 +142,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }

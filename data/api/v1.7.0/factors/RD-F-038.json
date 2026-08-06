@@ -44,186 +44,6 @@
       "scored_protocols": [
         {
           "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Executor Lvl1: 86,400s (1 day) post-pass delay. Executor Lvl2: 604,800s (7 days). Plus voting period (~3 days for most AIPs). Total proposal-to-execution time is well above 24 hours on both paths.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Aave",
-          "protocol_slug": "aave",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "retrieved_at": "2026-04-27",
-              "source_type": "url",
-              "url": "https://etherscan.io/address/0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A"
-            }
-          ],
-          "surface_slug": "v3"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-31T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The documented DAO proposal vote runs seven days; direct Safe administration is classified separately under timelock factors.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Across Protocol",
-          "protocol_slug": "across-protocol",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.across.to/user-docs/governance/proposals-and-voting"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Standard proposals: 3-day voting period = 72h. Expedited proposals: 1-day voting period = 24h. Standard path meets the green threshold (≥48h). Expedited path (24h) is at the exact yellow/green boundary (24-47h = yellow). Graded yellow because the expedited path (24h) is explicitly available and structurally accessible for time-sensitive proposals with higher approval threshold (66.7%).",
-          "gap_reason": null,
-          "primary_chain": "bitcoin",
-          "protocol_name": "Babylon Protocol",
-          "protocol_slug": "babylon-protocol",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.babylonlabs.io/guides/overview/babylon_genesis/governance/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "OpenSquare votes have a minimum 7-day discussion period plus snapshot vote period. On-chain execution of any resulting Root change requires 48h timelock (72h aggregate). No sub-24h execution path exists.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Centrifuge",
-          "protocol_slug": "centrifuge",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.centrifuge.io/getting-started/cfg-governance/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The public DAO-staking material describes on-chain governance as upcoming; no current proposal execution delay exists to evaluate.",
-          "gap_reason": "not_applicable",
-          "primary_chain": "ethereum",
-          "protocol_name": "deBridge",
-          "protocol_slug": "debridge",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://debridge.com/support/how-does-dao-staking-work/"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "The published ELIP process requires an approved proposal to be queued on-chain before Protocol Council execution, and the technical architecture states that the primary timelock has a minimum 10-day delay for safety-critical functions. This documented proposal route is not under 24 hours.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "EigenLayer",
-          "protocol_slug": "eigenlayer",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "docs",
-              "url": "https://docs.eigenfoundation.org/protocol-governance/elip-process"
-            },
-            {
-              "source_type": "docs",
-              "url": "https://docs.eigenfoundation.org/protocol-governance/technical-architecture"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "No on-chain governor, no execution delay mechanism. Multisig executes directly after gathering 5-of-11 signatures. Functionally equivalent to 0-delay execution for any admin action once multisig consensus is reached. No mandatory waiting period between decision and execution.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Ethena",
-          "protocol_slug": "ethena",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/code-423n4/2023-10-ethena/blob/main/contracts/EthenaMinting.sol"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "programmatic",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Timelock minimum delay is 1 hour — below 24h threshold. A colluding 4-of-7 Safe could execute a malicious upgrade in under 2 hours (Safe approval + Timelock delay). No separate voting period exists in the on-chain execution path.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "ether.fi",
-          "protocol_slug": "ether-fi",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "etherscan",
-              "url": "https://etherscan.io/address/0x9f26d4C958fD811A1F59B01B86Be7dFFc9d20761"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Documented governance votes (December 2025 HYPE burn) used 3–7 day windows. JELLY incident: emergency delisting executed in ~2 minutes with zero enforced delay. No formal minimum execution delay for governance proposals. Emergency actions can execute without delay.",
-          "gap_reason": null,
-          "primary_chain": "arbitrum",
-          "protocol_name": "Hyperliquid",
-          "protocol_slug": "hyperliquid",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "url",
-              "url": "https://www.tradingview.com/news/cointelegraph:f9f2d66e1094b:0-hyperliquid-governance-vote-aims-to-permanently-sideline-1b-assistance-fund/"
-            },
-            {
-              "source_type": "url",
-              "url": "https://hyperliquid-co.gitbook.io/wiki/introduction/roadmap/incident/2025-26-03"
-            }
-          ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
           "data_as_of": "2026-07-24T00:00:00Z",
           "evidence_detail": null,
           "evidence_summary": "DAO proposals have a 2-day delay period after vote before on-chain execution. This is ≥ 24h. Emergency Security Council actions can bypass this, but standard DAO proposals meet the 24h threshold.",
@@ -262,20 +82,6 @@
               "url": "https://gov.kamino.finance/"
             }
           ],
-          "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-30T14:26:52Z",
-          "evidence_detail": null,
-          "evidence_summary": "Kelp has no published Governor proposal-pass-to-execution path; the factual 180-second Manager Timelock delay is assessed under RD-F-033.",
-          "gap_reason": "not_applicable",
-          "primary_chain": "ethereum",
-          "protocol_name": "Kelp DAO",
-          "protocol_slug": "kelp-dao",
-          "scope_level": "surface",
-          "score": "not_applicable",
-          "sources": [],
           "surface_slug": "default"
         },
         {
@@ -360,7 +166,7 @@
       ]
     }
   },
-  "data_as_of": "2026-07-24T00:00:00Z",
-  "generated_at": "2026-08-05T17:43:14Z",
+  "data_as_of": "2026-08-05T23:01:13Z",
+  "generated_at": "2026-08-05T23:01:13Z",
   "rubric_version": "v1.7.0"
 }
