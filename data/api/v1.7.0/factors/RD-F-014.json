@@ -64,6 +64,25 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana single-threaded SVM prevents traditional reentrancy. Anchor 0.32.1 (used by CLMM and CPMM) includes built-in reentrancy guard. Standard AMM v4 (native Rust, non-Anchor) relies on Solana runtime single-threaded guarantees. No reentrancy exploit identified in any audit.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm/blob/master/programs/amm/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
