@@ -41,10 +41,30 @@
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No arbitrary user-controlled external call found. Exchange contracts call pre-specified immutable addresses (CTF contract, collateral ERC-20). No generic .call(user-supplied-address, data) pattern detected in reviewed source.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/mixins/Assets.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when the protocol's primary repository shows a force-push or push to a sensitive branch (main, master, production, or tagged release) from an account that is not on the protocol's known-contributor list, or when a force-push removes commits from the history of a production branch. The signal is generated via GitHub API webhook monitoring on the repository's push events. Category 6 context: repository history manipulation is documented in exit-scam scenarios — Uranium Finance deleted their GitHub post-exploit — and a force-push to production by an unknown actor is a supply-chain compromise signal.\n\n**Why it matters**\nUranium Finance ($57.2M, 2021) deleted their GitHub repository post-exploit — a retroactive cover-up rather than a pre-exploit signal, but indicative of the pattern. More relevantly, a supply-chain compromise scenario where an attacker gains repository access and force-pushes malicious code to the production branch would be detected by this signal before any on-chain consequence materializes. The XZ Utils supply-chain attack (not DeFi, but the canonical example) demonstrated that months of contribution activity can precede a single malicious commit to a sensitive branch. GitHub monitoring provides an automated mechanism for detecting this class of supply-chain attack.\n\n**Green / Yellow / Red**\nGreen is the baseline when all pushes to sensitive branches originate from known contributors with established repository history. Yellow fires when a push to a sensitive branch occurs from a contributor with shorter tenure than the 30-day threshold — flagged for curator review but not immediately red. Red fires when a force-push occurs on a production branch, or when any push to a production branch originates from an account not in the known-contributor list, particularly if combined with no associated PR review.\n\n**Common gray cases**\nGray applies when the repository is private and push events are not accessible via the monitoring API, or when the protocol does not maintain a public repository and deployments are managed through a closed DevOps pipeline.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The official source repository is public, but a force-push determination requires branch-reflog or continuous event monitoring that the public repository view does not supply.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

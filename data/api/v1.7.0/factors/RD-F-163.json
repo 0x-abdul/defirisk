@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis static factor records the average number of days of documented reconnaissance activity — on-chain probing, test transactions, mixer wallet preparation — by attacker-labeled wallets before executing a strike on peer-class protocols in the hack database. The value is derived from curator analysis of the hack database and is protocol-class-specific: lending protocols, bridge protocols, and DEXes each have documented reconnaissance lead times. Output is a days-value benchmark for the class, updated when new post-mortem evidence expands the database. Category 11 context: the reconnaissance window benchmark tells curators how much advance warning time is theoretically available and frames the urgency of real-time signal response.\n\n**Why it matters**\nThe T-01 synthesis documents the detection window distribution across 37 hacks: High detectability hacks had reconnaissance windows up to 12 days (Badger DAO's malicious approvals), Medium detectability hacks typically had hours to days of pre-exploit on-chain activity, and Low/None detectability hacks had zero advance signal. For the lending protocol class, oracle manipulation setup is typically executed within the same transaction or within minutes, while governance attack preparation can span 24 hours or more. Bridge exploits involving social engineering (DPRK implant class) have the longest reconnaissance windows — months to years. The benchmark informs alert threshold calibration for Cat 6 signals for this protocol class.\n\n**Green / Yellow / Red**\nGreen is informational — a longer reconnaissance window benchmark is more favorable as it provides more actionable alert time. Yellow applies when the benchmark for the class is less than 24 hours — most signals will fire during or after the exploit. Red applies when the class benchmark is under one hour — Cat 6 signals become primarily exploit-in-progress rather than precursor alerts.\n\n**Common gray cases**\nGray applies when the hack database has insufficient examples of the specific protocol class to compute a reliable benchmark (fewer than three in-sample exploits), or when the protocol combines multiple classes making the applicable benchmark ambiguous.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Peer-class attacker-reconnaissance duration requires a defined incident corpus and reproducible measurement methodology; no public dataset sufficient for this factor was established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

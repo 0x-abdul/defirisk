@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis episodic signal fires when a public paste site (Pastebin, GitHub Gist), an error-monitoring endpoint (Sentry, Rollbar), or a credential-dump feed references API keys, RPC endpoint credentials, or infrastructure configuration strings that match known patterns from the monitored protocol's public infrastructure. Detection is manual curator investigation triggered by automated keyword-based alerts on paste-monitoring services. Category 11 context: leaked credentials are the off-chain precursor to infrastructure compromise attacks; they represent attacker access to the protocol's operational environment before any on-chain action has occurred.\n\n**Why it matters**\nEasyFi ($59M, 2021) involved MetaMask private key exposure — a credential compromise that enabled the admin key drain. AnySwap V3 ($7.9M, 2021) involved MPC ECDSA nonce reuse that compromised signing keys. More broadly, RPC endpoint credentials and API keys exposed on paste sites enable attackers to monitor protocol state with privileged access, identify vulnerable states, and time attacks to coincide with low-monitoring windows. The Atomic Wallet compromise ($100M, 2023) — which Least Authority had flagged in 2022 — shows that credential and key management issues are known to external researchers before they are known to the protocol team.\n\n**Green / Yellow / Red**\nGreen is the baseline when no credential-related alerts have fired for the protocol's known infrastructure patterns in the trailing 30 days. Yellow fires when a keyword alert fires for a non-critical credential type (e.g., a read-only API key for a public RPC endpoint) — elevated but not immediately exploitable. Red fires when a private key pattern, admin wallet seed phrase, or privileged API endpoint credential matching the protocol's infrastructure patterns is identified in a public paste or dump feed.\n\n**Common gray cases**\nGray applies in virtually all cases where the protocol has not provided infrastructure configuration samples to the monitoring service, making pattern-matching against paste sites impossible from an external vantage point — this is the standard state and Gray is expected.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "This factor requires verified leaked credentials on a paste or telemetry site. Public reporting about account-access incidents does not independently verify a qualifying credential leak.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

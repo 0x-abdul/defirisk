@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol implements a circuit breaker that halts operations or reverts oracle reads when the reported price deviates more than a configured threshold from a reference price within a defined window. Source inspection of the oracle integration layer is the assessment method.\n\n**Why it matters**\nCircuit breakers are the last line of defence against oracle manipulation that passes the TWAP or medianisation check — particularly for assets with genuine high volatility that may render a simple manipulation-resistance test insufficient. An oracle price deviation signal (RD-F-099) in the real-time layer depends on the same concept, but at the protocol level a circuit breaker provides in-protocol protection that does not require an external monitor to react. The synthesis dataset notes that Inverse Finance's oracle price anomaly was rated High detectability — a circuit breaker would have halted the protocol before the drain completed. Protocols with high-volatility assets as collateral are most exposed when this protection is absent.\n\n**Green / Yellow / Red**\nGreen is scored when a circuit breaker is implemented and configured with a documented threshold appropriate for the asset class (typically 5–15% deviation). Yellow is scored when a circuit breaker exists but the threshold is excessively wide (over 30%) or is not documented. Red is scored when no circuit breaker is present and the protocol will accept any price returned by the oracle without sanity checking.\n\n**Common gray cases**\nGray is applied when the circuit breaker is implemented at the oracle-provider layer (e.g., Chainlink's own deviation threshold) but the protocol has no additional in-protocol check.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials confirm Chainlink-powered price-market resolution but do not disclose a Polymarket-specific price-deviation circuit breaker.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

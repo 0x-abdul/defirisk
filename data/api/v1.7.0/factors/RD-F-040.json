@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether a governance veto or emergency-pause multisig exists that is specifically empowered to stop malicious proposals before they execute — distinct from the standard pause mechanism. The veto multisig must have the power to cancel or delay a queued proposal in the timelock, not merely pause the protocol's operational functions.\n\n**Why it matters**\nA veto mechanism adds a second defensive layer above the standard timelock: even if a malicious governance proposal accumulates enough votes to pass (flash loan attack, whale concentration, insider vote), a veto multisig composed of independent security-focused parties can cancel it before execution. Several post-2022 governance improvements in major protocols (Compound, Aave, Uniswap) have added security councils or guardian roles specifically for this purpose. The absence of a veto mechanism means the only defense against a passed malicious proposal is the timelock delay itself — which is only useful if someone monitoring the queue takes action.\n\n**Green / Yellow / Red**\nGreen is assigned when an emergency veto multisig exists with at least a 2-of-N threshold, independent from the primary governance multisig, and with documented authority to cancel queued proposals. Yellow covers cases where a veto mechanism exists but is held by the same multisig as the governance executor (not truly independent). Red is assigned when no veto mechanism exists — the timelock alone is the only buffer between a passed proposal and execution.\n\n**Common gray cases**\nThis factor is grayed when the governance system is immutable or operates via a single-step on-chain vote with no separate queueing mechanism, rendering a veto multisig architecturally irrelevant.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No governance proposal queue to veto or cancel. Admin can pause trading directly (same multisig). No separate veto mechanism needed or applicable.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/exchange/mixins/Auth.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

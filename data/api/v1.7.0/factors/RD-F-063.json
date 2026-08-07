@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor records the current total value locked (TVL) in USD and a thirty-day trend sparkline derived from DeFiLlama data via the in-house adapter. TVL is the aggregate market value of all user-deposited assets in the protocol's live contracts. The thirty-day trend captures whether capital is flowing in or out and at what velocity. Both the absolute value and the trend direction are displayed on the protocol card; neither alone is a sufficient risk signal without context.\n\n**Why it matters**\nTVL is a proxy for depositor demand and protocol health, but its primary risk-dashboard role is as a denominator for concentration and adequacy calculations. A protocol with $10M TVL and a 2-of-3 multisig faces a categorically different risk profile than a protocol with $2B TVL and the same multisig -- because the dollar value at risk per compromised signer is two hundred times higher. TVL also anchors the oracle-manipulation-resistance threshold: the cost of manipulating an oracle pool must exceed the attacker's potential gain, which scales with TVL. Declining TVL trends have historically preceded several exploits, suggesting sophisticated capital was exiting before public disclosure.\n\n**Green / Yellow / Red**\nGreen: TVL above $100M with a stable or rising thirty-day trend, meeting the A-grade eligibility floor. Yellow: TVL between $10M and $100M, or TVL above $100M but with a declining trend exceeding twenty percent over thirty days. Red: TVL below $10M, or a single-day drop exceeding thirty percent not explained by a known market event.\n\n**Common gray cases**\nProtocols with multi-chain TVL that is aggregated inconsistently across DeFiLlama adapters may show misleading totals. Curator must verify that the in-house adapter matches DeFiLlama's methodology for the specific protocol before relying on the TVL figure.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeFiLlama's public Polymarket dashboard reported $334.81M TVL on Polygon and a 23.5% decrease over the preceding 30 days when independently checked on 2026-07-24. The TVL remains above $100M, but the independently displayed decline exceeds the rubric's yellow trend threshold.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/polymarket"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
