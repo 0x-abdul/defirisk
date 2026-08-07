@@ -20,10 +20,34 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's currently deployed runtime bytecode corresponds to a signed git tag in the protocol's public repository. The verification process compares the on-chain bytecode hash against the compiled artifact from the tagged commit, using the protocol's declared compiler settings. A match means the deployed code is traceable to a specific point in the public version history; a mismatch means the deployed code was compiled from a state that is not publicly verifiable.\n\n**Why it matters**\nBytecode-to-release-tag correspondence is the foundational transparency requirement for any post-audit assurance claim. When an audit references a specific commit, users need to know that the deployed bytecode corresponds to that commit — or to a subsequent tagged release that documents what changed. Without this correspondence, an audit report cannot be meaningfully linked to the production system. The synthesis notes that \"audited protocol, unaudited upgrade\" is a recurring failure mode: release tag correspondence would catch the case where the deployed bytecode diverges from the audited commit without a documented release entry.\n\n**Green / Yellow / Red**\nGreen is assigned when all production contracts have their bytecode verified against a signed release tag that is publicly accessible and the compiler settings are reproducible. Yellow covers cases where a tag exists but is unsigned, or where the correspondence is established for major contracts but not peripheral ones. Red is assigned when the deployed bytecode does not match any tagged release in the public repository, or when the repository has no tagged releases and the deploy commit is not documented.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private and no public artifact verification path exists, or when the protocol operates on a chain where deterministic compilation tooling is not yet mature.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No signed release tags in ctf-exchange-v2 GitHub repo (GitHub API /releases returned empty []). Deployed bytecode verified on Polygonscan (exact match) but not anchored to a signed git tag commit. Source is publicly verifiable but formal signed-tag provenance absent.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange-v2/releases"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol has formally deprecated a contract but left the pause state on that contract reversible by a currently-live admin role. The deprecated contract is paused — appearing inactive — but the pause is not permanent: an admin can unpause it, restoring its functionality and any attack surface it carries. The factor is populated by on-chain checks of deprecated contracts listed in protocol documentation against their current pause state and who holds the unpause authority.\n\n**Why it matters**\nDeprecated but unfinalized contracts present an invisible attack surface. Users and monitoring systems may treat a paused deprecated contract as inert, but if a live admin role can unpause it, an attacker who compromises that admin can restore the contract's full functionality. OKX DEX lost $2.7M via a deprecated TokenApprove contract whose admin key had not been revoked — users still had open approvals to the contract, and a single admin action allowed the attacker to drain them. This pattern is distinct from a protocol that has burned or renounced admin on deprecated contracts, which would score green; the risk is specifically the combination of \"announced deprecated\" and \"admin pause is still reversible.\"\n\n**Green / Yellow / Red**\nGreen is assigned when deprecated contracts have had admin authority renounced or transferred to an immutable address, or when the pause is executed by a burned admin key with no live unpause capability. Yellow covers cases where a timelock of at least 48 hours gates any unpause action on deprecated contracts. Red is assigned when a deprecated contract's pause is reversible by a currently-live admin role with no timelock, effectively leaving the deprecated surface under live admin control.\n\n**Common gray cases**\nThis factor is grayed when no contracts have been deprecated or when the deprecation status cannot be confirmed from public protocol documentation.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public April 2026 migration notice documents a new exchange stack and cleared v1 order books, but this pass could not establish that a specifically deprecated contract was paused and had a live role capable of reversing that pause.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

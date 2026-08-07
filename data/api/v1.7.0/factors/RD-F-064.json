@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor calculates the percentage of protocol TVL held in the top ten depositor addresses, sourced from on-chain scanning. A high concentration ratio means a small number of wallets control the majority of the protocol's deposit base, creating correlated withdrawal risk. The metric is updated continuously and displayed as a concentration percentage alongside the top-ten wallet count.\n\n**Why it matters**\nHigh TVL concentration creates two distinct risks. First, the coordinated exit of even two or three top depositors can cause a TVL collapse that triggers oracle-based liquidation cascades or drops the protocol below the threshold where insurance coverage is economically rational. Second, in a lending protocol, a highly concentrated deposit base allows a single large depositor to also become the dominant borrower, creating circular collateral relationships that amplify liquidation risk. The dataset includes several cases where post-exploit TVL recovery was complicated by the exit of a few large holders who accounted for the majority of the residual deposit base.\n\n**Green / Yellow / Red**\nGreen: top-ten wallet share below thirty percent, indicating broad distribution and low correlated-exit risk. Yellow: top-ten wallet share between thirty and sixty percent, indicating meaningful concentration that warrants monitoring of the largest depositor addresses. Red: top-ten wallet share above sixty percent, or a single wallet accounting for more than twenty-five percent of TVL, indicating that the departure of one address would constitute a material liquidity event.\n\n**Common gray cases**\nProtocols where the largest depositor is a verified protocol-owned treasury account (not a user) may present differently; curator must distinguish user TVL concentration from protocol-owned reserves when calculating the ratio.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A reproducible protocol-wide top-10 depositor share was not located in public sources. Polymarket exposes outcome-token order books and market data, but these do not publish an aggregate depositor-concentration metric. No wallet-share conclusion is made.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/market-data/prices-order-books"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

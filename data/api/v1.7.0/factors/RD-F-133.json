@@ -20,10 +20,34 @@
         "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol's package manifest files -- package.json, Cargo.toml, foundry.toml, or equivalent -- use range specifiers (^ or ~) for security-critical library dependencies such as OpenZeppelin Contracts, Solady, or Solmate, rather than exact pinned version strings. Unpinned dependencies allow npm or package managers to silently update the library to a newer version on the next install, potentially introducing a newly-published vulnerability or a supply-chain-compromised release. The data source is the protocol's public repository.\n\n**Why it matters**\nUnpinned critical library dependencies are a supply-chain attack surface. If an attacker compromises an npm package for OpenZeppelin at version 4.9.4 (hypothetically), all protocols using ^4.9.0 or ~4.9.0 in their package.json will pull the malicious version on their next npm install -- including CI/CD pipelines building the deployment artifact. Even without a malicious release, auto-updating to a library version with a newly-discovered bug can introduce a vulnerability that was not present in the previously pinned version. Approximately two documented instances in the T-01 inventory involve library dependency incidents.\n\n**Green / Yellow / Red**\nGreen: all security-critical library dependencies (OpenZeppelin, Solady, Solmate, or equivalents) are pinned to exact version strings (no ^ or ~ prefix) in all package manifest files, and lock files are committed. Yellow: non-security-critical development dependencies use range specifiers, but all deployed contract libraries are pinned. Red: any range specifier is used for OpenZeppelin, Solady, or equivalent libraries that are compiled into the deployed bytecode.\n\n**Common gray cases**\nThis factor is gray when the protocol does not use a package manager (e.g., vendored or inline library copies) or when the repository is private and the manifest cannot be inspected.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on its supply-chain risk classification in the T-01 evidence inventory."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V1 submodules all pinned to exact SHA commits: forge-std (1801b054...), openzeppelin-contracts (8769b198...), solady (acd959aa...), solmate (bff24e83...). CTF Exchange V2 submodules pinned: forge-std (0844d7e1...), solady (acd959aa...). All security-critical libraries pinned.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange-v2/git/trees/HEAD?recursive=1"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange/git/trees/HEAD?recursive=1"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

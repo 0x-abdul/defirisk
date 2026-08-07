@@ -20,10 +20,36 @@
         "scoring_methodology": "**What this measures**\nThis factor produces a curator-scored 1–5 depth score for each core contributor, based on the richness and independent corroborability of their online presence: LinkedIn profile depth (employment history, connections, endorsements), GitHub history (account age, contribution volume, fork and star patterns), conference or media presence, and any independent third-party references. The per-contributor scores are averaged to produce a team-level OSINT depth metric. Category 7 context: OSINT depth is a consolidated signal that partially overlaps with RD-F-112 (accountability surface count) but emphasizes depth and independence of evidence rather than breadth.\n\n**Why it matters**\nA team member with a high-follower Twitter account and a LinkedIn profile created in the past six months with generic employment entries represents a different risk than one with a ten-year GitHub history, endorsed LinkedIn connections from verifiable prior colleagues, and three conference talk recordings. The distinction matters for assessing whether identity signals are genuine or fabricated. DPRK IT worker profiles consistently score low on OSINT depth — LinkedIn profiles are typically sparse, GitHub accounts are new, and conference references are absent. Legitimate senior DeFi contributors typically score 4–5 across all three evidence dimensions.\n\n**Green / Yellow / Red**\nGreen is scored when the team average OSINT depth score is 4 or above — multiple contributors with rich, independently corroborated online histories. Yellow applies when the average falls in the 2–3 range — some verifiable history exists but it is limited in depth or relies on easily-fabricated platforms. Red is scored when the team average falls below 2 — most or all contributors have shallow or unverifiable online presences inconsistent with the experience level claimed.\n\n**Common gray cases**\nGray is assigned when the curator cannot complete the OSINT assessment within the evidence budget because the team has not disclosed sufficient identity information to begin the scoring process.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public records provide substantial OSINT depth for the CEO and a visible public engineering organization, but do not establish comparable, verifiable depth scores for every privileged contributor. Coverage is therefore partial rather than a full-team green conclusion.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.cbsnews.com/news/polymarket-ceo-shayne-coplan-online-betting-platform-60-minutes-transcript/"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

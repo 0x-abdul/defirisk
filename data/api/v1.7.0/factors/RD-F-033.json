@@ -20,10 +20,34 @@
         "scoring_methodology": "**What this measures**\nThis factor is a boolean checklist recording whether each sensitive action category — mint, pause, rescue, oracle change, and contract upgrade — is subject to a timelock delay before execution. The result is a per-action boolean map (timelocked: yes/no) rather than a single aggregate score. A protocol that timelocks upgrades but not rescue functions scores partially; the non-timelocked rescue path still represents an immediate drain vector.\n\n**Why it matters**\nAdmin action categories have asymmetric risk profiles. A rescue function that bypasses the timelock covering upgrades negates the security value of that timelock entirely — an attacker who gains admin key access can call rescue() immediately while the upgrade mechanism remains protected by a 48-hour delay. The pattern of selective timelock application is common in DeFi protocols that added a governance timelock in response to market pressure but did not apply it consistently across all privileged action categories. The evidence base shows that mint and rescue are the two most frequently bypassed categories.\n\n**Green / Yellow / Red**\nGreen is assigned when all five action categories (mint, pause, rescue, oracle change, upgrade) are timelocked with a delay meeting the RD-F-032 threshold. Yellow covers configurations where three or four categories are timelocked and the untimelocked categories are low-severity (pause only). Red is assigned when mint, rescue, or upgrade is executable without any timelock by an admin-level role.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all five action types (e.g., no mint function on a DEX), in which case only applicable categories are scored and missing categories are noted.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No timelock on any of the five sensitive action categories. mint (owner grants MINTER_ROLE, no timelock); pause (direct admin call, no timelock); rescue (no function); setOracle (UMA adapter reset direct, emergencyResolve has 2-day flagging delay only); upgrade (pUSD UUPS _authorizeUpgrade onlyOwner, no timelock).",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/exchange/mixins/Auth.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -61,10 +61,34 @@
           "root_cause": "Compromised proxy admin key → malicious implementation upgrade → claimTokens() drain of user approvals"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The legacy Polymarket CTF Exchange address currently shows approximately $13.1k of token holdings, including about $9.7k USDC and $3.2k USDC.e/pUSD, below the $100k materiality threshold. Public V2 documentation confirms the legacy V1 path has been superseded.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/v2-migration"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

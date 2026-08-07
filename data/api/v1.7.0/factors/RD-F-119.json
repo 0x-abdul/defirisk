@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis factor analyzes the distribution of commit timestamps in the protocol's public repository and checks whether the commit-hour distribution is consistent with the team's publicly stated geography and time zone. A strong clustering of commits outside the stated time zone — for instance, a US-based team with the majority of commits landing between 01:00–06:00 UTC (consistent with East Asian working hours) — is a weak signal of time-zone misrepresentation associated with DPRK developer-implant tactics. Measurement is programmatic via GitHub API commit timestamp analysis. Category 7 context: time-zone anomaly is an explicit weak signal in DPRK developer-implant profiling.\n\n**Why it matters**\nDPRK IT workers operating under false identities typically work on schedules consistent with North Korean Standard Time (UTC+9) or adjacent zones, regardless of the geography claimed in their public profiles. Trail of Bits and Unit42 research on DPRK developer infiltration documented time-zone mismatches as one of several behavioral indicators. The signal is weak in isolation and generates false positives for teams with distributed contributors across multiple zones. However, when combined with other Cat 7 indicators (pseudonymous identity, mixer funding, short contributor tenure), the time-zone anomaly pattern strengthens the insider-risk assessment.\n\n**Green / Yellow / Red**\nGreen is scored when commit-hour distribution is broadly consistent with the stated geography (within a two-hour tolerance band accounting for late/early work). Yellow applies when commit-time distribution has a bimodal pattern consistent with a distributed team across multiple zones, even if one cluster is in a high-risk zone — the bimodality itself suggests legitimate distribution. Red is scored when greater than 70% of commits land in a time window inconsistent with the stated geography and consistent with known DPRK working hours, with no plausible distributed-team explanation.\n\n**Common gray cases**\nGray is assigned when the repository is private or has fewer than 50 commits in the trailing 90 days, making statistical analysis unreliable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
