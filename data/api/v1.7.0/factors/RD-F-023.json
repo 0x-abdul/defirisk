@@ -119,29 +119,6 @@
             }
           ],
           "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "Wormhole EVM implementation contracts do not call `_disableInitializers()` (OZ pattern introduced in OZ 4.6+). They use their own `initializer` modifier pattern instead, which achieves the same end goal by checking the implementation address against a mapping. The custom pattern was the root of the 2022 Immunefi finding (state could be cleared) but is now properly initialized. The absence of `_disableInitializers()` means the OZ canonical defense pattern is not in place; however the functiona...",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Wormhole",
-          "protocol_slug": "wormhole",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
-            },
-            {
-              "source_type": "url",
-              "url": "https://immunefi.com/blog/bug-fix-reviews/wormhole-uninitialized-proxy-bugfix-review/"
-            }
-          ],
-          "surface_slug": "default"
         }
       ]
     }

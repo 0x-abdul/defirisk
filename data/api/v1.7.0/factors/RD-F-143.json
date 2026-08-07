@@ -172,33 +172,6 @@
             }
           ],
           "surface_slug": "default"
-        },
-        {
-          "collection_mode": "hybrid",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": "Implementation.sol exposes initialize() with a custom initializer modifier. Setup.sol calls setInitialized(implementation) during setup, and official Core Contract documentation describes initializedImplementations as tracking initialized implementation addresses for upgrade safety. The nonstandard pattern remains a maintenance and verification concern, but the inspected sources show a specific mitigation rather than establishing an exploitable proxy-takeover condition.",
-          "evidence_summary": "The Core Bridge uses a custom per-implementation initialization guard rather than a constructor _disableInitializers() call. Setup.sol marks the selected implementation initialized, and Wormhole's Core Contract documentation describes initializedImplementations as upgrade-safety state.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Wormhole",
-          "protocol_slug": "wormhole",
-          "scope_level": "surface",
-          "score": "yellow",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://raw.githubusercontent.com/wormhole-foundation/wormhole/main/ethereum/contracts/Implementation.sol"
-            },
-            {
-              "source_type": "github",
-              "url": "https://raw.githubusercontent.com/wormhole-foundation/wormhole/main/ethereum/contracts/Setup.sol"
-            },
-            {
-              "source_type": "docs",
-              "url": "https://wormhole.com/docs/products/messaging/reference/core-contract-evm/"
-            }
-          ],
-          "surface_slug": "default"
         }
       ]
     }

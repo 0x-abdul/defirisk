@@ -148,25 +148,6 @@
             }
           ],
           "surface_slug": "default"
-        },
-        {
-          "collection_mode": "manual",
-          "data_as_of": "2026-07-24T00:00:00Z",
-          "evidence_detail": null,
-          "evidence_summary": "`Bridge.sol` uses ReentrancyGuard from OpenZeppelin (confirmed via Bridge.sol source inspection showing `ReentrancyGuard` and SafeERC20 patterns). CCTP bridge contracts confirmed to use `nonReentrant` modifier on `transferTokensWithPayload`. The core bridge message publication path does not perform external calls before state writes in the identified code. No reentrancy-related findings in accessible audit summaries.",
-          "gap_reason": null,
-          "primary_chain": "ethereum",
-          "protocol_name": "Wormhole",
-          "protocol_slug": "wormhole",
-          "scope_level": "surface",
-          "score": "green",
-          "sources": [
-            {
-              "source_type": "github",
-              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
-            }
-          ],
-          "surface_slug": "default"
         }
       ]
     }
