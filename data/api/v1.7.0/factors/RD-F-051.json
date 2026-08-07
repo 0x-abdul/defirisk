@@ -104,6 +104,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ResilientOracle implements cascading three-tier fallback via try-catch pattern. If main oracle fails (zero price, revert, or BoundValidator rejection against pivot), fallback is tried against pivot. If all three tiers fail or diverge, transaction reverts with 'invalid resilient oracle price'  -  no last-known-price acceptance. Try-catch prevents individual oracle reverts from halting execution. OpenZeppelin May 2023 audit found zero critical/high findings.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://www.openzeppelin.com/news/venus-protocol-oracles-audit"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/ResilientOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

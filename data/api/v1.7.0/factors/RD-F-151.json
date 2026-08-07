@@ -81,6 +81,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus XVS OFT bridge validation does not use an ecrecover signer path, so the RD-F-151 zero-address ecrecover check condition is not triggered. BaseXVSProxyOFT validates trusted remote/source-chain addressing through the LayerZero/OFT path. Single-DVN or relayer concentration risk remains assigned to the relevant bridge-trust factors, not RD-F-151.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/token-bridge/main/contracts/Bridge/BaseXVSProxyOFT.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/technical-reference/reference-technical-articles/xvs-bridge"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

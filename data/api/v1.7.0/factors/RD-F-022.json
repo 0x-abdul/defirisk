@@ -123,6 +123,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Core Pool VToken.sol initialize() is public with admin check inside body (ensureAdmin(msg.sender)) and state guard (accrualBlockNumber==0), but no OZ initializer modifier. Isolated Pools VToken.sol correctly uses initializer modifier + _disableInitializers() in constructor. The Core Pool pattern is weaker than OZ standard but the combined admin+state guards prevent the one-tx unauthorized re-init exploit. Yellow (not red) because the state guard effectively prevents unauthorized re-initialization post-deploy.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/VToken.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VTokens/VToken.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

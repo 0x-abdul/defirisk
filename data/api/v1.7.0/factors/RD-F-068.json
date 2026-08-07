@@ -91,6 +91,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus enforces liquidation via Comptroller with 50% close factor (standard) and forced liquidation at 100% when flagged. The Core Pool uses shared liquidity; a single large market disruption propagates across the pool (evidenced in 2021). Protocol has since added supply caps, borrow caps, collateral factor reductions, and Risk Stewards for dynamic parameter adjustment. The Risk Fund for Isolated Pools is funded at ~50% of pool income. However, the Core Pool lacks automatic bad debt tracking at the moment (per Risk Fund docs), relying on treasury funding for shortfall resolution. Curator simulation not performed (PH curation required). Historical record shows the protocol has breached 100% collateralization under stress (2021 XVS: >$100M bad debt created). Not confirmed to be currently below 110% under standard parameters; flagged yellow given history.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://quillhashteam.medium.com/200-m-venus-protocol-hack-analysis-b044af76a1ae"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/guides/liquidation"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/risk/risk-fund-and-shortfall-handling"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

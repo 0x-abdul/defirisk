@@ -96,6 +96,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Isolated Pools VToken.sol confirmed: constructor calls _disableInitializers(). Core Pool VToken.sol (legacy Compound-derived): no _disableInitializers in the constructor path. Diamond.sol does not call _disableInitializers(). Split in hygiene between Core Pool (legacy pattern) and Isolated Pools (modern OZ pattern).",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Comptroller/Diamond/Diamond.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/VToken.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

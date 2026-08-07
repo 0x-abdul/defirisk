@@ -149,6 +149,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Isolated Pools VToken.sol: _disableInitializers() called in constructor at line 115 (confirmed). Core Pool VToken.sol (old Compound v2 delegator pattern): uses manual require(accrualBlockNumber == 0 && borrowIndex == 0) guard — not OZ _disableInitializers(). VBep20Delegate.sol: empty constructor. Yellow: partial — isolated pools use correct pattern; legacy Core Pool uses manual guard (functional but not OZ canonical).",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/VTokens/VBep20Delegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools/blob/main/contracts/VToken.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

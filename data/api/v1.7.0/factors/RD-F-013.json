@@ -112,6 +112,29 @@
           "score": "not_assessed",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Timelock.sol uses target.call(callData) without an allowlist — any address can be targeted by queued proposals. However, execution requires full Governor Bravo proposal lifecycle (quorum, voting period, timelock delay), providing economic and temporal friction. This is the standard Compound-style design shared by most major governance systems. Yellow not red due to governance friction layer.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/Timelock.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/governance-contracts/main/contracts/Governance/GovernorBravoDelegate.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

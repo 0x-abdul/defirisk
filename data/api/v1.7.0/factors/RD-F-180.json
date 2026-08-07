@@ -109,6 +109,25 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[[critical] CRITICAL per T-14] ResilientOracle stores feed addresses in governance-replaceable mappings. Functions confirmed in source: setOracle(asset, oracle, role), setTokenConfig(TokenConfig), enableOracle(asset, role, bool). Oracle addresses are NOT EVM immutable. Governance (via VIP + applicable Timelock tier) can replace any oracle for any asset. Compound-fork pattern preserves this replaceability  -  oracle is an external call to a mutable mapping. GREEN: no immutable oracle address risk.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/ResilientOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

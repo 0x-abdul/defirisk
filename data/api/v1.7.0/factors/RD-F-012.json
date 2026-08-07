@@ -116,6 +116,29 @@
           "score": "not_assessed",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Diamond.sol uses delegatecall in fallback to dispatch to facets, but targets are determined by admin-controlled _selectorToFacetAndPosition mapping (not user-supplied). SetterFacet shows no user-controlled external call targets. No user-controlled delegatecall target found in source inspection.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Comptroller/Diamond/Diamond.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Comptroller/Diamond/facets/SetterFacet.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

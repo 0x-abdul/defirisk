@@ -86,6 +86,29 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "TwapOracle.sol exists in VenusProtocol/oracle repo for PancakeSwap AMM pools. PancakeSwap is not fully permissionless-pool-creation in the Uniswap v3 sense. The THE attack (2026) demonstrates that thin-liquidity assets accepted as collateral can be exploited via multi-venue price manipulation  -  functionally equivalent to the permissionless pool oracle attack surface. Isolated pools require governance-approved market listing, providing some gating. Whether any active market uses a fully permissionless-created pool for oracle pricing not confirmed.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blocksec.com/blog/venus-thena-donation-attack"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/VenusProtocol/oracle/git/trees/main?recursive=1"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

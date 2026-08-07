@@ -95,6 +95,29 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ChainlinkOracle and BinanceOracle do not use TWAP (point-in-time). TwapOracle.sol exists in VenusProtocol/oracle repo for PancakeSwap AMM pools. TWAP window for PancakeSwap-based assets not confirmed from available sources. THE incident used multi-source convergence (functionally TWAP-manipulation-equivalent). No TWAP window < 30 min confirmed as active for major assets; thin-liquidity TWAP exposure unconfirmed.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/oracles/ChainlinkOracle.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/VenusProtocol/oracle/git/trees/main?recursive=1"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
