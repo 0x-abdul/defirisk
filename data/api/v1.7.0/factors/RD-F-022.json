@@ -100,6 +100,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SynapseBridge.initialize() is declared external initializer in the public source, so RD-F-022's unguarded-initialize condition is not met. The missing _disableInitializers() fact belongs under RD-F-143; it should not keep RD-F-022 yellow when initialize() itself has the one-time-call guard. Score moves to green for the initializer-modifier check.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/synapsecns/synapse-contracts/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
