@@ -85,6 +85,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Red remains based on the bridge mint authority path: SynapseBridge exposes NODEGROUP_ROLE-gated mint() / mintAndSwap() flows that call mint on IERC20Mintable tokens for which the bridge has minter access, and the bridge source does not enforce a hard supply cap in that path. The evidence is narrowed to that live bridge mint surface; this row no longer relies on SYN circulating supply versus a stated cap, nor on unverified claims that Bridge or Cortex Safes hold SYN MINTER_ROLE.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://l2beat.com/bridges/projects/synapse"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/synapsecns/synapse-contracts/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
