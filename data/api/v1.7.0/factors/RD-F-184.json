@@ -20,10 +20,58 @@
         "scoring_methodology": "**What this measures**\nThis factor flags when a \"team contributor\" or \"external integrator\" persona has deposited one million dollars or more of attributed real capital into the target protocol or peer protocols, where the deposits are assessed by the curator as credibility-building prior to a social-engineering attack rather than genuine investment activity. Measurement is manual OSINT combined with on-chain capital flow analysis: the curator identifies the contributor, maps their deposit history across protocols, and assesses whether the capital deployment pattern is consistent with investment behavior or with pre-attack credibility building. Category 7 context: real-capital persona construction is a sophisticated DPRK tactic documented first in the Drift Protocol incident.\n\n**Why it matters**\nThe Drift Protocol incident (April 2026, $285M) established this attack pattern: UNC4736 (DPRK-attributed) built a six-month conference and in-person engagement history with the Drift team, deploying more than $1M in real capital across protocol interactions to establish credibility as a genuine integrator before gaining access to enable the pre-signing exploit. This represents a qualitative escalation from the classic IT-worker infiltration playbook — real capital is used as a trust-building instrument. The signal is P1 (not P0) because attribution requires curator confidence beyond on-chain evidence alone; false positives occur when genuine large depositors also have team engagement roles.\n\n**Green / Yellow / Red**\nGreen is scored when no contributor or integrator persona has a capital deployment pattern assessed as credibility-building by the curator. Yellow applies when a contributor or integrator has made large deposits but the pattern is consistent with genuine investment and no other risk indicators are present. Red is scored when curator assessment confirms a persona with $1M+ deposits whose capital deployment timeline, combined with their subsequent access or influence pattern, is consistent with social-engineering credibility construction.\n\n**Common gray cases**\nGray is assigned when large-depositor identity cannot be confirmed through OSINT, or when the curator cannot distinguish investment behavior from credibility-building behavior within the evidence budget — which is the norm for most protocols.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting documents the social-engineering pattern at Drift, but the reviewed material does not provide a complete Raydium contributor and deposit-activity dataset needed to assess this factor.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.chainalysis.com/blog/lessons-from-the-drift-hack/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public materials do not provide attributable evidence sufficient to establish or exclude a real-capital social-engineering persona pattern for this protocol.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

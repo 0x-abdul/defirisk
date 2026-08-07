@@ -661,10 +661,58 @@
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket resolves markets through UMA's Optimistic Oracle, not a documented price-deviation feed; a comparable current primary-versus-secondary price observation was not established.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's documented AMM products use pool and AMM mechanics; this factor's primary-versus-secondary oracle comparison is not a direct core-swap signal.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Rocket Pool governance materials describe the RPIP-61 balance-submission guardrail; no public report establishes abnormal oDAO rate submissions.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/rpip-61-balance-submission-guardrail/3010"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

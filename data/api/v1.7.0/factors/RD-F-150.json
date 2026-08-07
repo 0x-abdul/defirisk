@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether bridge validators share ASN (Autonomous System Number), data-centre operator, or cloud custodian — indicating that multiple validators could be taken offline or compromised by a single infrastructure event. Assessment combines bridge documentation with OSINT on validator operator infrastructure. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nPhysical and infrastructure co-location transforms a nominally independent validator set into a correlated failure group. A 7-of-10 bridge with all validators hosted on the same AWS region effectively has a single infrastructure point of failure — a region outage or targeted attack against that provider can simultaneously compromise the quorum. The T-01 evidence base links co-hosting patterns to approximately 3 protocols in the hack database, including bridge incidents where signer-set compromise was facilitated by shared infrastructure. Harmony Bridge validators reportedly shared operational infrastructure that reduced the effective independence of its 2-of-5 threshold.\n\n**Green / Yellow / Red**\nGreen is scored when validators use diverse cloud providers, geographic regions, and independent node operators with documented independence. Yellow is scored when some validators share a cloud provider or region but no single provider controls a quorum. Red is scored when validators sharing a single provider or region constitute a quorum, or when all validators are operated by the same entity.\n\n**Common gray cases**\nGray is applied when validator infrastructure cannot be determined from public documentation and OSINT cannot confidently identify hosting relationships.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public materials do not establish bridge-validator operator hosting or independence.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No bridge validator set. Not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge validators to co-host. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

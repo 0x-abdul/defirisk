@@ -20,10 +20,59 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when cross-chain activity is detected that is consistent with an unverified mint on the destination chain — specifically, when a large mint event on the destination chain occurs without a corresponding verifiable deposit or lock event on the source chain within the expected message-delivery latency window. The signal requires cross-chain indexing to correlate source-chain deposit events with destination-chain mint events. Category 6 context: the \"mint without corresponding lock\" pattern is the fundamental exploit signature of bridge replay and validation-bypass attacks.\n\n**Why it matters**\nNomad Bridge ($190M, 2022) — the bytes32(0) valid-root exploit — enabled any address to mint tokens on the destination chain without any source-chain deposit, once the bug was discovered. Wormhole ($320M, 2022) involved a signature-verification bypass that enabled fabricated guardian messages to trigger mints. The Meter Passport bridge exploit and Harmony Bridge incident both show variants of this pattern. Cross-chain indexing to detect mint-without-lock events is technically complex (PH curation) but provides the only real-time detection window for bridge validation exploits. Without this signal, bridge attacks are invisible until TVL is already drained.\n\n**Green / Yellow / Red**\nGreen is the baseline when all destination-chain mint events have corresponding verifiable source-chain deposit events within the expected delivery window. Yellow fires when a mint event arrives within the expected window but the source-chain confirmation count is below the safe threshold (e.g., four blocks on Ethereum for large amounts). Red fires when a mint event on the destination chain has no corresponding source-chain deposit within five times the expected delivery window — indicating either a validation bypass or a proof-fabrication attack.\n\n**Common gray cases**\nGray applies when the bridge uses a zero-knowledge proof system where proof verification on-chain does not correspond one-to-one with indexable source-chain events, or when source-chain monitoring coverage is incomplete for the specific chain pair.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket documents cross-chain Bridge API deposits and withdrawals into and out of pUSD, but the public interface does not expose a verifiable unverified-mint event feed or bridge-attestation state.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/bridge/withdraw"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No bridge surface exists in the approved Raydium topology for an unverified-mint signal.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool does not operate cross-chain bridge contracts.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -61,10 +61,80 @@
           "root_cause": "Compromised Multisig Private Keys (Hot Wallets)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Admin/multisig evidence narrowed: the CTF Exchange V2 admin is 0x3dcE0a29139A851Da1dFCa56Af8e8a6440b4D952, currently a 3-of-6 Safe. The UMA ManagedOptimisticOracleV2 proxy owner is a separate 2-of-2 Safe, with nested Safes currently 3-of-6 and 2-of-4. Prior wording that compressed the structure into a single 2-of-4 multisig was stale. Signer identity/public-attestation gaps remain, so RD-F-028 stays yellow.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B#code"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://iter.ca/post/polymarket-trust/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://api.safe.global/tx-service/polygon/api/v1/safes/0x3dcE0a29139A851Da1dFCa56Af8e8a6440b4D952/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Official documentation describes a 3/4 program-upgrade multisig with a 24-hour delay and a separate 3/5 treasury multisig. The public documentation does not identify the signers or independently establish their separation; at Raydium's material TVL this leaves a meaningful effective-centralization uncertainty.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The primary privileged role (guardian) is a single EOA, not a multisig — this factor's threshold evaluation does not apply to an EOA. The oDAO is a 18-member committee with 51% quorum (10/18), which is adequate for its scope. No Gnosis Safe identified as primary admin control layer.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://hackmd.io/@PrismaRisk/rETH"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

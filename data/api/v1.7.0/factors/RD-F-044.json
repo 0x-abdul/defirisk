@@ -20,10 +20,63 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's admin address has sent or received transactions involving addresses on a curator-maintained watchlist — including known dust-attack targets, mixer deposit addresses, sanctioned clusters, and addresses linked to prior exploits or exit scams. The check is performed via on-chain transaction history analysis and cross-referenced against the watchlist.\n\n**Why it matters**\nAdmin address interactions with flagged addresses are a soft signal of potential insider risk or compromised key custodian relationships. A protocol whose admin wallet has received funds from a mixer, sent funds to a OFAC-sanctioned address, or interacted with a known exit-scam contract presents an elevated risk of insider-motivated drain. This factor is not individually sufficient to alter a grade, but it contributes to the overall governance risk picture and can corroborate other signals in the dev identity category (Cat 7).\n\n**Green / Yellow / Red**\nGreen is assigned when the admin address has no interactions with flagged addresses in the watchlist. Yellow covers cases where interactions are present but explainable (e.g., dust-attack receipt with no active response) or where the watchlist confidence is low. Red is assigned when the admin address has sent funds to or actively interacted with mixer addresses, sanctioned clusters, or known exit-scam deployers.\n\n**Common gray cases**\nThis factor is grayed when the admin address cannot be identified from on-chain data, or when the watchlist coverage for the relevant chain is sparse.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public explorer identifies the documented admin Safe, but this pass did not obtain a reproducible public watchlist comparison for its counterparties. No positive or negative watchlist conclusion is made.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952#tokentxns"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public attribution or sanctions-screening record establishes the interaction history of the current multisig authorities.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable to the current effective admin path: Rocket Pool's October 2025 governance update states that the protocol DAO guardian was permanently disabled and control transferred to the Protocol DAO. No current single admin/upgrader wallet is identified in the public evidence reviewed for this factor. This does not assert a clean transaction-history result for the former guardian.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0ccf14983364a7735d369879603930afe10df21e"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the bridge message struct includes a `srcChainId` field and whether the verifier enforces chain-of-origin separation when validating messages. Without this, a valid message signed for chain A can be replayed on chain B if the signer set is shared. Static analysis of the bridge verifier and message struct is the assessment method. This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nCross-chain replay attacks exploit the absence of per-chain message binding: an attacker who captures a valid signed message from one chain can replay it on a different chain where the same validator set is trusted. This is particularly relevant for bridges that operate across many chains with a shared guardian set — a signed message to release tokens on Ethereum could be replayed to release tokens on BSC, BNB Chain, or Avalanche if chain binding is absent. The T-01 evidence base links cross-chain replay patterns to approximately 2 protocols in the hack database. Chain binding is a minimum security requirement for any multi-chain bridge architecture.\n\n**Green / Yellow / Red**\nGreen is scored when the message struct includes `srcChainId` (or equivalent), the verifier enforces it, and per-chain nonce or root state prevents cross-chain replay. Yellow is scored when chain binding exists in the struct but is not verified in all execution paths, or when chain binding is present only for some bridge functions. Red is scored when no chain binding exists in the message struct or verification logic.\n\n**Common gray cases**\nGray is applied when the bridge uses a proprietary message encoding that cannot be decoded without the closed-source ABI.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Bridge API materials do not disclose its cross-chain message format or source-chain binding control.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No cross-chain messaging. Not applicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge message structs. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

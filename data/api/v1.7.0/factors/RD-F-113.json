@@ -20,10 +20,77 @@
         "scoring_methodology": "**What this measures**\nThis factor documents the record of current and prior protocol roles for each team member — whether they have previously contributed to audited, live, and non-exploited protocols; whether any prior protocol they contributed to was subsequently exploited; and whether any prior project under their name was abandoned or exit-scammed. Output is a structured list of protocol involvement with outcome classification per role. Category 7 context: a team member's prior protocol track record is the strongest available proxy for security culture and operational competence, distinct from code quality which audits assess separately.\n\n**Why it matters**\nPrior involvement in a rugged or exit-scammed protocol is a documented precursor in the dataset. AlexLab experienced two independent exploits across separate vectors, suggesting team-level security culture deficiencies rather than isolated bugs. Hope Finance's three multisig signers coordinated the drain — their prior roles were not disclosed. Conversely, team members with documented histories at major audited protocols (Uniswap, Aave, Compound core contributors) represent a verifiable competence and accountability signal. The factor is not deterministic: contributors who moved between legitimate protocols carry positive signal even if one of those protocols was later exploited for unrelated reasons.\n\n**Green / Yellow / Red**\nGreen is scored when core team members have documented prior contributions to two or more audited, non-exploited protocols with verifiable on-chain deployment history. Yellow applies when prior involvement exists but protocols were smaller, less audited, or one of the prior protocols was exploited (though not by the same team member's code). Red is scored when any team member has a verified prior association with a protocol that was exit-scammed or where that member is listed in a curator rug database.\n\n**Common gray cases**\nGray is assigned when the team is pseudonymous and no prior protocol involvement can be verified through OSINT, or when stated prior involvement cannot be confirmed via on-chain deployer or contributor evidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository confirms an active Polymarket engineering surface, but the reviewed public materials do not provide a complete, independently verifiable history of prior protocol roles for all privileged contributors.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public profiles describe AlphaRay and Timon Peng backgrounds, but they do not provide a complete, independently verifiable other-protocol history for every named or pseudonymous contributor.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/alpharay"
+            },
+            {
+              "source_type": "url",
+              "url": "https://messari.io/project/raydium"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/timonpeng/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public profiles identify David Rugendyke as Rocket Pool's founder/CTO and Darren Langley as Rocket Pool's general manager. The reviewed public sources do not provide a complete, independently verifiable history of every other protocol involvement for all privileged contributors. Gray: no adverse conclusion is asserted from this limited OSINT record.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/darcius"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

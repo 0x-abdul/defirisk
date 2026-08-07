@@ -20,10 +20,80 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the upgrade, fee collection, and oracle configuration functions are assigned to distinct addresses or distinct multisigs — meaning no single address holds all three administrative powers simultaneously. The on-chain AccessControl or equivalent role mapping is queried for each of the three action types and compared for address overlap.\n\n**Why it matters**\nRole separation across upgrade, fee, and oracle functions prevents a single key compromise from granting an attacker total protocol control. An attacker who gains access to the oracle setter role should not also be able to upgrade the protocol or drain fee revenues. In practice, many DeFi protocols use a single deployer-controlled multisig for all three roles — which means that any compromise of that multisig constitutes a simultaneous oracle, fee, and upgrade authority breach. The evidence base shows that full-authority-concentration in a single key or multisig is strongly correlated with post-compromise total drains rather than partial impacts.\n\n**Green / Yellow / Red**\nGreen is assigned when upgrade, fee, and oracle roles are held by three distinct addresses or multisigs with no overlap. Yellow covers two-of-three role separation (any one role shared with another). Red is assigned when all three roles are controlled by a single address or multisig, giving a single compromise total administrative authority.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not have all three role types (e.g., no oracle configuration because it uses an immutable oracle address — which is separately assessed under RD-F-180).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No role separation. CTFExchange admin controls upgrade (addAdmin), fee (setFeeReceiver), and oracle-config (operator grants, which execute market resolution). pUSD owner controls upgrade (UUPS) and fee/inflation (MINTER_ROLE). Single admin controller for all three role types.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/exchange/mixins/Auth.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Program upgrade authority: Squads FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK (3/4). Protocol fee and admin: GThUX1Atko4tqhN2NaiTazWSeFWMuiUvfFnyJyUghFMJ (3/5 Treasury). Two distinct Squads multisig addresses for upgrade vs treasury/fee operations. Raydium is a DEX with no oracle admin role. Meaningful role separation between upgrade and fee collection authority.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/treasury"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Role separation: post-Oct 2025, guardian role no longer overlaps domains. Upgrade role: pDAO governance approves; oDAO registers into RocketStorage. Fee/reward settings: pDAO governance via RocketDAOProtocolProposals. Oracle (rETH rate, RPL price): oDAO via RocketNetworkBalances + RocketNetworkPrices. The remaining role-separation gap: oDAO holds BOTH upgrade-execution power (RocketStorage registration) AND oracle submission power. Upgrade != oracle is NOT cleanly satisfied at the oDAO level. Yellow because two of three role separations hold (upgrade != fee, fee != oracle) but oDAO still conflates upgrade-execution + oracle reporting.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/guides/odao/overview.html"
+            },
+            {
+              "source_type": "url",
+              "url": "https://notonlyowner.com/articles/permissions-of-a-permissionless-staking-pool/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

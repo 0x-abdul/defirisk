@@ -191,10 +191,84 @@
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Published resolution paths use UMA and Chainlink; the public core-contract inventory and position documentation do not identify a spot DEX pool price as an oracle input.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] GREEN. Raydium uses no external oracle. No spot DEX pool is read as a price source — Raydium IS the pool. The red condition requires reading a spot DEX pool as an oracle without TWAP/fallback; not applicable to a reserves-based AMM. Confirmed via Cargo.toml inspection: no Pyth, Chainlink, Switchboard, or Uniswap-TWAP deps in any core program.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-clmm/master/programs/amm/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-cp-swap/master/programs/cp-swap/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "rETH:ETH exchange rate is computed as (totalETHBalance * rethAmount) / totalRETHSupply inside RocketTokenRETH.getEthValue(). Both inputs are internal Rocket Pool state submitted by oDAO consensus — NOT from any DEX spot price, TWAP oracle, or external price feed. No slot0(), getReserves(), or consult() call exists in any price-critical code path. RPL/ETH for collateral uses oDAO committee input (submitted via submitPrices), not spot DEX. This is the [★ CRITICAL] factor — confirmed GREEN.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

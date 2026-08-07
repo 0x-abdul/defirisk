@@ -20,10 +20,67 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether the protocol publishes an acknowledgment-time service level agreement for disclosed vulnerabilities — for example, a commitment to acknowledge security reports within 72 hours, triage within seven days, and patch within 90 days. Measurement is manual curator review of the protocol's security disclosure documentation, bug bounty program terms, and any published responsible-disclosure policy. Category 13 context: a published SLA transforms an informal disclosure process into a contractual commitment, creating accountability for timely response and reducing the window between discovery and exploitation.\n\n**Why it matters**\nThe absence of a disclosure SLA is documented across multiple dataset incidents where known vulnerabilities were reported but not acted upon. Atomic Wallet ($100M, 2023) received a Least Authority security report in 2022 and failed to act — a public SLA would have created a documented timeline for mandatory response. Mango Markets ($115M, 2022) had a Discord warning in March 2022 referencing the exact vulnerability class; without a disclosure SLA, the warning disappeared without a response commitment. Sonne Finance ($20M, 2024) had a yAudit finding flagging the Compound V2 donation risk but the governance execution gap was not addressed within any defined timeframe. A published SLA does not prevent exploitation but creates a measurable standard against which team responsiveness can be assessed.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol publishes a clear acknowledgment SLA of 72 hours or shorter, with a defined triage window and a maximum response timeline. Yellow applies when a partial SLA exists — for instance, the bug bounty program defines payment terms but not acknowledgment timelines. Red is scored when the protocol has an Immunefi program or equivalent but no acknowledgment SLA is published, or when the documented response history shows SLA violations on prior reports.\n\n**Common gray cases**\nGray applies when the protocol operates a private disclosure process and SLA terms are communicated only to submitters after first contact, making public verification impossible.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The current public bounty tells researchers when to submit reports but does not publish a Polymarket acknowledgement or remediation turnaround SLA. This meets the red no-public-SLA condition.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/ff945ca2-2a6e-4b83-b1b6-7a0cd3b94bea"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public SECURITY.md promises a response within 24 hours. Its live Immunefi page reports a one-day median resolution time, providing public evidence consistent with the stated <=72-hour acknowledgment SLA.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/SECURITY.md"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/raydium/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Immunefi program provides reward and submission information, but the specialist did not verify a published Rocket Pool acknowledgement-time commitment from the available public materials.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

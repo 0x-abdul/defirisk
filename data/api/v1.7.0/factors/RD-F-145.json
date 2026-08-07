@@ -20,10 +20,76 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol's deployed bytecode is independently reproducible from the public repository and the protocol's declared build toolchain — meaning a third party can clone the repo, install the declared compiler version and dependencies, run the declared build command, and produce bytecode that matches the deployed runtime bytecode byte-for-byte. Reproducible builds are a necessary condition for independent verification of any deployment claim.\n\n**Why it matters**\nBuild reproducibility is the technical foundation for auditability. Without it, even a fully audited and source-verified protocol cannot be confirmed to deploy what it published: compiler version drift, dependency version differences, and build-environment assumptions can all produce materially different bytecode from identical source. The StableMagnet exploit ($27M) demonstrated this attack class: Techrate audited code from the GitHub repository while the deployed BSC library was a completely different binary — users had no way to detect the discrepancy because build reproducibility was not established. Reproducible builds create a deterministic verification path from source to deployment that any party can independently audit.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol provides a documented build configuration (Dockerfile, pinned foundry.toml, or equivalent) and independent reproduction of the deployed bytecode is confirmed for at least the most recent deployment. Yellow covers cases where build instructions are published but contain environment-specific assumptions, or where reproducibility has been verified for earlier versions but not the current deployment. Red is assigned when no build reproducibility documentation exists and independent bytecode reproduction cannot be performed.\n\n**Common gray cases**\nThis factor is grayed when the protocol operates on a non-EVM chain where deterministic compilation tooling is not yet standardized, or when the deployment predates the availability of reproducible build tooling for the relevant compiler.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Source verified on Polygonscan (exact match). foundry.toml present (solc v0.8.34, optimizer_runs = 1,000,000, EVM = Prague). Build should be reproducible. No signed release tag to anchor exact commit. Reproducibility is functionally available but not formally anchored.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/foundry.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana Verifiable Builds confirmed for CLMM, CPMM, AMM V4 (announced @RaydiumProtocol Nov 2024). Users can reproduce deployed bytecode from open-source repos using cargo build-sbf. Verification available on Solscan and SolanaFM. Full build reproducibility confirmed.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/README.md"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/RaydiumProtocol/status/1858922030747504698"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Build system is Hardhat (not Foundry). Source fully verified on Etherscan with compiler settings visible. No formal bytecode reproduction guide published by the team. Reproduction is possible in principle from Etherscan-verified source + Hardhat config, but no formal commitment or step-by-step guide exists. Foundry would provide deterministic builds; Hardhat is less standardized.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x1d8f8f00cfa6758d7bE78336684788Fb0ee0Fa46"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,94 @@
         "scoring_methodology": "**What this measures**\nThis factor counts the number of verifiable public accountability trails per core team member: LinkedIn profiles with substantive employment history, conference talk attributions with recorded video, prior employer references where the employment is independently verifiable, and GitHub profiles with multi-year contribution histories predating the current protocol. The output is a per-member count and a team aggregate score. Category 7 context: accountability surface depth is a proxy for the cost of exit — the more traceable the team, the higher the real-world consequence of executing a rug or insider drain.\n\n**Why it matters**\nA single social media handle is trivially discardable; a LinkedIn profile with ten years of employment history connected to a verifiable employer, combined with conference talks and peer references, is operationally difficult to abandon. Protocols where multiple team members have deep accountability surfaces have a materially lower observed exit-scam rate in the database. The signal is particularly relevant for protocols in early launch phase where no on-chain history exists yet to substitute for identity credibility.\n\n**Green / Yellow / Red**\nGreen is scored when the majority of core team members each have three or more independent verifiable accountability surface entries — LinkedIn with history, GitHub with multi-year activity, plus one additional source such as a conference talk or prior employer reference. Yellow applies when team members have one to two verifiable entries, or when accountability surface is concentrated in a single platform that could be fabricated. Red is scored when team members have zero independently verifiable accountability entries beyond a social handle or a newly created LinkedIn with no substantive history.\n\n**Common gray cases**\nGray is assigned when the protocol team is fully pseudonymous and accountability surface assessment relies entirely on unverifiable self-assertions, or when the team has not disclosed sufficient identifying information to begin the OSINT process within the evidence budget.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The CEO has a named mainstream-media interview and the Polymarket GitHub organization publicly operates the current CTF Exchange V2 repository. These are independently verifiable public accountability surfaces for protocol leadership and engineering work.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.cbsnews.com/news/polymarket-ceo-shayne-coplan-online-betting-platform-60-minutes-transcript/"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AlphaRay: multiple audio podcast appearances, IQ.wiki profile, 5-year ecosystem presence. Timon Peng: LinkedIn (10+ years crypto, prior employers Pangu Jailbreak and MinerCloud), GitHub org member. XRay, GammaRay, StingRay, RayZor: minimal individual public trails — named in materials but no individual LinkedIn, conference slide, or prior employer records. raydium-io GitHub org shows only 1 public member (Timon Peng). Aggregate public accountability surface is below Tier-1 doxxed standard but above fully anonymous.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=S0G2tZ6l8pM"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/timonpeng/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/orgs/raydium-io/people"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rugendyke: BSc CompSci (Southern Cross Univ 2001), Clemenger BBDO Brisbane (2006-2011), George Patterson Y&R (2013-2017), Rocket Pool founder since 2017, YouTube interviews on record. Langley: BSc CompSci (Univ of Kent 1998-2002), Civic Ledger and Victoria State Govt Education employer history, Devcon SEA 2024 speaker, active X/Twitter presence. GitHub org has 6 public members. oDAO includes Etherscan, Coinbase, Consensys Codefi, Blockdaemon, Bankless — all institutions with deep public accountability.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://app.devcon.org/speakers/darren-langley"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/@darrenlangley"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/@darcius"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=cqf6aJCFZn8"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

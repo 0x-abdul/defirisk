@@ -20,10 +20,63 @@
         "scoring_methodology": "**What this measures**\nThis factor assesses whether the fork's audit coverage is adequate for its deployed code, specifically whether: (a) the upstream audit covers the portions of code the fork shares with the upstream, AND (b) any diverged portions (identified by RD-F-129 code divergence) have been covered by either a fresh fork-specific audit or a documented delta-review. The data source is audit PDFs combined with bytecode diffing against the upstream.\n\n**Why it matters**\nA fork protocol that relies on the upstream's audit without its own review of diverged code has a false audit signal. Cork Protocol ($12M, 2025) is the sharpest example in the dataset: four separate audit firms reviewed the protocol across multiple rounds, yet the specific CorkHook contract that was exploited was outside at least three firms' scope. The protocol's management of a complex fork with multiple audit firms failed to cover the single most critical contract. For fork protocols specifically, the question is not 'has the protocol been audited?' but 'is the audit coverage continuous from the upstream through all divergence points to the deployed bytecode?'\n\n**Green / Yellow / Red**\nGreen: either (a) the fork divergence is below 10% and the upstream audit explicitly covers the shared code, or (b) the fork has a dedicated independent audit covering all deployed code including all diverged portions. Yellow: the fork has a delta-review or spot-review of the diverged portions but no full audit of the fork as a whole. Red: the fork relies entirely on the upstream's audit with no coverage of its own diverged code, or the diverged code exceeds 40% and no audit of any kind covers the fork-specific portions.\n\n**Common gray cases**\nThis factor is gray when audit PDFs are not publicly available and audit scope cannot be assessed, or when the fork origin cannot be confirmed to map the divergence.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor functions as the integrated audit-coverage signal for the Cat 8 lineage assessment."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens has fresh independent audit (ChainSecurity April 2024). CTF Exchange V2 has fresh dual audit (Cantina + Quantstamp March 2026). CTF Exchange V1 has ChainSecurity 2022 audit (V1 now sunset). Comprehensive audit coverage across fork and original components.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://old.chainsecurity.com/wp-content/uploads/2024/04/ChainSecurity_Polymarket_Conditional_Tokens_audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream. All 8 audit engagements are fresh audits of original code.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork — all audit coverage is native to Rocket Pool. Factor not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

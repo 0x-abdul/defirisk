@@ -31,10 +31,80 @@
           "root_cause": "`_upscale()` rounding-down compounded across 65+ micro-swaps"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No unprotected initialize() found. CTFExchange V1/V2 use constructors (non-upgradeable). pUSD implementation has initialize(address) with initializer modifier AND _disableInitializers() in constructor. No F022 vulnerability present.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/CTFExchange.sol"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium uses Rust/Anchor on Solana — the OZ initializer modifier pattern does not exist. Anchor enforces initialization through account struct constraints (Signer<'info>, seeds, init). CPMM initialize requires creator Signer. Standard AMM v4 process_initialize2 checks is_signer explicitly. No open unguarded initialization vector found. EVM attack vector eliminated by architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm/blob/master/program/src/processor.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/blob/master/programs/cp-swap/src/lib.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No unguarded public initialize() found. Core contracts use constructor injection (no initialize() at all). RocketMinipoolDelegate's initialise() is protected by custom onlyUninitialised modifier: require(storageState == StorageState.Uninitialised) — equivalent to OZ initializer. Saturn One RocketMegapoolDelegate and RocketMegapoolFactory use constructor-based initialization with no initialize() function.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolDelegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/minipool/RocketMinipoolDelegate.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

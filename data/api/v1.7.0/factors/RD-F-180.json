@@ -31,10 +31,75 @@
           "root_cause": "CAPO (Correlated Asset Price Oracle) misconfigured price feed for a freshly-listed correlated asset → mispriced collateral → cascade of involuntary liquidations"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "UMA resolves event outcomes for Polymarket's Conditional Token Framework. It is not a collateral-price or depeg oracle, so the v1.7 immutable collateral-oracle/depeg surface is not applicable.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/uma-ctf-adapter/blob/main/src/UmaCtfAdapter.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL per T-14 rubric v1.4/v1.5 — PD-017 tracking flag] NOT_APPLICABLE. No external oracle address exists in any Raydium program — there is no oracle address to be immutable or replaceable. Batch-24 definition covers: (a) EVM immutable oracle address — N/A (Solana, not EVM); (b) non-EVM hardcoded oracle address — no oracle address hardcoded in any Cargo.toml or program source; (c) closed-source binary oracle embedding — Raydium source is open and contains no oracle. Orchestrator: this not_applicable does NOT count against the ★ critical total.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL-CANDIDATE — PD-017 tracked] Rocket Pool does not use any external oracle service (Chainlink, Pyth, UMA, Redstone, etc.) whose address could be marked 'immutable'. The oracle function is the internal oDAO committee system using RocketNetworkBalances.sol and RocketNetworkPrices.sol. Both contracts retrieve all sibling contract addresses dynamically via getContractAddress() from the RocketStorage registry — none are immutable. No external oracle address field exists in any core contract. F180 requires an external oracle to potentially be immutable; Rocket Pool has no external oracle. Score: not_applicable. Flagged per PD-017: F180 [★ CRITICAL-CANDIDATE] is not_applicable for rocket-pool — orchestrator can record zero F180 promotion candidates for this protocol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

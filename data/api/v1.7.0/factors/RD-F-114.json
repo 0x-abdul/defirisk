@@ -31,10 +31,78 @@
           "root_cause": "Flash loan + bonding curve arbitrage (buy/burn/sell cycle)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "PolygonScan labels two public addresses as Polymarket deployers and exposes their transaction histories. The explorer evidence alone is insufficient to classify all prior deployments or establish the absence of a prior rug linkage.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xca71ea69c54c163d17beb90beb8d001e1eb538a1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4df6f457ae69c9310fa34c4b64f15582ea6e1fc8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public incident reports identify the compromised December 2022 admin key and the later multisig migration, but do not establish a complete pre-incident deployment history for the original protocol deployer.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certik.com/resources/blog/raydium-protocol-exploit-incident-analysis"
+            },
+            {
+              "source_type": "url",
+              "url": "https://raydium.medium.com/detailed-post-mortem-and-next-steps-d6d6dd461c3e"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer 2 (0x0ccf14983364a7735d369879603930afe10df21e) shows 415 transactions: protocol contract deployments and Rocket Pool Bootstrap function interactions. Labeled 'Rocket Pool: Deployer 2' and 'Contract Deployer' by Etherscan — public name tag confirms protocol affiliation. No prior-rug-linked contracts in visible history. Normal long-tenured developer activity pattern.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0ccf14983364a7735d369879603930afe10df21e"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

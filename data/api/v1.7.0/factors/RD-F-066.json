@@ -20,10 +20,63 @@
         "scoring_methodology": "**What this measures**\nThis factor records the utilization rate (borrowed amount divided by supplied amount) per market for lending protocols, read from on-chain state. High utilization means most of the supplied capital is actively borrowed and unavailable for withdrawal, increasing the risk of a liquidity crunch if multiple depositors attempt to exit simultaneously. The rate is displayed per market and updated continuously. This factor is not applicable (N/A) for non-lending protocols.\n\n**Why it matters**\nUtilization rate is a direct measure of withdrawal liquidity risk. When a lending market approaches one hundred percent utilization, new withdrawals become impossible without borrows being repaid first. In stress scenarios (exploit rumors, market crashes, governance failures), depositors often attempt to exit simultaneously, triggering a bank-run dynamic where early withdrawers drain the available liquidity and late withdrawers are locked in. High utilization in a protocol under other risk factors (poor multisig posture, post-audit code changes) is particularly dangerous because depositors cannot exit even if they receive advance warning of an impending exploit.\n\n**Green / Yellow / Red**\nGreen: all major markets below eighty percent utilization under normal conditions, indicating adequate withdrawal liquidity. Yellow: one or more markets between eighty and ninety-five percent utilization, indicating elevated exit risk if stress events coincide. Red: any market above ninety-five percent utilization for more than twenty-four consecutive hours, indicating a bank-run dynamic or liquidity trap is active or imminent.\n\n**Common gray cases**\nUtilization can spike temporarily during governance-driven borrow campaigns or yield optimization strategies; a single-day spike above the threshold is treated differently from sustained high utilization. Curator should verify whether elevated utilization is structural or transient before scoring.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Polymarket's documented model uses pUSD collateral to create and trade fully collateralized YES/NO outcome-token pairs; it does not document supply-and-borrow markets. A lending utilization rate is therefore not a meaningful protocol metric.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/positions/how-positions-work"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Raydium is an AMM/DEX, not a lending protocol, so it has no protocol borrow utilization rate.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Rocket Pool is an Ethereum liquid-staking protocol, not a lending protocol with borrow utilization.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

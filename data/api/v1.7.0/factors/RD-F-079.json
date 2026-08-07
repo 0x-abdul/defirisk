@@ -151,10 +151,76 @@
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public incident reporting does not substantiate a repeated exploit with the same root cause: the June 2026 event was a vendor-injected frontend script, while earlier reports concerned authentication-provider and phishing vectors.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/383711/polymarket-third-party-vulnerability-hack"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The two confirmed incidents have distinct reported causes: a compromised pool-owner key in 2022 and insufficient LP-mint validation in legacy AMM V3 in 2026. No same-root-cause repeat is evidenced.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/raydium-rekt/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The 2022 post-mortem attributes the documented incident to compromised workstation access and unencrypted SSH keys, while stating the protocol was unaffected. A single public incident record cannot establish or exclude repeated protocol-exploit root causes.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/post-mortem-security-incident-26-05/701"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,72 @@
         "scoring_methodology": "**What this measures**\nThis factor records the categorical tier assigned to the audit firms that have reviewed the protocol's deployed code. Tier classifications are maintained by curators on a published reputation list and are based on firm track record, auditor count, methodology rigor, and industry recognition. The categories are: Tier-1 (Trail of Bits, OpenZeppelin, Spearbit, ChainSecurity, Sigma Prime), Tier-2 (Halborn, Peckshield, Certik, Dedaub, MixBytes, others with established track records), boutique (smaller or newer firms), and unknown (no assessable reputation).\n\n**Why it matters**\nAudit firm quality affects the probability that a given bug survives review. KyberSwap Elastic ($48M, 2023) was reviewed by ChainSecurity (Tier-1) and Sherlock -- yet the sub-microscopic precision failure was missed by both, illustrating that tier alone does not guarantee coverage of novel vulnerability classes. Conversely, protocols audited only by unknown boutique firms or self-reported internal reviewers have a weaker baseline assurance. Audit firm tier is a soft signal that is most useful in combination with other Cat 1 factors -- particularly audit scope coverage and post-audit code change status.\n\n**Green / Yellow / Red**\nGreen: at least one Tier-1 firm has reviewed the currently deployed code. Yellow: all audits are from Tier-2 or boutique firms with established track records but no Tier-1 involvement. Red: all audits are from unknown-reputation firms, or the only audits are self-reported internal reviews with no independent third-party verification.\n\n**Common gray cases**\nCurators cannot grade this factor when audit firm identity is not disclosed, or when the curator-maintained reputation list has not yet classified a newly active firm. This factor is also gray when no audit exists (in which case RD-F-004 captures the absence).\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a causal driver; audit firm tier is a soft input rather than a single-factor sufficient condition for exploit. The factor's value is as a quality modifier on the audit count signal."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Cantina (Tier-1, Spearbit-affiliated), OpenZeppelin (Tier-1) cover critical components. ChainSecurity (Tier-2), Quantstamp (Tier-2) also engaged. At least one Tier-1 firm on deployed code.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/ff945ca2-2a6e-4b83-b1b6-7a0cd3b94bea"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All 5 firms are Tier-2. OtterSec and Sec3 are Solana-native and considered leading firms for SVM programs. Halborn is established Tier-2. No Tier-1 (ToB/OZ/ConsenSys/Certora/Sigma/Spearbit/Zellic) engagement identified. For Solana protocols, OtterSec is considered equivalent to a Tier-1 Solana auditor.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit/OtterSec%20Q3%202022"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Tier-1 firms confirmed: Trail of Bits, Sigma Prime, Consensys Diligence, Cantina/Spearbit. Bailsec and ChainSafe are established named firms with public track records. No unknown or unranked boutique firms.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/sigp/public-audits/blob/master/reports/rocket-pool/rocket-pool/review.pdf"
+            },
+            {
+              "source_type": "url",
+              "url": "https://github.com/trailofbits/publications/blob/master/reviews/RocketPool.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

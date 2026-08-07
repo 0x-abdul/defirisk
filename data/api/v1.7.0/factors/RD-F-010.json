@@ -20,10 +20,63 @@
         "scoring_methodology": "**What this measures**\nThis factor records the count of high-severity findings flagged by static analysis tools -- specifically Slither, Mythril, and Semgrep -- run against the protocol's deployed bytecode and verified source code, after deduplication across tools. The count excludes findings that have documented on-chain fixes or that the protocol has formally acknowledged and risk-accepted with curator review. The measurement is programmatic and runs on each assessment cadence using the verified source from Etherscan.\n\n**Why it matters**\nStatic analyzers detect a broad range of well-documented vulnerability patterns automatically: reentrancy, unchecked return values, integer overflow, arbitrary call targets, and storage collision risks. A high count of unresolved high-severity findings indicates that the protocol has deployed code with known warning patterns that have not been investigated or resolved. While false positives exist, each unresolved high finding represents a potential real vulnerability that deserves manual review. Protocols with large numbers of unaddressed static findings have consistently lower code quality baselines in the historical exploit dataset.\n\n**Green / Yellow / Red**\nGreen: zero unresolved high-severity static analysis findings across all deployed contracts covering user funds, or all findings are documented as accepted-risk with curator rationale on file. Yellow: one to three unresolved high-severity findings in non-critical contract paths, with documentation that the team is aware. Red: four or more unresolved high-severity findings, or any unresolved finding in a function that directly controls user fund movements.\n\n**Common gray cases**\nCurators cannot grade this factor when the protocol's source is not verified on any explorer and static analysis cannot be run, or when the verified source is Yul or assembly-heavy code that the standard Slither/Mythril detectors cannot parse reliably.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. Static analyzer findings are a preventive input that correlates with code quality rather than directly with exploits."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither/Mythril/Semgrep run results found. Cannot run tools locally. Source inspection suggests low reentrancy risk in V2 (operator-gated) and clean V1 (nonReentrant guards). Requires tool execution for definitive assessment.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public automated static-analysis output was identified for the current Raydium Rust/Solana programs.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither, Mythril, or Semgrep output found for Rocket Pool contracts. Hardhat-based codebase (no Foundry) — no Foundry-native analysis tooling applicable. No static-analysis output in the github.com/rocket-pool/rocketpool repository. Cannot assess without tool run.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

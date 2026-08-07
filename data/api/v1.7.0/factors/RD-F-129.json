@@ -20,10 +20,58 @@
         "scoring_methodology": "**What this measures**\nThis factor records the percentage of lines changed between this fork's deployed code and the stated upstream source at the fork point, computed via git diff against the upstream repository at the reference commit. A high divergence percentage indicates that the fork has evolved substantially beyond the audited upstream, potentially introducing novel vulnerabilities that the upstream's audit does not cover. The data source is the protocol's public repository combined with bytecode diffing against the upstream.\n\n**Why it matters**\nFork divergence is a proxy for how much 'new surface' has been added beyond the audited upstream code. A fork that has diverged 80% from Compound Finance is essentially a new protocol in a Compound wrapper -- the upstream's audit provides minimal assurance for the diverged portions. The sweet spot of fork risk is high divergence without corresponding audit coverage of the diverged code: the team gets the credibility signal of forking from a well-known protocol while deploying substantial novel code that has not been independently reviewed. Governance fork parameter changes are one of the most common forms of divergence; Curio ($16M, 2024) exploited a MakerDAO fork where voting power privilege logic had been modified without independent parameter review.\n\n**Green / Yellow / Red**\nGreen: code divergence from upstream is below 20% and the diverged portion has been independently audited or is limited to configuration parameters. Yellow: divergence is 20% to 60%; a delta-audit covers the changed portions. Red: divergence exceeds 60% with no audit of the diverged code, or divergence is in security-critical functions (access control, oracle integration, liquidation logic) without independent review.\n\n**Common gray cases**\nThis factor is gray when the protocol does not publish source code, when the upstream commit reference is not stated, or when the fork is of a non-public upstream that cannot be compared.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural input that feeds the RD-F-131 audit coverage assessment."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens deployment on Polygon is verbatim Gnosis CTF standard (Polygonscan 'Exact Match' verification). Divergence is ~0%. CTF Exchange V1/V2 are original code with no upstream to diff against.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4D97DCd97eC945f40cF65F87097ACe5EA0476045#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork to compute divergence against.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork parent — divergence measurement undefined. Factor not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

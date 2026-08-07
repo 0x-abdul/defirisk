@@ -20,10 +20,58 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when an address from a curator-maintained threat-actor cluster — comprising past exploiters, labeled attacker families, and sanctioned addresses — has interacted with the monitored protocol within the trailing 30 days. The threat-actor cluster is drawn from Chainalysis TRM labels, OFAC SDN list entries, curator-maintained attacker address lists derived from post-mortem analysis, and known DPRK/Lazarus wallet sets. Category 11 context: attacker-side reconnaissance precedes the majority of DeFi exploits; a known threat actor interacting with a protocol is the highest-confidence forward-looking threat intelligence signal available.\n\n**Why it matters**\nThe T-01 synthesis documents approximately eight in-sample hack precedents where known-threat-actor addresses were interacting with target protocols before the exploit. Radiant Capital II ($53M, 2024) included a failed exploit attempt six days before the successful attack — if the attacker address were labeled from the failed attempt, a second interaction would have triggered this signal. Post-mortem analysis consistently identifies attacker addresses that were active in earlier hacks — attacker address reuse across protocols is documented. The signal is P0 because a labeled threat actor probing a protocol is the most actionable pre-exploit intelligence available, regardless of the absence of on-chain vulnerability evidence.\n\n**Green / Yellow / Red**\nGreen is the baseline when no known-threat-actor cluster addresses have interacted with the protocol in the trailing 30 days per the current cluster feed. Yellow fires when a medium-confidence threat-actor address (curator-labeled but not OFAC-sanctioned) interacts with the protocol — elevated but potentially a coincidental interaction. Red fires when a high-confidence labeled threat-actor address (OFAC SDN, Chainalysis-confirmed exploiter, or prior DPRK-attributed address) interacts with the protocol within the trailing 30 days.\n\n**Common gray cases**\nGray applies when the cluster feed has not been updated within 30 days (stale data) or when the protocol operates on a chain where cluster coverage is materially incomplete, making the absence of hits unreliable as a green signal.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Known-threat-actor cluster contact requires a current, attributable cluster-to-contract interaction. No independently verifiable public attribution establishes the signal.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting of earlier threat-actor activity through Raydium is historical and does not establish a current known-threat-actor cluster interaction with Raydium on 2026-07-24.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public evidence identifies a DPRK or Lazarus interaction with Rocket Pool core contracts; the cited public threat profile provides contextual attribution coverage.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://attack.mitre.org/groups/G0032/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

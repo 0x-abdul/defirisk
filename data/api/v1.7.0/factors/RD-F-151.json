@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether a bridge verifier explicitly tests that  does not return . In Solidity,  returns the zero address for invalid ECDSA signatures rather than reverting; a verifier that omits this check treats any malformed signature as belonging to . This factor applies only to bridge-touching protocols; non-bridge protocols show this factor as N/A.\n\n**Why it matters**\nIf  appears in a bridge guardian or signer set — as it did in Wormhole's original code — an attacker can forge a valid-looking signature for any message using malformed ECDSA inputs, enabling unbacked minting bounded only by destination liquidity. The Wormhole February 2022 exploit demonstrated how a single signer-set integrity flaw can threaten hundreds of millions in bridge TVL. Security auditors consistently flag a missing  as high-severity precisely because the omission is visually unobtrusive: one missing line converts a cryptographically sound scheme into a no-authentication bypass.\n\n**Green / Yellow / Red**\nGreen is scored when the verifier explicitly asserts  across all verification paths. Yellow is scored when the check exists but applies only to a subset of paths or is delegated to a library whose zero-address handling cannot be confirmed. Red is scored when no zero-address assertion is present in any signature verification path.\n\n**Common gray cases**\nGray is applied when the bridge verifier is closed-source or delegates to a third-party module whose implementation cannot be inspected.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5. A missing  check provides a direct path to arbitrary message forging and unbacked minting — one of the narrowest code-level omissions with the largest possible loss surface in bridge architecture."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The user-facing Bridge API is documented, but its public materials do not identify the contract signature-verification implementation needed to assess ecrecover zero-address handling.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] NOT_APPLICABLE. No EVM bridge code exists. Raydium is Solana-only. ecrecover is an EVM precompile; it does not exist in Solana programs. The Wormhole-class vulnerability pattern does not apply.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — bridge-only] Rocket Pool is an Eth-mainnet-only LST; rETH on L2s is canonical-bridged ERC-20 not operated or governed by Rocket Pool. No bridge contracts exist; ecrecover pattern is irrelevant. Cat 10 N/A by construction.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

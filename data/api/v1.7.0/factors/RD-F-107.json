@@ -20,10 +20,58 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when the admin or upgrader EOA signs a transaction from a geography (as inferred from IP metadata, if observable) or device fingerprint inconsistent with the prior signing history for that address. This signal is off-chain in nature — it requires access to signing telemetry from the wallet provider or a relay — and is therefore M (manual) curation and P2 priority. Category 6 context: geography and device anomalies are the off-chain behavioral indicators of key compromise, particularly relevant for the class of exploits where the attacker physically compromised a signing device or intercepted signing credentials.\n\n**Why it matters**\nRadiant Capital II ($53M, 2024) involved what Radiant described as a sophisticated device-level compromise across three signers' hardware wallets — an attack that left no on-chain precursor signal but would theoretically have been detectable via signing-session fingerprint anomalies if those signers' device environments were monitored. EasyFi ($59M, 2021) involved a MetaMask compromise that exposed private keys. The Harmony Bridge compromise involved hot-wallet signers whose key exposure would have been preceded by an anomalous signing session. The signal is P2 because signing-session telemetry is not broadly accessible from protocol-external monitoring — it requires cooperation from wallet providers or relay operators.\n\n**Green / Yellow / Red**\nGreen is the baseline when all admin signing sessions show device fingerprints and network characteristics consistent with the established signing history for each admin address. Yellow fires when a signing session shows an unfamiliar device fingerprint but from a consistent geography — could indicate hardware upgrade. Red fires when an admin signing session originates from an entirely new geography and device fingerprint combination never previously associated with that address.\n\n**Common gray cases**\nGray applies in virtually all v1 monitoring cases where signing telemetry is not accessible from the dashboard's external vantage point — this is the norm and Gray is the expected baseline state for most protocols.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "New-device or new-geography signing detection requires private signer telemetry and a historical device/geography baseline, neither of which is publicly available.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "New geography or device use by privileged signers is not observable from public blockchain data alone.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public administrator device, location, or signing-behaviour telemetry is available for Rocket Pool.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

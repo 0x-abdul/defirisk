@@ -20,10 +20,80 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol exposes a rescue() or emergencyWithdraw() function callable by an admin address without any timelock delay on execution. Static analysis of the deployed bytecode combined with on-chain role checks determines whether such a function exists, who can call it, and whether the call path bypasses the protocol's declared timelock. The absence of a timelock on a function capable of extracting all user funds is the trigger condition, regardless of the protocol's stated operational intent.\n\n**Why it matters**\nA rescue function that can be executed immediately by a single admin collapses the security model to a single key's integrity. Even when designed for legitimate emergency use, such a function creates a one-transaction full-drain vector: compromise the admin key, call rescue(), protocol is empty. Industry security research consistently flags unrestricted admin withdrawal functions as among the highest-severity centralization risks because they give the admin more power than the protocol's governance framework was designed to grant. The T-01 evidence base records approximately ten in-sample hacks where this pattern contributed to fund loss, typically in combination with a deployer-retained admin role. When a legitimate emergency mechanism exists, the correct implementation chains it through a timelock that gives users time to exit — eliminating the immediate-drain path while preserving the emergency capability.\n\n**Green / Yellow / Red**\nGreen is assigned when no rescue or emergencyWithdraw function exists, or when any such function is subject to the same timelock as upgrade operations (minimum 24 hours). Yellow covers protocols where a rescue path exists with a shorter-than-recommended timelock (6–24 hours) or where the function is restricted to a hardware-secured multisig above a meaningful threshold. Red is assigned when a rescue or emergencyWithdraw function is callable by a single admin role or low-threshold multisig with no timelock delay — regardless of how the function is labeled in documentation.\n\n**Common gray cases**\nThis factor is grayed when the source code for relevant contracts is unavailable or when the protocol uses a novel architecture where equivalent drain capability is unclear from on-chain inspection alone.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nThis factor alone is sufficient to trigger a D or F grade under rubric v1.5 — a single red assessment here overrides all other category scores. An immediately-executable rescue function is structurally equivalent to an admin withdrawal backdoor: any key compromise or insider threat converts it into a single-transaction full protocol drain."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Manual-resolution evidence corrected: UmaCtfAdapter uses SAFETY_PERIOD = 1 hours; flag() sets manualResolutionTimestamp to block.timestamp plus that period, and resolveManually() requires the market to be flagged and the safety period to have elapsed. This replaces stale 2-day flag-window wording. CTF Exchange V2 pauseTrading() remains immediate onlyAdmin, but pause is not a direct fund-extraction rescue/sweep path. RD-F-041 remains yellow.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xE111180000d2663C0091e4f400237545B87B996B#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/uma-ctf-adapter/8b76cc9e0d46c6f7450a0adb0ddc0f5b0568c9cc/src/UmaCtfAdapter.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "WithdrawPnl in AMM V4 allows pnl_owner/amm_owner to extract accumulated protocol fees without an independent timelock (multisig threshold required but no separate time delay). CLMM collect_protocol_fee similarly has no independent timelock. These are limited to fee accruals, not full LP fund drainage. Post-Dec 2022 remediation removed the dangerous LP supply inflation + withdrawPNL combination. Current fee withdrawal is multisig-gated but not independently timelocked.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certik.com/resources/blog/raydium-protocol-exploit-incident-analysis"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/src/processor.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No rescue, emergencyWithdraw, sweep, or equivalent function found in RocketVault, RocketTokenRETH, or RocketTokenRPL. RocketVault withdrawals (withdrawEther, withdrawToken) are restricted to onlyLatestNetworkContract — only authorized protocol contracts, not an admin EOA directly. No admin drain path found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/RocketVault.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

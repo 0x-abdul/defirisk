@@ -20,10 +20,86 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the wallet that deployed the protocol's primary contracts received funds via a privacy mixer — Tornado Cash, Railgun, or a comparable service — within the 30 calendar days prior to the deployment transaction. Measurement is programmatic: on-chain transaction graph analysis traces the deployer address back through its funding source, flagging any mixer cluster within a 30-day look-back window. Category 7 context: the mixer-funded deployer pattern is the single most reliable structural precursor to a deliberate rug or exit scam, as it establishes operational anonymity before the protocol receives user deposits.\n\n**Why it matters**\nA deployer who funds their wallet through a mixer immediately before launch is making an active choice to sever the financial identity trail that would otherwise link the deployment to a real-world identity. Across the T-01 hack database this pattern appears in approximately eight in-sample cases with rug or insider-drain outcomes. While legitimate privacy-focused developers occasionally use mixers for personal transactions, the 30-day pre-deploy window narrows the signal to intentional pre-launch obfuscation rather than incidental mixing. The combination of mixer funding, pseudonymous team, and no audit is the highest-probability rug precursor combination in the dataset.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer's funding history for the 30 days pre-deploy is fully traceable to identifiable on-chain sources — CEX withdrawal, ENS-linked wallet, or prior audited-protocol interactions. Yellow applies when funding is partially obscured (e.g., the deployer received funds from an intermediary wallet whose own history is opaque) but no direct mixer-cluster hop is confirmed within the window. Red is scored when on-chain analysis confirms a direct Tornado Cash, Railgun, or equivalent mixer withdrawal to the deployer address within 30 days of the first protocol deployment, triggering the critical flag.\n\n**Common gray cases**\nGray is assigned when the deployer address predates the protocol by many years and mixer interactions are present but outside the 30-day window, or when the mixer interaction is to a non-deployer address that subsequently funded the deployer through multiple intermediate hops exceeding the three-hop cluster definition.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor.\n\n**★ Critical factor**\nA confirmed direct mixer-to-deployer funding event within 30 days of deployment is alone sufficient to trigger a D or F grade under rubric v1.5; it represents a deliberate choice to eliminate identity accountability before accepting user funds."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "PolygonScan identifies the reviewed deployer addresses and displays their funding and transaction histories, but the public evidence reviewed does not establish a complete 30-day pre-deployment mixer trace. No mixer-funded finding is made.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xca71ea69c54c163d17beb90beb8d001e1eb538a1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4df6f457ae69c9310fa34c4b64f15582ea6e1fc8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] Public incident reporting identifies a compromised admin key and later attacker mixer activity, but it does not identify a verified Raydium deployer or establish the required 30-day pre-deployment funding path.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certik.com/resources/blog/raydium-protocol-exploit-incident-analysis"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/203732/raydium-hacker-funnels-2-7-million-through-tornado-cash-mixer"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/203732/raydium-hacker-funnels-2-7-million-through-tornado-cash-mixer"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Etherscan identifies the deployer as Rocket Pool: Deployer 2, shows the funding address and a first transaction more than five years before this assessment, while the rETH deployment transaction is dated November 2021. The observed funding precedes deployment by well over 30 days; no mixer-funded event within the factor's window was evidenced.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0ccf14983364a7735d369879603930afe10df21e"
+            },
+            {
+              "source_type": "transaction",
+              "url": "https://etherscan.io/tx/0x4f3f14803e358840c61bfb5f004c39920a6e15b9c5d6636fc6e9310eab772a91"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

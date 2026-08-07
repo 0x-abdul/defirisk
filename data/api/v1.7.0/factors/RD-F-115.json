@@ -20,10 +20,63 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether any team member is linked via verified OSINT to a prior rug pull or exit-scam-labeled protocol — specifically, a protocol where curator rug lists, post-mortem analysis, or law enforcement records attribute deliberate team-orchestrated theft. Measurement is manual curator OSINT cross-referencing team handles, wallet addresses, and social accounts against maintained rug databases (rekt.news, DeFiYield, Chainalysis labels, and curator-maintained lists). Category 7 context: prior rug affiliation is the most direct insider-risk signal available for protocols where no exploit has yet occurred.\n\n**Why it matters**\nExit scams are rarely isolated incidents — teams that successfully rug one protocol often attempt to launch another under a new identity, leveraging the proceeds of the prior scam to seed credibility. The Hope Finance incident ($1.86M) showed all three multisig signers coordinating a drain. Merlin DEX demonstrated how a nominally \"audited\" protocol with a backdoor-embedded privileged EOA constitutes a planned insider exit. The curator rug database is the primary mechanism for detecting serial bad actors before they acquire new user funds.\n\n**Green / Yellow / Red**\nGreen is scored when OSINT confirms no team member has any association with a prior rug-labeled protocol across all discoverable handles, wallet addresses, and social accounts. Yellow applies when a team member has a distant or unconfirmed association — for instance, they contributed code to a protocol that was later rugged but are not attributed as a principal. Red is scored when any verified OSINT trail links a core team member (founder, lead developer, multisig signer) to a prior confirmed rug or exit scam.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and OSINT cannot progress beyond handles that cannot be cross-referenced against rug databases, or when a potential match exists but curator confidence falls below the attribution threshold.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The reviewed public material does not establish a complete identity map or comprehensive adverse-affiliation check for all Raydium contributors.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://ambcrypto.com/blog/what-is-raydium-and-is-it-safe-to-use-in-2025/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public primary attribution of a Rocket Pool team member to a prior rug or exit scam was identified in this pass, but absence-search results cannot independently establish the negative claim across all team histories. Gray pending a comprehensive attributable-history source.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/rocket-pool"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

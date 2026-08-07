@@ -20,10 +20,68 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether the protocol published a public post-mortem within thirty days of its most recent exploit. The Boolean is set to true only when a post-mortem is publicly accessible (blog post, governance forum thread, or equivalent) and contains at minimum a timeline of the incident, identification of the root cause, and a description of the remediation steps taken or planned. Partial disclosures (e.g., brief tweets with no technical detail) do not satisfy the criterion.\n\n**Why it matters**\nA timely, detailed post-mortem serves three depositor-protection functions. First, it demonstrates that the team understood what failed -- a prerequisite for fixing it. Second, it creates an accountability record that allows the community to verify whether the stated fix was actually deployed. Third, it informs the broader ecosystem about a new vulnerability class, reducing the probability of the same vector being exploited on sister protocols. Twelve of the thirteen audited protocols in the dataset that were subsequently exploited had some form of post-mortem, but quality varied dramatically: Merlin DEX's CertiK audit marked a critical finding as resolved based on a verbal promise with no post-mortem verification; Elephant Money's Solidity Finance audit identified the exact vulnerability but the finding was not communicated to the team.\n\n**Green / Yellow / Red**\nGreen: post-mortem published within thirty days containing timeline, root cause, and remediation plan with on-chain verification of fix. Yellow: post-mortem published but after thirty days, or published on time but lacking root-cause technical depth or remediation verification. Red: no post-mortem published, or a statement issued that attributes the incident to external factors without acknowledging the internal vulnerability.\n\n**Common gray cases**\nProtocols that deliver private post-mortems to institutional depositors but do not publish publicly are scored red on this factor, since depositor-protection requires public disclosure.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "As of the refresh date, public reporting says Polymarket supplied little technical information about the June 2026 breach and did not provide more comment. The 30-day post-mortem window had not fully elapsed, so the evidence supports yellow rather than a final adverse conclusion.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting documents the June 2026 retired AMM V3 incident and Raydium's initial statement, but the reviewed materials do not establish whether a qualifying detailed post-mortem was later published. The current evidence is insufficient to determine the rubric outcome.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A public post-mortem was published for the 2022 oDAO operational incident, but that event was reported as not affecting the protocol. No protocol-exploit post-mortem can therefore be timed from the reviewed evidence.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/post-mortem-security-incident-26-05/701"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

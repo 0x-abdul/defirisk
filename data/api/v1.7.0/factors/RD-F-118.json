@@ -20,10 +20,67 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether any team member's social handles — Twitter/X, Discord, GitHub username, or Telegram — have previously been associated with a rugged or failed project under a different protocol name. Measurement is manual OSINT by the curator, cross-referencing current handles against archived social records, Wayback Machine captures, and curator-maintained alias databases. Category 7 context: handle reuse is a signature behavior of serial exit-scam operators who rebrand after each rug while retaining their online presence.\n\n**Why it matters**\nSerial exit-scam operators rarely create entirely new online identities — doing so sacrifices follower counts and credibility signals that are operationally useful for attracting new victims. More commonly, they retain the same handle but change the protocol branding, or use closely related handles across iterations. Handle reuse is documented in the rekt.news dataset for several BSC-era rug operators and in the Snowdog incident where wallet funding via FTX-KYC'd accounts provided cross-reference opportunities. The signal is weak in isolation but becomes strong when combined with pseudonymous identity, short protocol age, and no audit.\n\n**Green / Yellow / Red**\nGreen is scored when no handle associated with any core team member appears in curator rug alias databases or in archived references to failed/rugged projects under different protocol names. Yellow applies when a handle has a documented prior association with a project that failed (team dissolved, protocol sunsetted) but without confirmed rug attribution — normal project failure is not a risk signal. Red is scored when a verified handle reuse links a current team member to a prior confirmed rug or exit-scam protocol.\n\n**Common gray cases**\nGray is assigned when the team is fully pseudonymous and no handles are publicly attributable, or when the OSINT trail is too sparse to cross-reference against rug databases with confidence.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not assessed.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A public profile exists for Timon Peng, but the available public material does not establish a comprehensive handle-reuse investigation across every named or pseudonymous contributor.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/TimonPeng"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "David Rugendyke's public GitHub profile identifies the darcius handle with Rocket Pool. The reviewed sources do not provide a complete cross-platform handle-history or a comprehensive adverse-project index for every team member. Gray: no absence-of-reuse conclusion is asserted.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/darcius"
+            },
+            {
+              "source_type": "url",
+              "url": "https://x.com/langerstwit"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
