@@ -702,6 +702,47 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium audit-scope traceability remains yellow. Public CLMM master history includes activity through commit f68fd42 on 2026-06-24, CPMM has a 2026-06-12 master commit 78f254e, and the official audit repository includes the Sec3 Q2 2026 CLMM audit folder with limit-order/dynamic-fee coverage. A June 2026 report describes an exploit of the retired AMM v3 program; that report does not establish an audit-to-bytecode mapping for the current programs. Public sources still do not provide a clean deployed Solana bytecode-to-audit-commit mapping for all current user-fund programs, so neither green nor a material current-program mismatch/red is supported.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "reference": "CLMM 2026-06-24 commit after stale a5a46ff baseline.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-clmm/commit/f68fd4286821905b5d1f8a8762f0c51a7f33c578"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm/commits/master/"
+            },
+            {
+              "reference": "CPMM 2026-06-12 commit after the prior baseline.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/commit/78f254e1023751e706df7dc15c453fc3e046697c"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit/Sec3%20Q2%202026"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -43,6 +43,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "24h timelock applies to program upgrades. Admin fee collection functions (WithdrawPnl in AMM V4, collect_protocol_fee in CLMM) require multisig signatures but do not have an independent timelock on execution. Treasury multisig gates fee withdrawals but no dedicated timelock per-action confirmed for sensitive actions beyond upgrades.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/src/processor.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-clmm/master/programs/amm/src/instructions/admin/collect_protocol_fee.rs"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

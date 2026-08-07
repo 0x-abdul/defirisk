@@ -54,6 +54,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium uses Rust/Anchor on Solana — the OZ initializer modifier pattern does not exist. Anchor enforces initialization through account struct constraints (Signer<'info>, seeds, init). CPMM initialize requires creator Signer. Standard AMM v4 process_initialize2 checks is_signer explicitly. No open unguarded initialization vector found. EVM attack vector eliminated by architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm/blob/master/program/src/processor.rs"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/blob/master/programs/cp-swap/src/lib.rs"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

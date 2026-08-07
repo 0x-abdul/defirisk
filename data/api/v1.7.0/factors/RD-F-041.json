@@ -43,6 +43,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "WithdrawPnl in AMM V4 allows pnl_owner/amm_owner to extract accumulated protocol fees without an independent timelock (multisig threshold required but no separate time delay). CLMM collect_protocol_fee similarly has no independent timelock. These are limited to fee accruals, not full LP fund drainage. Post-Dec 2022 remediation removed the dangerous LP supply inflation + withdrawPNL combination. Current fee withdrawal is multisig-gated but not independently timelocked.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.certik.com/resources/blog/raydium-protocol-exploit-incident-analysis"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/src/processor.rs"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

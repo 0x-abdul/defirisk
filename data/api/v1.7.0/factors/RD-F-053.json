@@ -214,6 +214,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] GREEN. Raydium uses no external oracle. No spot DEX pool is read as a price source — Raydium IS the pool. The red condition requires reading a spot DEX pool as an oracle without TWAP/fallback; not applicable to a reserves-based AMM. Confirmed via Cargo.toml inspection: no Pyth, Chainlink, Switchboard, or Uniswap-TWAP deps in any core program.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-clmm/master/programs/amm/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-cp-swap/master/programs/cp-swap/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
