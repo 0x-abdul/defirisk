@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor detects whether any deployed contract in the protocol contains the SELFDESTRUCT opcode in a code path reachable from a non-admin, publicly callable function. The assessment is purely static: a bytecode scan for SELFDESTRUCT combined with call-graph analysis to determine whether the path is gated by an admin-only access control check. Contracts where SELFDESTRUCT is only reachable via owner or multisig-protected functions are not flagged.\n\n**Why it matters**\nSELFDESTRUCT in an implementation contract reachable from a public path allows an attacker to destroy the implementation, bricking every proxy that points to it. The Parity wallet freeze (not in dataset but foundational) occurred because the initWallet() function on the library implementation had no access control, allowing any caller to claim ownership and then call kill(), permanently destroying the implementation and making $150M of funds irretrievable. Post-Dencun, the SELFDESTRUCT opcode behavior changed in EVM (it no longer destroys code but still clears ETH balance), but the pattern remains dangerous on non-EVM chains or in legacy contracts.\n\n**Green / Yellow / Red**\nGreen: no SELFDESTRUCT opcode is present in any deployed contract, or SELFDESTRUCT is present only in code paths exclusively gated by owner or multisig access control with a timelock. Yellow: SELFDESTRUCT is present behind an admin gate but the admin gate does not require a timelock, meaning a compromised admin key could brick the protocol instantly. Red: SELFDESTRUCT is present in a code path reachable from any external caller without access control.\n\n**Common gray cases**\nThis factor cannot be graded when source is not verified and bytecode disassembly is ambiguous about the opcode's reachability conditions.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The factor is retained based on its catastrophic severity class (~5 documented precursor instances in T-01 evidence) and the Parity freeze as a foundational industry reference."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Source inspection of all reviewed CTF Exchange V1/V2 mixins (Auth, Pausable, Trading, AssetOperations, Assets, Fees, Registry, Signatures, Hashing, ERC1155TokenReceiver) found no SELFDESTRUCT opcode. ConditionalTokens (Gnosis CTF, 0.5.10) contains no selfdestruct per its design.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange/blob/main/src/exchange/CTFExchange.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

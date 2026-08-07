@@ -20,10 +20,34 @@
         "scoring_methodology": "**What this measures**\nThis factor counts the number of upgrades executed in the trailing 30 days that bypassed the protocol's declared timelock path — meaning the upgrade was executed directly from an admin address without going through the queuing and delay mechanism. These are identified by comparing on-chain upgrade transaction timestamps against any prior queuing transactions in the timelock contract; upgrades with no corresponding queue event are classified as hot-patch deploys.\n\n**Why it matters**\nHot-patch deploys that bypass the timelock eliminate the user protection window that timelocks are designed to provide. Even legitimate emergency patches represent a choice to prioritize speed over the security of the timelock guarantee — and that choice, when made unilaterally, reduces the protocol's governance security posture to the level of a non-timelocked system for that specific change. The pattern of emergency-bypass deploys accumulating over time (four in the evidence base) indicates that the timelock is not structurally enforced but is instead a discretionary governance tool, which undermines its credibility as a security signal.\n\n**Green / Yellow / Red**\nGreen is assigned when zero hot-patch deploys occurred in the trailing 30 days, or when any bypass was explicitly authorized by governance vote and publicly documented. Yellow covers one hot-patch deploy in 30 days with a documented emergency justification. Red is assigned when two or more hot-patch deploys occurred in the trailing 30 days without corresponding governance authorization, or when any hot-patch modified a contract in scope for a current audit.\n\n**Common gray cases**\nThis factor is grayed when the protocol has no timelock (making \"bypass\" undefined), or when all upgrades in the window preceded the protocol's adoption of a timelock.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No timelock on upgrade path (UUPS pUSD — onlyOwner, immediate). No hot-patch deploy events identified in last 30 days. Post-April-13 commits are docs-only. No upgrade executed. Rated yellow because the absence of a timelock means any future upgrade would bypass the declared (non-existent) timelock.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange-v2/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's vaults or lending markets implement a first-depositor guard against share inflation attacks. Acceptable guards include: a seed deposit locked at deploy time (dead shares), a virtual-share offset (OZ 4.9 implementation), or an explicit floor check that prevents first deposits from setting an exploitable exchange rate. The check covers both ERC-4626 vaults and Compound-fork cToken markets. Source inspection is the primary data source.\n\n**Why it matters**\nThe first-depositor share inflation attack affects any share-based accounting system where total supply can reach zero. The attack class spans cToken markets (RD-F-070), ERC-4626 vaults (RD-F-074), and hybrid architectures like Silo Finance where the receiver parameter allowed external depositors to inflate shares against capped markets. The common thread is that a zero-supply state creates a denominator-manipulation opportunity that the attacker can exploit before any legitimate user deposits. First-depositor guards (dead shares, virtual shares, or floor checks) eliminate this attack class by ensuring the denominator is never zero in practice.\n\n**Green / Yellow / Red**\nGreen: all share-based accounting systems in the protocol have a first-depositor guard implemented in code and verifiable on-chain. Yellow: some but not all share-based systems have guards, or guards exist for ERC-4626 vaults but not for cToken-style markets. Red: no first-depositor guards in any share-based accounting system, or guards exist in documentation but are not enforced in deployed code.\n\n**Common gray cases**\nProtocols that deploy markets with a founding team deposit (non-code-enforced) may argue the risk is mitigated; curator must verify whether the founding deposit is locked in a way that prevents withdrawal before user deposits arrive, not merely present at the time of assessment.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Polymarket outcome positions are created by converting pUSD into fully collateralized YES/NO ERC-1155 token pairs, not by minting proportional vault shares. The first-depositor/share-inflation guard for vault accounting does not apply.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/positions/how-positions-work"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

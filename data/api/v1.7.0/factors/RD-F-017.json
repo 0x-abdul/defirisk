@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol performs arithmetic operations over token amounts with different decimal precisions -- for example, combining a 6-decimal USDC amount with an 18-decimal ETH amount in the same numerator or denominator -- without explicit WAD/RAY normalization or equivalent decimal-aware scaling. The assessment is performed by static analysis and source inspection, looking for arithmetic expressions that mix token amounts without consistent decimal normalization.\n\n**Why it matters**\nMixed-decimals arithmetic produces values that differ by factors of 10^12 or more depending on which token is in the numerator. A protocol that divides an 18-decimal amount by a 6-decimal amount without scaling will produce a result 10^12 times larger than intended, or 10^12 times smaller. This class of error has caused approximately five documented hacks in the T-01 evidence base. Lending protocols that support multiple collateral types with different decimal precisions are the primary risk surface -- a single price or collateral calculation that mixes decimals can make an asset appear massively over- or under-valued.\n\n**Green / Yellow / Red**\nGreen: all arithmetic operations involving token amounts explicitly normalize to a common precision (18 decimals / WAD / RAY or equivalent) before combining values across different token types. Yellow: normalization is applied in primary fund-movement functions but some peripheral calculations (e.g., display math, off-chain computation helpers) mix decimals without scaling. Red: any core collateral, exchange rate, or liquidation calculation mixes token amounts of different decimal precisions without explicit normalization.\n\n**Common gray cases**\nThis factor is gray for single-asset protocols where all token amounts share the same decimal precision and mixed-decimals arithmetic is structurally impossible.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately five supporting instances in the T-01 vulnerability inventory."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Exchange operates on single collateral token (pUSD, 6 decimals) and ERC-1155 outcome tokens all denominated in pUSD units. No multi-token decimal arithmetic identified. Low risk surface.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB#code"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis factor computes the Gini coefficient of governance token holdings across the top-N holders — producing a concentration measure between 0 (perfectly equal distribution) and 1 (fully concentrated in one address). The assessment reads on-chain token holder distributions for the governance token and applies the Gini formula, displayed alongside the protocol's current quorum threshold to provide context on whether a small number of whales can unilaterally control governance outcomes.\n\n**Why it matters**\nHighly concentrated governance token distributions are a prerequisite for governance attacks by large holders without requiring flash loans. When the top five holders collectively control more than 50% of the voting supply, any two or three of them can pass a proposal unilaterally. This factor surfaces the structural power distribution within a protocol's governance, which is orthogonal to the attack surface factors (RD-F-036, RD-F-037) but relevant for assessing governance capture risk from large holders. It is a display field rather than a critical factor — concentration alone is not sufficient for a D or F grade — but it informs the holistic governance picture.\n\n**Green / Yellow / Red**\nGreen is assigned when the Gini coefficient of voting token distribution is below 0.6 and no single address controls more than 20% of voting supply. Yellow covers Gini 0.6–0.8 or single-address control of 20–40%. Red is assigned when a single address or a clearly coordinated group controls more than 40% of voting supply, enabling unilateral governance outcomes.\n\n**Common gray cases**\nThis factor is grayed when the governance token is vote-locked (non-transferable), where the standard holder scan does not accurately represent voting power, or when governance is off-chain and token distribution is not directly linked to proposal authority.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No governance token exists. No voting power distribution. Not applicable by construction.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

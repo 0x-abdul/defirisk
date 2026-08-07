@@ -20,10 +20,34 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the Chainlink price feed configuration for any asset uses `minAnswer` and `maxAnswer` bounds that are incorrectly set — either too wide (failing to catch extreme outliers) or too narrow (triggering false circuit-breaker activations for legitimate price moves). Chainlink feed configuration and on-chain reads of the aggregator contract are the data sources.\n\n**Why it matters**\nChainlink v2 aggregators include hardcoded min/max answer bounds. If an asset crashes below the `minAnswer` floor (as happened with several assets during the March 2020 and Terra 2022 market events), the aggregator continues to return the floor value rather than the actual price — creating a known-incorrect price that lending protocols accept. The ETH/USD feed's historical `minAnswer` of $1 (later updated) is the canonical example: a protocol that trusted the Chainlink-returned price without checking against its own circuit breaker would have priced ETH at $1 during any hypothetical sub-$1 crash. The T-01 evidence base links Chainlink min/max misconfig to approximately three protocols in the hack database.\n\n**Green / Yellow / Red**\nGreen is scored when min/max bounds are calibrated to realistic asset-class ranges and the protocol additionally implements its own circuit breaker independent of the Chainlink bounds. Yellow is scored when bounds appear reasonable but the protocol relies solely on Chainlink bounds without a secondary check. Red is scored when bounds are clearly misconfigured — e.g., `minAnswer = 1` for a volatile asset — or when bounds have not been reviewed since protocol deployment.\n\n**Common gray cases**\nGray is applied when the protocol uses a Chainlink feed via a third-party adapter whose bound configuration cannot be read from public on-chain sources.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The published price-market integration uses Chainlink Data Streams rather than an AggregatorV3 minAnswer/maxAnswer configuration; no such aggregator use is identified in the published Polymarket contract inventory.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://chain.link/data-streams"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/resources/contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

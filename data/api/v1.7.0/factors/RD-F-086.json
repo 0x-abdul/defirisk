@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor records the count of deliberate emergency-pause activations for this protocol in the trailing twelve months, along with the stated reason for each activation. Pauses triggered by governance vote are distinguished from pauses triggered by admin-role direct call. The cadence is event-driven: updated within twenty-four hours of each pause activation detected on-chain.\n\n**Why it matters**\nPause activation history reveals two distinct signals. First, a protocol that has activated its pause mechanism demonstrates that the mechanism works and is actually used -- a meaningful positive signal for protocols where the pause is often listed as a safeguard but never exercised. Second, frequent pauses (more than three in twelve months without clear external-market explanations) may indicate instability in the protocol's code or operational environment. A single pause following a whitehat disclosure and remediation is a positive signal; a pattern of unexplained pauses is a yellow warning. Compound's governance timelock prevented emergency pause during the Wave 2 incident; the absence of pause capability directly contributed to the $147M exposure period.\n\n**Green / Yellow / Red**\nGreen: zero or one pause activations in trailing twelve months, with documented reason for any activation that demonstrates appropriate use. Yellow: two or three pause activations in trailing twelve months, or one activation without a public explanation. Red: four or more pause activations in trailing twelve months, or any activation followed by a drain within thirty days, suggesting the pause was insufficient or came too late.\n\n**Common gray cases**\nProtocols that pause all markets simultaneously during protocol migrations or major upgrades as a precautionary measure are distinguished from emergency pauses triggered by detected anomalies. Curator should record the reason for each pause to enable accurate classification.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket scheduled one documented trading pause for the April 28, 2026 CLOB V2 cutover, lasting about 89 minutes. This is a documented planned activation in the yellow band.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://status.polymarket.com/zh/cmoi59k3j0cq3hvfz2uyrekpj"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

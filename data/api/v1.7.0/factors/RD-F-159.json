@@ -20,10 +20,25 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when a wallet in the threat-actor cluster sends low-gas or deliberately failing transactions to the monitored protocol — a pattern consistent with pre-strike testing of contract state, function reverts, and gas estimation for exploit transaction sizing. Detection requires mempool monitoring combined with threat-actor cluster cross-referencing. Low-gas failing transactions are identified as transactions with a gas limit below the expected minimum for the called function. Category 11 context: mempool probing is a documented reconnaissance behavior where the attacker tests the vulnerable state before committing full capital to the exploit.\n\n**Why it matters**\nRadiant Capital II ($53M) includes the clearest example: a failed exploit attempt occurred six days before the successful attack, and the preparation window was ignored. The Deus DAO 2 oracle pre-poisoning transaction (four minutes before the main attack) represents a different variant of pre-strike testing. The T-01 synthesis identifies three in-sample hack precedents for this pattern. Failing transactions sent by threat-actor cluster addresses are among the highest-specificity signals available — legitimate users do not intentionally send failing transactions — but the signal requires both mempool access and a current threat-actor cluster, making it PH curation.\n\n**Green / Yellow / Red**\nGreen is the baseline when no threat-actor cluster addresses are sending failing transactions to the protocol in the current mempool observation window. Yellow fires when low-gas failing transactions are detected from an unclassified address at a rate inconsistent with normal testing patterns — possibly a researcher or arbitrageur probing for MEV. Red fires when a confirmed threat-actor cluster address sends one or more low-gas failing transactions to a protocol contract, particularly if the function being probed corresponds to a known vulnerability class for this protocol architecture.\n\n**Common gray cases**\nGray applies when mempool observation is not available for the protocol's chain (private mempools, some L2 sequencers), or when the threat-actor cluster lacks an entry for the specific address pattern observed.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Pre-strike probing requires a historical pending/failed-transaction pattern linked to an attributed attacker wallet; no public observation establishes the pattern.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

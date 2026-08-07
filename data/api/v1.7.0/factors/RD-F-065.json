@@ -20,10 +20,30 @@
         "scoring_methodology": "**What this measures**\nThis factor measures the on-chain liquidity depth for the protocol's major held assets at two price impact thresholds: two percent and five percent. Liquidity depth is sourced from DEX subgraph data and represents the USD volume that can be traded at each impact level across the major trading venues for each asset. It is updated on a slow continuous cadence and displayed per asset rather than as a single protocol-level aggregate.\n\n**Why it matters**\nLiquidity depth determines how much capital an attacker needs to move asset prices by a meaningful amount. Inverse Finance ($15.6M, 2022) illustrates the failure mode precisely: the INV/WETH pool on SushiSwap held approximately $1M in liquidity, allowing an attacker with 500 ETH to move the INV price fifty times higher in a single transaction, which was then read by the lending protocol's TWAP oracle as the legitimate price. Deeper liquidity requires a proportionally larger attack capital outlay, reducing the economic viability of manipulation. For protocols that hold their own governance token as collateral, governance token liquidity depth is a critical oracle-manipulation-resistance metric.\n\n**Green / Yellow / Red**\nGreen: liquidity depth at two percent price impact exceeds ten times the maximum single-transaction borrow amount for the relevant asset market. Yellow: liquidity depth at five percent price impact exceeds the maximum single-transaction borrow amount but two percent depth does not. Red: liquidity depth at five percent price impact is less than the maximum single-transaction borrow amount, or the protocol holds governance tokens as collateral with no minimum liquidity floor.\n\n**Common gray cases**\nLiquidity depth measurements from DEX subgraphs can lag real-time conditions by up to several hours during high-volatility periods. Curator should treat the depth measurement as a snapshot and note that intra-day manipulation during low-liquidity periods (weekends, off-hours) may not be captured.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The specified 2%/5% liquidity-depth metric cannot be established protocol-wide from a reproducible public snapshot. Polymarket operates outcome-token order books on its CLOB, so depth is market- and token-specific; the public documentation provides individual order-book access rather than an aggregate depth measure. No aggregate-depth conclusion is made.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/market-data/prices-order-books"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
