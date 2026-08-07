@@ -110,6 +110,20 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Wormhole's VAA-based verification does not use EIP-712 for cross-chain messages — it uses its own custom VAA struct with Guardian signatures via `ecrecover`. The implementation binds messages to `srcChainId` via the `emitterChainId` field in the VAA struct. Chain replay protection is achieved through the Wormhole chain ID scheme, not EIP-712 domain separators. N/A for the core bridge (no EIP-712 in critical path); any EIP-712 usage in NTT/MultiGov peripheral contracts would require separate a...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
         }
       ]
     }
