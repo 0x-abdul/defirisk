@@ -61,10 +61,72 @@
           "root_cause": "Compromised Multisig Signer Keys (via rogue former CISO)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OFAC's public sanctions search documents the Lazarus Group designation, and PolygonScan identifies the reviewed deployer addresses. The reviewed public sources do not establish a traced, provider-labeled path of three or fewer hops between either deployer and a DPRK/Lazarus cluster.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://sanctionssearch.ofac.treas.gov/Details.aspx?id=27307"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xca71ea69c54c163d17beb90beb8d001e1eb538a1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4df6f457ae69c9310fa34c4b64f15582ea6e1fc8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL] Public reporting about DPRK activity and the Drift incident does not identify a verified Raydium deployer or signer set from which a three-hop DPRK/Lazarus analysis can be performed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.chainalysis.com/blog/lessons-from-the-drift-hack/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://decrypt.co/312797/north-korean-it-workers-infiltrated-european-solana-based-projects-google"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.trmlabs.com/resources/blog/north-korean-hackers-attack-drift-protocol-in-285-million-heist"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/raydium-io/raydium-amm/commits?per_page=20"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

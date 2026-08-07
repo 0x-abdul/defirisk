@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor assesses whether EIP-712 structured message signing in the protocol includes the chainId field in the domain separator. An EIP-712 domain separator that omits chainId allows a signed message valid on one chain to be replayed on any other chain where the protocol is deployed. The assessment is performed by static analysis of the domain separator construction in the protocol's verified source code.\n\n**Why it matters**\nCross-chain replay of signed messages is an underappreciated risk in multi-chain protocol deployments. If a protocol deploys to Ethereum, Arbitrum, and Base with the same contract logic and addresses, a permit() or governance vote signature from Ethereum can be submitted on Arbitrum and accepted as valid -- unless chainId is included in the domain separator. With approximately three documented hacks attributable to this pattern in the T-01 evidence base, and DeFi protocols increasingly deploying to five or more chains simultaneously, the absence of chainId in EIP-712 domain separators is a growing risk vector.\n\n**Green / Yellow / Red**\nGreen: all EIP-712 domain separators in deployed contracts include chainId, name, version, and verifyingContract fields as specified in the EIP. Yellow: chainId is included in the domain separator, but the domain separator is not recomputed on each verification call (cached domain separator pattern), creating a risk if the contract is ever deployed to a new chain with a cached stale separator. Red: any EIP-712 domain separator in the protocol omits the chainId field.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use EIP-712 signing in any function path, including protocols with purely on-chain governance and no permit()-style functions.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately three instances in the T-01 evidence inventory."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EIP-712 domain separator uses OZ EIP712 base contract (_domainSeparatorV4()) which encodes block.chainid. Search results and docs confirm domain separator includes name, version, chainId, and verifyingContract.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange/blob/main/src/exchange/mixins/Hashing.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "EIP-712 is an Ethereum signing standard. Solana uses ed25519 with blockhash-based replay protection. No domain separator needed. N/A.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

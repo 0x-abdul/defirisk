@@ -20,10 +20,54 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether the protocol team has declined video-on participation in public interviews or recorded calls, or whether voice patterns and stated timezone are inconsistent across public appearances. Measurement is manual curator observation: the curator reviews any recorded public appearances by team members (podcasts, AMAs, conference talks, Twitter Spaces) and flags video-off behavior, accent or language inconsistencies relative to stated geography, or reluctance to appear on camera across multiple occasions. Category 7 context: video-off behavior is an explicit behavioral indicator in DPRK developer-implant detection playbooks.\n\n**Why it matters**\nUS, EU, and crypto-ecosystem investigators have documented video-off behavior as one of several consistent traits of DPRK IT workers posing as remote developers. FBI and DOJ guidance on DPRK freelancer risk specifically calls out consistent video-off behavior, accent inconsistencies, and avoidance of in-person or synchronous video contact as warning signs. The Drift Protocol incident ($285M, April 2026) involved UNC4736 building credibility through in-person conference attendance — a deviation from the video-off pattern, underscoring that sophisticated actors adapt tactics and this signal should not be treated as definitive.\n\n**Green / Yellow / Red**\nGreen is scored when core team members have multiple public recorded video appearances with face-on camera, voices consistent with stated geography, and no documented reluctance to appear synchronously. Yellow applies when some team members have appeared on video but others consistently decline or when only audio appearances are available. Red is scored when all core team members have consistently declined video participation across multiple public appearances despite operating a high-TVL protocol with active community expectations.\n\n**Common gray cases**\nGray is assigned when the protocol has no public interview history (too new or low-profile to have generated AMAs), making this signal inapplicable, or when the entire team is explicitly pseudonymous and video-off is the stated policy rather than an anomaly.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CBS News published a named public interview with Shayne Coplan, Polymarket's CEO. This supplies public video/interview presence for a protocol leader and no contrary voice or identity inconsistency is evidenced by that record.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.cbsnews.com/news/polymarket-ceo-shayne-coplan-online-betting-platform-60-minutes-transcript/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "AlphaRay has participated in audio-only podcast appearances (Validated Ep #40, TIE Podcast #2) consistent with maintaining pseudonymity — common for pseudonymous DeFi founders. No video appearances identified. No voice-inconsistency or timezone-inconsistency reports in public discourse. Audio-only format is not independently a red flag for the pseudonymous-with-track-record archetype but is noted per factor definition.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=S0G2tZ6l8pM"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.youtube.com/watch?v=wgOVsD5dUoI"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor detects whether the protocol accepts tokens that implement callback hooks -- specifically ERC-777 (tokensReceived via ERC-1820), ERC-1155 (onERC1155Received), or ERC-721 (onERC721Received) -- without applying reentrancy guards to the functions in the protocol that receive or process those tokens. The assessment checks the protocol's supported token list against the set of functions that handle incoming token transfers and verifies guard coverage.\n\n**Why it matters**\nNon-standard token callbacks invoke external code during a token transfer, before the calling protocol can update its accounting state. Cream Finance ($18.8M, 2021) accepted AMP -- an ERC-777-based ERC-1820 token -- in its borrow() function, which had no reentrancy guard. The attacker exploited the tokensReceived callback to re-enter borrow() before Cream's borrow balance was updated, borrowing multiple times against the same collateral. Revest Finance lost funds via an ERC-1155 onERC1155Received callback; Sovryn via a callTokensToSend hook; Orion Protocol via a fake token transfer hook in its aggregator swap path. The pattern is consistent across four hacks in the dataset.\n\n**Green / Yellow / Red**\nGreen: the protocol either does not accept ERC-777 / ERC-1155 / callback-hook tokens, or all functions that receive such tokens carry nonReentrant guards verified by static analysis. Yellow: callback-hook tokens are accepted but reentrancy guards are present on primary fund-moving functions only, with some peripheral functions (reward claims, yield compounders) unguarded. Red: any core fund-moving function accepts a callback-hook token without a reentrancy guard.\n\n**Common gray cases**\nThis factor is gray when the protocol's accepted token list is not publicly defined or when the token's callback behavior cannot be confirmed without running the token contract's code.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor, though Cream Finance (ERC-777 reentrancy), Revest Finance (ERC-1155 callback), and Orion Protocol (fake token hook) are the primary documented cases in the broader cross-hack dataset."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTFExchange V2 inherits ERC1155TokenReceiver and processes ERC-1155 callbacks. The V2 nonReentrant removal (see F014) means ERC-1155 callback paths are not guarded. However, only operators can initiate order matching, limiting attack surface. Cantina/Quantstamp audits reviewed and accepted this design.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/tree/main/src/exchange/mixins"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ERC-777/ERC-1155/ERC-721 are Ethereum token standards with callbacks. Solana SPL Token has no transfer callbacks. Token-2022 transfer hooks exist but differ from ERC callbacks. CPMM Token-2022 support audited by Sec3 Q3 2025. N/A for ERC hook patterns.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://github.com/raydium-io/raydium-docs/blob/master/audit/Sec3%20Q3%202025/raydium_cp_swap_pr55.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -211,10 +211,57 @@
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting confirms multiple user-fund security incidents, including third-party authentication-related wallet drains in 2024/2025 and the June 2026 vendor supply-chain breach. The June incident was a frontend/vendor compromise rather than a confirmed core-contract exploit, but the incident count supports yellow.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.securityweek.com/3-million-reportedly-stolen-in-polymarket-hack/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/383711/polymarket-third-party-vulnerability-hack"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Two confirmed historical incidents affect Raydium: the December 2022 compromised-key drain (~$4.4M) and the June 10, 2026 exploit of inactive, retired AMM V3 pools (~$1.34M). The recent incident is retired-V3 history; public reporting states current mainnet programs were unaffected. The v1.7.0 red threshold is two or more exploits.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/raydium-rekt/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

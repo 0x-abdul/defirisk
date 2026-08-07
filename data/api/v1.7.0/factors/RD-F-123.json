@@ -81,10 +81,59 @@
           "root_cause": "Math bug — constant product formula check broken by inconsistent parameter change (1000→10000)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public V2 repository documents an Auth component for admin/operator role management, but the reviewed public material does not pair a complete recent on-chain ACL-event history with corresponding discussion records. No silent-change finding is established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/mixins/Auth.sol"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/issues"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL — GREEN] December 2022 admin migration (single EOA to Squads 3/4 multisig) was publicly communicated: (a) Twitter announcement on December 16, 2022 within hours of the exploit; (b) detailed Medium post-mortem explaining the migration rationale and implementation; (c) governance forum compensation proposal (thread #15 on raydium.discourse.group) which included discussion of the new security posture. While executed reactively under emergency conditions (appropriate for an active exploit), public discussion requirement for F123 is satisfied by post-incident disclosure within 24-48 hours. No subsequent undisclosed ACL change identified.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://raydium.medium.com/detailed-post-mortem-and-next-steps-d6d6dd461c3e"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/security/admin-and-multisig"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

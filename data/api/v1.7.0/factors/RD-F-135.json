@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor records the specific version numbers of key shared libraries used in the protocol's deployed contracts -- primarily OpenZeppelin Contracts, Solady, and Solmate -- and checks whether those versions carry any current CVE or public security advisory. The data source is the protocol's repository (package lock or import paths) combined with the CVE database and GitHub Security Advisories for the relevant library packages.\n\n**Why it matters**\nShared libraries are a systemic risk amplifier: a bug in a widely-used library version affects every protocol that has deployed that version, simultaneously. The Curve/Vyper compiler bug ($69M across four protocols simultaneously, July 2023) is the most dramatic example in the dataset -- all four affected protocols used the same Vyper compiler version (0.2.15-0.3.0) with the reentrancy guard bug. A depositor-facing dashboard that can identify 'this protocol uses library version X, and a CVE was published for version X last week' provides actionable advance warning before an exploit occurs. The 90-day gap between the publication of a library CVE and the first documented exploit in that class is a common pattern.\n\n**Green / Yellow / Red**\nGreen: all shared libraries are at versions with no current CVE or public advisory, or the protocol has deployed a patch addressing any known advisory. Yellow: a library advisory exists but the advisory severity is medium or low, and the specific vulnerable code path is not exercised by the protocol's usage pattern (confirmed by curator review). Red: a library used in deployed contracts has an active high or critical CVE with no patch deployed.\n\n**Common gray cases**\nThis factor is gray when library version cannot be determined from the repository (vendored inline copies without version metadata) or when the library is proprietary with no public advisory channel.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The Curve/Vyper compiler incident ($69M, 2023) is the closest motivating case, though it involves RD-F-170 (compiler version) rather than shared library version specifically."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OZ contracts pinned to SHA 8769b198 (V1) — exact version tag not resolved. Solady pinned to SHA acd959aa (both repos). No active GHSA high/critical advisory found for these library versions from public GHSA search, but exact OZ version tag from SHA not confirmed. Confidence low.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/openzeppelin/openzeppelin-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "anchor-lang =0.32.1: No published RustSec/GHSA advisory found. 0.32.1 is the current patch release (race condition fix from 0.32.0). solana-program =2.1.0: current stable SDK, no known high-severity advisory. spl-token =7.0.0: current, no advisory. serum_dex 0.5.10 from raydium-io/openbook-dex fork: no GHSA advisory.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rustsec.org/advisories/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.anchor-lang.com/docs/updates/release-notes/0-32-1"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

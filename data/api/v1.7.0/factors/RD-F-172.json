@@ -31,10 +31,60 @@
           "root_cause": "Oracle Misconfiguration (Missing ETH/USD Multiplier)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Recent commits to ctf-exchange-v2 (SHA ccc0596, April 13, 2026) show no 'Co-authored-by' trailers mentioning GitHub Copilot or any AI tool. Commit authors: 0xrajath, mshrieve, JonathanAmenechi — standard human authorship.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange-v2/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Recent commits in raydium-clmm (a5a46ff), raydium-cp-swap (609780f), and raydium-amm (3b087ad) inspected. Primary committers are RainRaydium and 0x777A (core team). No Co-authored-by: GitHub Copilot, Co-authored-by: Claude, or other AI tool co-author trailers detected in commit messages.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "reference": "3b087ad (AMM Sep 22 2025, no AI co-author)",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-amm/commits/master"
+            },
+            {
+              "reference": "609780f (CPMM Dec 29 2025, no AI co-author)",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/commits/master"
+            },
+            {
+              "reference": "a5a46ff (CLMM Dec 29 2025, no AI co-author)",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-clmm/commits/master"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

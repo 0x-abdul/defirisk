@@ -20,10 +20,61 @@
         "scoring_methodology": "**What this measures**\nThis factor enumerates the oracle providers used by the protocol — such as Chainlink, Pyth, Redstone, Uniswap TWAP, or in-house custom feeds — listing each provider per asset or market. Data is collected via on-chain reads and protocol documentation. This field serves as the dependency map foundation for the rest of the oracle category.\n\n**Why it matters**\nOracle provider diversity determines how concentrated a protocol's price-feed risk is. A protocol relying on a single provider for all assets has correlated failure modes: if that provider experiences downtime, data manipulation, or a governance incident, all markets are simultaneously affected. The synthesis dataset documents multiple exploits where thin-liquidity or single-source oracles were the root cause; knowing which providers are in use is the first step in assessing that risk. Protocols that mix aggregated off-chain feeds (Chainlink) with on-chain DEX-derived feeds introduce additional composability surface that must be mapped before downstream factors can be assessed.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol uses one or more reputable aggregated providers (Chainlink, Pyth, Redstone) with documented source diversification per asset. Yellow is scored when the provider list is partially documented, includes at least one in-house or DEX-derived feed, or has material gaps between documented and observed on-chain feed calls. Red is scored when no reputable aggregated provider is in use and the oracle source is entirely in-house or spot-DEX derived.\n\n**Common gray cases**\nGray is applied when on-chain feed calls cannot be attributed to a specific provider (e.g., unverified aggregator contract or proxy with obfuscated source) or when the protocol has not yet listed any assets requiring external pricing.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket documents UMA Optimistic Oracle resolution for event markets. Chainlink documents a live integration for price-market resolution. These distinct oracle paths introduce external oracle dependencies.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            },
+            {
+              "source_type": "url",
+              "url": "https://chain.link/article/what-are-prediction-markets"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No external oracle provider used. All swap pricing derives from on-chain pool reserve ratios (Standard AMM, CPMM) or tick math (CLMM) or stableswap curve (Stable). Three Cargo.toml files inspected: raydium-amm/program, raydium-clmm/programs/amm, raydium-cp-swap/programs/cp-swap — zero Pyth, Chainlink, or Switchboard dependencies. OpenBook serum_dex dependency is a CLOB liquidity venue, not an oracle.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-clmm/master/programs/amm/Cargo.toml"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-cp-swap/master/programs/cp-swap/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -111,10 +111,75 @@
           "root_cause": "Fake jar injection — missing whitelist in Controller's jar-swap function"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public audit index contains Cantina and Quantstamp reports from March 2026, but the available public materials do not bind a specific audited commit to deployed bytecode. Full audit coverage of material code changes cannot be confirmed.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/tree/main/audits"
+            },
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/Polymarket/ctf-exchange-v2/commits?since=2026-03-01&until=2026-04-29"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium remains yellow for post-audit change coverage. Public CLMM commits show April-June 2026 feature and fix activity, while CPMM has a 2026-06-12 commit after the prior baseline. Immunefi writeups document critical Raydium bugs reported and fixed in 2024 and 2025. These facts refresh the evidence, but the checked sources do not prove which commits are deployed or that currently deployed CLMM/CPMM bytecode lacks subsequent audit or spot-review coverage at the red threshold.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "reference": "CLMM 2026-05-18 limit-order/dynamic-fee merge commit.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-clmm/commit/a0c0c181dfc759a1012e8e6172cc56516c9d57bc"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm/commits/master/"
+            },
+            {
+              "reference": "CPMM 2026-06-12 support-associated-mint commit.",
+              "source_type": "commit_sha",
+              "url": "https://github.com/raydium-io/raydium-cp-swap/commit/78f254e1023751e706df7dc15c453fc3e046697c"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/all/raydium-liquidity-drain-bug-fix-review/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/immunefi/raydium-tick-manipulation-bugfix-review-c6aae4527ed6"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit/Sec3%20Q2%202026"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

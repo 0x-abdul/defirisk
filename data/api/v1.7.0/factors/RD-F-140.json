@@ -20,10 +20,48 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a known vulnerability exists in the deployed codebase — confirmed via a PR merged in the public repository — but the fix has not been included in the currently deployed bytecode. This gap between a merged fix and a deployed fix is the \"fix-merged-but-not-deployed\" state: the team acknowledged the vulnerability and prepared a patch, but users' funds remain at risk from the unpatched deployed code.\n\n**Why it matters**\nMirror Protocol and the Venus REKT4 incident both exemplify this failure mode: a governance proposal to fix a known vulnerability was created and merged, but the production deployment lagged behind the repository state. The Deus DAO 2 exploit demonstrated the urgency particularly clearly — the attacker's bypass of a post-hack oracle fix came 40 days after the fix was deployed, but the window between the first fix being described and the second vector being closed was entirely preventable. A fix-merged-but-not-deployed gap means users are exposed to a vulnerability the team knows about and has solved — the only remaining question is when the attacker will find it.\n\n**Green / Yellow / Red**\nGreen is assigned when the deployed bytecode is current with the repository's main branch and no known vulnerabilities have open PRs without corresponding deployments. Yellow covers cases where a low-severity fix has been merged but not yet deployed, with a documented deployment timeline. Red is assigned when a high or critical severity fix has been merged into the repository but the corresponding upgrade has not been applied to the production deployment.\n\n**Common gray cases**\nThis factor is grayed when the protocol repository is private or when the PRs cannot be matched to specific bytecode changes within the assessment window.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The official migration notice identifies the V2 launch and public audits, but this pass did not establish a complete public vulnerability/PR-to-deployed-bytecode comparison.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No evidence of fix-merged-but-not-deployed gap. Both Immunefi-disclosed bugs (tick manipulation Jan 2024, liquidity drain Mar 2025) were patched and deployed. No open security PRs with undeployed fixes identified in the public repos.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/all/raydium-liquidity-drain-bug-fix-review/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

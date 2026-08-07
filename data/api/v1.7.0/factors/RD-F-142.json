@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a manual code review or the OpenZeppelin Upgrades Plugin storage-layout check has flagged any storage-layout collision risk between different implementation versions of an upgradeable proxy. A storage collision occurs when an upgrade adds, removes, or reorders storage variables in a way that causes previously-set variables to be misread or overwritten by the new implementation.\n\n**Why it matters**\nStorage layout collisions in upgradeable contracts are a silent corruption vulnerability: the deployed proxy continues to function normally in most code paths, but specific edge-case executions that access reordered storage slots produce unexpected results. The Raft protocol's 2023 loss ($3.3M) demonstrated a related delegatecall storage pattern where an uninitialized slot caused an unexpected fund routing outcome — even with four audits including Trail of Bits, the interaction between proxy patterns and storage state was not caught. The OpenZeppelin Upgrades Plugin automates detection of the most common collision patterns, but manual review is required for complex inheritance hierarchies and custom proxy patterns.\n\n**Green / Yellow / Red**\nGreen is assigned when the OZ Upgrades Plugin or equivalent has been run against the current implementation and the prior implementation, returning no collision warnings, and this check is part of the protocol's upgrade process. Yellow covers cases where the check has been run but with manual overrides accepted, or where the check was performed on an earlier version pair and the current upgrade was not re-verified. Red is assigned when no storage layout check has been performed on the current upgrade pair, or when a known collision warning has been dismissed without a documented resolution.\n\n**Common gray cases**\nThis factor is grayed when the protocol uses immutable contracts (no upgrade path means no collision risk), or when the proxy pattern is non-standard and incompatible with available automated tools.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTFExchange V2 is not a proxy (no upgrade path, no storage collision risk). pUSD CollateralToken UUPS uses OZ Upgradeable storage layout; constructor calls _disableInitializers(); initial deploy only (no prior implementation version to collide with).",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana BPF Upgradeable Loader does not use EVM storage slots. Account state is stored in separate data accounts, not implementation storage. The EVM storage-layout collision risk pattern does not apply to Solana's account model. Anchor framework handles account discriminators separately.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

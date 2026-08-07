@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor verifies that all UUPS (Universal Upgradeable Proxy Standard) implementation contracts define and correctly restrict the _authorizeUpgrade(address) function. Specifically, the function must revert for any caller that is not the designated owner, admin, or timelock controller. An unprotected or absent _authorizeUpgrade() allows any address to point the proxy at a new, attacker-controlled implementation. The assessment is performed by static analysis of the UUPS implementation's _authorizeUpgrade() visibility and access control gate.\n\n**Why it matters**\nUUPS puts the upgrade authorization logic inside the implementation contract rather than the proxy, which means an incorrectly implemented _authorizeUpgrade() is a complete proxy takeover vector. A publicly callable or improperly gated _authorizeUpgrade() allows any attacker to call upgradeTo() and replace the implementation with one that drains all protocol funds in a single transaction. Approximately four documented hacks in the T-01 inventory involve UUPS authorization failures or related proxy upgrade bugs. As UUPS has become a common pattern in newer DeFi deployments, the authorization gate is a critical checkpoint.\n\n**Green / Yellow / Red**\nGreen: _authorizeUpgrade() is restricted to owner or admin and reverts for all other callers, confirmed by static analysis; the owner/admin itself is a multisig or timelock. Yellow: _authorizeUpgrade() is correctly restricted but the permissioned caller is a single EOA rather than a multisig or timelock. Red: _authorizeUpgrade() is absent from the implementation contract, or it does not revert for non-owner callers.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use UUPS proxy patterns -- e.g., transparent proxy, beacon proxy, or non-upgradeable implementations.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately four supporting instances in the T-01 evidence inventory."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Only pUSD CollateralToken proxy uses UUPS pattern. Implementation _authorizeUpgrade() is gated to onlyOwner (OwnableRoles). CTFExchange V1/V2 are non-upgradeable. No open or missing _authorizeUpgrade found.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "UUPS is an EVM proxy pattern. Solana uses BPF Upgradeable Loader with Squads V4 upgrade authority. No UUPS _authorizeUpgrade needed. N/A.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

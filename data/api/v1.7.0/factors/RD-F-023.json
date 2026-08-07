@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor verifies that implementation contracts in the protocol's upgradeable proxy architecture call _disableInitializers() in their constructor, following the OpenZeppelin-recommended pattern to prevent direct initialization of the implementation contract itself. When _disableInitializers() is called in the constructor, the implementation contract's initializer is permanently locked at deployment time, preventing any subsequent caller from re-initializing it. The assessment is performed by static analysis of the implementation contract's constructor bytecode.\n\n**Why it matters**\nThe _disableInitializers() constructor call is the defense-in-depth complement to the initializer modifier (assessed by RD-F-022). Even if an initializer modifier is present, a missing _disableInitializers() call in the constructor leaves a narrow race-condition window at deploy time where the implementation can be initialized directly before the proxy is set up. More importantly, it prevents the class of attack where a future OpenZeppelin library upgrade or a missed initializer modifier on a newly added initializer function creates a new unguarded entry point. The pattern was introduced precisely because the modifier alone was insufficient in complex inheritance hierarchies. Approximately three supporting instances in the T-01 evidence base motivate this factor.\n\n**Green / Yellow / Red**\nGreen: all implementation contracts call _disableInitializers() in their constructor, confirmed by bytecode analysis of the deployed implementation. Yellow: the constructor does not call _disableInitializers() but all initialize() functions carry the initializer modifier, reducing -- but not eliminating -- the risk. Red: the constructor omits _disableInitializers() AND any initialize() function is missing the initializer modifier (this overlaps with RD-F-022 Red).\n\n**Common gray cases**\nThis factor is gray for non-upgradeable protocols that do not use proxy patterns, or for protocols whose constructors cannot be inspected (unverified source).\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor operates as a defense-in-depth check alongside RD-F-022, which captures the more common failure mode."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pUSD implementation constructor calls _disableInitializers(). CTFExchange V1/V2 are non-upgradeable (constructor pattern) — factor N/A for exchange contracts but applicable to pUSD implementation where it is correctly implemented.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "OZ _disableInitializers() is an EVM proxy pattern. Solana BPF Upgradeable Loader handles upgrades at the loader level, not via storage slot proxies. N/A for Solana.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

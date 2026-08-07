@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether a CVE (Common Vulnerabilities and Exposures), GHSA (GitHub Security Advisory), or equivalent standardized public advisory has been issued against the monitored protocol or its core smart contracts. Detection is programmatic via the CVE database, GitHub Advisory Database, and OSV vulnerability feed, cross-referenced against the protocol's repository identifiers and known contract addresses. Category 13 context: a CVE or GHSA represents the highest-formality level of public vulnerability disclosure — it indicates that a vulnerability has been assessed as sufficiently significant to warrant standardized public notification, creating a documented public record and a timestamp against which the team's response can be measured.\n\n**Why it matters**\nA CVE issued against a DeFi protocol creates a public, indexed record that any researcher, auditor, or monitor can retrieve and cross-reference. KyberSwap Elastic ($48M, 2023) had its tick-crossing precision failure ultimately documented in public advisories after the exploit. Compound's governance vulnerability family has multiple associated GHSAs. The existence of a CVE or GHSA against a protocol is not inherently a red flag — it may indicate responsible disclosure and patching — but the combination of an open (unresolved) advisory and a live protocol represents a specific elevated risk state. A resolved advisory provides the opposite signal: evidence that the protocol has engaged with formal vulnerability disclosure processes and maintained a public fix record.\n\n**Green / Yellow / Red**\nGreen is scored when no open CVE, GHSA, or equivalent public advisory exists for the protocol's core contracts, or when all historical advisories are marked as patched with on-chain proof of fix. Yellow applies when a historical advisory exists and is marked resolved, but the curator cannot verify on-chain that the fix was actually deployed. Red is scored when an open (unresolved) CVE or GHSA advisory exists against the protocol's core smart contracts that have not been marked as patched, indicating a known public vulnerability with no confirmed fix.\n\n**Common gray cases**\nGray applies when the protocol's contracts are not registered in any vulnerability tracking system and the absence of a CVE/GHSA reflects non-registration rather than absence of known vulnerabilities — the typical state for most DeFi protocols that have not engaged with formal CVE coordination.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public advisory search results include similarly named third-party packages but do not establish a CVE or GHSA issued against Polymarket's protocol contracts or official code. The relationship of those package advisories to the protocol is unresolved, so this factor remains gray.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/advisories?query=polymarket"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public GitHub security page reports no published security advisories. The reviewed public materials do not establish comprehensive CVE/GHSA registration coverage for Raydium's Solana programs, so absence of a formal advisory cannot be treated as proof of no advisory.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm/security"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

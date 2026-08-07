@@ -20,10 +20,39 @@
         "scoring_methodology": "**What this measures**\n\nThis factor is a *positive-mitigant* assessment — it contributes to a green grade when present rather than to a red grade when absent. It evaluates two structural controls on a bridge or cross-chain protocol: (1) whether a per-window outflow rate-limiter is implemented in the bridge contract (and at what cap relative to bridge TVL), and (2) whether the protocol team can trigger a chain-level or validator-set emergency pause to freeze further outflow during an active incident.\n\n**Why it matters**\n\nBridge exploits have an inherent maximum-loss profile bounded by available liquidity at the moment of attack. Without a rate-limiter, a successful exploit can drain the entire bridge TVL in a single block; with a meaningful rate-limiter, the attacker is forced to surface the exploit incrementally over multiple windows, giving the team and broader ecosystem time to detect, intervene, and pause. Chain-pause capability extends this further — even after an attacker has begun draining, a coordinated validator-set or sequencer halt can freeze remaining funds in place. F185 captures the difference between a structural control that meaningfully bounds blast radius and a hot-bridge architecture where one signature failure is total loss.\n\n**Green / Yellow / Red**\n\nGreen: rate-limiter present with cap ≤10% of bridge TVL per window AND chain-pause capability available to the protocol team. Yellow: one of the two controls present (rate-limiter without chain-pause, or chain-pause without rate-limiter). Red: neither rate-limiter nor chain-pause control available — exploit blast radius equals full bridge TVL. Gray: protocol does not have a bridge component (factor is N/A).\n\n**Common gray cases**\n\nThe rate-limiter exists but its cap is dynamically configurable by an admin role without timelock — the assessment depends on current cap, not nominal presence of the mechanism.\n\n**Notable historical examples**\n\nNo cross-hacked incidents currently linked in database for this factor. The reference *positive* case is **Dango** (Apr 2026), where a per-window rate-limiter capped post-exploit outflow at $410K out of a $1.9M attempted drain, and a validator-executed chain pause then froze the remaining $1.49M in place — yielding near-100% recovery and demonstrating both controls operating in sequence."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Polymarket's documented exchange and collateral architecture is not a bridge. The bridge-specific rate-limiter and chain-pause mitigant does not apply to this protocol assessment.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's approved protocol surface is a Solana DEX and has no bridge surface; bridge outflow-rate-limiter and bridge-chain-pause controls are structurally inapplicable.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

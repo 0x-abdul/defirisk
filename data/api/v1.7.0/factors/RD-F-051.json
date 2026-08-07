@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor documents what the protocol does when its primary oracle reverts, returns stale data, or becomes unavailable — specifically whether it pauses, switches to a secondary source, uses a last-known-price cache, or reverts all affected transactions. The assessment is based on protocol documentation and source code inspection of fallback logic.\n\n**Why it matters**\nOracle failure is not purely an adversarial event; Chainlink feeds have experienced latency during periods of extreme network congestion, and aggregators have returned stale prices during market dislocations. A protocol with no defined fallback behaviour may either freeze all operations (starving users of liquidity) or, worse, silently continue operating on stale prices — enabling economic exploitation without an active attacker. The T-02 gap analysis identified fallback behaviour documentation as one of the most consistently absent fields across competitor risk platforms, making this a direct differentiator for the dashboard.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol has a documented and code-verified fallback: either a pause mechanism that halts borrowing/liquidations or a secondary source that is automatically queried on primary failure. Yellow is scored when a fallback is mentioned in documentation but not verifiable in deployed source code, or when the fallback is a last-known-price cache with no maximum age. Red is scored when the protocol has no fallback documented or implemented and will operate on whatever the primary oracle returns, including stale or zero values.\n\n**Common gray cases**\nGray is applied when the fallback path involves off-chain keepers or multi-sig emergency oracle updates that have no on-chain proof of mechanism.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The UMA adapter flow resets after a first dispute and escalates after a second dispute to UMA's DVM; its public source also has an admin-gated manual-resolution failsafe. No equivalent public fallback configuration is established for Chainlink price markets.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/uma-ctf-adapter/blob/main/src/UmaCtfAdapter.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium documents that AMM v4 OpenBook integration is deactivated and swaps execute against the AMM curve; CPMM and CLMM are separate pool programs. No external price-oracle fallback path is applicable to this pool-pricing architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/protocol-overview/versions-and-migration"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

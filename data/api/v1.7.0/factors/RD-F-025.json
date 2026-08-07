@@ -20,10 +20,53 @@
         "scoring_methodology": "**What this measures**\nThis factor records the categorical type of custody arrangement holding the protocol's most privileged admin role: one of EOA, multisig, multisig-plus-timelock, full DAO-plus-timelock, or immutable (no admin). The value is determined by an on-chain read of the owner, admin, or ProxyAdmin slot on every major deployed contract. The result is a single categorical label that anchors the full governance & admin section — it is the baseline posture description from which more specific factors (RD-F-027 through RD-F-047) derive their context.\n\n**Why it matters**\nAdmin key custody type is the foundational governance signal — before assessing threshold sizes, timelock durations, or role separation, a depositor needs to know what class of mechanism holds ultimate control. The evidence base shows that every off-chain key compromise incident in the dataset was possible only because the exploited admin role was held by a custody type that could be compromised with a single key or a small coordinated set of keys. Immutable protocols cannot be upgraded by anyone and occupy a different risk category entirely; DAO-plus-timelock protocols have the highest structural resistance to unilateral action; EOA protocols have the lowest. This factor drives the display value on the protocol card and informs which sub-factors are applicable.\n\n**Green / Yellow / Red**\nGreen is assigned when the highest-privilege admin role is held by a multisig-plus-timelock or full DAO-plus-timelock, with the timelock meeting the minimum duration threshold assessed under RD-F-032. Yellow covers a multisig without timelock or a DAO without timelock. Red is assigned when the admin role is held by a single EOA (which also triggers RD-F-027), or when no admin role can be identified from on-chain data (opacity, not immutability).\n\n**Common gray cases**\nThis factor is grayed only when proxy architecture obscures the admin slot entirely and no published documentation identifies the governance type — an uncommon state for any protocol with material TVL.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V2 admin is a Gnosis Safe multisig (0x3dce0a29139a851da1dfca56af8e8a6440b4d952) — multisig without timelock. pUSD owner transferred post-deploy to undisclosed address. No DAO, no timelock controller.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x3dce0a29139a851da1dfca56af8e8a6440b4d952"
+            },
+            {
+              "source_type": "transaction",
+              "url": "https://polygonscan.com/tx/0xd313453c195344b3eea2d91343fb840e51130ba5562fb9c9eda83fd0f82c6c97"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Multisig+timelock for program upgrades. Squads V4 3/4 upgrade multisig (FytDrVzDybM1TwFQPGb8qaxZR7dBCzNeqT3vtQsceZQK) with 24h timelock. Treasury multisig 3/5 (GThUX1Atko4tqhN2NaiTazWSeFWMuiUvfFnyJyUghFMJ). All signers use air-gapped devices with hardware key + TOTP authentication.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

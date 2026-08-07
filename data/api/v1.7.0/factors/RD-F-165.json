@@ -20,10 +20,39 @@
         "scoring_methodology": "**What this measures**\nThis episodic signal fires when the curator's scam-coordinator watchlist identifies a member of the protocol's official Telegram or Discord community channels as a known scam coordinator — an account previously associated with coordinated social-engineering attacks, fake-airdrop scams, or phishing campaigns targeting DeFi users. Detection is manual curator monitoring of protocol social channels combined with cross-referencing against a maintained scam-coordinator database. Category 11 context: scam coordinators embedded in community channels are both a direct attack vector (phishing links in community posts) and a reconnaissance channel for gathering intelligence about team behavior and user wallet sizes.\n\n**Why it matters**\nCommunity channel infiltration is documented in several dataset incidents as a concurrent attack vector. Badger DAO ($120M) saw coordinated social media amplification of the malicious approval-harvesting campaign. Infini ($49.5M) involved a rogue insider with both on-chain access and social channel presence. In the broader DeFi landscape, fake-airdrop scams launched from compromised community channels have drained tens of millions in aggregate. A scam coordinator embedded in the protocol's official channels has access to user sentiment, deployment timing discussions, and team communication patterns that can inform timing and targeting of a concurrent on-chain attack.\n\n**Green / Yellow / Red**\nGreen is the baseline when no known scam-coordinator accounts from the watchlist are identified as members of the protocol's official community channels. Yellow fires when an account with medium-confidence scam-coordinator attribution (curator-flagged but not cross-confirmed by multiple sources) is identified in the community. Red fires when a high-confidence scam coordinator (confirmed by multiple independent sources or with documented prior phishing campaigns) is identified as an active member of the protocol's primary community channel.\n\n**Common gray cases**\nGray applies when the protocol's community channels are fully private or invite-only and the curator cannot access them to perform the monitoring sweep, or when the channel is very large (100,000+ members) and comprehensive monitoring is impractical.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "A social-channel scam-coordinator flag requires verified channel-administrator identity and a public coordinator watchlist match; no such public match was established.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public information does not identify a confirmed scam-coordinator flag on a current official Raydium social-channel administrator.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

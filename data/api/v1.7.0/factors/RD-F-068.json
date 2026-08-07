@@ -20,10 +20,49 @@
         "scoring_methodology": "**What this measures**\nThis factor evaluates whether, under a curator-defined stress scenario, the protocol's net collateralization falls below one hundred ten percent. The stress scenario applies a standardized asset price shock (typically a thirty percent single-day decline in all collateral assets simultaneously) and recomputes the aggregate collateral-to-debt ratio using on-chain position data. The measurement is sourced from curator simulation plus documentation and is updated on a slow cadence. This factor applies to lending protocols only; it is N/A for non-lending protocols.\n\n**Why it matters**\nUnder-collateralization under stress is the economic failure mode that transforms an oracle manipulation attack into a total loss event. When collateral prices fall faster than liquidation mechanisms can clear positions, the protocol accumulates bad debt. The Terra/Luna collapse demonstrated how algorithmic stabilization mechanisms can accelerate under-collateralization once collateral confidence breaks. Several lending protocols in the dataset accepted governance tokens as collateral with collateral factors above fifty percent -- meaning a governance token price drop of more than fifty percent would immediately push positions underwater. Under the stress scenario test, these positions would have appeared underwater in every crisis period in the dataset.\n\n**Green / Yellow / Red**\nGreen: net collateralization remains above one hundred fifty percent under the stress scenario, indicating adequate buffer for tail scenarios. Yellow: net collateralization falls between one hundred ten and one hundred fifty percent under stress, indicating meaningful but manageable vulnerability. Red: net collateralization falls below one hundred ten percent under the stress scenario, indicating the protocol would accumulate material bad debt in a standard risk-off event.\n\n**Common gray cases**\nProtocols that operate tiered isolation markets (where bad debt in one market cannot infect others) may present a less severe consolidated stress test outcome than their collateral composition suggests; curator must verify isolation boundaries before aggregating.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. The lending collateralization-under-stress metric does not map to Polymarket's documented conditional-token mechanics: one YES and one NO token are backed by exactly $1 of collateral, and balanced pairs can be merged back into pUSD.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/positions/how-positions-work"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Raydium provides AMM liquidity pools rather than collateralized lending positions, so no protocol collateralization ratio or liquidation stress regime exists.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
