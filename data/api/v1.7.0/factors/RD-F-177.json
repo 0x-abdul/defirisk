@@ -71,10 +71,86 @@
           "root_cause": "Self-funded MNGO spot price pump using two accounts → inflated unrealized collateral → lending pool drain"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public record established that Polymarket knowingly ignored a valid disclosure and later suffered exploitation of that known issue. The available bounty policy is current-process evidence, not proof of historical absence, so this remains gray.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/ff945ca2-2a6e-4b83-b1b6-7a0cd3b94bea"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public 2022 incident report attributes the drain to a compromised owner key, and the 2026 report attributes the legacy-pool exploit to LP-mint validation. Neither reviewed public incident record reports a previously disclosed vulnerability that Raydium ignored before exploitation.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/raydium-rekt/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "RPIP-63 documents three Immunefi submissions concerning the on-chain voting system and specifies the corrective changes adopted in the Houston hotfix. The public record supports a remediation response to disclosed issues.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-63"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public evidence was established during this pass that Synapse ignored a previously disclosed vulnerability before an exploit.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

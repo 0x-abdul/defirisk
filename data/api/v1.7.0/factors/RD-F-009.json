@@ -61,10 +61,90 @@
           "root_cause": "Uninitialized Pool Re-initialization (Missing initialized = true)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification coverage found. No Certora, Kani, Halmos, or equivalent FV specifications in any Polymarket repository. ChainSecurity/Cantina/Quantstamp audits are manual code assessments only.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No formal verification (Certora/Kani/Halmos) engagement found in public audit directory or documentation. Protocol relies on traditional manual audits and Immunefi bounty only.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-docs/tree/master/audit"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No Rocket Pool formal-verification report is listed in Certora SecurityReports, and the public Rocket Pool contracts repository contains no published invariant specification. No formal-verification coverage for the deployed protocol was identified; this is red under the rubric.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Certora/SecurityReports"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No Certora/Halmos/Kani engagement found. Not assessed within budget.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

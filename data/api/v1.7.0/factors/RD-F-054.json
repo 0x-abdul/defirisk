@@ -20,10 +20,86 @@
         "scoring_methodology": "**What this measures**\nThis factor records the TWAP window duration in minutes for each oracle that uses a time-weighted average price. Windows shorter than 30 minutes are flagged as high risk. The value is extracted per oracle via source inspection and on-chain reads.\n\n**Why it matters**\nTWAP window length is the primary determinant of how expensive a price manipulation attack is to execute. A 1-minute TWAP requires the attacker to hold a position for only 60 seconds — achievable with a flash loan sequence across multiple blocks. A 30-minute TWAP requires sustained capital lock-up that makes the attack economically irrational for most targets. The T-01 evidence base links short or nonexistent TWAP windows to approximately 15 protocols in the hack database. The cost-of-attack scales roughly linearly with window length for low-liquidity pools; for high-liquidity pools, window length interacts with pool depth to determine the true manipulation threshold.\n\n**Green / Yellow / Red**\nGreen is scored when all TWAP-based oracles use windows of 30 minutes or longer. Yellow is scored when at least one TWAP oracle uses a window between 10 and 29 minutes. Red is scored when any TWAP oracle uses a window under 10 minutes, or when no TWAP is used at all (scored alongside RD-F-053).\n\n**Common gray cases**\nGray is applied when the TWAP implementation uses dynamic observation selection that cannot be reduced to a fixed window duration, or when the oracle is an aggregated feed whose internal averaging methodology is not publicly documented.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Polymarket oracle path uses a DEX-pool TWAP; the documented paths are UMA outcome resolution and Chainlink price-market data.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No TWAP oracle used. Not applicable to reserves-based AMM pricing model.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-clmm/master/programs/amm/Cargo.toml"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/products/routing/math"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool does not use any DEX-TWAP oracle for any price-critical function. rETH:ETH rate is oDAO-committee-submitted accounting data. RPL/ETH price is oDAO-committee-submitted (off-chain 1inch aggregation by oDAO nodes, submitted on-chain — no on-chain TWAP call by protocol contracts). No OracleLibrary.consult(), no observe(), no TWAP window parameter exists in any Rocket Pool contract.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No TWAP oracle in any bridge path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -81,10 +81,72 @@
           "root_cause": "Malicious Strategy Contracts — Backdoor Withdrawal (Insider Rug Pull)"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The signal requires current whale identity, ERC-20 approval events, and contract-verification status; no public monitoring result establishes the threshold.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The factor is written for ERC-20 approval events; Raydium operates on Solana token-account primitives rather than ERC-20 approvals.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public reporting describes a holder phishing event, not a protocol-triggered unverified-contract approval; no public protocol-level monitor is available.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.investing.com/news/cryptocurrency-news/crypto-whale-losses-over-24m-in-phishing-scam-3170033"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public depositor ranking and approval-monitoring dataset was available to assess new approvals from high-value depositors.",
+          "gap_reason": "requires_curator_input",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

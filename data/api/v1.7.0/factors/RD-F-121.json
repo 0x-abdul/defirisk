@@ -20,10 +20,108 @@
         "scoring_methodology": "**What this measures**\nThis factor produces a curator-scored 1–5 depth score for each core contributor, based on the richness and independent corroborability of their online presence: LinkedIn profile depth (employment history, connections, endorsements), GitHub history (account age, contribution volume, fork and star patterns), conference or media presence, and any independent third-party references. The per-contributor scores are averaged to produce a team-level OSINT depth metric. Category 7 context: OSINT depth is a consolidated signal that partially overlaps with RD-F-112 (accountability surface count) but emphasizes depth and independence of evidence rather than breadth.\n\n**Why it matters**\nA team member with a high-follower Twitter account and a LinkedIn profile created in the past six months with generic employment entries represents a different risk than one with a ten-year GitHub history, endorsed LinkedIn connections from verifiable prior colleagues, and three conference talk recordings. The distinction matters for assessing whether identity signals are genuine or fabricated. DPRK IT worker profiles consistently score low on OSINT depth — LinkedIn profiles are typically sparse, GitHub accounts are new, and conference references are absent. Legitimate senior DeFi contributors typically score 4–5 across all three evidence dimensions.\n\n**Green / Yellow / Red**\nGreen is scored when the team average OSINT depth score is 4 or above — multiple contributors with rich, independently corroborated online histories. Yellow applies when the average falls in the 2–3 range — some verifiable history exists but it is limited in depth or relies on easily-fabricated platforms. Red is scored when the team average falls below 2 — most or all contributors have shallow or unverifiable online presences inconsistent with the experience level claimed.\n\n**Common gray cases**\nGray is assigned when the curator cannot complete the OSINT assessment within the evidence budget because the team has not disclosed sufficient identity information to begin the scoring process.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public records provide substantial OSINT depth for the CEO and a visible public engineering organization, but do not establish comparable, verifiable depth scores for every privileged contributor. Coverage is therefore partial rather than a full-team green conclusion.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "url",
+              "url": "https://www.cbsnews.com/news/polymarket-ceo-shayne-coplan-online-betting-platform-60-minutes-transcript/"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "github",
+              "url": "https://github.com/Polymarket"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Curator-scored 1–5 per team member: Timon Peng = 4 (LinkedIn with prior employers, GitHub org membership, pre-Raydium account history, location). AlphaRay = 2 (podcast appearances but no real name, no LinkedIn, no conference speaker slide). XRay/GammaRay/StingRay/RayZor = 1 each (named in public materials only, no individual profiles). Weighted average: approximately 2/5 across known team. Below threshold for well-doxxed team. Consistent with pseudonymous-with-track-record archetype.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/alpharay"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.linkedin.com/in/timonpeng/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rugendyke: 5/5 — BSc CS, 10+ years prior employment confirmed, 9+ years Rocket Pool founder, Medium blog (1.6K followers), YouTube interviews, LinkedIn, GitHub. Langley: 5/5 — BSc CS, Civic Ledger and Victoria Govt employer history, Devcon speaker, LinkedIn, X/Twitter, Medium since 2018. Wallmann/Clapis: 3/5 — real names public, multi-year GitHub histories, but limited external biographical depth. Overall team OSINT depth score: 4/5.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://au.linkedin.com/in/darren-langley-12a03825"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/darcius"
+            },
+            {
+              "source_type": "url",
+              "url": "https://iq.wiki/wiki/david-rugendyke"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public evidence provides a project repository but no named founder or core-team disclosure. Identity OSINT depth is therefore limited rather than sufficient for a strong attribution assessment.",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://coinmarketcap.com/currencies/synapse-2/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

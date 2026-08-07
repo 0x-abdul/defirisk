@@ -20,10 +20,111 @@
         "scoring_methodology": "**What this measures**\nThis factor records the Solidity compiler version used for the deployed bytecode of the protocol's primary contracts and flags any versions on the known-bug list. The known-bug list covers Solidity versions with documented compiler-level vulnerabilities (e.g., Vyper 0.2.15 through 0.3.0 which had reentrancy guard failures) and end-of-life versions no longer receiving security patches. The version is extracted from bytecode metadata and updated on a slow cadence (semi-annual or on code change).\n\n**Why it matters**\nCompiler bugs are among the hardest vulnerability classes to detect through standard auditing because auditors review source code while the compiler translates that code into bytecode. A compiler with a known bug can produce incorrect bytecode even from correct source code, creating a gap between the audited behavior and the deployed behavior. The Vyper reentrancy bug (affecting versions 0.2.15 through 0.3.0) is the most documented example in the DeFi ecosystem: it disabled the reentrancy guard macro in those versions, making protocols that relied on the compiler-level guard vulnerable even when their source code appeared correct. Several protocols using these Vyper versions lost funds through reentrancy attacks that should have been prevented by their code.\n\n**Green / Yellow / Red**\nGreen: all deployed contracts use a current, supported Solidity or Vyper version with no known bugs, and the version is consistent across all deployments. Yellow: deployed contracts use a Solidity version that is no longer receiving active patches but has no documented critical bugs; or versions are inconsistent across deployments without a documented reason. Red: any deployed contract uses a Solidity or Vyper version on the known-bug list, particularly any version with a documented reentrancy or arithmetic vulnerability.\n\n**Common gray cases**\nProtocols with contracts deployed across multiple versions (e.g., older V1 contracts still live alongside newer V2) must be assessed at the version of the contracts currently holding user funds, not the newest version used.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens (0x4D97DCd9...): Solidity 0.5.10 — EOL compiler but frozen deployment. Active bugs at 0.5.10 include 'ABIEncoderV2StorageArrayWithMultiSlotElement' (fixed in 0.5.10 — not applicable to 0.5.10 deployments). Post-0.5.10 bugs do not affect this frozen deployment. CTF Exchange V1 (0x4bFb41d5...): Solidity 0.8.15 — bugs 'DirtyBytesArrayToStorage' and 'InlineAssemblyMemorySideEffects' are FIXED in 0.8.15 (were in 0.8.13-0.8.14). V1 is sunset as of April 28, 2026. CTF Exchange V2, NegRiskCTFV2, pUSD: Solidity 0.8.34 — no known active bugs. Yellow assigned for presence of EOL 0.5.10 compiler in the dependency stack (ConditionalTokens), even though practical risk is minimal.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4D97DCd97eC945f40cF65F87097ACe5EA0476045#code"
+            },
+            {
+              "source_type": "url",
+              "url": "https://forum.soliditylang.org/t/solidity-v0-8-15-is-here-two-important-bugs-cheaper-ir-code-and-more/1072"
+            },
+            {
+              "source_type": "url",
+              "url": "https://etherscan.io/solcbuginfo"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium uses Rust cargo build-sbf (Solana Bytecode Format) — not Solidity/solc. Solidity bug list N/A. Rust 1.81.0 specified in CLMM and CPMM setup docs — current stable release, no known high-severity Rust compiler bug for BPF target. Anchor 0.32.1 is current stable. Standard AMM uses cargo build-sbf with standard SBF toolchain.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-cp-swap"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Two Solidity versions in production. (1) 0.7.6: used for all pre-Saturn core contracts (rETH, RocketStorage, RocketBase, etc.). Active known bug: DirtyBytesArrayToStorage (low severity, affects 0.0.1–0.8.15). Compiler is unsupported (de facto EOL — see F174). (2) 0.8.30: used for Saturn One megapool contracts. Active known bugs: TransientStorageClearingHelperCollision (HIGH severity, 0.8.28–0.8.34) — requires clearing both storage AND transient storage; Rocket Pool megapool contracts DO NOT use transient storage (confirmed by source inspection), so this bug is non-applicable to deployed code. LostStorageArrayWriteOnSlotOverflow (low). Yellow: 0.7.6 has a low-severity bug and is unsupported; 0.8.30 has a high-severity bug in the compiler but triggering conditions are absent.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolDelegate.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/hardhat-common.config.js"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xae78736cd615f374d3085123a210448e74fc6393#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SynapseBridge uses Solidity 0.6.12, which has known compiler bugs in the 0.6.x series. Outdated relative to current 0.8.29.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

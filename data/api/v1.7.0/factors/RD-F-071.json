@@ -20,10 +20,82 @@
         "scoring_methodology": "**What this measures**\nThis factor evaluates whether the protocol's market-listing governance or code requires a minimum seed deposit before a new market's borrow functionality is enabled. The seed-deposit requirement is the primary defense against the empty-cToken exchange-rate inflation attack (RD-F-070). Sources include source code inspection and governance proposal analysis. This factor is applicable only to Compound-fork lending protocols; it is N/A for non-lending and non-Compound-fork protocols.\n\n**Why it matters**\nThe seed-deposit requirement directly prevents the cToken inflation attack by ensuring that at least one legitimate supply-side deposit exists in every market before borrowing is enabled. When Sonne Finance's yAudit audit flagged the Compound V2 donation attack as a high-severity issue in their own report, the recommended fix was precisely a seed-deposit requirement. Onyx Protocol was exploited twice using the same empty-market vector because it did not implement a seed-deposit guard on governance-added markets. Hundred Finance's $7.4M loss was similarly preventable: an attacker donated 500 WBTC to an empty hWBTC market with no minimum deposit guard, inflating the exchange rate before the first legitimate depositor arrived.\n\n**Green / Yellow / Red**\nGreen: protocol enforces an on-chain minimum seed deposit for all markets before borrow enablement, with the seed amount set to a level that makes the inflation attack economically non-viable. Yellow: seed-deposit requirement exists in governance documentation but is not enforced on-chain at market activation, leaving a window between activation and first legitimate deposit. Red: no seed-deposit requirement exists in code or governance; markets can be activated with zero supply.\n\n**Common gray cases**\nProtocols that require a governance vote to activate new markets but have no minimum seed deposit still score red on this factor, because the activation window (even if short) is the critical vulnerability window as demonstrated by the Sonne Finance 6-second front-running attack.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Polymarket states that users cannot directly create markets; markets are created by the markets team with community input. The lending-market seed-deposit requirement is therefore not a protocol mechanism here.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://help.polymarket.com/en/articles/13364541-how-are-markets-created"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Green. For CPMM pool initialization, Raydium permanently locks a minimum-LP amount, so the first provider does not receive the entire initial LP supply. This is a concrete seed/lockup safeguard for new shared-LP pools.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/security/attack-vectors"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Rocket Pool has no lending-market listing process with a seed-deposit requirement.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the bridge documentation describes cross-chain asset transfer and redemption, not permissionless lending-market listings.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

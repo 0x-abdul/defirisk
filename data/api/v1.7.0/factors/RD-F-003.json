@@ -20,10 +20,99 @@
         "scoring_methodology": "**What this measures**\nThis factor counts the number of findings in the protocol's most recent audit report that are marked 'Resolved' or 'Fixed' where no corresponding on-chain bytecode change or verifiable commit can be identified. A finding is counted as unverified-resolved when the audit marks it closed, but the deployed bytecode at the audited commit hash shows no change consistent with the described fix. The data source is audit PDF cross-referenced against commit trails and deployed bytecode.\n\n**Why it matters**\nAudit findings marked Resolved without on-chain proof create a false paper trail. Merlin DEX's CertiK audit marked a critical centralization risk -- maximum approval granted to a single EOA -- as Resolved after the team verbally promised to implement a multisig. The EOA was never replaced; the finding remained fully exploitable and was the direct vector for the $1.82M exploit. This pattern -- verbal or self-reported fixes accepted by auditors without on-chain verification -- is a documented class of false assurance. A protocol with multiple unverified Resolved findings has potentially fewer real security properties than its audit certificate suggests.\n\n**Green / Yellow / Red**\nGreen: all findings marked Resolved in the audit have on-chain proof of fix, either via a verifiable commit hash or a subsequent audit confirming the remediation. Yellow: one or two low-severity findings lack verifiable on-chain proof, but high and critical findings are all confirmed fixed. Red: any high or critical severity finding is marked Resolved without on-chain or commit-level proof of the fix.\n\n**Common gray cases**\nCurators cannot grade this factor when the audit report is not publicly available or when the protocol does not publish source code with verifiable commit history, making it impossible to cross-reference stated resolutions against deployed code.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The Merlin DEX case (noted in the Factor 27 cross-hack section) is the clearest documented example, but Merlin DEX does not appear in the linked hacks for RD-F-003 directly. The factor's evidence base of approximately 14 precursor instances in the T-01 inventory supports its P0 priority."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ChainSecurity audit summaries state 'high level of security' with no unresolved high/critical findings. V2 post-audit commits (March-April 2026) describe validation improvements consistent with audit remediation. Cannot verify specific finding-to-fix mapping without PDF access (binary PDFs). Confidence low.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.chainsecurity.com/security-audit/polymarket-exchange-smart-contracts"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/commits/main"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "MadShield Q1 2024 CPMM audit: 2 Critical + 1 High — all resolved per public sources. OtterSec Q3 2022 CLMM: 2 Critical (OS-RAY-ADV-00/01) — remediated and confirmed via subsequent Immunefi engagement. Two Immunefi-discovered criticals (tick manipulation Jan 2024, liquidity drain Mar 2025) patched. Audit PDFs are binary so exact finding-by-finding commit verification is infeasible via WebFetch; Immunefi bugfix reviews confirm resolution for the two post-audit criticals.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/all/raydium-liquidity-drain-bug-fix-review/"
+            },
+            {
+              "source_type": "url",
+              "url": "https://medium.com/immunefi/raydium-tick-manipulation-bugfix-review-c6aae4527ed6"
+            },
+            {
+              "source_type": "audit_report",
+              "url": "https://resources.cryptocompare.com/asset-management/223/1754648736986.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public Saturn roadmap reports that audit findings were fixed and re-evaluated, but it does not map individual findings to deployed bytecode. The public Houston report documents its own fixed findings but describes a time-boxed, reduced scope and recommends follow-up. Full deployed-code resolution proof is unavailable.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/protocol-development-roadmap-update-aug-sept-oct/3810"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CertiK Nerve Finance audit found zero findings (0 critical, 0 major, 0 minor). No unresolved findings from the only known audit.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://skynet.certik.com/projects/synapseprotocol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

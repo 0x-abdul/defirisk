@@ -20,10 +20,82 @@
         "scoring_methodology": "**What this measures**\nThis factor is a curator-assigned categorical classification: whether the protocol is an algorithmic or under-collateralized stablecoin design per curator classification. The classification is based on the protocol's stated design, its collateralization mechanism, and the nature of its stabilization mechanism. Purely fiat-backed or overcollateralized designs score green; partially algorithmic designs or designs relying on endogenous collateral score yellow; purely algorithmic or fractional-reserve designs score red.\n\n**Why it matters**\nAlgorithmic stablecoins represent a distinct economic failure mode not present in overcollateralized lending or AMM designs: the reflexive collapse. Under Terra/Luna, the protocol's stabilization mechanism (mint/burn arbitrage between LUNA and UST) amplified rather than damped the depegging event, producing a total loss of approximately $40B in market value within days. The fundamental risk is that the stabilization mechanism is pro-cyclical at the tail: it works well during small deviations but fails catastrophically during large ones because the collateral (endogenous LUNA) depreciates as the stabilization mechanism is exercised. Any protocol featuring an endogenous token as a meaningful component of its stabilization reserve is exposed to this dynamic.\n\n**Green / Yellow / Red**\nGreen: protocol uses no algorithmic stabilization; stablecoin is fully backed by exogenous overcollateralized assets with a minimum collateral ratio enforced on-chain. Yellow: protocol uses a hybrid mechanism with partial algorithmic backing; stabilization reserve includes some endogenous tokens but exogenous collateral exceeds fifty percent. Red: protocol is primarily algorithmic (stabilization reserve is majority endogenous tokens) or is fractional-reserve by design.\n\n**Common gray cases**\nProtocols that use algorithmic mechanisms for rate adjustment (e.g., Liquity's interest rate targeting) but maintain full collateralization are not classified as algorithmic stablecoins; the risk category applies to stabilization collateral composition, not rate-setting mechanisms.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Polymarket documents pUSD as a USDC-backed ERC-20 collateral token whose backing is enforced onchain, explicitly stating that it has no algorithmic peg or fractional reserve. Polymarket is not assessed here as an algorithmic or under-collateralized stablecoin issuer.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/pusd"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Raydium is an AMM/DEX and does not issue a protocol stablecoin whose peg design can be assessed by this factor.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: rETH is a liquid-staking receipt token whose value tracks staking rewards, not a stablecoin with a peg-maintenance mechanism.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the documented bridge mints and redeems bridged ERC-20 representations; it does not implement an algorithmic or under-collateralized stablecoin mechanism.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/docs/bridge/SynapseBridge.md"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

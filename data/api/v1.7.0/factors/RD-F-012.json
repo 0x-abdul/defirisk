@@ -41,10 +41,86 @@
           "root_cause": "Evil Contract — Delegatecall Storage Collision"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No user-controlled delegatecall identified across reviewed V1/V2 mixin source. pUSD UUPS proxy has _authorizeUpgrade restricted to owner. No arbitrary delegatecall path found.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "delegatecall does not exist in Solana. Solana uses CPI (cross-program invocation) with hardcoded or PDA-validated program IDs. CPI targets in Raydium are controlled, not user-supplied. N/A.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm/blob/master/program/src/processor.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Source inspection confirms no user-controlled delegatecall. Minipool proxy delegatecalls to admin-registered delegate address. Megapool clones use OZ Clones.cloneDeterministic (EIP-1167 minimal proxy) — not a user-supplied target delegatecall. RocketBase access control gates all call targets via RocketStorage registry.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/RocketBase.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolFactory.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Unsafe delegatecall not fully assessed beyond standard EIP-1967 proxy mechanism.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

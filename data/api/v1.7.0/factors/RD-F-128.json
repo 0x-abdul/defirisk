@@ -20,10 +20,77 @@
         "scoring_methodology": "**What this measures**\nThis factor monitors whether the upstream protocol that this fork descends from has published a public vulnerability disclosure in the trailing 90 days that affects code the fork shares with the upstream. The assessment runs on an episodic, event-driven cadence: when a new upstream security advisory is published, the factor is re-evaluated for all downstream forks in the coverage list. The data source is GitHub security advisories, the upstream protocol's official disclosure channels, and security advisory feeds.\n\n**Why it matters**\nA fresh upstream vulnerability disclosure is an active risk elevation for all downstream forks. The 90-day trailing window captures the highest-risk period: within days of a public disclosure, sophisticated attackers scan GitHub for all forks of the affected code. The cross-hack dataset shows that fork-propagation attacks happen within 8 hours to 7 days of the original exploit in the most aggressive cases. For a depositor-facing dashboard, a live flag that 'an upstream vulnerability affecting this fork was disclosed N days ago' is one of the most actionable risk signals available -- it is a leading indicator of exploit risk with a known short time window.\n\n**Green / Yellow / Red**\nGreen: no upstream vulnerability disclosures in the trailing 90 days affect code shared with this fork. Yellow: an upstream disclosure exists for a medium-severity issue that affects shared code; the fork team has acknowledged the disclosure and provided a patch ETA. Red: an upstream high or critical vulnerability disclosure in the trailing 90 days affects code shared with this fork and no patch has been deployed.\n\n**Common gray cases**\nThis factor is gray for original protocols with no upstream, or when the upstream does not maintain a public security advisory channel and no disclosures are assessable.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor in isolation. The factor's value is as a leading indicator that is most powerful in the days immediately following an upstream disclosure."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public security advisory or vulnerability disclosure for Gnosis CTF in the trailing 90 days (January 29 to April 29, 2026). Gnosis CTF is a frozen unmaintained reference implementation with no active upstream advisory.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/gnosis/conditional-tokens-contracts/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — no upstream fork identified (see F126).",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork parent — factor not applicable. Rocket Pool is an original protocol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Saddle Finance security patches not confirmed systematically propagated to Synapse AMM fork. November 2021 incident was a direct result of a missing upstream safety mechanism.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/synapse-protocol-rekt/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

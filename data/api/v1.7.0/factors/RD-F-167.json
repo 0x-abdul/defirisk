@@ -20,10 +20,82 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether a protocol has formally deprecated a contract but left the pause state on that contract reversible by a currently-live admin role. The deprecated contract is paused — appearing inactive — but the pause is not permanent: an admin can unpause it, restoring its functionality and any attack surface it carries. The factor is populated by on-chain checks of deprecated contracts listed in protocol documentation against their current pause state and who holds the unpause authority.\n\n**Why it matters**\nDeprecated but unfinalized contracts present an invisible attack surface. Users and monitoring systems may treat a paused deprecated contract as inert, but if a live admin role can unpause it, an attacker who compromises that admin can restore the contract's full functionality. OKX DEX lost $2.7M via a deprecated TokenApprove contract whose admin key had not been revoked — users still had open approvals to the contract, and a single admin action allowed the attacker to drain them. This pattern is distinct from a protocol that has burned or renounced admin on deprecated contracts, which would score green; the risk is specifically the combination of \"announced deprecated\" and \"admin pause is still reversible.\"\n\n**Green / Yellow / Red**\nGreen is assigned when deprecated contracts have had admin authority renounced or transferred to an immutable address, or when the pause is executed by a burned admin key with no live unpause capability. Yellow covers cases where a timelock of at least 48 hours gates any unpause action on deprecated contracts. Red is assigned when a deprecated contract's pause is reversible by a currently-live admin role with no timelock, effectively leaving the deprecated surface under live admin control.\n\n**Common gray cases**\nThis factor is grayed when no contracts have been deprecated or when the deprecation status cannot be confirmed from public protocol documentation.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public April 2026 migration notice documents a new exchange stack and cleared v1 order books, but this pass could not establish that a specifically deprecated contract was paused and had a live role capable of reversing that pause.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium documents AcceleRaytor as archived and LaunchLab as its successor, but the public documentation reviewed does not establish whether any deprecated AcceleRaytor program remains pauseable by a live admin or retains material value.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Public Etherscan pages identify older DepositPool contracts, but the reviewed public evidence does not establish that any such contract is currently paused or that a live admin can reverse a pause. The prior claim that a guardian retains RocketStorage control conflicts with Rocket Pool's October 2025 statement that the protocol DAO guardian was permanently disabled. The factor is therefore not assessed rather than inferred from the mere existence of deprecated contracts.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x4d05e3d48a938db4b7a9a59a802d5b45011bde58"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "DeFiLlama reports $11.88M protocol-level TVL at the assessment date, but the reviewed public sources do not attribute that balance to this legacy SynapseBridge deployment or establish its current GOVERNANCE_ROLE holder and deprecated-surface status. This factor is not assessed.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/synapse"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

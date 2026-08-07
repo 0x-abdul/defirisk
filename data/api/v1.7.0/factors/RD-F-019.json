@@ -20,10 +20,86 @@
         "scoring_methodology": "**What this measures**\nThis factor detects whether any use of ecrecover() in the protocol's deployed code fails to validate that the returned address is not address(0). In Solidity, ecrecover() returns address(0) when the signature is invalid rather than reverting. If the calling code uses the return value without a != address(0) check, an invalid or malformed signature passes as valid, with address(0) treated as the signer. The detection is performed by static analysis of the verified source.\n\n**Why it matters**\nA missing zero-address check on ecrecover() enables signature forgery: any attacker can submit a malformed signature and be treated as having been signed by address(0). If address(0) has any special permissions in the protocol (a common pattern in early contracts), the attacker gains those permissions. This pattern underpins the Wormhole-class signature validation failures -- Wormhole ($326M, 2022) involved a guardian signature verification bypass where the zero-address edge case was not handled. The vulnerability is simple to detect and fix but can be catastrophic when present in a signature-gated permission system.\n\n**Green / Yellow / Red**\nGreen: all uses of ecrecover() are followed by a require(signer != address(0)) check, confirmed by static analysis. Yellow: the check is absent in ecrecover() calls for non-critical signature paths (e.g., permit() functions without admin privilege), but all admin or governance signatures are correctly validated. Red: any ecrecover() call in an admin, governance, or fund-movement path lacks the != address(0) validation.\n\n**Common gray cases**\nThis factor is gray for protocols that do not use ecrecover() or ECDSA signature verification in any function path.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The factor is retained as P1 based on approximately four documented precursor instances in the T-01 evidence inventory, including the Wormhole-class pattern."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V1 uses OpenZeppelin ECDSA.recover() (handles zero-address case). CTF Exchange V2 uses Solady ECDSA.recover() (also handles zero-address). No raw ecrecover() without guards found in signature validation path.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/mixins/Signatures.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange/blob/main/src/exchange/mixins/Signatures.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ecrecover is an Ethereum precompile; Solana uses ed25519 signatures via Solana runtime intrinsics. No ecrecover pattern present. N/A for Solana.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-amm"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No ecrecover usage found in core contracts (RocketTokenRETH, RocketStorage, RocketBase, megapool contracts). Rocket Pool does not use EIP-712 permit or ECDSA signatures in its core staking/withdrawal path.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ecrecover is not used in SynapseBridge; NODEGROUP_ROLE uses AccessControl-based role check, not ECDSA recovery. Pattern inapplicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

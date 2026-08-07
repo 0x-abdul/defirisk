@@ -20,10 +20,82 @@
         "scoring_methodology": "**What this measures**\nThis factor runs the Slither divide-before-multiply detector on the protocol's deployed verified source code and records whether the detector fires on any function handling token amounts, exchange rates, or share calculations. The divide-before-multiply pattern -- where a division is performed before a multiplication that depends on the intermediate result -- causes precision loss that can be exploited to extract value by rounding the attacker's favor repeatedly.\n\n**Why it matters**\nInteger arithmetic in Solidity is fixed-point with no fractional representation. Dividing before multiplying causes the intermediate result to lose precision, and when this precision loss is consistent (e.g., always rounding down for the user, never for the protocol), an attacker can repeatedly exploit the rounding to extract small amounts per transaction at scale. The pattern appears in approximately seven documented hacks in the T-01 evidence inventory. It is particularly dangerous in exchange rate calculations where shares-to-assets conversions are called millions of times by users.\n\n**Green / Yellow / Red**\nGreen: the Slither divide-before-multiply detector reports no findings on the deployed verified source, or all findings are in non-financial computation paths confirmed by curator review. Yellow: findings exist in peripheral calculation paths (e.g., fee calculations with small absolute impact) but not in core exchange rate or collateral accounting functions. Red: the detector fires on a core exchange rate, share price, or collateral accounting function that directly affects user fund calculations.\n\n**Common gray cases**\nThis factor cannot be graded when the protocol's source is not verified on any explorer. It is gray for protocols written in Vyper or Yul where the Slither Solidity detector does not apply reliably.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is retained as P1 based on approximately seven supporting instances in the T-01 vulnerability inventory."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither divide-before-multiply output available. Cannot assess without tool execution. V2 fee math appears simple (constant MAX_FEE_RATE = 1000 bps) but full arithmetic path not verified.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2/blob/main/src/exchange/mixins/Fees.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Slither divide-before-multiply detector N/A for Rust. Rust equivalent (integer rounding errors in math paths): Immunefi liquidity-drain finding (Mar 2025) was precisely this class — rounding error in lp_tokens_to_trading_tokens — patched and bounty paid. MadShield Q1 2024 also found critical rounding issues, all resolved. No known remaining precision issues.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/all/raydium-liquidity-drain-bug-fix-review/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Slither divide-before-multiply output found. rETH exchange rate involves division (rETH:ETH ratio) but no specific divide-before-multiply finding in any accessible audit summary. Cannot assess without tool run.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Divide-before-multiply patterns not assessed within budget.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

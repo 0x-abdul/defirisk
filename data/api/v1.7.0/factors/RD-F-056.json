@@ -101,10 +101,82 @@
           "root_cause": "Flash loan + Curve Y-pool spot price manipulation → inflated fToken share valuation → vault drain"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No published Polymarket oracle path is a single DEX-pool oracle; this factor is not applicable to the documented UMA and Chainlink paths.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/concepts/resolution"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public routing documentation describes per-pool curve pricing rather than aggregation of external price venues. Oracle medianization is therefore not applicable to this DEX pool architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/products/routing/math"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No DEX pool oracle is used in Rocket Pool's on-chain contracts. The RPL/ETH oDAO input is derived off-chain from 1inch (combining two Uniswap V3 pools), but the on-chain contracts don't read from any single pool directly — they accept oDAO consensus submissions. Factor N/A because the protocol does not use an on-chain DEX pool oracle to medianize.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No oracle. AMM pool is not an oracle.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

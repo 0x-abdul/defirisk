@@ -20,10 +20,81 @@
         "scoring_methodology": "**What this measures**\nThis factor records whether the protocol has active coverage on a recognized DeFi insurance provider (Nexus Mutual, Unslashed Finance, Sherlock, or a verified equivalent) and, if so, the current cover size in USD. Coverage is verified via provider APIs and is updated continuously. A protocol without any active insurance coverage scores yellow or red depending on TVL tier. The factor measures the presence and adequacy of formal insurance coverage, not informal treasury reserves.\n\n**Why it matters**\nActive insurance coverage provides two depositor-protection signals. First, it represents an independent third-party assessment of the protocol's risk posture: insurance providers (particularly Sherlock, which runs competitive audit contests) conduct their own review before offering coverage and reprice based on ongoing assessments. Second, it provides actual financial recourse for depositors in the event of an exploit. In the dataset, Euler Finance's $4.5M Sherlock insurance payout acknowledging the missed donateToReserves vulnerability is the clearest example of insurance functioning as designed. Coverage absence correlates with the dataset's highest-loss protocols: the majority of protocols with losses exceeding $50M had no active insurance coverage at the time of the exploit.\n\n**Green / Yellow / Red**\nGreen: active coverage from a recognized provider with cover size representing at least twenty percent of current TVL. Yellow: active coverage but cover size represents less than twenty percent of TVL, or coverage is from a provider without an active assessment process. Red: no active insurance coverage on any recognized provider, or coverage lapsed within the last ninety days.\n\n**Common gray cases**\nSelf-insurance (e.g., protocol treasury reserves earmarked for hack compensation) is not equivalent to third-party insurance coverage and is not counted for this factor. Curator must verify that the coverage is active via direct API check, not just protocol documentation, as policies can lapse silently.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Nexus Mutual's public materials describe cover as a product tied to designated protocols and published cover listings. They do not identify an active Polymarket-specific policy, cover amount, or protocol-level protection at the refresh date; that evidence gap supports gray rather than an adverse conclusion.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://nexusmutual.io/cover"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No active third-party insurance cover for Raydium was identified in the public Nexus Mutual cover interface during this assessment. A treasury reimbursement commitment is not third-party insurance; the current public DeFiLlama dashboard reports material protocol TVL.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://app.nexusmutual.io/cover"
+            },
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public evidence verified a $150,000 maximum bug-bounty reward and current protocol TVL, but did not independently establish the existence or absence of an on-chain insurance policy or the amount of applicable cover.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No independently verifiable public evidence of active protocol insurance coverage and cover size was established during this pass.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

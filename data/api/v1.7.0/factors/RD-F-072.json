@@ -91,10 +91,86 @@
           "root_cause": "Fake jar injection — missing whitelist in Controller's jar-swap function"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Green. New market listings are team-curated rather than permissionless: Polymarket states that markets are created by its markets team, while users may only suggest ideas. This is a closed, high-threshold listing model for the economic listing-risk factor.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://help.polymarket.com/en/articles/13364541-how-are-markets-created"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Yellow. Raydium permits permissionless pool creation, while certain CPMM creation flows may use a permission account for integrated-program paths. The public materials do not establish a protocol-wide governance threshold that screens every new pool, so users can encounter newly created long-tail pools.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/products/cpmm/accounts"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: Rocket Pool does not list borrowable lending markets or use a market-listing incentive model.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: no lending-market listing mechanism is part of the documented SynapseBridge surface.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/docs/bridge/SynapseBridge.md"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

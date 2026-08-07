@@ -20,10 +20,85 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the protocol implements an oracle staleness check — specifically whether it validates that the oracle's `updatedAt` timestamp is more recent than `now - maxAge` before accepting the reported price. Source inspection of the oracle integration layer is the assessment method.\n\n**Why it matters**\nWithout a staleness check, a protocol will continue to use a price that was last updated hours or days ago as if it were current — a failure mode that becomes critical during network congestion, oracle outages, or periods of extreme market volatility when keepers fail to update feeds. Chainlink feeds have experienced significant delays during high gas-price events; a protocol operating on a stale price during a rapid market move can process borrows against collateral that is actually worth far less than the stale price indicates, creating bad debt. This is a particularly common implementation gap in DeFi: many protocols call `latestRoundData()` but never check the returned `updatedAt` timestamp, leaving them silently operating on stale data.\n\n**Green / Yellow / Red**\nGreen is scored when the protocol checks `updatedAt > block.timestamp - maxAge` for all oracle reads, and the maxAge is documented and appropriate for the asset class. Yellow is scored when a staleness check exists but maxAge is excessively long (over 24 hours for non-stablecoin assets) or is not documented. Red is scored when no staleness check is present and the protocol accepts any price regardless of when it was last updated.\n\n**Common gray cases**\nGray is applied when the oracle uses a push-based feed where timestamp validation is handled by the feed contract rather than the consuming protocol and the mechanism cannot be confirmed from inspection alone.\n\n**Notable historical examples**\nNo cross-hacked incidents are currently linked in the database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Chainlink describes Data Streams as including staleness indicators, but public Polymarket materials do not establish Polymarket's onchain staleness-enforcement rule.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Raydium's public routing documentation describes swap pricing from each pool's on-chain curve rather than an external feed. External oracle staleness checks are not applicable to that architecture.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/products/routing/math"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Neither RocketTokenRETH.sol (consumer of rETH:ETH rate) nor any known consumer contract checks 'updatedAt > block.timestamp - maxStaleness' before using oracle values. RocketNetworkBalances.sol enforces minimum time BETWEEN submissions (95% of configured interval) but does NOT reject reads if the last update is old. Consumers use the last stored value unconditionally — if oDAO goes offline for days, the protocol silently uses a stale price without reverting. RocketNetworkPrices.sol imposes no staleness guard on RPL price reads either. This is the only red factor in Cat 3.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No oracle, hence no staleness check required or present.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,77 @@
         "scoring_methodology": "**What this measures**\nThis real-time signal fires when a transaction to the monitored protocol matches a known-exploit-replay template — a specific sequence of function selectors, calldata shapes, or inter-contract call patterns that matches a previously documented exploit execution against this protocol or a protocol of the same class. The signal library is maintained from post-mortem calldata analysis. Category 6 context: selector-pattern matching is an exploit-in-progress signal — it fires when the exploit transaction is already in the mempool, providing a last-moment alert window before block confirmation.\n\n**Why it matters**\nCopy-cat exploits within the Compound fork family are the clearest evidence that selector-pattern replay detection would have value: AutoShark was exploited eight hours after PancakeBunny using the same attack pattern, and Merlin Labs was exploited one week later using an identical pattern. If a selector-pattern alert had fired after PancakeBunny, protocols running the same code would have had a warning window to pause. Onyx Protocol was exploited twice with the same empty-market vector — the second exploit eleven months after the first used the identical calldata pattern, meaning a replay template from the first exploit would have fired on the second.\n\n**Green / Yellow / Red**\nGreen is the baseline when all transactions to the protocol contain no selector patterns matching the exploit-replay library. Yellow fires when a transaction contains a partial selector-pattern match — individual selectors appear in the exploit library but the full sequence does not match. Red fires when a transaction matches a complete known-exploit-replay template, particularly if the transaction is submitted by a fresh wallet or follows a flash loan origination.\n\n**Common gray cases**\nGray applies when the protocol's legitimate functionality overlaps significantly with selector patterns in the exploit library (e.g., a lending protocol that legitimately uses flash loans for liquidations), making false positive rates unacceptably high.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "programmatic",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Known-exploit selector replay requires a current transaction stream and a defined selector corpus; the public materials reviewed do not establish either result.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public record confirms the December 2022 AMM incident and a June 2026 fake-LP-mint exploit limited to retired AMM V3. The June report says the legacy program had been phased out in 2021 and is not supported by the current SDK or dApp. Public reporting does not establish a current-program selector/replay event.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://www.theblock.co/post/404304/raydium-dex-1-34-million-exploit-retired-amm-program-treasury-cover-losses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public selector-replay monitoring feed establishes an attack attempt against Rocket Pool contracts.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No public selector-sequence monitor was available to establish whether a known exploit replay pattern is currently targeting Synapse.",
+          "gap_reason": "pipeline_unimplemented",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

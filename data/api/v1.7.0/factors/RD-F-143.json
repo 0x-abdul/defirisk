@@ -61,10 +61,99 @@
           "root_cause": "Flash loan + collateral inflation via position liquidation → infinite R mint → stablecoin dump"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★] pUSD impl (0x6bBCef9f) calls _disableInitializers() in constructor (confirmed from source). CTFExchange V2 is not a proxy — no reinitializer risk. Neg Risk Adapter is not a proxy. All proxied implementations correctly protected.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x6bBCef9f7ef3B6C592c99e0f206a0DE94Ad0925f#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/Polymarket/ctf-exchange-v2/main/src/collateral/CollateralToken.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana has no proxy/implementation pattern. BPF Upgradeable Loader directly upgrades program bytecode. _disableInitializers() risk class does not apply. Raydium AMM V4 checks if amm.status != AmmStatus::Uninitialized to prevent re-init of existing pools (Solana-native protection). No proxy takeover vector.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/raydium-io/raydium-amm/master/program/src/state.rs"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Architectural N/A. Rocket Pool does not use standard transparent proxy or UUPS proxy patterns. Contracts are independent implementations registered in RocketStorage. No initialize() functions with initializer modifiers. No proxy upgrade path requiring _disableInitializers(). The storage-registry pattern makes this factor inapplicable by architecture.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/RocketStorage.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The verified SynapseBridge implementation exposes initialize() as external initializer and assigns DEFAULT_ADMIN_ROLE to the initializer caller. Its verified source does not include a constructor-level _disableInitializers() lock. Under the v1.7 constructor-lock requirement, the implementation is not protected by the required initializer lock; score is red.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x31fe393815822edacbd81c2262467402199efd0d#code"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/synapsecns/synapse-contracts/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

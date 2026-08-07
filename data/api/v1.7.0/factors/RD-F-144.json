@@ -20,10 +20,87 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether the protocol uses a CREATE2 factory that permits redeployment to the same contract address with different bytecode — either via a selfDestruct-and-redeploy pattern or via a factory configuration that does not enforce deterministic address uniqueness. If redeployment is possible, the address ceases to be a reliable identifier for a specific contract's code.\n\n**Why it matters**\nCREATE2 factories that permit redeployment enable metamorphic contract attacks: an attacker (or a malicious governance proposal) can deploy an apparently-safe contract to a known address, accumulate user approvals or deposits, then self-destruct and redeploy a malicious version at the same address. The Tornado Cash governance attack in 2023 demonstrated this vector: a trojan governance proposal used CREATE2's malicious-contract-swap capability to deploy a contract that accumulated votes under an apparently benign façade, then swapped to a malicious implementation. The attack was executed at the governance layer; a protocol using a redeployable CREATE2 factory for its own core contracts carries the same risk in its own upgrade process.\n\n**Green / Yellow / Red**\nGreen is assigned when the protocol does not use CREATE2 deployment for upgradeable core contracts, or when the factory is configured to prevent redeployment via a one-time-nonce burn or equivalent. Yellow covers use of CREATE2 for peripheral contracts with no self-destruct capability in the deployer. Red is assigned when core protocol contracts are deployed via CREATE2 with no guard against redeployment to the same address.\n\n**Common gray cases**\nThis factor is grayed when the protocol does not use CREATE2 in its deployment architecture, or when the factory used is a well-audited standard implementation with verified non-redeployable configuration.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTFExchange V2 deployed via CREATE2 factory (fixed salt). Redeployment to same address requires identical bytecode — standard CREATE2 behavior. No evidence of redeployable-to-same-address vulnerability beyond standard mechanics.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "transaction",
+              "url": "https://polygonscan.com/tx/0xd313453c195344b3eea2d91343fb840e51130ba5562fb9c9eda83fd0f82c6c97"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana does not use CREATE2. Program addresses on Solana are determined by keypairs, not bytecode hashes. No CREATE2 redeploy-to-same-address risk.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/raydium/protocol/security"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public repository is available for review, but the evidence currently attached does not document a complete inspection of deployed factory bytecode or rule out CREATE2/selfdestruct redeploy behavior across the protocol. The factor is not assessed rather than making an unsupported absence claim.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No CREATE2 factory usage. Standard EIP-1967 transparent proxy (deterministic to deployer nonce). No redeployment-to-same-address risk.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts/blob/master/contracts/bridge/SynapseBridge.sol"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

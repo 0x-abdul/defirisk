@@ -20,10 +20,77 @@
         "scoring_methodology": "**What this measures**\nThis factor records the number of fork hops between the assessed protocol and an originally-audited base protocol. A direct fork of Compound Finance has a fork depth of 1. A fork of a Compound fork has a fork depth of 2. Each additional hop potentially dilutes the audit coverage assurance and introduces new parameter divergences at each layer. The data source is a curator-maintained lineage map cross-referenced with bytecode similarity analysis.\n\n**Why it matters**\nFork-of-fork deployments compound the audit coverage risk at each layer. A third-generation fork (depth 3) may carry bugs introduced at the second-generation level that were never audited, combined with parameter changes introduced at the third level that diverge from both the first and second generation audits. The BSC DeFi ecosystem during 2021-2022 was dominated by second- and third-generation forks where an already-dangerous pattern (unaudited BSC fork of an audited Ethereum protocol) was further forked without any additional review. AutoShark was a fork of PancakeBunny which was itself a yield aggregator inspired by Yearn -- two hops from the original audited design, with vulnerabilities introduced at each layer.\n\n**Green / Yellow / Red**\nGreen: fork depth of 0 (original code) or 1 (direct fork with independent audit of the fork itself). Yellow: fork depth of 2, where the protocol can demonstrate that the intermediate fork's changes were reviewed. Red: fork depth of 3 or more, or fork depth of 2 without any audit of the intermediate changes.\n\n**Common gray cases**\nFork depth is gray when the lineage cannot be reliably traced due to undisclosed or multiple overlapping upstream sources.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor as a standalone causal driver. The factor is a structural modifier on the overall Cat 8 lineage assessment."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ConditionalTokens: depth 0 — direct deployment of originally audited Gnosis CTF. Gnosis CTF audited pre-2020 by Gnosis, and additionally ChainSecurity April 2024 for Polymarket's deployment. CTF Exchange: original code, N/A.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://old.chainsecurity.com/wp-content/uploads/2024/04/ChainSecurity_Polymarket_Conditional_Tokens_audit.pdf"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "N/A — original protocol, fork depth = 0 (not applicable as a fork depth metric).",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "No upstream fork — fork depth is 0 (original). Factor not applicable.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Known vulnerability (missing virtual price check) exploited in Nov 2021 was a direct result of inherited upstream pattern from Curve/Saddle codebase not replicated in fork.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/synapse-protocol-rekt/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

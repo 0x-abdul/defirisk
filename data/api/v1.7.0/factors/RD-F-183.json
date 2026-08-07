@@ -20,10 +20,90 @@
         "scoring_methodology": "**What this measures**\nThis factor identifies whether the protocol's highest-TVL contracts -- particularly shared-primitive contracts such as LayerZero OFT adapters, ZK verifiers, or bridge inbox contracts -- are explicitly excluded from the scope of the protocol's bug bounty program, while other (lower-TVL) contracts remain in scope. The assessment cross-references the Immunefi scope definition and protocol bounty documentation against the contract addresses that collectively hold the majority of user funds.\n\n**Why it matters**\nA bug bounty program that excludes the contracts holding the most value provides economic incentive for researchers to disclose only the low-value vulnerabilities, while the highest-risk surfaces remain economically unprotected from exploit. Kelp DAO's April 2026 exploit ($292M) is the clearest documented case: the protocol ran an active Immunefi program for its core rsETH contracts, but the LayerZero OFT adapter -- the contract through which the exploiter minted unbacked tokens -- was explicitly excluded from bounty scope despite holding over $1B in bridged value. A whitehat who discovered the 1/1 DVN misconfiguration had no economic incentive to disclose it through the bounty channel because the scope exclusion made the report ineligible for payout.\n\n**Green / Yellow / Red**\nGreen: the protocol's bug bounty scope explicitly includes all contracts that collectively hold more than 80% of TVL, including any bridge adapters, OFT contracts, or shared primitives. Yellow: the bounty scope includes primary lending or swap contracts but excludes some integration contracts (bridges, keepers) where the excluded contracts hold less than 20% of TVL. Red: any contract that individually holds more than $10M in TVL or more than 20% of protocol TVL is explicitly excluded from the bounty scope.\n\n**Common gray cases**\nThis factor is gray when the protocol does not have a bounty program at all (captured separately by RD-F-007), or when the bounty scope documentation is ambiguous and curator review cannot determine inclusion or exclusion of specific contracts.\n\n**Notable historical examples**\nNo hacks are currently linked in the database for this specific factor. The Kelp DAO case (April 2026, $292M) is the primary motivating incident; the factor was added in the v1.1 batch-24 pass precisely because the bounty scope gap was identified as a direct contributor to that exploit's severity."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Cantina $5M bounty covers 18 contracts including V1/V2 exchange, NegRisk, pUSD, UMA adapter. The ConditionalTokens contract (Gnosis CTF, 0x4D97DCd9...) bounty coverage status in the Cantina program is uncertain — it is a Gnosis-deployed contract, not a Polymarket-deployed contract. The legacy Immunefi program explicitly listed ConditionalTokens as in-scope, but transition to Cantina program's exact scope for this contract is unverified. Possible gap during transition period.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://cantina.xyz/bounties/ff945ca2-2a6e-4b83-b1b6-7a0cd3b94bea"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/polymarket/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program has 74 assets in scope. Exclusions are specific known-and-resolved findings from prior audits (not contract address exclusions). Standard AMM v4 ($1B+ TVL), CLMM, and CPMM are all in active bounty scope. $1.7M paid; median 2-day resolution. No high-TVL contract found explicitly excluded from bounty.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/raydium/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Immunefi program active with 77 assets, last updated March 31, 2026 (post-Saturn One Feb 18, 2026 launch — consistent with Saturn assets added post-launch). Discord summary Feb 16, 2026 confirms transition of bug bounty to Saturn assets was in progress. Indirect inference that Saturn megapool contracts were added to scope by March 31, 2026; no confirmed in-scope contract address list available to verify explicitly.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "governance_post",
+              "url": "https://dao.rocketpool.net/t/bug-bounty-program-update/3893"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/bug-bounty/rocketpool/"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Specific Immunefi contract exclusions not assessed within budget.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_assessed",
+          "sources": [],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,97 @@
         "scoring_methodology": "**What this measures**\nThis factor checks whether the deployer address has a bound Ethereum Name Service (ENS) domain or NameStone name that resolves to a verifiable human identity — one where the ENS registration itself is connected to a social profile, GitHub account, or other identity anchor. Measurement is programmatic via ENS resolution: the factor queries the reverse ENS record for the deployer address and, if present, traces the ENS name to any linked identity records. Category 7 context: an ENS name bound to a deployer is a weak but non-trivial accountability signal — it requires the deployer to have established an on-chain identity prior to deployment.\n\n**Why it matters**\nENS names are not a strong identity guarantee — they can be registered pseudonymously — but their presence indicates that the deployer made an active choice to establish an on-chain identity, which marginally increases the cost of disappearing after a rug. More importantly, ENS names linked to verifiable social profiles (e.g., a vitalik.eth-style linkage where the ENS resolves to a Twitter account with history) provide meaningful corroborating identity signal. The absence of any ENS binding on a high-TVL deployer is a weak negative signal, particularly for protocols where other identity signals are also absent.\n\n**Green / Yellow / Red**\nGreen is scored when the deployer has an ENS or NameStone name that resolves to a verifiable identity anchor — linked to a GitHub account with multi-year history, a public social profile, or a prior audited-protocol deployment. Yellow applies when an ENS name is present but resolves only to the address itself or to a pseudonymous social handle with no further verifiable history. Red is not applicable as a standalone grade trigger; this factor is a positive mitigant or neutral signal, not a disqualifier.\n\n**Common gray cases**\nGray is assigned when the deployer uses a multi-sig factory or CREATE2 pattern where the originating EOA is not the direct deployer of record, making ENS reverse-resolution inapplicable.\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "PolygonScan identifies the reviewed deployer addresses, but the reviewed public record does not provide a resolved ENS or NameStone identity that can be tied to a verifiable person.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0xca71ea69c54c163d17beb90beb8d001e1eb538a1"
+            },
+            {
+              "retrieved_at": "2026-07-24",
+              "source_type": "etherscan",
+              "url": "https://polygonscan.com/address/0x4df6f457ae69c9310fa34c4b64f15582ea6e1fc8"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. Raydium is Solana-native with no EVM deployment. ENS and NameStone are Ethereum-specific. Solana Name Service (SNS/Bonfida) not referenced for any Raydium program address in public documentation. Gray = N/A for Solana protocol.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.raydium.io/reference/program-addresses"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Deployer 2 (0x0ccf14983364a7735d369879603930afe10df21e) does not have a confirmed bound ENS name. Etherscan shows a public name tag 'Rocket Pool: Deployer 2' providing protocol-affiliation labeling, but this is an Etherscan-applied tag, not an on-chain ENS binding. The 'darcius' GitHub handle is publicly linked to David Rugendyke and the rocket-pool org, but the chain between 'darcius' and the deployer address is not formally on-chain-attested. Weaker identity binding than ENS; scored yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x0ccf14983364a7735d369879603930afe10df21e"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/darcius"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The public deployer explorer page was reviewed, but no independently verified ENS or NameStone identity binding was established in this pass.",
+          "gap_reason": "protocol_opacity",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "gray",
+          "sources": [
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0x235AF07E770f474d24f5bf73074735892371b40D"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

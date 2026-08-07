@@ -41,10 +41,95 @@
           "root_cause": "Governance-introduced bug — updated Comptroller vault incorrectly distributed COMP rewards; any user could call `drip()` to refill the vulnerable vault from the Reservoir"
         }
       ],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "CTF Exchange V1 (0x4bFb41d5...): nonReentrant guards present on fillOrder and matchOrders. CTF Exchange V2: reentrancy guard was removed per design — operator-only access model eliminates reentrancy vectors. The design rationale is sound but the absence of nonReentrant in V2 on ERC-1155 callback paths is a departure that warrants yellow.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://github.com/Polymarket/ctf-exchange-v2"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/Polymarket/ctf-exchange/blob/main/src/exchange/CTFExchange.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Solana single-threaded SVM prevents traditional reentrancy. Anchor 0.32.1 (used by CLMM and CPMM) includes built-in reentrancy guard. Standard AMM v4 (native Rust, non-Anchor) relies on Solana runtime single-threaded guarantees. No reentrancy exploit identified in any audit.",
+          "gap_reason": null,
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/raydium-io/raydium-clmm/blob/master/programs/amm/Cargo.toml"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool uses CEI (checks-effects-interactions) pattern rather than explicit OZ nonReentrant modifiers in core contracts. Consensys Diligence 2021 audit found a reentrancy issue that was addressed by implementing a custom reentrancy guard via state variable. No explicit nonReentrant import found in RocketTokenRETH.sol or megapool contracts via source inspection. Cannot confirm full reentrancy guard coverage across all 20+ contracts without tool run.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://diligence.security/audits/2021/04/rocketpool/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Saddle-fork MetaSwapUtils._calculateSwap() lacked virtual price check — exploited Nov 2021 ($8.2M at risk, $0 lost). Patch applied post-incident; current state unaudited.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rekt.news/synapse-protocol-rekt/"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }

@@ -20,10 +20,91 @@
         "scoring_methodology": "**What this measures**\nThis factor records the count and total USD value of documented bad-debt events in which the protocol socialized losses across depositors. Bad debt occurs when a borrower's collateral is liquidated at a value insufficient to repay the outstanding borrow, leaving a deficit that the protocol absorbs. Sources include protocol governance forum posts, post-mortem documentation, and news coverage. The cadence is event-driven; the factor is updated whenever a new bad-debt event is confirmed.\n\n**Why it matters**\nBad-debt events are a direct measure of economic model stress. Unlike exploits (which are externally inflicted), bad debt represents a failure of the protocol's own risk parameters -- collateral factors, liquidation penalties, and borrow caps -- to account for tail scenarios. The dataset includes oracle manipulation attacks (Inverse Finance, Mango Markets) that used artificially inflated collateral prices to borrow against phantom value, resulting in uncollectible bad debt that was ultimately socialized. A protocol with a history of bad-debt events has demonstrated that its economic model is insufficiently conservative for its actual operating environment.\n\n**Green / Yellow / Red**\nGreen: zero documented bad-debt events in the hacks database or protocol governance history. Yellow: one or two bad-debt events with total socialized losses below one percent of current TVL, and risk parameters updated following the events. Red: three or more bad-debt events, or any single event with socialized losses exceeding five percent of TVL at the time, or any event without subsequent parameter updates.\n\n**Common gray cases**\nProtocols that operate insurance funds or treasury backstops that absorbed bad debt without socializing losses to depositors may argue the event does not constitute a depositor loss; curator must evaluate whether the backstop mechanism was pre-committed (green) or ad hoc (yellow).\n\n**Notable historical examples**\nNo cross-hacked incidents currently linked in database for this factor."
       },
       "linked_hacks": [],
-      "scored_protocols": []
+      "scored_protocols": [
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable. This lending bad-debt factor does not map to Polymarket's documented fully collateralized prediction-market positions: each YES/NO pair is backed by exactly $1 of collateral and resolved tokens are redeemed for their payout. This is not an assessment of unrelated operational or oracle-resolution risk.",
+          "gap_reason": null,
+          "primary_chain": "polygon",
+          "protocol_name": "Polymarket",
+          "protocol_slug": "polymarket",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.polymarket.com/trading/positions/how-positions-work"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: this factor measures bad debt in lending markets. Raydium's recorded incidents were AMM/infrastructure or protocol-logic losses, not borrower shortfalls or socialized lending debt.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "solana",
+          "protocol_name": "Raydium",
+          "protocol_slug": "raydium",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://defillama.com/protocol/raydium"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool documents that penalties or losses can be socialized across the node-operator network. Its current 4 ETH bond model leaves rETH stakers exposed to validator-performance and loss-allocation risk; no independently verifiable complete incident record was established for a green conclusion.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/pt/protocol/faq"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/upgrades/saturn-1/whats-new"
+            }
+          ],
+          "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Not applicable: the approved surface is a cross-chain bridge, not a lending protocol with a bad-debt or debt-socialization mechanism.",
+          "gap_reason": "not_applicable",
+          "primary_chain": "ethereum",
+          "protocol_name": "Synapse Protocol",
+          "protocol_slug": "synapse",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/synapsecns/synapse-contracts"
+            }
+          ],
+          "surface_slug": "default"
+        }
+      ]
     }
   },
-  "data_as_of": "2026-08-05T23:01:13Z",
-  "generated_at": "2026-08-06T11:18:13Z",
+  "data_as_of": "2026-07-24T00:00:00Z",
+  "generated_at": "2026-08-07T00:00:00Z",
   "rubric_version": "v1.7.0"
 }
