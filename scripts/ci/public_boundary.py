@@ -96,6 +96,9 @@ PROHIBITED_URL_QUERY_KEYS = {
 }
 PROHIBITED_SOURCE_TYPES = {"curator_note", "internal", "partner_feed", "private"}
 PUBLIC_SOURCE_TYPE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
+CANONICAL_PROTOCOL_SLUG = re.compile(
+    r"^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+)
 
 
 class BoundaryError(ValueError):
@@ -273,6 +276,25 @@ def validate_protocol_citations(detail: dict[str, Any], source: str) -> list[str
     return failures
 
 
+def validate_protocol_history(
+    history: dict[str, Any], *, slug: str, source: str
+) -> list[str]:
+    """Validate one canonical protocol-history compatibility envelope."""
+
+    failures = scan_api_value(history, source)
+    data = history.get("data")
+    if not isinstance(data, dict):
+        return [*failures, f"{source}: data must be an object"]
+    if data.get("protocol_slug") != slug:
+        failures.append(f"{source}: data.protocol_slug must match the path slug")
+    series = data.get("series")
+    if not isinstance(series, list) or any(
+        not isinstance(row, dict) for row in series
+    ):
+        failures.append(f"{source}: data.series must be an array of objects")
+    return failures
+
+
 def slug_digest(slugs: Iterable[str]) -> str:
     return hashlib.sha256("\n".join(sorted(slugs)).encode("utf-8")).hexdigest()
 
@@ -373,7 +395,7 @@ def validate_api_version(root: Path, version_root: Path) -> list[str]:
         if protocol_root.is_dir()
         else set()
     )
-    if detail_paths != expected_paths or nested_paths:
+    if detail_paths != expected_paths:
         failures.append(f"{relative_root}/protocols: detail files must match the published index exactly")
     for detail_path in sorted(expected_paths):
         if detail_path.is_file():
@@ -383,7 +405,40 @@ def validate_api_version(root: Path, version_root: Path) -> list[str]:
                 )
             )
 
+    seen_history_slugs: set[str] = set()
     published = set(slugs)
+    for history_path in sorted(nested_paths):
+        relative_parts = history_path.relative_to(protocol_root).parts
+        relative = history_path.relative_to(root).as_posix()
+        if (
+            len(relative_parts) != 2
+            or relative_parts[1] != "history.json"
+        ):
+            failures.append(
+                f"{relative}: unexpected nested protocol path; only "
+                "<canonical-slug>/history.json is allowed"
+            )
+            continue
+        slug = relative_parts[0]
+        if CANONICAL_PROTOCOL_SLUG.fullmatch(slug) is None:
+            failures.append(f"{relative}: protocol history slug is not canonical")
+            continue
+        if slug in seen_history_slugs:
+            failures.append(f"{relative}: duplicate protocol history ownership")
+            continue
+        seen_history_slugs.add(slug)
+        if slug not in published:
+            failures.append(f"{relative}: protocol history slug is not indexed")
+        if not (protocol_root / f"{slug}.json").is_file():
+            failures.append(
+                f"{relative}: protocol history lacks a matching top-level detail file"
+            )
+        failures.extend(
+            validate_protocol_history(
+                load_json(history_path), slug=slug, source=relative
+            )
+        )
+
     for factor_path in sorted((version_root / "factors").glob("*.json")):
         factor = load_json(factor_path)
         scored = factor.get("data", {}).get("factor_data", {}).get("scored_protocols")
