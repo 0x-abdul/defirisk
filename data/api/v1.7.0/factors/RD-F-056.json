@@ -172,6 +172,29 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ResilientOracle with BoundValidator provides medianization at the protocol adapter layer across 3 diverse providers. Chainlink uses multi-node aggregation (not single pool). BNB has RedStone (main), Chainlink (pivot), Binance (fallback)  -  three independent sources. Major assets do not rely on a single pool or single exchange. For thin-liquidity assets, multi-source can still converge if all venues are manipulated simultaneously (demonstrated in THE attack).",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/ResilientOracle.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/risk/resilient-price-oracle"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -120,6 +120,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "GovernorBravoDelegate uses xvsVault.getPriorVotes(voter, proposal.startBlock) for voting weight — checkpointed balance at proposal-start block. XVS token implements checkpoints mapping and getPriorVotes. Flash-loan attack on voting not possible: staked vault balance cannot be flash-borrowed and the checkpoint is historical.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/governance-contracts/blob/main/contracts/Governance/GovernorBravoDelegate.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/venus-protocol/blob/main/contracts/Tokens/XVS/XVS.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

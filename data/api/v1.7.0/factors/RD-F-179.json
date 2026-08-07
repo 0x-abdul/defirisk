@@ -76,6 +76,33 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "SINGLE DEFAULT DVN (1/1 configuration). Venus XVS bridge uses OFT V2 (BaseOFTV2 from @layerzerolabs/solidity-examples v2). DVN configuration not overridden in contract  -  uses default LayerZero DVN. Venus docs explicitly confirm: 'Bridge relies on a single relayer, the default by LayerZero.' Operator diversity = 0 (single operator = LayerZero Labs). This matches the Kelp DAO 1/1 DVN pattern (Kelp DAO $292M Apr 2026). Mitigants: (a) bridge guards XVS governance token only, not $1.26B lending TVL; (b) BaseXVSProxyOFT rate-limiter (per-tx + daily caps + per-chain mint cap); (c) emergency wallet authorization via VIP in DVN downtime. YELLOW (not RED) because bridge is governance-token-only and rate limiters provide containment. Would be RED if this were the primary lending TVL bridge.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/token-bridge/main/contracts/Bridge/BaseXVSProxyOFT.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs-v4.venus.io/technical-reference/reference-technical-articles/xvs-bridge"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://bscscan.com/address/0xf8F46791E3dB29a029Ec6c9d946226f3c613e854"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

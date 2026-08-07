@@ -99,6 +99,29 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ChainlinkOracle.sol validates only positive prices (answer <= 0 reverts). No upper-bound check for anomalously high prices. No explicit Chainlink aggregator minAnswer/maxAnswer validation. BoundValidator provides indirect upper bound via anchor ratio, but this is cross-validated against another oracle (not the Chainlink aggregator's own min/max). LUNA 2022 incident involved Chainlink pausing at a floor value  -  current maxStalePeriod check mitigates the specific LUNA scenario (stale pause triggers revert) but upper-bound gap remains.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://beincrypto.com/venus-protocol-loses-11m-chainlink-suspension-luna-price-oracle/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/oracles/ChainlinkOracle.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

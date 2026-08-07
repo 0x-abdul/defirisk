@@ -94,6 +94,29 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "ChainlinkOracle.sol rejects a price when its age exceeds the configured maxStalePeriod. Venus's public Oracle Configuration Update reports that 74 oracle slots required maxStalePeriod reductions and gives CAKE as an example reduced from 24 hours to 120 seconds. The code-level check is present, but the public change record establishes that stale-period configuration had been too wide for some feeds; residual configuration risk remains.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/VenusProtocol/oracle/main/contracts/oracles/ChainlinkOracle.sol"
+            },
+            {
+              "source_type": "governance_post",
+              "url": "https://community.venus.io/t/oracle-configuration-update/5716"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -91,6 +91,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Isolated Pool market listings require an initialSupply parameter in the AddMarketInput struct, providing a seed deposit before the market goes live. This partially mitigates the zero-supply empty-market condition. However, the March 2026 THE exploit demonstrates the donation attack is effective on active markets with substantial supply (THE market had 12.2M tokens in genuine deposits, representing 84% of the 14.5M supply cap, before the attack). A seed deposit alone does not prevent the donation attack on active markets. For Core Pool markets, no governance-required minimum seed deposit mechanism was identified in public documentation. The seed deposit mitigates the pure zero-supply empty-market scenario but does not cover the active-market donation pathway that was exploited.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://blocksec.com/blog/venus-thena-donation-attack"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/VenusProtocol/isolated-pools"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

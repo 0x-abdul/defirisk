@@ -112,6 +112,25 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Venus's primary oracle stack (Chainlink/RedStone/Binance) does not use LP token balanceOf for pricing. In-house correlated token oracles (AnkrBNBOracle, SlisBNBOracle, etc.) use staking exchange rates, not raw LP balanceOf. No evidence of donation-manipulable LP-balanceOf pricing in active markets.",
+          "gap_reason": null,
+          "primary_chain": "bsc",
+          "protocol_name": "Venus Protocol",
+          "protocol_slug": "venus",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://api.github.com/repos/VenusProtocol/oracle/git/trees/main?recursive=1"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
