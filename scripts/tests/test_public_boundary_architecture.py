@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -14,9 +15,125 @@ BOUNDARY = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(BOUNDARY)
 
 
+def _write_json(path: Path, value: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _history(slug: str) -> dict:
+    return {
+        "rubric_version": "v1.7.0",
+        "data": {
+            "protocol_slug": slug,
+            "series": [
+                {
+                    "snapshot_date": "2026-08-07",
+                    "snapshot_version": f"fixture:{slug}:2026-08-07",
+                    "grade_letter": "B",
+                    "risk_score": 10.0,
+                }
+            ],
+        },
+    }
+
+
+def _version_fixture(root: Path, *, indexed: tuple[str, ...] = ("alpha",)) -> Path:
+    version = root / "data" / "api" / "v1.7.0"
+    _write_json(
+        version / "index.json",
+        {"data": {"protocols": [{"slug": slug} for slug in indexed]}},
+    )
+    for slug in indexed:
+        _write_json(
+            version / "protocols" / f"{slug}.json",
+            {"data": {"protocol_data": {"factor_scores": []}}},
+        )
+    for filename, key in (
+        ("history.json", "history"),
+        ("changes.json", "changes"),
+        ("incidents.json", "incidents"),
+    ):
+        _write_json(version / filename, {"data": {key: []}})
+    (version / "factors").mkdir(parents=True, exist_ok=True)
+    return version
+
+
 def test_current_tree_passes_the_fail_closed_boundary() -> None:
     failures = BOUNDARY.validate_tree(ROOT)
     assert failures == []
+
+
+def test_indexed_protocol_history_is_the_only_allowed_nested_shape(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    _write_json(version / "protocols" / "alpha" / "history.json", _history("alpha"))
+    assert BOUNDARY.validate_api_version(tmp_path, version) == []
+
+
+def test_top_level_protocol_details_still_equal_the_index(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    _write_json(
+        version / "protocols" / "extra.json",
+        {"data": {"protocol_data": {"factor_scores": []}}},
+    )
+    failures = BOUNDARY.validate_api_version(tmp_path, version)
+    assert any("detail files must match" in failure for failure in failures)
+
+
+def test_unindexed_or_detail_less_protocol_history_fails(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    _write_json(version / "protocols" / "ghost" / "history.json", _history("ghost"))
+    (version / "protocols" / "alpha.json").unlink()
+    _write_json(version / "protocols" / "alpha" / "history.json", _history("alpha"))
+    failures = BOUNDARY.validate_api_version(tmp_path, version)
+    assert any("history slug is not indexed" in failure for failure in failures)
+    assert any("lacks a matching top-level detail" in failure for failure in failures)
+
+
+def test_protocol_history_path_payload_and_depth_are_bound(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    _write_json(version / "protocols" / "alpha" / "history.json", _history("beta"))
+    _write_json(version / "protocols" / "alpha" / "extra.json", _history("alpha"))
+    _write_json(
+        version / "protocols" / "alpha" / "deeper" / "history.json",
+        _history("alpha"),
+    )
+    failures = BOUNDARY.validate_api_version(tmp_path, version)
+    assert any("protocol_slug must match" in failure for failure in failures)
+    assert len([failure for failure in failures if "unexpected nested protocol path" in failure]) == 2
+
+
+def test_protocol_history_rejects_unsafe_private_material(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    history = _history("alpha")
+    history["data"]["private_url"] = "https://example.org/private-review"
+    _write_json(version / "protocols" / "alpha" / "history.json", history)
+    failures = BOUNDARY.validate_api_version(tmp_path, version)
+    assert any("prohibited private field" in failure for failure in failures)
+
+
+def test_protocol_history_is_bound_into_the_manifest(tmp_path: Path) -> None:
+    version = _version_fixture(tmp_path)
+    history_path = version / "protocols" / "alpha" / "history.json"
+    _write_json(history_path, _history("alpha"))
+    manifest = tmp_path / BOUNDARY.MANIFEST_RELATIVE
+    manifest.parent.mkdir(parents=True, exist_ok=True)
+    manifest.write_text(BOUNDARY.file_manifest(tmp_path), encoding="utf-8")
+    assert BOUNDARY.validate_manifest(tmp_path) == []
+
+    manifest.write_text(
+        "\n".join(
+            line
+            for line in manifest.read_text(encoding="utf-8").splitlines()
+            if "protocols/alpha/history.json" not in line
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    assert BOUNDARY.validate_manifest(tmp_path)
+
+    manifest.write_text(BOUNDARY.file_manifest(tmp_path), encoding="utf-8")
+    history_path.write_text(history_path.read_text(encoding="utf-8") + " ", encoding="utf-8")
+    assert BOUNDARY.validate_manifest(tmp_path)
 
 
 def test_private_fields_fail_before_any_github_write() -> None:
