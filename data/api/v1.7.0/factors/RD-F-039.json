@@ -74,6 +74,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pDAO proposal execution targets a single hardcoded contract: getContractAddress('rocketDAOProtocolProposals'). This is an effective target allowlist of one permitted contract. No user-supplied delegatecall target. RocketDAOProtocolProposals contract exposes only governance settings, treasury, and Security Council management functions — all restricted by onlyExecutingContracts() modifier.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolProposal.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolProposals.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

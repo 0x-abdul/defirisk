@@ -83,6 +83,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool uses CEI (checks-effects-interactions) pattern rather than explicit OZ nonReentrant modifiers in core contracts. Consensys Diligence 2021 audit found a reentrancy issue that was addressed by implementing a custom reentrancy guard via state variable. No explicit nonReentrant import found in RocketTokenRETH.sol or megapool contracts via source inspection. Cannot confirm full reentrancy guard coverage across all 20+ contracts without tool run.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "audit_report",
+              "url": "https://diligence.security/audits/2021/04/rocketpool/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

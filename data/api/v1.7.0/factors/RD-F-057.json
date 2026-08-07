@@ -57,6 +57,37 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For rETH:ETH balance submissions: RPIP-61 (implemented in Saturn One) adds a 2% per-update max delta cap via RocketNetworkBalances._updateBalances() — enforces require(newRatio - currentRatio <= maxChange) where maxChangePercent = 2% (floor 1%). This is a partial circuit breaker but only constrains per-submission rate movement, not absolute deviation from a reference. For RPL/ETH price submissions: NO circuit breaker exists — RocketNetworkPrices.sol accepts consensus output without any deviation check from prior price. Mixed state: rETH has partial guardrail, RPL has none = yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://rpips.rocketpool.net/RPIPs/RPIP-61"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsNetwork.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

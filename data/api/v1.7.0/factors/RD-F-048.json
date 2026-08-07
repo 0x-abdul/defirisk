@@ -70,6 +70,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Rocket Pool's core contracts use trusted-node consensus for Beacon-chain balance updates and RPL/ETH price submissions. The reviewed balance and price contracts do not import or call Chainlink, Pyth, Redstone, or a DEX-TWAP oracle. The single committee-operated oracle path has no documented independent fallback, supporting yellow under the v1.7.0 taxonomy.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

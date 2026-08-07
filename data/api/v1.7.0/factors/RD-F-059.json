@@ -53,6 +53,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Neither RocketTokenRETH.sol (consumer of rETH:ETH rate) nor any known consumer contract checks 'updatedAt > block.timestamp - maxStaleness' before using oracle values. RocketNetworkBalances.sol enforces minimum time BETWEEN submissions (95% of configured interval) but does NOT reject reads if the last update is old. Consumers use the last stored value unconditionally — if oDAO goes offline for days, the protocol silently uses a stale price without reverting. RocketNetworkPrices.sol imposes no staleness guard on RPL price reads either. This is the only red factor in Cat 3.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "red",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

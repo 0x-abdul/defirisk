@@ -79,6 +79,25 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "All external call targets are resolved via RocketStorage.getContractAddress() — trusted registry lookups, not user-supplied. No arbitrary call(target, data) with user-controlled args found in source inspection. The onlyLatestNetworkContract modifier in RocketBase gates all sensitive cross-contract calls.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/RocketStorage.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
