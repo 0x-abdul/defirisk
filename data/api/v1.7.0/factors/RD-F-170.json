@@ -70,6 +70,37 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Two Solidity versions in production. (1) 0.7.6: used for all pre-Saturn core contracts (rETH, RocketStorage, RocketBase, etc.). Active known bug: DirtyBytesArrayToStorage (low severity, affects 0.0.1–0.8.15). Compiler is unsupported (de facto EOL — see F174). (2) 0.8.30: used for Saturn One megapool contracts. Active known bugs: TransientStorageClearingHelperCollision (HIGH severity, 0.8.28–0.8.34) — requires clearing both storage AND transient storage; Rocket Pool megapool contracts DO NOT use transient storage (confirmed by source inspection), so this bug is non-applicable to deployed code. LostStorageArrayWriteOnSlotOverflow (low). Yellow: 0.7.6 has a low-severity bug and is unsupported; 0.8.30 has a high-severity bug in the compiler but triggering conditions are absent.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolDelegate.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.soliditylang.org/blog/2026/02/18/transient-storage-clearing-helper-collision-bug/"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/hardhat-common.config.js"
+            },
+            {
+              "source_type": "etherscan",
+              "url": "https://etherscan.io/address/0xae78736cd615f374d3085123a210448e74fc6393#code"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

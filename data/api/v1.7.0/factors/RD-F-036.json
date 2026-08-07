@@ -74,6 +74,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "pDAO voting power is anchored to staked RPL at a specific past block via merkle tree snapshot. RocketDAOProtocolVerifier uses block-level checkpointing. Vote weight = staked RPL at proposal creation block, not current liquid balanceOf. Staking RPL itself requires multi-block commitment. Flash loans cannot manipulate checkpoint-time balances.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/RocketDAOProtocolVerifier.sol"
+            },
+            {
+              "source_type": "docs",
+              "url": "https://docs.rocketpool.net/upgrades/houston/participate"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

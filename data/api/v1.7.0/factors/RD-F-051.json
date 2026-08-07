@@ -62,6 +62,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "If oDAO fails to reach consensus on submitBalances, the rETH:ETH rate does not update — it silently remains at the last-submitted value. RocketTokenRETH.getEthValue() calls RocketNetworkBalances without any staleness check. No automatic fallback to secondary oracle. No circuit-breaker that pauses the contract if the rate is too old. Same pattern for RPL/ETH price (last-known-price used if oDAO fails). Fallback behavior = last-known-price (stale risk) = yellow per taxonomy.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

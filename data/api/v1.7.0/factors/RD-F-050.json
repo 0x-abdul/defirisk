@@ -161,6 +161,33 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Dependencies enumerated: (1) oDAO committee for Beacon chain balance reporting — critical, non-redundant, enables rETH:ETH rate; (2) oDAO committee for RPL/ETH price — critical, non-redundant, enables collateral validation; (3) Ethereum Beacon Deposit Contract (0x00000000219ab540356cBB839Cbe05303d7705Fa) for new validator registrations — moderate, existing validators unaffected; (4) RocketStorage registry for all contract address resolution — critical but immutable, not upgradeable. No external DeFi protocol dependencies in core contracts. oDAO's off-chain RPL price source is 1inch (off-chain only; no on-chain 1inch call). Single non-redundant oDAO dependency for both critical price paths = yellow.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/deposit/RocketDepositPool.sol"
+            },
+            {
+              "source_type": "url",
+              "url": "https://www.notonlyowner.com/research/permissions-of-a-permissionless-staking-pool"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

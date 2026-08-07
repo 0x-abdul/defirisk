@@ -62,6 +62,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "For rETH:ETH rate: oDAO committee is sole primary oracle via RocketNetworkBalances; no secondary or fallback oracle exists. For RPL/ETH price: oDAO committee is sole primary via RocketNetworkPrices; no fallback. Consensus threshold = 51% of oDAO members (getNodeConsensusThreshold() = 0.51 ether). Single-path oracle for both critical assets with no documented fallback = yellow per taxonomy ('primary only with no fallback documented').",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/dao/protocol/settings/RocketDAOProtocolSettingsNetwork.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -68,6 +68,33 @@
           "score": "not_applicable",
           "sources": [],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "[★ CRITICAL-CANDIDATE — PD-017 tracked] Rocket Pool does not use any external oracle service (Chainlink, Pyth, UMA, Redstone, etc.) whose address could be marked 'immutable'. The oracle function is the internal oDAO committee system using RocketNetworkBalances.sol and RocketNetworkPrices.sol. Both contracts retrieve all sibling contract addresses dynamically via getContractAddress() from the RocketStorage registry — none are immutable. No external oracle address field exists in any core contract. F180 requires an external oracle to potentially be immutable; Rocket Pool has no external oracle. Score: not_applicable. Flagged per PD-017: F180 [★ CRITICAL-CANDIDATE] is not_applicable for rocket-pool — orchestrator can record zero F180 promotion candidates for this protocol.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "not_applicable",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkPrices.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

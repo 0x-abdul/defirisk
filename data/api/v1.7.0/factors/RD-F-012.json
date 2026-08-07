@@ -79,6 +79,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "Source inspection confirms no user-controlled delegatecall. Minipool proxy delegatecalls to admin-registered delegate address. Megapool clones use OZ Clones.cloneDeterministic (EIP-1167 minimal proxy) — not a user-supplied target delegatecall. RocketBase access control gates all call targets via RocketStorage registry.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/RocketBase.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/rocket-pool/rocketpool/master/contracts/contract/megapool/RocketMegapoolFactory.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

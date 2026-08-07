@@ -241,6 +241,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "rETH:ETH exchange rate is computed as (totalETHBalance * rethAmount) / totalRETHSupply inside RocketTokenRETH.getEthValue(). Both inputs are internal Rocket Pool state submitted by oDAO consensus — NOT from any DEX spot price, TWAP oracle, or external price feed. No slot0(), getReserves(), or consult() call exists in any price-critical code path. RPL/ETH for collateral uses oDAO committee input (submitted via submitPrices), not spot DEX. This is the [★ CRITICAL] factor — confirmed GREEN.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Rocket Pool",
+          "protocol_slug": "rocket-pool",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/network/RocketNetworkBalances.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://github.com/rocket-pool/rocketpool/blob/master/contracts/contract/token/RocketTokenRETH.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
