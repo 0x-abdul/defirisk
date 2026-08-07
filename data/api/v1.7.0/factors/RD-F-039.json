@@ -142,6 +142,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "hybrid",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": "Execution type: proposal-supplied call arrays via GovernorTimelockControl; no delegatecall was identified in the inspected HubGovernor path. Safeguards shown in source include voting delay, voting period, proposal threshold, quorum, and timelock integration. Deployed parameter values, direct treasury paths, and attack history were not independently established.",
+          "evidence_summary": "MultiGov accepts proposal-supplied targets, values, and calldatas and routes execution through GovernorTimelockControl; source also shows proposal-threshold and voting-period controls. A strict target allowlist was not verified.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "yellow",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/HubGovernor.sol"
+            },
+            {
+              "source_type": "github",
+              "url": "https://raw.githubusercontent.com/wormhole-foundation/multigov/main/evm/src/SpokeMessageExecutor.sol"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

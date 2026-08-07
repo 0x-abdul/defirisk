@@ -135,6 +135,25 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "`Governance.sol` `submitTransferFees()` performs `recipient.transfer(transfer.amount)` where recipient is extracted from a VAA. This is a native-ETH transfer (not an arbitrary calldata call). `Bridge.sol` uses SafeERC20.safeTransfer() and SafeERC20.safeTransferFrom() for ERC-20 movements; no arbitrary external call with user-controlled calldata found.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -118,6 +118,25 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "`Messages.sol` `verifySignatures()` explicitly checks: `require(signatory != address(0), \"ecrecover failed with signature\")` — the comment in the code states \"ecrecover returns 0 for invalid signatures. We explicitly require valid signatures to avoid unexpected behaviour.\" This is the exact vulnerability pattern the 2022 Solana exploit exposed (on the Rust/Solana side, not EVM), and the EVM side has the guard properly implemented.",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

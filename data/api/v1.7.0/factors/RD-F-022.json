@@ -146,6 +146,29 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "`Implementation.sol`: `function initialize() initializer public virtual` — the custom `initializer` modifier checks `!isInitialized(ERC1967Upgrade._getImplementation())` before permitting initialization, storing a flag by implementation address. This effectively prevents re-initialization of any given implementation. `BridgeImplementation.sol` uses the same pattern. The 2022 Immunefi issue ($10M payout) was NOT a missing modifier — it was that the implementation's initialized flag had been cl...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "github",
+              "url": "https://github.com/wormhole-foundation/wormhole/tree/main/ethereum/contracts"
+            },
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/bug-fix-reviews/wormhole-uninitialized-proxy-bugfix-review/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }

@@ -123,6 +123,25 @@
             }
           ],
           "surface_slug": "default"
+        },
+        {
+          "collection_mode": "manual",
+          "data_as_of": "2026-07-24T00:00:00Z",
+          "evidence_detail": null,
+          "evidence_summary": "The 2022 Immunefi uninitialized proxy disclosure described a scenario where an attacker could trigger selfdestruct via: (1) call `initialize()` to take over Guardian set, (2) deploy malicious contract with SELFDESTRUCT, (3) submit governance upgrade to that address. This was an indirect path gated behind taking over the Guardian set first — it required exploiting the uninitialized state as a prerequisite. The fix (properly initializing) was applied before exploit. Current deployed code: Gover...",
+          "gap_reason": null,
+          "primary_chain": "ethereum",
+          "protocol_name": "Wormhole",
+          "protocol_slug": "wormhole",
+          "scope_level": "surface",
+          "score": "green",
+          "sources": [
+            {
+              "source_type": "url",
+              "url": "https://immunefi.com/blog/bug-fix-reviews/wormhole-uninitialized-proxy-bugfix-review/"
+            }
+          ],
+          "surface_slug": "default"
         }
       ]
     }
