@@ -69,22 +69,29 @@ const rows = factors
   </div>
 
   <div class="frail" data-filter-rail>
-    <div class="frow">
+    <div class="frow category-row">
       <span class="flbl">Category</span>
-      {
-        CATEGORIES.map((c) => (
-          <button type="button" class="chip" data-cat-filter={c.id}>
-            {c.short ?? c.name}
-            <span class="ct">{factors.filter((f) => f.category_id === c.id).length}</span>
-          </button>
-        ))
-      }
+      <div class="chip-scroll-shell">
+        <div class="chip-scroll" data-category-scroll role="group" aria-label="Factor categories">
+          {
+            CATEGORIES.map((c) => (
+              <button type="button" class="chip" data-cat-filter={c.id} aria-pressed="false">
+                {c.short ?? c.name}
+                <span class="ct">{factors.filter((f) => f.category_id === c.id).length}</span>
+              </button>
+            ))
+          }
+        </div>
+        <span class="scroll-affordance" aria-hidden="true">→</span>
+      </div>
     </div>
-    <div class="frow">
-      <span class="flbl">Severity</span>
-      <button type="button" class="star-toggle" data-crit-only>
-        <span class="star">★</span> Critical only <span class="ct">{CRITICAL_FACTOR_COUNT}</span>
-      </button>
+    <div class="frow control-row">
+      <div class="severity-controls">
+        <span class="flbl">Severity</span>
+        <button type="button" class="star-toggle" data-crit-only aria-pressed="false">
+          <span class="star">★</span> Critical only <span class="ct">{CRITICAL_FACTOR_COUNT}</span>
+        </button>
+      </div>
       <label class="search">
         <span aria-hidden="true">⌕</span>
         <input
@@ -96,6 +103,9 @@ const rows = factors
       </label>
       <button type="button" class="clr" data-clear-all>Clear</button>
     </div>
+    <p class="filter-announcement" data-filter-announcement aria-live="polite" aria-atomic="true">
+      Showing {TOTAL_FACTOR_COUNT} of {TOTAL_FACTOR_COUNT} factors
+    </p>
   </div>
 
   <div class="tbl-wrap">
@@ -146,8 +156,10 @@ const rows = factors
     var catSel = new Set();
     var critOnly = false;
     var q = '';
+    var announcement = rail.querySelector('[data-filter-announcement]');
 
     function update() {
+      var visibleCount = 0;
       rows.forEach(function (r) {
         var cat = Number(r.getAttribute('data-cat'));
         var name = r.getAttribute('data-name') || '';
@@ -158,7 +170,11 @@ const rows = factors
         if (critOnly && !crit) visible = false;
         if (q && !(name.includes(q) || id.includes(q))) visible = false;
         r.style.display = visible ? '' : 'none';
+        if (visible) visibleCount++;
       });
+      if (announcement) {
+        announcement.textContent = 'Showing ' + visibleCount + ' of ' + rows.length + ' factors';
+      }
     }
 
     rail.querySelectorAll('[data-cat-filter]').forEach(function (btn) {
@@ -167,6 +183,7 @@ const rows = factors
         if (catSel.has(id)) catSel.delete(id);
         else catSel.add(id);
         btn.classList.toggle('on');
+        btn.setAttribute('aria-pressed', catSel.has(id) ? 'true' : 'false');
         update();
       });
     });
@@ -176,6 +193,7 @@ const rows = factors
       critBtn.addEventListener('click', function () {
         critOnly = !critOnly;
         critBtn.classList.toggle('on');
+        critBtn.setAttribute('aria-pressed', critOnly ? 'true' : 'false');
         update();
       });
     }
@@ -197,11 +215,16 @@ const rows = factors
         if (searchInput) searchInput.value = '';
         rail.querySelectorAll('[data-cat-filter].on').forEach(function (b) {
           b.classList.remove('on');
+          b.setAttribute('aria-pressed', 'false');
         });
-        if (critBtn) critBtn.classList.remove('on');
+        if (critBtn) {
+          critBtn.classList.remove('on');
+          critBtn.setAttribute('aria-pressed', 'false');
+        }
         update();
       });
     }
+    update();
   })();
 </script>
 
@@ -272,6 +295,39 @@ const rows = factors
     gap: 8px;
     flex-wrap: wrap;
   }
+  .frail .category-row {
+    min-width: 0;
+  }
+  .frail .chip-scroll-shell {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .frail .chip-scroll {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding: 2px 2px 4px;
+    scrollbar-width: thin;
+  }
+  .frail .chip-scroll .chip {
+    flex: 0 0 auto;
+  }
+  .frail .scroll-affordance {
+    display: none;
+    position: absolute;
+    inset: 0 0 0 auto;
+    align-items: center;
+    padding: 0 5px 0 15px;
+    background: linear-gradient(90deg, transparent, var(--surface) 45%);
+    color: var(--fg-2);
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px;
+    pointer-events: none;
+  }
   .frail .flbl {
     font-size: 10px;
     color: var(--fg-3);
@@ -311,6 +367,9 @@ const rows = factors
     font-size: 10px;
     opacity: 0.7;
   }
+  :global([data-prefer-contrast]) .frail .chip .ct {
+    opacity: 1;
+  }
   .frail .star-toggle {
     padding: 4px 11px;
     border-radius: 14px;
@@ -333,6 +392,17 @@ const rows = factors
   .frail .star-toggle .star {
     color: var(--gF);
   }
+  .frail .control-row {
+    display: grid;
+    grid-template-columns: auto minmax(220px, 1fr) auto;
+    align-items: center;
+  }
+  .frail .severity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
   .frail .search {
     display: flex;
     align-items: center;
@@ -345,15 +415,25 @@ const rows = factors
     font-family: 'Geist Mono', monospace;
     color: var(--fg-3);
   }
+  .frail .search:focus-within {
+    border-color: var(--fg-2);
+    box-shadow:
+      0 0 0 2px var(--bg),
+      0 0 0 4px var(--fg-2);
+  }
   .frail .search input {
     border: none;
     background: transparent;
-    outline: none;
+    min-width: 0;
     font-family: inherit;
     font-size: 12px;
     color: var(--fg);
     flex: 1;
     font-feature-settings: 'tnum';
+  }
+  .frail .search input:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
   }
   .frail .clr {
     padding: 4px 9px;
@@ -369,6 +449,13 @@ const rows = factors
   }
   .frail .clr:hover {
     color: var(--fg);
+  }
+  .frail .filter-announcement {
+    margin: 0;
+    color: var(--fg-3);
+    font-family: 'Geist Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.4;
   }
 
   .tbl-wrap {
@@ -514,14 +601,26 @@ const rows = factors
     .frail {
       margin: 14px 18px 0;
     }
-    .frail .frow {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      padding-bottom: 4px;
-    }
     .frail .flbl {
       width: auto;
       min-width: 78px;
+    }
+    .frail .chip-scroll {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    .frail .control-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: 10px;
+    }
+    .frail .search {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      width: 100%;
+      min-width: 0;
+    }
+    .frail .scroll-affordance {
+      display: flex;
     }
     .tbl-wrap {
       margin: 14px 18px 24px;
@@ -538,6 +637,19 @@ const rows = factors
     }
   }
   @media (max-width: 640px) {
+    .frail .control-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: 10px;
+    }
+    .frail .search {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      width: 100%;
+      min-width: 0;
+    }
+    .frail .clr {
+      justify-self: end;
+    }
     .tbl-head,
     .tbl-row {
       grid-template-columns: 70px 14px 1fr 24px;
