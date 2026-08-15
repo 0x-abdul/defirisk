@@ -140,6 +140,9 @@ const rows = factors
               {r.dist.y > 0 && <i class="y" style={`width:${(r.dist.y / totalProtocols) * 100}%`} />}
               {r.dist.g > 0 && <i class="g" style={`width:${(r.dist.g / totalProtocols) * 100}%`} />}
             </span>
+            <span class="dist-summary">
+              Severity distribution: {r.dist.r} red, {r.dist.y} yellow, {r.dist.g} green.
+            </span>
           </span>
           <span class="arr" aria-hidden="true">→</span>
         </a>
@@ -275,7 +278,7 @@ const rows = factors
     font-weight: 500;
   }
   .star-inline {
-    color: var(--gF);
+    color: var(--gF-text);
     margin-left: 4px;
   }
 
@@ -365,10 +368,6 @@ const rows = factors
   .frail .chip .ct {
     font-family: 'Geist Mono', monospace;
     font-size: 10px;
-    opacity: 0.7;
-  }
-  :global([data-prefer-contrast]) .frail .chip .ct {
-    opacity: 1;
   }
   .frail .star-toggle {
     padding: 4px 11px;
@@ -386,11 +385,11 @@ const rows = factors
   }
   .frail .star-toggle.on {
     background: var(--gF-bg);
-    color: var(--gF);
+    color: var(--gF-text);
     border-color: transparent;
   }
   .frail .star-toggle .star {
-    color: var(--gF);
+    color: var(--gF-text);
   }
   .frail .control-row {
     display: grid;
@@ -510,7 +509,7 @@ const rows = factors
   .tbl-row .star-mark {
     display: inline-flex;
     align-items: center;
-    color: var(--gF);
+    color: var(--gF-text);
     font-size: 13px;
   }
   .tbl-row .fname {
@@ -563,6 +562,18 @@ const rows = factors
     border-radius: 3px;
     overflow: hidden;
     background: var(--border);
+  }
+  .tbl-row .pcount .dist-summary {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
   .tbl-row .pcount .distbar i {
     height: 100%;

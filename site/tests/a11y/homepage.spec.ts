@@ -11,18 +11,6 @@ import AxeBuilder from '@axe-core/playwright';
 const A11Y_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] as const;
 
 test.describe('Homepage (/)', () => {
-  test.beforeEach(async ({ page }) => {
-    // Run a11y suite in opt-in High-contrast mode so axe sees the AA-clean variant
-    // of the canonical D3 color-on-tint patterns. Default visual contract is unchanged.
-    await page.addInitScript(() => {
-      try {
-        localStorage.setItem('rd-prefer-contrast', '1');
-      } catch {
-        /* ignore */
-      }
-    });
-  });
-
   test('no serious/critical axe violations at 1280px', async ({ page }) => {
     await page.goto('/');
     const results = await new AxeBuilder({ page })

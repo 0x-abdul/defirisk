@@ -380,7 +380,7 @@ export default function ProtocolSurfaceExplorer({
     setText('[data-family-field="body-reviewed"]', header.reviewed);
     setText('[data-family-field="critical"]', header.criticalText);
     document.querySelectorAll<HTMLElement>('[data-family-field="critical"]').forEach((element) => {
-      element.style.color = !overview && assessment.criticalRed > 0 ? 'var(--gF)' : '';
+      element.style.color = !overview && assessment.criticalRed > 0 ? 'var(--gF-text)' : '';
     });
     setText('[data-family-field="severity"]', header.severityText);
     if (riskScore !== null && !overview) {
