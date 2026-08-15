@@ -123,7 +123,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
       />
     </aside>
 
-    <main class="body">
+    <div class="body">
       <div class="hero">
         <h1>
           {f.is_critical && <span class="star-big" aria-label="Critical factor">★</span>}
@@ -250,7 +250,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         <span><b>carried</b> {totalProtocols}</span>
         <span><b>critical</b> {f.is_critical ? 'yes' : 'no'}</span>
       </div>
-    </main>
+    </div>
   </div>
 </Base>
 
@@ -358,6 +358,10 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
   }
   .body h2:hover .alink {
     opacity: 1;
+  }
+  .body h2 .alink:focus-visible {
+    opacity: 1;
+    color: var(--fg-2);
   }
   .body h2:first-of-type {
     margin-top: 36px;

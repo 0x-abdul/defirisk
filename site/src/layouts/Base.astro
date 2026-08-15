@@ -118,10 +118,27 @@ const ldArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <a class="skip-link" href="#main">Skip to main content</a>
     <slot name="topbar" />
     <slot name="banner" />
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <slot name="footer" />
+    <script is:inline>
+      (function () {
+        document.querySelectorAll('a.alink').forEach(function (link) {
+          if (link.hasAttribute('aria-label')) return;
+          var heading = link.closest('h1, h2, h3, h4, h5, h6');
+          if (!heading) return;
+          var label = heading.textContent
+            .replace(/\s*#\s*$/, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (!label) return;
+          var accessibleName = 'Permalink to ' + label;
+          link.setAttribute('aria-label', accessibleName);
+          link.setAttribute('title', accessibleName);
+        });
+      })();
+    </script>
   </body>
 </html>
 

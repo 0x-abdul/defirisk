@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopBar from './TopBar.astro';
+import Footer from './Footer.astro';
 import Breadcrumb from './Breadcrumb.astro';
 import TableOfContents from './TableOfContents.astro';
 import type { TocItem } from './TableOfContents.astro';
 import type { CrumbItem } from './Breadcrumb.astro';
-import { RUBRIC_VERSION } from '../lib/rubric';
 
 export interface HeroMeta {
   label: string;
@@ -36,7 +36,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
   <div class="page">
     <TableOfContents items={toc} />
 
-    <main class="body">
+    <div class="body">
       <div class="hero">
         <h1>{hero.h1}</h1>
         {hero.lede && <p class="lede">{hero.lede}</p>}
@@ -55,25 +55,10 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
       }
 
       <slot />
-    </main>
+    </div>
   </div>
 
-  <footer slot="footer" class="ftr">
-    <div class="frow">
-      <div class="l">
-        <a href="/">Protocols</a>
-        <a href="/factors/">Factors</a>
-        <a href="/methodology/">Methodology</a>
-        <a href="/contributions/">Contribute</a>
-        <a href="/about/">About</a>
-        <a href="/data/">Data &amp; API</a>
-        <a href="/methodology/changelog/">Changelog</a>
-      </div>
-      <div>
-        © 2026 DeFi Risk · Data <i>CC BY 4.0</i> · Code <i>MIT</i> · Rubric <i>{RUBRIC_VERSION}</i> · build <i>{buildSha ?? 'dev'}</i>
-      </div>
-    </div>
-  </footer>
+  <Footer slot="footer" buildSha={buildSha} />
 </Base>
 
 <style>
@@ -167,6 +152,10 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
   .body :global(h2 .alink:hover) {
     color: var(--fg-2);
   }
+  .body :global(h2 .alink:focus-visible) {
+    opacity: 1;
+    color: var(--fg-2);
+  }
   .body :global(h3) {
     margin: 32px 0 10px;
     font-size: 18px;
@@ -193,6 +182,10 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
   }
   .body :global(h3:hover .alink) {
     opacity: 1;
+  }
+  .body :global(h3 .alink:focus-visible) {
+    opacity: 1;
+    color: var(--fg-2);
   }
   .body :global(p) {
     font-size: 14px;
@@ -421,46 +414,6 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     max-width: 32ch;
   }
 
-  /* Footer (compact) */
-  .ftr {
-    border-top: 1px solid var(--border);
-    background: var(--surface-2);
-    margin-top: 48px;
-    padding: 24px 28px 28px;
-  }
-  .ftr .frow {
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-    font-size: 11.5px;
-    color: var(--fg-3);
-  }
-  .ftr .frow .l {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-  .ftr .frow .l a {
-    color: var(--fg-3);
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .ftr .frow .l a:hover {
-    color: var(--fg);
-  }
-  .ftr .frow i {
-    font-style: normal;
-    font-family: 'Geist Mono', monospace;
-    color: var(--fg-2);
-    background: var(--surface);
-    padding: 1px 5px;
-    border-radius: 3px;
-    border: 1px solid var(--border);
-    font-size: 10.5px;
-    margin: 0 2px;
-  }
-
   /* ─── Mobile (under 900px) ─── Collapse TOC rail */
   @media (max-width: 900px) {
     .page {
@@ -471,7 +424,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
       padding: 24px 0 64px;
       max-width: 100%;
       min-width: 0;
-      overflow-x: hidden;
+      overflow-x: visible;
     }
     .body .hero h1 {
       font-size: 26px;
@@ -493,13 +446,6 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     }
     .body :global(.ttable th[style*="width"]) {
       width: auto !important;
-    }
-    .ftr {
-      padding: 22px 18px 24px;
-    }
-    .ftr .frow {
-      flex-direction: column;
-      gap: 12px;
     }
   }
   @media (max-width: 640px) {

@@ -89,7 +89,12 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     component (e.g. <code>v1.5.0</code> → <code>v1.6.0</code>); additive changes do not. Older
     version paths are intended to remain available after a new minor is released.
   </p>
-  <CodeBlock title="base URL" lang="https" code={baseUrlExample} />
+  <CodeBlock
+    title="base URL"
+    lang="https"
+    code={baseUrlExample}
+    copyLabel="Copy base URL example"
+  />
 
   <h2 id="endpoints">Endpoints <a class="alink" href="#endpoints">#</a></h2>
   <p>
@@ -142,14 +147,24 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     <code>data</code> payload. The stamps make every response self-citing.
   </p>
 
-  <CodeBlock title="protocol detail envelope (with M1 v4 fields)" lang="json" code={envelopeExample} />
+  <CodeBlock
+    title="protocol detail envelope (with M1 v4 fields)"
+    lang="json"
+    code={envelopeExample}
+    copyLabel="Copy protocol detail envelope example"
+  />
 
   <p style="margin-top:1.5rem">
     The <code>index.json</code> / list envelopes omit the four M1 v4 fields;
     they are protocol-specific and only appear on protocol-detail responses
     and at the envelope top level. List rows are lightweight on purpose:
   </p>
-  <CodeBlock title="index.json envelope (lightweight, no M1 fields)" lang="json" code={indexEnvelopeExample} />
+  <CodeBlock
+    title="index.json envelope (lightweight, no M1 fields)"
+    lang="json"
+    code={indexEnvelopeExample}
+    copyLabel="Copy index JSON envelope example"
+  />
 
   <ul>
     <li>
@@ -215,6 +230,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     title="schema index"
     lang="https"
     code={`https://defirisk.co/api/${RUBRIC_VERSION}/schema/envelope.json`}
+    copyLabel="Copy schema index URL"
   />
 
   <h2 id="cache">Caching <a class="alink" href="#cache">#</a></h2>
@@ -229,5 +245,10 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     Everything we publish is licensed for unrestricted reuse, subject to attribution. Data is
     <code>CC BY 4.0</code>; code is <code>MIT</code>. Attribution to "DeFi Risk, rubric {RUBRIC_VERSION}" suffices for any data reuse.
   </p>
-  <CodeBlock title="nightly CSV (planned)" lang="https" code={csvExample} />
+  <CodeBlock
+    title="nightly CSV (planned)"
+    lang="https"
+    code={csvExample}
+    copyLabel="Copy nightly CSV example"
+  />
 </Page>
