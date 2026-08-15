@@ -69,16 +69,16 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
 
 <Page
   pageTitle="Data & API"
-  description="All data is open under CC-BY 4.0. Adapter code under MIT. Stable JSON envelope."
+  description="All data is open under CC BY 4.0. Adapter code under MIT. Stable JSON envelope."
   crumbs={[{ n: 'Data & API' }]}
   toc={toc}
   hero={{
     h1: 'Data & API',
-    lede: 'All data is open under CC-BY 4.0. Adapter code under MIT. Stable JSON envelope.',
+    lede: 'All data is open under CC BY 4.0. Adapter code under MIT. Stable JSON envelope.',
     meta: [
       { label: 'Base URL', value: `defirisk.co/api/${RUBRIC_VERSION}` },
       { label: 'Schema', value: RUBRIC_VERSION },
-      { label: 'License', value: 'CC-BY 4.0 · MIT' },
+      { label: 'License', value: 'CC BY 4.0 · MIT' },
       { label: 'Last updated', value: CONTENT_LAST_UPDATED.data },
     ],
   }}
@@ -177,8 +177,9 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
     <li>
       <strong><code>risk_score</code></strong>: numeric 0–100, rounded to 2 decimal places. A
       core-five-weighted average of per-category severity scores plus a critical-red penalty
-      (5 pts per critical red, capped at 15). Lower is safer. This is the primary input to
-      the letter-grade bands.
+      (5 pts per critical red, capped at 15). One critical red blocks A; two or more force D or
+      worse; three or more force F. Lower is safer. This is the primary input to the letter-grade
+      bands, and core-five caps can lower the final grade further.
     </li>
     <li>
       <strong><code>category_severities</code></strong>: <code>Record&lt;string, number&gt;</code>.
@@ -208,7 +209,7 @@ https://defirisk.co/api/${RUBRIC_VERSION}/factors.csv`;
   <h2 id="schema">Schema <a class="alink" href="#schema">#</a></h2>
   <p>
     JSON Schema definitions for every resource type are published alongside the API and versioned
-    in lockstep with the rubric. The schema is open under CC-BY 4.0; reuse it freely.
+    in lockstep with the rubric. The schema is open under CC BY 4.0; reuse it freely.
   </p>
   <CodeBlock
     title="schema index"

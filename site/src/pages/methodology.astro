@@ -41,7 +41,7 @@ const toc = [
     meta: [
       { label: 'Last updated', value: CONTENT_LAST_UPDATED.methodology },
       { label: 'Version', value: RUBRIC_VERSION },
-      { label: 'License', value: 'CC-BY 4.0' },
+      { label: 'License', value: 'CC BY 4.0' },
     ],
   }}
 >
@@ -55,9 +55,9 @@ const toc = [
     The letter is produced by a three-stage pipeline: each category receives a severity score
     (0–100) based on the proportion of red and yellow factors it contains; those category
     severities are aggregated into a protocol risk score (0–100) with core-five categories
-    weighted 1.5×; the risk score is bucketed into a letter band. Critical-flag reds carry an
-    additional penalty and can force the bottom two grades regardless of the score. There is no
-    hidden weight vector and no trained model; every step of the derivation is published.
+    weighted 1.5×; the risk score is bucketed into a letter band. Critical reds carry an
+    additional penalty: one blocks A, two or more force D or worse, and three or more force F.
+    There is no hidden weight vector or trained model. Every step of the derivation is published.
   </p>
 
   <h3 id="overview-shape">Shape of a grade <a class="alink" href="#overview-shape">#</a></h3>
@@ -73,7 +73,7 @@ const toc = [
     Each of the {TOTAL_FACTOR_COUNT} evidence factors is reviewed against a fixed citation list:
     audit reports, on-chain state, governance forums, public incident records, source repos, and
     operator disclosures. Every factor row on a protocol page links to its sources. If a
-    citation cannot be made public, the factor is marked <code>n/a, under embargo</code> and the
+    citation cannot be made public, the factor is marked <code>n/a (under embargo)</code>, and the
     underlying claim does not contribute to the grade.
   </p>
 
@@ -88,7 +88,7 @@ const toc = [
 
   <h2 id="thresholds">Letter thresholds <a class="alink" href="#thresholds">#</a></h2>
   <p>
-    The letter is derived from a protocol risk score (0–100) and a count of critical-flag reds.
+    The letter is derived from a protocol risk score (0–100) and a count of critical reds.
     The first matching rule wins; precedence runs F &gt; D &gt; C &gt; B &gt; A.
   </p>
 
@@ -99,38 +99,38 @@ const toc = [
           <th style="width:60px">Grade</th>
           <th style="width:110px">Meaning</th>
           <th>Threshold (first match wins)</th>
-          <th style="width:160px">Critical-flag trigger</th>
+          <th style="width:160px">Critical-red trigger</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><span class="gcell"><span class="gpill A">A</span></span></td>
           <td><b>Resilient</b></td>
-          <td>Risk score ≤ 12. No critical flags.</td>
+          <td>Risk score ≤ 12 and no critical reds.</td>
           <td class="mono">0</td>
         </tr>
         <tr>
           <td><span class="gcell"><span class="gpill B">B</span></span></td>
           <td><b>Sound</b></td>
-          <td>Risk score ≤ 20 with 0 critical flags; or exactly 1 critical flag with risk score ≤ 20 (prevents A regardless of score).</td>
+          <td>Risk score ≤ 20 with 0 or 1 critical red. One critical red blocks A and adds 5 risk points.</td>
           <td class="mono">≤ 1</td>
         </tr>
         <tr>
           <td><span class="gcell"><span class="gpill C">C</span></span></td>
           <td><b>Watch</b></td>
-          <td>Risk score &gt; 20 and ≤ 35. Material gaps warrant monitoring.</td>
+          <td>Risk score &gt; 20 and ≤ 35. One critical red may still land here depending on the score.</td>
           <td class="mono">≤ 1</td>
         </tr>
         <tr>
           <td><span class="gcell"><span class="gpill D">D</span></span></td>
           <td><b>Compromised</b></td>
-          <td>Risk score &gt; 35 and ≤ 55; or a single core-five category severity ≥ 60 overrides a higher natural letter.</td>
+          <td>Risk score &gt; 35 and ≤ 55; two or more critical reds force D or worse; or core-five severity ≥ 60 caps at D.</td>
           <td class="mono">≥ 2</td>
         </tr>
         <tr>
           <td><span class="gcell"><span class="gpill F">F</span></span></td>
           <td><b>Failing</b></td>
-          <td>Risk score &gt; 55, or a core-five category severity ≥ 90 overrides any natural letter.</td>
+          <td>Risk score &gt; 55; three or more critical reds force F; or core-five severity ≥ 90 forces F.</td>
           <td class="mono">≥ 3</td>
         </tr>
       </tbody>
@@ -161,11 +161,11 @@ const toc = [
       <strong>Protocol risk score.</strong> A weighted average of per-category severities, where
       core-five categories (code, governance, oracle, operational history, fork lineage) contribute
       at 1.5× and all other categories at 1.0×. Gray categories (no assessed factors) are excluded
-      from the weighted average. A critical-red penalty of 5 points per critical-flag red
+      from the weighted average. A critical-red penalty of 5 points per critical red
       (capped at 15 total) is added to the weighted average, capped at 100.
     </li>
     <li>
-      <strong>Letter band.</strong> The risk score and critical-flag count are compared against
+      <strong>Letter band.</strong> The risk score and critical-red count are compared against
       the threshold table above. After the natural letter is assigned, a cap override checks
       each core-five category: a severity ≥ 60 caps the letter at D; a severity ≥ 90 forces F,
       regardless of the natural letter. The cap reason is shown on the protocol page.
@@ -174,7 +174,7 @@ const toc = [
 
   <h2 id="critical">Critical factors <a class="alink" href="#critical">#</a></h2>
   <p>
-    A critical factor is an evidence item that, when red, prevents an A grade on its own and adds 5 points to the protocol risk score (cap 15 across all critical reds). A single critical-flag red guarantees at least B; two guarantee at least D; three or more guarantee F.
+    A critical factor is an evidence item that, when red, blocks an A and adds 5 points to the protocol risk score (cap 15 across all critical reds). Two or more critical reds force D or worse, and three or more force F. The score bands and core-five category caps can lower the final grade further.
     Critical status is asserted explicitly in the factor definition file and cannot be inferred
     at grading time. As of rubric {RUBRIC_VERSION} there are {CRITICAL_FACTOR_COUNT} critical
     factors out of {TOTAL_FACTOR_COUNT} total.

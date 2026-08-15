@@ -113,7 +113,10 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
             value: linkedHacks.length > 0 ? `${linkedHacks.length} historical` : 'None',
             crit: linkedHacks.length > 0,
           },
-          { label: 'Severity gate', value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup' },
+          {
+            label: 'Critical rule',
+            value: f.is_critical ? 'Red blocks A; +5 risk points (15-point cap)' : 'Category rollup',
+          },
         ]}
         distribution={dist}
         appliesTo={totalProtocols}
@@ -137,8 +140,10 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
                 ★
               </span>
               <span>
-                <b>Critical factor.</b> A Red on this factor alone is sufficient to gate a protocol
-                to grade D or F regardless of other category rollups.
+                <b>Critical factor.</b> A red result on this factor blocks an A and adds 5 risk
+                points, capped at 15 across all critical reds. Two or more critical reds force D or
+                worse; three or more force F. Score bands and core-five caps can lower the final
+                grade further.
               </span>
             </div>
           )

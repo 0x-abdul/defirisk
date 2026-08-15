@@ -50,7 +50,7 @@ export function defaultCard(data: {
             color: COLORS.muted,
             fontFamily: 'monospace',
           },
-        }, 'CC-BY 4.0 · MIT'),
+        }, 'CC BY 4.0 · MIT'),
       ),
     ],
   } as never);

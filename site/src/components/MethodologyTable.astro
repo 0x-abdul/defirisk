@@ -16,32 +16,32 @@ const DEFAULT_ROWS: MethodologyRow[] = [
   {
     letter: 'A',
     meaning: 'Resilient',
-    evidence: 'All five core categories green. No factor marked yellow in oracle or governance.',
+    evidence: 'Risk score ≤ 12, no critical reds, and no core-five cap.',
     critical: '0',
   },
   {
     letter: 'B',
     meaning: 'Sound',
-    evidence: 'At most one yellow in the core five. No red anywhere. All gaps documented with mitigations.',
-    critical: '0',
+    evidence: 'Risk score > 12 and ≤ 20 with 0 critical reds, or exactly 1 critical red with score ≤ 20. One critical red blocks A and adds 5 risk points.',
+    critical: '0 or 1',
   },
   {
     letter: 'C',
     meaning: 'Watch',
-    evidence: 'Multiple yellows or one yellow in oracle/governance. Material gaps that warrant monitoring.',
-    critical: '0',
+    evidence: 'Risk score > 20 and ≤ 35. One critical red may still land here depending on the score.',
+    critical: '0 or 1',
   },
   {
     letter: 'D',
     meaning: 'Compromised',
-    evidence: 'At least one red in the core five, or any single critical factor open and unmitigated.',
-    critical: '≥ 1',
+    evidence: 'Risk score > 35 and ≤ 55, two or more critical reds, or core-five severity ≥ 60.',
+    critical: '2+',
   },
   {
     letter: 'F',
     meaning: 'Failing',
-    evidence: 'Disqualifying issue present: active exploit, missing timelock with admin keys live, or two or more reds in the core five.',
-    critical: '≥ 1 unresolved',
+    evidence: 'Risk score > 55, three or more critical reds, or core-five severity ≥ 90.',
+    critical: '3+',
   },
 ];
 

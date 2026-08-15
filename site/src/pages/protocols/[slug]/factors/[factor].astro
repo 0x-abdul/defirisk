@@ -101,8 +101,8 @@ const sources = (
             value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? 'N/A',
           },
           {
-            label: 'Severity gate',
-            value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup',
+            label: 'Critical rule',
+            value: f.is_critical ? 'Red blocks A; +5 risk points (15-point cap)' : 'Category rollup',
           },
         ]}
       />

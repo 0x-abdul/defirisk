@@ -1,5 +1,6 @@
 ---
 import Page from '../components/Page.astro';
+import { RUBRIC_VERSION } from '../lib/rubric';
 import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
 const toc = [
@@ -85,8 +86,8 @@ const toc = [
   <ul>
     <li>
       <strong>Data</strong>: all grades, evidence factors, citation lists, and derived datasets
-      are licensed under <code>CC BY 4.0</code>. Attribution to "defirisk.co, rubric vN.N" is
-      sufficient.
+      are licensed under <code>CC BY 4.0</code>. Attribution to "defirisk.co, rubric {RUBRIC_VERSION}"
+      is sufficient.
     </li>
     <li>
       <strong>Code</strong>: the rubric engine, factor parser, adapter SDK, and site itself are
