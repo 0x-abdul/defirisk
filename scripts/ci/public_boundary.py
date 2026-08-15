@@ -7,6 +7,7 @@ import hashlib
 import ipaddress
 import json
 import re
+import struct
 from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import parse_qsl, urlsplit
@@ -16,6 +17,20 @@ CURRENT_VERSION = "v1.7.0"
 MANIFEST_RELATIVE = Path("data/api/MANIFEST.sha256")
 BASELINE_RELATIVE = Path("data/api/publication-baseline.json")
 FIELD_REGISTRY_RELATIVE = Path("data/api/public-field-classification.json")
+V1_API_PRESERVATION_RELATIVE = Path("scripts/ci/v1-api-preservation.json")
+V1_API_PRESERVATION_SCHEMA = "defirisk/v1-api-preservation/v1"
+V1_API_PRESERVATION_HASHING = {
+    "raw": (
+        "sha256 over repeated big-endian uint64 path-byte-length, path UTF-8 bytes, "
+        "big-endian uint64 content-byte-length, and raw file bytes"
+    ),
+    "semantic": (
+        "same framing over JSON files only after UTF-8-sig decoding and canonical "
+        "JSON serialization (ensure_ascii=false, sort_keys=true, separators=(',', ':'), "
+        "allow_nan=false)"
+    ),
+}
+V1_API_PRESERVATION_VERSIONS = frozenset(("v1.5.0", "v1.6.0", "v1.7.0"))
 
 PROHIBITED_PREFIXES = (
     ".research/",
@@ -299,6 +314,163 @@ def slug_digest(slugs: Iterable[str]) -> str:
     return hashlib.sha256("\n".join(sorted(slugs)).encode("utf-8")).hexdigest()
 
 
+def _framed_digest(rows: Iterable[tuple[str, bytes]]) -> str:
+    digest = hashlib.sha256()
+    for relative, content in rows:
+        path_bytes = relative.encode("utf-8")
+        digest.update(struct.pack(">Q", len(path_bytes)))
+        digest.update(path_bytes)
+        digest.update(struct.pack(">Q", len(content)))
+        digest.update(content)
+    return digest.hexdigest()
+
+
+def _canonical_json_bytes(path: Path, content: bytes) -> bytes:
+    try:
+        value = json.loads(content.decode("utf-8-sig"))
+        canonical = json.dumps(
+            value,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
+        return canonical.encode("utf-8")
+    except (UnicodeError, ValueError, TypeError, json.JSONDecodeError) as exc:
+        raise BoundaryError(f"invalid JSON: {path}") from exc
+
+
+def api_version_digest(version_root: Path) -> dict[str, int | str]:
+    """Return the immutable raw and semantic digest summary for one API tree."""
+
+    rows: list[tuple[str, bytes]] = []
+    semantic_rows: list[tuple[str, bytes]] = []
+    byte_count = 0
+    json_file_count = 0
+    for path in sorted(
+        (candidate for candidate in version_root.rglob("*") if candidate.is_file()),
+        key=lambda candidate: candidate.relative_to(version_root).as_posix(),
+    ):
+        relative = path.relative_to(version_root).as_posix()
+        content = path.read_bytes()
+        rows.append((relative, content))
+        byte_count += len(content)
+        if path.suffix.casefold() == ".json":
+            json_file_count += 1
+            semantic_rows.append((relative, _canonical_json_bytes(path, content)))
+    return {
+        "file_count": len(rows),
+        "json_file_count": json_file_count,
+        "byte_count": byte_count,
+        "raw_sha256": _framed_digest(rows),
+        "semantic_sha256": _framed_digest(semantic_rows),
+    }
+
+
+def _load_v1_api_preservation_contract(
+    root: Path,
+) -> tuple[dict[str, Any] | None, list[str]]:
+    contract_path = root / V1_API_PRESERVATION_RELATIVE
+    if not contract_path.is_file():
+        return None, [f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: missing"]
+    try:
+        value = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None, [f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: invalid JSON"]
+    if not isinstance(value, dict):
+        return None, [f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: JSON object required"]
+
+    failures: list[str] = []
+    if value.get("schema") != V1_API_PRESERVATION_SCHEMA:
+        failures.append(f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: unsupported schema")
+    if value.get("hashing") != V1_API_PRESERVATION_HASHING:
+        failures.append(f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: hashing contract mismatch")
+
+    versions = value.get("versions")
+    if not isinstance(versions, dict):
+        failures.append(f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: versions must be an object")
+        return value, failures
+    missing_versions = V1_API_PRESERVATION_VERSIONS - set(versions)
+    unexpected_versions = set(versions) - V1_API_PRESERVATION_VERSIONS
+    if missing_versions:
+        failures.append(
+            f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: missing version entries "
+            f"{sorted(missing_versions)}"
+        )
+    if unexpected_versions:
+        failures.append(
+            f"{V1_API_PRESERVATION_RELATIVE.as_posix()}: unexpected version entries "
+            f"{sorted(unexpected_versions)}"
+        )
+    required_fields = {
+        "file_count",
+        "json_file_count",
+        "byte_count",
+        "raw_sha256",
+        "semantic_sha256",
+    }
+    for version in sorted(V1_API_PRESERVATION_VERSIONS & set(versions)):
+        entry = versions[version]
+        if not isinstance(entry, dict):
+            failures.append(
+                f"{V1_API_PRESERVATION_RELATIVE.as_posix()}/{version}: entry must be an object"
+            )
+            continue
+        missing_fields = required_fields - set(entry)
+        unexpected_fields = set(entry) - required_fields
+        if missing_fields:
+            failures.append(
+                f"{V1_API_PRESERVATION_RELATIVE.as_posix()}/{version}: missing fields "
+                f"{sorted(missing_fields)}"
+            )
+        if unexpected_fields:
+            failures.append(
+                f"{V1_API_PRESERVATION_RELATIVE.as_posix()}/{version}: unexpected fields "
+                f"{sorted(unexpected_fields)}"
+            )
+    return value, failures
+
+
+def validate_v1_api_preservation(root: Path) -> list[str]:
+    """Verify every pinned v1 API tree against its committed byte contract."""
+
+    root = root.resolve()
+    contract, failures = _load_v1_api_preservation_contract(root)
+    if contract is None:
+        return failures
+    versions = contract.get("versions")
+    if not isinstance(versions, dict):
+        return failures
+    required_fields = (
+        "file_count",
+        "json_file_count",
+        "byte_count",
+        "raw_sha256",
+        "semantic_sha256",
+    )
+    for version in sorted(V1_API_PRESERVATION_VERSIONS):
+        entry = versions.get(version)
+        if not isinstance(entry, dict) or any(field not in entry for field in required_fields):
+            continue
+        version_root = root / "data" / "api" / version
+        relative_root = version_root.relative_to(root).as_posix()
+        if not version_root.is_dir():
+            failures.append(f"{relative_root}: missing pinned API tree")
+            continue
+        try:
+            actual = api_version_digest(version_root)
+        except BoundaryError as exc:
+            failures.append(str(exc))
+            continue
+        for field in required_fields:
+            if actual[field] != entry[field]:
+                failures.append(
+                    f"{relative_root}: {field} mismatch "
+                    f"(expected={entry[field]!r}, actual={actual[field]!r})"
+                )
+    return failures
+
+
 def file_manifest(root: Path) -> str:
     api_root = root / "data" / "api"
     rows: list[str] = []
@@ -508,6 +680,7 @@ def validate_tree(root: Path, *, check_manifest: bool = True) -> list[str]:
         failures.extend(scan_api_value(load_json(json_path), relative))
 
     failures.extend(validate_status_registry(root))
+    failures.extend(validate_v1_api_preservation(root))
     if check_manifest:
         failures.extend(validate_manifest(root))
     return sorted(set(failures))

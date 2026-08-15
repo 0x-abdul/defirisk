@@ -14,21 +14,25 @@
 
 import { cp, access, constants, readdir, unlink } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const SITE_ROOT = path.resolve(__dirname, '..'); // .../site
 const REPO_ROOT = path.resolve(SITE_ROOT, '..'); // repo root
-const OVERRIDE_ROOT = process.env.DEFIRISK_API_ROOT
-  ? path.resolve(process.env.DEFIRISK_API_ROOT)
-  : null;
-const DIST_ROOT = process.env.DEFIRISK_DIST_ROOT
-  ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
-  : path.join(SITE_ROOT, 'dist');
-const SRC = OVERRIDE_ROOT ?? path.join(REPO_ROOT, 'data', 'api');
-const DST = path.join(DIST_ROOT, 'api');
-const COPY_TARGET = OVERRIDE_ROOT ? path.join(DST, path.basename(OVERRIDE_ROOT)) : DST;
+const COMMITTED_API_ROOT = path.join(REPO_ROOT, 'data', 'api');
+
+export function resolveBuildPaths(env = process.env) {
+  const distRoot = env.DEFIRISK_DIST_ROOT
+    ? path.resolve(env.DEFIRISK_DIST_ROOT)
+    : path.join(SITE_ROOT, 'dist');
+
+  return {
+    sourceRoot: COMMITTED_API_ROOT,
+    distRoot,
+    destinationRoot: path.join(distRoot, 'api'),
+  };
+}
 
 async function exists(p) {
   try {
@@ -39,36 +43,47 @@ async function exists(p) {
   }
 }
 
-async function main() {
-  if (!(await exists(SRC))) {
-    console.error(`[post-build-copy] ERROR: source not found: ${SRC}`);
-    console.error(`[post-build-copy]   Restore the reviewed committed API projection.`);
-    process.exit(1);
+export async function copyCommittedApiTree({ env = process.env, log = console.log } = {}) {
+  const { sourceRoot, distRoot, destinationRoot } = resolveBuildPaths(env);
+
+  if (!(await exists(sourceRoot))) {
+    throw new Error(
+      `[post-build-copy] ERROR: source not found: ${sourceRoot}\n` +
+        '[post-build-copy]   Restore the reviewed committed API projection.'
+    );
   }
-  if (!(await exists(path.dirname(DST)))) {
-    console.error(`[post-build-copy] ERROR: site/dist/ not found — run \`astro build\` first.`);
-    process.exit(1);
+  if (!(await exists(path.dirname(destinationRoot)))) {
+    throw new Error('[post-build-copy] ERROR: site/dist/ not found — run `astro build` first.');
   }
 
-  await cp(SRC, COPY_TARGET, { recursive: true });
-  console.log(
-    `[post-build-copy] copied ${path.relative(REPO_ROOT, SRC)} → ${path.relative(REPO_ROOT, COPY_TARGET)}`
+  await cp(sourceRoot, destinationRoot, { recursive: true });
+  log(
+    `[post-build-copy] copied ${path.relative(REPO_ROOT, sourceRoot)} → ${path.relative(REPO_ROOT, destinationRoot)}`
   );
 
   // Strip canonical-preview fixtures from dist/. They live in public/ so the
   // dev server can serve them for visual-rebuild verification, but they should
   // not ship to production — they're design-system internals, not user-facing.
-  const distRoot = DIST_ROOT;
   const entries = await readdir(distRoot);
   for (const name of entries) {
     if (name.startsWith('_canonical_') && name.endsWith('.html')) {
       await unlink(path.join(distRoot, name));
-      console.log(`[post-build-copy] removed dist/${name} (design-fixture, not for production)`);
+      log(`[post-build-copy] removed dist/${name} (design-fixture, not for production)`);
     }
   }
 }
 
-main().catch((err) => {
-  console.error('[post-build-copy] failed:', err);
-  process.exit(1);
-});
+export async function main() {
+  try {
+    await copyCommittedApiTree();
+    return true;
+  } catch (err) {
+    console.error('[post-build-copy] failed:', err);
+    process.exitCode = 1;
+    return false;
+  }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await main();
+}

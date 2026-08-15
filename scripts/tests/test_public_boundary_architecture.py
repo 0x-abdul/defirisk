@@ -397,3 +397,115 @@ def test_pre_push_guard_has_no_boundary_bypass() -> None:
     assert "ALLOW_INTERNAL_PUSH" not in hook
     assert "verify-public-boundary.py" in hook
     assert "git archive" in hook
+
+
+def _preservation_fixture(tmp_path: Path) -> tuple[Path, dict[str, Path]]:
+    versions: dict[str, Path] = {}
+    for version in sorted(BOUNDARY.V1_API_PRESERVATION_VERSIONS):
+        version_root = tmp_path / "data" / "api" / version
+        _write_json(version_root / "index.json", {"data": {"value": version}})
+        (version_root / "notes.yaml").write_text(
+            f"version: {version}\n", encoding="utf-8"
+        )
+        versions[version] = version_root
+    _write_json(
+        tmp_path / BOUNDARY.V1_API_PRESERVATION_RELATIVE,
+        {
+            "schema": BOUNDARY.V1_API_PRESERVATION_SCHEMA,
+            "hashing": BOUNDARY.V1_API_PRESERVATION_HASHING,
+            "versions": {
+                version: BOUNDARY.api_version_digest(version_root)
+                for version, version_root in versions.items()
+            },
+        },
+    )
+    return tmp_path, versions
+
+
+def test_frozen_v1_contract_matches_the_current_tree() -> None:
+    assert BOUNDARY.validate_v1_api_preservation(ROOT) == []
+
+
+def test_frozen_contract_rejects_one_byte_changes(tmp_path: Path) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    target = versions["v1.5.0"] / "index.json"
+    target.write_bytes(target.read_bytes().replace(b"v1.5.0", b"v1.5.1", 1))
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("v1.5.0: raw_sha256 mismatch" in failure for failure in failures)
+    assert any("v1.5.0: semantic_sha256 mismatch" in failure for failure in failures)
+
+
+def test_frozen_contract_rejects_missing_files(tmp_path: Path) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    (versions["v1.6.0"] / "notes.yaml").unlink()
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("v1.6.0: file_count mismatch" in failure for failure in failures)
+    assert any("v1.6.0: raw_sha256 mismatch" in failure for failure in failures)
+
+
+def test_frozen_contract_rejects_extra_files(tmp_path: Path) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    (versions["v1.7.0"] / "unexpected.txt").write_text(
+        "not part of the frozen tree\n", encoding="utf-8"
+    )
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("v1.7.0: file_count mismatch" in failure for failure in failures)
+    assert any("v1.7.0: raw_sha256 mismatch" in failure for failure in failures)
+
+
+def test_frozen_contract_rejects_semantic_json_changes(tmp_path: Path) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    _write_json(
+        versions["v1.5.0"] / "index.json",
+        {"data": {"value": "different-version"}},
+    )
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("v1.5.0: raw_sha256 mismatch" in failure for failure in failures)
+    assert any("v1.5.0: semantic_sha256 mismatch" in failure for failure in failures)
+
+
+def test_frozen_contract_proves_formatting_only_json_is_semantically_equal(
+    tmp_path: Path,
+) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    target = versions["v1.5.0"] / "index.json"
+    target.write_text(
+        '{\n  "data": {\n    "value": "v1.5.0"\n  }\n}\n',
+        encoding="utf-8",
+    )
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("v1.5.0: raw_sha256 mismatch" in failure for failure in failures)
+    assert not any("v1.5.0: semantic_sha256 mismatch" in failure for failure in failures)
+
+
+def test_frozen_contract_rejects_malformed_json(tmp_path: Path) -> None:
+    fixture, versions = _preservation_fixture(tmp_path)
+    (versions["v1.6.0"] / "index.json").write_text(
+        '{"data": ', encoding="utf-8"
+    )
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("invalid JSON" in failure for failure in failures)
+
+
+def test_frozen_contract_requires_every_pinned_version_entry(tmp_path: Path) -> None:
+    fixture, _versions = _preservation_fixture(tmp_path)
+    contract_path = fixture / BOUNDARY.V1_API_PRESERVATION_RELATIVE
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    del contract["versions"]["v1.7.0"]
+    _write_json(contract_path, contract)
+
+    failures = BOUNDARY.validate_v1_api_preservation(fixture)
+
+    assert any("missing version entries" in failure for failure in failures)
