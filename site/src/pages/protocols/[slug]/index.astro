@@ -2,13 +2,26 @@
 import ProtocolDetailLayout from '../../../components/ProtocolDetailLayout.astro';
 import { listPublishedProtocolSlugs, getProtocol } from '../../../lib/data-loaders';
 import { buildProtocolFamilyRedirect } from '../../../lib/protocol-redirect';
+import { getTask10AliasTarget, listTask10AliasSlugs } from '../../../lib/task10-aliases';
 
 export async function getStaticPaths() {
-  // Only reviewed protocols present in the committed public projection render here.
-  return listPublishedProtocolSlugs().map((slug) => ({ params: { slug } }));
+  // Only reviewed protocols and the two route-only Task 10 aliases render here.
+  const aliasSlugs = listTask10AliasSlugs();
+  const aliasSet = new Set<string>(aliasSlugs);
+  return [
+    ...listPublishedProtocolSlugs()
+      .filter((slug) => !aliasSet.has(slug))
+      .map((slug) => ({ params: { slug } })),
+    ...aliasSlugs.map((slug) => ({ params: { slug } })),
+  ];
 }
 
 const { slug } = Astro.params as { slug: string };
+const aliasTarget = getTask10AliasTarget(slug);
+if (aliasTarget) {
+  return Astro.redirect(aliasTarget);
+}
+
 const detail = getProtocol(slug);
 
 if (!detail) {
