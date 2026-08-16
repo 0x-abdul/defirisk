@@ -115,10 +115,20 @@ applicable or not assessed and is excluded from the denominator.
 severity = (red * 3 + yellow) / (assessed * 3) * 100
 ```
 
-Category severities are combined into a 0–100 risk score. Core categories have
-additional weight, critical-red findings add a capped penalty, and rubric caps
-can limit the final letter grade. Factor definitions and the frozen rubric are
-published under `data/api/v1.7.0/`.
+The protocol risk score is a core-five-weighted average of category severity,
+plus a critical-red penalty. One critical red blocks A and adds 5 points; two
+or more force D or worse, and three or more force F. A core-five severity of
+60 or more caps the grade at D; 90 or more forces F.
+
+| Natural score band | Grade |
+| --- | --- |
+| ≤12 | A |
+| ≤20 | B |
+| ≤35 | C |
+| ≤55 | D |
+| >55 | F |
+
+Factor definitions and the frozen rubric are published under `data/api/v1.7.0/`.
 
 ## Contributing
 

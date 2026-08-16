@@ -133,7 +133,7 @@ const EXPLOITS: LearnTopic[] = [
     body: [
       'Private key compromise is the simplest exploit vector: if an attacker gains control of a deployer or admin wallet, they bypass every on-chain security measure and can directly call privileged functions. This happens through phishing, malware, supply-chain attacks on developer tooling, insider threats, and, in state-sponsored cases, sophisticated social engineering.',
       'The structural risk is determined by how much power a single key holds. A protocol where a single EOA can upgrade the implementation, mint tokens without limit, or withdraw the treasury with no timelock can be drained in one transaction if that key is compromised. The DPRK Lazarus Group has consistently targeted protocols with this architecture.',
-      'DeFi Risk grades key management risk through several ★ critical factors: single admin EOA (RD-F-027), deployer wallet mixer-funded within 30 days (RD-F-124), and deployer linked within 3 hops to DPRK/Lazarus clusters (RD-F-125). A single red on any of these creates a grade floor of D, reflecting the binary nature of key-compromise risk.',
+      'DeFi Risk grades key management risk through several ★ critical factors: single admin EOA (RD-F-027), deployer wallet mixer-funded within 30 days (RD-F-124), and deployer linked within 3 hops to DPRK/Lazarus clusters (RD-F-125). One critical red blocks A and adds 5 risk points; two or more force D or worse, and three or more force F.',
     ],
   },
   {
@@ -336,7 +336,7 @@ const FACTORS: LearnTopic[] = [
     type: 'factor',
     slug: 'RD-F-125',
     title: 'Deployer Linked to DPRK / Lazarus',
-    description: 'Why a 3-hop on-chain link from deployer wallet to DPRK/Lazarus cluster is an automatic ★ critical red.',
+    description: 'Why a 3-hop on-chain link from deployer wallet to DPRK/Lazarus cluster is classified as a ★ critical red.',
     factorId: 'RD-F-125',
     body: [
       'The Lazarus Group (DPRK state-sponsored hackers) has stolen billions from DeFi protocols through a combination of social engineering (infiltrating teams as developers), direct exploitation, and bridge attacks. Wallets used in confirmed Lazarus operations form a cluster that can be traced on-chain via Chainalysis and similar tools.',
@@ -384,7 +384,7 @@ const FACTORS: LearnTopic[] = [
     factorId: 'RD-F-180',
     body: [
       'When an oracle address is immutable, set at deployment and not changeable by any admin action short of a full protocol upgrade, the protocol loses the ability to respond to oracle failures, compromises, or manipulations. If the oracle becomes unreliable or is deprecated, every user is exposed until a full upgrade can be deployed, audited, and executed through governance.',
-      'This factor was promoted to ★ critical in April 2026 (T-14 promotion) after four documented single-factor-sufficient incidents in 14 months: USR (Apr 2026), USDX (Mar 2026), xUSD (Nov 2025), and USD0++ (Jan 2025). In each case, an immutable oracle address left the protocol unable to respond when the oracle behaviour changed. The mitigation is an admin-replaceable wrapper with appropriate governance controls around the replacement action.',
+      'This factor was promoted to ★ critical in April 2026 (T-14 promotion) after four documented incidents in 14 months: USR (Apr 2026), USDX (Mar 2026), xUSD (Nov 2025), and USD0++ (Jan 2025). In each case, an immutable oracle address left the protocol unable to respond when the oracle behaviour changed. The mitigation is an admin-replaceable wrapper with appropriate governance controls around the replacement action.',
     ],
   },
 ];

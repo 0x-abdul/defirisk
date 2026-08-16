@@ -24,7 +24,7 @@ const toc = [
     meta: [
       { label: 'Latest', value: RUBRIC_VERSION },
       { label: 'Released', value: '2026-05-12' },
-      { label: 'License', value: 'CC-BY 4.0' },
+      { label: 'License', value: 'CC BY 4.0' },
     ],
   }}
 >
@@ -33,7 +33,7 @@ const toc = [
     repo; entries link to the merged proposal and the resulting predicates.
   </p>
   <p>
-    A bump in the minor (e.g. <code>v1.5 → v1.6</code>) may flip letters without any evidence
+    A minor-version bump (e.g. <code>v1.5.0 → v1.6.0</code>) may flip letters without any evidence
     change. Affected assessments carry a <code>rubric-shift</code> note linking to the entry
     below.
   </p>
@@ -45,7 +45,7 @@ const toc = [
     <li>
       <strong>Replaced</strong> the four-integer deterministic-lookup rubric with a severity-based
       score pipeline per <code>PD-043</code>. The letter is now derived from a 0–100 protocol
-      risk score and a critical-flag count, not from category-color counts.
+      risk score and a critical-red count, not from category-color counts.
     </li>
     <li>
       <strong>Per-category severity:</strong> each category receives a severity score
@@ -55,12 +55,13 @@ const toc = [
     <li>
       <strong>Protocol risk score:</strong> core-five-weighted average of per-category severities
       (core-five weight 1.5×; all others 1.0×), plus a critical-red penalty of 5 pts per
-      critical-flag red, capped at 15. Total score capped at 100.
+      critical red, capped at 15. Total score capped at 100.
     </li>
     <li>
-      <strong>Letter bands:</strong> F if critical_red_count ≥ 3 or score &gt; 55; D if
-      critical_red_count ≥ 2 or score &gt; 35; C if score &gt; 20; B if critical_red_count ≥ 1
-      or score &gt; 12; A otherwise.
+      <strong>Critical reds and letter bands:</strong> one critical red blocks A and adds 5
+      risk points; two or more force D or worse; three or more force F. Otherwise, F is score
+      &gt; 55, D is score &gt; 35, C is score &gt; 20, B is score &gt; 12, and A is the remaining band.
+      Core-five caps can lower the natural letter further.
     </li>
     <li>
       <strong>Single-category cap:</strong> after the natural letter is assigned, a core-five
@@ -75,7 +76,7 @@ const toc = [
     </li>
     <li>
       <strong>Calibration/launch result:</strong> initial calibration used the pre-backlog cohort;
-      the launch generated-data tree expanded coverage substantially under <code>v1.7.0</code>.
+      the generated data tree at launch expanded coverage substantially under <code>v1.7.0</code>.
       The current protocol count and grade distribution should be read from
       <code>data/api/v1.7.0/index.json</code>; that file is the source of truth.
     </li>

@@ -113,14 +113,17 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
             value: linkedHacks.length > 0 ? `${linkedHacks.length} historical` : 'None',
             crit: linkedHacks.length > 0,
           },
-          { label: 'Severity gate', value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup' },
+          {
+            label: 'Critical rule',
+            value: f.is_critical ? 'Red blocks A; +5 risk points (15-point cap)' : 'Category rollup',
+          },
         ]}
         distribution={dist}
         appliesTo={totalProtocols}
       />
     </aside>
 
-    <main class="body">
+    <div class="body">
       <div class="hero">
         <h1>
           {f.is_critical && <span class="star-big" aria-label="Critical factor">★</span>}
@@ -137,8 +140,10 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
                 ★
               </span>
               <span>
-                <b>Critical factor.</b> A Red on this factor alone is sufficient to gate a protocol
-                to grade D or F regardless of other category rollups.
+                <b>Critical factor.</b> A red result on this factor blocks an A and adds 5 risk
+                points, capped at 15 across all critical reds. Two or more critical reds force D or
+                worse; three or more force F. Score bands and core-five caps can lower the final
+                grade further.
               </span>
             </div>
           )
@@ -245,7 +250,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
         <span><b>carried</b> {totalProtocols}</span>
         <span><b>critical</b> {f.is_critical ? 'yes' : 'no'}</span>
       </div>
-    </main>
+    </div>
   </div>
 </Base>
 
@@ -292,7 +297,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
     color: var(--fg);
   }
   .body .hero h1 .star-big {
-    color: var(--gF);
+    color: var(--gF-text);
     font-size: 24px;
     line-height: 1;
   }
@@ -313,14 +318,14 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
     background: var(--gF-bg);
     border-radius: 6px;
     font-size: 12px;
-    color: var(--gF);
+    color: var(--gF-text);
     font-weight: 500;
   }
   .body .hero .crit-banner b {
     font-weight: 600;
   }
   .body .hero .star {
-    color: var(--gF);
+    color: var(--gF-text);
   }
 
   .body h2 {
@@ -353,6 +358,10 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
   }
   .body h2:hover .alink {
     opacity: 1;
+  }
+  .body h2 .alink:focus-visible {
+    opacity: 1;
+    color: var(--fg-2);
   }
   .body h2:first-of-type {
     margin-top: 36px;
@@ -397,7 +406,7 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
     line-height: 1.5;
   }
   .infogrid .ig .crit-flag {
-    color: var(--gF);
+    color: var(--gF-text);
     font-weight: 500;
   }
 
@@ -487,15 +496,15 @@ function pipTooltip(score: string, gr: string | null | undefined): string | unde
     border-radius: 4px;
   }
   .stbl .pip.red {
-    color: var(--gF);
+    color: var(--gF-text);
     background: var(--gF-bg);
   }
   .stbl .pip.yellow {
-    color: var(--gC);
+    color: var(--gC-text);
     background: var(--gC-bg);
   }
   .stbl .pip.green {
-    color: var(--gA);
+    color: var(--gA-text);
     background: var(--gA-bg);
   }
   .stbl-footer {

@@ -216,7 +216,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
         }
         risk categories: audits, governance, oracle dependencies, economic design, operational history,
         and more. Each category receives a 0–100 severity score (weighted by red and yellow findings);
-        the letter grade is bucketed from a core-five-weighted protocol risk score, with critical-factor
+        the letter grade is derived from a protocol risk score weighted toward the five core categories, with critical-factor
         reds adding a direct penalty and single-category caps ensuring no catastrophically weak area can
         be masked by strong scores elsewhere.
       </p>
@@ -295,7 +295,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     gap: 5px;
     font-size: 10.5px;
     font-weight: 600;
-    color: var(--gC);
+    color: var(--gC-text);
     background: var(--gC-bg);
     padding: 2px 7px;
     border-radius: 4px;
@@ -511,7 +511,7 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--grade-on-fill);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -520,19 +520,19 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
     min-width: 0;
   }
   .sp-seg.A {
-    background: var(--gA);
+    background: var(--gA-fill);
   }
   .sp-seg.B {
-    background: var(--gB);
+    background: var(--gB-fill);
   }
   .sp-seg.C {
-    background: var(--gC);
+    background: var(--gC-fill);
   }
   .sp-seg.D {
-    background: var(--gD);
+    background: var(--gD-fill);
   }
   .sp-seg.F {
-    background: var(--gF);
+    background: var(--gF-fill);
   }
 
   /* Section wrapper */

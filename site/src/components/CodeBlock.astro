@@ -3,9 +3,10 @@ export interface Props {
   title?: string;
   lang?: string;
   code: string;
+  copyLabel: string;
 }
 
-const { title, lang, code } = Astro.props;
+const { title, lang, code, copyLabel } = Astro.props;
 const hasBar = Boolean(title || lang);
 ---
 
@@ -18,9 +19,10 @@ const hasBar = Boolean(title || lang);
           {title && <span>{title}</span>}
           {lang && <span class="lang">{lang}</span>}
         </div>
-        <button type="button" class="copy">
+        <button type="button" class="copy" aria-label={copyLabel}>
           Copy
         </button>
+        <span class="copy-status" role="status" aria-live="polite" aria-atomic="true"></span>
       </div>
     )
   }
@@ -30,22 +32,29 @@ const hasBar = Boolean(title || lang);
 <script is:inline>
   (function () {
     document.querySelectorAll('.codeblock button.copy').forEach(function (btn) {
+      if (btn.dataset.copyBound === 'true') return;
+      btn.dataset.copyBound = 'true';
       btn.addEventListener('click', function () {
         var block = btn.closest('.codeblock');
         var pre = block && block.querySelector('pre');
+        var status = block && block.querySelector('.copy-status');
         if (!pre) return;
-        try {
-          navigator.clipboard.writeText(pre.textContent || '');
-        } catch (e) {
-          /* ignore */
-        }
-        var original = btn.textContent;
-        btn.classList.add('ok');
-        btn.textContent = 'Copied';
-        setTimeout(function () {
-          btn.classList.remove('ok');
-          btn.textContent = original;
-        }, 1200);
+        if (!navigator.clipboard || !navigator.clipboard.writeText) return;
+        Promise.resolve(navigator.clipboard.writeText(pre.textContent || ''))
+          .then(function () {
+            var original = btn.textContent;
+            btn.classList.add('ok');
+            btn.textContent = 'Copied';
+            if (status) status.textContent = 'Copied';
+            setTimeout(function () {
+              btn.classList.remove('ok');
+              btn.textContent = original;
+              if (status) status.textContent = '';
+            }, 1200);
+          })
+          .catch(function () {
+            /* Leave the control unchanged when clipboard access is unavailable. */
+          });
       });
     });
   })();
@@ -101,8 +110,17 @@ const hasBar = Boolean(title || lang);
     color: var(--fg);
   }
   .codeblock .cbar .copy.ok {
-    color: var(--gA);
-    border-color: var(--gA);
+    color: var(--gA-text);
+    border-color: var(--gA-text);
+  }
+  .codeblock .cbar .copy-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
   .codeblock pre {
     margin: 0;
@@ -122,10 +140,10 @@ const hasBar = Boolean(title || lang);
     color: var(--fg);
   }
   .codeblock pre :global(.c-str) {
-    color: var(--gA);
+    color: var(--gA-text);
   }
   .codeblock pre :global(.c-num) {
-    color: var(--gD);
+    color: var(--gD-text);
   }
   .codeblock pre :global(.c-com) {
     color: var(--fg-3);
@@ -135,7 +153,7 @@ const hasBar = Boolean(title || lang);
     color: var(--fg-2);
   }
   .codeblock pre :global(.c-flag) {
-    color: var(--gC);
+    color: var(--gC-text);
   }
   .codeblock pre :global(.c-url) {
     color: var(--fg);

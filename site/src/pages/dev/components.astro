@@ -136,9 +136,9 @@ const stubLinkedHacks = [
         <span class="muted">hero (256×256, with meaning + score):</span>
       </div>
       <div class="hero-row">
-        <div class="hero-box"><LetterPill letter="A" size="hero" meaning="Resilient" score="v1.6.0" /></div>
-        <div class="hero-box"><LetterPill letter="C" size="hero" meaning="Watch" score="v1.6.0" /></div>
-        <div class="hero-box"><LetterPill letter="F" size="hero" meaning="Failing" score="v1.6.0" /></div>
+        <div class="hero-box"><LetterPill letter="A" size="hero" meaning="Resilient" score="v1.7.0" /></div>
+        <div class="hero-box"><LetterPill letter="C" size="hero" meaning="Watch" score="v1.7.0" /></div>
+        <div class="hero-box"><LetterPill letter="F" size="hero" meaning="Failing" score="v1.7.0" /></div>
       </div>
     </section>
 
@@ -237,7 +237,12 @@ const stubLinkedHacks = [
 
     <section class="block">
       <h2>CodeBlock</h2>
-      <CodeBlock title="example" lang="bash" code={'curl -s "https://api.defirisk.co/v1.6.0/protocols/aave-v3.json"\n  | jq .data.protocol_data.protocol.headline_grade'} />
+      <CodeBlock
+        title="example"
+        lang="bash"
+        code={'curl -s "https://api.defirisk.co/v1.6.0/protocols/aave-v3.json"\n  | jq .data.protocol_data.protocol.headline_grade'}
+        copyLabel="Copy component gallery example"
+      />
     </section>
 
     <section class="block">
@@ -297,7 +302,7 @@ const stubLinkedHacks = [
 
     <section class="block">
       <h2>VersionMarker: H2 with version pill + date</h2>
-      <VersionMarker id="vm-current" version="v1.6.0" date="2026-05-11" current>
+      <VersionMarker id="vm-current" version="v1.7.0" date="2026-05-12" current>
         Current version
       </VersionMarker>
       <VersionMarker id="vm-prior" version="v1.5.0" date="2026-04-23">
@@ -321,7 +326,7 @@ const stubLinkedHacks = [
             { label: 'Cadence', value: 'S' },
             { label: 'Carried', value: '38 of 38' },
             { label: 'Linked hacks', value: '65 historical', crit: true },
-            { label: 'Severity gate', value: 'D / F (single-factor)' },
+            { label: 'Critical rule', value: 'Red blocks A; +5 risk points (15-point cap)' },
           ]}
           distribution={{ r: 2, y: 29, g: 7 }}
           appliesTo={38}

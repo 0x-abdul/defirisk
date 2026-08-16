@@ -63,10 +63,23 @@ const nav: NavItem[] = [
     </svg>
     <span class="brand-name">defirisk<span class="brand-tld">.co</span></span>
   </a>
-  <nav class="nav" aria-label="Primary">
+  <button
+    type="button"
+    class="menu-toggle"
+    aria-expanded="false"
+    aria-controls="primary-navigation"
+  >
+    <span class="menu-icon" aria-hidden="true">☰</span>
+    <span>Menu</span>
+  </button>
+  <nav id="primary-navigation" class="nav" aria-label="Primary">
     {
       nav.map((n) => (
-        <a class:list={[n.matches(currentPath) ? 'on' : '']} href={n.href}>
+        <a
+          class:list={[n.matches(currentPath) ? 'on' : '']}
+          href={n.href}
+          aria-current={n.matches(currentPath) ? 'page' : undefined}
+        >
           {n.n}
         </a>
       ))
@@ -90,6 +103,47 @@ const nav: NavItem[] = [
 
 <script is:inline>
   (function () {
+    var topbar = document.querySelector('.topbar');
+    var menuButton = topbar && topbar.querySelector('.menu-toggle');
+    var nav = topbar && topbar.querySelector('.nav');
+    var mobileQuery = window.matchMedia('(max-width: 900px)');
+
+    function syncMenu(open, returnFocus) {
+      if (!menuButton || !nav || !topbar) return;
+      var mobile = mobileQuery.matches;
+      var expanded = mobile && open;
+      topbar.classList.toggle('nav-open', expanded);
+      menuButton.setAttribute('aria-expanded', String(expanded));
+      nav.hidden = false;
+      nav.setAttribute('aria-hidden', String(mobile && !expanded));
+      if (returnFocus && mobile) menuButton.focus();
+    }
+
+    function closeMenu(returnFocus) {
+      syncMenu(false, returnFocus);
+    }
+
+    if (menuButton && nav && topbar) {
+      syncMenu(false, false);
+      menuButton.addEventListener('click', function () {
+        var isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+        syncMenu(!isOpen, false);
+      });
+      nav.addEventListener('click', function (event) {
+        var target = event.target;
+        if (target instanceof Element && target.closest('a')) closeMenu(true);
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
+          event.preventDefault();
+          closeMenu(true);
+        }
+      });
+      mobileQuery.addEventListener('change', function () {
+        closeMenu(false);
+      });
+    }
+
     function syncTheme() {
       var theme = document.documentElement.getAttribute('data-theme') || 'light';
       var buttons = document.querySelectorAll('[data-theme-set]');
@@ -148,6 +202,7 @@ const nav: NavItem[] = [
     top: 0;
     z-index: 5;
     gap: 18px;
+    min-width: 0;
   }
   .brand {
     display: flex;
@@ -172,6 +227,28 @@ const nav: NavItem[] = [
     display: flex;
     gap: 2px;
     flex: 1;
+    min-width: 0;
+  }
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 9px;
+    background: var(--surface-2);
+    color: var(--fg-2);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .menu-toggle:hover {
+    color: var(--fg);
+    background: var(--surface);
+  }
+  .menu-icon {
+    font-size: 13px;
+    line-height: 1;
   }
   .nav a {
     padding: 7px 11px;
@@ -196,6 +273,7 @@ const nav: NavItem[] = [
     gap: 8px;
     font-size: 12px;
     color: var(--fg-3);
+    flex-shrink: 0;
   }
   .vbadge {
     font-family: 'Geist Mono', monospace;
@@ -205,6 +283,7 @@ const nav: NavItem[] = [
     border: 1px solid var(--border);
     border-radius: 5px;
     color: var(--fg-2);
+    flex-shrink: 0;
   }
   .toggle {
     display: flex;
@@ -250,21 +329,34 @@ const nav: NavItem[] = [
     .topbar {
       padding: 0 14px;
       gap: 10px;
-      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+    .menu-toggle {
+      display: inline-flex;
+      flex-shrink: 0;
     }
     .nav {
-      flex: none;
-      overflow-x: auto;
-      white-space: nowrap;
+      position: absolute;
+      top: 52px;
+      left: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      padding: 10px 14px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 18px rgb(0 0 0 / 8%);
+    }
+    .topbar.nav-open .nav {
+      display: flex;
     }
     .nav a {
       padding: 7px 8px;
       font-size: 12px;
+      width: 100%;
     }
     .vbadge {
-      display: none;
-    }
-    button.toggle.toggle-aa {
       display: none;
     }
   }
