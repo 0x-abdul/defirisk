@@ -8,6 +8,9 @@ import { listPublishedProtocolSlugs, getProtocol, getFactor } from '../../../../
 import { CATEGORIES } from '../../../../data/categories';
 import { RUBRIC_VERSION } from '../../../../lib/rubric';
 import { inlineMarkdown } from '../../../../lib/inline-md';
+import { ISSUE_NEW_URL } from '../../../../lib/seo-defaults';
+
+const FACTUAL_CORRECTION_URL = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 
 export async function getStaticPaths() {
   const paths: Array<{ params: { slug: string; factor: string } }> = [];
@@ -191,6 +194,11 @@ const sources = (
           }</span
         >
       </div>
+
+      <p class="corrections-line">
+        Spot an error in this assessment?
+        <a class="link" href={FACTUAL_CORRECTION_URL}>Open a factual correction</a>.
+      </p>
     </div>
   </div>
 </Base>
@@ -329,6 +337,11 @@ const sources = (
     color: var(--fg);
     font-weight: 500;
     margin-right: 6px;
+  }
+  .body .corrections-line {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--fg-3);
   }
 
   @media (max-width: 900px) {
