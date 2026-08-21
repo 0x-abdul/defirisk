@@ -272,6 +272,10 @@ const legacyCaveat =
         }
       </div>
 
+      <p class="assessment-scope">
+        Assessment scope: this grade records the result for this assessment surface under rubric {RUBRIC_VERSION}, using the dated evidence shown below. Other surfaces are assessed separately.
+      </p>
+
       <div class="pname">{displayName}</div>
       <div class="ptag">
         {protocolType} · {chainMeta(primaryChain).name}
@@ -538,6 +542,12 @@ const legacyCaveat =
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+  .assessment-scope {
+    margin: 12px 0 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--fg-3);
   }
   [data-family-grade-scored],
   [data-family-verdict] {
