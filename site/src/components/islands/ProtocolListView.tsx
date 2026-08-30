@@ -123,6 +123,12 @@ function writeFilters(filters: Filters, replace = false): void {
 }
 
 const LIGHT_HEIGHTS = [8, 10.5, 13, 15.5, 18];
+const LIGHT_LABELS: Record<CategoryLight, string> = {
+  red: 'high severity',
+  yellow: 'moderate severity',
+  green: 'low severity',
+  gray: 'not assessed',
+};
 
 export default function ProtocolListView({ protocols, categories, chains, status, error }: Props) {
   const list = protocols ?? [];
@@ -567,7 +573,16 @@ export default function ProtocolListView({ protocols, categories, chains, status
                 />
               </span>
             </span>
-            <span class={styles.lights} role="cell" aria-label="13-category severity profile">
+            <span
+              class={styles.lights}
+              role="cell"
+              aria-label={`13-category severity profile: ${categories
+                .map((category) => {
+                  const light = protocol.category_lights?.[category.id] ?? 'gray';
+                  return `${category.name}: ${LIGHT_LABELS[light]}`;
+                })
+                .join('; ')}`}
+            >
               {categories.map((category, index) => {
                 const light = protocol.category_lights?.[category.id] ?? 'gray';
                 const className =
@@ -582,6 +597,7 @@ export default function ProtocolListView({ protocols, categories, chains, status
                   <i
                     key={category.id}
                     class={className}
+                    aria-hidden="true"
                     style={{
                       height: `${LIGHT_HEIGHTS[index % LIGHT_HEIGHTS.length]}px`,
                     }}

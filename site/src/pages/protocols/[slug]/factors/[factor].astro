@@ -101,14 +101,14 @@ const sources = (
             value: (matching.collected_at as string | undefined)?.slice(0, 10) ?? 'N/A',
           },
           {
-            label: 'Severity gate',
-            value: f.is_critical ? 'D / F (single-factor)' : 'Category rollup',
+            label: 'Critical rule',
+            value: f.is_critical ? 'Red blocks A; +5 risk points (15-point cap)' : 'Category rollup',
           },
         ]}
       />
     </aside>
 
-    <main class="body">
+    <div class="body">
       <div class="hero">
         <h1>
           {
@@ -191,7 +191,7 @@ const sources = (
           }</span
         >
       </div>
-    </main>
+    </div>
   </div>
 </Base>
 
@@ -230,7 +230,7 @@ const sources = (
     color: var(--fg);
   }
   .body .hero h1 .star-big {
-    color: var(--gF);
+    color: var(--gF-text);
     font-size: 22px;
     line-height: 1;
   }
@@ -266,6 +266,10 @@ const sources = (
   .body h2:hover .alink {
     opacity: 1;
   }
+  .body h2 .alink:focus-visible {
+    opacity: 1;
+    color: var(--fg-2);
+  }
   .body p {
     font-size: 14px;
     color: var(--fg-2);
@@ -292,15 +296,15 @@ const sources = (
     border-radius: 4px;
   }
   .pip.red {
-    color: var(--gF);
+    color: var(--gF-text);
     background: var(--gF-bg);
   }
   .pip.yellow {
-    color: var(--gC);
+    color: var(--gC-text);
     background: var(--gC-bg);
   }
   .pip.green {
-    color: var(--gA);
+    color: var(--gA-text);
     background: var(--gA-bg);
   }
   .pip.gray {

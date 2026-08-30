@@ -34,15 +34,32 @@
   /* Text */
   --fg:        #0f1011;   /* primary text, headlines */
   --fg-2:      #4a4d52;   /* secondary text, body */
-  --fg-3:      #686b71;   /* tertiary text, captions, datelines; darkened from #7a7e85 for WCAG AA 4.5:1 on --bg */
-  --fg-4:      #80838a;   /* faint text, disabled; darkened from #a5a8af for WCAG AA on small text */
+  --fg-3:      #5f6369;   /* tertiary text, captions, datelines; AA-safe on light surfaces */
+  --fg-4:      #6d7077;   /* faint text and disabled labels; AA-safe on light surfaces */
 
-  /* Letter grades: fg (the letter color) */
+  /* Letter grades: canonical hues for decorative fills and dots */
   --gA: #118a4d;   /* A: generally safe (deep green) */
   --gB: #3da55f;   /* B: acceptable (medium green) */
   --gC: #c4881b;   /* C: caution (mustard) */
   --gD: #cc6420;   /* D: material concern (orange) */
   --gF: #b62a1f;   /* F: avoid (brick red) */
+
+  /* Grade text uses AA-safe values derived from the enhanced palette. The
+     canonical hues above remain available for decorative bars and dots. */
+  --gA-text: #0a5c34;
+  --gB-text: #2b7a45;
+  --gC-text: #936112;
+  --gD-text: #984a16;
+  --gF-text: #871f17;
+
+  /* Solid fills carry white-on-color labels without changing decorative bars. */
+  --gA-fill: #0a5c34;
+  --gB-fill: #2b7a45;
+  --gC-fill: #946112;
+  --gD-fill: #984a16;
+  --gF-fill: #871f17;
+  --grade-on-fill: #ffffff;
+  --focus-ring: #005fcc;
 
   /* Letter grades: bg tint */
   --gA-bg: #dff2e3;
@@ -140,14 +157,27 @@
 
   --fg:        #f0f1f2;
   --fg-2:      #b3b6bb;
-  --fg-3:      #7e8389;
-  --fg-4:      #5a5f66;
+  --fg-3:      #9298a0;
+  --fg-4:      #8e949d;
 
   --gA: #3eb573;
   --gB: #7fc35a;
   --gC: #e8b62a;
   --gD: #e88a2a;
   --gF: #e25555;
+
+  --gA-text: #6ed395;
+  --gB-text: #aedc8e;
+  --gC-text: #f4cf63;
+  --gD-text: #f4a965;
+  --gF-text: #ef8c8c;
+  --gA-fill: #6ed395;
+  --gB-fill: #aedc8e;
+  --gC-fill: #f4cf63;
+  --gD-fill: #f4a965;
+  --gF-fill: #ef8c8c;
+  --grade-on-fill: #0a0b0c;
+  --focus-ring: #8abfff;
 
   --gA-bg: rgba(62, 181, 115, 0.14);
   --gB-bg: rgba(127, 195, 90, 0.14);
@@ -160,16 +190,21 @@
    Toggled by [data-prefer-contrast] on <html> (TopBar button +
    localStorage 'rd-prefer-contrast'). Swaps the color-on-tint
    patterns that fail WCAG-AA 4.5:1 at small text sizes for
-   higher-contrast variants. Canonical D3 palette is preserved by
-   default; this mode is opt-in for users who need stricter contrast.
+   higher-contrast variants. Canonical D3 palette is preserved for
+   decorative fills; this mode is opt-in for users who need stricter contrast.
    See methodology/changelog v1.6.0 + Design system v1.1 note. */
 [data-prefer-contrast] {
   /* Darker grade foregrounds (lift contrast against tinted bg). */
-  --gA: #0a5c34;
-  --gB: #2b7a45;
-  --gC: #946112;
-  --gD: #984a16;
-  --gF: #871f17;
+  --gA-text: #0a5c34;
+  --gB-text: #2b7a45;
+  --gC-text: #946112;
+  --gD-text: #984a16;
+  --gF-text: #871f17;
+  --gA-fill: #0a5c34;
+  --gB-fill: #2b7a45;
+  --gC-fill: #946112;
+  --gD-fill: #984a16;
+  --gF-fill: #871f17;
   /* Lighter tints (further lift contrast under the darker letter). */
   --gA-bg: #ecf7ee;
   --gB-bg: #f0f6e6;
@@ -183,11 +218,16 @@
 }
 
 [data-theme='dark'][data-prefer-contrast] {
-  --gA: #6ed395;
-  --gB: #aedc8e;
-  --gC: #f4cf63;
-  --gD: #f4a965;
-  --gF: #ef8c8c;
+  --gA-text: #6ed395;
+  --gB-text: #aedc8e;
+  --gC-text: #f4cf63;
+  --gD-text: #f4a965;
+  --gF-text: #ef8c8c;
+  --gA-fill: #6ed395;
+  --gB-fill: #aedc8e;
+  --gC-fill: #f4cf63;
+  --gD-fill: #f4a965;
+  --gF-fill: #ef8c8c;
   --gA-bg: rgba(110, 211, 149, 0.22);
   --gB-bg: rgba(174, 220, 142, 0.22);
   --gC-bg: rgba(244, 207, 99, 0.22);

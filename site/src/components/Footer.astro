@@ -1,0 +1,79 @@
+---
+import { RUBRIC_VERSION } from '../lib/rubric';
+
+export interface Props {
+  /** Build identifier shown in the compact site footer. */
+  buildSha?: string;
+}
+
+const { buildSha = import.meta.env.PUBLIC_GIT_SHA } = Astro.props;
+---
+
+<footer class="ftr">
+  <div class="frow">
+    <div class="l">
+      <a href="/">Protocols</a>
+      <a href="/factors/">Factors</a>
+      <a href="/methodology/">Methodology</a>
+      <a href="/contributions/">Contribute</a>
+      <a href="/about/">About</a>
+      <a href="/data/">Data &amp; API</a>
+      <a href="/methodology/changelog/">Changelog</a>
+    </div>
+    <div>
+      © 2026 DeFi Risk · Data <i>CC BY 4.0</i> · Code <i>MIT</i> · Rubric <i>{RUBRIC_VERSION}</i> · build
+      <i>{buildSha ?? 'dev'}</i>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    margin-top: 48px;
+    padding: 24px 28px 28px;
+  }
+  .ftr .frow {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--fg-3);
+  }
+  .ftr .frow .l {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .ftr .frow .l a {
+    color: var(--fg-3);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .ftr .frow .l a:hover {
+    color: var(--fg);
+  }
+  .ftr .frow i {
+    font-style: normal;
+    font-family: 'Geist Mono', monospace;
+    color: var(--fg-2);
+    background: var(--surface);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    font-size: 10.5px;
+    margin: 0 2px;
+  }
+
+  @media (max-width: 900px) {
+    .ftr {
+      padding: 22px 18px 24px;
+    }
+    .ftr .frow {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+</style>

@@ -80,6 +80,27 @@ test.describe('Factor detail page', () => {
   });
 });
 
+test.describe('Factor routes expose one main landmark', () => {
+  const routes = [
+    '/factors/RD-F-001/',
+    '/protocols/aave-v3/factors/RD-F-028/',
+    '/protocols/aave-v3/surfaces/default/factors/RD-F-028/',
+  ];
+
+  for (const route of routes) {
+    test(`${route} has one main landmark`, async ({ page }) => {
+      const res = await page.goto(route);
+      if (res?.status() === 404) {
+        test.skip(true, `${route} is not generated in this build`);
+        return;
+      }
+      expect(res?.status()).toBe(200);
+      await expect(page.locator('main#main')).toHaveCount(1);
+      await expect(page.locator('main')).toHaveCount(1);
+    });
+  }
+});
+
 test.describe('Protocol detail page (M3a)', () => {
   const SLUG = 'aave-v3';
 
