@@ -198,7 +198,7 @@ function buildDefault(h) {
         ),
       ),
     ),
-    mkFooter(h, '', 'CC-BY 4.0 \xb7 MIT'),
+    mkFooter(h, '', 'CC BY 4.0 \xb7 MIT'),
   );
 }
 
