@@ -16,11 +16,17 @@ JSON_PATHS = (
 YAML_PATHS = tuple(path.with_suffix(".yaml") for path in JSON_PATHS)
 
 
+def normalized_bytes(path: Path) -> bytes:
+    """Compare generated text independent of the checkout's line-ending mode."""
+
+    return path.read_bytes().replace(b"\r\n", b"\n")
+
+
 def main() -> int:
     documents = [json.loads(path.read_text(encoding="utf-8")) for path in JSON_PATHS]
     if documents[0] != documents[1] or documents[0].get("openapi") != "3.1.0":
         raise SystemExit("OpenAPI JSON artifacts differ or are not version 3.1.0")
-    before = {path: path.read_bytes() for path in YAML_PATHS}
+    before = {path: normalized_bytes(path) for path in YAML_PATHS}
     result = subprocess.run(
         ["node", str(ROOT / "scripts/generate-openapi-yaml.mjs")],
         cwd=ROOT,
@@ -34,7 +40,7 @@ def main() -> int:
     changed = [
         str(path.relative_to(ROOT))
         for path in YAML_PATHS
-        if path.read_bytes() != before[path]
+        if normalized_bytes(path) != before[path]
     ]
     if changed:
         raise SystemExit(f"OpenAPI YAML artifacts are stale: {changed}")

@@ -81,8 +81,13 @@ describe('canonicalizeBuildTree', () => {
   it('rejects symlinks anywhere in the generated tree', async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'defirisk-islands-'));
     temporaryRoots.push(root);
-    await writeFile(path.join(root, 'outside.html'), '<p>outside</p>');
-    await symlink(path.join(root, 'outside.html'), path.join(root, 'linked.html'));
+    await mkdir(path.join(root, 'outside'));
+    await writeFile(path.join(root, 'outside', 'outside.html'), '<p>outside</p>');
+    await symlink(
+      path.join(root, 'outside'),
+      path.join(root, 'linked'),
+      process.platform === 'win32' ? 'junction' : 'dir'
+    );
 
     await expect(canonicalizeBuildTree(root)).rejects.toThrow(
       'symlink is not permitted in build output'
