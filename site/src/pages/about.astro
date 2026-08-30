@@ -2,6 +2,9 @@
 import Page from '../components/Page.astro';
 import { RUBRIC_VERSION } from '../lib/rubric';
 import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
+import { ISSUE_NEW_URL } from '../lib/seo-defaults';
+
+const FACTUAL_CORRECTION_URL = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 
 const toc = [
   { id: 'mission', n: 'Mission' },
@@ -56,8 +59,9 @@ const toc = [
   </p>
   <ul>
     <li>
-      <strong>Factual Correction</strong>: a specific data point is wrong and you can cite a
-      source. We re-evidence the factor and the letter recomputes.
+      <strong><a class="link" href={FACTUAL_CORRECTION_URL}>Factual Correction</a></strong>: a
+      specific data point is wrong and you can cite a source. We re-evidence the factor and the
+      letter recomputes.
     </li>
     <li>
       <strong>Grade Dispute</strong>: the facts are right but the rubric was applied incorrectly.

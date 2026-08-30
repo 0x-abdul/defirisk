@@ -1,5 +1,6 @@
 ---
 import { RUBRIC_VERSION } from '../lib/rubric';
+import { ISSUE_NEW_URL } from '../lib/seo-defaults';
 
 export interface Props {
   /** Build identifier shown in the compact site footer. */
@@ -7,6 +8,7 @@ export interface Props {
 }
 
 const { buildSha = import.meta.env.PUBLIC_GIT_SHA } = Astro.props;
+const FACTUAL_CORRECTION_URL = `${ISSUE_NEW_URL}?template=factual-correction.md`;
 ---
 
 <footer class="ftr">
@@ -16,6 +18,7 @@ const { buildSha = import.meta.env.PUBLIC_GIT_SHA } = Astro.props;
       <a href="/factors/">Factors</a>
       <a href="/methodology/">Methodology</a>
       <a href="/contributions/">Contribute</a>
+      <a href={FACTUAL_CORRECTION_URL}>Factual correction</a>
       <a href="/about/">About</a>
       <a href="/data/">Data &amp; API</a>
       <a href="/methodology/changelog/">Changelog</a>
