@@ -51,4 +51,20 @@ describe('public copy review', () => {
     expect(changelog).toContain('v1.6.0');
     expect(changelog).toContain('CC BY 4.0');
   });
+
+  it('keeps the approved per-surface scope and provenance copy exact', () => {
+    const protocolDetail = readSource('components', 'ProtocolDetailLayout.astro');
+    const methodology = readSource('pages', 'methodology.astro');
+    const data = readSource('pages', 'data.astro');
+
+    expect(protocolDetail).toContain(
+      'Assessment scope: this grade records the result for this assessment surface under rubric {RUBRIC_VERSION}, using the dated evidence shown below. Other surfaces are assessed separately.',
+    );
+    expect(methodology).toContain(
+      "A letter records one canonical assessment surface's result under the named rubric version and evidence date. An unavailable surface remains unavailable; another surface's result is not substituted.",
+    );
+    expect(data).toContain(
+      'Interpret a grade with rubric_version, data_as_of, and the canonical surface identifier. Missing or unavailable results remain distinct from assessed results.',
+    );
+  });
 });
