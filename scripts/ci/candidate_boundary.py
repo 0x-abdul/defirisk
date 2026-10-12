@@ -940,6 +940,53 @@ def validate_api_tree(api_root: Path, *, check_manifest: bool = True) -> list[st
 
 
 
+def _validate_frozen_source(root: Path, immutable: Any, *, check_manifest: bool = True) -> list[str]:
+    """Retain main API checks; prune only verified ignored worktree runtimes."""
+    root = root.resolve()
+    failures: list[str] = []
+    for path in _iter_tree(root, worktree=True):
+        if ".git" in path.parts:
+            continue
+        relative = path.relative_to(root).as_posix()
+        if path.is_symlink():
+            failures.append(f"{relative}: symlinks are prohibited in the public tree")
+        if any(relative == prefix.rstrip("/") or relative.startswith(prefix) for prefix in immutable.PROHIBITED_PREFIXES):
+            failures.append(f"{relative}: private path is prohibited")
+        if relative in immutable.PROHIBITED_EXACT_PATHS:
+            failures.append(f"{relative}: retired control-plane path is prohibited")
+        if "/unpublished/" in f"/{relative}/" or relative.endswith("/unpublished"):
+            failures.append(f"{relative}: unpublished path is prohibited")
+
+    api_root = root / "data" / "api"
+    versions = sorted(path for path in api_root.glob("v*") if path.is_dir())
+    if not versions:
+        failures.append("data/api: no versioned public API trees found")
+    for version_root in versions:
+        failures.extend(immutable.validate_api_version(root, version_root))
+
+    baseline = immutable.load_json(root / immutable.BASELINE_RELATIVE)
+    current_version = baseline.get("current_api_version")
+    expected = baseline.get("published_protocols", {})
+    current_index = immutable.load_json(api_root / str(current_version) / "index.json")
+    current_rows = current_index.get("data", {}).get("protocols", [])
+    current_slugs = [row.get("slug") for row in current_rows if isinstance(row, dict)]
+    if expected.get("count") != len(current_slugs):
+        failures.append(f"{immutable.BASELINE_RELATIVE.as_posix()}: published count mismatch")
+    if expected.get("slug_sha256") != immutable.slug_digest(current_slugs):
+        failures.append(f"{immutable.BASELINE_RELATIVE.as_posix()}: published slug digest mismatch")
+
+    for json_path in sorted(api_root.rglob("*.json")):
+        relative = json_path.relative_to(root).as_posix()
+        failures.extend(immutable.scan_api_value(immutable.load_json(json_path), relative))
+
+    failures.extend(immutable.validate_status_registry(root))
+    failures.extend(immutable.validate_v1_api_preservation(root))
+    if check_manifest:
+        failures.extend(immutable.validate_manifest(root))
+    return sorted(set(failures))
+
+
+
 def validate_selected_api(root: Path, api_root: Path, *, check_manifest: bool = True) -> list[str]:
     import importlib.util
     spec = importlib.util.spec_from_file_location("immutable_public_boundary", Path(__file__).with_name("public_boundary.py"))
@@ -948,7 +995,7 @@ def validate_selected_api(root: Path, api_root: Path, *, check_manifest: bool = 
     committed = root / "data/api"
     if (root / "scripts/ci/v1-api-preservation.json").is_file() and committed.is_dir() and hash_public_tree(api_root) == hash_public_tree(committed):
         # Frozen serving snapshot: retain every current main assertion, including v1 preservation.
-        return immutable.validate_tree(root, check_manifest=check_manifest)
+        return _validate_frozen_source(root, immutable, check_manifest=check_manifest)
     # A distinct candidate must satisfy the full strict candidate contract.
     return validate_api_tree(api_root, check_manifest=check_manifest)
 

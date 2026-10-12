@@ -81,3 +81,66 @@ def test_exact_frozen_selection_retains_main_checks(tmp_path):
     assert BOUNDARY.validate_selected_api(tmp_path, tmp_path / 'data/api') == immutable.validate_tree(tmp_path)
     (tmp_path / 'data/api/v1.6.0/index.json').write_text('{}', encoding='utf-8')
     assert BOUNDARY.validate_selected_api(tmp_path, tmp_path / 'data/api')
+
+
+def frozen_worktree(root):
+    import subprocess
+    from test_public_boundary_architecture import BOUNDARY as immutable
+    api = source_tree(root)
+    write_json(root / immutable.V1_API_PRESERVATION_RELATIVE, {
+        'schema': immutable.V1_API_PRESERVATION_SCHEMA,
+        'hashing': immutable.V1_API_PRESERVATION_HASHING,
+        'versions': {v: immutable.api_version_digest(api / v)
+                     for v in immutable.V1_API_PRESERVATION_VERSIONS},
+    })
+    (root / '.gitignore').write_text('node_modules/\n', encoding='utf-8')
+    subprocess.run(['git', 'init', '-q', str(root)], check=True, capture_output=True)
+    subprocess.run(['git', 'add', '.gitignore'], cwd=root, check=True, capture_output=True)
+    return api
+
+
+def test_frozen_source_prunes_ignored_runtime_before_recursion(tmp_path):
+    frozen_worktree(tmp_path)
+    runtime = tmp_path / 'site/node_modules/package/node_modules/.bin'
+    runtime.mkdir(parents=True)
+    (runtime / 'tool').write_text('runtime shim', encoding='utf-8')
+    assert not any('node_modules' in p.parts for p in BOUNDARY._iter_tree(tmp_path, worktree=True))
+    assert BOUNDARY.validate_tree(tmp_path) == []
+
+
+@pytest.mark.parametrize('relative', ['site/node_modules/.bin/tool', 'site/node_modules/dep/node_modules/.bin/tool'])
+def test_frozen_source_ignores_installed_dependency_links_but_output_rejects_them(tmp_path, relative):
+    from test_public_output_boundary import output_tree
+    root = tmp_path / 'source'
+    api = frozen_worktree(root)
+    link = root / relative
+    link.parent.mkdir(parents=True)
+    target = link.parent.parent / 'tool.mjs'
+    target.write_text('export default 1;', encoding='utf-8')
+    try:
+        link.symlink_to(target)
+    except (OSError, NotImplementedError):
+        pytest.skip('symlink creation is unavailable for this Windows principal')
+    assert BOUNDARY.validate_tree(root) == []
+    dist = output_tree(root, api)
+    output_link = dist / 'node_modules/.bin/tool'
+    output_link.parent.mkdir(parents=True)
+    output_link.symlink_to(target)
+    failures = BOUNDARY.validate_output_tree(root, dist)
+    assert any('symlinks or junctions' in failure for failure in failures)
+    assert all(str(target) not in failure for failure in failures)
+
+
+@pytest.mark.parametrize('relative,expected', [
+    ('receipts/private.txt', 'private path is prohibited'),
+    ('site/node_modules/.bin/tool', 'private or workspace-only artifact path'),
+])
+def test_frozen_source_keeps_non_runtime_guards_and_tracked_runtime_guard(tmp_path, relative, expected):
+    import subprocess
+    frozen_worktree(tmp_path)
+    target = tmp_path / relative
+    target.parent.mkdir(parents=True)
+    target.write_text('fixture', encoding='utf-8')
+    if 'node_modules' in target.parts:
+        subprocess.run(['git', 'add', '-f', relative], cwd=tmp_path, check=True, capture_output=True)
+    assert any(expected in failure for failure in BOUNDARY.validate_tree(tmp_path))

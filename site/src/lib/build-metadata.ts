@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 import contentMetadata from '../content-metadata.json';
 import { RUBRIC_VERSION } from './rubric';
 
-/** Server-only snapshot reader; only public dates leave this module. */
+/** Server-only reader of status.data.assessment_snapshot.projection_timestamp.
+ * Only the validated public date leaves this module. */
 function readProjectionTimestamp(): string {
   const override = process.env.DEFIRISK_API_ROOT;
   if (override !== undefined && !override.trim()) {
