@@ -4,7 +4,7 @@
  * Run after `astro build` (or standalone: `node scripts/build-og-images.mjs`).
  * Outputs PNG files to site/dist/og/. Existing files are overwritten.
  *
- * Skips gracefully when the committed data/api/<rubric>/ tree is absent.
+ * Requires the validated copied API tree; unsafe or missing inputs fail closed.
  *
  * Card types generated:
  *   default.png              — site-wide fallback
@@ -15,29 +15,87 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { lstat, mkdtemp, readFile, rename, rm } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { buildConfiguration, hashTree, treesMatch, verifiedCopiedApi } from './post-build-copy.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const SITE_ROOT = path.resolve(__dirname, '..');
-const REPO_ROOT = path.resolve(SITE_ROOT, '..');
-const DIST_ROOT = process.env.DEFIRISK_DIST_ROOT
-  ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
-  : path.join(SITE_ROOT, 'dist');
-const DIST_OG = path.join(DIST_ROOT, 'og');
-
 // ── Rubric version (mirrors site/src/lib/rubric.ts) ─────────────────────────
 const RUBRIC_VERSION = 'v1.7.0';
-const DATA_ROOT = process.env.DEFIRISK_API_ROOT
-  ? path.resolve(process.env.DEFIRISK_API_ROOT)
-  : path.join(REPO_ROOT, 'data', 'api', RUBRIC_VERSION);
 
-function readJson(relpath) {
-  const p = path.join(DATA_ROOT, relpath);
-  if (!existsSync(p)) return null;
-  return JSON.parse(readFileSync(p, 'utf-8'));
+function readJson(dataRoot, relpath) {
+  return JSON.parse(readFileSync(path.join(dataRoot, relpath), 'utf-8'));
+}
+
+function requireRows(dataRoot, filename, key) {
+  const rows = readJson(dataRoot, filename)?.data?.[key];
+  if (!Array.isArray(rows)) throw new Error('validated OG input roster is missing');
+  return rows;
+}
+
+function cardId(value) {
+  if (typeof value !== 'string' || !/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,127}$/.test(value)) {
+    throw new Error('unsafe or missing OG card identity');
+  }
+  return value;
+}
+
+export function assertPublicProtocol(row) {
+  if (!row || typeof row !== 'object' || Array.isArray(row)) {
+    throw new Error('invalid public OG protocol row');
+  }
+  if (row.do_not_publish === true
+    || (Object.hasOwn(row, 'is_published') && row.is_published !== true)
+    || (Object.hasOwn(row, 'protocol_is_published') && row.protocol_is_published !== true)
+    || (Object.hasOwn(row, 'family_is_published') && row.family_is_published !== true)
+    || (Object.hasOwn(row, 'editorial_status') && row.editorial_status !== 'published')
+    || (Object.hasOwn(row, 'publication_exception') && row.publication_exception !== 'none')
+    || (Object.hasOwn(row, 'projection_visibility') && row.projection_visibility !== 'public')
+    || (Object.hasOwn(row, 'assessment_eligibility') && row.assessment_eligibility !== 'eligible')
+    || (Object.hasOwn(row, 'assessment_grade_status') && row.assessment_grade_status !== 'rated')) {
+    throw new Error('held or ineligible protocol may not produce a public OG card');
+  }
+  const slug = cardId(row.slug);
+  // A topology-only family preserves its surfaces without inventing a family grade.
+  if (row.headline_grade == null) return null;
+  if (!['A', 'B', 'C', 'D', 'F'].includes(row.headline_grade)) {
+    throw new Error('held or ineligible protocol may not produce a public OG card');
+  }
+  return slug;
+}
+
+export async function loadOgInputs(config = buildConfiguration()) {
+  const copiedApi = await verifiedCopiedApi(config);
+  const dataRoot = path.join(copiedApi, RUBRIC_VERSION);
+  const protocols = requireRows(dataRoot, 'index.json', 'protocols');
+  const factors = requireRows(dataRoot, 'factors.json', 'factors');
+  const hacks = requireRows(dataRoot, 'hacks.json', 'hacks');
+  const paths = new Set(['default.png', 'analytics.png']);
+  const sourceDefaultFiles = new Map();
+  let sourceDefaultHashes = new Map();
+  const sourceDefaults = path.join(config.siteRoot, 'public', 'og');
+  try {
+    sourceDefaultHashes = await hashTree(sourceDefaults);
+    if ([...sourceDefaultHashes.keys()].some((name) => !['default.png', 'default.svg'].includes(name))) {
+      throw new Error('unexpected static OG source asset');
+    }
+    for (const name of sourceDefaultHashes.keys()) sourceDefaultFiles.set(name, await readFile(path.join(sourceDefaults, name)));
+  } catch (error) {
+    if (error.code !== 'ENOENT' && error.message !== 'required build tree is missing') throw error;
+  }
+  if (sourceDefaultFiles.has('default.svg')) paths.add('default.svg');
+  const gradedProtocols = protocols.filter((row) => assertPublicProtocol(row) !== null);
+  for (const row of gradedProtocols) paths.add(`protocols/${assertPublicProtocol(row)}.png`);
+  for (const row of factors) paths.add(`factors/${cardId(row?.id)}.png`);
+  for (const row of hacks) paths.add(`hacks/${cardId(row?.id)}.png`);
+  if (paths.size !== 2 + (sourceDefaultFiles.has('default.svg') ? 1 : 0) + gradedProtocols.length + factors.length + hacks.length) {
+    throw new Error('duplicate OG card identity');
+  }
+  return { protocols, gradedProtocols, factors, hacks, paths, sourceDefaultFiles, sourceDefaultHashes };
 }
 
 function ensureDir(dir) {
@@ -47,6 +105,11 @@ function ensureDir(dir) {
 function writePng(outPath, buffer) {
   ensureDir(path.dirname(outPath));
   writeFileSync(outPath, buffer);
+}
+
+export function exactFontArrayBuffer(bytes) {
+  // Node may return a view into a pooled allocation containing unrelated bytes.
+  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
 }
 
 // ── Lazy import render + templates (ESM, after node_modules exist) ───────────
@@ -69,8 +132,8 @@ async function importRender() {
   const fontBoldPath = path.join(
     SITE_ROOT, 'node_modules', '@fontsource', 'inter', 'files', 'inter-latin-700-normal.woff',
   );
-  const fontReg  = existsSync(fontRegPath)  ? readFileSync(fontRegPath).buffer  : null;
-  const fontBold = existsSync(fontBoldPath) ? readFileSync(fontBoldPath).buffer : null;
+  const fontReg  = existsSync(fontRegPath)  ? exactFontArrayBuffer(readFileSync(fontRegPath))  : null;
+  const fontBold = existsSync(fontBoldPath) ? exactFontArrayBuffer(readFileSync(fontBoldPath)) : null;
 
   const fonts = [
     fontReg  ? { name: 'Inter', data: fontReg,  weight: 400 } : null,
@@ -281,9 +344,9 @@ function buildHack(h, { id, protocolName, occurredAt, lossUsd, category, factorI
 
 function buildAnalytics(h, { protocolCount, factorCount, hackCount }) {
   const stats = [
-    { label: 'Protocols graded', value: String(protocolCount ?? '57') },
-    { label: 'Evidence factors', value: String(factorCount ?? '184') },
-    { label: 'Hacks indexed', value: String(hackCount ?? '311') },
+    { label: 'Protocols graded', value: String(protocolCount) },
+    { label: 'Evidence factors', value: String(factorCount) },
+    { label: 'Hacks indexed', value: String(hackCount) },
   ];
   return h('div', {
     style: { ...OUTER, background: C.bg, flexDirection: 'column', justifyContent: 'space-between' },
@@ -305,122 +368,91 @@ function buildAnalytics(h, { protocolCount, factorCount, hackCount }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-async function main() {
-  if (!existsSync(DIST_ROOT)) {
-    console.error('[build-og] ERROR: site/dist/ not found — run `astro build` first');
-    process.exit(1);
-  }
-
-  if (!existsSync(DATA_ROOT)) {
-    console.warn(`[build-og] SKIP: data root not found (${DATA_ROOT}); generating default card only`);
-    const { renderOgCard, h } = await loadModules();
-    ensureDir(DIST_OG);
-    const defaultBuf = await renderOgCard(buildDefault(h));
-    writePng(path.join(DIST_OG, 'default.png'), defaultBuf);
-    console.log('[build-og] wrote og/default.png (fallback only)');
-    return;
-  }
-
-  const { renderOgCard, h } = await loadModules();
-  ensureDir(DIST_OG);
-
-  let count = 0;
-
-  // Default card
-  const defaultBuf = await renderOgCard(buildDefault(h));
-  writePng(path.join(DIST_OG, 'default.png'), defaultBuf);
-  count++;
-
-  // Analytics card
-  const indexEnv = readJson('index.json');
-  const protocols = indexEnv?.data?.protocols ?? [];
-  const factsEnv = readJson('factors.json');
-  const factors = factsEnv?.data?.factors ?? [];
-  const hacksEnv = readJson('hacks.json');
-  const hacks = hacksEnv?.data?.hacks ?? [];
-
-  const analyticsBuf = await renderOgCard(buildAnalytics(h, {
-    protocolCount: protocols.length,
-    factorCount: factors.length,
-    hackCount: hacks.length,
-  }));
-  writePng(path.join(DIST_OG, 'analytics.png'), analyticsBuf);
-  count++;
-
-  // Protocol cards
-  ensureDir(path.join(DIST_OG, 'protocols'));
-  for (const p of protocols) {
-    const slug = p.slug ?? p.id;
-    if (!slug) continue;
-    try {
-      const buf = await renderOgCard(buildProtocol(h, {
-        name: p.display_name ?? slug,
-        slug,
-        grade: p.headline_grade ?? 'ineligible',
-        badge: p.headline_badge ?? '',
-        chain: p.primary_chain ?? null,
+export async function main(config = buildConfiguration(), renderer = loadModules) {
+  // Validate the complete source and copied API roster before importing renderers.
+  const { gradedProtocols, factors, hacks, paths, sourceDefaultFiles, sourceDefaultHashes } = await loadOgInputs(config);
+  const { renderOgCard, h } = await renderer();
+  const scratch = await mkdtemp(path.join(path.dirname(config.distRoot), '.public-og-stage-'));
+  const stagedOg = path.join(scratch, 'og');
+  const destination = path.join(config.distRoot, 'og');
+  try {
+    writePng(path.join(stagedOg, 'default.png'), await renderOgCard(buildDefault(h)));
+    if (sourceDefaultFiles.has('default.svg')) writePng(path.join(stagedOg, 'default.svg'), sourceDefaultFiles.get('default.svg'));
+    writePng(path.join(stagedOg, 'analytics.png'), await renderOgCard(buildAnalytics(h, {
+      protocolCount: gradedProtocols.length, factorCount: factors.length, hackCount: hacks.length,
+    })));
+    for (const p of gradedProtocols) {
+      const slug = assertPublicProtocol(p);
+      writePng(path.join(stagedOg, 'protocols', `${slug}.png`), await renderOgCard(buildProtocol(h, {
+        name: p.display_name ?? slug, slug, grade: p.headline_grade,
+        badge: p.headline_badge ?? '', chain: p.primary_chain ?? null,
         tvlDisplay: p.total_value_secured_usd
           ? fmtLoss(typeof p.total_value_secured_usd === 'string'
-            ? parseFloat(p.total_value_secured_usd)
-            : p.total_value_secured_usd)
-          : null,
-      }));
-      writePng(path.join(DIST_OG, 'protocols', `${slug}.png`), buf);
-      count++;
-    } catch (e) {
-      console.warn(`[build-og] WARN: protocol ${slug}: ${e.message}`);
+            ? parseFloat(p.total_value_secured_usd) : p.total_value_secured_usd) : null,
+      })));
     }
-  }
-
-  // Factor cards
-  ensureDir(path.join(DIST_OG, 'factors'));
-  for (const f of factors) {
-    if (!f.id) continue;
-    try {
-      const buf = await renderOgCard(buildFactor(h, {
-        id: f.id,
-        name: f.name ?? f.id,
-        description: f.description ?? null,
-        isCritical: Boolean(f.is_critical),
-        hacksCount: null,
-      }));
-      writePng(path.join(DIST_OG, 'factors', `${f.id}.png`), buf);
-      count++;
-    } catch (e) {
-      console.warn(`[build-og] WARN: factor ${f.id}: ${e.message}`);
+    for (const f of factors) {
+      const id = cardId(f.id);
+      writePng(path.join(stagedOg, 'factors', `${id}.png`), await renderOgCard(buildFactor(h, {
+        id, name: f.name ?? id, description: f.description ?? null,
+        isCritical: Boolean(f.is_critical), hacksCount: null,
+      })));
     }
-  }
-
-  // Hack cards
-  ensureDir(path.join(DIST_OG, 'hacks'));
-  for (const hack of hacks) {
-    if (!hack.id) continue;
-    try {
+    for (const hack of hacks) {
+      const id = cardId(hack.id);
       const lossRaw = hack.loss_usd;
       const lossNum = lossRaw != null
-        ? (typeof lossRaw === 'string' ? parseFloat(lossRaw) : lossRaw)
-        : null;
-      const factorIds = (hack.linked_factors ?? []).map((lf) => lf.factor_id);
-      const buf = await renderOgCard(buildHack(h, {
-        id: hack.id,
-        protocolName: hack.protocol_name,
-        occurredAt: hack.occurred_at ?? null,
-        lossUsd: lossNum,
-        category: hack.category ?? null,
-        factorIds,
-        hasCritical: false,
-      }));
-      writePng(path.join(DIST_OG, 'hacks', `${hack.id}.png`), buf);
-      count++;
-    } catch (e) {
-      console.warn(`[build-og] WARN: hack ${hack.id}: ${e.message}`);
+        ? (typeof lossRaw === 'string' ? parseFloat(lossRaw) : lossRaw) : null;
+      writePng(path.join(stagedOg, 'hacks', `${id}.png`), await renderOgCard(buildHack(h, {
+        id, protocolName: hack.protocol_name, occurredAt: hack.occurred_at ?? null,
+        lossUsd: lossNum, category: hack.category ?? null,
+        factorIds: (hack.linked_factors ?? []).map((lf) => lf.factor_id), hasCritical: false,
+      })));
     }
+    const stagedHashes = await hashTree(stagedOg);
+    if (stagedHashes.size !== paths.size || [...stagedHashes.keys()].some((name) => !paths.has(name))) {
+      throw new Error('OG output roster differs from validated API');
+    }
+    try {
+      const stat = await lstat(destination);
+      if (stat.isSymbolicLink() || !stat.isDirectory()) {
+        throw new Error('existing OG output is stale or differs; use a fresh local Astro build');
+      }
+      const actual = await hashTree(destination);
+      if (!treesMatch(stagedHashes, actual)) {
+        if (!sourceDefaultHashes.size || !treesMatch(sourceDefaultHashes, actual)) {
+          throw new Error('existing OG output is stale or differs; use a fresh local Astro build');
+        }
+        // Only unchanged source fallback assets copied by Astro can be replaced.
+        const previous = path.join(scratch, 'source-defaults');
+        await rename(destination, previous);
+        try { await rename(stagedOg, destination); }
+        catch (error) { await rename(previous, destination); throw error; }
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      await rename(stagedOg, destination);
+    }
+    console.log(`[build-og] generated and verified ${paths.size} OG cards from copied API`);
+    return paths;
+  } finally {
+    await rm(scratch, { recursive: true, force: true });
   }
-
-  console.log(`[build-og] ✓ generated ${count} OG cards → dist/og/`);
 }
 
-main().catch((err) => {
-  console.error('[build-og] fatal:', err);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    const staticFailures = new Set([
+      'validated OG input roster is missing', 'unsafe or missing OG card identity',
+      'held or ineligible protocol may not produce a public OG card', 'duplicate OG card identity',
+      'unexpected static OG source asset', 'OG output roster differs from validated API',
+      'existing OG output is stale or differs; use a fresh local Astro build',
+      'public output boundary validation failed', 'validated API copy is required before OG generation',
+    ]);
+    const reason = staticFailures.has(error?.message) ? error.message : 'renderer or filesystem operation failed';
+    const codes = new Set(['ENOENT', 'EPERM', 'EBUSY', 'EACCES', 'EINVAL', 'ENOMEM', 'ERR_MODULE_NOT_FOUND', 'ERR_INVALID_ARG_TYPE']);
+    const category = codes.has(error?.code) ? ` (${error.code})` : '';
+    console.error(`[build-og] failed: ${reason}${category}`);
+    process.exitCode = 1;
+  });
+}

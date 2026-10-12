@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
-import hashlib
-import json
+import argparse
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from candidate_boundary import BoundaryError, hash_public_tree, load_json, validate_output_tree
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -13,17 +16,7 @@ API_LANDING_ARTIFACT = "index.html"
 
 
 def hash_tree(root: Path) -> dict[str, str]:
-    if not root.is_dir() or root.is_symlink():
-        raise ValueError(f"unsafe or missing tree: {root}")
-    result: dict[str, str] = {}
-    for path in sorted(root.rglob("*")):
-        if path.is_symlink():
-            raise ValueError(f"symlink is forbidden: {path}")
-        if path.is_file():
-            result[path.relative_to(root).as_posix()] = hashlib.sha256(
-                path.read_bytes()
-            ).hexdigest()
-    return result
+    return hash_public_tree(root)
 
 
 def verify_deployed_api(committed_root: Path, deployed_root: Path) -> int:
@@ -38,7 +31,22 @@ def verify_deployed_api(committed_root: Path, deployed_root: Path) -> int:
 
 
 def main() -> int:
-    dist = ROOT / "site/dist"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--dist", type=Path)
+    parser.add_argument("--api-root", type=Path, help="Complete validated candidate API tree")
+    parser.add_argument("--curator-root", type=Path, help="Trusted frozen base for logical data/curator source inputs")
+    parser.add_argument("--build-receipt", "--expected-output-manifest", dest="build_receipt", type=Path, help="Frozen external private build receipt (required)")
+    args = parser.parse_args()
+    root = args.root
+    dist = args.dist or root / "site/dist"
+    api_root = args.api_root or root / "data/api"
+    failures = validate_output_tree(root, dist, api_root=api_root, build_receipt=args.build_receipt, require_build_receipt=True, curator_root=args.curator_root)
+    if failures:
+        print("Inactive output boundary validation failed:")
+        for failure in failures:
+            print(f"- {failure}")
+        return 1
     required = (
         dist / "index.html",
         dist / "about/index.html",
@@ -48,13 +56,15 @@ def main() -> int:
         dist / "404.html",
     )
     missing = [
-        str(path.relative_to(ROOT)) for path in required if not path.is_file()
+        f"site/dist/{path.relative_to(dist).as_posix()}" for path in required if not path.is_file()
     ]
     if missing:
         raise SystemExit(f"inactive release lacks required routes: {missing}")
-    index = json.loads(
-        (ROOT / "data/api/v1.7.0/index.json").read_text(encoding="utf-8")
-    )
+    try:
+        baseline = load_json(api_root / "publication-baseline.json")
+        index = load_json(api_root / baseline["current_api_version"] / "index.json")
+    except (BoundaryError, KeyError):
+        raise SystemExit("invalid committed public API publication binding") from None
     protocols = index.get("data", {}).get("protocols")
     if not isinstance(protocols, list):
         raise SystemExit("committed protocol index is invalid")
@@ -66,20 +76,20 @@ def main() -> int:
             continue
         route = dist / "protocols" / slug / "index.html"
         if not route.is_file():
-            missing_protocol_routes.append(str(route.relative_to(ROOT)))
+            missing_protocol_routes.append(f"site/dist/{route.relative_to(dist).as_posix()}")
     if missing_protocol_routes:
         raise SystemExit(
             "inactive release lacks protocol routes: "
             f"{missing_protocol_routes}"
         )
     try:
-        api_file_count = verify_deployed_api(ROOT / "data/api", dist / "api")
+        api_file_count = verify_deployed_api(api_root, dist / "api")
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
     print(
         "OK: inactive route smoke passed, "
-        f"{api_file_count} API data files match Git, and the deterministic "
-        "API landing artifact is present"
+        f"{api_file_count} API data files match the validated input, and every "
+        "emitted text artifact passed the public boundary"
     )
     return 0
 

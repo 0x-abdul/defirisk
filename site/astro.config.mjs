@@ -3,6 +3,7 @@ import preact from '@astrojs/preact';
 import sitemap from '@astrojs/sitemap';
 import { execSync } from 'node:child_process';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 function gitSha() {
   if (process.env.GIT_SHA) return process.env.GIT_SHA.slice(0, 7);
@@ -34,10 +35,10 @@ export default defineConfig({
   site: 'https://defirisk.co',
   output: 'static',
   trailingSlash: 'always',
+  outDir: process.env.DEFIRISK_DIST_ROOT
+    ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
+    : undefined,
   build: {
-    outDir: process.env.DEFIRISK_DIST_ROOT
-      ? path.resolve(process.env.DEFIRISK_DIST_ROOT)
-      : undefined,
     // Force all CSS into external _astro/*.css chunks instead of inlining
     // small ones. The default 'auto' policy inlines chunks < ~4KB, which on
     // a 7,176-page build duplicates ~9KB of scoped component CSS into every
@@ -65,6 +66,11 @@ export default defineConfig({
   ],
   vite: {
     define: {
+      // Source checkout for the server-only curator reader; prerender chunks
+      // move between framework versions. Only projected sidecar values render.
+      'import.meta.env.DEFIRISK_REPOSITORY_ROOT': JSON.stringify(
+        fileURLToPath(new URL('../', import.meta.url)),
+      ),
       'import.meta.env.PUBLIC_GIT_SHA': JSON.stringify(gitSha()),
     },
   },

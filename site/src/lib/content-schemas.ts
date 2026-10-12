@@ -101,7 +101,9 @@ export const factorScoredProtocolSchema = z.object({
   collection_mode: z.enum(['programmatic', 'manual', 'hybrid']),
   collected_at: z.string(),
   data_as_of: z.string(),
-  collected_by: z.string(),
+  // Public projections omit private collector provenance. Legacy projections
+  // may still carry a string while their evidence inputs are being repaired.
+  collected_by: z.string().optional(),
   // PD-039 (2026-05-11): why a GRAY / not_assessed cell couldn't be measured.
   // Null on graded scores (green/yellow/red).
   gap_reason: z

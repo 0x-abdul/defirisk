@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { createHash } from 'node:crypto';
 import { lstat, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -85,7 +87,9 @@ export async function main(argv = process.argv.slice(2)) {
   if (argv.length > 1) {
     throw new Error('usage: canonicalize-astro-islands.mjs [dist-root]');
   }
-  const result = await canonicalizeBuildTree(argv[0] ?? DEFAULT_DIST_ROOT);
+  const result = await canonicalizeBuildTree(
+    argv[0] ?? process.env.DEFIRISK_DIST_ROOT ?? DEFAULT_DIST_ROOT
+  );
   console.log(
     `[canonicalize-astro-islands] canonicalized ${result.islandCount} island(s) across ${result.fileCount} HTML file(s)`
   );
