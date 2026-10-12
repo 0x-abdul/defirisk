@@ -5,8 +5,11 @@ import CodeBlock from '../components/CodeBlock.astro';
 import { RUBRIC_VERSION } from '../lib/rubric';
 import { CONTENT_LAST_UPDATED } from '../lib/build-metadata';
 
+import { selectedRetiredVersions } from '../lib/api-lifecycle';
+const retiredVersions = selectedRetiredVersions();
 const toc = [
   { id: 'base', n: 'Versioned base URL' },
+  { id: 'retired', n: 'Version lifecycle' },
   { id: 'endpoints', n: 'Endpoints' },
   { id: 'envelope', n: 'Envelope contract' },
   { id: 'schema', n: 'Schema' },
@@ -84,8 +87,8 @@ const envelopeExample = `{
   <h2 id="base">Versioned base URL <a class="alink" href="#base">#</a></h2>
   <p>
     Every endpoint is prefixed by the rubric version. Breaking changes increment the minor
-    component (e.g. <code>v1.5.0</code> → <code>v1.6.0</code>); additive changes do not. Older
-    version paths are intended to remain available after a new minor is released.
+    component; additive changes do not. Versioned paths may be retired by an explicit
+    lifecycle decision with a migration notice.
   </p>
   <CodeBlock
     title="base URL"
@@ -93,6 +96,20 @@ const envelopeExample = `{
     code={baseUrlExample}
     copyLabel="Copy base URL example"
   />
+
+  <h2 id="retired">Version lifecycle <a class="alink" href="#retired">#</a></h2>
+  {retiredVersions.length > 0 ? <p>
+    The selected build input retires {retiredVersions.join(' and ')}. Its qualified serving
+    configuration returns HTTP 410 JSON for each retired root and every descendant.
+    Clients must explicitly migrate to the current version and inspect its status.
+  </p> : <p>The selected API snapshot retains its versioned trees. No version is marked retired in this input.</p>}
+  <p>
+    The retirement candidate for v1.5.0 and v1.6.0 is separate from the retained snapshot.
+    Publication and installation of its HTTP 410 routing require a separate operation;
+    this documentation does not establish production routing behavior.
+  </p>
+  <CodeBlock title="candidate retirement response (HTTP 410)" lang="json" copyLabel="Copy candidate retirement response"
+    code={JSON.stringify({ error: 'api_version_retired', api_version: 'v1.6.0', migration_url: '/data/' }, null, 2)} />
 
   <h2 id="endpoints">Endpoints <a class="alink" href="#endpoints">#</a></h2>
   <p>
@@ -237,8 +254,8 @@ const envelopeExample = `{
   <h2 id="cache">Caching <a class="alink" href="#cache">#</a></h2>
   <p>
     All API responses are static JSON files emitted by the build pipeline and served by the CDN.
-    They carry standard HTTP cache headers. New rubric versions live at new paths; old paths are
-    immutable.
+    They carry standard HTTP cache headers. New rubric versions live at new paths.
+    Retirement changes serving availability only through an explicit lifecycle decision.
   </p>
 
   <h2 id="license">License <a class="alink" href="#license">#</a></h2>
