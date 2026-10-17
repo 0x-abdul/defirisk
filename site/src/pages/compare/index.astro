@@ -1,0 +1,37 @@
+---
+import Page from '../../components/Page.astro';
+import ProtocolComparison from '../../components/ProtocolComparison';
+import { listComparisonProtocols } from '../../lib/comparison-data';
+import { listFactors } from '../../lib/data-loaders';
+import { CATEGORIES } from '../../data/categories';
+const protocols = listComparisonProtocols();
+const factors = listFactors().map(({ id, name, category_id, is_critical }) => ({
+  id,
+  name,
+  category_id,
+  is_critical,
+}));
+---
+
+<Page
+  pageTitle="Compare protocols"
+  description="Compare two to four published protocol assessments by surface, coverage and evidence."
+  crumbs={[{ n: 'Compare' }]}
+  toc={[{ id: 'comparison', n: 'Protocol comparison' }]}
+  hero={{
+    h1: 'Compare protocols',
+    lede: 'Inspect published categories, factors, coverage and evidence dates side by side.',
+  }}
+>
+  <section id="comparison">
+    <ProtocolComparison
+      client:load
+      protocols={protocols}
+      categories={CATEGORIES}
+      factors={factors}
+    />
+  </section>
+  <noscript
+    >Enable JavaScript to select protocols and preserve comparison selections in the URL.</noscript
+  >
+</Page>

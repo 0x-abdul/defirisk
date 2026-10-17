@@ -10,6 +10,7 @@ import IncidentBanner from '../components/IncidentBanner.astro';
 import FactorAssessment from '../components/FactorAssessment';
 import DeploymentTabs from '../components/DeploymentTabs';
 import ProtocolSurfaceExplorer from '../components/ProtocolSurfaceExplorer';
+import WatchProtocolButton from '../components/WatchProtocolButton';
 import { listFactors, listIncidents, type ProtocolDetail } from '../lib/data-loaders';
 import { buildFactorAssessmentModel } from '../lib/factor-assessment-model';
 import {
@@ -383,6 +384,10 @@ const legacyCaveat =
     <div class="body">
       <div class="masthead">
         <h1>{displayName}</h1>
+        <WatchProtocolButton client:load slug={slug} name={displayName} />
+        <p>
+          <a href={`/compare/?protocol=${encodeURIComponent(slug)}`}>Compare with another protocol</a>
+        </p>
         {description && <p class="sub">{description}</p>}
         <div class="body-meta">
           <div class="mi">
