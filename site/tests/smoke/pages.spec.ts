@@ -56,6 +56,13 @@ test.describe('Core pages — always present', () => {
     const res = await page.goto('/status/');
     expect(res?.status()).toBe(200);
     await expect(page.locator('main')).toBeVisible();
+    await expect(page).toHaveTitle('System status · DeFi Risk');
+    await expect(page.getByRole('navigation', { name: 'Primary' })).toBeVisible();
+    await expect(page.getByRole('contentinfo')).toBeVisible();
+    await expect(page.getByText('API envelope version')).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Cadence bucket table' })).toBeVisible();
+    await expect(page.getByText('Pipeline run history')).toHaveCount(0);
+    await expect(page.getByText('Per-protocol freshness')).toHaveCount(0);
   });
 
   test('404 page renders for unknown path', async ({ page }) => {

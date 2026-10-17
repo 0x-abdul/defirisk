@@ -26,6 +26,14 @@ import {
   type RawFactorScore,
   type FactorMeta,
 } from './rubric';
+import {
+  COVERAGE_TARGET_FACTORS,
+  COVERAGE_TARGET_CRITICAL_FACTORS,
+  COVERAGE_TARGET_PROTOCOLS,
+  EXPECTED_CADENCE_COUNTS,
+  EXPECTED_CADENCE_TOTAL,
+  type CadenceCode,
+} from './status-thresholds';
 import type { ExplorerHack, FacetOptions } from './hack-facets';
 import {
   protocolListSchema,
@@ -383,44 +391,13 @@ export function listGradeChanges(): import('./feed-generator').GradeChange[] {
 
 // ── Status page (E-30) ───────────────────────────────────────────────────────
 
-export interface PipelineRun {
-  run_at: string;
-  script_name: string;
-  cadence_bucket: string | null;
-  protocols_touched: number;
-  fetchers_invoked: string[];
-  success_count: number;
-  error_count: number;
-  duration_seconds: number | null;
-  triggered_by: string;
-  error_summary?: { protocol?: string; error?: string }[] | null;
-  notes?: string | null;
-}
-
-export interface BucketFreshness {
-  cadence_bucket: 'C' | 'E' | 'S';
-  last_run_at: string | null;
-  run_count_30: number;
-  total_errors: number;
-  total_successes: number;
-  success_rate_pct: number | null;
-}
-
-export interface ProtocolFreshness {
-  slug: string;
-  display_name: string;
-  letter: string | null;
-  graded_at: string | null;
-  data_as_of: string | null;
-  days_stale: number | null;
-}
-
 export interface StatusSummary {
   // System version block
   rubric_version: string;
+  api_envelope_version: string;
   rubric_frozen_at: string | null;
   build_sha: string | null;
-  schema_version: string;
+  data_as_of: string;
   generated_at: string;
   // Coverage block
   protocols_target: number;
@@ -428,82 +405,74 @@ export interface StatusSummary {
   protocols_pending: number;
   critical_factors_target: number;
   critical_factors_covered: number;
-  // Per-protocol freshness (sortable on /status/)
-  per_protocol: ProtocolFreshness[];
-  // Operational telemetry is served separately and is never loaded from data/api.
-  pipeline_runs: PipelineRun[];
-  pipeline_runs_source: 'live' | 'unwired';
-  bucket_freshness: Record<'C' | 'E' | 'S', BucketFreshness>;
+  cadence_counts: Readonly<Record<CadenceCode, number>>;
 }
 
-const CRITICAL_FACTOR_TARGET = 20;
-const SCHEMA_VERSION = 'v0';
-
 /**
- * Build-time assessment snapshot for /status/. Live freshness and pipeline
- * health come from the separate telemetry service, never committed API data.
+ * Derive cadence totals from the current versioned factor detail metadata.
+ * The assertion keeps the public status page tied to the reviewed v1.7.0
+ * projection instead of allowing stale hand-maintained totals.
  */
+export function getCadenceCounts(): Readonly<Record<CadenceCode, number>> {
+  const counts: Record<CadenceCode, number> = { C: 0, E: 0, S: 0, RT: 0 };
+
+  for (const factor of listFactors()) {
+    const cadence = getFactor(factor.id)?.factor.cadence;
+    if (!(cadence && Object.prototype.hasOwnProperty.call(counts, cadence))) {
+      throw new Error(`Missing or invalid cadence metadata for factor ${factor.id}`);
+    }
+    counts[cadence as CadenceCode] += 1;
+  }
+
+  const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+  const mismatch = (Object.keys(EXPECTED_CADENCE_COUNTS) as CadenceCode[]).find(
+    (code) => counts[code] !== EXPECTED_CADENCE_COUNTS[code],
+  );
+  if (mismatch || total !== EXPECTED_CADENCE_TOTAL || total !== COVERAGE_TARGET_FACTORS) {
+    throw new Error(
+      `Unexpected v1.7.0 cadence totals: C=${counts.C}, E=${counts.E}, S=${counts.S}, RT=${counts.RT}, total=${total}`,
+    );
+  }
+
+  return counts;
+}
+
+/** Build-time reviewed assessment snapshot for /status/. */
 export function getStatusSummary(): StatusSummary {
   const rubric = getRubric();
-  const protocols = listProtocols();
   const factors = listFactors();
-
-  const perProtocol: ProtocolFreshness[] = protocols.map((p) => {
-    const obj = p as unknown as Record<string, unknown>;
-    const gradedAt = (obj.graded_at as string | null | undefined) ?? null;
-    const dataAsOf = (obj.data_as_of as string | null | undefined) ?? null;
-    return {
-      slug: (obj.slug as string) ?? p.id,
-      display_name: (obj.display_name as string) ?? (obj.slug as string) ?? p.id,
-      letter: (obj.headline_grade as string | null | undefined) ?? null,
-      graded_at: gradedAt,
-      data_as_of: dataAsOf,
-      days_stale: null,
-    };
-  });
-
-  const protocolsGraded = perProtocol.filter((p) => p.letter !== null).length;
   const criticalFactorsCovered = factors.filter((f) => f.is_critical).length;
-
-  const emptyBucket = (cadence_bucket: 'C' | 'E' | 'S'): BucketFreshness => ({
-    cadence_bucket,
-    last_run_at: null,
-    run_count_30: 0,
-    total_errors: 0,
-    total_successes: 0,
-    success_rate_pct: null,
-  });
   const statusEnv = readJson('status.json') as {
     generated_at?: string;
     data_as_of?: string;
     data?: {
       assessment_snapshot?: {
+        data_as_of?: string;
         projection_timestamp?: string;
       };
     };
   } | null;
-  const bucketFreshness = {
-    C: emptyBucket('C'),
-    E: emptyBucket('E'),
-    S: emptyBucket('S'),
-  };
-  const generatedAt =
-    statusEnv?.data?.assessment_snapshot?.projection_timestamp ?? statusEnv?.generated_at ?? '';
+
+  // The numerator follows the committed public protocol files. The target is
+  // fixed by the coverage contract and intentionally does not move with the
+  // current publication batch.
+  const publishedProtocolCount = listPublishedProtocolSlugs().length;
+  const snapshot = statusEnv?.data?.assessment_snapshot;
+  const dataAsOf = snapshot?.data_as_of ?? statusEnv?.data_as_of ?? '';
+  const generatedAt = snapshot?.projection_timestamp ?? statusEnv?.generated_at ?? '';
 
   return {
     rubric_version: RUBRIC_VERSION,
+    api_envelope_version: RUBRIC_VERSION,
     rubric_frozen_at: rubric?.frozen_at ?? null,
     build_sha: (import.meta.env.PUBLIC_GIT_SHA as string | undefined) ?? null,
-    schema_version: SCHEMA_VERSION,
+    data_as_of: dataAsOf,
     generated_at: generatedAt,
-    protocols_target: protocols.length,
-    protocols_graded: protocolsGraded,
-    protocols_pending: protocols.length - protocolsGraded,
-    critical_factors_target: CRITICAL_FACTOR_TARGET,
+    protocols_target: COVERAGE_TARGET_PROTOCOLS,
+    protocols_graded: publishedProtocolCount,
+    protocols_pending: Math.max(COVERAGE_TARGET_PROTOCOLS - publishedProtocolCount, 0),
+    critical_factors_target: COVERAGE_TARGET_CRITICAL_FACTORS,
     critical_factors_covered: criticalFactorsCovered,
-    per_protocol: perProtocol.sort((a, b) => a.display_name.localeCompare(b.display_name)),
-    pipeline_runs: [],
-    pipeline_runs_source: 'unwired',
-    bucket_freshness: bucketFreshness,
+    cadence_counts: getCadenceCounts(),
   };
 }

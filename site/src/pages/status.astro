@@ -1,19 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
+import TopBar from '../components/TopBar.astro';
+import Footer from '../components/Footer.astro';
 import { getStatusSummary } from '../lib/data-loaders';
-import { RUBRIC_VERSION } from '../lib/rubric';
 import {
   CADENCE_BUCKETS,
   COVERAGE_TARGET_FACTORS,
   COVERAGE_TARGET_CATEGORIES,
-  FRESHNESS_GREEN_DAYS,
-  FRESHNESS_YELLOW_DAYS,
-  classifyFreshness,
 } from '../lib/status-thresholds';
 
 const status = getStatusSummary();
-const buildSha = import.meta.env.PUBLIC_GIT_SHA;
-const generatedAtDisplay = status.generated_at.slice(0, 19).replace('T', ' ') + ' UTC';
+const generatedAtDisplay = status.generated_at
+  ? status.generated_at.slice(0, 19).replace('T', ' ') + ' UTC'
+  : 'N/A';
+const dataAsOfDisplay = status.data_as_of
+  ? status.data_as_of.slice(0, 19).replace('T', ' ') + ' UTC'
+  : 'N/A';
 const rubricFrozenDisplay = status.rubric_frozen_at
   ? status.rubric_frozen_at.slice(0, 10)
   : 'N/A';
@@ -29,74 +31,56 @@ const coveragePctCritical =
       )
     : 0;
 
-const freshnessCounts = status.per_protocol.reduce(
-  (acc, p) => {
-    const c = classifyFreshness(p.days_stale);
-    acc[c] = (acc[c] ?? 0) + 1;
-    return acc;
-  },
-  { green: 0, yellow: 0, red: 0, gray: 0 } as Record<string, number>,
-);
-
-const bucketRows = CADENCE_BUCKETS.map((bucket) => {
-  const freshness = bucket.code === 'C' || bucket.code === 'E' || bucket.code === 'S'
-    ? status.bucket_freshness[bucket.code]
-    : null;
-  const hasRun = Boolean(freshness?.last_run_at);
-  const hasErrors = (freshness?.total_errors ?? 0) > 0;
-  const state =
-    bucket.code === 'RT'
-      ? 'Deferred'
-      : !hasRun
-        ? 'No runs'
-        : hasErrors
-          ? 'Partial failures'
-          : 'OK';
-  return { ...bucket, freshness, state };
-});
-
-const problemRuns = status.pipeline_runs.filter((r) => r.error_count > 0);
-
-function formatRunErrors(run: (typeof status.pipeline_runs)[number]): string {
-  const errors = run.error_summary ?? [];
-  if (errors.length === 0) return `${run.error_count} error(s)`;
-  return errors
-    .slice(0, 3)
-    .map((err) => {
-      const subject = err.protocol ?? 'unknown';
-      return `${subject}: ${err.error ?? 'error'}`;
-    })
-    .join('; ');
-}
+const bucketRows = CADENCE_BUCKETS.map((bucket) => ({
+  ...bucket,
+  count: status.cadence_counts[bucket.code],
+}));
 ---
 
 <Base
-  title="System status | DeFi Risk"
-  description="Live operational status: rubric version, build SHA, fleet freshness, per-protocol last-updated timestamps, and pipeline run history."
+  title="System status"
+  description="Reviewed public snapshot, coverage, and factor cadence for the DeFi Risk dashboard."
 >
+  <TopBar slot="topbar" />
+
   <div class="container">
     <div class="masthead">
       <div class="crumb">System status</div>
-      <h1>Status</h1>
-      <p class="lede">What version of the dashboard you're reading, when the data was last refreshed, and the health of the ingestion pipeline. This page is regenerated every nightly build; see "generated at" below.</p>
+      <h1>System status</h1>
+      <p class="lede">
+        A reviewed public snapshot of the dashboard, its coverage target, and the cadence assigned
+        to each factor. Values below come from the versioned API projection at build time.
+      </p>
       <div class="meta-row">
-        <span><b>Rubric</b> {RUBRIC_VERSION}</span>
-        <span><b>Schema</b> {status.schema_version}</span>
-        <span><b>Build</b> <code>{buildSha ?? 'N/A'}</code></span>
+        <span><b>Rubric</b> {status.rubric_version}</span>
+        <span><b>API envelope</b> {status.api_envelope_version}</span>
+        <span><b>Build</b> <code>{status.build_sha ?? 'N/A'}</code></span>
         <span><b>Generated</b> {generatedAtDisplay}</span>
       </div>
     </div>
 
     <section class="section">
-      <div class="section-head"><span class="section-num">§01</span><h2>System version</h2></div>
+      <div class="section-head"><span class="section-num">§01</span><h2>Reviewed snapshot</h2></div>
       <table class="mtable">
         <tbody>
-          <tr><th scope="row">Rubric version</th><td><code>{RUBRIC_VERSION}</code> · <a href="/methodology/#changelog">changelog</a></td></tr>
+          <tr>
+            <th scope="row">Rubric version</th>
+            <td><code>{status.rubric_version}</code> · <a href="/methodology/#changelog">changelog</a></td>
+          </tr>
+          <tr>
+            <th scope="row">API envelope version</th>
+            <td>
+              <code>{status.api_envelope_version}</code> ·
+              <a href={`/api/${status.api_envelope_version}/schema/envelope.json`}>envelope schema</a>
+            </td>
+          </tr>
           <tr><th scope="row">Rubric frozen at</th><td>{rubricFrozenDisplay}</td></tr>
-          <tr><th scope="row">DB schema version</th><td><code>{status.schema_version}</code> · <a href={`/api/${RUBRIC_VERSION}/schema/envelope.json`}>envelope schema</a></td></tr>
-          <tr><th scope="row">Build commit</th><td><code>{buildSha ?? 'N/A (set PUBLIC_GIT_SHA at build time)'}</code></td></tr>
-          <tr><th scope="row">Coverage target</th><td>{COVERAGE_TARGET_CATEGORIES} categories · {COVERAGE_TARGET_FACTORS} factors · {status.critical_factors_target} critical ★</td></tr>
-          <tr><th scope="row">Page generated at</th><td><code>{status.generated_at}</code></td></tr>
+          <tr><th scope="row">Data as of</th><td><code>{dataAsOfDisplay}</code></td></tr>
+          <tr>
+            <th scope="row">Build commit</th>
+            <td><code>{status.build_sha ?? 'N/A (set PUBLIC_GIT_SHA at build time)'}</code></td>
+          </tr>
+          <tr><th scope="row">Projection generated at</th><td><code>{generatedAtDisplay}</code></td></tr>
         </tbody>
       </table>
     </section>
@@ -106,13 +90,13 @@ function formatRunErrors(run: (typeof status.pipeline_runs)[number]): string {
       <div class="coverage-grid">
         <div class="coverage-cell">
           <div class="coverage-num">{status.protocols_graded} <span class="muted">/ {status.protocols_target}</span></div>
-          <div class="coverage-label">Protocols graded</div>
-          <div class="coverage-meta">{coveragePctProtocols}% · {status.protocols_pending} pending M3a</div>
+          <div class="coverage-label">Published protocols</div>
+          <div class="coverage-meta">{coveragePctProtocols}% of the fixed target · {status.protocols_pending} remaining</div>
         </div>
         <div class="coverage-cell">
           <div class="coverage-num">{status.critical_factors_covered} <span class="muted">/ {status.critical_factors_target}</span></div>
-          <div class="coverage-label">Critical ★ factors loaded</div>
-          <div class="coverage-meta">{coveragePctCritical}% of the single-factor-sufficient set</div>
+          <div class="coverage-label">Critical ★ factors in taxonomy</div>
+          <div class="coverage-meta">{coveragePctCritical}% of the active critical-factor set</div>
         </div>
         <div class="coverage-cell">
           <div class="coverage-num">{COVERAGE_TARGET_FACTORS}</div>
@@ -123,247 +107,265 @@ function formatRunErrors(run: (typeof status.pipeline_runs)[number]): string {
     </section>
 
     <section class="section">
-      <div class="section-head"><span class="section-num">§03</span><h2>Per-protocol freshness</h2><span class="tag">{status.per_protocol.length} protocols</span></div>
-
-      {status.per_protocol.length === 0 ? (
-        <div class="empty-state">
-          <p><b>No protocols graded yet.</b> Once M3a (E-18) lands, every protocol's slug, letter grade, last-graded-at, and data-as-of timestamps will appear here, sorted with the most stale rows first.</p>
-          <p class="muted">Color legend: green ≤{FRESHNESS_GREEN_DAYS}d · yellow {FRESHNESS_GREEN_DAYS + 1}–{FRESHNESS_YELLOW_DAYS}d · red &gt;{FRESHNESS_YELLOW_DAYS}d · gray ungraded.</p>
-        </div>
-      ) : (
-        <>
-          <div class="freshness-summary">
-            <span class="dot dot-green" aria-hidden="true"></span> {freshnessCounts.green} fresh
-            <span class="sep">·</span>
-            <span class="dot dot-yellow" aria-hidden="true"></span> {freshnessCounts.yellow} aging
-            <span class="sep">·</span>
-            <span class="dot dot-red" aria-hidden="true"></span> {freshnessCounts.red} stale
-            <span class="sep">·</span>
-            <span class="dot dot-gray" aria-hidden="true"></span> {freshnessCounts.gray} ungraded
-          </div>
-          <table class="mtable freshness-table">
-            <thead>
-              <tr>
-                <th>Protocol</th>
-                <th>Letter</th>
-                <th>Graded at</th>
-                <th>Data as of</th>
-                <th class="num">Days stale</th>
-              </tr>
-            </thead>
-            <tbody>
-              {status.per_protocol.map((p) => {
-                const fc = classifyFreshness(p.days_stale);
-                return (
-                  <tr class={`freshness-row freshness-${fc}`}>
-                    <td><a href={`/protocols/${p.slug}/`}>{p.display_name}</a></td>
-                    <td class="mono">{p.letter ?? 'N/A'}</td>
-                    <td class="mono">{p.graded_at?.slice(0, 10) ?? 'N/A'}</td>
-                    <td class="mono">{p.data_as_of?.slice(0, 10) ?? 'N/A'}</td>
-                    <td class="num mono">{p.days_stale ?? 'N/A'}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </>
-      )}
-    </section>
-
-    <section class="section">
-      <div class="section-head"><span class="section-num">§04</span><h2>Cadence buckets</h2><span class="tag">refresh schedule</span></div>
-      <p class="muted">Every factor in the 184-factor taxonomy is annotated with a refresh cadence. Bucket counts are derived from the cadence column in the methodology template; run health below comes from the exported pipeline log.</p>
-      <table class="mtable">
-        <thead>
-          <tr>
-            <th>Code</th>
-            <th>Bucket</th>
-            <th class="num">Factors</th>
-            <th>Refresh model</th>
-            <th>SLA</th>
-            <th>Last run</th>
-            <th class="num">30d OK</th>
-            <th class="num">30d Err</th>
-            <th>State</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bucketRows.map((b) => (
+      <div class="section-head"><span class="section-num">§03</span><h2>Cadence buckets</h2><span class="tag">factor schedule</span></div>
+      <p class="muted">
+        Every factor in the {COVERAGE_TARGET_FACTORS}-factor taxonomy is assigned a cadence.
+        Counts are derived from the current v1.7.0 factor detail metadata at build time, with an
+        exact total assertion.
+      </p>
+      <div class="table-scroll" role="region" aria-label="Cadence bucket table" tabindex="0">
+        <table class="mtable">
+          <thead>
             <tr>
-              <td class="mono"><b>{b.code}</b></td>
-              <td>{b.label}</td>
-              <td class="num">{b.count}</td>
-              <td>{b.refresh}</td>
-              <td class="muted">{b.sla}</td>
-              <td class="mono">{b.freshness?.last_run_at ? b.freshness.last_run_at.slice(0, 10) : 'N/A'}</td>
-              <td class="num">{b.freshness?.total_successes ?? 'N/A'}</td>
-              <td class={`num ${(b.freshness?.total_errors ?? 0) > 0 ? 'warn' : ''}`}>{b.freshness?.total_errors ?? 'N/A'}</td>
-              <td><span class={`state state-${b.state.toLowerCase().replaceAll(' ', '-')}`}>{b.state}</span></td>
+              <th>Code</th>
+              <th>Bucket</th>
+              <th class="num">Factors</th>
+              <th>Refresh model</th>
+              <th>SLA</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {bucketRows.map((bucket) => (
+              <tr>
+                <td class="mono"><b>{bucket.code}</b></td>
+                <td>{bucket.label}</td>
+                <td class="num">{bucket.count}</td>
+                <td>{bucket.refresh}</td>
+                <td class="muted">{bucket.sla}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p class="muted">Examples and full per-factor mapping: see <a href="/methodology/">methodology</a>.</p>
     </section>
 
     <section class="section">
-      <div class="section-head"><span class="section-num">§05</span><h2>Pipeline run history</h2><span class="tag">{status.pipeline_runs_source === 'live' ? `${status.pipeline_runs.length} runs` : 'unwired'}</span></div>
-      {status.pipeline_runs_source === 'unwired' ? (
-        <div class="empty-state">
-          <p><b>Run history not yet wired.</b> When E-30 Phase 3 lands, this section renders the last 30 invocations of <code>refresh-continuous.py</code> and <code>refresh-events.py</code>, with per-fetcher success/error counts, protocols touched, and duration.</p>
-          <p class="muted">Until then, freshness above is computed directly from per-protocol envelopes (graded_at / data_as_of), not from a separate run log.</p>
-        </div>
-      ) : (
-        <>
-          {problemRuns.length > 0 && (
-            <div class="run-alert">
-              <p><b>Partial pipeline failures detected.</b></p>
-              <ul>
-                {problemRuns.slice(0, 5).map((r) => (
-                  <li><code>{r.script_name}</code> at <code>{r.run_at.slice(0, 19).replace('T', ' ')}</code>: {formatRunErrors(r)}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <table class="mtable">
-            <thead>
-              <tr>
-                <th>Run at</th>
-                <th>Script</th>
-                <th>Bucket</th>
-                <th class="num">Protocols</th>
-                <th class="num">OK</th>
-                <th class="num">Err</th>
-                <th class="num">Duration</th>
-                <th>Errors</th>
-                <th>Trigger</th>
-              </tr>
-            </thead>
-            <tbody>
-              {status.pipeline_runs.map((r) => (
-                <tr class={r.error_count > 0 ? 'run-error' : ''}>
-                  <td class="mono">{r.run_at.slice(0, 19).replace('T', ' ')}</td>
-                  <td class="mono">{r.script_name}</td>
-                  <td class="mono">{r.cadence_bucket ?? 'N/A'}</td>
-                  <td class="num">{r.protocols_touched}</td>
-                  <td class="num">{r.success_count}</td>
-                  <td class="num">{r.error_count}</td>
-                  <td class="num">{r.duration_seconds == null ? 'N/A' : `${r.duration_seconds}s`}</td>
-                  <td class="muted">{r.error_count > 0 ? formatRunErrors(r) : 'None'}</td>
-                  <td class="muted">{r.triggered_by}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
-    </section>
-
-    <section class="section">
-      <div class="section-head"><span class="section-num">§06</span><h2>Data freshness policy</h2></div>
-      <ul class="policy">
-        <li><b>Green</b>: last-updated within {FRESHNESS_GREEN_DAYS} days. Treat as current.</li>
-        <li><b>Yellow</b>: {FRESHNESS_GREEN_DAYS + 1} to {FRESHNESS_YELLOW_DAYS} days. Episodic factors expected to land here between weekly sweeps; static factors are normal at any age.</li>
-        <li><b>Red</b>: &gt; {FRESHNESS_YELLOW_DAYS} days for a continuous-cadence factor, or &gt; 90 days for an episodic factor. Surface as a stale-data flag on the protocol page.</li>
-        <li><b>Gray</b>: never assessed. Pre-M3a state for new protocols.</li>
-      </ul>
-      <p class="muted">Active incidents are surfaced via the per-protocol incident banner and do <em>not</em> change the structural letter grade (PD-033). The EVENT badge mechanism returns alongside the v1.1 streaming-signal engine.</p>
+      <div class="section-head"><span class="section-num">§04</span><h2>Public snapshot notes</h2></div>
+      <p class="muted">
+        This page describes the committed reviewed projection. It is not a live operations monitor
+        and does not include private review or ingestion telemetry.
+      </p>
+      <p class="muted">Real-time signals remain deferred to v1.1 and will be surfaced by the signal engine.</p>
     </section>
 
     <div class="envelope">
-      <span><b>rubric_version</b> {RUBRIC_VERSION}</span>
-      <span><b>schema_version</b> {status.schema_version}</span>
-      <span><b>generated_at</b> {status.generated_at}</span>
+      <span><b>rubric_version</b> {status.rubric_version}</span>
+      <span><b>api_envelope_version</b> {status.api_envelope_version}</span>
+      <span><b>data_as_of</b> {status.data_as_of || 'N/A'}</span>
+      <span><b>generated_at</b> {status.generated_at || 'N/A'}</span>
       <span><b>protocols_graded</b> {status.protocols_graded}/{status.protocols_target}</span>
     </div>
   </div>
+
+  <Footer slot="footer" buildSha={status.build_sha ?? undefined} />
 </Base>
 
 <style>
+  .container {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: var(--s-13) var(--s-10) var(--s-14);
+    min-width: 0;
+  }
+  .masthead {
+    padding-bottom: var(--s-10);
+    border-bottom: 1px solid var(--border);
+  }
+  .crumb,
+  .section-num,
+  .tag,
+  .meta-row,
+  .envelope,
+  .mono {
+    font-family: var(--font-mono);
+  }
+  .crumb,
+  .section-num {
+    color: var(--fg-3);
+    font-size: var(--t-cap);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+  }
+  .masthead h1 {
+    margin-top: var(--s-3);
+    color: var(--fg);
+    font-size: var(--t-4xl);
+    font-weight: var(--w-semi);
+    letter-spacing: var(--ls-display);
+    line-height: 1.1;
+  }
+  .lede {
+    max-width: 70ch;
+    margin-top: var(--s-5);
+    color: var(--fg-2);
+    font-size: var(--t-md);
+    line-height: 1.6;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    margin-top: var(--s-7);
+    color: var(--fg-3);
+    font-size: var(--t-cap);
+  }
+  .meta-row b {
+    color: var(--fg-2);
+    font-weight: var(--w-medium);
+  }
+  .meta-row code,
+  .mtable code {
+    color: var(--fg);
+    font-family: var(--font-mono);
+  }
+  .section {
+    margin-top: var(--s-13);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    margin-bottom: var(--s-5);
+  }
+  .section-head h2 {
+    color: var(--fg);
+    font-size: var(--t-2xl);
+    font-weight: var(--w-semi);
+    letter-spacing: var(--ls-snug);
+  }
+  .tag {
+    margin-left: auto;
+    color: var(--fg-3);
+    font-size: var(--t-micro);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+  .mtable {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-3);
+    overflow: hidden;
+  }
+  .mtable th,
+  .mtable td {
+    padding: var(--s-5) var(--s-6);
+    border-bottom: 1px solid var(--border);
+    color: var(--fg-2);
+    font-size: var(--t-base);
+    line-height: 1.5;
+    text-align: left;
+    vertical-align: top;
+  }
+  .mtable tr:last-child th,
+  .mtable tr:last-child td {
+    border-bottom: 0;
+  }
+  .mtable th {
+    width: 32%;
+    color: var(--fg-3);
+    font-weight: var(--w-medium);
+  }
+  .mtable thead th {
+    background: var(--surface-2);
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: var(--t-cap);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+  }
+  .mtable .num {
+    font-family: var(--font-mono);
+    font-feature-settings: 'tnum';
+    text-align: right;
+    white-space: nowrap;
+  }
+  .mtable a,
+  .muted a {
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .coverage-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--s-4);
-    margin-top: var(--s-3);
+    gap: var(--s-5);
   }
   .coverage-cell {
-    border: 1px solid var(--n-200);
-    padding: var(--s-4);
-    border-radius: 4px;
-    background: var(--n-50);
+    padding: var(--s-7);
+    border: 1px solid var(--border);
+    border-radius: var(--r-3);
+    background: var(--surface-2);
   }
   .coverage-num {
-    font-family: var(--mono);
-    font-size: var(--t-2xl, 1.75rem);
-    font-weight: 600;
-    color: var(--n-900);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: var(--t-3xl);
+    font-weight: var(--w-semi);
     line-height: 1.1;
   }
-  .coverage-num .muted { color: var(--n-500); font-weight: 400; }
-  .coverage-label { color: var(--n-700); margin-top: 4px; font-weight: 500; }
-  .coverage-meta { color: var(--n-500); font-size: var(--t-xs); margin-top: 2px; }
-
-  .freshness-summary {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
-    color: var(--n-700);
+  .coverage-num .muted {
+    color: var(--fg-3);
+    font-weight: var(--w-regular);
+  }
+  .coverage-label {
+    margin-top: var(--s-2);
+    color: var(--fg-2);
+    font-weight: var(--w-medium);
+  }
+  .coverage-meta,
+  .muted {
+    color: var(--fg-3);
     font-size: var(--t-sm);
-    margin-bottom: var(--s-3);
   }
-  .freshness-summary .sep { color: var(--n-300); margin: 0 4px; }
-  .dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 4px;
+  .coverage-meta {
+    margin-top: var(--s-1);
   }
-  .dot-green { background: var(--cell-green, #22c55e); }
-  .dot-yellow { background: var(--cell-yellow, #eab308); }
-  .dot-red { background: var(--cell-red, #ef4444); }
-  .dot-gray { background: var(--n-300); }
-
-  .freshness-table th, .freshness-table td { padding: 6px 12px; }
-  .freshness-row td { border-bottom: 1px solid var(--n-100); }
-  .freshness-green td:first-child { border-left: 3px solid var(--cell-green, #22c55e); }
-  .freshness-yellow td:first-child { border-left: 3px solid var(--cell-yellow, #eab308); }
-  .freshness-red td:first-child { border-left: 3px solid var(--cell-red, #ef4444); }
-  .freshness-gray td:first-child { border-left: 3px solid var(--n-300); }
-
-  .empty-state {
-    border: 1px dashed var(--n-300);
-    padding: var(--s-4);
-    border-radius: 4px;
-    background: var(--n-50);
+  .table-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--r-3);
+    background: var(--surface);
   }
-  .empty-state p:first-child { margin-top: 0; }
-  .empty-state p:last-child { margin-bottom: 0; }
-
-  .warn { color: #b91c1c; font-weight: 600; }
-  .state {
-    display: inline-block;
-    padding: 2px 6px;
-    border: 1px solid var(--n-200);
-    border-radius: 4px;
-    font-size: var(--t-xs);
-    font-weight: 600;
+  .table-scroll:focus-visible {
+    outline: 2px solid var(--fg-2);
+    outline-offset: 2px;
   }
-  .state-ok { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
-  .state-partial-failures { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
-  .state-no-runs, .state-deferred { color: var(--n-600); background: var(--n-50); }
-  .run-alert {
-    border: 1px solid #fecaca;
-    background: #fef2f2;
-    border-radius: 4px;
-    padding: var(--s-3);
-    margin-bottom: var(--s-3);
+  .table-scroll .mtable {
+    min-width: 720px;
+    border: 0;
+    border-radius: 0;
   }
-  .run-alert p { margin-top: 0; }
-  .run-alert ul { margin-bottom: 0; padding-left: var(--s-4); }
-  .run-error td { background: #fff7f7; }
-
-  .policy { padding-left: var(--s-4); }
-  .policy li { margin-bottom: 8px; color: var(--n-700); }
+  .envelope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-7);
+    margin-top: var(--s-13);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--border);
+    color: var(--fg-3);
+    font-size: var(--t-micro);
+  }
+  .envelope b {
+    color: var(--fg-2);
+    font-weight: var(--w-medium);
+  }
+  @media (max-width: 700px) {
+    .container {
+      padding: var(--s-10) var(--s-5) var(--s-13);
+    }
+    .masthead h1 {
+      font-size: var(--t-3xl);
+    }
+    .section-head h2 {
+      font-size: var(--t-xl);
+    }
+    .mtable th,
+    .mtable td {
+      padding: var(--s-4) var(--s-5);
+    }
+  }
 </style>
