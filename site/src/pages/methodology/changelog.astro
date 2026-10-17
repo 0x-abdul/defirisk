@@ -3,12 +3,14 @@ import Page from '../../components/Page.astro';
 import VersionMarker from '../../components/VersionMarker.astro';
 import { RUBRIC_VERSION } from '../../lib/rubric';
 
+import { selectedRetiredVersions } from '../../lib/api-lifecycle';
+const retiredVersions = selectedRetiredVersions();
 const toc = [
   { id: 'v1-7-0', n: `${RUBRIC_VERSION} current` },
   { id: 'v1-7-0-rd-f-039', n: 'RD-F-039 recalibration' },
-  { id: 'v1-6-0', n: 'v1.6.0 (superseded)' },
+  { id: 'v1-6-0', n: retiredVersions.includes('v1.6.0') ? 'v1.6.0 (API retired in selected input)' : 'v1.6.0 (superseded)' },
   { id: 'ds-v1-1', n: 'Design system v1.1' },
-  { id: 'v1-5-0', n: 'v1.5.0' },
+  { id: 'v1-5-0', n: retiredVersions.includes('v1.5.0') ? 'v1.5.0 (API retired in selected input)' : 'v1.5.0' },
   { id: 'v1-4-0', n: 'v1.4.0' },
 ];
 ---
@@ -78,11 +80,12 @@ const toc = [
       <strong>Calibration/launch result:</strong> initial calibration used the pre-backlog cohort;
       the generated data tree at launch expanded coverage substantially under <code>v1.7.0</code>.
       The current protocol count and grade distribution should be read from
-      <code>data/api/v1.7.0/index.json</code>; that file is the source of truth.
+      <code>/api/v1.7.0/index.json</code>; that file is the source of truth.
     </li>
     <li>
-      <strong>API:</strong> <code>data/api/v1.7.0/</code> is the canonical tree. The v1.6.0
-      folder is archived for rollback and version-comparison. New envelope fields:
+      <strong>API:</strong> <code>/api/v1.7.0/</code> is the canonical tree. The v1.6.0
+      folder is retained in the frozen snapshot. A separate retirement candidate omits legacy
+      serving trees; <a href="/data/#retired">version lifecycle details</a>. New envelope fields:
       <code>risk_score</code>, <code>category_severities</code>, <code>cap_applied</code>,
       <code>cap_reason</code>.
     </li>
@@ -122,7 +125,7 @@ const toc = [
     </li>
     <li>
       <strong>Dropped</strong> the <code>headline_badge</code> field from the envelope schema in
-      <code>data/api/v1.6.0/</code>. The v1.5.0 API folder is frozen as a legacy snapshot.
+      <code>/api/v1.6.0/</code>. The v1.5.0 API folder is frozen as a legacy snapshot.
     </li>
     <li>
       <strong>Preserved unchanged</strong> the four-count letter rubric (critical-flag,

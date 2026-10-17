@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import { RUBRIC_VERSION } from '../../lib/rubric';
 
+import { selectedRetiredVersions } from '../../lib/api-lifecycle';
+const retiredVersions = selectedRetiredVersions();
 const target = '/data/';
 ---
 
@@ -16,6 +18,7 @@ const target = '/data/';
         <span><b>Rubric</b> <code>{RUBRIC_VERSION}</code></span>
         <span><b>Versioned base</b> <code>/api/{RUBRIC_VERSION}/</code></span>
       </div>
+      <p>Selected API: <code>{RUBRIC_VERSION}</code>. {retiredVersions.length ? `Retired in this input: ${retiredVersions.join(', ')}.` : 'No retired versions in this input.'} <a href="/data/#retired">Version lifecycle</a>.</p>
     </div>
     <section class="section">
       <p>Redirecting to <a href={target}>{target}</a>&#8230; If you are not redirected, follow the link.</p>

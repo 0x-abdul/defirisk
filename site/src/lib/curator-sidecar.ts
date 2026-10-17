@@ -20,7 +20,18 @@ import { RUBRIC_VERSION } from './rubric';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const CURATOR_ROOT = path.resolve(__dirname, '../../../data/curator', RUBRIC_VERSION);
+// Server-only roots stay inside this reader. Qualified builds bind the base
+// directory to their frozen sidecar snapshot; the version is appended once.
+const REPOSITORY_ROOT =
+  import.meta.env.DEFIRISK_REPOSITORY_ROOT ?? path.resolve(__dirname, '../../..');
+const DEFAULT_CURATOR_ROOT = path.join(REPOSITORY_ROOT, 'data', 'curator', RUBRIC_VERSION);
+const curatorOverride = process.env.DEFIRISK_CURATOR_ROOT;
+if (curatorOverride !== undefined && (!curatorOverride.trim() || curatorOverride.includes('\0'))) {
+  throw new Error('Bound curator snapshot root is invalid');
+}
+const CURATOR_ROOT = curatorOverride !== undefined
+  ? path.resolve(curatorOverride, RUBRIC_VERSION)
+  : DEFAULT_CURATOR_ROOT;
 
 export type SignalLight = 'green' | 'yellow' | 'red' | 'gray';
 

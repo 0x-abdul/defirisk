@@ -59,35 +59,34 @@ afterEach(async () => {
 
 describe('post-build API copy', () => {
   it(
-    'copies every historical tree byte-for-byte despite an API root override',
+    'copies every default frozen historical tree byte-for-byte',
     { timeout: 30_000 },
     async () => {
       const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), 'defirisk-post-build-copy-'));
       temporaryRoots.push(temporaryRoot);
 
       const distRoot = path.join(temporaryRoot, 'dist');
-      const poisonRoot = path.join(temporaryRoot, 'future-api', 'v2.0.0');
       await mkdir(distRoot);
-      await mkdir(poisonRoot, { recursive: true });
       await writeFile(path.join(distRoot, '_canonical_preview.html'), 'fixture');
-      await writeFile(path.join(poisonRoot, 'poison.json'), '{"source":"mutable-active-rubric"}');
 
       const { stdout } = await execFileAsync(process.execPath, [POST_BUILD_COPY], {
         env: {
           ...process.env,
-          DEFIRISK_API_ROOT: poisonRoot,
+          DEFIRISK_API_ROOT: undefined,
+          DEFIRISK_API_TREE_ROOT: undefined,
           DEFIRISK_DIST_ROOT: distRoot,
         },
         encoding: 'utf8',
       });
 
       const copiedApiRoot = path.join(distRoot, 'api');
-      expect(stdout).toContain('[post-build-copy] copied data');
+      expect(stdout).toContain('[post-build-copy] validated');
       expect(stdout).not.toContain('v2.0.0');
       expect(await readdir(copiedApiRoot)).toEqual(expect.arrayContaining(HISTORICAL_VERSIONS));
       await expect(readFile(path.join(copiedApiRoot, 'v2.0.0', 'poison.json'))).rejects.toThrow();
       expect(await readdir(distRoot)).not.toContain('_canonical_preview.html');
 
+      await expectByteIdenticalTree(COMMITTED_API_ROOT, copiedApiRoot);
       for (const version of HISTORICAL_VERSIONS) {
         await expectByteIdenticalTree(
           path.join(COMMITTED_API_ROOT, version),
@@ -96,4 +95,24 @@ describe('post-build API copy', () => {
       }
     }
   );
+  it.each(['v2.0.0', 'v1.7.0'])(
+    'rejects unsupported or incomplete selected candidate root %s',
+    { timeout: 30_000 },
+    async (version) => {
+      const root = await mkdtemp(path.join(os.tmpdir(), 'defirisk-invalid-api-'));
+      temporaryRoots.push(root);
+      const distRoot = path.join(root, 'dist');
+      const selectedRoot = path.join(root, 'candidate', version);
+      await mkdir(distRoot);
+      await mkdir(selectedRoot, { recursive: true });
+      await writeFile(path.join(selectedRoot, 'poison.json'), '{"source":"incomplete-candidate"}');
+      await expect(execFileAsync(process.execPath, [POST_BUILD_COPY], {
+        env: { ...process.env, DEFIRISK_API_TREE_ROOT: undefined,
+          DEFIRISK_API_ROOT: selectedRoot, DEFIRISK_DIST_ROOT: distRoot },
+        encoding: 'utf8',
+      })).rejects.toThrow();
+      expect(await readdir(distRoot)).toEqual([]);
+    }
+  );
+
 });
