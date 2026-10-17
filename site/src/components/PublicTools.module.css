@@ -1,0 +1,112 @@
+.tools {
+  color: var(--fg);
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+.tools button,
+.tools select,
+.watchButton {
+  font: inherit;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  padding: 8px 10px;
+  max-width: 100%;
+}
+.tools button,
+.watchButton {
+  cursor: pointer;
+}
+.tools button:disabled,
+.tools select:disabled,
+.watchButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.tools a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tools button:focus-visible,
+.tools select:focus-visible,
+.watchButton:focus-visible,
+.viewport:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.viewport {
+  overflow-x: auto;
+  margin: 18px 0;
+  border: 1px solid var(--border);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+.table caption {
+  text-align: left;
+  padding: 12px;
+  font-weight: 600;
+}
+.table th,
+.table td {
+  min-width: 150px;
+  padding: 12px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.table td p {
+  margin: 8px 0;
+}
+.table small {
+  color: var(--fg-2);
+}
+.table th {
+  background: var(--surface);
+}
+.factorGroup {
+  border-top: 1px solid var(--border);
+  padding: 12px 0;
+}
+.factorGroup summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.notice {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  line-height: 1.6;
+}
+.change {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.change p {
+  margin: 8px 0;
+}

@@ -1,0 +1,36 @@
+---
+import Page from '../../components/Page.astro';
+import LocalWatchlist from '../../components/LocalWatchlist';
+import { listComparisonProtocols } from '../../lib/comparison-data';
+import { listGradeChanges } from '../../lib/data-loaders';
+import { buildJsonFeed } from '../../lib/feed-generator';
+import { PUBLIC_SNAPSHOT_TIMESTAMP } from '../../lib/build-metadata';
+const protocols = listComparisonProtocols().map(({ slug, name }) => ({ slug, name }));
+const feed = buildJsonFeed(listGradeChanges());
+---
+
+<Page
+  pageTitle="Local watchlist"
+  description="Save published protocols in this browser and read a digest from the public grade-change feed."
+  crumbs={[{ n: 'Watchlist' }]}
+  toc={[
+    { id: 'saved', n: 'Watched protocols' },
+    { id: 'digest', n: 'Change digest' },
+  ]}
+  hero={{
+    h1: 'Local watchlist',
+    lede: 'Keep a browser-local list of published protocols and their available grade changes.',
+  }}
+>
+  <LocalWatchlist
+    client:load
+    protocols={protocols}
+    feed={feed}
+    snapshot={PUBLIC_SNAPSHOT_TIMESTAMP}
+  />
+  <noscript
+    >Enable JavaScript and browser storage to use the watchlist. <a href="/changes/"
+      >Read all published grade changes</a
+    >.</noscript
+  >
+</Page>
