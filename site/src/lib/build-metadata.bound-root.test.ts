@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import os from 'node:os';
 import path from 'node:path';
 
@@ -42,6 +43,11 @@ afterEach(() => {
 describe('bound public snapshot metadata', () => {
   it('uses the overridden snapshot and agrees with the status loader', async () => {
     const root = boundRoot();
+    // The status model also asserts the complete reviewed cadence taxonomy.
+    // Keep the timestamp override isolated while supplying its required public metadata.
+    const taxonomyRoot = fileURLToPath(new URL('../../../data/api/v1.7.0/', import.meta.url));
+    cpSync(path.join(taxonomyRoot, 'factors.json'), path.join(root, 'factors.json'));
+    cpSync(path.join(taxonomyRoot, 'factors'), path.join(root, 'factors'), { recursive: true });
     const timestamp = '2026-09-23T08:15:00Z';
     writeFileSync(path.join(root, 'status.json'), JSON.stringify(fixtureStatus(timestamp)));
     const metadata = await import('./build-metadata');
