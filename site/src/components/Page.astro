@@ -458,5 +458,27 @@ const buildSha = import.meta.env.PUBLIC_GIT_SHA;
       padding-right: 0;
       margin-right: 0;
     }
+    .body :global(.endpts .ep) {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 7px;
+      align-items: start;
+      min-width: 0;
+    }
+    .body :global(.endpts .ep .verb) {
+      grid-column: 1;
+      grid-row: auto;
+      justify-self: start;
+    }
+    .body :global(.endpts .ep .path),
+    .body :global(.endpts .ep .desc) {
+      grid-column: 1;
+      min-width: 0;
+      max-width: none;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+    .body :global(.endpts .ep .desc) {
+      text-align: left;
+    }
   }
 </style>
