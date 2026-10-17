@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 
 const srcRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const repoRoot = path.resolve(srcRoot, '..', '..');
 
 function readSource(...parts: string[]): string {
   return readFileSync(path.join(srcRoot, ...parts), 'utf8');
@@ -67,4 +68,17 @@ describe('public copy review', () => {
       'Interpret a grade with rubric_version, data_as_of, and the canonical surface identifier. Missing or unavailable results remain distinct from assessed results.',
     );
   });
+
+  it('describes critical-factor metadata with the current v1.7 rule', () => {
+    const factorSchema = readFileSync(
+      path.join(repoRoot, 'data', 'schemas', 'factor.json'),
+      'utf8'
+    );
+
+    expect(factorSchema).not.toContain('single-factor-sufficient D/F');
+    expect(factorSchema).toContain('one red blocks A and adds 5 risk points');
+    expect(factorSchema).toContain('two or more force D or worse');
+    expect(factorSchema).toContain('three or more force F');
+  });
+
 });
